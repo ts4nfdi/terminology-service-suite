@@ -1,0 +1,1 @@
+export { IriWidget } from './IriWidget';
