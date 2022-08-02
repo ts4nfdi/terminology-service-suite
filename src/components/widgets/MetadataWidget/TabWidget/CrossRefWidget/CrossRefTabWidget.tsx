@@ -9,7 +9,7 @@ interface CrossRefWidgetProps {
 }
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
-  const [crossRef, setCrossRef] = useState([]);
+  const [crossRef, setCrossRef] = useState<{url: string, database: string, id:string}[]>();
   const { term, api } = props;
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
       setCrossRef(crossRefData);
     };
     getDescription().catch((error) => console.log(error));
-  }, [props.api, props.term]);
+  }, [api, term]);
 
   return (
     <EuiPanel>
@@ -34,6 +34,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         {crossRef
           ? (
             crossRef.map((item, index) => (
+              // eslint-disable-next-line react/no-array-index-key
               <EuiFlexItem key={index}>
                 {item.url
                   ? (
