@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "module": "Commonjs",
-    "target": "ES5",
-    "sourceMap": false,
-    "outDir": "./dist",
-    "noImplicitAny": true,
-    "declaration": true,
-    "jsx": "react-jsx",
+    "target": "esnext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": ["node"]
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types/"],
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "dist/esm/types"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": ["./src/**/*"]
 }
