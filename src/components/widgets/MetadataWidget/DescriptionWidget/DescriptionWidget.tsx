@@ -5,7 +5,6 @@ import { EuiTextProps } from '@elastic/eui/src/components/text/text';
 interface DescriptionWidgetProps extends EuiTextProps {
   iri: string,
   api: string,
-  // eslint-disable-next-line react/require-default-props
   descText?: string
 }
 

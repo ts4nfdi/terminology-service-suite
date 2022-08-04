@@ -24,6 +24,7 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
         .then((response) => response.json())
         .then((response) => [response._embedded.terms[0].ontology_prefix,
           response._embedded.terms[0].obo_id]);
+      // @ts-ignore
       setHierarchy(hierarchyData);
     };
     getHierarchy().catch((error) => console.log(error));
