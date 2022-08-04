@@ -1,10 +1,13 @@
 {
   "name": "@PB_KM/widgets-semlookp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Widget component library",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
-  "files": ["dist","package.json"],
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "scripts": {
     "rollup": "rollup -c",
     "semantic-release": "semantic-release"
