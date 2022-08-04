@@ -1,5 +1,5 @@
 {
-  "name": "@PB_KM/widgets-semlookp",
+  "name": "@km/widgets-semlookp",
   "version": "1.0.4",
   "description": "Widget component library",
   "main": "dist/esm/index.js",
