@@ -23,7 +23,12 @@ variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
 
 stages:
+  - build
   - release
+build:
+  stage: build
+  script:
+    - npm run rollup
 
 publish:
   stage: release
