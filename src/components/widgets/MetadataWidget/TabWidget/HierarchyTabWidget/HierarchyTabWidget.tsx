@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  EuiPanel, EuiText, EuiTreeView,
+  EuiPanel, EuiText
 } from '@elastic/eui';
 
-interface HierarchyTabWidgetProps {
+export interface HierarchyTabWidgetProps {
   iri: string;
   api:string;
 }

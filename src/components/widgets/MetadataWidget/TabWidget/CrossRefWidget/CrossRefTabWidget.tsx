@@ -3,7 +3,7 @@ import {
   EuiFlexGroup, EuiFlexItem, EuiLink, EuiPanel, EuiText,
 } from '@elastic/eui';
 
-interface CrossRefWidgetProps {
+export interface CrossRefWidgetProps {
   term: string;
   api:string;
 }

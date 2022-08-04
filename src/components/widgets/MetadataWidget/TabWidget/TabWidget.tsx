@@ -4,7 +4,7 @@ import { AlternativeNameTabWidget } from './AlternativeNameTabWidget';
 import { CrossRefTabWidget } from './CrossRefWidget';
 import { HierarchyTabWidget } from './HierarchyTabWidget';
 
-interface TabWidgetProps {
+export interface TabWidgetProps {
   iri: string;
   api:string;
 }

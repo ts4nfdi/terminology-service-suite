@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
-interface AlternativeNameTabWidgetProps {
+export interface AlternativeNameTabWidgetProps {
   term: string;
   api: string;
 }
