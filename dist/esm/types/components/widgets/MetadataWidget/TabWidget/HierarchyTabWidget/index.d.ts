@@ -1,1 +1,0 @@
-export { HierarchyTabWidget } from './HierarchyTabWidget';
