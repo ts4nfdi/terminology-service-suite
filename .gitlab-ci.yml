@@ -1,7 +1,7 @@
 default:
   tags:
     - shell1
-  image: node:latest
+  image: node:18-alpine
   before_script:
     - npm ci --cache .npm --prefer-offline
     - |
