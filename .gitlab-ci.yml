@@ -3,6 +3,7 @@ default:
     - docker1
   image: node:18-alpine
   before_script:
+    - apk add git
     - npm ci --cache .npm --prefer-offline
     - |
       {
@@ -25,9 +26,6 @@ stages:
   - release
 
 publish:
-  tags:
-    - docker1
-  image: node:18-alpine
   stage: release
   script:
     - npm run semantic-release
