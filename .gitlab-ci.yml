@@ -27,6 +27,7 @@ stages:
 publish:
   tags:
     - shell1
+  image: node:18-alpine
   stage: release
   script:
     - npm run semantic-release
