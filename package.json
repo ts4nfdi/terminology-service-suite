@@ -4,9 +4,7 @@
   "description": "Widget component library",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist","package.json"],
   "scripts": {
     "rollup": "rollup -c",
     "semantic-release": "semantic-release"
