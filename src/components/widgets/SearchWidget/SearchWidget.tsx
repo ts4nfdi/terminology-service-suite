@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EuiComboBox } from '@elastic/eui';
 
-interface SearchWidgetProps {
+export interface SearchWidgetProps {
   api: string,
   onChange({}): void,
 }
