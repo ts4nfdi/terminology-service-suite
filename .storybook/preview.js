@@ -7,3 +7,14 @@ export const parameters = {
     },
   },
 }
+
+import '@elastic/eui/dist/eui_theme_light.css';
+
+import { EuiProvider } from '@elastic/eui';
+export const decorators = [
+  (Story) => (
+      <EuiProvider colorMode="light">
+        {Story()}
+      </EuiProvider>
+  ),
+];
