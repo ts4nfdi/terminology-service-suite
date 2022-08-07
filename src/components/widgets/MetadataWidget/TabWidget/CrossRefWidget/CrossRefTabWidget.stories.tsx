@@ -24,6 +24,6 @@ export const CrossRefTabWidget1 = Template.bind({})
 
 // @ts-ignore
 CrossRefTabWidget1.args = {
-    iri: 'http://purl.obolibrary.org/obo/NCIT_C2985',
-    api: 'https://semanticlookup.zbmed.de/ols/api/'
+    iri: 'http://purl.obolibrary.org/obo/NCIT_C2987',
+    api: 'https://www.ebi.ac.uk/ols/api/'
 }
