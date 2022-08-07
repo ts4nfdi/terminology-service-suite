@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { EuiFlexItem, EuiLink } from '@elastic/eui';
 
-interface IriWidgetProps {
+export interface IriWidgetProps {
   iri: string,
   api: string,
   iriText?: string

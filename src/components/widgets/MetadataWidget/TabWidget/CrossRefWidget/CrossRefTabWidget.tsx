@@ -3,18 +3,18 @@ import {
   EuiFlexGroup, EuiFlexItem, EuiLink, EuiPanel, EuiText,
 } from '@elastic/eui';
 
-interface CrossRefWidgetProps {
-  term: string;
+export interface CrossRefWidgetProps {
+  iri: string;
   api:string;
 }
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const [crossRef, setCrossRef] = useState<{url: string, database: string, id:string}[]>();
-  const { term, api } = props;
+  const { iri, api } = props;
 
   useEffect(() => {
     const getDescription = async () => {
-      const crossRefData = await fetch(`${api}terms?iri=${term}`, {
+      const crossRefData = await fetch(`${api}terms?iri=${iri}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -26,7 +26,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
       setCrossRef(crossRefData);
     };
     getDescription().catch((error) => console.log(error));
-  }, [api, term]);
+  }, [api, iri]);
 
   return (
     <EuiPanel>
@@ -34,7 +34,6 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         {crossRef
           ? (
             crossRef.map((item, index) => (
-              // eslint-disable-next-line react/no-array-index-key
               <EuiFlexItem key={index}>
                 {item.url
                   ? (

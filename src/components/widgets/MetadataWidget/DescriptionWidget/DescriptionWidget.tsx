@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { EuiFlexItem, EuiText } from '@elastic/eui';
 import { EuiTextProps } from '@elastic/eui/src/components/text/text';
 
-interface DescriptionWidgetProps extends EuiTextProps {
+export interface DescriptionWidgetProps extends EuiTextProps {
   iri: string,
   api: string,
   descText?: string

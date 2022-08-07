@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { EuiBadge, EuiFlexItem } from '@elastic/eui';
 
-interface OntologyHierarchyWidgetProps {
+export interface OntologyHierarchyWidgetProps {
   iri: string,
   api: string,
 }

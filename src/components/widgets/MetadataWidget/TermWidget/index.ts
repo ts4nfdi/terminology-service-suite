@@ -1,1 +1,1 @@
-export {TermWidget} from "./TermWidget"
+export {TermWidget} from './TermWidget'
