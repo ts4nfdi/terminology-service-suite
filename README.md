@@ -53,7 +53,7 @@ publish a new package and increase the version number depending on the commit me
 [Source](https://docs.gitlab.com/ee/ci/examples/semantic-release.html)
 
 
-## Use Module
+## Use Components
 
 To use the module, create a `.npmrc` file in your projects root folder. 
 Paste your authentication token with read and/or write access to the registry and the registry link.
