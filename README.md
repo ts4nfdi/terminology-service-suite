@@ -77,4 +77,10 @@ Note:
 The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
 `<EuiProvider>` component.
 
+Elastic UI needs following peer dependencies as well to work correctly:
+
+```
+npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types
+```
+
 [Source](https://elastic.github.io/eui/#/utilities/provider)
