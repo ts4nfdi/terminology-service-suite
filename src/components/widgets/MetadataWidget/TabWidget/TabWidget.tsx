@@ -12,7 +12,7 @@ export interface TabWidgetProps {
 function TabWidget(props: TabWidgetProps) {
   const tabs: Array<EuiTabbedContentTab> = [
     {
-      content: <AlternativeNameTabWidget api={props.api} term={props.iri} />,
+      content: <AlternativeNameTabWidget api={props.api} iri={props.iri} />,
       id: 'tab1',
       name: 'Alternative Names',
     },
@@ -24,7 +24,7 @@ function TabWidget(props: TabWidgetProps) {
       name: 'Hierarchy',
     },
     {
-      content: <CrossRefTabWidget api={props.api} term={props.iri} />,
+      content: <CrossRefTabWidget api={props.api} iri={props.iri} />,
       id: 'tab3',
       name: 'Cross references',
     },

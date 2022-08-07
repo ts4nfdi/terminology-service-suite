@@ -1,5 +1,5 @@
 import React from "react";
-import TermWidget, { TermWidgetProps } from "./TermWidget";
+import { TermWidget, TermWidgetProps } from "./TermWidget";
 
 export default {
     title: '/Widgets/TermWidget',

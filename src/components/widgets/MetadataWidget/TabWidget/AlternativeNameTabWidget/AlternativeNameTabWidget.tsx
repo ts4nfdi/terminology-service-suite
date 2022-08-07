@@ -2,25 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
 
 export interface AlternativeNameTabWidgetProps {
-  term: string;
+  iri: string;
   api: string;
 }
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const [altLabel, setAltLabel] = useState([]);
-  const { term, api } = props;
+  const { iri, api } = props;
 
   function renderAltLabel() {
     if (altLabel != null && altLabel.length > 0) {
-      const table = altLabel.map((value, index) => <EuiFlexItem key={value + index}>{value}</EuiFlexItem>);
-      return table;
+      return altLabel.map((value, index) => <EuiFlexItem key={value + index}>{value}</EuiFlexItem>);
     }
     return <EuiText>No alternative names exit for this concept.</EuiText>;
   }
 
   useEffect(() => {
     const getAltLabel = async () => {
-      const altLabelData = await fetch(`${api}terms?iri=${term}`, {
+      const altLabelData = await fetch(`${api}terms?iri=${iri}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -33,7 +32,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
       setAltLabel(altLabelData);
     };
     getAltLabel().catch((error) => console.log(error));
-  }, [props.api, props.term]);
+  }, [props.api, props.iri]);
 
   return (
     <EuiPanel>
