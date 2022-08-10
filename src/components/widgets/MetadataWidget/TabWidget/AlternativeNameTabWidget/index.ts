@@ -1,1 +1,1 @@
-export { AlternativeNameTabWidget } from './AlternativeNameTabWidget';
+export { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";

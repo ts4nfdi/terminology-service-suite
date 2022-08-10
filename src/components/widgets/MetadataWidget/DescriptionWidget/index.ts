@@ -1,1 +1,1 @@
-export { DescriptionWidget } from './DescriptionWidget';
+export { DescriptionWidget } from "./DescriptionWidget";

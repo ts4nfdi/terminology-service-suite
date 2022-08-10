@@ -30,12 +30,11 @@ build:
   script:
     - npm run rollup
   artifacts:
-      paths:
+    paths:
       - dist/
   cache:
     paths:
       - dist/
-
 
 publish:
   stage: release

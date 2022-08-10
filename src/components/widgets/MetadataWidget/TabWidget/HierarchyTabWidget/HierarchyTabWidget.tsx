@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import {
-  EuiPanel, EuiText
-} from '@elastic/eui';
+import React, { useEffect, useState } from "react";
+import { EuiPanel, EuiText } from "@elastic/eui";
 
 export interface HierarchyTabWidgetProps {
   iri: string;
-  api:string;
+  api: string;
 }
 
 function HierarchyTabWidget(props: HierarchyTabWidgetProps) {
-  const [mainLabel, setMainLabel] = useState('');
+  const [mainLabel, setMainLabel] = useState("");
   const [link, setLink] = useState();
   const [data, setData] = useState();
   const [childrenItems, setChildrenItems] = useState();
@@ -18,12 +16,13 @@ function HierarchyTabWidget(props: HierarchyTabWidgetProps) {
 
   useEffect(() => {
     fetch(`${api}terms?iri=${iri}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Accept: 'application/json',
-        Content_Type: 'application/json',
+        Accept: "application/json",
+        Content_Type: "application/json",
       },
-    }).then((res) => res.json())
+    })
+      .then((res) => res.json())
       .then((res) => res._embedded)
       .then((res) => {
         setData(res);
@@ -38,13 +37,14 @@ function HierarchyTabWidget(props: HierarchyTabWidgetProps) {
       // console.log(data)
       // @ts-ignore
       fetch(data.terms[0]._links.children.href, {
-        method: 'GET',
-        mode: 'same-origin',
+        method: "GET",
+        mode: "same-origin",
         headers: {
-          Accept: 'application/json',
-          Content_Type: 'application/json',
+          Accept: "application/json",
+          Content_Type: "application/json",
         },
-      }).then((res) => res.json())
+      })
+        .then((res) => res.json())
         .then((res) => console.log(res))
         .catch((error) => console.log(error));
     }
@@ -66,10 +66,7 @@ function HierarchyTabWidget(props: HierarchyTabWidgetProps) {
       {/*   aria-label="HierarchyTab" */}
       {/*   expandByDefault */}
       {/* /> */}
-      <EuiText>
-        Hierarchy not implemented
-      </EuiText>
-
+      <EuiText>Hierarchy not implemented</EuiText>
     </EuiPanel>
   );
 }

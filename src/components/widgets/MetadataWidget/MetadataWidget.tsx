@@ -1,14 +1,14 @@
-import React from 'react';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
-import { OntologyHierarchyWidget } from './OntologyHierarchyWidget';
-import { IriWidget } from './IriWidget';
-import { TermWidget }  from './TermWidget';
-import { DescriptionWidget } from './DescriptionWidget';
-import { TabWidget } from './TabWidget';
+import React from "react";
+import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { OntologyHierarchyWidget } from "./OntologyHierarchyWidget";
+import { IriWidget } from "./IriWidget";
+import { TermWidget } from "./TermWidget";
+import { DescriptionWidget } from "./DescriptionWidget";
+import { TabWidget } from "./TabWidget";
 
 interface MetadataWidgetProps {
   iri: string;
-  api:string;
+  api: string;
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
