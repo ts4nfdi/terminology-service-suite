@@ -12,7 +12,11 @@
     "rollup": "rollup -c",
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "style:format": "npx prettier --write .",
+    "style:check": "npx prettier --check .",
+    "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
+    "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix"
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "Pierre Zimmermann",
@@ -36,7 +40,15 @@
     "@types/react": "^17.0.45",
     "@types/react-dom": "17.0.11",
     "react-router": "^6.3.0",
-    "typescript": "~4.5.3"
+    "typescript": "~4.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "2.7.1"
   },
   "peerDependencies": {
     "react": "17.0.2",
