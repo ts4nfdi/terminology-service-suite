@@ -8,7 +8,7 @@ export interface TermWidgetProps {
 }
 function TermWidget(props: TermWidgetProps) {
   const [label, setLabel] = useState("undefined");
-  const { iri, api } = props;
+  const { iri, api ,termText } = props;
 
   useEffect(() => {
     const getTerm = async () => {
@@ -24,9 +24,9 @@ function TermWidget(props: TermWidgetProps) {
       setLabel(fetchedLabel);
     };
     getTerm().catch((error) => console.log(error));
-  }, [props.api, props.iri]);
+  }, [api, iri]);
 
-  return <EuiText>{props.termText ? props.termText : label}</EuiText>;
+  return <EuiText>{termText ? termText : label}</EuiText>;
 }
 
 export { TermWidget };

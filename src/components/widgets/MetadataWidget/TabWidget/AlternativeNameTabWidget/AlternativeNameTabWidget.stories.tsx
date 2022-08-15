@@ -31,6 +31,8 @@ const Template = (args: AlternativeNameTabWidgetProps) => (
 );
 
 export const AlternativeNameTabWidget1 = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 AlternativeNameTabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

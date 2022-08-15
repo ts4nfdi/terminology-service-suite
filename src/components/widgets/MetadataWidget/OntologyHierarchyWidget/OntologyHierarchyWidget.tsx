@@ -7,7 +7,7 @@ export interface OntologyHierarchyWidgetProps {
 }
 
 function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
-  const [hierarchy, setHierarchy] = useState([]);
+  const [hierarchy, setHierarchy] = useState<string[]>([]);
   const { api, iri } = props;
 
   useEffect(() => {
@@ -24,11 +24,10 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
           response._embedded.terms[0].ontology_prefix,
           response._embedded.terms[0].obo_id,
         ]);
-      // @ts-ignore
       setHierarchy(hierarchyData);
     };
     getHierarchy().catch((error) => console.log(error));
-  }, [props.api, props.iri]);
+  }, [api, iri]);
 
   return (
     <EuiFlexItem>

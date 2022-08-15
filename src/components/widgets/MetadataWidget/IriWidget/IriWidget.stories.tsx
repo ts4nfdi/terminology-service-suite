@@ -27,6 +27,7 @@ const Template = (args: IriWidgetProps) => <IriWidget {...args} />;
 
 export const IriWidget1 = Template.bind({});
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 IriWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

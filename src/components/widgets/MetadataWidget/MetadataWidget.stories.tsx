@@ -23,11 +23,13 @@ export default {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const Template = (args) => <MetadataWidget {...args} />;
 
 export const MetadataWidget1 = Template.bind({});
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 MetadataWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

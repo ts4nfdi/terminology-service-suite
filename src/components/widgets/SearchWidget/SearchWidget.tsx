@@ -7,11 +7,11 @@ export interface SearchWidgetProps {
 }
 
 function SearchWidget(props: SearchWidgetProps) {
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<{label:string, value:string}[]>([]);
   const [selectedOptions, setSelected] = useState([]);
 
   function searchTerm(searchValue: string) {
-    const options_data: any[] = [];
+    const options_data: {label:string, value:string}[] = [];
     if (searchValue.length > 0) {
       fetch(`${props.api}search?q=${searchValue}`, {
         method: "GET",
@@ -21,23 +21,22 @@ function SearchWidget(props: SearchWidgetProps) {
         },
       })
         .then((res) => res.json())
-        .then((res) => res.response.docs)
+        .then((res) => res?.response?.docs)
         .then((res) => {
           for (const item in res) {
-            const obo_short_form = res[item].hasOwnProperty("obo_id")
+            const obo_short_form = res[item]?.obo_id
               ? res[item].obo_id.toUpperCase()
-              : res[item].ontology_name == "mesh"
+              : res[item]?.ontology_name == "mesh"
               ? "MESH: " + res[item].short_form.toUpperCase()
-              : res[item].short_form.toUpperCase();
+              : res[item]?.short_form.toUpperCase();
             options_data.push({
-              label: res[item].label.toLowerCase() + " | " + obo_short_form,
+              label: res[item]?.label.toLowerCase() + " | " + obo_short_form,
               value: res[item],
             });
             if (options_data.length > 9) {
               break;
             }
           }
-          // @ts-ignore
           setOptions(options_data);
         });
     } else {

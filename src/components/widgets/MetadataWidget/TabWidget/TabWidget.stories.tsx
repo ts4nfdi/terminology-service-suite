@@ -27,6 +27,7 @@ const Template = (args: TabWidgetProps) => <TabWidget {...args} />;
 
 export const TabWidget1 = Template.bind({});
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

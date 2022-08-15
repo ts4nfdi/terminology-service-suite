@@ -27,6 +27,7 @@ const Template = (args: TermWidgetProps) => <TermWidget {...args} />;
 
 export const TermWidget1 = Template.bind({});
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TermWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

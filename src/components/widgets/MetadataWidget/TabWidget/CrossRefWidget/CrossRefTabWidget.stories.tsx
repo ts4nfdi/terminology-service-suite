@@ -27,6 +27,7 @@ const Template = (args: CrossRefWidgetProps) => <CrossRefTabWidget {...args} />;
 
 export const CrossRefTabWidget1 = Template.bind({});
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 CrossRefTabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2987",
