@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { EuiFlexItem, EuiText } from '@elastic/eui';
-import { EuiTextProps } from '@elastic/eui/src/components/text/text';
+import React, { useEffect, useState } from "react";
+import { EuiText } from "@elastic/eui";
+import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
-  iri: string,
-  api: string,
-  descText?: string
+  iri: string;
+  api: string;
+  descText?: string;
 }
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const [description, setDescription] = useState('No description available.');
-  const {
-    api, iri, descText, ...rest
-  } = props;
+  const [description, setDescription] = useState("No description available.");
+  const { api, iri, descText, ...rest } = props;
 
   useEffect(() => {
     const getDescription = async () => {
       const descriptionData = await fetch(`${api}terms?iri=${iri}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Content_Type: 'application/json',
+          Accept: "application/json",
+          Content_Type: "application/json",
         },
       })
         .then((response) => response.json())
@@ -35,14 +33,9 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   }, [api, iri]);
 
   return (
-
-    <div>
-      <EuiFlexItem>
-        <EuiText {...rest}>
-          {descText || description}
-        </EuiText>
-      </EuiFlexItem>
-    </div>
+    <>
+      <EuiText {...rest}>{descText || description}</EuiText>
+    </>
   );
 }
 

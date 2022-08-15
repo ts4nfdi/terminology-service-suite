@@ -6,15 +6,11 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+};
 
-import '@elastic/eui/dist/eui_theme_light.css';
+import "@elastic/eui/dist/eui_theme_light.css";
 
-import { EuiProvider } from '@elastic/eui';
+import { EuiProvider } from "@elastic/eui";
 export const decorators = [
-  (Story) => (
-      <EuiProvider colorMode="light">
-        {Story()}
-      </EuiProvider>
-  ),
+  (Story) => <EuiProvider colorMode="light">{Story()}</EuiProvider>,
 ];

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { EuiFlexItem, EuiLink } from '@elastic/eui';
+import React, { useEffect, useState } from "react";
+import { EuiFlexItem, EuiLink } from "@elastic/eui";
 
 export interface IriWidgetProps {
-  iri: string,
-  api: string,
-  iriText?: string
+  iri: string;
+  api: string;
+  iriText?: string;
 }
 function IriWidget(props: IriWidgetProps) {
-  const [fetchedIri, setFetchediri] = useState('undefined');
+  const [fetchedIri, setFetchediri] = useState("undefined");
   const { api, iri, iriText } = props;
 
   useEffect(() => {
     const getIri = async () => {
       const description = await fetch(`${api}terms?iri=${iri}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Content_Type: 'application/json',
+          Accept: "application/json",
+          Content_Type: "application/json",
         },
       })
         .then((response) => response.json())
@@ -28,24 +28,15 @@ function IriWidget(props: IriWidgetProps) {
 
   return (
     <EuiFlexItem grow={false}>
-      {iriText
-        ? (
-          <EuiLink
-            href={iriText}
-            target="_blank"
-          >
-            {iriText}
-          </EuiLink>
-        )
-        : (
-          <EuiLink
-            href={fetchedIri}
-            target="_blank"
-          >
-            {fetchedIri}
-          </EuiLink>
-        )}
-
+      {iriText ? (
+        <EuiLink href={iriText} target="_blank">
+          {iriText}
+        </EuiLink>
+      ) : (
+        <EuiLink href={fetchedIri} target="_blank">
+          {fetchedIri}
+        </EuiLink>
+      )}
     </EuiFlexItem>
   );
 }

@@ -1,1 +1,1 @@
-export { IriWidget } from './IriWidget';
+export { IriWidget } from "./IriWidget";

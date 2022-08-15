@@ -1,45 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { EuiBadge, EuiFlexItem } from '@elastic/eui';
+import React, { useEffect, useState } from "react";
+import { EuiBadge, EuiFlexItem } from "@elastic/eui";
 
 export interface OntologyHierarchyWidgetProps {
-  iri: string,
-  api: string,
+  iri: string;
+  api: string;
 }
 
 function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
-  const [hierarchy, setHierarchy] = useState([]);
-  const {
-    api, iri,
-  } = props;
+  const [hierarchy, setHierarchy] = useState<string[]>([]);
+  const { api, iri } = props;
 
   useEffect(() => {
     const getHierarchy = async () => {
       const hierarchyData = await fetch(`${api}terms?iri=${iri}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Content_Type: 'application/json',
+          Accept: "application/json",
+          Content_Type: "application/json",
         },
       })
         .then((response) => response.json())
-        .then((response) => [response._embedded.terms[0].ontology_prefix,
-          response._embedded.terms[0].obo_id]);
-      // @ts-ignore
+        .then((response) => [
+          response._embedded.terms[0].ontology_prefix,
+          response._embedded.terms[0].obo_id,
+        ]);
       setHierarchy(hierarchyData);
     };
     getHierarchy().catch((error) => console.log(error));
-  }, [props.api, props.iri]);
+  }, [api, iri]);
 
   return (
     <EuiFlexItem>
       <span>
-        <EuiBadge color="primary">
-          {hierarchy[0]}
-        </EuiBadge>
-        { ' > ' }
-        <EuiBadge color="success">
-          {hierarchy[1]}
-        </EuiBadge>
+        <EuiBadge color="primary">{hierarchy[0]}</EuiBadge>
+        {" > "}
+        <EuiBadge color="success">{hierarchy[1]}</EuiBadge>
       </span>
     </EuiFlexItem>
   );

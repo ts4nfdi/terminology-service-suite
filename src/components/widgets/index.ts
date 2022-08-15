@@ -1,2 +1,2 @@
-export * from './MetadataWidget';
-export * from './SearchWidget';
+export * from "./MetadataWidget";
+export * from "./SearchWidget";

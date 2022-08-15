@@ -1,1 +1,1 @@
-export { HierarchyTabWidget } from './HierarchyTabWidget';
+export { HierarchyTabWidget } from "./HierarchyTabWidget";
