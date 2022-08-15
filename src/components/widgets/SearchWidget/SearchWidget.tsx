@@ -7,11 +7,13 @@ export interface SearchWidgetProps {
 }
 
 function SearchWidget(props: SearchWidgetProps) {
-  const [options, setOptions] = useState<{label:string, value:string}[]>([]);
+  const [options, setOptions] = useState<{ label: string; value: string }[]>(
+    []
+  );
   const [selectedOptions, setSelected] = useState([]);
 
   function searchTerm(searchValue: string) {
-    const options_data: {label:string, value:string}[] = [];
+    const options_data: { label: string; value: string }[] = [];
     if (searchValue.length > 0) {
       fetch(`${props.api}search?q=${searchValue}`, {
         method: "GET",

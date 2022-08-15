@@ -8,7 +8,7 @@ export interface TermWidgetProps {
 }
 function TermWidget(props: TermWidgetProps) {
   const [label, setLabel] = useState("undefined");
-  const { iri, api ,termText } = props;
+  const { iri, api, termText } = props;
 
   useEffect(() => {
     const getTerm = async () => {

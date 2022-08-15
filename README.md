@@ -48,7 +48,6 @@ publish a new package and increase the version number depending on the commit me
 
 [Source](https://docs.gitlab.com/ee/ci/examples/semantic-release.html)
 
-
 ## Use Components
 
 To use the module, create a `.npmrc` file in your projects root folder.
@@ -62,6 +61,7 @@ npm config set -- '//gitlab.zbmed.com/api/v4/projects/<project_id>/packages/npm/
 ```
 
 Then run
+
 ```
 npm i @km/widgets-semlookp
 ```
