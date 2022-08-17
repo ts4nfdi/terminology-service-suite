@@ -61,9 +61,9 @@ Paste your authentication token with read and/or write access to the registry an
 Add the project id of this repo.
 
 ```
-npm config set @km:registry https://gitlab.zbmed.com/api/v4/projects/<project_id>/packages/npm/
+npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
 
-npm config set -- '//gitlab.zbmed.com/api/v4/projects/<project_id>/packages/npm/:_authToken' "<your_token>"
+npm config set -- '//gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/:_authToken' "<your_token>"
 ```
 
 Then run
