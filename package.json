@@ -11,8 +11,8 @@
   "scripts": {
     "rollup": "npx rollup -c",
     "semantic-release": "npx semantic-release",
-    "storybook": "npx start-storybook -p 6006",
-    "build-storybook": "npx build-storybook",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "style:format": "npx prettier --write .",
     "style:check": "npx prettier --check .",
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
@@ -20,7 +20,7 @@
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "Pierre Zimmermann",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.4",
     "rollup": "^2.77.2",
