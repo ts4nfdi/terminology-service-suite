@@ -37,6 +37,8 @@ build:
       - dist/
 pages:
   stage: release
+  before_script:
+    - export NODE_OPTIONS=--openssl-legacy-provider
   script:
     - npm run build-storybook -- -o public
   artifacts:
