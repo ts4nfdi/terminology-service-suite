@@ -7,6 +7,12 @@ The components can be viewed, built and tested with the included Storybook. Afte
 the CI/CD pipeline will publish a new package release depending on the analysis of semantic release.
 The built registry module can then be integrated into existing projects.
 
+## Documentation
+
+[![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)
+[Documentation](http://km.pages.gitlab.zbmed.de/semlookp/widgets-semlookp )
+
+
 # Built With
 
 - [ReactJS 17](https://reactjs.org/blog/2020/10/20/react-v17.html)
