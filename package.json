@@ -19,7 +19,7 @@
     "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix"
   },
   "types": "dist/esm/types/index.d.ts",
-  "author": "Pierre Zimmermann",
+  "author": "ZB MED - PB Knowledgemanagement",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.4",
