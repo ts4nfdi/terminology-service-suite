@@ -1,7 +1,7 @@
 default:
   tags:
     - docker1
-  image: node:18-alpine
+  image: node:17.8-alpine
   before_script:
     - apk add git
     - npm ci --cache .npm --prefer-offline
