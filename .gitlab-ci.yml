@@ -35,6 +35,19 @@ build:
   cache:
     paths:
       - dist/
+      -
+pages:
+  stage: release
+  script:
+    - npm run build-storybook -- -o public
+  artifacts:
+    paths:
+      - public/
+  cache:
+    paths:
+      - public/
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 publish:
   stage: release
