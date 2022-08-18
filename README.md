@@ -52,10 +52,9 @@ publish a new package and increase the version number depending on the commit me
 
 To use the module, create a `.npmrc` file in your projects root folder.
 Paste your authentication token with read and/or write access to the registry and the registry link.
-Add the project id of this repo.
 
 ```
-npm config set @km:registry https://gitlab.zbmed.com/api/v4/projects/<project_id>/packages/npm/
+npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/550/packages/npm/
 
 npm config set -- '//gitlab.zbmed.com/api/v4/projects/<project_id>/packages/npm/:_authToken' "<your_token>"
 ```
@@ -70,13 +69,19 @@ npm i @km/widgets-semlookp
 
 Note:
 
-The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
-`<EuiProvider>` component.
+* The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
+`<EuiProvider>` component. Elastic UI needs following peer dependencies as well to work correctly:
 
-Elastic UI needs following peer dependencies as well to work correctly:
 
 ```
 npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types
 ```
-
 [Source](https://elastic.github.io/eui/#/utilities/provider)
+
+
+* If this repository changes its location, you have to make sure that the project ID in the config:
+```
+npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
+```
+matches the new project ID of this repository.
+
