@@ -9,6 +9,7 @@ import { TabWidget } from "./TabWidget";
 interface MetadataWidgetProps {
   iri: string;
   api: string;
+  linkToSelf: string;
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
@@ -38,7 +39,11 @@ function MetadataWidget(props: MetadataWidgetProps) {
         <DescriptionWidget iri={props.iri} api={props.api} />
       </EuiFlexItem>
       <EuiFlexItem>
-        <TabWidget iri={props.iri} api={props.api} />
+        <TabWidget
+          iri={props.iri}
+          api={props.api}
+          linkToSelf={props.linkToSelf}
+        />
       </EuiFlexItem>
     </EuiFlexGroup>
   );
