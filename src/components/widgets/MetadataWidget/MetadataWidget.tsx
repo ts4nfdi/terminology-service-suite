@@ -6,7 +6,7 @@ import { TermWidget } from "./TermWidget";
 import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 
-interface MetadataWidgetProps {
+export interface MetadataWidgetProps {
   iri: string;
   api: string;
   linkToSelf: string;
