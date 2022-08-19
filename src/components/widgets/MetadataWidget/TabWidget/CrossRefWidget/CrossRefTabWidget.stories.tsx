@@ -2,7 +2,7 @@ import React from "react";
 import { CrossRefTabWidget, CrossRefWidgetProps } from "./CrossRefTabWidget";
 
 export default {
-  title: "/Widgets/CrossRefTabWidget",
+  title: "CrossRefTabWidget",
   component: CrossRefTabWidget,
   parameters: {
     layout: "centered",

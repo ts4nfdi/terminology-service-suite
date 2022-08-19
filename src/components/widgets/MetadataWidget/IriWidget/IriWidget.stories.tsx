@@ -2,7 +2,7 @@ import React from "react";
 import { IriWidget, IriWidgetProps } from "./IriWidget";
 
 export default {
-  title: "/Widgets/IriWidget",
+  title: "IriWidget",
   component: IriWidget,
   parameters: {
     layout: "centered",

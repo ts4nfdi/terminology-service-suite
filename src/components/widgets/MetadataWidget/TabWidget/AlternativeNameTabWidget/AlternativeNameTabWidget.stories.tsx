@@ -5,7 +5,7 @@ import {
 } from "./AlternativeNameTabWidget";
 
 export default {
-  title: "/Widgets/AlternativeNameTabWidget",
+  title: "AlternativeNameTabWidget",
   component: AlternativeNameTabWidget,
   parameters: {
     layout: "centered",

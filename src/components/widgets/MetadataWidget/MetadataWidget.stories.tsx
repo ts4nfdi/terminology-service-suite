@@ -2,7 +2,7 @@ import React from "react";
 import { MetadataWidget } from "./MetadataWidget";
 
 export default {
-  title: "/Widgets/MetadataWidget",
+  title: "MetadataWidget",
   component: MetadataWidget,
   parameters: {
     layout: "centered",
