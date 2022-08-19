@@ -3,7 +3,7 @@ import { SearchWidget, SearchWidgetProps } from "./SearchWidget";
 import "@elastic/eui/dist/eui_theme_light.json";
 
 export default {
-  title: "/Widgets/SearchWidget",
+  title: "SearchWidget",
   component: SearchWidget,
   argTypes: {
     api: {

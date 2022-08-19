@@ -5,21 +5,19 @@ import {
 } from "./AlternativeNameTabWidget";
 
 export default {
-  title: "/Widgets/AlternativeNameTabWidget",
+  title: "AlternativeNameTabWidget",
   component: AlternativeNameTabWidget,
   parameters: {
     layout: "centered",
   },
   argTypes: {
     api: {
-      description: "API die genutzt werden soll",
+      description: "API",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
         ],
       },
     },

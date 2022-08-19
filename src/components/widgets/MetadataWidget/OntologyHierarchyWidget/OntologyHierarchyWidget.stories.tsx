@@ -5,7 +5,7 @@ import {
 } from "./OntologyHierarchyWidget";
 
 export default {
-  title: "/Widgets/OntologyHierarchyWidget",
+  title: "OntologyHierarchyWidget",
   component: OntologyHierarchyWidget,
   parameters: {
     layout: "centered",

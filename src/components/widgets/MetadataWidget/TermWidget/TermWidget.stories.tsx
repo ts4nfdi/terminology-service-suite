@@ -2,7 +2,7 @@ import React from "react";
 import { TermWidget, TermWidgetProps } from "./TermWidget";
 
 export default {
-  title: "/Widgets/TermWidget",
+  title: "TermWidget",
   component: "TermWidget",
   parameters: {
     layout: "centered",

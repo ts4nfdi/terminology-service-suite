@@ -2,7 +2,7 @@ import React from "react";
 import { DescriptionWidget, DescriptionWidgetProps } from "./DescriptionWidget";
 
 export default {
-  title: "/Widgets/DescriptionWidget",
+  title: "DescriptionWidget",
   component: DescriptionWidget,
   parameters: {
     layout: "centered",

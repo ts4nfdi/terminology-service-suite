@@ -1,11 +1,8 @@
 import React from "react";
-import {
-  HierarchyTabWidget,
-  HierarchyTabWidgetProps,
-} from "./HierarchyTabWidget";
+import { HierarchyTabIF, HierarchyTabWidget } from "./HierarchyTabWidget";
 
 export default {
-  title: "/Widgets/HierarchyTabWidget",
+  title: "HierarchyTabWidget",
   component: HierarchyTabWidget,
   argTypes: {
     api: {
@@ -15,23 +12,20 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
         ],
       },
     },
   },
 };
 
-const Template = (args: HierarchyTabWidgetProps) => (
-  <HierarchyTabWidget {...args} />
-);
+const Template = (args: HierarchyTabIF) => <HierarchyTabWidget {...args} />;
 
 export const HierarchyTabWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 HierarchyTabWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+  iri: "http://purl.bioontology.org/ontology/MESH/D003704",
   api: "https://semanticlookup.zbmed.de/ols/api/",
+  linkToSelf: "https://semanticlookup.zbmed.de/ols/api/ontologies/mesh/terms/",
 };
