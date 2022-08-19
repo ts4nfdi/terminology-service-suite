@@ -162,4 +162,4 @@ const HierarchyTabWidget = (props: HierarchyTabIF) => {
   );
 };
 
-export default HierarchyTabWidget;
+export { HierarchyTabWidget };
