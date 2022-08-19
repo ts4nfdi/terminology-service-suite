@@ -1,6 +1,6 @@
 {
   "name": "@km/widgets-semlookp",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Widget component library",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
@@ -63,7 +63,5 @@
   "publishConfig": {
     "@semlookp:registry": "https://gitlab.zbmed.de/api/v4/projects/550/packages/npm/"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
