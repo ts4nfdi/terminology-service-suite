@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import HierarchyTabWidget from "./HierarchyTabWidget";
+import { HierarchyTabWidget } from "./HierarchyTabWidget";
 
 export default {
   title: "/Widgets/HierarchyTabWidget",
