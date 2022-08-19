@@ -1,37 +1,24 @@
 import React from "react";
-import {
-  HierarchyTabWidget,
-  HierarchyTabWidgetProps,
-} from "./HierarchyTabWidget";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+import HierarchyTabWidget from "./HierarchyTabWidget";
 
 export default {
   title: "/Widgets/HierarchyTabWidget",
   component: HierarchyTabWidget,
-  argTypes: {
-    api: {
-      description: "API",
-      control: {
-        type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
-        ],
-      },
-    },
-  },
 };
 
-const Template = (args: HierarchyTabWidgetProps) => (
-  <HierarchyTabWidget {...args} />
+const queryClient = new QueryClient();
+
+export const Template = () => (
+  <>
+    <QueryClientProvider client={queryClient}>
+      <HierarchyTabWidget
+        iri={"http://purl.bioontology.org/ontology/MESH/D003704"}
+        linkToSelf={
+          "https://semanticlookup.zbmed.de/ols/api/ontologies/mesh/terms/"
+        }
+      />
+    </QueryClientProvider>
+  </>
 );
-
-export const HierarchyTabWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-HierarchyTabWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
-};
