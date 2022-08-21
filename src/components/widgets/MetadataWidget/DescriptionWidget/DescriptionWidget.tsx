@@ -30,7 +30,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
       setDescription(descriptionData);
     };
     getDescription().catch((error) => console.log(error));
-  }, [api, iri]);
+  }, [api, iri, descText]);
 
   return (
     <>
