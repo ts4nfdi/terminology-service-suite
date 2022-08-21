@@ -12,14 +12,52 @@ export default {
   },
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
+        ],
+      },
+    },
+    iri: {
+      description:
+        "Iri of the term you want to fetch the ontology hierarchy for.",
+    },
+    colorFirst: {
+      description:
+        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      control: {
+        type: "radio",
+        options: [
+          "primary",
+          "accent",
+          "success",
+          "warning",
+          "danger",
+          "ghost",
+          "text",
+          "subdued",
+          "#00FFFF",
+        ],
+      },
+    },
+    colorSecond: {
+      description:
+        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      control: {
+        type: "radio",
+        options: [
+          "primary",
+          "accent",
+          "success",
+          "warning",
+          "danger",
+          "ghost",
+          "text",
+          "subdued",
+          "#00FFFF",
         ],
       },
     },
