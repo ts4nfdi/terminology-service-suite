@@ -60,7 +60,7 @@ function SearchWidget(props: SearchWidgetProps) {
   return (
     <EuiComboBox
       aria-label="searchBar"
-      placeholder={props.placeholder? props.placeholder : "Search for Term"}
+      placeholder={props.placeholder ? props.placeholder : "Search for Term"}
       options={options}
       selectedOptions={selectedOptions}
       onChange={onChangeHandler}
