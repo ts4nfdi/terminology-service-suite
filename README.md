@@ -94,3 +94,26 @@ matches the new project ID of this repository.
 - The HierarchyWidget uses react-query to fetch data. To make the widget work properly, you have to wrap the component inside a `QueryClientProvider`.
 
 [Source](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
+
+## Components
+
+- IriWidget
+  - Widget for the iri of a given term
+- DescriptionWidget
+  - Widget for the description of a widget
+- MetaDataWidget
+  - Widget that shows the name, iri, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
+- OntologyHierarchyWidget
+  - Widget that shows badges of the current term and its ontology
+- AlternativeNameTabWidget
+  - Widget that shows inside a tab all alternative names of a term
+- CrossRefTabWidget
+  - Widget that shows inside a tab all cross-references of a term
+- HierarchyTabWidget
+  - Widget that shows the term hierarchy
+- TabWidget
+  - Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
+- SearchWidget
+  - Widget that searches an instance of OLS for matching terms
+
+For more information about the existing widgets and its props, just run the included Storybook and the docs page.
