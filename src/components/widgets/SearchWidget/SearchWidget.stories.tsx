@@ -15,17 +15,17 @@ export default {
           "https://semanticlookup.zbmed.de/ols/api/",
         ],
       },
-      defaultValue: "https://semanticlookup.zbmed.de/ols/api/"
-
+      defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
     },
     onChange: {
-      description: "Will be called everytime the text in the input field is parsed. Returns Object of the OLS API answer. " +
-          "Pass as argument a function that takes the result of the search.",
+      description:
+        "Will be called everytime the text in the input field is parsed. Returns Object of the OLS API answer. " +
+        "Pass as argument a function that takes the result of the search.",
     },
     placeholder: {
       description: "Placeholder for the input field.",
-      defaultValue: "Search for Term"
-    }
+      defaultValue: "Search for Term",
+    },
   },
 };
 
