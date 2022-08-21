@@ -90,3 +90,7 @@ npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>
 ```
 
 matches the new project ID of this repository.
+
+- The HierarchyWidget uses react-query to fetch data. To make the widget work properly, you have to wrap the component inside a `QueryClientProvider`.
+
+[Source](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
