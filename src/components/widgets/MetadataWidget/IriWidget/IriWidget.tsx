@@ -5,10 +5,19 @@ export interface IriWidgetProps {
   iri: string;
   api: string;
   iriText?: string;
+  color?:
+    | "primary"
+    | "accent"
+    | "success"
+    | "warning"
+    | "danger"
+    | "ghost"
+    | "text"
+    | "subdued";
 }
 function IriWidget(props: IriWidgetProps) {
   const [fetchedIri, setFetchediri] = useState("undefined");
-  const { api, iri, iriText } = props;
+  const { api, iri, iriText, color } = props;
 
   useEffect(() => {
     const getIri = async () => {
@@ -29,11 +38,11 @@ function IriWidget(props: IriWidgetProps) {
   return (
     <EuiFlexItem grow={false}>
       {iriText ? (
-        <EuiLink href={iriText} target="_blank">
+        <EuiLink href={iriText} target="_blank" color={color}>
           {iriText}
         </EuiLink>
       ) : (
-        <EuiLink href={fetchedIri} target="_blank">
+        <EuiLink href={fetchedIri} target="_blank" color={color}>
           {fetchedIri}
         </EuiLink>
       )}
