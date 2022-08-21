@@ -4,16 +4,15 @@ import { HierarchyTabIF, HierarchyTabWidget } from "./HierarchyTabWidget";
 export default {
   title: "HierarchyTabWidget",
   component: HierarchyTabWidget,
+  parameters: {
+    layout: "centered",
+  },
   argTypes: {
-    api: {
-      description: "API",
-      control: {
-        type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-        ],
-      },
+    iri: {
+      description: "Iri of the term you want to fetch the term hierarchy for.",
+    },
+    linkToSelf: {
+      description: "Link to the source of the ontology terms",
     },
   },
 };
@@ -26,6 +25,5 @@ export const HierarchyTabWidget1 = Template.bind({});
 // @ts-ignore
 HierarchyTabWidget1.args = {
   iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
   linkToSelf: "https://semanticlookup.zbmed.de/ols/api/ontologies/mesh/terms/",
 };

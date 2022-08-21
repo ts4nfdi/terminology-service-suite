@@ -7,16 +7,24 @@ export default {
   component: SearchWidget,
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
         ],
       },
+      defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
+    },
+    onChange: {
+      description:
+        "Will be called everytime the text in the input field is parsed. Returns Object of the OLS API answer. " +
+        "Pass as argument a function that takes the result of the search.",
+    },
+    placeholder: {
+      description: "Placeholder for the input field.",
+      defaultValue: "Search for Term",
     },
   },
 };

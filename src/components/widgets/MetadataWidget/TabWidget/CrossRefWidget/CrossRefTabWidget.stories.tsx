@@ -9,14 +9,18 @@ export default {
   },
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/"
+          "https://semanticlookup.zbmed.de/ols/api/",
         ],
       },
+    },
+    iri: {
+      description:
+        "Iri of the term you want to fetch the cross references for.",
     },
   },
 };

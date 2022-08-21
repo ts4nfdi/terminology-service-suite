@@ -4,11 +4,22 @@ import { EuiBadge, EuiFlexItem } from "@elastic/eui";
 export interface OntologyHierarchyWidgetProps {
   iri: string;
   api: string;
+  colorFirst?:
+    | "primary"
+    | "accent"
+    | "success"
+    | "warning"
+    | "danger"
+    | "ghost"
+    | "text"
+    | "subdued"
+    | string;
+  colorSecond?: string;
 }
 
 function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
   const [hierarchy, setHierarchy] = useState<string[]>([]);
-  const { api, iri } = props;
+  const { api, iri, colorFirst, colorSecond } = props;
 
   useEffect(() => {
     const getHierarchy = async () => {
@@ -32,9 +43,9 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
   return (
     <EuiFlexItem>
       <span>
-        <EuiBadge color="primary">{hierarchy[0]}</EuiBadge>
+        <EuiBadge color={colorFirst || "primary"}>{hierarchy[0]}</EuiBadge>
         {" > "}
-        <EuiBadge color="success">{hierarchy[1]}</EuiBadge>
+        <EuiBadge color={colorSecond || "success"}>{hierarchy[1]}</EuiBadge>
       </span>
     </EuiFlexItem>
   );

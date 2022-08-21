@@ -1,5 +1,6 @@
 import React from "react";
 import { TermWidget, TermWidgetProps } from "./TermWidget";
+import { EuiPanel } from "@elastic/eui";
 
 export default {
   title: "TermWidget",
@@ -9,21 +10,31 @@ export default {
   },
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
         ],
       },
+    },
+    iri: {
+      description: "Iri of the term you want to fetch the term name for.",
+    },
+    termText: {
+      description: "Text that replaces the fetched text.",
     },
   },
 };
 
-const Template = (args: TermWidgetProps) => <TermWidget {...args} />;
+const Template = (args: TermWidgetProps) => (
+  <>
+    <EuiPanel>
+      <TermWidget {...args} />
+    </EuiPanel>
+  </>
+);
 
 export const TermWidget1 = Template.bind({});
 

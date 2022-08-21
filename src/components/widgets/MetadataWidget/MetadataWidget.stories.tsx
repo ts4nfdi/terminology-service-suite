@@ -1,5 +1,6 @@
 import React from "react";
 import { MetadataWidget, MetadataWidgetProps } from "./MetadataWidget";
+import { EuiPanel } from "@elastic/eui";
 
 export default {
   title: "MetadataWidget",
@@ -9,7 +10,7 @@ export default {
   },
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
@@ -18,10 +19,22 @@ export default {
         ],
       },
     },
+    iri: {
+      description: "Iri of the term you want to fetch the metadata for.",
+    },
+    linkToSelf: {
+      description: "Link to the source of the ontology terms",
+    },
   },
 };
 
-const Template = (args: MetadataWidgetProps) => <MetadataWidget {...args} />;
+const Template = (args: MetadataWidgetProps) => (
+  <>
+    <EuiPanel>
+      <MetadataWidget {...args} />
+    </EuiPanel>
+  </>
+);
 
 export const MetadataWidget1 = Template.bind({});
 

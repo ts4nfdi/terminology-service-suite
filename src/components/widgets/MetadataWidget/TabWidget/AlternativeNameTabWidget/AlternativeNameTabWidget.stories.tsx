@@ -12,7 +12,7 @@ export default {
   },
   argTypes: {
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
@@ -20,6 +20,10 @@ export default {
           "https://semanticlookup.zbmed.de/ols/api/",
         ],
       },
+    },
+    iri: {
+      description:
+        "Iri of the term you want to fetch the alternative names for.",
     },
   },
 };
