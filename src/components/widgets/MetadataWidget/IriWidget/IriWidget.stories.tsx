@@ -1,5 +1,6 @@
 import React from "react";
 import { IriWidget, IriWidgetProps } from "./IriWidget";
+import { EuiPanel } from "@elastic/eui";
 
 export default {
   title: "IriWidget",
@@ -8,22 +9,48 @@ export default {
     layout: "centered",
   },
   argTypes: {
+    iri: {
+      description: "Iri of the term that should be displayed.",
+    },
+    iriText: {
+      description: "Alternative text to display.",
+    },
     api: {
-      description: "API",
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
-          "http://localhost:8080/api/",
-          "http://localhost:5000/api/",
+        ],
+      },
+    },
+    color: {
+      description: "Color of the link",
+      control: {
+        type: "radio",
+        options: [
+          "primary",
+          "accent",
+          "success",
+          "warning",
+          "danger",
+          "ghost",
+          "text",
+          "subdued",
         ],
       },
     },
   },
 };
 
-const Template = (args: IriWidgetProps) => <IriWidget {...args} />;
+const Template = (args: IriWidgetProps) => (
+  <>
+    <EuiPanel>
+      <IriWidget {...args} />
+    </EuiPanel>{" "}
+  </>
+);
 
 export const IriWidget1 = Template.bind({});
 
