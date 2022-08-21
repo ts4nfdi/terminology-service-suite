@@ -63,7 +63,5 @@
   "publishConfig": {
     "@semlookp:registry": "https://gitlab.zbmed.de/api/v4/projects/550/packages/npm/"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
