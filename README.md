@@ -21,13 +21,28 @@ The built registry module can then be integrated into existing projects.
 - [Elastic UI](https://elastic.github.io/eui/#/)
 - [Storybook](https://storybook.js.org/)
 
+# Getting Started with Create React Storybook
+
+## Requirements
+The following tool is required to run the storybook.
+
+- [Node.js 16](https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/)
+
+## Setup
+
+Before starting the storybook for the first time you must run the following command.
+```
+npm install
+```
+
 ## Run Storybook
 
-Start storybook on port 6006
+To start the storybook use the following command
 
 ```
 npm run storybook
 ```
+Note: The Storybook uses per default the port 6006.
 
 ## Publish Components
 
