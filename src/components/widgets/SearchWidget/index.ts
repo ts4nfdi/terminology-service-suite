@@ -1,1 +1,0 @@
-export { SearchWidget } from "./SearchWidget";

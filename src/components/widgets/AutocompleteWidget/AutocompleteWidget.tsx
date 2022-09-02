@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { EuiComboBox } from "@elastic/eui";
 
-export interface SearchWidgetProps {
+export interface AutocompleteWidgetProps {
   api: string;
   onChange({}): void;
   placeholder?: string | undefined;
+  parameter?: string | undefined;
 }
 
-function SearchWidget(props: SearchWidgetProps) {
+function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
@@ -16,7 +17,7 @@ function SearchWidget(props: SearchWidgetProps) {
   function searchTerm(searchValue: string) {
     const options_data: { label: string; value: string }[] = [];
     if (searchValue.length > 0) {
-      fetch(`${props.api}search?q=${searchValue}`, {
+      fetch(`${props.api}select?q=${searchValue}&${props.parameter}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -27,13 +28,8 @@ function SearchWidget(props: SearchWidgetProps) {
         .then((res) => res?.response?.docs)
         .then((res) => {
           for (const item in res) {
-            const obo_short_form = res[item]?.obo_id
-              ? res[item].obo_id.toUpperCase()
-              : res[item]?.ontology_name == "mesh"
-              ? "MESH: " + res[item].short_form.toUpperCase()
-              : res[item]?.short_form.toUpperCase();
             options_data.push({
-              label: res[item]?.label.toLowerCase() + " | " + obo_short_form,
+              label: res[item]?.label.toLowerCase() + " | " + res[item].ontology_name.toUpperCase() + " > " + res[item].short_form,
               value: res[item],
             });
             if (options_data.length > 9) {
@@ -74,4 +70,4 @@ function SearchWidget(props: SearchWidgetProps) {
   );
 }
 
-export { SearchWidget };
+export { AutocompleteWidget };

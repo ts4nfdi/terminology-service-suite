@@ -128,7 +128,7 @@ matches the new project ID of this repository.
   - Widget that shows the term hierarchy
 - TabWidget
   - Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
-- SearchWidget
+- Autocomplete Widget
   - Widget that searches an instance of OLS for matching terms
 
 For more information about the existing widgets and its props, just run the included Storybook and the docs page.
