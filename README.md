@@ -7,6 +7,8 @@ The components can be viewed, built and tested with the included Storybook. Afte
 the CI/CD pipeline will publish a new package release depending on the analysis of semantic release.
 The built registry module can then be integrated into existing projects.
 
+This work was done as part of the NFDI4Health Consortium and is published on behalf of this Consortium (www.nfdi4health.de).
+
 ## Documentation
 
 [![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)
@@ -74,7 +76,7 @@ To use the module, create a `.npmrc` file in your projects root folder.
 Paste your authentication token with read and/or write access to the registry and the registry link.
 
 ```
-npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/550/packages/npm/
+npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
 
 npm config set -- '//gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/:_authToken' "<your_token>"
 ```
