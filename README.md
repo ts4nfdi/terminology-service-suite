@@ -7,7 +7,8 @@ The components can be viewed, built and tested with the included Storybook. Afte
 the CI/CD pipeline will publish a new package release depending on the analysis of semantic release.
 The built registry module can then be integrated into existing projects.
 
-This work was done as part of the NFDI4Health Consortium and is published on behalf of this Consortium (www.nfdi4health.de).
+This work was done as part of the NFDI4Health Consortium and is published on behalf of this Consortium (www.nfdi4health.de). 
+It is funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 442326535.
 
 ## Documentation
 
