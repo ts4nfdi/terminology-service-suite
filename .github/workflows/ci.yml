@@ -13,3 +13,5 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          registry: "https://github.com/nfdi4health/semlookp-widgets.git"
+          package:  "./package.json"
