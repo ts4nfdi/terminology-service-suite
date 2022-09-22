@@ -31,7 +31,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   pages:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -54,3 +53,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main
+          FOLDER: public
+          CLEAN: true
+          TARGET_FOLDER: docs
