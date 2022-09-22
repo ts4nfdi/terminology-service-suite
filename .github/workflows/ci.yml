@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Build and Deploy Storybook
 
 on: push
 
@@ -43,7 +43,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: npm run build-storybook -- -o public
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build-storybook -- -o public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
