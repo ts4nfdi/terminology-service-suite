@@ -12,11 +12,14 @@
     "rollup": "npx rollup -c",
     "semantic-release": "npx semantic-release",
     "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "style:format": "npx prettier --write .",
     "style:check": "npx prettier --check .",
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
     "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix",
-    "build-storybook": "build-storybook"
+    "predeploy": "npm run build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "build-storybook": "build-storybook -o docs-build"
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "ZB MED - PB Knowledgemanagement",

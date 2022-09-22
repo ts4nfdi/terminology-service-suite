@@ -38,8 +38,11 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm run build-storybook -- -o public
+          npm run build-storybook
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
-          folder: public
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: storybook-static
+          folder: docs-build
+          target-folder: docs
