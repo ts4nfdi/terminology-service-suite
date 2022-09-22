@@ -1,19 +1,29 @@
-# widgets-semlookp
+# SemLookP Widgets
 
-## About The Project
 
-This project includes a widget component library. The widgets are built with React and TypeScript.
-The components can be viewed, built and tested with the included Storybook. After editing a component or adding new ones
-the CI/CD pipeline will publish a new package release depending on the analysis of semantic release.
-The built registry module can then be integrated into existing projects.
 
+## About the project
+
+This project includes a widget component library derived from the semantic lookup service SemLookP.
+SemLookP supports metadata annotation as well as data search in the area of translational medicine. 
+The service is based on software developed by EBI: the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index) and the mapping service [Ontology Xref Service (OxO)](https://www.ebi.ac.uk/spot/oxo/). 
+The widgets are built with React and TypeScript. The components can be viewed, built and tested with the included Storybook.
+
+## Table of contents
+* [About the project](#about-the-project)
+* [Documentation](#documentation)
+* [Requirements](#requirements)
+* [Setup](#setup)
+  * [Run Storybook](#run-storybook)
+  * [Publish](#publish-components)
+  * [Install package](#install-package)
+* [Components](#components)
+* [Funding](#funding)
 
 ## Documentation
 
-[![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)
-[Documentation](http://km.pages.gitlab.zbmed.de/semlookp/widgets-semlookp)
 
-# Built With
+## Built with
 
 - [ReactJS 17](https://reactjs.org/blog/2020/10/20/react-v17.html)
 - [TypeScript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)
@@ -21,8 +31,6 @@ The built registry module can then be integrated into existing projects.
 - [Semantic Release](https://github.com/semantic-release/semantic-release)
 - [Elastic UI](https://elastic.github.io/eui/#/)
 - [Storybook](https://storybook.js.org/)
-
-# Getting Started with Create React Storybook
 
 ## Requirements
 The following tool is required to run the storybook.
@@ -36,103 +44,56 @@ Before starting the storybook for the first time you must run the following comm
 npm install
 ```
 
-## Run Storybook
+### Run Storybook
 
 To start the storybook use the following command
 
 ```
 npm run storybook
 ```
-Note: The Storybook uses per default the port 6006.
+Note: The Storybook uses per default port 6006.
 
-## Publish Components
+### Publish Components
 
-To publish a new release, add to the commit message the semantic release trigger.
 
-Start the commit with:
+### Install package
 
+Install from the command line:
 ```
-fix: for new patch release
+ npm install @nfdi4health/semlookp-widgets@1.0.0 
 ```
-
+Install via package.json:
 ```
-feat: for new minor release
-```
-
-```
-feat: for new major release
-BREAKING CHANGE: The new breaking change is...
+ "@nfdi4health/semlookp-widgets": <version>
 ```
 
-The GitLab CI/CD pipeline will then start semantic release,
-publish a new package and increase the version number depending on the commit message.
-
-[Source](https://docs.gitlab.com/ee/ci/examples/semantic-release.html)
-
-## Use Components
-
-To use the module, create a `.npmrc` file in your projects root folder.
-Paste your authentication token with read and/or write access to the registry and the registry link.
-
-```
-npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
-
-npm config set -- '//gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/:_authToken' "<your_token>"
-```
-
-Then run
-
-```
-npm i @km/widgets-semlookp
-```
-
-[Source](https://gitlab.zbmed.de/help/user/packages/npm_registry/index)
-
-Note:
+Notes:
 
 - The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
-  `<EuiProvider>` component. Elastic UI needs following peer dependencies as well to work correctly:
+  `<EuiProvider>` component. Elastic UI needs following peer dependencies to work correctly:
 
 ```
 npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types
 ```
-
-[Source](https://elastic.github.io/eui/#/utilities/provider)
-
-- If this repository changes its location, you have to make sure that the project ID in the config:
-
-```
-npm config set @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
-```
-
-matches the new project ID of this repository.
+For help see [ElasticUI Provider](https://elastic.github.io/eui/#/utilities/provider)
 
 - The HierarchyWidget uses react-query to fetch data. To make the widget work properly, you have to wrap the component inside a `QueryClientProvider`.
 
-[Source](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
+For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
 
 ## Components
 
-- IriWidget
-  - Widget for the iri of a given term
-- DescriptionWidget
-  - Widget for the description of a widget
-- MetaDataWidget
-  - Widget that shows the name, iri, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
-- OntologyHierarchyWidget
-  - Widget that shows badges of the current term and its ontology
-- AlternativeNameTabWidget
-  - Widget that shows inside a tab all alternative names of a term
-- CrossRefTabWidget
-  - Widget that shows inside a tab all cross-references of a term
-- HierarchyTabWidget
-  - Widget that shows the term hierarchy
-- TabWidget
-  - Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
-- Autocomplete Widget
-  - Widget that searches an instance of OLS for matching terms
+- IriWidget: Displays the IRI of a given term
+- DescriptionWidget: Displays the description of a widget
+- MetaDataWidget: Widget that displays the name, IRI, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
+- OntologyHierarchyWidget: Widget that displays badges of the current term and it's ontology
+- AlternativeNameTabWidget: Widget that displays all alternative names of a term
+- CrossRefTabWidget: Widget that displays all cross-references of a term
+- HierarchyTabWidget: Widget that displays the term hierarchy
+- TabWidget: Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
+- Autocomplete Widget: Widget that searches an instance of OLS for matching terms
 
-For more information about the existing widgets and its props, just run the included Storybook and the docs page.
+For more information about the existing widgets and its properties run the included Storybook.
 
 ## Funding
 
