@@ -39,4 +39,4 @@ jobs:
         run:
           npm run deploy-storybook -- --ci
         env:
-          GH_TOKEN: nfdi4health:${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.actor }}:${{ secrets.G_TOKEN }}
