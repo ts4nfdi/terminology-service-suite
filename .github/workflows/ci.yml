@@ -34,15 +34,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
       - name: Install and Build
         run: |
           npm install
-          npm run build-storybook
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.6.2
+          npm run build-storybook -- -o public
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: storybook-static
-          folder: docs-build
-          target-folder: docs
+          path: 'public'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
