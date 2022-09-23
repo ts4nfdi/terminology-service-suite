@@ -21,7 +21,8 @@ The widgets are built with React and TypeScript. The components can be viewed, b
 * [Funding](#funding)
 
 ## Documentation
-
+[Documentation](https://nfdi4health.github.io/semlookp-widgets/)  
+[Latest Release](https://github.com/nfdi4health/semlookp-widgets/releases)
 
 ## Built with
 

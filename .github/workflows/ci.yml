@@ -1,6 +1,7 @@
 name: Build and Deploy Storybook
 
-on: push
+on:
+  push
 
 permissions:
   contents: read
@@ -30,10 +31,13 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
+      - name: Install dependencies
+        run: npm ci
+      - name: Release
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release
 
   pages:
     runs-on: ubuntu-latest

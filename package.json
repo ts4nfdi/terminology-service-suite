@@ -18,8 +18,7 @@
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
     "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix",
     "predeploy": "npm run build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static",
-    "build-storybook": "build-storybook"
+    "deploy-storybook": "gh-pages -d storybook-static"
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "ZB MED - PB Knowledgemanagement",
@@ -27,6 +26,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.4",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.6",
     "@semantic-release/gitlab": "^9.4.1",
     "@semantic-release/npm": "^9.0.1",
     "@storybook/addon-actions": "^6.5.10",
