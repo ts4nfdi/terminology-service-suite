@@ -13,5 +13,5 @@
       }
     ]
   ],
-  "repositoryUrl": "https://github.com/nfdi4health/semlookp-widgets.git"
+  "extends": "semantic-release-npm-github-publish"
 }
