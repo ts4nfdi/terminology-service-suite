@@ -12,5 +12,6 @@
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]
-  ]
+  ],
+  "repositoryUrl": "https://github.com/nfdi4health/semlookp-widgets.git"
 }
