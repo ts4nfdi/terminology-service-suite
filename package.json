@@ -8,7 +8,7 @@
     "dist",
     "package.json"
   ],
-  "homepage": "https://github.com/nfdi4health/semlookp-widgets.git",
+  "repository": "https://github.com/nfdi4health/semlookp-widgets.git",
   "scripts": {
     "rollup": "npx rollup -c",
     "semantic-release": "npx semantic-release",
