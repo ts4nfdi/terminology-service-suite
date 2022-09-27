@@ -55,13 +55,13 @@ npm run storybook
 Note: The Storybook uses per default port 6006.
 
 ### Publish Components
-
+The NPM package is published to the package registry on every push to the main branch. Please update the version number accordingly.
 
 ### Install package
 
 Install from the command line:
 ```
- npm install @nfdi4health/semlookp-widgets@1.0.0 
+ npm install @nfdi4health/semlookp-widgets@<version>
 ```
 Install via package.json:
 ```
