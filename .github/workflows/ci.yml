@@ -37,6 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_REGISTRY_URL: https://npm.pkg.github.com/
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   pages:
     runs-on: ubuntu-latest
