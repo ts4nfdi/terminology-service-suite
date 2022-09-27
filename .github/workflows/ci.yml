@@ -33,13 +33,11 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > /home/runner/work/_temp/.npmrc
-      - uses: mikeal/merge-release@master
+      - uses: frankdilo/merge-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_REGISTRY_URL: https://npm.pkg.github.com/
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
 
   pages:
     runs-on: ubuntu-latest
