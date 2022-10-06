@@ -8,8 +8,10 @@ export interface DescriptionWidgetProps extends EuiTextProps {
   descText?: string;
 }
 
+const NO_DESCRIPTION = "No description available.";
+
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const [description, setDescription] = useState("No description available.");
+  const [description, setDescription] = useState(NO_DESCRIPTION);
   const { api, iri, descText, ...rest } = props;
 
   useEffect(() => {
@@ -23,8 +25,10 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
       })
         .then((response) => response.json())
         .then((response) => {
-          if (response._embedded.terms[0].description[0] != null) {
+          if (response._embedded.terms[0].description != null && response._embedded.terms[0].description[0] != null) {
             return response._embedded.terms[0].description[0];
+          } else {
+            return NO_DESCRIPTION;
           }
         });
       setDescription(descriptionData);
