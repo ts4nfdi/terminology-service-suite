@@ -1,6 +1,6 @@
 import React from "react";
 import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { OntologyHierarchyWidget } from "./OntologyHierarchyWidget";
+import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import { IriWidget } from "./IriWidget";
 import { TermWidget } from "./TermWidget";
 import { DescriptionWidget } from "./DescriptionWidget";
@@ -17,7 +17,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem grow={false}>
         <span>
-          <OntologyHierarchyWidget iri={props.iri} api={props.api} />
+          <BreadcrumbWidget iri={props.iri} api={props.api} />
         </span>
       </EuiFlexItem>
       <EuiFlexItem>

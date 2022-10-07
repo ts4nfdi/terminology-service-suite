@@ -114,7 +114,7 @@ For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryCli
 - IriWidget: Displays the IRI of a given term
 - DescriptionWidget: Displays the description of a widget
 - MetaDataWidget: Widget that displays the name, IRI, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
-- OntologyHierarchyWidget: Widget that displays badges of the current term and it's ontology
+- BreadcrumbWidget: Widget that displays badges of the current term and its ontology
 - AlternativeNameTabWidget: Widget that displays all alternative names of a term
 - CrossRefTabWidget: Widget that displays all cross-references of a term
 - HierarchyTabWidget: Widget that displays the term hierarchy

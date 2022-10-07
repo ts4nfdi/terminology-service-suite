@@ -1,1 +1,0 @@
-export { OntologyHierarchyWidget } from "./OntologyHierarchyWidget";
