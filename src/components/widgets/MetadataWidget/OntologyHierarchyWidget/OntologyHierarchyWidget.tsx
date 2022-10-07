@@ -33,7 +33,7 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
         .then((response) => response.json())
         .then((response) => [
           response._embedded.terms[0].ontology_prefix,
-          response._embedded.terms[0].obo_id,
+          response._embedded.terms[0].short_form,
         ]);
       setHierarchy(hierarchyData);
     };
