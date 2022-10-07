@@ -31,10 +31,19 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
         },
       })
         .then((response) => response.json())
-        .then((response) => [
-          response._embedded.terms[0].ontology_prefix,
-          response._embedded.terms[0].short_form,
-        ]);
+        .then((response) => {
+          if (response._embedded != null){
+            return[
+              response._embedded.terms[0].ontology_prefix,
+              response._embedded.terms[0].short_form,
+            ]
+          } else {
+            return[
+              "",
+              "",
+            ]
+          }
+        });
       setHierarchy(hierarchyData);
     };
     getHierarchy().catch((error) => console.log(error));
