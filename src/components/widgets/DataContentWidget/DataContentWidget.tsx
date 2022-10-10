@@ -26,6 +26,27 @@ const getTotalElements = (url: string) => {
   });
 };
 
+const useFetchTotalFromAPI = (queryPath: string, setTotal: React.Dispatch<React.SetStateAction<string | number>>): [boolean, number] => {
+  const {
+    data: data,
+    isSuccess: isSuccess,
+    isLoading: isLoading,
+    dataUpdatedAt: dataUpdatedAt
+  } = useQuery(
+    [queryPath],
+    () => getTotalElements(queryPath),
+    { refetchOnWindowFocus: false }
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTotal(data);
+    }
+  }, [data]);
+
+  return [isLoading, dataUpdatedAt];
+};
+
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, ...rest } = props;
   const [totalOntologies, setTotalOntologies] = useState<string | number>(NOT_AVAILABLE);
@@ -41,96 +62,26 @@ function DataContentWidget(props: DataContentWidgetProps) {
     setTotalIndividuals(NOT_AVAILABLE);
   }, [api]);
 
-
-  /* TODO Remove code duplication? */
-
-  const {
-    data: ontologiesData,
-    isSuccess: isSuccessOntologies,
-    isLoading: isLoadingOntologies,
-    dataUpdatedAt: dataUpdatedAt
-  } = useQuery(
-    ["ontologiesData", api],
-    () => getTotalElements(`${api}ontologies?size=1`),
-    { refetchOnWindowFocus: false }
-  );
-
-  useEffect(() => {
-    if (isSuccessOntologies) {
-      setTotalOntologies(ontologiesData);
-    }
-  }, [ontologiesData]);
-
-
-  const {
-    data: termsData,
-    isSuccess: isSuccessTerms,
-    isLoading: isLoadingTerms
-  } = useQuery(
-    ["termsData", api],
-    () => getTotalElements(`${api}terms?size=1`),
-    { refetchOnWindowFocus: false }
-  );
-
-  useEffect(() => {
-    if (isSuccessTerms) {
-      setTotalTerms(termsData);
-    }
-  }, [termsData]);
-
-
-  const {
-    data: propertiesData,
-    isSuccess: isSuccessProperties,
-    isLoading: isLoadingProperties
-  } = useQuery(
-    ["propertiesData", api],
-    () => getTotalElements(`${api}properties?size=1`),
-    { refetchOnWindowFocus: false }
-  );
-
-  useEffect(() => {
-    if (isSuccessProperties) {
-      setTotalProperties(propertiesData);
-    }
-  }, [propertiesData]);
-
-
-  const {
-    data: individualsData,
-    isSuccess: isSuccessIndividuals,
-    isLoading: isLoadingIndividuals,
-  } = useQuery(
-    ["individualsData", api],
-    () => getTotalElements(`${api}individuals?size=1`),
-    { refetchOnWindowFocus: false }
-  );
-
-  useEffect(() => {
-    if (isSuccessIndividuals) {
-      setTotalIndividuals(individualsData);
-    }
-  }, [individualsData]);
-
+  const [isLoadingOntologies, dataUpdatedAtOntologies] = useFetchTotalFromAPI(`${props.api}ontologies?size=1`, setTotalOntologies);
+  const [isLoadingTerms,] = useFetchTotalFromAPI(`${props.api}terms?size=1`, setTotalTerms);
+  const [isLoadingProperties,] = useFetchTotalFromAPI(`${props.api}properties?size=1`, setTotalProperties);
+  const [isLoadingIndividuals,] = useFetchTotalFromAPI(`${props.api}individuals?size=1`, setTotalIndividuals);
 
   return (
     <>
       <EuiCard
         title="Data Content"
-        description={dataUpdatedAt ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}` : ''}
+        description={dataUpdatedAtOntologies ? `Updated ${new Date(dataUpdatedAtOntologies).toLocaleString()}` : ''}
         layout="horizontal"
       >
         <EuiText {...rest}>
-          {isLoadingOntologies || isLoadingTerms || isLoadingProperties || isLoadingIndividuals
-            ? <EuiLoadingSpinner/>
-            : <ul>
-                <li>{totalOntologies.toLocaleString()} ontologies and terminologies</li>
-                <li>{totalTerms.toLocaleString()} terms</li>
-                <li>{totalProperties.toLocaleString()} properties</li>
-                <li>{totalIndividuals.toLocaleString()} individuals</li>
-                <li>Version n/a</li> {/* TODO how to get version? */}
-              </ul>
-          }
+          <ul>
+            <li>{isLoadingOntologies ? <EuiLoadingSpinner size="s" /> : totalOntologies.toLocaleString()} ontologies and terminologies</li>
+            <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : totalTerms.toLocaleString()} terms</li>
+            <li>{isLoadingProperties ? <EuiLoadingSpinner size="s" /> : totalProperties.toLocaleString()} properties</li>
+            <li>{isLoadingIndividuals ? <EuiLoadingSpinner size="s" /> : totalIndividuals.toLocaleString()} individuals</li>
+            <li>Version n/a</li> {/* TODO how to get version? */}
+          </ul>
         </EuiText>
       </EuiCard>
     </>
