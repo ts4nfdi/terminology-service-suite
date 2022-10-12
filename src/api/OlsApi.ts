@@ -1,44 +1,38 @@
-const fetchOptions = {
-  method: "GET",
-  headers: {
-    Accept: "application/json",
-    Content_Type: "application/json",
-  },
-};
+import axios, { AxiosInstance } from "axios";
 
 interface PaginationParams {
   size?: string;
   page?: string;
 }
 
-function buildPaginatedUrl(api: string, path: string, paginationParams?: PaginationParams): string {
-  let paginatedUrl = api + path;
-  if (paginationParams) paginatedUrl += "?" + new URLSearchParams({ ...paginationParams });
-  return paginatedUrl;
-}
-
 export type apiCallFn = (paginationParams?: PaginationParams) => Promise<any>;
 
 export class OlsApi {
-  private api: string;
+  private axiosInstance: AxiosInstance;
 
   constructor(api: string) {
-    this.api = api;
+    this.axiosInstance = axios.create({
+      baseURL: api,
+      headers: {
+        Accept: "application/json",
+        Content_Type: "application/json",
+      },
+    });
   }
 
   public getOntologies: apiCallFn = async (paginationParams) => {
-    return (await fetch(buildPaginatedUrl(this.api, "ontologies", paginationParams), fetchOptions)).json();
+    return (await this.axiosInstance.get("ontologies", { params: paginationParams })).data;
   }
 
   public getTerms: apiCallFn = async (paginationParams) => {
-    return (await fetch(buildPaginatedUrl(this.api, "terms", paginationParams), fetchOptions)).json();
+    return (await this.axiosInstance.get("terms", { params: paginationParams })).data;
   }
 
   public getProperties: apiCallFn = async (paginationParams) => {
-    return (await fetch(buildPaginatedUrl(this.api, "properties", paginationParams), fetchOptions)).json();
+    return (await this.axiosInstance.get("properties", { params: paginationParams })).data;
   }
 
   public getIndividuals: apiCallFn = async (paginationParams) => {
-    return (await fetch(buildPaginatedUrl(this.api, "individuals", paginationParams), fetchOptions)).json();
+    return (await this.axiosInstance.get("individuals", { params: paginationParams })).data;
   }
 }
