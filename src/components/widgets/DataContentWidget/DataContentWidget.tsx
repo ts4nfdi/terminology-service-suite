@@ -1,57 +1,48 @@
 import React from "react";
 import { EuiText, EuiLoadingSpinner, EuiCard } from "@elastic/eui";
-import { useQuery, QueryFunction } from 'react-query';
+import { useQuery } from 'react-query';
+import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 
 export interface DataContentWidgetProps {
   api: string;
 }
 
 const NOT_AVAILABLE = "n/a";
-const QUERY_STALE_TIME = 5 * 60 * 1000;
 
-const getTotalElements: QueryFunction<number, [string]> = ({queryKey}) => {
-  const [queryPath] = queryKey;
+async function getTotalElements(apiCall: apiCallFn): Promise<number> {
+  const response = await apiCall({ size: "1" });
 
-  return fetch(queryPath, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Content_Type: "application/json",
-    },
-  })
-  .then(response => response.json())
-  .then(response => {
-    if (response.page.totalElements != null) {
-      return response.page.totalElements;
-    } else {
-      throw new Error("page.totalElements is null in API response");
-    }
-  });
+  if (response.page.totalElements != null) {
+    return response.page.totalElements;
+  } else {
+    throw new Error("page.totalElements is null in API response");
+  }
 };
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, ...rest } = props;
+  const olsApi = new OlsApi(api);
 
   const {
     data: totalOntologies,
     isLoading: isLoadingOntologies,
     dataUpdatedAt: dataUpdatedAtOntologies
-  } = useQuery([`${props.api}ontologies?size=1`], getTotalElements, { staleTime: QUERY_STALE_TIME });
+  } = useQuery([api, "getOntologies"], () => { return getTotalElements(olsApi.getOntologies); });
 
   const {
     data: totalTerms,
     isLoading: isLoadingTerms
-  } = useQuery([`${props.api}terms?size=1`], getTotalElements, { staleTime: QUERY_STALE_TIME });
+  } = useQuery([api, "getTerms"], () => { return getTotalElements(olsApi.getTerms); });
 
   const {
     data: totalProperties,
     isLoading: isLoadingProperties
-  } = useQuery([`${props.api}properties?size=1`], getTotalElements, { staleTime: QUERY_STALE_TIME });
+  } = useQuery([api, "getProperties"], () => { return getTotalElements(olsApi.getProperties); });
 
   const {
     data: totalIndividuals,
     isLoading: isLoadingIndividuals
-  } = useQuery([`${props.api}individuals?size=1`], getTotalElements, { staleTime: QUERY_STALE_TIME });
+  } = useQuery([api, "getIndividuals"], () => { return getTotalElements(olsApi.getIndividuals); });
 
   return (
     <>
@@ -66,7 +57,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
             <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : (totalTerms ? totalTerms.toLocaleString() : NOT_AVAILABLE)} terms</li>
             <li>{isLoadingProperties ? <EuiLoadingSpinner size="s" /> : (totalProperties ? totalProperties.toLocaleString() : NOT_AVAILABLE)} properties</li>
             <li>{isLoadingIndividuals ? <EuiLoadingSpinner size="s" /> : (totalIndividuals ? totalIndividuals.toLocaleString() : NOT_AVAILABLE)} individuals</li>
-            <li>Version {NOT_AVAILABLE}</li> {/* TODO how to get version? */}
+            {/* <li>Version {NOT_AVAILABLE}</li> */} {/* TODO how to get API version? */}
           </ul>
         </EuiText>
       </EuiCard>
