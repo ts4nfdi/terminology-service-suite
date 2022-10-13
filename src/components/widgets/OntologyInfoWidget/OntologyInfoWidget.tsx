@@ -13,8 +13,7 @@ interface OntoInfo {
   version: string,
   termNum: string,
   lastLoad: string,
-  comment: string,
-  label: string,
+  annotations: object; //list of key&value string pairs
 }
 
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
@@ -37,8 +36,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
           version: response.config.version,
           termNum: response.numberOfTerms,
           lastLoad: response.loaded,
-          comment: response.config.annotations ? response.config.annotations.comment : undefined,
-          label: response.config.annotations ? response.config.annotations.label : undefined,
+          annotations: response.config.annotations ? response.config.annotations : [],
         };
       });
   }
@@ -53,26 +51,26 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       <EuiFlexItem>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
-            Ontology IRI: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.iri ? ontoInfo.iri : "-")}
+            Ontology IRI: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Ontology ID: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.id ? ontoInfo.id : "-")}
+            Ontology ID: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Version: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.version ? ontoInfo.version : "-")}
+            Version: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Number of terms: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.termNum ? ontoInfo.termNum : "-")}
+            Number of terms: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Last loaded: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.lastLoad ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
+            Last loaded: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
           </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            comment: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.comment ? ontoInfo.comment : "-")}
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            label: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.label ? ontoInfo.label : "-")}
-          </EuiFlexItem>
+          {ontoInfo ? (
+            Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (
+              <EuiFlexItem grow={false} key={annoKey}>{annoKey}: {annoVal}
+              </EuiFlexItem>
+              ))
+          ) : ''}
         </EuiFlexGroup>
       </EuiFlexItem>
     </EuiFlexGroup>
