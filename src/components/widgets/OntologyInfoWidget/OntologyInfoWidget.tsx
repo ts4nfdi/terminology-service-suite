@@ -1,74 +1,77 @@
-import React, {useEffect, useState} from "react";
-import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import React from "react";
+import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner } from "@elastic/eui";
+import {QueryFunction, useQuery} from "react-query";
 
 export interface OntologyInfoWidgetProps {
   onto: string;
   api: string;
 }
 
+interface OntoInfo {
+  iri: string,
+  id: string,
+  version: string,
+  termNum: string,
+  lastLoad: string,
+  comment: string,
+  label: string,
+}
+
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const { onto, api } = props;
-  const [ontoInfo, setOntoInfo] = useState({
-    iri: "IRI?",
-    id: "ID?",
-    version: "VERSION?",
-    termNum: "COUNT?",
-    lastLoad: "DATE?",
-    comment: "COMMENT?",
-    label: "LABEL?",
-  });
 
+  const fetchOntoData: QueryFunction<OntoInfo, string> = ({queryKey}) => {
+    const [queryPath] = queryKey;
+    return fetch(queryPath, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Content_Type: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        return {
+          iri: response.config.id,
+          id: response.ontologyId,
+          version: response.config.version,
+          termNum: response.numberOfTerms,
+          lastLoad: response.loaded,
+          comment: response.config.annotations ? response.config.annotations.comment : undefined,
+          label: response.config.annotations ? response.config.annotations.label : undefined,
+        };
+      });
+  }
 
-  useEffect(() => {
-    const getOntoInfo = async () => {
-      const ontoInfo = await fetch(`${api}ontologies/${onto}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          Content_Type: "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          return {
-            iri: response.config.id,
-            id: response.ontologyId,
-            version: response.config.version,
-            termNum: response.numberOfTerms,
-            lastLoad: response.loaded,
-            comment: response.config.annotations.comment,
-            label: response.config.annotations.label,
-          }
-        });
-      setOntoInfo(ontoInfo)
-    };
-    getOntoInfo().catch((error) => console.log(error));
-  },[onto, api]);
+  const {
+    data: ontoInfo,
+    isLoading,
+  } = useQuery(`${api}ontologies/${onto}`, fetchOntoData)
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
-            Ontology IRI: {ontoInfo.iri}
+            Ontology IRI: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.iri ? ontoInfo.iri : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Ontology ID: {ontoInfo.id}
+            Ontology ID: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.id ? ontoInfo.id : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Version: {ontoInfo.version}
+            Version: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.version ? ontoInfo.version : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Number of terms: {ontoInfo.termNum}
+            Number of terms: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.termNum ? ontoInfo.termNum : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Last loaded: {ontoInfo.lastLoad}
+            Last loaded: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.lastLoad ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            comment: {ontoInfo.comment}
+            comment: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.comment ? ontoInfo.comment : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            label: {ontoInfo.label}
+            label: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && ontoInfo.label ? ontoInfo.label : "-")}
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
