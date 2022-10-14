@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  OntologyHierarchyWidget,
-  OntologyHierarchyWidgetProps,
-} from "./OntologyHierarchyWidget";
+  BreadcrumbWidget,
+  BreadcrumbWidgetProps,
+} from "./BreadcrumbWidget";
 
 export default {
-  title: "OntologyHierarchyWidget",
-  component: OntologyHierarchyWidget,
+  title: "BreadcrumbWidget",
+  component: BreadcrumbWidget,
   parameters: {
     layout: "centered",
   },
@@ -64,15 +64,15 @@ export default {
   },
 };
 
-const Template = (args: OntologyHierarchyWidgetProps) => (
-  <OntologyHierarchyWidget {...args} />
+const Template = (args: BreadcrumbWidgetProps) => (
+  <BreadcrumbWidget {...args} />
 );
 
-export const OntologyHierarchyWidget1 = Template.bind({});
+export const BreadcrumbWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-OntologyHierarchyWidget1.args = {
+BreadcrumbWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
 };

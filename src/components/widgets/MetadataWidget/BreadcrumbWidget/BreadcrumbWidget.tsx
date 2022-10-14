@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EuiBadge, EuiFlexItem } from "@elastic/eui";
 
-export interface OntologyHierarchyWidgetProps {
+export interface BreadcrumbWidgetProps {
   iri: string;
   api: string;
   colorFirst?:
@@ -17,7 +17,7 @@ export interface OntologyHierarchyWidgetProps {
   colorSecond?: string;
 }
 
-function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
+function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const [hierarchy, setHierarchy] = useState<string[]>([]);
   const { api, iri, colorFirst, colorSecond } = props;
 
@@ -31,10 +31,19 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
         },
       })
         .then((response) => response.json())
-        .then((response) => [
-          response._embedded.terms[0].ontology_prefix,
-          response._embedded.terms[0].obo_id,
-        ]);
+        .then((response) => {
+          if (response._embedded != null){
+            return[
+              response._embedded.terms[0].ontology_prefix,
+              response._embedded.terms[0].short_form,
+            ]
+          } else {
+            return[
+              "",
+              "",
+            ]
+          }
+        });
       setHierarchy(hierarchyData);
     };
     getHierarchy().catch((error) => console.log(error));
@@ -50,4 +59,4 @@ function OntologyHierarchyWidget(props: OntologyHierarchyWidgetProps) {
     </EuiFlexItem>
   );
 }
-export { OntologyHierarchyWidget };
+export { BreadcrumbWidget };
