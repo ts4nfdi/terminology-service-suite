@@ -17,7 +17,46 @@ async function getTotalElements(apiCall: apiCallFn): Promise<number> {
   } else {
     throw new Error("page.totalElements is null in API response");
   }
-};
+}
+
+async function getTotalAmountOfTerms(apiCall: apiCallFn): Promise<number> {
+  const response = await apiCall({ size: "1000" });
+  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
+    let totalAmount = 0;
+    for (const ontology of response._embedded.ontologies) {
+      totalAmount += ontology.numberOfTerms;
+    }
+    return totalAmount;
+  } else {
+    throw new Error("Unexpected API response");
+  }
+}
+
+async function getTotalAmountOfProperties(apiCall: apiCallFn): Promise<number> {
+  const response = await apiCall({ size: "1000" });
+  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
+    let totalAmount = 0;
+    for (const ontology of response._embedded.ontologies) {
+      totalAmount += ontology.numberOfProperties;
+    }
+    return totalAmount;
+  } else {
+    throw new Error("Unexpected API response");
+  }
+}
+
+async function getTotalAmountOfIndividuals(apiCall: apiCallFn): Promise<number> {
+  const response = await apiCall({ size: "1000" });
+  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
+    let totalAmount = 0;
+    for (const ontology of response._embedded.ontologies) {
+      totalAmount += ontology.numberOfIndividuals;
+    }
+    return totalAmount;
+  } else {
+    throw new Error("Unexpected API response");
+  }
+}
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, ...rest } = props;
@@ -29,20 +68,24 @@ function DataContentWidget(props: DataContentWidgetProps) {
     dataUpdatedAt: dataUpdatedAtOntologies
   } = useQuery([api, "getOntologies"], () => { return getTotalElements(olsApi.getOntologies); });
 
+
   const {
     data: totalTerms,
     isLoading: isLoadingTerms
-  } = useQuery([api, "getTerms"], () => { return getTotalElements(olsApi.getTerms); });
+  } = useQuery([api, "getTerms"], () => { return getTotalAmountOfTerms(olsApi.getOntologies); });
+
 
   const {
     data: totalProperties,
     isLoading: isLoadingProperties
-  } = useQuery([api, "getProperties"], () => { return getTotalElements(olsApi.getProperties); });
+  } = useQuery([api, "getProperties"], () => { return getTotalAmountOfProperties(olsApi.getOntologies); });
+
 
   const {
     data: totalIndividuals,
     isLoading: isLoadingIndividuals
-  } = useQuery([api, "getIndividuals"], () => { return getTotalElements(olsApi.getIndividuals); });
+  } = useQuery([api, "getIndividuals"], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies); });
+
 
   return (
     <>
