@@ -54,7 +54,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Resource Name",
       field: "config.title",
-      width: "20%",
+      width: "15%",
       sortable: true,
     },
     {
@@ -71,7 +71,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Version",
       field: "config.version",
-      width: "10%",
+      width: "7.5%",
     },
     {
       name: "Loaded on",
@@ -83,28 +83,29 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Terms",
       field: "numberOfTerms",
-      width: "5%",
+      render: (value: number) => (<>{value.toLocaleString()}</>),
+      width: "7.5%",
       sortable: true,
     },
     {
       name: "Properties",
       field: "numberOfProperties",
-      width: "5%",
+      render: (value: number) => (<>{value.toLocaleString()}</>),
+      width: "7.5%",
       sortable: true,
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
-      width: "5%",
+      render: (value: number) => (<>{value.toLocaleString()}</>),
+      width: "7.5%",
       sortable: true,
     },
     {
-      name: "Actions",
       width: "5%",
       actions: [
         // TODO Allow usage of react-router links
         {
-          isPrimary: true,
           render: (item: OlsResource) => (
             <EuiButtonIcon
               href="" // TODO Add working link
@@ -114,7 +115,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           ),
         },
         {
-          isPrimary: true,
           render: (item: OlsResource) => (
             <EuiButtonIcon
               href={item.config.fileLocation}
