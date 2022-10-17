@@ -19,6 +19,10 @@ interface OntoInfo {
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const { onto, api } = props;
 
+  const infoItemStyle = {
+    marginLeft: "9px"
+  };
+
   const fetchOntoData: QueryFunction<OntoInfo, string> = ({queryKey}) => {
     const [queryPath] = queryKey;
     return fetch(queryPath, {
@@ -51,24 +55,30 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       <EuiFlexItem>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
-            <b>Ontology IRI:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}
+            <b>Ontology IRI:</b>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <b>Ontology ID:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}
+            <b>Ontology ID:</b>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <b>Version:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}
+            <b>Version:</b>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <b>Number of terms:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}
+            <b>Number of terms:</b>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <b>Last loaded:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
+            <b>Last loaded:</b>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}</p>
           </EuiFlexItem>
           {ontoInfo ? (
             Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>{annoKey}:</b> {annoVal}
+                <b>{annoKey}:</b>
+                <p style={infoItemStyle}>{annoVal}</p>
               </EuiFlexItem>
               ))
           ) : ''}
