@@ -11,7 +11,7 @@ interface OntoInfo {
   iri: string,
   id: string,
   version: string,
-  termNum: string,
+  termNum: number,
   lastLoad: string,
   annotations: object; //list of key&value string pairs
 }
@@ -45,6 +45,10 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       });
   }
 
+  const isAvailable = (item: any) => {
+    return item != undefined && item != "" && item != []
+  }
+
   const {
     data: ontoInfo,
     isLoading,
@@ -56,29 +60,29 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
             <b>Ontology IRI:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.iri) ? ontoInfo.iri.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Ontology ID:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.id) ? ontoInfo.id.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Version:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.version) ? ontoInfo.version.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Number of terms:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.termNum) ? ontoInfo.termNum.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Last loaded:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.lastLoad) ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}</p>
           </EuiFlexItem>
           {ontoInfo ? (
             Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
               <EuiFlexItem grow={false} key={annoKey}>
                 <b>{annoKey}:</b>
-                <p style={infoItemStyle}>{annoVal}</p>
+                <p style={infoItemStyle}>{isAvailable(annoVal) ? annoVal.toLocaleString() : "-"}</p>
               </EuiFlexItem>
               ))
           ) : ''}
