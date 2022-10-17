@@ -51,23 +51,24 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       <EuiFlexItem>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
-            Ontology IRI: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}
+            <b>Ontology IRI:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.iri : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Ontology ID: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}
+            <b>Ontology ID:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.id : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Version: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}
+            <b>Version:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.version : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Number of terms: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}
+            <b>Number of terms:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? ontoInfo.termNum : "-")}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            Last loaded: {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
+            <b>Last loaded:</b> {isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}
           </EuiFlexItem>
           {ontoInfo ? (
-            Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (
-              <EuiFlexItem grow={false} key={annoKey}>{annoKey}: {annoVal}
+            Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
+              <EuiFlexItem grow={false} key={annoKey}>
+                <b>{annoKey}:</b> {annoVal}
               </EuiFlexItem>
               ))
           ) : ''}
