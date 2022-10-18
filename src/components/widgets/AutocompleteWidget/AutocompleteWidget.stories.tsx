@@ -19,8 +19,19 @@ export default {
     },
     onChange: {
       description:
+        "Will be called everytime a suggestion is selected. Returns array of the selected suggestions. " +
+        "Pass as argument a function that takes this array.",
+    },
+    onSearchChange: {
+      description:
         "Will be called everytime the text in the input field is parsed. Returns Object of the OLS API answer. " +
         "Pass as argument a function that takes the result of the search.",
+    },
+    onSearchButtonClick: {
+      description:
+        "Will be called everytime the search button is clicked." +
+        "Pass as argument a function that takes the current search value. " +
+        "If this argument is not provided, the search button will not be rendered.",
     },
     placeholder: {
       description: "Placeholder for the input field.",
@@ -45,6 +56,9 @@ export default {
           "</table>",
       defaultValue: "ontology=mesh,efo&type=class",
     },
+    prefill: {
+      description: "This parameter can be used to prefill the input field.",
+    }
   },
 };
 
