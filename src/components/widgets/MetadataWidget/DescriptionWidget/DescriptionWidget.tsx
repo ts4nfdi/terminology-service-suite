@@ -25,7 +25,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
       })
         .then((response) => response.json())
         .then((response) => {
-          if (response._embedded.terms[0].description != null && response._embedded.terms[0].description[0] != null) {
+          if (response._embedded && response._embedded.terms && response._embedded.terms.length > 0 && response._embedded.terms[0].description != null && response._embedded.terms[0].description[0] != null) {
             return response._embedded.terms[0].description[0];
           } else {
             return NO_DESCRIPTION;
