@@ -47,4 +47,8 @@ export class OlsApi {
   public getIndividuals: apiCallFn = async (paginationParams, sortingParams) => {
     return (await this.axiosInstance.get("individuals", { params: this.buildParams(paginationParams, sortingParams) })).data;
   }
+
+  public search = async (query: string, paginationParams: PaginationParams): Promise<any> => {
+    return (await this.axiosInstance.get("search", { params: { q: query, start: paginationParams.page, rows: paginationParams.size } })).data;
+  }
 }
