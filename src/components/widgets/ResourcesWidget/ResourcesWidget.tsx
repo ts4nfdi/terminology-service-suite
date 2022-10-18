@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { EuiLoadingSpinner, EuiBasicTable, EuiButton, EuiButtonIcon, CriteriaWithPagination } from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
+import { css } from "@emotion/react";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -67,6 +68,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       name: "Description",
       field: "config.description",
       width: "30%",
+      css: css`display: block; max-height: 200px; overflow: auto;`,
     },
     {
       name: "Version",
