@@ -10,6 +10,12 @@ interface SortingParams {
   sortDir?: "asc" | "desc";
 }
 
+interface SearchQueryParams {
+  query: string;
+  exactMatch?: boolean;
+  showObsoleteTerms?: boolean;
+}
+
 export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams) => Promise<any>;
 
 const DEFAULT_SEARCH_RESULTS_PER_PAGE = 10;
@@ -34,8 +40,14 @@ export class OlsApi {
     return { ...paginationParams };
   }
 
-  private buildParamsForSearch(query: string, paginationParams: PaginationParams) {
-    const params: any = { q: query, rows: paginationParams.size };
+  private buildParamsForSearch(queryParams: SearchQueryParams, paginationParams: PaginationParams) {
+    const params: any = {
+      q: queryParams.query,
+      rows: paginationParams.size,
+      exact: queryParams.exactMatch,
+      obsoletes: queryParams.showObsoleteTerms,
+    };
+  
     if (paginationParams.page) {
       if (paginationParams.size) {
         params.start = (+paginationParams.page * +paginationParams.size).toString();
@@ -43,6 +55,7 @@ export class OlsApi {
         params.start = (+paginationParams.page * DEFAULT_SEARCH_RESULTS_PER_PAGE).toString();
       }
     }
+  
     return params;
   }
 
@@ -62,7 +75,7 @@ export class OlsApi {
     return (await this.axiosInstance.get("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams) })).data;
   }
 
-  public search = async (query: string, paginationParams: PaginationParams): Promise<any> => {
-    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(query, paginationParams) })).data;
+  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams): Promise<any> => {
+    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams) })).data;
   }
 }

@@ -1,4 +1,4 @@
-import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiPanelProps, EuiSpacer, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiPanelProps, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
 import React, { useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
@@ -28,18 +28,24 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   const [pageCount, setPageCount] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   const [totalItems, setTotalItems] = useState(0);
+  const [exactMatch, setExactMatch] = useState(false);
+  const [showObsoleteTerms, setShowObsoleteTerms] = useState(false);
 
   const {
     data: searchResults,
     isLoading: resultsAreLoading
   } = useQuery(
-    [api, "searchResults", query, activePage, itemsPerPage],
+    [api, "searchResults", query, exactMatch, showObsoleteTerms, activePage, itemsPerPage],
     async () => {
       return olsApi.search(
-        query,
+        {
+          query: query,
+          exactMatch: exactMatch,
+          showObsoleteTerms: showObsoleteTerms,
+        },
         {
           page: activePage.toString(),
-          size: itemsPerPage.toString()
+          size: itemsPerPage.toString(),
         }
       ).then((response) => {
         if (response.response && response.response.docs != null && response.response.numFound != null) {
@@ -59,14 +65,33 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setItemsPerPage(newItemsPerPage);
   }
 
+  function toggleExactMatch() {
+    setExactMatch(!exactMatch);
+  }
+
+  function toggleShowObsoleteTerms() {
+    setShowObsoleteTerms(!showObsoleteTerms);
+  }
+
   if (resultsAreLoading) {
     return <EuiLoadingSpinner size="xl" />;
   }
 
   return (
     <>
+      <EuiFlexGroup>
+        <EuiFlexItem grow={false}>
+          <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiSwitch label="Show obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiSpacer size="m" />
+
       <EuiText size="xs" style={{ padding: "0 8px" }}>
-        Showing {activePage*itemsPerPage+1} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
+        Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
       </EuiText>
 
       <EuiSpacer size="s" />
@@ -87,7 +112,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
       <EuiSpacer size="s" />
 
-      {searchResults.map((result: any) => (
+      {searchResults && searchResults.map((result: any) => (
         <React.Fragment key={result.id}>
           <EuiPanel {...rest}>
             <EuiFlexGroup>
