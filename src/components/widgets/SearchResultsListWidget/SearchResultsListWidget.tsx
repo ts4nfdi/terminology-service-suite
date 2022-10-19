@@ -145,7 +145,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
   return (
     <EuiFlexGroup>
-      <EuiFlexItem grow={3}>
+      <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
         <EuiPanel>
           <EuiFormRow label="Filter by type">
             <EuiSelectable
