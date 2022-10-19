@@ -1,4 +1,4 @@
-import { EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
+import { EuiButtonEmpty, EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
 import React, { useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
@@ -65,19 +65,32 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     }
   }
 
+  const filterSelectedOptions = (option: EuiSelectableOption) => option.checked === "on";
+
   const {
     data: searchResults,
     isLoading: resultsAreLoading
   } = useQuery(
-    [api, "searchResults", query, exactMatch, showObsoleteTerms, activePage, itemsPerPage, filterByTypeOptions, filterByOntologyOptions],
+    [
+      "searchResults",
+      api,
+      query,
+      exactMatch,
+      showObsoleteTerms,
+      activePage,
+      itemsPerPage,
+      filterByTypeOptions.filter(filterSelectedOptions),
+      filterByOntologyOptions.filter(filterSelectedOptions),
+    ],
     async () => {
       return olsApi.search(
         {
           query: query,
           exactMatch: exactMatch,
           showObsoleteTerms: showObsoleteTerms,
-          types: filterByTypeOptions.filter((option: EuiSelectableOption) => option.checked === "on").map((option: EuiSelectableOption) => option.key)[0],
-          ontology: filterByOntologyOptions.filter((option: EuiSelectableOption) => option.checked === "on").map((option: EuiSelectableOption) => option.key).join(","),
+          types: filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+          ontology: filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+          groupByIri: true,
         },
         {
           page: activePage.toString(),
@@ -129,20 +142,29 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setShowObsoleteTerms(!showObsoleteTerms);
   }
 
+  function clearFilter(currentOptions: EuiSelectableOption[], setOptions: Function) {
+    const newOptions = [...currentOptions];
+    setOptions(newOptions.map((option: EuiSelectableOption) => ({ ...option, checked: undefined })));
+  }
+
+  function clearAllFilters() {
+    clearFilter(filterByTypeOptions, setFilterByTypeOptions);
+    clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
+  }
+
   if (resultsAreLoading) {
     return <EuiLoadingSpinner size="xl" />;
   }
 
   return (
     <EuiFlexGroup>
-      <EuiFlexItem grow={3}>
+      <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
         <EuiPanel>
           <EuiFormRow label="Filter by type">
             <EuiSelectable
               options={filterByTypeOptions}
               onChange={setFilterByTypeOptions}
               listProps={{ bordered: true }}
-              singleSelection={true}
             >
               {(list) => list}
             </EuiSelectable>
@@ -163,42 +185,49 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               )}
             </EuiSelectable>
           </EuiFormRow>
+
+          <EuiButtonEmpty
+            onClick={clearAllFilters}
+          >
+            Clear all filters
+          </EuiButtonEmpty>
         </EuiPanel>
       </EuiFlexItem>
 
       <EuiFlexItem grow={7}>
-        <EuiFlexGroup>
-          <EuiFlexItem grow={false}>
-            <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiSwitch label="Show obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        <EuiPanel color="transparent" grow={false}>
+          <EuiFlexGroup>
+            <EuiFlexItem grow={false}>
+              <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiSwitch label="Show only obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
+            </EuiFlexItem>
+          </EuiFlexGroup>
 
-        <EuiSpacer size="m" />
+          <EuiSpacer size="m" />
 
-        <EuiText size="xs" style={{ padding: "0 8px" }}>
-          Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
-        </EuiText>
+          <EuiText size="xs" style={{ padding: "0 8px" }}>
+            Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
+          </EuiText>
 
-        <EuiSpacer size="s" />
+          <EuiSpacer size="s" />
 
-        <EuiHorizontalRule margin="none" style={{ height: 2 }} />
+          <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
-        <EuiSpacer size="s" />
+          <EuiSpacer size="s" />
 
-        <EuiTablePagination
-          aria-label="Search result pagination"
-          pageCount={pageCount}
-          activePage={activePage}
-          onChangePage={setActivePage}
-          itemsPerPage={itemsPerPage}
-          onChangeItemsPerPage={onChangeItemsPerPage}
-          itemsPerPageOptions={itemsPerPageOptions}
-        />
+          <EuiTablePagination
+            aria-label="Search result pagination"
+            pageCount={pageCount}
+            activePage={activePage}
+            onChangePage={setActivePage}
+            itemsPerPage={itemsPerPage}
+            onChangeItemsPerPage={onChangeItemsPerPage}
+            itemsPerPageOptions={itemsPerPageOptions}
+          />
 
-        <EuiSpacer size="s" />
+          <EuiSpacer size="s" />
 
         {searchResults && searchResults.map((result: any) => (
           <React.Fragment key={result.id}>
