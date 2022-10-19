@@ -14,6 +14,8 @@ interface SearchQueryParams {
   query: string;
   exactMatch?: boolean;
   showObsoleteTerms?: boolean;
+  types?: string;
+  ontology?: string;
 }
 
 export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams) => Promise<any>;
@@ -47,6 +49,14 @@ export class OlsApi {
       exact: queryParams.exactMatch,
       obsoletes: queryParams.showObsoleteTerms,
     };
+
+    if (queryParams.types) {
+      params.type = queryParams.types;
+    }
+
+    if (queryParams.ontology) {
+      params.ontology = queryParams.ontology;
+    }
   
     if (paginationParams.page) {
       if (paginationParams.size) {
