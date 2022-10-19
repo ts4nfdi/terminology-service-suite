@@ -1,6 +1,7 @@
 import React from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner } from "@elastic/eui";
-import {QueryFunction, useQuery} from "react-query";
+import {useQuery} from "react-query";
+import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 
 export interface OntologyInfoWidgetProps {
   onto: string;
@@ -16,34 +17,26 @@ interface OntoInfo {
   annotations: object; //list of key&value string pairs
 }
 
+async function getOntoData(apiCall: apiCallFn, ontoId: string): Promise<OntoInfo> {
+  const response = await apiCall(undefined, undefined, {ontologyId: ontoId});
+
+  return {
+    iri: response.config.id,
+    id: response.ontologyId,
+    version: response.config.version,
+    termNum: response.numberOfTerms,
+    lastLoad: response.loaded,
+    annotations: response.config.annotations ? response.config.annotations : [],
+  };
+}
+
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const { onto, api } = props;
+  const olsApi = new OlsApi(api);
 
   const infoItemStyle = {
     marginLeft: "9px"
   };
-
-  const fetchOntoData: QueryFunction<OntoInfo, string> = ({queryKey}) => {
-    const [queryPath] = queryKey;
-    return fetch(queryPath, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        Content_Type: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        return {
-          iri: response.config.id,
-          id: response.ontologyId,
-          version: response.config.version,
-          termNum: response.numberOfTerms,
-          lastLoad: response.loaded,
-          annotations: response.config.annotations ? response.config.annotations : [],
-        };
-      });
-  }
 
   const isAvailable = (item: any) => {
     return item != undefined && item != "" && item != []
@@ -52,7 +45,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const {
     data: ontoInfo,
     isLoading,
-  } = useQuery(`${api}ontologies/${onto}`, fetchOntoData)
+  } = useQuery([api, "getOntology", onto], () => { return getOntoData(olsApi.getOntology, onto); });
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>

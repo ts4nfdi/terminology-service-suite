@@ -10,7 +10,15 @@ interface SortingParams {
   sortDir?: "asc" | "desc";
 }
 
-export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams) => Promise<any>;
+interface ContentParams {
+  ontologyId?: string;
+  termIri?: string;
+  propertyIri?: string;
+  individualIri?: string;
+  queryString?: string;
+}
+
+export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams) => Promise<any>;
 
 export class OlsApi {
   private axiosInstance: AxiosInstance;
@@ -46,5 +54,9 @@ export class OlsApi {
 
   public getIndividuals: apiCallFn = async (paginationParams, sortingParams) => {
     return (await this.axiosInstance.get("individuals", { params: this.buildParams(paginationParams, sortingParams) })).data;
+  }
+
+  public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId)).data;
   }
 }
