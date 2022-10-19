@@ -12,6 +12,8 @@ interface SortingParams {
 
 export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams) => Promise<any>;
 
+const DEFAULT_SEARCH_RESULTS_PER_PAGE = 10;
+
 export class OlsApi {
   private axiosInstance: AxiosInstance;
 
@@ -25,30 +27,42 @@ export class OlsApi {
     });
   }
 
-  private buildParams(paginationParams?: PaginationParams, sortingParams?: SortingParams) {
+  private buildParamsForGet(paginationParams?: PaginationParams, sortingParams?: SortingParams) {
     if (sortingParams) {
       return { ...paginationParams, sort: `${sortingParams.sortField},${sortingParams.sortDir}` };
     }
     return { ...paginationParams };
   }
 
+  private buildParamsForSearch(query: string, paginationParams: PaginationParams) {
+    const params: any = { q: query, rows: paginationParams.size };
+    if (paginationParams.page) {
+      if (paginationParams.size) {
+        params.start = (+paginationParams.page * +paginationParams.size).toString();
+      } else {
+        params.start = (+paginationParams.page * DEFAULT_SEARCH_RESULTS_PER_PAGE).toString();
+      }
+    }
+    return params;
+  }
+
   public getOntologies: apiCallFn = async (paginationParams, sortingParams) => {
-    return (await this.axiosInstance.get("ontologies", { params: this.buildParams(paginationParams, sortingParams) })).data;
+    return (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams) })).data;
   }
 
   public getTerms: apiCallFn = async (paginationParams, sortingParams) => {
-    return (await this.axiosInstance.get("terms", { params: this.buildParams(paginationParams, sortingParams) })).data;
+    return (await this.axiosInstance.get("terms", { params: this.buildParamsForGet(paginationParams, sortingParams) })).data;
   }
 
   public getProperties: apiCallFn = async (paginationParams, sortingParams) => {
-    return (await this.axiosInstance.get("properties", { params: this.buildParams(paginationParams, sortingParams) })).data;
+    return (await this.axiosInstance.get("properties", { params: this.buildParamsForGet(paginationParams, sortingParams) })).data;
   }
 
   public getIndividuals: apiCallFn = async (paginationParams, sortingParams) => {
-    return (await this.axiosInstance.get("individuals", { params: this.buildParams(paginationParams, sortingParams) })).data;
+    return (await this.axiosInstance.get("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams) })).data;
   }
 
   public search = async (query: string, paginationParams: PaginationParams): Promise<any> => {
-    return (await this.axiosInstance.get("search", { params: { q: query, start: paginationParams.page, rows: paginationParams.size } })).data;
+    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(query, paginationParams) })).data;
   }
 }

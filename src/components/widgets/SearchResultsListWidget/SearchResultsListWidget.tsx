@@ -54,6 +54,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     { keepPreviousData : true } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
   );
 
+  function onChangeItemsPerPage(newItemsPerPage: number) {
+    setActivePage(Math.floor((activePage*itemsPerPage+1)/newItemsPerPage));
+    setItemsPerPage(newItemsPerPage);
+  }
+
   if (resultsAreLoading) {
     return <EuiLoadingSpinner size="xl" />;
   }
@@ -61,7 +66,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   return (
     <>
       <EuiText size="xs" style={{ padding: "0 8px" }}>
-        Showing {activePage*itemsPerPage+1} to {(activePage+1)*itemsPerPage} of {totalItems} results
+        Showing {activePage*itemsPerPage+1} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
       </EuiText>
 
       <EuiSpacer size="s" />
@@ -76,7 +81,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         activePage={activePage}
         onChangePage={setActivePage}
         itemsPerPage={itemsPerPage}
-        onChangeItemsPerPage={setItemsPerPage}
+        onChangeItemsPerPage={onChangeItemsPerPage}
         itemsPerPageOptions={itemsPerPageOptions}
       />
 
