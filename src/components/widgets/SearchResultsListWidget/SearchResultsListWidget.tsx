@@ -1,4 +1,4 @@
-import { EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiPanelProps, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
+import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiPanelProps, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
 import React, { useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
@@ -129,6 +129,16 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setShowObsoleteTerms(!showObsoleteTerms);
   }
 
+  function clearFilter(currentOptions: EuiSelectableOption[], setOptions: Function) {
+    const newOptions = [...currentOptions];
+    setOptions(newOptions.map((option: EuiSelectableOption) => ({ ...option, checked: undefined })));
+  }
+
+  function clearAllFilters() {
+    clearFilter(filterByTypeOptions, setFilterByTypeOptions);
+    clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
+  }
+
   if (resultsAreLoading) {
     return <EuiLoadingSpinner size="xl" />;
   }
@@ -163,6 +173,12 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               )}
             </EuiSelectable>
           </EuiFormRow>
+
+          <EuiButtonEmpty
+            onClick={clearAllFilters}
+          >
+            Clear all filters
+          </EuiButtonEmpty>
         </EuiPanel>
       </EuiFlexItem>
 
