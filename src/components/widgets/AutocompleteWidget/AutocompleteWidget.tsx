@@ -50,7 +50,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   //@ts-ignore
   function onChangeHandler(selectedOptions) {
     setSelected(selectedOptions);
-    props.onChange(options);
+    props.onChange({
+      "options": options,
+      "selectedOption": selectedOptions
+    });
   }
 
   return (
