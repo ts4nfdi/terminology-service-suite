@@ -50,9 +50,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   //@ts-ignore
   function onChangeHandler(selectedOptions) {
     setSelected(selectedOptions);
+    //due to singleSelection being true, selectedOptions contains only 1 entry when searching a term
+    //on deletion of the search term, selectedOptions is empty -> "selectedOption" is undefined
     props.onChange({
       "options": options,
-      "selectedOption": selectedOptions
+      "selectedOption": selectedOptions[0]
     });
   }
 
