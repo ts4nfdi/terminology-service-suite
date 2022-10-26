@@ -61,12 +61,13 @@ function AutocompleteWidget(props: {
   const [selectedOptions, setSelectedOptions] = useState<
     { label: string; value: string }[]
   >([]);
-
+  const [hasLoadingState, setLoadingState] = useState<boolean>(false);
   /**
    * If a selectOption is provided, we obtain the label via API
    */
   useEffect(() => {
     if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
+      setLoadingState(true)
       fetchConceptById(props.selectOption?.iri).then((rsp) => {
         setOptions([
           {
@@ -81,6 +82,7 @@ function AutocompleteWidget(props: {
           },
         ]);
       });
+    setLoadingState(false)
     }
   }, [props.selectOption]);
 
@@ -133,7 +135,9 @@ function AutocompleteWidget(props: {
   };
 
   function onChangeHandler(options: Array<any>): void {
+    setLoadingState(true);
     setSelectedOptions(options);
+    setLoadingState(false);
   }
 
   return (
@@ -143,8 +147,9 @@ function AutocompleteWidget(props: {
       fullWidth={true}
       {...rest} // items above can be overriden by a client
       async={true}
+      isLoading={hasLoadingState}
       singleSelection={{ asPlainText: true }}
-      placeholder={props.placeholder ? props.placeholder : "Search for Term"}
+      placeholder={props.placeholder ? props.placeholder : "Search for a Concept"}
       options={options}
       selectedOptions={selectedOptions}
       onSearchChange={onSearchChange}
