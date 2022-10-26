@@ -31,7 +31,6 @@ function AutocompleteWidget(props: {
    * </table>
    */
   parameter?: string;
-
   /**
    * A method that is called once the set of selection changes
    * @param selectedOptions  The selected items
@@ -71,13 +70,13 @@ function AutocompleteWidget(props: {
       fetchConceptById(props.selectOption?.iri).then((rsp) => {
         setOptions([
           {
-            label: rsp.concept?.label,
+            label: generateDisplayLabel(rsp.concept),
             value: rsp.conceptId,
           },
         ]);
         setSelectedOptions([
           {
-            label: rsp.concept?.label,
+            label: generateDisplayLabel(rsp.concept),
             value: rsp.conceptId,
           },
         ]);
@@ -89,15 +88,24 @@ function AutocompleteWidget(props: {
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
-    if(selectedOptions.length>=1) {
+    if (selectedOptions.length >= 1) {
       props.selectionChangedEvent(
-          selectedOptions
-              .map((x) => {
-                return {iri: x.value, label: x.label};
-              })[0]
+        selectedOptions.map((x) => {
+          return { iri: x.value, label: x.label };
+        })[0]
       );
     }
   }, [selectedOptions]);
+
+  function generateDisplayLabel(item: any) {
+    return (
+      item.label +
+      " | " +
+      item.ontology_name.toUpperCase() +
+      " > " +
+      item.short_form
+    );
+  }
 
   const onSearchChange = (searchValue: string) => {
     if (searchValue.length > 0) {
@@ -114,12 +122,7 @@ function AutocompleteWidget(props: {
           setOptions(
             res.slice(0, 9).map((item: any) => {
               return {
-                label:
-                  item.label.toLowerCase() +
-                  " | " +
-                  item.ontology_name.toUpperCase() +
-                  " > " +
-                  item.short_form,
+                label: generateDisplayLabel(item),
                 value: item.iri,
               };
             })
@@ -136,12 +139,11 @@ function AutocompleteWidget(props: {
   return (
     <EuiComboBox
       isClearable
-      async={true}
-      singleSelection={{ asPlainText: true }}
-      className="comboBox"
+      aria-label="searchBar"
       fullWidth={true}
       {...rest} // items above can be overriden by a client
-      aria-label="searchBar"
+      async={true}
+      singleSelection={{ asPlainText: true }}
       placeholder={props.placeholder ? props.placeholder : "Search for Term"}
       options={options}
       selectedOptions={selectedOptions}
