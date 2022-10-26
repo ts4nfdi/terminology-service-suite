@@ -1,5 +1,7 @@
 import React from "react";
-import { ResourcesWidget, ResourcesWidgetProps } from "./ResourcesWidget";
+import {OlsResource, ResourcesWidget, ResourcesWidgetProps } from "./ResourcesWidget";
+import {ComponentStory} from "@storybook/react";
+import {EuiButton, EuiButtonIcon} from "@elastic/eui";
 
 export default {
   title: "ResourcesWidget",
@@ -47,14 +49,14 @@ export default {
         ],
       },
     },
+    actions:{
+
+    }
   },
 };
 
-const Template = (args: ResourcesWidgetProps) => (
-  <>
-    <ResourcesWidget {...args} />
-  </>
-);
+
+const Template: ComponentStory<typeof ResourcesWidget> = (args) => <ResourcesWidget {...args} />;
 
 export const ResourcesWidget1 = Template.bind({});
 
@@ -67,3 +69,32 @@ ResourcesWidget1.args = {
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const
 };
+export const withActions = Template.bind({});
+withActions.args={...ResourcesWidget1.args,actions:
+  [// TODO Allow usage of react-router links
+        {
+          render: (item: OlsResource) => (
+            <EuiButtonIcon
+              href="" // TODO Add working link
+              iconType="search"
+              aria-label="Search"
+            />
+          ),
+        },
+           {
+          render: (item: OlsResource) => (
+            <EuiButton href="" size="s">Show terms</EuiButton> // TODO Add working link
+          ),
+        },
+        {
+          render: (item: OlsResource) => (
+            <EuiButton href="" size="s">Show properties</EuiButton> // TODO Add working link
+          ),
+        },
+        {
+          render: (item: OlsResource) => (
+            <EuiButton href="" size="s">Show individuals</EuiButton> // TODO Add working link
+          ),
+        }
+        ]
+  }

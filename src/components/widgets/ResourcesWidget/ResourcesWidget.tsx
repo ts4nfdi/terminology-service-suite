@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { EuiLoadingSpinner, EuiBasicTable, EuiButton, EuiButtonIcon, CriteriaWithPagination } from "@elastic/eui";
+import { EuiLoadingSpinner, EuiBasicTable, EuiButtonIcon, CriteriaWithPagination } from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { css } from "@emotion/react";
@@ -10,9 +10,13 @@ export interface ResourcesWidgetProps {
   pageSizeOptions?: number[];
   initialSortField?: string;
   initialSortDir?: "asc" | "desc";
+  /**
+   * Pass actions to each item in the table.
+   */
+  actions?: Array<{render: (item: OlsResource) => void}>
 }
 
-interface OlsResource {
+export interface OlsResource {
   ontologyId: string;
   loaded: string;
   numberOfTerms: number;
@@ -106,43 +110,18 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       width: "5%",
       actions: [
-        // TODO Allow usage of react-router links
-        {
-          render: (item: OlsResource) => (
+     ...(props.actions|| []),
+      {
+        render: (item: OlsResource) => (
             <EuiButtonIcon
-              href="" // TODO Add working link
-              iconType="search"
-              aria-label="Search"
+                href={item.config.fileLocation}
+                iconType="download"
+                aria-label="Download"
+                isDisabled={!item.config.allowDownload || item.config.fileLocation.startsWith("file://")}
             />
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButtonIcon
-              href={item.config.fileLocation}
-              iconType="download"
-              aria-label="Download"
-              isDisabled={!item.config.allowDownload || item.config.fileLocation.startsWith("file://")}
-            />
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show terms</EuiButton> // TODO Add working link
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show properties</EuiButton> // TODO Add working link
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show individuals</EuiButton> // TODO Add working link
-          ),
-        },
-      ],
-    },
+        ),
+      }]
+    }
   ];
 
   const pagination = {
@@ -200,6 +179,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   if (ontologies) {
     return (
       <EuiBasicTable
+         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         // @ts-ignore
         columns={columns}
         items={ontologies}
         onChange={onTableChange}
