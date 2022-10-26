@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { EuiComboBox } from "@elastic/eui";
+import { fetchConceptById } from "../../../api/widget";
 
 /**
  * A react component to provide Autosuggestion based on semlookp.
@@ -35,10 +36,14 @@ function AutocompleteWidget(props: {
    * A method that is called once the set of selection changes
    * @param selectedOptions  The selected items
    */
-  selectionChangedEvent: (
-    selectedOptions: Array<{ label: string; value: string }>
-  ) =>void;
-
+  selectionChangedEvent: (selectedOption: {
+    label: string;
+    iri: string;
+  }) => void;
+  /**
+   * Pass a pre select value.
+   */
+  selectOption?: { label?: string; iri: string };
   /**
    * Placeholder to show if no user input nor selection is performed.
    */
@@ -59,10 +64,39 @@ function AutocompleteWidget(props: {
   >([]);
 
   /**
+   * If a selectOption is provided, we obtain the label via API
+   */
+  useEffect(() => {
+    if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
+      fetchConceptById(props.selectOption?.iri).then((rsp) => {
+        setOptions([
+          {
+            label: rsp.concept?.label,
+            value: rsp.conceptId,
+          },
+        ]);
+        setSelectedOptions([
+          {
+            label: rsp.concept?.label,
+            value: rsp.conceptId,
+          },
+        ]);
+      });
+    }
+  }, [props.selectOption]);
+
+  /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
-    props.selectionChangedEvent(selectedOptions);
+    if(selectedOptions.length>=1) {
+      props.selectionChangedEvent(
+          selectedOptions
+              .map((x) => {
+                return {iri: x.value, label: x.label};
+              })[0]
+      );
+    }
   }, [selectedOptions]);
 
   const onSearchChange = (searchValue: string) => {
@@ -86,13 +120,12 @@ function AutocompleteWidget(props: {
                   item.ontology_name.toUpperCase() +
                   " > " +
                   item.short_form,
-                value: item.id,
+                value: item.iri,
               };
             })
           );
+          setSelectedOptions([]);
         });
-    } else {
-      setOptions([]);
     }
   };
 
