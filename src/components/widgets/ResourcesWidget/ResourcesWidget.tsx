@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { EuiLoadingSpinner, EuiBasicTable, EuiButtonIcon, CriteriaWithPagination } from "@elastic/eui";
-import { useQuery } from 'react-query';
+import {
+  EuiLoadingSpinner,
+  EuiBasicTable,
+  EuiButtonIcon,
+  CriteriaWithPagination,
+} from "@elastic/eui";
+import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css } from "@emotion/react";
 
@@ -13,7 +18,7 @@ export interface ResourcesWidgetProps {
   /**
    * Pass actions to each item in the table.
    */
-  actions?: Array<{render: (item: OlsResource) => void}>
+  actions?: Array<{ render: (item: OlsResource) => void }>;
 }
 
 export interface OlsResource {
@@ -72,7 +77,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       name: "Description",
       field: "config.description",
       width: "30%",
-      css: css`display: block; max-height: 200px; overflow: auto;`,
+      css: css`
+        display: block;
+        max-height: 200px;
+        overflow: auto;
+      `,
     },
     {
       name: "Version",
@@ -89,56 +98,63 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Terms",
       field: "numberOfTerms",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       name: "Properties",
       field: "numberOfProperties",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       width: "5%",
       actions: [
-     ...(props.actions|| []),
-      {
-        render: (item: OlsResource) => (
+        ...(props.actions || []),
+        {
+          render: (item: OlsResource) => (
             <EuiButtonIcon
-                href={item.config.fileLocation}
-                iconType="download"
-                aria-label="Download"
-                isDisabled={!item.config.allowDownload || item.config.fileLocation.startsWith("file://")}
+              href={item.config.fileLocation}
+              iconType="download"
+              aria-label="Download"
+              isDisabled={
+                !item.config.allowDownload ||
+                item.config.fileLocation.startsWith("file://")
+              }
             />
-        ),
-      }]
-    }
+          ),
+        },
+      ],
+    },
   ];
 
   const pagination = {
     pageIndex: pageIndex,
     pageSize: entriesPerPage,
     totalItemCount: totalOntologies,
-    pageSizeOptions: pageSizeOptions
+    pageSizeOptions: pageSizeOptions,
   };
 
   const sorting = {
     sort: {
       field: sortField,
       direction: sortDirection,
-    }
-  }
+    },
+  };
 
-  const onTableChange = ({ page, sort }: CriteriaWithPagination<OlsResource>) => {
+  const onTableChange = ({
+    page,
+    sort,
+  }: CriteriaWithPagination<OlsResource>) => {
     const { index: pageIndex, size: entriesPerPage } = page;
     setPageIndex(pageIndex);
     setEntriesPerPage(entriesPerPage);
@@ -150,37 +166,48 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
-  const {
-    data: ontologies
-  } = useQuery(
-    [api, "ontologiesMetadata", entriesPerPage, pageIndex, sortField, sortDirection],
+  const { data: ontologies } = useQuery(
+    [
+      api,
+      "ontologiesMetadata",
+      entriesPerPage,
+      pageIndex,
+      sortField,
+      sortDirection,
+    ],
     async () => {
-      return olsApi.getOntologies(
-        {
-          size: entriesPerPage.toString(),
-          page: pageIndex.toString()
-        },
-        {
-          sortField: sortField,
-          sortDir: sortDirection
-        }
-      ).then((response) => {
-        if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
-          // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-          setTotalOntologies(response.page.totalElements);
-          return response._embedded.ontologies;
-        } else {
-          throw new Error("Unexpected API response");
-        }
-      });
+      return olsApi
+        .getOntologies(
+          {
+            size: entriesPerPage.toString(),
+            page: pageIndex.toString(),
+          },
+          {
+            sortField: sortField,
+            sortDir: sortDirection,
+          }
+        )
+        .then((response) => {
+          if (
+            response.page.totalElements != null &&
+            response._embedded &&
+            response._embedded.ontologies
+          ) {
+            // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
+            setTotalOntologies(response.page.totalElements);
+            return response._embedded.ontologies;
+          } else {
+            throw new Error("Unexpected API response");
+          }
+        });
     }
   );
 
   if (ontologies) {
     return (
       <EuiBasicTable
-         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-         // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         columns={columns}
         items={ontologies}
         onChange={onTableChange}
