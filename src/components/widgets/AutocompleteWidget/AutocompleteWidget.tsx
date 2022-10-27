@@ -67,7 +67,7 @@ function AutocompleteWidget(props: {
    */
   useEffect(() => {
     if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
-      setLoadingState(true)
+      setLoadingState(true);
       fetchConceptById(props.selectOption?.iri).then((rsp) => {
         setOptions([
           {
@@ -82,7 +82,7 @@ function AutocompleteWidget(props: {
           },
         ]);
       });
-    setLoadingState(false)
+      setLoadingState(false);
     }
   }, [props.selectOption]);
 
@@ -149,7 +149,9 @@ function AutocompleteWidget(props: {
       async={true}
       isLoading={hasLoadingState}
       singleSelection={{ asPlainText: true }}
-      placeholder={props.placeholder ? props.placeholder : "Search for a Concept"}
+      placeholder={
+        props.placeholder ? props.placeholder : "Search for a Concept"
+      }
       options={options}
       selectedOptions={selectedOptions}
       onSearchChange={onSearchChange}

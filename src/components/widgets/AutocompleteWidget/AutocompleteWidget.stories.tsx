@@ -1,7 +1,7 @@
 import React from "react";
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import "@elastic/eui/dist/eui_theme_light.json";
-import {ComponentStory} from "@storybook/react";
+import { ComponentStory } from "@storybook/react";
 
 export default {
   title: "Autocomplete Widget",
@@ -17,25 +17,32 @@ export default {
       },
       defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
     },
-    selectionChangedEvent:{
-        action: 'selectionChangedEvent'
+    selectionChangedEvent: {
+      action: "selectionChangedEvent",
     },
     placeholder: {
       defaultValue: "Search for Term",
     },
-    selectOption:{
-    },
+    selectOption: {},
     parameter: {
       defaultValue: "ontology=mesh,efo&type=class",
     },
   },
 };
-const Template: ComponentStory<typeof AutocompleteWidget> = (args) => <AutocompleteWidget {...args} />;
+const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
+  <AutocompleteWidget {...args} />
+);
 
 export const withDefaults = Template.bind({});
 
 export const withValue = Template.bind({});
-withValue.args = {selectOption:{iri:"http://purl.bioontology.org/ontology/MESH/D000086382" }};
+withValue.args = {
+  selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
+};
 
 export const withInvalidValue = Template.bind({});
-withInvalidValue.args = {selectOption:{iri:"ht3stp://purl.bioontology.org/ontology/MESH/D000086382" }};
+withInvalidValue.args = {
+  selectOption: {
+    iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
+  },
+};
