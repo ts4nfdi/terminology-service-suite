@@ -21,6 +21,14 @@ export default {
     query: {
       description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
     },
+    initialItemsPerPage: {
+      description: "Initial number of items displayed per page.",
+      control: "number",
+    },
+    itemsPerPageOptions: {
+      description: "Possible values for number of items displayed per page.",
+      control: "array",
+    },
   },
 };
 
