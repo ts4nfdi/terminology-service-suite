@@ -63,4 +63,12 @@ export class OlsApi {
   public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
     return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId+"/terms", { params: {iri: contentParams?.termIri} })).data;
   }
+
+  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId+"/properties", { params: {iri: contentParams?.propertyIri} })).data;
+  }
+
+  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId+"/individuals", { params: {iri: contentParams?.individualIri} })).data;
+  }
 }

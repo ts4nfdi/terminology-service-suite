@@ -41,10 +41,23 @@ export default {
         "Set your own text manually that overwrites the text fetched from the API",
     },
     onto: {
-      description: "Ontology ID from where the term description should be taken.",
+      description: "Ontology ID from where the object description should be taken.",
+    },
+    objType: {
+      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'property', or 'individual'.",
+      control: {
+        type: "radio",
+        options: [
+          "ontology",
+          "term",
+          "property",
+          "individual",
+          "INVALID STRING"
+        ],
+      },
     },
     iri: {
-      description: "Iri of the term you want to fetch the description for.",
+      description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'onto' arg is sufficient.",
     },
   },
 };
@@ -65,4 +78,5 @@ DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
   onto: "ncit",
+  objType: "term",
 };
