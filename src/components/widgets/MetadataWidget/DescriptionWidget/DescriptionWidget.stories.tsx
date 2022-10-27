@@ -40,6 +40,9 @@ export default {
       description:
         "Set your own text manually that overwrites the text fetched from the API",
     },
+    onto: {
+      description: "Ontology ID from where the term description should be taken.",
+    },
     iri: {
       description: "Iri of the term you want to fetch the description for.",
     },
@@ -61,4 +64,5 @@ export const DescriptionWidget1 = Template.bind({});
 DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
+  onto: "ncit",
 };
