@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { EuiComboBox } from "@elastic/eui";
-import { fetchConceptById } from "../../../api/widget";
 
-/**
- * A react component to provide Autosuggestion based on semlookp.
- */
-function AutocompleteWidget(props: {
+import { fetchConceptById } from "../../../api/widget";
+import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
+import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import { EuiComboBox } from "@elastic/eui";
+
+export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
   /**
    * Instance of the OLS API to call.
    */
@@ -20,7 +20,7 @@ function AutocompleteWidget(props: {
    *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
    *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
    *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-   *  <tr><td>stdm</td><td>Restrict a search to an particular set of slims by name</td></tr>
+   *  <tr><td>stdm</td><td>Restrict a search to a particular set of slims by name</td></tr>
    *  <tr><td>fieldtdst</td><td>Specify the fields to return, the defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
    *  <tr><td>obsoletes</td><td>Set to true to include obsoleted terms in the results</td></tr>
    *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology e.g. Only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
@@ -36,8 +36,8 @@ function AutocompleteWidget(props: {
    * @param selectedOptions  The selected items
    */
   selectionChangedEvent: (selectedOption: {
-    label: string;
-    iri: string;
+    label: string | undefined;
+    iri: string | undefined;
   }) => void;
   /**
    * Pass a pre select value.
@@ -47,20 +47,27 @@ function AutocompleteWidget(props: {
    * Placeholder to show if no user input nor selection is performed.
    */
   placeholder?: string;
-}) {
-  const { api, parameter, ...rest } = props;
+}
+
+/**
+ * A React component to provide Autosuggestion based on semlookp.
+ */
+function AutocompleteWidget(props: AutocompleteWidgetProps) {
+  const { api,parameter, ...rest } = props;
+
   /**
-   * The set of available options.
+   * The set of available options.s
    */
-  const [options, setOptions] = useState<{ label: string; value: string }[]>(
-    []
-  );
+  const [options, setOptions] = useState<
+    Array<EuiComboBoxOptionOption<string>>
+  >([]);
   /**
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<
-    { label: string; value: string }[]
+    Array<EuiComboBoxOptionOption<string>>
   >([]);
+
   const [hasLoadingState, setLoadingState] = useState<boolean>(false);
   /**
    * If a selectOption is provided, we obtain the label via API
@@ -97,7 +104,7 @@ function AutocompleteWidget(props: {
         })[0]
       );
     }
-  }, [selectedOptions]);
+  }, [selectedOptions, props]);
 
   function generateDisplayLabel(item: any) {
     return (
@@ -134,7 +141,7 @@ function AutocompleteWidget(props: {
     }
   };
 
-  function onChangeHandler(options: Array<any>): void {
+  function onChangeHandler(options: EuiComboBoxOptionOption<string>[]): void {
     setLoadingState(true);
     setSelectedOptions(options);
     setLoadingState(false);
