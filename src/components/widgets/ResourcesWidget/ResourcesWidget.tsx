@@ -7,7 +7,9 @@ import {
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
+import { Action } from "@elastic/eui/src/components/basic_table/action_types";
+import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -18,7 +20,7 @@ export interface ResourcesWidgetProps {
   /**
    * Pass actions to each item in the table.
    */
-  actions?: Array<{ render: (item: OlsResource) => void }>;
+  actions?: Array<Action<OlsResource>>;
 }
 
 export interface OlsResource {
@@ -60,7 +62,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [sortDirection, setSortDirection] = useState(initialSortDir);
   const [totalOntologies, setTotalOntologies] = useState(0);
 
-  const columns = [
+
+  const columns: Array<EuiBasicTableColumn<OlsResource> & {css?:SerializedStyles}> = [
     {
       name: "Resource Name",
       field: "config.title",
@@ -206,8 +209,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   if (ontologies) {
     return (
       <EuiBasicTable
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         columns={columns}
         items={ontologies}
         onChange={onTableChange}
