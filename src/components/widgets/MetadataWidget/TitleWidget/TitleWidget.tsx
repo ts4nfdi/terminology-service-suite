@@ -1,32 +1,59 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
-import { apiCallFn, OlsApi } from "../../../../api/OlsApi";
+import { OlsApi } from "../../../../api/OlsApi";
 
 export interface TitleWidgetProps {
-  iri: string;
+  iri?: string;
   onto: string;
   api: string;
-  termText?: string;
+  titleText?: string;
+  objType:
+    | "ontology"
+    | "term"
+    | "individual"
+    | "property"
+    | string;
 }
 
-async function getTerm(apiCall: apiCallFn, onto: string, termIri: string): Promise<string> {
-  const response = await apiCall(undefined, undefined, {ontologyId: onto, termIri: termIri})
-    .catch((error) => console.log(error));
-  return response?._embedded?.terms[0].label || "No label available."
+const NO_TITLE = "No title available.";
+
+
+async function getTitle(olsApi: OlsApi, objType: string, onto: string, iri?: string): Promise<string> {
+  if (objType == "ontology") {
+    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: onto})
+      .catch((error) => console.log(error));
+    return response?.title || NO_TITLE
+  }
+  if (objType == "term") {
+    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: onto, termIri: iri})
+      .catch((error) => console.log(error));
+    return response?._embedded?.terms[0].label || NO_TITLE
+  }
+  if (objType == "property") {
+    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: onto, propertyIri: iri})
+      .catch((error) => console.log(error));
+    return response?._embedded?.properties[0].label || NO_TITLE
+  }
+  if (objType == "individual"){
+    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: onto, individualIri: iri})
+      .catch((error) => console.log(error));
+    return response?._embedded?.individuals[0].label || NO_TITLE
+  }
+  return NO_TITLE;
 }
 
 function TitleWidget(props: TitleWidgetProps) {
-  const { iri, onto, api, termText } = props;
+  const { iri, onto, api, titleText, objType } = props;
   const olsApi = new OlsApi(api);
 
   const {data: label,
   isLoading,
-  } = useQuery([api, "getTerm", onto, iri], () => { return getTerm(olsApi.getTerm, onto, iri); });
+  } = useQuery([api, "getTitle", objType, onto, iri], () => { return getTitle(olsApi, objType, onto, iri); });
 
   return (
     <>
-      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText>{termText || label}</EuiText>}
+      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText>{titleText || label}</EuiText>}
     </>
   );
 }

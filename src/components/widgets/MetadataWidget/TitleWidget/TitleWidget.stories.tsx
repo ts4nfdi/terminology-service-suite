@@ -20,13 +20,27 @@ export default {
       },
     },
     onto: {
-      description: "Ontology ID from where the term label should be taken.",
+      description: "Ontology ID from where the object title/label should be taken.",
+    },
+    objType: {
+      description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'property', or 'individual'.",
+      control: {
+        type: "radio",
+        options: [
+          "ontology",
+          "term",
+          "property",
+          "individual",
+          "INVALID STRING"
+        ],
+      },
     },
     iri: {
-      description: "Iri of the term you want to fetch the term label for.",
+      description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'onto' arg is sufficient.",
     },
-    termText: {
-      description: "Text that replaces the fetched text.",
+    titleText: {
+      description:
+        "Set your own text manually that overwrites the text fetched from the API",
     },
   },
 };
@@ -47,4 +61,5 @@ TitleWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
   onto: "ncit",
+  objType: "term",
 };
