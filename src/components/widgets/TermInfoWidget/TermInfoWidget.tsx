@@ -6,7 +6,8 @@ import { useQuery } from 'react-query'
 export interface TermInfoWidgetProps {
     api: string;
     termIri: string;
-    ontologyId: string
+    ontologyId: string;
+    hasTitle?: boolean;
 }
 
 interface TermInfo {
@@ -14,6 +15,8 @@ interface TermInfo {
     synonyms: [],
     annotation: {},
 }
+
+const DEFAULT_HAS_TITLE = true;
 
 async function getTermData(apiCall: apiCallFn, termIri: string, ontologyId: string): Promise<TermInfo> {
     const response = await apiCall(undefined, undefined, { termIri, ontologyId });
@@ -25,7 +28,7 @@ async function getTermData(apiCall: apiCallFn, termIri: string, ontologyId: stri
 }
 
 function TermInfoWidget(props: TermInfoWidgetProps) {
-    const { api, termIri, ontologyId, ...rest } = props;
+    const { api, termIri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
@@ -51,7 +54,7 @@ function TermInfoWidget(props: TermInfoWidgetProps) {
     return (
         <>
             <EuiCard
-                title="Term Information"
+                title={hasTitle ? "Term Information" : ""}
                 layout="horizontal"
             >
                 {isLoadingTermInfo && <EuiLoadingSpinner size={'s'}/>}
