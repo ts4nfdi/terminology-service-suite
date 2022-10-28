@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { EuiText } from "@elastic/eui";
+import React from "react";
+import { useQuery } from "react-query";
+import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import { apiCallFn, OlsApi } from "../../../../api/OlsApi";
 
 export interface TermWidgetProps {
   iri: string;
+  onto: string;
   api: string;
   termText?: string;
 }
+
+async function getTerm(apiCall: apiCallFn, onto: string, termIri: string): Promise<string> {
+  const response = await apiCall(undefined, undefined, {ontologyId: onto, termIri: termIri})
+    .catch((error) => console.log(error));
+  return response?._embedded?.terms[0].label || "No label available."
+}
+
 function TermWidget(props: TermWidgetProps) {
-  const [label, setLabel] = useState("undefined");
-  const { iri, api, termText } = props;
+  const { iri, onto, api, termText } = props;
+  const olsApi = new OlsApi(api);
 
-  useEffect(() => {
-    const getTerm = async () => {
-      const fetchedLabel = await fetch(`${api}terms?iri=${iri}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          Content_Type: "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((response) => response._embedded.terms[0].label);
-      setLabel(fetchedLabel);
-    };
-    getTerm().catch((error) => console.log(error));
-  }, [api, iri]);
+  const {data: label,
+  isLoading,
+  } = useQuery([api, "getTerm", onto, iri], () => { return getTerm(olsApi.getTerm, onto, iri); });
 
-  return <EuiText>{termText ? termText : label}</EuiText>;
+  return (
+    <>
+      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText>{termText || label}</EuiText>}
+    </>
+  );
 }
 
 export { TermWidget };

@@ -19,8 +19,11 @@ export default {
         ],
       },
     },
+    onto: {
+      description: "Ontology ID from where the term label should be taken.",
+    },
     iri: {
-      description: "Iri of the term you want to fetch the term name for.",
+      description: "Iri of the term you want to fetch the term label for.",
     },
     termText: {
       description: "Text that replaces the fetched text.",
@@ -43,4 +46,5 @@ export const TermWidget1 = Template.bind({});
 TermWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
+  onto: "ncit",
 };
