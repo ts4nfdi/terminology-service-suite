@@ -33,4 +33,6 @@ export const TermInfoWidget1 = Template.bind({});
 // @ts-ignore
 TermInfoWidget1.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
+  termIri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  ontologyId: "efo"
 };
