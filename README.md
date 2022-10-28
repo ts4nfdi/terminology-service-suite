@@ -112,7 +112,8 @@ For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryCli
 ## Components
 
 - IriWidget: Displays the IRI of a given term
-- DescriptionWidget: Displays the description of a widget
+- TitleWidget: Widget displaying the title of an ontology, or the label of a term, property or individual
+- DescriptionWidget: Widget displaying the description of an ontology, a term, a property or an individual
 - MetaDataWidget: Widget that displays the name, IRI, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
 - OntologyInfoWidget: Widget that displays IRI, ID, version, term count, load date, and all the annotations of an ontology
 - BreadcrumbWidget: Widget that displays badges of the current term and its ontology

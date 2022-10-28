@@ -1,10 +1,10 @@
 import React from "react";
-import { TermWidget, TermWidgetProps } from "./TermWidget";
+import { TitleWidget, TitleWidgetProps } from "./TitleWidget";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
-  title: "TermWidget",
-  component: "TermWidget",
+  title: "TitleWidget",
+  component: "TitleWidget",
   parameters: {
     layout: "centered",
   },
@@ -31,19 +31,19 @@ export default {
   },
 };
 
-const Template = (args: TermWidgetProps) => (
+const Template = (args: TitleWidgetProps) => (
   <>
     <EuiPanel>
-      <TermWidget {...args} />
+      <TitleWidget {...args} />
     </EuiPanel>
   </>
 );
 
-export const TermWidget1 = Template.bind({});
+export const TitleWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-TermWidget1.args = {
+TitleWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
   onto: "ncit",

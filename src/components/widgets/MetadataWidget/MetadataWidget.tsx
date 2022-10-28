@@ -2,7 +2,7 @@ import React from "react";
 import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import { IriWidget } from "./IriWidget";
-import { TermWidget } from "./TermWidget";
+import { TitleWidget } from "./TitleWidget";
 import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 
@@ -31,7 +31,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TermWidget iri={props.iri} api={props.api} />
+            <TitleWidget iri={props.iri} api={props.api} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>

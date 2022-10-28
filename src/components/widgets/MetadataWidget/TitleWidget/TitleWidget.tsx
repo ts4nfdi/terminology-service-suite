@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { apiCallFn, OlsApi } from "../../../../api/OlsApi";
 
-export interface TermWidgetProps {
+export interface TitleWidgetProps {
   iri: string;
   onto: string;
   api: string;
@@ -16,7 +16,7 @@ async function getTerm(apiCall: apiCallFn, onto: string, termIri: string): Promi
   return response?._embedded?.terms[0].label || "No label available."
 }
 
-function TermWidget(props: TermWidgetProps) {
+function TitleWidget(props: TitleWidgetProps) {
   const { iri, onto, api, termText } = props;
   const olsApi = new OlsApi(api);
 
@@ -31,4 +31,4 @@ function TermWidget(props: TermWidgetProps) {
   );
 }
 
-export { TermWidget };
+export { TitleWidget };
