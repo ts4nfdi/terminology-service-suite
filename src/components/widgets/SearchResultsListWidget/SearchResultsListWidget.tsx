@@ -10,6 +10,7 @@ export type SearchResultsListWidgetProps = {
   query: string;
   initialItemsPerPage?: number;
   itemsPerPageOptions?: number[];
+  targetLink?: string;
 } & Omit<EuiCardProps, "layout">;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
@@ -21,6 +22,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     query,
     initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
     itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
+    targetLink,
     ...rest
   } = props;
   const olsApi = new OlsApi(api);
@@ -62,7 +64,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             option.append = "(" + array[currentIndex+1];
             if (option.data && array[currentIndex+1] < option.data.totalCount) {
               option.append += "/" + option.data.totalCount;
-             }
+            }
             option.append += ")";
           }
         }
@@ -249,6 +251,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 <EuiCard
                   textAlign="left"
                   {...rest}
+                  href={targetLink ? targetLink + "?iri=" + result.iri : undefined}
                   title={
                     <EuiFlexGroup>
                       <EuiFlexItem grow={false}>

@@ -26,6 +26,9 @@ export default {
       description: "Possible values for number of items displayed per page.",
       control: "array",
     },
+    targetLink: {
+      description: "The link which should be the target of the EuiCard.",
+    },
   },
 };
 
@@ -42,4 +45,5 @@ export const SearchResultsListWidget1 = Template.bind({});
 SearchResultsListWidget1.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
   query: "diabetes",
+  targetLink: "https://semanticlookup.zbmed.de/dev/terms",
 };
