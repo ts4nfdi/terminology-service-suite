@@ -20,7 +20,7 @@ async function getTotalElements(apiCall: apiCallFn): Promise<number> {
 }
 
 async function getTotalAmountOfTerms(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "1000" });
+  const response = await apiCall({ size: "500" });
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -33,7 +33,7 @@ async function getTotalAmountOfTerms(apiCall: apiCallFn): Promise<number> {
 }
 
 async function getTotalAmountOfProperties(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "1000" });
+  const response = await apiCall({ size: "500" });
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -46,7 +46,7 @@ async function getTotalAmountOfProperties(apiCall: apiCallFn): Promise<number> {
 }
 
 async function getTotalAmountOfIndividuals(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "1000" });
+  const response = await apiCall({ size: "500" });
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -68,24 +68,20 @@ function DataContentWidget(props: DataContentWidgetProps) {
     dataUpdatedAt: dataUpdatedAtOntologies
   } = useQuery([api, "getOntologies"], () => { return getTotalElements(olsApi.getOntologies); });
 
-
   const {
     data: totalTerms,
     isLoading: isLoadingTerms
   } = useQuery([api, "getTerms"], () => { return getTotalAmountOfTerms(olsApi.getOntologies); });
-
 
   const {
     data: totalProperties,
     isLoading: isLoadingProperties
   } = useQuery([api, "getProperties"], () => { return getTotalAmountOfProperties(olsApi.getOntologies); });
 
-
   const {
     data: totalIndividuals,
     isLoading: isLoadingIndividuals
   } = useQuery([api, "getIndividuals"], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies); });
-
 
   return (
     <>

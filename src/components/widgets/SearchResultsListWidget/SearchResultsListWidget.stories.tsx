@@ -4,9 +4,6 @@ import { SearchResultsListWidget, SearchResultsListWidgetProps } from "./SearchR
 export default {
   title: "SearchResultsListWidget",
   component: SearchResultsListWidget,
-  parameters: {
-    layout: "centered",
-  },
   argTypes: {
     api: {
       description: "Instance of the OLS API to call.",

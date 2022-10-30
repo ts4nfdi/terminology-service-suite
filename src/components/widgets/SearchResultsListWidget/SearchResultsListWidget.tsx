@@ -1,15 +1,16 @@
-import { EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiPanelProps, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
-import React, { useState } from "react";
+import { EuiButtonEmpty, EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
+import React, { useEffect, useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
+import { SearchBarWidget } from "../SearchBarWidget";
 
 export type SearchResultsListWidgetProps = {
   api: string;
   query: string;
   initialItemsPerPage?: number;
   itemsPerPageOptions?: number[];
-} & EuiPanelProps;
+} & Omit<EuiCardProps, "layout">;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -24,6 +25,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   } = props;
   const olsApi = new OlsApi(api);
 
+  const [searchValue, setSearchValue] = useState(query);
   const [activePage, setActivePage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
@@ -32,6 +34,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   const [showObsoleteTerms, setShowObsoleteTerms] = useState(false);
   const [filterByTypeOptions, setFilterByTypeOptions] = useState<EuiSelectableOption[]>([]);
   const [filterByOntologyOptions, setFilterByOntologyOptions] = useState<EuiSelectableOption[]>([]);
+
+  useEffect(() => {
+    setSearchValue(query);
+  }, [query]);
 
   function updateFilterOptions(currentOptions: EuiSelectableOption[], optionCounts: any[], setOptions: Function, render?: (value: string) => string) {
     if (currentOptions.length == 0) {
@@ -65,19 +71,32 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     }
   }
 
+  const filterSelectedOptions = (option: EuiSelectableOption) => option.checked === "on";
+
   const {
     data: searchResults,
     isLoading: resultsAreLoading
   } = useQuery(
-    [api, "searchResults", query, exactMatch, showObsoleteTerms, activePage, itemsPerPage, filterByTypeOptions, filterByOntologyOptions],
+    [
+      "searchResults",
+      api,
+      searchValue,
+      exactMatch,
+      showObsoleteTerms,
+      activePage,
+      itemsPerPage,
+      filterByTypeOptions.filter(filterSelectedOptions),
+      filterByOntologyOptions.filter(filterSelectedOptions),
+    ],
     async () => {
       return olsApi.search(
         {
-          query: query,
+          query: searchValue,
           exactMatch: exactMatch,
           showObsoleteTerms: showObsoleteTerms,
-          types: filterByTypeOptions.filter((option: EuiSelectableOption) => option.checked === "on").map((option: EuiSelectableOption) => option.key)[0],
-          ontology: filterByOntologyOptions.filter((option: EuiSelectableOption) => option.checked === "on").map((option: EuiSelectableOption) => option.key).join(","),
+          types: filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+          ontology: filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+          groupByIri: true,
         },
         {
           page: activePage.toString(),
@@ -144,99 +163,117 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   }
 
   return (
-    <EuiFlexGroup>
-      <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
-        <EuiPanel>
-          <EuiFormRow label="Filter by type">
-            <EuiSelectable
-              options={filterByTypeOptions}
-              onChange={setFilterByTypeOptions}
-              listProps={{ bordered: true }}
-              singleSelection={true}
+    <>
+      <SearchBarWidget
+        api={api}
+        query={searchValue}
+        onSearchValueChange={setSearchValue}
+      />
+
+      <EuiSpacer size="s" />
+
+      <EuiFlexGroup>
+        <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
+          <EuiPanel>
+            <EuiFormRow label="Filter by type">
+              <EuiSelectable
+                options={filterByTypeOptions}
+                onChange={setFilterByTypeOptions}
+                listProps={{ bordered: true }}
+              >
+                {(list) => list}
+              </EuiSelectable>
+            </EuiFormRow>
+
+            <EuiFormRow label="Filter by ontology">
+              <EuiSelectable
+                options={filterByOntologyOptions}
+                onChange={setFilterByOntologyOptions}
+                listProps={{ bordered: true }}
+                searchable
+              >
+                {(list, search) => (
+                  <>
+                    {search}
+                    {list}
+                  </>
+                )}
+              </EuiSelectable>
+            </EuiFormRow>
+
+            <EuiButtonEmpty
+              onClick={clearAllFilters}
             >
-              {(list) => list}
-            </EuiSelectable>
-          </EuiFormRow>
+              Clear all filters
+            </EuiButtonEmpty>
+          </EuiPanel>
+        </EuiFlexItem>
 
-          <EuiFormRow label="Filter by ontology">
-            <EuiSelectable
-              options={filterByOntologyOptions}
-              onChange={setFilterByOntologyOptions}
-              listProps={{ bordered: true }}
-              searchable
-            >
-              {(list, search) => (
-                <>
-                  {search}
-                  {list}
-                </>
-              )}
-            </EuiSelectable>
-          </EuiFormRow>
+        <EuiFlexItem grow={7}>
+          <EuiPanel color="transparent" grow={false}>
+            <EuiFlexGroup>
+              <EuiFlexItem grow={false}>
+                <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiSwitch label="Show only obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
+              </EuiFlexItem>
+            </EuiFlexGroup>
 
-          <EuiButtonEmpty
-            onClick={clearAllFilters}
-          >
-            Clear all filters
-          </EuiButtonEmpty>
-        </EuiPanel>
-      </EuiFlexItem>
+            <EuiSpacer size="m" />
 
-      <EuiFlexItem grow={7}>
-        <EuiFlexGroup>
-          <EuiFlexItem grow={false}>
-            <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiSwitch label="Show obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
-          </EuiFlexItem>
-        </EuiFlexGroup>
+            <EuiText size="xs" style={{ padding: "0 8px" }}>
+              Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
+            </EuiText>
 
-        <EuiSpacer size="m" />
+            <EuiSpacer size="s" />
 
-        <EuiText size="xs" style={{ padding: "0 8px" }}>
-          Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
-        </EuiText>
+            <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
-        <EuiSpacer size="s" />
+            <EuiSpacer size="s" />
 
-        <EuiHorizontalRule margin="none" style={{ height: 2 }} />
+            <EuiTablePagination
+              aria-label="Search result pagination"
+              pageCount={pageCount}
+              activePage={activePage}
+              onChangePage={setActivePage}
+              itemsPerPage={itemsPerPage}
+              onChangeItemsPerPage={onChangeItemsPerPage}
+              itemsPerPageOptions={itemsPerPageOptions}
+            />
 
-        <EuiSpacer size="s" />
+            <EuiSpacer size="s" />
 
-        <EuiTablePagination
-          aria-label="Search result pagination"
-          pageCount={pageCount}
-          activePage={activePage}
-          onChangePage={setActivePage}
-          itemsPerPage={itemsPerPage}
-          onChangeItemsPerPage={onChangeItemsPerPage}
-          itemsPerPageOptions={itemsPerPageOptions}
-        />
-
-        <EuiSpacer size="s" />
-
-        {searchResults && searchResults.map((result: any) => (
-          <React.Fragment key={result.id}>
-            <EuiPanel {...rest}>
-              <EuiFlexGroup>
-                <EuiFlexItem grow={false}>
-                  <EuiTitle><h2>{result.label}</h2></EuiTitle> {/* TODO Link to concept details page */}
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <BreadcrumbWidget api={api} iri={result.iri} />
-                </EuiFlexItem>
-              </EuiFlexGroup>
-              <EuiSpacer size="xs" />
-              <IriWidget api={api} iri={result.iri} />
-              <EuiSpacer size="s" />
-              <DescriptionWidget api={api} iri={result.iri} />
-            </EuiPanel>
-            <EuiSpacer />
-          </React.Fragment>
-        ))}
-      </EuiFlexItem>
-    </EuiFlexGroup>
+            {searchResults && searchResults.map((result: any) => (
+              <React.Fragment key={result.id}>
+                <EuiCard
+                  textAlign="left"
+                  {...rest}
+                  title={
+                    <EuiFlexGroup>
+                      <EuiFlexItem grow={false}>
+                        <EuiTitle><h2>{result.label}</h2></EuiTitle>
+                      </EuiFlexItem>
+                      <EuiFlexItem>
+                        <BreadcrumbWidget api={api} iri={result.iri} />
+                      </EuiFlexItem>
+                    </EuiFlexGroup>
+                  }
+                  children={
+                    <>
+                      <IriWidget api={api} iri={result.iri} />
+                      <EuiSpacer size="s" />
+                      <DescriptionWidget api={api} iri={result.iri} />
+                    </>
+                  }
+                />
+                <EuiSpacer />
+              </React.Fragment>
+            ))}
+          </EuiPanel>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    </>
   );
 }
 

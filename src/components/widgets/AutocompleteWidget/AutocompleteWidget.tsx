@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { EuiButtonIcon, EuiComboBox, EuiComboBoxOptionOption, EuiComboBoxProps, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 
-export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
+export type AutocompleteWidgetProps = {
   api: string;
-  onChange?: (options: EuiComboBoxOptionOption<string>[]) => void;
+  onChange?: (obj: any) => void;
   onSearchChange?: (searchValue: string, hasMatchingOptions?: boolean) => void;
   onSearchButtonClick?: (searchValue: string) => void;
-  placeholder?: string | undefined;
-  parameter?: string | undefined;
-  prefill?: string;
-}
+  placeholder?: string;
+  parameter?: string;
+} & Omit<EuiComboBoxProps<string>, "onCreateOption">;
 
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-  const { api, onChange, onSearchChange, onSearchButtonClick, placeholder, parameter, prefill, ...rest } = props;
+  const { api, onChange, onSearchChange, onSearchButtonClick, placeholder, parameter, ...rest } = props;
 
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
-  const [selectedOptions, setSelected] = useState(prefill ? [{ label: prefill }] : []);
+  const [selectedOptions, setSelected] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
   const [currentSearchValue, setCurrentSearchValue] = useState("");
-
-  useEffect(() => {
-    if (!prefill) return;
-    onSearchChangeHandler(prefill);
-  }, [prefill]);
 
   function searchTerm(searchValue: string) {
     const options_data: { label: string; value: string }[] = [];
@@ -63,17 +57,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   };
 
   //@ts-ignore
-  function onChangeHandler(selectedOptions) {
+  function onChangeHandler(selectedOptions: Array<EuiComboBoxOptionOption<string>>) {
     setSelected(selectedOptions);
+    //due to singleSelection being true, selectedOptions contains only 1 entry when searching a term
+    //on deletion of the search term, selectedOptions is empty -> "selectedOption" is undefined
     if (onChange) {
-      onChange(selectedOptions);
+      onChange({
+        "options": options,
+        "selectedOption": selectedOptions[0]
+      });
     }
   }
 
-  const onSearchButtonClickHandler = (item: any) => {
-    console.log(item);
+  const onSearchButtonClickHandler = () => {
     if (onSearchButtonClick) {
-      onSearchButtonClick(currentSearchValue);
+      onSearchButtonClick(selectedOptions.length > 0 ? selectedOptions[0].label : currentSearchValue);
     }
   };
 
@@ -82,7 +80,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       <EuiFlexItem>
         <EuiComboBox
           aria-label="searchBar"
-          placeholder={placeholder ? placeholder : "Search for Term"}
+          placeholder={placeholder || "Search for Concept"}
           options={options}
           selectedOptions={selectedOptions}
           onChange={onChangeHandler}
