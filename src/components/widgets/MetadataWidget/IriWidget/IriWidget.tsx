@@ -37,15 +37,17 @@ function IriWidget(props: IriWidgetProps) {
 
   return (
     <EuiFlexItem grow={false}>
-      {iriText ? (
-        <EuiLink href={iriText} target="_blank" color={color}>
-          {iriText}
-        </EuiLink>
-      ) : (
-        <EuiLink href={fetchedIri} target="_blank" color={color}>
-          {fetchedIri}
-        </EuiLink>
-      )}
+      <div>
+        {iriText ? (
+            <EuiLink href={iriText} target="_blank" color={color}>
+              {iriText}
+            </EuiLink>
+        ) : (
+            <EuiLink href={fetchedIri} target="_blank" color={color}>
+              {fetchedIri}
+            </EuiLink>
+        )}
+      </div>
     </EuiFlexItem>
   );
 }
