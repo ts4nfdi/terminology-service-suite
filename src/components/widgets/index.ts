@@ -4,3 +4,5 @@ export * from "./JsonApiWidget";
 export * from "./DataContentWidget";
 export * from "./ResourcesWidget";
 export * from "./OntologyInfoWidget";
+export * from "./SearchBarWidget";
+export * from "./SearchResultsListWidget";
