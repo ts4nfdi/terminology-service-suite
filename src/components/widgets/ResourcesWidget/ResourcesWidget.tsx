@@ -3,6 +3,7 @@ import {
   EuiLoadingSpinner,
   EuiBasicTable,
   EuiButtonIcon,
+  EuiLink,
   CriteriaWithPagination,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
@@ -20,6 +21,7 @@ export interface ResourcesWidgetProps {
   /**
    * Pass actions to each item in the table.
    */
+  targetLink?: string;
   actions?: Array<Action<OlsResource>>;
 }
 
@@ -53,6 +55,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
+    targetLink,
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -73,6 +76,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Short Name",
       field: "config.preferredPrefix",
+      render: (value: string) => (
+          targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
+      ),
       width: "10%",
       sortable: true,
     },

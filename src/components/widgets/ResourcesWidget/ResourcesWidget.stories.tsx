@@ -46,6 +46,12 @@ export default {
         options: ["asc", "desc"],
       },
     },
+    targetLink: {
+      description: "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want " +
+          "a hyperlink to the terminology overview of your terminology service. Leave it blank if your application " +
+          "isn't  a terminology service.",
+      control: "text",
+    },
     actions: {},
   },
 };
@@ -64,6 +70,7 @@ ResourcesWidget1.args = {
   pageSizeOptions: [10, 25, 50, 100],
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const,
+  targetLink: "https://semanticlookup.zbmed.de/dev/",
 };
 export const withActions = Template.bind({});
 withActions.args = {
