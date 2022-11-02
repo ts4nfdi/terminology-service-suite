@@ -6,7 +6,7 @@ import { useQuery } from 'react-query'
 export interface TermInfoWidgetProps {
     api: string;
     termIri: string;
-    ontologyId: string;
+    ontologyId?: string;
     hasTitle?: boolean;
 }
 
@@ -18,7 +18,7 @@ interface TermInfo {
 
 const DEFAULT_HAS_TITLE = true;
 
-async function getTermData(apiCall: apiCallFn, termIri: string, ontologyId: string): Promise<TermInfo> {
+async function getTermData(apiCall: apiCallFn, termIri: string, ontologyId?: string): Promise<TermInfo> {
     const response = await apiCall(undefined, undefined, { termIri, ontologyId });
     return {
         label: response._embedded.terms[0].label,
@@ -36,7 +36,7 @@ function TermInfoWidget(props: TermInfoWidgetProps) {
         isLoading: isLoadingTermInfo,
         isSuccess: isSuccessTermInfo,
     } = useQuery([api, termIri, ontologyId, "termInfo"], () => {
-        return getTermData(olsApi.getTermInfo, termIri, ontologyId);
+        return getTermData(olsApi.getTerm, termIri, ontologyId);
     });
 
     function generateDisplayItems(item: any) {
