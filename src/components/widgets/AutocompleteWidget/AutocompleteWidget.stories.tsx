@@ -56,9 +56,6 @@ export default {
           "</table>",
       defaultValue: "ontology=mesh,efo&type=class",
     },
-    prefill: {
-      description: "This parameter can be used to prefill the input field.",
-    }
   },
 };
 
