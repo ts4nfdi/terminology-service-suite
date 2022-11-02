@@ -126,6 +126,10 @@ export class OlsApi {
     return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId)).data;
   }
 
+  public getTermInfo: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+        return (await this.axiosInstance.get("ontologies/" + contentParams?.ontologyId + "/terms?iri=" + contentParams?.termIri)).data;
+    }
+
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams): Promise<any> => {
     return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams) })).data;
   }
