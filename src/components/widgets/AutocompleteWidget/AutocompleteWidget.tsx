@@ -133,11 +133,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             res.slice(0, 9).map((item: any) => {
               return {
                 label: generateDisplayLabel(item),
-                value: {
-                  iri: item.iri,
-                  ontology_prefix: item.ontology_prefix,
-                  type: item.type,
-                },
+                value: item.iri,
               };
             })
           );
