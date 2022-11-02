@@ -45,5 +45,5 @@ export const SearchResultsListWidget1 = Template.bind({});
 SearchResultsListWidget1.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
   query: "diabetes",
-  targetLink: "https://semanticlookup.zbmed.de/dev/terms",
+  targetLink: "https://semanticlookup.zbmed.de/dev",
 };

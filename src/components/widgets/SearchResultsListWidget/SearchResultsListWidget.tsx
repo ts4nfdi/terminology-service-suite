@@ -251,7 +251,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 <EuiCard
                   textAlign="left"
                   {...rest}
-                  href={targetLink ? targetLink + "?iri=" + result.iri : undefined}
+                  href={targetLink ? targetLink + "/ontologies/" + result.ontology_name + "/" + result.type + "?iri=" + result.iri : undefined}
                   title={
                     <EuiFlexGroup>
                       <EuiFlexItem grow={false}>
