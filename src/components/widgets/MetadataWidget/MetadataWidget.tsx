@@ -8,6 +8,7 @@ import { TabWidget } from "./TabWidget";
 
 export interface MetadataWidgetProps {
   iri: string;
+  onto?: string;
   api: string;
   linkToSelf: string;
 }
@@ -31,12 +32,12 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TitleWidget iri={props.iri} api={props.api} />
+            <TitleWidget iri={props.iri} onto={props.onto} api={props.api} objType={"term"} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
       <EuiFlexItem>
-        <DescriptionWidget iri={props.iri} api={props.api} />
+        <DescriptionWidget iri={props.iri} onto={props.onto} api={props.api} objType={"term"} />
       </EuiFlexItem>
       <EuiFlexItem>
         <TabWidget
