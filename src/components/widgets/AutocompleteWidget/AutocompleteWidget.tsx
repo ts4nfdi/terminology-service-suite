@@ -53,7 +53,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
  * A React component to provide Autosuggestion based on semlookp.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-  const { api,parameter, ...rest } = props;
+  const { api, parameter, ...rest } = props;
 
   /**
    * The set of available options.s
@@ -118,6 +118,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
   const onSearchChange = (searchValue: string) => {
     if (searchValue.length > 0) {
+      setLoadingState(true);
       fetch(`${props.api}select?q=${searchValue}&${props.parameter}`, {
         method: "GET",
         headers: {
@@ -132,19 +133,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             res.slice(0, 9).map((item: any) => {
               return {
                 label: generateDisplayLabel(item),
-                value: {iri: item.iri, ontology_prefix: item.ontology_prefix, type: item.type},
+                value: {
+                  iri: item.iri,
+                  ontology_prefix: item.ontology_prefix,
+                  type: item.type,
+                },
               };
             })
           );
           setSelectedOptions([]);
+          setLoadingState(false);
         });
     }
   };
 
   function onChangeHandler(options: EuiComboBoxOptionOption<string>[]): void {
-    setLoadingState(true);
     setSelectedOptions(options);
-    setLoadingState(false);
   }
 
   return (
