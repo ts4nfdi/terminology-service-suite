@@ -1,0 +1,1 @@
+export { TermInfoWidget } from "./TermInfoWidget";
