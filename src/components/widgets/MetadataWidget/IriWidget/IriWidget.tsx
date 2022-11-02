@@ -15,6 +15,9 @@ export interface IriWidgetProps {
     | "text"
     | "subdued";
 }
+
+const NO_IRI = "No IRI available.";
+
 function IriWidget(props: IriWidgetProps) {
   const [fetchedIri, setFetchediri] = useState("undefined");
   const { api, iri, iriText, color } = props;
@@ -29,7 +32,13 @@ function IriWidget(props: IriWidgetProps) {
         },
       })
         .then((response) => response.json())
-        .then((response) => response._embedded.terms[0].iri);
+        .then((response) => {
+          if (response._embedded && response._embedded.terms && response._embedded.terms.length > 0 && response._embedded.terms[0].iri != null) {
+            return response._embedded.terms[0].iri;
+          } else {
+            return NO_IRI;
+          }
+        });
       setFetchediri(description);
     };
     getIri().catch((error) => console.log(error));
@@ -37,15 +46,17 @@ function IriWidget(props: IriWidgetProps) {
 
   return (
     <EuiFlexItem grow={false}>
-      {iriText ? (
-        <EuiLink href={iriText} target="_blank" color={color}>
-          {iriText}
-        </EuiLink>
-      ) : (
-        <EuiLink href={fetchedIri} target="_blank" color={color}>
-          {fetchedIri}
-        </EuiLink>
-      )}
+      <div>
+        {iriText ? (
+            <EuiLink href={iriText} target="_blank" color={color}>
+              {iriText}
+            </EuiLink>
+        ) : (
+            <EuiLink href={fetchedIri} target="_blank" color={color}>
+              {fetchedIri}
+            </EuiLink>
+        )}
+      </div>
     </EuiFlexItem>
   );
 }

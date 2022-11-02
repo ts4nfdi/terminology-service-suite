@@ -121,6 +121,7 @@ For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryCli
 - HierarchyTabWidget: Widget that displays the term hierarchy
 - TabWidget: Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
 - Autocomplete Widget: Widget that searches an instance of OLS for matching terms
+- JsonApiWidget: Widget containing a button that opens a new page with the JSON result of any query to an API instance
 
 For more information about the existing widgets and its properties run the included Storybook.
 
