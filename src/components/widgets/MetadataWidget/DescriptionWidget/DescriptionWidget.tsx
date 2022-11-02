@@ -6,7 +6,7 @@ import { OlsApi } from "../../../../api/OlsApi";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
-  onto: string;
+  onto?: string;
   api: string;
   descText?: string;
   objType:
@@ -19,7 +19,7 @@ export interface DescriptionWidgetProps extends EuiTextProps {
 
 const NO_DESCRIPTION = "No description available.";
 
-async function getDescription(olsApi: OlsApi, objType: string, onto: string, iri?: string): Promise<string> {
+async function getDescription(olsApi: OlsApi, objType: string, onto?: string, iri?: string): Promise<string> {
   if (objType == "ontology"){
     const response = await olsApi.getOntology(undefined, undefined, {ontologyId: onto})
       .catch((error) => console.log(error));

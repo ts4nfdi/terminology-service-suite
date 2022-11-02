@@ -5,7 +5,7 @@ import { OlsApi } from "../../../../api/OlsApi";
 
 export interface TitleWidgetProps {
   iri?: string;
-  onto: string;
+  onto?: string;
   api: string;
   titleText?: string;
   objType:
@@ -19,11 +19,11 @@ export interface TitleWidgetProps {
 const NO_TITLE = "No title available.";
 
 
-async function getTitle(olsApi: OlsApi, objType: string, onto: string, iri?: string): Promise<string> {
+async function getTitle(olsApi: OlsApi, objType: string, onto?: string, iri?: string): Promise<string> {
   if (objType == "ontology") {
     const response = await olsApi.getOntology(undefined, undefined, {ontologyId: onto})
       .catch((error) => console.log(error));
-    return response?.title || NO_TITLE
+    return response?.config.title || NO_TITLE
   }
   if (objType == "term") {
     const response = await olsApi.getTerm(undefined, undefined, {ontologyId: onto, termIri: iri})
