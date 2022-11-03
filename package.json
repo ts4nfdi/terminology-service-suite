@@ -1,6 +1,6 @@
 {
   "name": "@km/widgets-semlookp",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Widget component library",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
