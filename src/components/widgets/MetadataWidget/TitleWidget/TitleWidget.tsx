@@ -10,7 +10,7 @@ export interface TitleWidgetProps {
   titleText?: string;
   objType:
     | "ontology"
-    | "term"
+    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
     | "individual"
     | "property"
     | string;
@@ -45,11 +45,12 @@ async function getTitle(olsApi: OlsApi, objType: string, onto?: string, iri?: st
 
 function TitleWidget(props: TitleWidgetProps) {
   const { iri, onto, api, titleText, objType } = props;
+  const fixedObjType = objType == "class" ? "term" : objType
   const olsApi = new OlsApi(api);
 
   const {data: label,
   isLoading,
-  } = useQuery([api, "getTitle", objType, onto, iri], () => { return getTitle(olsApi, objType, onto, iri); });
+  } = useQuery([api, "getTitle", fixedObjType, onto, iri], () => { return getTitle(olsApi, fixedObjType, onto, iri); });
 
   return (
     <>

@@ -44,12 +44,13 @@ export default {
       description: "Ontology ID from where the object description should be taken.",
     },
     objType: {
-      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'property', or 'individual'.",
+      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
         options: [
           "ontology",
           "term",
+          "class",
           "property",
           "individual",
           "INVALID STRING"

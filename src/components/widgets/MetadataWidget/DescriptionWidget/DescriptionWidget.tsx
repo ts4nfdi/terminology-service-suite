@@ -11,7 +11,7 @@ export interface DescriptionWidgetProps extends EuiTextProps {
   descText?: string;
   objType:
     | "ontology"
-    | "term"
+    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
     | "individual"
     | "property"
     | string;
@@ -58,12 +58,13 @@ async function getDescription(olsApi: OlsApi, objType: string, onto?: string, ir
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
   const { api, onto, iri, descText, objType, ...rest } = props;
+  const fixedObjType = objType == "class" ? "term" : objType
   const olsApi = new OlsApi(api);
 
   const {
     data: description,
     isLoading,
-  } = useQuery([api, "getDescription", objType, onto, iri], () => { return getDescription(olsApi, objType, onto, iri); });
+  } = useQuery([api, "getDescription", fixedObjType, onto, iri], () => { return getDescription(olsApi, fixedObjType, onto, iri); });
 
   return (
     <>

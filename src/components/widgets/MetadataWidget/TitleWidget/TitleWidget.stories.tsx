@@ -23,12 +23,13 @@ export default {
       description: "Ontology ID from where the object title/label should be taken.",
     },
     objType: {
-      description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'property', or 'individual'.",
+      description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
         options: [
           "ontology",
           "term",
+          "class",
           "property",
           "individual",
           "INVALID STRING"
