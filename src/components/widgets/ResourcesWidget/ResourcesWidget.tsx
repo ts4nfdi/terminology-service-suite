@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { EuiLoadingSpinner, EuiBasicTable, EuiButton, EuiButtonIcon, CriteriaWithPagination } from "@elastic/eui";
-import { useQuery } from 'react-query';
+import {
+  EuiLoadingSpinner,
+  EuiBasicTable,
+  EuiButtonIcon,
+  EuiLink,
+  CriteriaWithPagination,
+} from "@elastic/eui";
+import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
+import { Action } from "@elastic/eui/src/components/basic_table/action_types";
+import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -10,9 +18,14 @@ export interface ResourcesWidgetProps {
   pageSizeOptions?: number[];
   initialSortField?: string;
   initialSortDir?: "asc" | "desc";
+  /**
+   * Pass actions to each item in the table.
+   */
+  targetLink?: string;
+  actions?: Array<Action<OlsResource>>;
 }
 
-interface OlsResource {
+export interface OlsResource {
   ontologyId: string;
   loaded: string;
   numberOfTerms: number;
@@ -42,6 +55,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
+    targetLink,
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -51,7 +65,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [sortDirection, setSortDirection] = useState(initialSortDir);
   const [totalOntologies, setTotalOntologies] = useState(0);
 
-  const columns = [
+
+  const columns: Array<EuiBasicTableColumn<OlsResource> & {css?:SerializedStyles}> = [
     {
       name: "Resource Name",
       field: "config.title",
@@ -61,6 +76,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Short Name",
       field: "config.preferredPrefix",
+      render: (value: string) => (
+          targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
+      ),
       width: "10%",
       sortable: true,
     },
@@ -68,7 +86,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       name: "Description",
       field: "config.description",
       width: "30%",
-      css: css`display: block; max-height: 200px; overflow: auto;`,
+      css: css`
+        display: block;
+        max-height: 200px;
+        overflow: auto;
+      `,
     },
     {
       name: "Version",
@@ -85,60 +107,39 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Terms",
       field: "numberOfTerms",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       name: "Properties",
       field: "numberOfProperties",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
-      render: (value: number) => (<>{value.toLocaleString()}</>),
+      render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
       sortable: true,
     },
     {
       width: "5%",
       actions: [
-        // TODO Allow usage of react-router links
-        {
-          render: (item: OlsResource) => (
-            <EuiButtonIcon
-              href="" // TODO Add working link
-              iconType="search"
-              aria-label="Search"
-            />
-          ),
-        },
+        ...(props.actions || []),
         {
           render: (item: OlsResource) => (
             <EuiButtonIcon
               href={item.config.fileLocation}
               iconType="download"
               aria-label="Download"
-              isDisabled={!item.config.allowDownload || item.config.fileLocation.startsWith("file://")}
+              isDisabled={
+                !item.config.allowDownload ||
+                item.config.fileLocation.startsWith("file://")
+              }
             />
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show terms</EuiButton> // TODO Add working link
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show properties</EuiButton> // TODO Add working link
-          ),
-        },
-        {
-          render: (item: OlsResource) => (
-            <EuiButton href="" size="s">Show individuals</EuiButton> // TODO Add working link
           ),
         },
       ],
@@ -149,17 +150,20 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageIndex: pageIndex,
     pageSize: entriesPerPage,
     totalItemCount: totalOntologies,
-    pageSizeOptions: pageSizeOptions
+    pageSizeOptions: pageSizeOptions,
   };
 
   const sorting = {
     sort: {
       field: sortField,
       direction: sortDirection,
-    }
-  }
+    },
+  };
 
-  const onTableChange = ({ page, sort }: CriteriaWithPagination<OlsResource>) => {
+  const onTableChange = ({
+    page,
+    sort,
+  }: CriteriaWithPagination<OlsResource>) => {
     const { index: pageIndex, size: entriesPerPage } = page;
     setPageIndex(pageIndex);
     setEntriesPerPage(entriesPerPage);
@@ -171,29 +175,40 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
-  const {
-    data: ontologies
-  } = useQuery(
-    [api, "ontologiesMetadata", entriesPerPage, pageIndex, sortField, sortDirection],
+  const { data: ontologies } = useQuery(
+    [
+      api,
+      "ontologiesMetadata",
+      entriesPerPage,
+      pageIndex,
+      sortField,
+      sortDirection,
+    ],
     async () => {
-      return olsApi.getOntologies(
-        {
-          size: entriesPerPage.toString(),
-          page: pageIndex.toString()
-        },
-        {
-          sortField: sortField,
-          sortDir: sortDirection
-        }
-      ).then((response) => {
-        if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
-          // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-          setTotalOntologies(response.page.totalElements);
-          return response._embedded.ontologies;
-        } else {
-          throw new Error("Unexpected API response");
-        }
-      });
+      return olsApi
+        .getOntologies(
+          {
+            size: entriesPerPage.toString(),
+            page: pageIndex.toString(),
+          },
+          {
+            sortField: sortField,
+            sortDir: sortDirection,
+          }
+        )
+        .then((response) => {
+          if (
+            response.page.totalElements != null &&
+            response._embedded &&
+            response._embedded.ontologies
+          ) {
+            // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
+            setTotalOntologies(response.page.totalElements);
+            return response._embedded.ontologies;
+          } else {
+            throw new Error("Unexpected API response");
+          }
+        });
     }
   );
 
