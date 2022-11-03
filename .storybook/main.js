@@ -4,6 +4,10 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "storybook-addon-react-docgen"
   ],
   framework: "@storybook/react",
+  typescript: {
+    reactDocgen: 'react-docgen'
+  }
 };
