@@ -1,283 +1,303 @@
-import { EuiButtonEmpty, EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiHorizontalRule, EuiLoadingSpinner, EuiPanel, EuiSelectable, EuiSelectableOption, EuiSpacer, EuiSwitch, EuiTablePagination, EuiText, EuiTitle } from "@elastic/eui";
+import {
+    EuiButtonEmpty,
+    EuiCard,
+    EuiCardProps,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiFormRow,
+    EuiHorizontalRule,
+    EuiLoadingSpinner,
+    EuiPanel,
+    EuiSelectable,
+    EuiSelectableOption,
+    EuiSpacer,
+    EuiSwitch,
+    EuiTablePagination,
+    EuiText,
+    EuiTitle
+} from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
 import { SearchBarWidget } from "../SearchBarWidget";
+import { switchEntityType } from '../../../utils/ApiUtils'
+
 
 export type SearchResultsListWidgetProps = {
-  api: string;
-  query: string;
-  initialItemsPerPage?: number;
-  itemsPerPageOptions?: number[];
-  targetLink?: string;
+    api: string;
+    query: string;
+    initialItemsPerPage?: number;
+    itemsPerPageOptions?: number[];
+    targetLink?: string;
 } & Omit<EuiCardProps, "layout">;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
 function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
-  const {
-    api,
-    query,
-    initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
-    itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
-    targetLink,
-    ...rest
-  } = props;
-  const olsApi = new OlsApi(api);
+    const {
+        api,
+        query,
+        initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
+        itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
+        targetLink,
+        ...rest
+    } = props;
+    const olsApi = new OlsApi(api);
 
-  const [searchValue, setSearchValue] = useState(query);
-  const [activePage, setActivePage] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
-  const [totalItems, setTotalItems] = useState(0);
-  const [exactMatch, setExactMatch] = useState(false);
-  const [showObsoleteTerms, setShowObsoleteTerms] = useState(false);
-  const [filterByTypeOptions, setFilterByTypeOptions] = useState<EuiSelectableOption[]>([]);
-  const [filterByOntologyOptions, setFilterByOntologyOptions] = useState<EuiSelectableOption[]>([]);
+    const [searchValue, setSearchValue] = useState(query);
+    const [activePage, setActivePage] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
+    const [totalItems, setTotalItems] = useState(0);
+    const [exactMatch, setExactMatch] = useState(false);
+    const [showObsoleteTerms, setShowObsoleteTerms] = useState(false);
+    const [filterByTypeOptions, setFilterByTypeOptions] = useState<EuiSelectableOption[]>([]);
+    const [filterByOntologyOptions, setFilterByOntologyOptions] = useState<EuiSelectableOption[]>([]);
 
-  useEffect(() => {
-    setSearchValue(query);
-  }, [query]);
+    useEffect(() => {
+        setSearchValue(query);
+    }, [query]);
 
-  function updateFilterOptions(currentOptions: EuiSelectableOption[], optionCounts: any[], setOptions: Function, render?: (value: string) => string) {
-    if (currentOptions.length == 0) {
-      setOptions(optionCounts.reduce((accumulator: any[], currentValue: string, currentIndex: number, array: any[]) => {
-        if (currentIndex % 2 === 0) {
-          accumulator.push({
-            label: render ? render(currentValue) : currentValue,
-            key: currentValue,
-            append: "(" + array[currentIndex+1] + ")",
-            disabled: array[currentIndex+1] == 0,
-            data: { totalCount: array[currentIndex+1] },
-          });
-        }
-        return accumulator;
-      }, []));
-    } else {
-      const newOptions = [...currentOptions];
-      optionCounts.forEach((currentValue: string, currentIndex: number, array: any[]) => {
-        if (currentIndex % 2 === 0) {
-          const option = newOptions.find((option: EuiSelectableOption) => option.key == currentValue);
-          if (option) {
-            option.append = "(" + array[currentIndex+1];
-            if (option.data && array[currentIndex+1] < option.data.totalCount) {
-              option.append += "/" + option.data.totalCount;
-            }
-            option.append += ")";
-          }
-        }
-      });
-      setOptions(newOptions);
-    }
-  }
-
-  const filterSelectedOptions = (option: EuiSelectableOption) => option.checked === "on";
-
-  const {
-    data: searchResults,
-    isLoading: resultsAreLoading
-  } = useQuery(
-    [
-      "searchResults",
-      api,
-      searchValue,
-      exactMatch,
-      showObsoleteTerms,
-      activePage,
-      itemsPerPage,
-      filterByTypeOptions.filter(filterSelectedOptions),
-      filterByOntologyOptions.filter(filterSelectedOptions),
-    ],
-    async () => {
-      return olsApi.search(
-        {
-          query: searchValue,
-          exactMatch: exactMatch,
-          showObsoleteTerms: showObsoleteTerms,
-          types: filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
-          ontology: filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
-          groupByIri: true,
-        },
-        {
-          page: activePage.toString(),
-          size: itemsPerPage.toString(),
-        }
-      ).then((response) => {
-        if (response.response && response.response.docs != null && response.response.numFound != null) {
-          setTotalItems(response.response.numFound);
-          setPageCount(Math.ceil(response.response.numFound/itemsPerPage));
-
-          if (response.facet_counts && response.facet_counts.facet_fields) {
-            if (response.facet_counts.facet_fields.type) {
-              updateFilterOptions(
-                filterByTypeOptions,
-                response.facet_counts.facet_fields.type,
-                setFilterByTypeOptions,
-                (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
-              );
-            }
-            if (response.facet_counts.facet_fields.ontology_name) {
-              updateFilterOptions(
-                filterByOntologyOptions,
-                response.facet_counts.facet_fields.ontology_name,
-                setFilterByOntologyOptions,
-                (currentValue: string) => currentValue.toUpperCase()
-              );
-            }
-          }
-
-          return response.response.docs;
+    function updateFilterOptions(currentOptions: EuiSelectableOption[], optionCounts: any[], setOptions: Function, render?: (value: string) => string) {
+        if (currentOptions.length == 0) {
+            setOptions(optionCounts.reduce((accumulator: any[], currentValue: string, currentIndex: number, array: any[]) => {
+                if (currentIndex % 2 === 0) {
+                    accumulator.push({
+                        label: render ? render(currentValue) : currentValue,
+                        key: currentValue,
+                        append: "(" + array[currentIndex + 1] + ")",
+                        disabled: array[currentIndex + 1] == 0,
+                        data: { totalCount: array[currentIndex + 1] },
+                    });
+                }
+                return accumulator;
+            }, []));
         } else {
-          throw new Error("Unexpected API response");
+            const newOptions = [...currentOptions];
+            optionCounts.forEach((currentValue: string, currentIndex: number, array: any[]) => {
+                if (currentIndex % 2 === 0) {
+                    const option = newOptions.find((option: EuiSelectableOption) => option.key == currentValue);
+                    if (option) {
+                        option.append = "(" + array[currentIndex + 1];
+                        if (option.data && array[currentIndex + 1] < option.data.totalCount) {
+                            option.append += "/" + option.data.totalCount;
+                        }
+                        option.append += ")";
+                    }
+                }
+            });
+            setOptions(newOptions);
         }
-      });
-    },
-    { keepPreviousData : true } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
-  );
+    }
 
-  function onChangeItemsPerPage(newItemsPerPage: number) {
-    setActivePage(Math.floor((activePage*itemsPerPage+1)/newItemsPerPage));
-    setItemsPerPage(newItemsPerPage);
-  }
+    const filterSelectedOptions = (option: EuiSelectableOption) => option.checked === "on";
 
-  function toggleExactMatch() {
-    setExactMatch(!exactMatch);
-  }
+    const {
+        data: searchResults,
+        isLoading: resultsAreLoading
+    } = useQuery(
+        [
+            "searchResults",
+            api,
+            searchValue,
+            exactMatch,
+            showObsoleteTerms,
+            activePage,
+            itemsPerPage,
+            filterByTypeOptions.filter(filterSelectedOptions),
+            filterByOntologyOptions.filter(filterSelectedOptions),
+        ],
+        async () => {
+            return olsApi.search(
+                {
+                    query: searchValue,
+                    exactMatch: exactMatch,
+                    showObsoleteTerms: showObsoleteTerms,
+                    types: filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+                    ontology: filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key).join(","),
+                    groupByIri: true,
+                },
+                {
+                    page: activePage.toString(),
+                    size: itemsPerPage.toString(),
+                }
+            ).then((response) => {
+                if (response.response && response.response.docs != null && response.response.numFound != null) {
+                    setTotalItems(response.response.numFound);
+                    setPageCount(Math.ceil(response.response.numFound / itemsPerPage));
 
-  function toggleShowObsoleteTerms() {
-    setShowObsoleteTerms(!showObsoleteTerms);
-  }
+                    if (response.facet_counts && response.facet_counts.facet_fields) {
+                        if (response.facet_counts.facet_fields.type) {
+                            updateFilterOptions(
+                                filterByTypeOptions,
+                                response.facet_counts.facet_fields.type,
+                                setFilterByTypeOptions,
+                                (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
+                            );
+                        }
+                        if (response.facet_counts.facet_fields.ontology_name) {
+                            updateFilterOptions(
+                                filterByOntologyOptions,
+                                response.facet_counts.facet_fields.ontology_name,
+                                setFilterByOntologyOptions,
+                                (currentValue: string) => currentValue.toUpperCase()
+                            );
+                        }
+                    }
 
-  function clearFilter(currentOptions: EuiSelectableOption[], setOptions: Function) {
-    const newOptions = [...currentOptions];
-    setOptions(newOptions.map((option: EuiSelectableOption) => ({ ...option, checked: undefined })));
-  }
+                    return response.response.docs;
+                } else {
+                    throw new Error("Unexpected API response");
+                }
+            });
+        },
+        { keepPreviousData: true } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
+    );
 
-  function clearAllFilters() {
-    clearFilter(filterByTypeOptions, setFilterByTypeOptions);
-    clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
-  }
+    function onChangeItemsPerPage(newItemsPerPage: number) {
+        setActivePage(Math.floor((activePage * itemsPerPage + 1) / newItemsPerPage));
+        setItemsPerPage(newItemsPerPage);
+    }
 
-  if (resultsAreLoading) {
-    return <EuiLoadingSpinner size="xl" />;
-  }
+    function toggleExactMatch() {
+        setExactMatch(!exactMatch);
+    }
 
-  return (
-    <>
-      <SearchBarWidget
-        api={api}
-        query={searchValue}
-        onSearchValueChange={setSearchValue}
-      />
+    function toggleShowObsoleteTerms() {
+        setShowObsoleteTerms(!showObsoleteTerms);
+    }
 
-      <EuiSpacer size="s" />
+    function clearFilter(currentOptions: EuiSelectableOption[], setOptions: Function) {
+        const newOptions = [...currentOptions];
+        setOptions(newOptions.map((option: EuiSelectableOption) => ({ ...option, checked: undefined })));
+    }
 
-      <EuiFlexGroup>
-        <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
-          <EuiPanel>
-            <EuiFormRow label="Filter by type">
-              <EuiSelectable
-                options={filterByTypeOptions}
-                onChange={setFilterByTypeOptions}
-                listProps={{ bordered: true }}
-              >
-                {(list) => list}
-              </EuiSelectable>
-            </EuiFormRow>
+    function clearAllFilters() {
+        clearFilter(filterByTypeOptions, setFilterByTypeOptions);
+        clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
+    }
 
-            <EuiFormRow label="Filter by ontology">
-              <EuiSelectable
-                options={filterByOntologyOptions}
-                onChange={setFilterByOntologyOptions}
-                listProps={{ bordered: true }}
-                searchable
-              >
-                {(list, search) => (
-                  <>
-                    {search}
-                    {list}
-                  </>
-                )}
-              </EuiSelectable>
-            </EuiFormRow>
+    if (resultsAreLoading) {
+        return <EuiLoadingSpinner size="xl"/>;
+    }
 
-            <EuiButtonEmpty
-              onClick={clearAllFilters}
-            >
-              Clear all filters
-            </EuiButtonEmpty>
-          </EuiPanel>
-        </EuiFlexItem>
-
-        <EuiFlexItem grow={7}>
-          <EuiPanel color="transparent" grow={false}>
-            <EuiFlexGroup>
-              <EuiFlexItem grow={false}>
-                <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch} />
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiSwitch label="Show only obsolete terms" checked={showObsoleteTerms} onChange={toggleShowObsoleteTerms} />
-              </EuiFlexItem>
-            </EuiFlexGroup>
-
-            <EuiSpacer size="m" />
-
-            <EuiText size="xs" style={{ padding: "0 8px" }}>
-              Showing {Math.min(activePage*itemsPerPage+1, totalItems)} to {Math.min((activePage+1)*itemsPerPage, totalItems)} of {totalItems} results
-            </EuiText>
-
-            <EuiSpacer size="s" />
-
-            <EuiHorizontalRule margin="none" style={{ height: 2 }} />
-
-            <EuiSpacer size="s" />
-
-            <EuiTablePagination
-              aria-label="Search result pagination"
-              pageCount={pageCount}
-              activePage={activePage}
-              onChangePage={setActivePage}
-              itemsPerPage={itemsPerPage}
-              onChangeItemsPerPage={onChangeItemsPerPage}
-              itemsPerPageOptions={itemsPerPageOptions}
+    return (
+        <>
+            <SearchBarWidget
+                api={api}
+                query={searchValue}
+                onSearchValueChange={setSearchValue}
             />
 
-            <EuiSpacer size="s" />
+            <EuiSpacer size="s"/>
 
-            {searchResults && searchResults.map((result: any) => (
-              <React.Fragment key={result.id}>
-                <EuiCard
-                  textAlign="left"
-                  {...rest}
-                  href={targetLink ? targetLink + "/ontologies/" + result.ontology_name + "/" + result.type + "?iri=" + result.iri : undefined}
-                  title={
-                    <EuiFlexGroup>
-                      <EuiFlexItem grow={false}>
-                        <EuiTitle><h2>{result.label}</h2></EuiTitle>
-                      </EuiFlexItem>
-                      <EuiFlexItem>
-                        <BreadcrumbWidget api={api} iri={result.iri} />
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                  }
-                  children={
-                    <>
-                      <IriWidget api={api} iri={result.iri} />
-                      <EuiSpacer size="s" />
-                      <DescriptionWidget api={api} iri={result.iri} />
-                    </>
-                  }
-                />
-                <EuiSpacer />
-              </React.Fragment>
-            ))}
-          </EuiPanel>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-    </>
-  );
+            <EuiFlexGroup>
+                <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
+                    <EuiPanel>
+                        <EuiFormRow label="Filter by type">
+                            <EuiSelectable
+                                options={filterByTypeOptions}
+                                onChange={setFilterByTypeOptions}
+                                listProps={{ bordered: true }}
+                            >
+                                {(list) => list}
+                            </EuiSelectable>
+                        </EuiFormRow>
+
+                        <EuiFormRow label="Filter by ontology">
+                            <EuiSelectable
+                                options={filterByOntologyOptions}
+                                onChange={setFilterByOntologyOptions}
+                                listProps={{ bordered: true }}
+                                searchable
+                            >
+                                {(list, search) => (
+                                    <>
+                                        {search}
+                                        {list}
+                                    </>
+                                )}
+                            </EuiSelectable>
+                        </EuiFormRow>
+
+                        <EuiButtonEmpty
+                            onClick={clearAllFilters}
+                        >
+                            Clear all filters
+                        </EuiButtonEmpty>
+                    </EuiPanel>
+                </EuiFlexItem>
+
+                <EuiFlexItem grow={7}>
+                    <EuiPanel color="transparent" grow={false}>
+                        <EuiFlexGroup>
+                            <EuiFlexItem grow={false}>
+                                <EuiSwitch label="Exact match" checked={exactMatch} onChange={toggleExactMatch}/>
+                            </EuiFlexItem>
+                            <EuiFlexItem>
+                                <EuiSwitch label="Show only obsolete terms" checked={showObsoleteTerms}
+                                           onChange={toggleShowObsoleteTerms}/>
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+
+                        <EuiSpacer size="m"/>
+
+                        <EuiText size="xs" style={{ padding: "0 8px" }}>
+                            Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to {Math.min((activePage + 1) * itemsPerPage, totalItems)} of {totalItems} results
+                        </EuiText>
+
+                        <EuiSpacer size="s"/>
+
+                        <EuiHorizontalRule margin="none" style={{ height: 2 }}/>
+
+                        <EuiSpacer size="s"/>
+
+                        <EuiTablePagination
+                            aria-label="Search result pagination"
+                            pageCount={pageCount}
+                            activePage={activePage}
+                            onChangePage={setActivePage}
+                            itemsPerPage={itemsPerPage}
+                            onChangeItemsPerPage={onChangeItemsPerPage}
+                            itemsPerPageOptions={itemsPerPageOptions}
+                        />
+
+                        <EuiSpacer size="s"/>
+
+                        {searchResults && searchResults.map((result: any) => (
+                            <React.Fragment key={result.id}>
+                                <EuiCard
+                                    textAlign="left"
+                                    {...rest}
+                                    href={targetLink ? targetLink + "/ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri : undefined}
+                                    title={
+                                        <EuiFlexGroup>
+                                            <EuiFlexItem grow={false}>
+                                                <EuiTitle><h2>{result.label}</h2></EuiTitle>
+                                            </EuiFlexItem>
+                                            <EuiFlexItem>
+                                                <BreadcrumbWidget api={api} iri={result.iri}/>
+                                            </EuiFlexItem>
+                                        </EuiFlexGroup>
+                                    }
+                                    children={
+                                        <>
+                                            <IriWidget api={api} iri={result.iri}/>
+                                            <EuiSpacer size="s"/>
+                                            <DescriptionWidget api={api} iri={result.iri}/>
+                                        </>
+                                    }
+                                />
+                                <EuiSpacer/>
+                            </React.Fragment>
+                        ))}
+                    </EuiPanel>
+                </EuiFlexItem>
+            </EuiFlexGroup>
+        </>
+    );
 }
 
 export { SearchResultsListWidget };
