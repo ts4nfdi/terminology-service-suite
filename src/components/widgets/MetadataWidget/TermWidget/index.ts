@@ -1,1 +1,0 @@
-export { TermWidget } from "./TermWidget";

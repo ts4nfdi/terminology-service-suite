@@ -266,7 +266,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     <>
                       <IriWidget api={api} iri={result.iri} />
                       <EuiSpacer size="s" />
-                      <DescriptionWidget api={api} iri={result.iri} />
+                      <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri} objType={result.type} />
                     </>
                   }
                 />

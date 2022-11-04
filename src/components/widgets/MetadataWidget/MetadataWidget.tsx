@@ -2,12 +2,13 @@ import React from "react";
 import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import { IriWidget } from "./IriWidget";
-import { TermWidget } from "./TermWidget";
+import { TitleWidget } from "./TitleWidget";
 import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 
 export interface MetadataWidgetProps {
   iri: string;
+  ontologyID?: string;
   api: string;
   linkToSelf: string;
 }
@@ -31,12 +32,12 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TermWidget iri={props.iri} api={props.api} />
+            <TitleWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
       <EuiFlexItem>
-        <DescriptionWidget iri={props.iri} api={props.api} />
+        <DescriptionWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} />
       </EuiFlexItem>
       <EuiFlexItem>
         <TabWidget
