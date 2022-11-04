@@ -11,7 +11,7 @@ export type SearchResultsListWidgetProps = {
   initialItemsPerPage?: number;
   itemsPerPageOptions?: number[];
   targetLink?: string;
-} & Partial<EuiCardProps>;
+} & Omit<EuiCardProps, "layout">;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
