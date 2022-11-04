@@ -40,7 +40,7 @@ export default {
       description:
         "Set your own text manually that overwrites the text fetched from the API",
     },
-    onto: {
+    ontologyID: {
       description: "Ontology ID from where the object description should be taken.",
     },
     objType: {
@@ -58,7 +58,7 @@ export default {
       },
     },
     iri: {
-      description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'onto' arg is sufficient.",
+      description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
   },
 };
@@ -78,6 +78,6 @@ export const DescriptionWidget1 = Template.bind({});
 DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
-  onto: "ncit",
+  ontologyID: "ncit",
   objType: "term",
 };

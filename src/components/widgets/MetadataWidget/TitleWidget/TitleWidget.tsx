@@ -5,7 +5,7 @@ import { OlsApi } from "../../../../api/OlsApi";
 
 export interface TitleWidgetProps {
   iri?: string;
-  onto?: string;
+  ontologyID?: string;
   api: string;
   titleText?: string;
   objType:
@@ -19,24 +19,24 @@ export interface TitleWidgetProps {
 const NO_TITLE = "No title available.";
 
 
-async function getTitle(olsApi: OlsApi, objType: string, onto?: string, iri?: string): Promise<string> {
+async function getTitle(olsApi: OlsApi, objType: string, ontologyID?: string, iri?: string): Promise<string> {
   if (objType == "ontology") {
-    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: onto})
+    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyID})
       .catch((error) => console.log(error));
     return response?.config.title || NO_TITLE
   }
   if (objType == "term") {
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: onto, termIri: iri})
+    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyID, termIri: iri})
       .catch((error) => console.log(error));
     return response?._embedded?.terms[0].label || NO_TITLE
   }
   if (objType == "property") {
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: onto, propertyIri: iri})
+    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyID, propertyIri: iri})
       .catch((error) => console.log(error));
     return response?._embedded?.properties[0].label || NO_TITLE
   }
   if (objType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: onto, individualIri: iri})
+    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyID, individualIri: iri})
       .catch((error) => console.log(error));
     return response?._embedded?.individuals[0].label || NO_TITLE
   }
@@ -44,13 +44,13 @@ async function getTitle(olsApi: OlsApi, objType: string, onto?: string, iri?: st
 }
 
 function TitleWidget(props: TitleWidgetProps) {
-  const { iri, onto, api, titleText, objType } = props;
+  const { iri, ontologyID, api, titleText, objType } = props;
   const fixedObjType = objType == "class" ? "term" : objType
   const olsApi = new OlsApi(api);
 
   const {data: label,
   isLoading,
-  } = useQuery([api, "getTitle", fixedObjType, onto, iri], () => { return getTitle(olsApi, fixedObjType, onto, iri); });
+  } = useQuery([api, "getTitle", fixedObjType, ontologyID, iri], () => { return getTitle(olsApi, fixedObjType, ontologyID, iri); });
 
   return (
     <>

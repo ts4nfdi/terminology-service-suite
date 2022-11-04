@@ -19,7 +19,7 @@ export default {
         ],
       },
     },
-    onto: {
+    ontologyID: {
       description: "Ontology ID from where the object title/label should be taken.",
     },
     objType: {
@@ -37,7 +37,7 @@ export default {
       },
     },
     iri: {
-      description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'onto' arg is sufficient.",
+      description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
     titleText: {
       description:
@@ -61,6 +61,6 @@ export const TitleWidget1 = Template.bind({});
 TitleWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/ols/api/",
-  onto: "ncit",
+  ontologyID: "ncit",
   objType: "term",
 };
