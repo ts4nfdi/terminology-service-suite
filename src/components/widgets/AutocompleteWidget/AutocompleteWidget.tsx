@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { fetchConceptById } from "../../../api/widget";
+import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import { EuiComboBox } from "@elastic/eui";
@@ -38,6 +38,8 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     selectionChangedEvent: (selectedOption: {
         label: string | undefined;
         iri: string | undefined;
+        ontology_name: string | undefined;
+        type: string | undefined;
     }) => void;
     /**
      * Pass a pre select value.
@@ -50,19 +52,21 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
 }
 
 /**
- * A React component to provide Autosuggestion based on semlookp.
+ * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const { api, parameter, ...rest } = props;
 
+    const olsApi = new OlsApi(api);
+
     /**
      * The set of available options.s
      */
-    const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
+    const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
     /**
      * Store current set of select Options. A subset of options.
      */
-    const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
+    const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
     const [hasLoadingState, setLoadingState] = useState<boolean>(false);
     /**
@@ -71,20 +75,38 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     useEffect(() => {
         if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
             setLoadingState(true);
-            fetchConceptById(props.selectOption?.iri).then((rsp) => {
-                setOptions([
-                    {
-                        label: generateDisplayLabel(rsp.concept),
-                        value: rsp.conceptId,
-                    },
-                ]);
-                setSelectedOptions([
-                    {
-                        label: generateDisplayLabel(rsp.concept),
-                        value: rsp.conceptId,
-                    },
-                ]);
-                setLoadingState(false);
+            olsApi.select(
+                props.selectOption?.iri, parameter
+            ).then((response) => {
+                if (response.response && response.response.docs) {
+                    response.response.docs.map((selection: any) => {
+                        if (props.selectOption?.iri === selection.iri) {
+                            setOptions([
+                                {
+                                    label: generateDisplayLabel(selection),
+                                    value: {
+                                        iri: selection.iri,
+                                        label: selection.label,
+                                        ontology_name: selection.ontology_name,
+                                        type: selection.type,
+                                    },
+                                },
+                            ]);
+                            setSelectedOptions([
+                                {
+                                    label: generateDisplayLabel(selection),
+                                    value: {
+                                        iri: selection.iri,
+                                        label: selection.label,
+                                        ontology_name: selection.ontology_name,
+                                        type: selection.type,
+                                    },
+                                },
+                            ]);
+                            setLoadingState(false);
+                        }
+                    })
+                }
             });
         }
     }, [props.selectOption]);
@@ -96,12 +118,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         if (selectedOptions.length >= 1) {
             props.selectionChangedEvent(
                 selectedOptions.map((x) => {
-                    return { iri: x.value, label: x.label };
+                    return {
+                        iri: x.value.iri,
+                        label: x.value.label,
+                        ontology_name: x.value.ontology_name,
+                        type: x.value.type
+                    };
                 })[0]
             );
         }
     }, [selectedOptions, props]);
 
+    /**
+     * This function advanced the labels in the suggestion list with their corresponding Ontology and short form.
+     * @param item
+     */
     function generateDisplayLabel(item: any) {
         return (
             item.label +
@@ -115,31 +146,30 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const onSearchChange = (searchValue: string) => {
         if (searchValue.length > 0) {
             setLoadingState(true);
-            fetch(`${props.api}select?q=${searchValue}&${props.parameter}`, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    Content_Type: "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .then((res) => res?.response?.docs)
-                .then((res) => {
-                    setOptions(
-                        res.slice(0, 9).map((item: any) => {
-                            return {
-                                label: generateDisplayLabel(item),
-                                value: item.iri,
-                            };
+            return olsApi.select(
+                searchValue, parameter
+            ).then((response) => {
+                if (response.response && response.response.docs) {
+                    setOptions(response.response.docs.map((selection: any) => (
+                        {
+                            label: generateDisplayLabel(selection),
+                            value: {
+                                iri: selection.iri,
+                                label: selection.label,
+                                ontology_name: selection.ontology_name,
+                                type: selection.type,
+                            },
                         })
-                    );
+
+                    ));
                     setSelectedOptions([]);
                     setLoadingState(false);
-                });
+                }
+            });
         }
     };
 
-    function onChangeHandler(options: EuiComboBoxOptionOption<string>[]): void {
+    function onChangeHandler(options: EuiComboBoxOptionOption<any>[]): void {
         setSelectedOptions(options);
     }
 
