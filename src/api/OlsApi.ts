@@ -152,6 +152,10 @@ export class OlsApi {
     return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams) })).data;
   }
 
+  public select = async(queryParams: string, parameter?: string): Promise<any> => {
+    return (await this.axiosInstance.get("select?q=" + queryParams + "&" + parameter)).data;
+  }
+
   public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams): Promise<any> => {
     return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams) })).data;
   }
