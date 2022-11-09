@@ -3,7 +3,14 @@ import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
-import { EuiComboBox } from "@elastic/eui";
+import {
+    EuiComboBox,
+    euiPaletteColorBlindBehindText,
+    euiPaletteColorBlind,
+    EuiHighlight,
+    EuiHealth,
+    EuiBadge
+} from "@elastic/eui";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -59,6 +66,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const olsApi = new OlsApi(api);
 
+    const visColors = euiPaletteColorBlind();
+    const visColorsBehindText = euiPaletteColorBlindBehindText();
+
     /**
      * The set of available options.s
      */
@@ -69,6 +79,35 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
     const [hasLoadingState, setLoadingState] = useState<boolean>(false);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const renderOption = (option, searchValue) => {
+        const { label, value } = option;
+        let color = "";
+        if (value.type === "class") {
+            color = visColorsBehindText[5];
+        } else if  (value.type === "individual") {
+            color = visColorsBehindText[3];
+        } else if (value.type === "property") {
+            color = visColorsBehindText[1];
+        }
+        const dotColor = visColors[visColorsBehindText.indexOf(color)];
+        return (
+            <EuiHealth title={value.type} color={dotColor}>
+                <span>
+                  <EuiHighlight search={searchValue}>{label}</EuiHighlight>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
+                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
+                                {" > "}
+                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
+                    </span>
+                </span>
+            </EuiHealth>
+        );
+    };
+
     /**
      * If a selectOption is provided, we obtain the label via API
      */
@@ -83,23 +122,25 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                         if (props.selectOption?.iri === selection.iri) {
                             setOptions([
                                 {
-                                    label: generateDisplayLabel(selection),
+                                    label: selection.label,
                                     value: {
                                         iri: selection.iri,
                                         label: selection.label,
                                         ontology_name: selection.ontology_name,
                                         type: selection.type,
+                                        short_form: selection.short_form,
                                     },
                                 },
                             ]);
                             setSelectedOptions([
                                 {
-                                    label: generateDisplayLabel(selection),
+                                    label: selection.label,
                                     value: {
                                         iri: selection.iri,
                                         label: selection.label,
                                         ontology_name: selection.ontology_name,
                                         type: selection.type,
+                                        short_form: selection.short_form,
                                     },
                                 },
                             ]);
@@ -109,7 +150,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 }
             });
         }
-    }, [props.selectOption]);
+    }, [olsApi, parameter, props.selectOption]);
 
     /**
      * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -129,19 +170,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     }, [selectedOptions, props]);
 
-    /**
-     * This function advanced the labels in the suggestion list with their corresponding Ontology and short form.
-     * @param item
-     */
-    function generateDisplayLabel(item: any) {
-        return (
-            item.label +
-            " | " +
-            item.ontology_name.toUpperCase() +
-            " > " +
-            item.short_form
-        );
-    }
 
     const onSearchChange = (searchValue: string) => {
         if (searchValue.length > 0) {
@@ -152,12 +180,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 if (response.response && response.response.docs) {
                     setOptions(response.response.docs.map((selection: any) => (
                         {
-                            label: generateDisplayLabel(selection),
+                            label: selection.label,
                             value: {
                                 iri: selection.iri,
                                 label: selection.label,
                                 ontology_name: selection.ontology_name,
                                 type: selection.type,
+                                short_form: selection.short_form,
                             },
                         })
 
@@ -189,6 +218,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             selectedOptions={selectedOptions}
             onSearchChange={onSearchChange}
             onChange={onChangeHandler}
+            renderOption={renderOption}
         />
     );
 }
