@@ -8,7 +8,7 @@ import { fetch_data, get_url_prefix } from "../../../../../api/widget";
 /**
  * Response from OLS
  */
-interface semanticResponseIF {
+interface SemanticResponse {
   id: string;
   parent: string;
   iri: string;
@@ -26,13 +26,13 @@ interface semanticResponseIF {
   // ontology_name: string;
 }
 
-class HierarchyTreeIF implements Node {
+class HierarchyTree implements Node {
   url: string;
   iri: string;
   label: React.ReactNode;
   id: string;
   isExpanded?: boolean = true;
-  children: Array<HierarchyTreeIF> = [];
+  children: Array<HierarchyTree> = [];
   icon: React.ReactElement = (<>+</>);
   iconWhenExpanded: React.ReactElement = (<>-</>);
 
@@ -43,7 +43,7 @@ class HierarchyTreeIF implements Node {
     this.url = url;
   }
 
-  setchild(child: HierarchyTreeIF) {
+  setchild(child: HierarchyTree) {
     this.children.push(child);
     if (this.children.length > 0) {
       this.icon = <>+</>;
@@ -76,45 +76,34 @@ class HierarchyTreeIF implements Node {
 }
 
 const create_tree = (
-  tree: HierarchyTreeIF,
-  arr: Array<semanticResponseIF>,
+  tree: HierarchyTree,
+  arr: Array<SemanticResponse>,
   url: string
 ) => {
-  if (tree.is_root()) {
-    arr
-      .filter((value) => value.parent === "#")
-      .forEach((value) => {
-        tree.setchild(
-          new HierarchyTreeIF(value.text, value.id, url, value.iri)
-        );
-      });
+  arr
+    .filter((value) => value.parent === tree.id)
+    .forEach((value) => {
+      tree.setchild(
+        new HierarchyTree(value.text, value.id, url, value.iri)
+      );
+    });
     tree.children.map((value) => create_tree(value, arr, url));
-  } else {
-    arr
-      .filter((value) => value.parent === tree.id)
-      .forEach((value) => {
-        tree.setchild(
-          new HierarchyTreeIF(value.text, value.id, url, value.iri)
-        );
-      });
-    tree.children.map((value) => create_tree(value, arr, url));
-  }
 };
 
-export interface HierarchyTabIF {
+export interface HierarchyWidgetProps {
   linkToSelf: string | undefined;
   iri: string | undefined;
 }
 
-const HierarchyTabWidget = (props: HierarchyTabIF) => {
+const HierarchyWidget = (props: HierarchyWidgetProps) => {
   // state used to use EuiTreeView alternate,
   // because EuiTreeView does not show the children when in run time
   // a child is added
   const [state, setstate] = useState(true);
 
-  const [treeItems, settreeItems] = useState<HierarchyTreeIF[]>();
+  const [treeItems, settreeItems] = useState<HierarchyTree[]>();
 
-  useQuery<Array<semanticResponseIF>>(["childhierarchy", props.iri], () => {
+  useQuery<Array<SemanticResponse>>(["childhierarchy", props.iri], () => {
     return fetch(
       get_url_prefix(props.linkToSelf) +
         props.iri?.replaceAll("/", "%252F").replaceAll(":", "%253A") +
@@ -129,7 +118,7 @@ const HierarchyTabWidget = (props: HierarchyTabIF) => {
     )
       .then((res) => res.json())
       .then((res) => {
-        const root = new HierarchyTreeIF("#", "#", "", "");
+        const root = new HierarchyTree("#", "#", "", "");
         if (res) create_tree(root, res, get_url_prefix(props.linkToSelf));
         settreeItems(root.children);
         return res;
@@ -144,17 +133,10 @@ const HierarchyTabWidget = (props: HierarchyTabIF) => {
 
   return (
     <EuiPanel>
-      {treeItems && !state && (
+      {treeItems && (
         <EuiTreeView
           expandByDefault={true}
           aria-label="HierarchyTab"
-          items={treeItems}
-        />
-      )}
-      {treeItems && state && (
-        <EuiTreeView
-          expandByDefault={true}
-          aria-label="HierarchyTab1"
           items={treeItems}
         />
       )}
@@ -162,4 +144,4 @@ const HierarchyTabWidget = (props: HierarchyTabIF) => {
   );
 };
 
-export { HierarchyTabWidget };
+export { HierarchyWidget };

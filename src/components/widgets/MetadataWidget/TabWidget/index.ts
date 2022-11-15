@@ -1,4 +1,4 @@
 export * from "./AlternativeNameTabWidget";
 export * from "./CrossRefWidget";
-export * from "./HierarchyTabWidget";
+export * from "./HierarchyWidget";
 export { TabWidget } from "./TabWidget";
