@@ -25,12 +25,12 @@ import { switchEntityType } from '../../../utils/ApiUtils'
 
 
 export type SearchResultsListWidgetProps = {
-    api: string;
-    query: string;
-    initialItemsPerPage?: number;
-    itemsPerPageOptions?: number[];
-    targetLink?: string;
-} & Omit<EuiCardProps, "layout">;
+  api: string;
+  query: string;
+  initialItemsPerPage?: number;
+  itemsPerPageOptions?: number[];
+  targetLink?: string;
+} & Partial<Omit<EuiCardProps, "layout">>;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -286,7 +286,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                                         <>
                                             <IriWidget api={api} iri={result.iri}/>
                                             <EuiSpacer size="s"/>
-                                            <DescriptionWidget api={api} iri={result.iri}/>
+                                            <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri} objType={result.type} />
                                         </>
                                     }
                                 />

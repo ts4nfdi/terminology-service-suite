@@ -4,11 +4,11 @@ import {useQuery} from "react-query";
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 
 export interface OntologyInfoWidgetProps {
-  onto: string;
+  ontologyID: string;
   api: string;
 }
 
-interface OntoInfo {
+interface OntologyInfo {
   iri: string,
   id: string,
   version: string,
@@ -17,8 +17,8 @@ interface OntoInfo {
   annotations: object; //list of key&value string pairs
 }
 
-async function getOntoData(apiCall: apiCallFn, ontoId: string): Promise<OntoInfo> {
-  const response = await apiCall(undefined, undefined, {ontologyId: ontoId});
+async function getOntoData(apiCall: apiCallFn, ontologyID: string): Promise<OntologyInfo> {
+  const response = await apiCall(undefined, undefined, {ontologyId: ontologyID});
 
   return {
     iri: response.config.id,
@@ -31,7 +31,7 @@ async function getOntoData(apiCall: apiCallFn, ontoId: string): Promise<OntoInfo
 }
 
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
-  const { onto, api } = props;
+  const { ontologyID, api } = props;
   const olsApi = new OlsApi(api);
 
   const infoItemStyle = {
@@ -43,9 +43,9 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   }
 
   const {
-    data: ontoInfo,
+    data: ontologyInfo,
     isLoading,
-  } = useQuery([api, "getOntology", onto], () => { return getOntoData(olsApi.getOntology, onto); });
+  } = useQuery([api, "getOntology", ontologyID], () => { return getOntoData(olsApi.getOntology, ontologyID); });
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
@@ -53,26 +53,26 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
             <b>Ontology IRI:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.iri) ? ontoInfo.iri.toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.iri) ? ontologyInfo.iri.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Ontology ID:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.id) ? ontoInfo.id.toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.id) ? ontologyInfo.id.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Version:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.version) ? ontoInfo.version.toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.version) ? ontologyInfo.version.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Number of terms:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.termNum) ? ontoInfo.termNum.toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.termNum) ? ontologyInfo.termNum.toLocaleString() : "-")}</p>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <b>Last loaded:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontoInfo && isAvailable(ontoInfo.lastLoad) ? new Date(ontoInfo.lastLoad).toLocaleString() : "-")}</p>
+            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.lastLoad) ? new Date(ontologyInfo.lastLoad).toLocaleString() : "-")}</p>
           </EuiFlexItem>
-          {ontoInfo ? (
-            Object.entries(ontoInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
+          {ontologyInfo ? (
+            Object.entries(ontologyInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
               <EuiFlexItem grow={false} key={annoKey}>
                 <b>{annoKey}:</b>
                 <p style={infoItemStyle}>{isAvailable(annoVal) ? annoVal.toLocaleString() : "-"}</p>

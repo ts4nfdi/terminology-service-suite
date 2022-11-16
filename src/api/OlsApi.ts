@@ -60,7 +60,7 @@ export class OlsApi {
     const params: any = {
       rows: paginationParams?.size,
     };
-  
+
     if (paginationParams?.page) {
       if (paginationParams.size) {
         params.start = (+paginationParams.page * +paginationParams.size).toString();
@@ -90,7 +90,7 @@ export class OlsApi {
     if (queryParams.ontology) {
       params.ontology = queryParams.ontology;
     }
-  
+
     return { ...params, ...this.buildPaginationParams(paginationParams) };
   }
 
@@ -126,12 +126,34 @@ export class OlsApi {
     return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId)).data;
   }
 
-  public getTermInfo: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-        return (await this.axiosInstance.get("ontologies/" + contentParams?.ontologyId + "/terms?iri=" + contentParams?.termIri)).data;
-    }
+  /**
+   * getTerm, getProperty, getIndividual:
+   * These methods always require the respective object IRI in contentParams to be set
+   * If ontologyID is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyID is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
+
+  public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"terms", { params: {iri: contentParams?.termIri} })).data;
+  }
+
+  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri} })).data;
+  }
+
+  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri} })).data;
+  }
 
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams): Promise<any> => {
     return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams) })).data;
+  }
+
+  public select = async(queryParams: string, parameter?: string): Promise<any> => {
+    return (await this.axiosInstance.get("select?q=" + queryParams + "&" + parameter)).data;
   }
 
   public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams): Promise<any> => {

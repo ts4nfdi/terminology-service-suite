@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import { fetchConceptById } from "../../../api/widget";
+import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
-import { EuiComboBox } from "@elastic/eui";
+import {
+    EuiComboBox,
+    euiPaletteColorBlindBehindText,
+    euiPaletteColorBlind,
+    EuiHighlight,
+    EuiHealth,
+    EuiBadge
+} from "@elastic/eui";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -38,6 +45,8 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     selectionChangedEvent: (selectedOption: {
         label: string | undefined;
         iri: string | undefined;
+        ontology_name: string | undefined;
+        type: string | undefined;
     }) => void;
     /**
      * Pass a pre select value.
@@ -50,44 +59,98 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
 }
 
 /**
- * A React component to provide Autosuggestion based on semlookp.
+ * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const { api, parameter, ...rest } = props;
 
+    const olsApi = new OlsApi(api);
+
+    const visColors = euiPaletteColorBlind();
+    const visColorsBehindText = euiPaletteColorBlindBehindText();
+
     /**
      * The set of available options.s
      */
-    const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
+    const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
     /**
      * Store current set of select Options. A subset of options.
      */
-    const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
+    const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
     const [hasLoadingState, setLoadingState] = useState<boolean>(false);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const renderOption = (option, searchValue) => {
+        const { label, value } = option;
+        let color = "";
+        if (value.type === "class") {
+            color = visColorsBehindText[5];
+        } else if  (value.type === "individual") {
+            color = visColorsBehindText[3];
+        } else if (value.type === "property") {
+            color = visColorsBehindText[1];
+        }
+        const dotColor = visColors[visColorsBehindText.indexOf(color)];
+        return (
+            <EuiHealth title={value.type} color={dotColor}>
+                <span>
+                  <EuiHighlight search={searchValue}>{label}</EuiHighlight>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
+                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
+                                {" > "}
+                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
+                    </span>
+                </span>
+            </EuiHealth>
+        );
+    };
+
     /**
      * If a selectOption is provided, we obtain the label via API
      */
     useEffect(() => {
         if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
             setLoadingState(true);
-            fetchConceptById(props.selectOption?.iri).then((rsp) => {
-                setOptions([
-                    {
-                        label: generateDisplayLabel(rsp.concept),
-                        value: rsp.conceptId,
-                    },
-                ]);
-                setSelectedOptions([
-                    {
-                        label: generateDisplayLabel(rsp.concept),
-                        value: rsp.conceptId,
-                    },
-                ]);
-                setLoadingState(false);
+            olsApi.select(
+                props.selectOption?.iri, parameter
+            ).then((response) => {
+                if (response.response && response.response.docs) {
+                    response.response.docs.map((selection: any) => {
+                        if (props.selectOption?.iri === selection.iri) {
+                            setOptions([
+                                {
+                                    label: selection.label,
+                                    value: {
+                                        iri: selection.iri,
+                                        label: selection.label,
+                                        ontology_name: selection.ontology_name,
+                                        type: selection.type,
+                                        short_form: selection.short_form,
+                                    },
+                                },
+                            ]);
+                            setSelectedOptions([
+                                {
+                                    label: selection.label,
+                                    value: {
+                                        iri: selection.iri,
+                                        label: selection.label,
+                                        ontology_name: selection.ontology_name,
+                                        type: selection.type,
+                                        short_form: selection.short_form,
+                                    },
+                                },
+                            ]);
+                            setLoadingState(false);
+                        }
+                    })
+                }
             });
         }
-    }, [props.selectOption]);
+    }, [olsApi, parameter, props.selectOption]);
 
     /**
      * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -96,50 +159,46 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         if (selectedOptions.length >= 1) {
             props.selectionChangedEvent(
                 selectedOptions.map((x) => {
-                    return { iri: x.value, label: x.label };
+                    return {
+                        iri: x.value.iri,
+                        label: x.value.label,
+                        ontology_name: x.value.ontology_name,
+                        type: x.value.type
+                    };
                 })[0]
             );
         }
     }, [selectedOptions, props]);
 
-    function generateDisplayLabel(item: any) {
-        return (
-            item.label +
-            " | " +
-            item.ontology_name.toUpperCase() +
-            " > " +
-            item.short_form
-        );
-    }
 
     const onSearchChange = (searchValue: string) => {
         if (searchValue.length > 0) {
             setLoadingState(true);
-            fetch(`${props.api}select?q=${searchValue}&${props.parameter}`, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    Content_Type: "application/json",
-                },
-            })
-                .then((res) => res.json())
-                .then((res) => res?.response?.docs)
-                .then((res) => {
-                    setOptions(
-                        res.slice(0, 9).map((item: any) => {
-                            return {
-                                label: generateDisplayLabel(item),
-                                value: item.iri,
-                            };
+            return olsApi.select(
+                searchValue, parameter
+            ).then((response) => {
+                if (response.response && response.response.docs) {
+                    setOptions(response.response.docs.map((selection: any) => (
+                        {
+                            label: selection.label,
+                            value: {
+                                iri: selection.iri,
+                                label: selection.label,
+                                ontology_name: selection.ontology_name,
+                                type: selection.type,
+                                short_form: selection.short_form,
+                            },
                         })
-                    );
+
+                    ));
                     setSelectedOptions([]);
                     setLoadingState(false);
-                });
+                }
+            });
         }
     };
 
-    function onChangeHandler(options: EuiComboBoxOptionOption<string>[]): void {
+    function onChangeHandler(options: EuiComboBoxOptionOption<any>[]): void {
         setSelectedOptions(options);
     }
 
@@ -159,6 +218,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             selectedOptions={selectedOptions}
             onSearchChange={onSearchChange}
             onChange={onChangeHandler}
+            renderOption={renderOption}
         />
     );
 }
