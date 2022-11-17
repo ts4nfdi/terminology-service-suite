@@ -1,9 +1,10 @@
 import { EuiPanel, EuiTreeView } from "@elastic/eui";
 import { Node } from "@elastic/eui/src/components/tree_view/tree_view";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { fetch_data, get_url_prefix } from "../../../../../api/widget";
+import { OlsApi } from "../../../../../api/OlsApi";
 
 /**
  * Response from OLS
@@ -60,7 +61,7 @@ class HierarchyTree implements Node {
     );
   }
 
-  callback() {
+  callback() { //TODO handle via OlsApi.getTermTree with child param
     if (this.isExpanded) return "";
     const api_data_onclick =
       this.url +
@@ -91,45 +92,33 @@ const create_tree = (
 };
 
 export interface HierarchyWidgetProps {
-  linkToSelf: string | undefined;
-  iri: string | undefined;
+  linkToSelf: string | undefined; //TODO remove, since new props below are sufficient
+  iri: string;
+  ontologyID: string;
+  api: string;
+}
+
+async function getTree(olsApi: OlsApi, ontologyID: string, iri: string): Promise<any> {
+  const response = await olsApi.getTermTree({ontologyId: ontologyID, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined)
+    .catch((error) => console.log(error));
+  return response
 }
 
 const HierarchyWidget = (props: HierarchyWidgetProps) => {
-  // state used to use EuiTreeView alternate,
-  // because EuiTreeView does not show the children when in run time
-  // a child is added
-  const [state, setstate] = useState(true);
+  const { linkToSelf, iri, ontologyID, api } = props;
+  const [treeItems, setTreeItems] = useState<HierarchyTree[]>();
+  const olsApi = new OlsApi(api);
 
-  const [treeItems, settreeItems] = useState<HierarchyTree[]>();
-
-  useQuery<Array<SemanticResponse>>(["childhierarchy", props.iri], () => {
-    return fetch(
-      get_url_prefix(props.linkToSelf) +
-        props.iri?.replaceAll("/", "%252F").replaceAll(":", "%253A") +
-        "/jstree?viewMode=All&siblings=false",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
+  //initial tree query
+  useQuery<Array<SemanticResponse>>([api, "getTermTree", ontologyID, iri], () => {
+    return getTree(olsApi, ontologyID, iri)
       .then((res) => {
         const root = new HierarchyTree("#", "#", "", "");
-        if (res) create_tree(root, res, get_url_prefix(props.linkToSelf));
-        settreeItems(root.children);
+        if (res) create_tree(root, res, get_url_prefix(linkToSelf));
+        setTreeItems(root.children);
         return res;
-      })
-
-      .catch((err) => {});
+      });
   });
-
-  useEffect(() => {
-    setstate(!state);
-  }, [treeItems]);
 
   return (
     <EuiPanel>

@@ -34,6 +34,12 @@ interface SuggestQueryParams {
   ontology?: string;
 }
 
+interface JsTreeParams {
+  viewMode?: string;
+  siblings?: boolean;
+  child?: string;
+}
+
 const DEFAULT_SEARCH_RESULTS_PER_PAGE = 10;
 
 export class OlsApi {
@@ -158,5 +164,11 @@ export class OlsApi {
 
   public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams): Promise<any> => {
     return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams) })).data;
+  }
+
+  public getTermTree = async (contentParams: ContentParams, treeParams: JsTreeParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
+    const baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms/"+contentParams?.termIri?.replaceAll("/", "%252F").replaceAll(":", "%253A")+"/jstree"
+    if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data;
+    else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data;
   }
 }
