@@ -10,8 +10,8 @@ import { HierarchyWidget } from "./HierarchyWidget";
 
 export interface TabWidgetProps {
   iri: string;
+  ontologyID: string;
   api: string;
-  linkToSelf: string;
 }
 
 function TabWidget(props: TabWidgetProps) {
@@ -23,7 +23,7 @@ function TabWidget(props: TabWidgetProps) {
     },
     {
       content: (
-        <HierarchyWidget iri={props.iri} linkToSelf={props.linkToSelf} />
+        <HierarchyWidget api={props.api} iri={props.iri} ontologyID={props.ontologyID} />
       ),
       id: "tab2",
       name: "Hierarchy",
