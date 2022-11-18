@@ -176,7 +176,7 @@ export class OlsApi {
   public getTermTree = async (contentParams: ContentParams, treeParams: JsTreeParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
     let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
     if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
-    baseRequest = baseRequest+"/"+contentParams?.termIri?.replaceAll("/", "%252F").replaceAll(":", "%253A")+"/jstree"
+    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/jstree"
     if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data; //3)
     else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data; //2)
   }
