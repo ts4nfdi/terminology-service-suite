@@ -42,10 +42,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             }
             children={
                 <>
-                    {result.type != "ontology" ? <IriWidget api={api} iri={result.iri}/> :
-                        <EuiLink href={result.iri} target="_blank"> {/*TODO update IriWidget*/}
-                            {result.iri}
-                        </EuiLink>}
+                    {result.type != "ontology" ? <IriWidget api={api} iri={result.iri}/> : undefined}
                     <EuiSpacer size="s"/>
                     <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri}
                                        objType={result.type}/>
