@@ -6,12 +6,12 @@ import {
 } from "@elastic/eui";
 import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
 import { CrossRefTabWidget } from "./CrossRefWidget";
-import { HierarchyTabWidget } from "./HierarchyTabWidget";
+import { HierarchyWidget } from "./HierarchyWidget";
 
 export interface TabWidgetProps {
   iri: string;
+  ontologyID: string;
   api: string;
-  linkToSelf: string;
 }
 
 function TabWidget(props: TabWidgetProps) {
@@ -23,7 +23,7 @@ function TabWidget(props: TabWidgetProps) {
     },
     {
       content: (
-        <HierarchyTabWidget iri={props.iri} linkToSelf={props.linkToSelf} />
+        <HierarchyWidget api={props.api} iri={props.iri} ontologyID={props.ontologyID} />
       ),
       id: "tab2",
       name: "Hierarchy",

@@ -19,11 +19,11 @@ export default {
         ],
       },
     },
+    ontologyID: {
+      description: "Ontology ID from where the term metadata should be taken.",
+    },
     iri: {
       description: "Iri of the term you want to fetch the metadata for.",
-    },
-    linkToSelf: {
-      description: "Link to the source of the ontology terms",
     },
   },
 };
@@ -42,6 +42,6 @@ export const MetadataWidget1 = Template.bind({});
 // @ts-ignore
 MetadataWidget1.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
+  ontologyID: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
-  linkToSelf: "https://semanticlookup.zbmed.de/ols/api/ontologies/ncit/terms/",
 };

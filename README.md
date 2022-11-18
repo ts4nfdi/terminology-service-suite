@@ -119,8 +119,8 @@ For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryCli
 - BreadcrumbWidget: Widget that displays badges of the current term and its ontology
 - AlternativeNameTabWidget: Widget that displays all alternative names of a term
 - CrossRefTabWidget: Widget that displays all cross-references of a term
-- HierarchyTabWidget: Widget that displays the term hierarchy
-- TabWidget: Widget that combines the AlternativeNameTabWidget, HierarchyTabWidget, CrossRefTabWidget
+- HierarchyWidget: Widget that displays the term hierarchy
+- TabWidget: Widget that combines the AlternativeNameTabWidget, HierarchyWidget, CrossRefTabWidget
 - Autocomplete Widget: Widget that searches an instance of OLS for matching terms
 - JsonApiWidget: Widget containing a button that opens a new page with the JSON result of any query to an API instance
 

@@ -8,9 +8,8 @@ import { TabWidget } from "./TabWidget";
 
 export interface MetadataWidgetProps {
   iri: string;
-  ontologyID?: string;
+  ontologyID: string;
   api: string;
-  linkToSelf: string;
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
@@ -42,8 +41,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
       <EuiFlexItem>
         <TabWidget
           iri={props.iri}
+          ontologyID={props.ontologyID}
           api={props.api}
-          linkToSelf={props.linkToSelf}
         />
       </EuiFlexItem>
     </EuiFlexGroup>
