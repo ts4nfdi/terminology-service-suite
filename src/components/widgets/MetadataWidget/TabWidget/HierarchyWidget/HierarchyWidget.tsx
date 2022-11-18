@@ -65,7 +65,7 @@ class HierarchyTree implements Node {
     if (this.isExpanded) return "";
     const api_data_onclick =
       this.url +
-      this.iri.replaceAll("/", "%252F").replaceAll(":", "%253A") +
+      encodeURIComponent(encodeURIComponent(this.iri)) +
       "/jstree/children/" +
       this.id;
     fetch_data(api_data_onclick).then((res) => {
