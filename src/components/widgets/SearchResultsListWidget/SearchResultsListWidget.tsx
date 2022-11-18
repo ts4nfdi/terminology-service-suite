@@ -22,6 +22,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { switchEntityType } from '../../../utils/ApiUtils'
+import { MetadataCompact } from './MetadataCompact'
 
 
 export type SearchResultsListWidgetProps = {
@@ -268,28 +269,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
                         {searchResults && searchResults.map((result: any) => (
                             <React.Fragment key={result.id}>
-                                <EuiCard
-                                    textAlign="left"
-                                    {...rest}
-                                    href={targetLink ? targetLink + "/ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri : undefined}
-                                    title={
-                                        <EuiFlexGroup>
-                                            <EuiFlexItem grow={false}>
-                                                <EuiTitle><h2>{result.label}</h2></EuiTitle>
-                                            </EuiFlexItem>
-                                            <EuiFlexItem>
-                                                <BreadcrumbWidget api={api} iri={result.iri}/>
-                                            </EuiFlexItem>
-                                        </EuiFlexGroup>
-                                    }
-                                    children={
-                                        <>
-                                            <IriWidget api={api} iri={result.iri}/>
-                                            <EuiSpacer size="s"/>
-                                            <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri} objType={result.type} />
-                                        </>
-                                    }
-                                />
+                                <MetadataCompact api={api} result={result} targetLink={targetLink}/>
                                 <EuiSpacer/>
                             </React.Fragment>
                         ))}
