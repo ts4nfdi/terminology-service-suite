@@ -92,22 +92,35 @@ const create_tree = (
 };
 
 export interface HierarchyWidgetProps {
-  linkToSelf: string | undefined; //TODO remove, since new props below are sufficient
-  iri: string;
+  iri?: string;
   ontologyID: string;
   api: string;
 }
 
-async function getTree(olsApi: OlsApi, ontologyID: string, iri: string): Promise<any> {
+async function getTree(olsApi: OlsApi, ontologyID: string, iri?: string): Promise<any> {
   const response = await olsApi.getTermTree({ontologyId: ontologyID, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined)
     .catch((error) => console.log(error));
-  return response
+  if (iri) return response
+  else { //roots have been queried, and the response needs restructuring to become SemanticResponse
+    return response._embedded.terms.map(
+      (x: { iri: string, label: string, has_children: boolean }, i: number) =>
+        ({id: (++i).toString(), parent: '#', iri: x.iri, text: x.label, children: x.has_children})
+    );
+  }
 }
 
 const HierarchyWidget = (props: HierarchyWidgetProps) => {
-  const { linkToSelf, iri, ontologyID, api } = props;
+  const { iri, ontologyID, api } = props;
   const [treeItems, setTreeItems] = useState<HierarchyTree[]>();
   const olsApi = new OlsApi(api);
+  const linkToSelf = api+"ontologies/"+ontologyID+"/terms/"
+
+  const fetchChildren = async (child: HierarchyTree) => { //could be given to HierarchyTree nodes for onClick callbacks
+    const response = await olsApi.getTermTree({ontologyId: ontologyID, termIri: iri}, {child: child.id}, undefined, undefined)
+      .catch((error) => console.log(error));
+    child.children = [];
+    create_tree(child, response, get_url_prefix(linkToSelf));
+  }
 
   //initial tree query
   useQuery<Array<SemanticResponse>>([api, "getTermTree", ontologyID, iri], () => {

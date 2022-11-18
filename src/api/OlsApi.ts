@@ -166,9 +166,18 @@ export class OlsApi {
     return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams) })).data;
   }
 
+  /**
+   * getTermTree:
+   * This method always requires an ontologyID in contentParams
+   * 1) If no termIri is defined in contentParams, the ontology roots will be queried
+   * 2) If a termIri is defined but no child in jsTreeParams, the hierarchy containing that term will be queried
+   * 3) If a termIri is defined and also a child in jsTreeParams, the subhierarchy of that child will be queried
+   */
   public getTermTree = async (contentParams: ContentParams, treeParams: JsTreeParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
-    const baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms/"+contentParams?.termIri?.replaceAll("/", "%252F").replaceAll(":", "%253A")+"/jstree"
-    if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data;
-    else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data;
+    let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
+    if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
+    baseRequest = baseRequest+"/"+contentParams?.termIri?.replaceAll("/", "%252F").replaceAll(":", "%253A")+"/jstree"
+    if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data; //3)
+    else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data; //2)
   }
 }
