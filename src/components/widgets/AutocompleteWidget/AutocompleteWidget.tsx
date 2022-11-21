@@ -150,7 +150,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 }
             });
         }
-    }, [olsApi, parameter, props.selectOption]);
+    }, []); // no dependencies - does only need to be executed once when mounting the component
 
     /**
      * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -168,7 +168,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 })[0]
             );
         }
-    }, [selectedOptions, props]);
+    }, [selectedOptions]);
 
 
     const onSearchChange = (searchValue: string) => {
@@ -201,6 +201,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     function onChangeHandler(options: EuiComboBoxOptionOption<any>[]): void {
         setSelectedOptions(options);
     }
+
+    useEffect(() => {
+    }, [selectedOptions, options, props.selectOption])
+
 
     return (
         <EuiComboBox
