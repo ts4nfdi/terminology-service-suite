@@ -9,54 +9,45 @@ export default {
     layout: "centered",
   },
   argTypes: {
-    iri: {
-      description: "Iri of the term that should be displayed.",
-    },
-    iriText: {
-      description: "Alternative text to display.",
-    },
-    api: {
-      description: "Instance of the OLS API to call.",
-      control: {
-        type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-        ],
-      },
-    },
     color: {
-      description: "Color of the link",
+      Iri: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
         options: [
-          "primary",
-          "accent",
-          "success",
-          "warning",
-          "danger",
-          "ghost",
-          "text",
+          "default",
           "subdued",
+          "success",
+          "accent",
+          "danger",
+          "warning",
+          "ghost",
+          "#00FFFF",
+          "rgb(255,0,255)",
         ],
       },
+    },
+    descText: {
+      Iri:
+          "Set your own text manually that overwrites the text fetched from the API",
+    },
+    iri: {
+      Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
   },
 };
 
 const Template = (args: IriWidgetProps) => (
-  <>
-    <EuiPanel>
-      <IriWidget {...args} />
-    </EuiPanel>{" "}
-  </>
+    <>
+      <EuiPanel>
+        <IriWidget {...args} />
+      </EuiPanel>
+    </>
 );
 
 export const IriWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+//@ts-ignore
 IriWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
 };
