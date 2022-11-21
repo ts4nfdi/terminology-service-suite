@@ -16,8 +16,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     color: {
       description: "Color of the text, names, hex or rgb",
@@ -77,7 +81,7 @@ export const DescriptionWidget1 = Template.bind({});
 //@ts-ignore
 DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   objType: "term",
 };

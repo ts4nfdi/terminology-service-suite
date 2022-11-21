@@ -6,6 +6,10 @@ import { OlsApi } from "../../../api/OlsApi";
 export type SearchBarWidgetProps = {
   api: string;
   query: string;
+  /**
+   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
+   */
+  frontend?: string;
   onSearchValueChange: (suggestion: string) => void;
 } & Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value">;
 
@@ -13,6 +17,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
     api,
     query,
+    frontend,
     onSearchValueChange,
     ...rest
   } = props;
@@ -34,6 +39,10 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
     return olsApi.suggest(
       {
         query: value,
+      },
+      undefined,
+      {
+        frontend: frontend,
       },
     ).then((response) => {
       if (response.response && response.response.docs) {

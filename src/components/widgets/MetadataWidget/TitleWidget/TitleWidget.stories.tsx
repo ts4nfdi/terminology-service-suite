@@ -16,8 +16,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     ontologyID: {
       description: "Ontology ID from where the object title/label should be taken.",
@@ -59,8 +63,7 @@ export const TitleWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TitleWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   objType: "term",
 };

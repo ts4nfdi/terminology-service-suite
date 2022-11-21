@@ -1,6 +1,5 @@
 import {
     EuiButtonEmpty,
-    EuiCard,
     EuiCardProps,
     EuiFlexGroup,
     EuiFlexItem,
@@ -14,20 +13,21 @@ import {
     EuiSwitch,
     EuiTablePagination,
     EuiText,
-    EuiTitle
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
-import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
 import { SearchBarWidget } from "../SearchBarWidget";
-import { switchEntityType } from '../../../utils/ApiUtils'
 import { MetadataCompact } from './MetadataCompact'
 
 
 export type SearchResultsListWidgetProps = {
   api: string;
   query: string;
+  /**
+   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
+   */
+  frontend?: string;
   initialItemsPerPage?: number;
   itemsPerPageOptions?: number[];
   targetLink?: string;
@@ -40,6 +40,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     const {
         api,
         query,
+        frontend,
         initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
         targetLink,
@@ -123,6 +124,9 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 {
                     page: activePage.toString(),
                     size: itemsPerPage.toString(),
+                },
+                {
+                    frontend: frontend
                 }
             ).then((response) => {
                 if (response.response && response.response.docs != null && response.response.numFound != null) {

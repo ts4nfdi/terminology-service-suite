@@ -12,8 +12,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     query: {
       description: "The search term to receive suggestions for.",
@@ -35,7 +39,6 @@ export const SearchBarWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SearchBarWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+SearchBarWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   query: "diab",
 };

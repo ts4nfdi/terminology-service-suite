@@ -15,8 +15,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
   },
 };
@@ -31,6 +35,5 @@ export const DataContentWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-DataContentWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+DataContentWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
 };
