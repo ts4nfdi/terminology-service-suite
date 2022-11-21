@@ -1,4 +1,4 @@
-import { EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import React from "react";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
 import { switchEntityType } from '../../../utils/ApiUtils'
@@ -27,8 +27,8 @@ function MetadataCompact(props: MetadataCompactProps) {
             {...rest}
             href={targetLink ?
                 (result.type != "ontology" ?
-                    targetLink + "/ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri
-                    : targetLink + "/ontologies/" + result.ontology_name)
+                    targetLink + "ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri
+                    : targetLink + "ontologies/" + result.ontology_name)
                 : undefined}
             title={
                 <EuiFlexGroup>
@@ -36,13 +36,13 @@ function MetadataCompact(props: MetadataCompactProps) {
                         <EuiTitle><h2>{result.label}</h2></EuiTitle>
                     </EuiFlexItem>
                     <EuiFlexItem>
-                        {result.type != "ontology" && <BreadcrumbWidget api={api} iri={result.iri}/>}
+                        {result.type != "ontology" && <BreadcrumbWidget api={api} iri={result.iri} objType={result.type} ontologyID={result.ontology_name}/>}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             }
             children={
                 <>
-                    {result.type != "ontology" ? <IriWidget api={api} iri={result.iri}/> : undefined}
+                    {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
                     <EuiSpacer size="s"/>
                     <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri}
                                        objType={result.type}/>

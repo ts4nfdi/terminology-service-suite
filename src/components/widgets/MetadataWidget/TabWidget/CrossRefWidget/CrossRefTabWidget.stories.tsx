@@ -15,8 +15,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     iri: {
       description:

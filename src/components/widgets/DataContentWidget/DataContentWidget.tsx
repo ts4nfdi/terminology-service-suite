@@ -5,12 +5,16 @@ import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 
 export interface DataContentWidgetProps {
   api: string;
+  /**
+   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
+   */
+  frontend?: string;
 }
 
 const NOT_AVAILABLE = "n/a";
 
-async function getTotalElements(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "1" });
+async function getTotalElements(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
+  const response = await apiCall({ size: "1" },undefined,{ frontend: frontend });
 
   if (response.page.totalElements != null) {
     return response.page.totalElements;
@@ -19,8 +23,8 @@ async function getTotalElements(apiCall: apiCallFn): Promise<number> {
   }
 }
 
-async function getTotalAmountOfTerms(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "500" });
+async function getTotalAmountOfTerms(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -32,8 +36,8 @@ async function getTotalAmountOfTerms(apiCall: apiCallFn): Promise<number> {
   }
 }
 
-async function getTotalAmountOfProperties(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "500" });
+async function getTotalAmountOfProperties(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -45,8 +49,8 @@ async function getTotalAmountOfProperties(apiCall: apiCallFn): Promise<number> {
   }
 }
 
-async function getTotalAmountOfIndividuals(apiCall: apiCallFn): Promise<number> {
-  const response = await apiCall({ size: "500" });
+async function getTotalAmountOfIndividuals(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -59,29 +63,29 @@ async function getTotalAmountOfIndividuals(apiCall: apiCallFn): Promise<number> 
 }
 
 function DataContentWidget(props: DataContentWidgetProps) {
-  const { api, ...rest } = props;
+  const { api, frontend, ...rest } = props;
   const olsApi = new OlsApi(api);
 
   const {
     data: totalOntologies,
     isLoading: isLoadingOntologies,
     dataUpdatedAt: dataUpdatedAtOntologies
-  } = useQuery([api, "getOntologies"], () => { return getTotalElements(olsApi.getOntologies); });
+  } = useQuery([api, "getOntologies", frontend], () => { return getTotalElements(olsApi.getOntologies, frontend); });
 
   const {
     data: totalTerms,
     isLoading: isLoadingTerms
-  } = useQuery([api, "getTerms"], () => { return getTotalAmountOfTerms(olsApi.getOntologies); });
+  } = useQuery([api, "getTerms", frontend], () => { return getTotalAmountOfTerms(olsApi.getOntologies, frontend); });
 
   const {
     data: totalProperties,
     isLoading: isLoadingProperties
-  } = useQuery([api, "getProperties"], () => { return getTotalAmountOfProperties(olsApi.getOntologies); });
+  } = useQuery([api, "getProperties", frontend], () => { return getTotalAmountOfProperties(olsApi.getOntologies, frontend); });
 
   const {
     data: totalIndividuals,
     isLoading: isLoadingIndividuals
-  } = useQuery([api, "getIndividuals"], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies); });
+  } = useQuery([api, "getIndividuals", frontend], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies, frontend); });
 
   return (
     <>

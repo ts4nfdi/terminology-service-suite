@@ -21,8 +21,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     initialEntriesPerPage: {
       description: "Initial number of entries displayed per page.",
@@ -65,12 +69,13 @@ export const ResourcesWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 ResourcesWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+  api: "https://semanticlookup.zbmed.de/api/",
   initialEntriesPerPage: 10,
   pageSizeOptions: [10, 25, 50, 100],
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const,
   targetLink: "https://semanticlookup.zbmed.de/dev/",
+  frontend: "nfdi4health"
 };
 export const withActions = Template.bind({});
 withActions.args = {
@@ -108,4 +113,11 @@ withActions.args = {
       ),
     },
   ],
+};
+
+export const withActionsAndSafety = Template.bind({});
+withActionsAndSafety.args = {
+  ...withActions.args,
+  targetLink: "https://semanticlookup.zbmed.de/safety/",
+  frontend: "safety",
 };
