@@ -29,6 +29,19 @@ export default {
     iri: {
       description: "Iri of the term you want to fetch the metadata for.",
     },
+    objType: {
+      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+      control: {
+        type: "radio",
+        options: [
+          "term",
+          "class",
+          "property",
+          "individual",
+          "INVALID STRING"
+        ],
+      },
+    },
   },
 };
 
@@ -47,4 +60,5 @@ export const MetadataWidget1 = Template.bind({});
 MetadataWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+  objType: "term",
 };
