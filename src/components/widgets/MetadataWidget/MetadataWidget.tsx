@@ -10,6 +10,11 @@ export interface MetadataWidgetProps {
   iri: string;
   ontologyID: string;
   api: string;
+  objType:
+    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
+    | "individual"
+    | "property"
+    | string;
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
@@ -17,7 +22,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem grow={false}>
         <span>
-          <BreadcrumbWidget iri={props.iri} api={props.api} />
+          <BreadcrumbWidget api={props.api} iri={props.iri} objType={props.objType} ontologyID={props.ontologyID}/>
         </span>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -25,7 +30,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
           <EuiFlexItem>
             <EuiFlexGroup>
               <EuiFlexItem grow={false}>
-                <IriWidget iri={props.iri} api={props.api} />
+                <IriWidget iri={props.iri} />
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>

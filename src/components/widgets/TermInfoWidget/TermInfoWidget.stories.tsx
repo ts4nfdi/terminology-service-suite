@@ -15,6 +15,7 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
     },
@@ -36,8 +37,7 @@ export const TermInfoWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-TermInfoWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+TermInfoWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   termIri: "http://www.ebi.ac.uk/efo/EFO_0000400",
   ontologyId: "efo",
   hasTitle: true,

@@ -18,13 +18,33 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     iri: {
       description:
         "Iri of the term you want to fetch the ontology hierarchy for.",
     },
+    ontologyID: {
+      description: "Ontology ID from where the object description should be taken.",
+    },
+  objType: {
+    description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+    control: {
+      type: "radio",
+      options: [
+        "term",
+        "class",
+        "property",
+        "individual",
+        "INVALID STRING"
+      ],
+    },
+  },
     colorFirst: {
       description:
         "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
@@ -74,5 +94,8 @@ export const BreadcrumbWidget1 = Template.bind({});
 // @ts-ignore
 BreadcrumbWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+  api: "https://semanticlookup.zbmed.de/api/",
+  frontend: "nfdi4health",
+  ontologyID: "ncit",
+  objType: "term",
 };

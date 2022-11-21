@@ -16,8 +16,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     ontologyID: {
       description: "ID of the ontology whose info should be displayed.",
@@ -37,7 +41,6 @@ export const OntologyInfoWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-OntologyInfoWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+OntologyInfoWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "atc",
 };

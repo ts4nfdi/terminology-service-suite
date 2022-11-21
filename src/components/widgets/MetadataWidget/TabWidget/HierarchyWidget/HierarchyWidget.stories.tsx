@@ -15,8 +15,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     ontologyID: {
       description: "Ontology ID from where the term hierarchy should be taken.",
@@ -35,6 +39,7 @@ export const HierarchyWidget1 = Template.bind({});
 // @ts-ignore
 HierarchyWidget1.args = {
   iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-  api: "https://semanticlookup.zbmed.de/ols/api/",
+  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "mesh",
+  frontend: "nfdi4health",
 };

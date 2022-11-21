@@ -12,8 +12,12 @@ export default {
         options: [
           "https://www.ebi.ac.uk/ols/api/",
           "https://semanticlookup.zbmed.de/ols/api/",
+          "https://semanticlookup.zbmed.de/api/",
         ],
       },
+    },
+    frontend: {
+      defaultValue: "nfdi4health",
     },
     query: {
       description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
@@ -38,12 +42,23 @@ const Template = (args: SearchResultsListWidgetProps) => (
   </>
 );
 
-export const SearchResultsListWidget1 = Template.bind({});
+export const SearchResultsListSafety = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SearchResultsListWidget1.args = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
-  query: "diabetes",
-  targetLink: "https://semanticlookup.zbmed.de/dev",
+SearchResultsListSafety.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  query: "d*",
+  targetLink: "https://semanticlookup.zbmed.de/safety/",
+};
+
+export const SearchResultsListNFDI4Health = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SearchResultsListNFDI4Health.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  query: "d*",
+  targetLink: "https://semanticlookup.zbmed.de/dev/",
+  frontend: "nfdi4health",
 };
