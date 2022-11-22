@@ -31,9 +31,18 @@ const Template = (args: DataContentWidgetProps) => (
   </>
 );
 
-export const DataContentWidget1 = Template.bind({});
+export const NFDI4HealthDataContentWidget = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-DataContentWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
+NFDI4HealthDataContentWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+};
+
+export const SafetyDataContentWidget = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SafetyDataContentWidget.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  frontend: "safety",
 };

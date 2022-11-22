@@ -60,7 +60,7 @@ export class OlsApi {
     if (sortingParams) {
       return { ...paginationParams, sort: `${sortingParams.sortField},${sortingParams.sortDir}`, ...contentParams};
     }
-    return { ...paginationParams };
+    return { ...paginationParams, ...contentParams };
   }
 
   private buildPaginationParams(paginationParams?: PaginationParams) {

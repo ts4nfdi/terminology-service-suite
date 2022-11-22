@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { EuiText, EuiLoadingSpinner, EuiCard } from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
@@ -13,15 +13,7 @@ export interface DataContentWidgetProps {
 
 const NOT_AVAILABLE = "n/a";
 
-async function getTotalElements(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
-  const response = await apiCall({ size: "1" },undefined,{ frontend: frontend });
 
-  if (response.page.totalElements != null) {
-    return response.page.totalElements;
-  } else {
-    throw new Error("page.totalElements is null in API response");
-  }
-}
 
 async function getTotalAmountOfTerms(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
   const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
@@ -66,11 +58,45 @@ function DataContentWidget(props: DataContentWidgetProps) {
   const { api, frontend, ...rest } = props;
   const olsApi = new OlsApi(api);
 
+  const [totalOntologies, setTotalOntologies] = useState(0);
+
+
   const {
-    data: totalOntologies,
+    data: getOntologies,
     isLoading: isLoadingOntologies,
     dataUpdatedAt: dataUpdatedAtOntologies
-  } = useQuery([api, "getOntologies", frontend], () => { return getTotalElements(olsApi.getOntologies, frontend); });
+  } = useQuery(
+      [
+        api,
+        "ontologiesMetadata",
+        frontend,
+      ],
+      async () => {
+        return olsApi
+            .getOntologies(
+                {
+                  size: "500",
+                },
+                undefined,
+                {
+                  frontend: frontend,
+                }
+            )
+            .then((response) => {
+              if (
+                  response.page.totalElements != null &&
+                  response._embedded &&
+                  response._embedded.ontologies
+              ) {
+                // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
+                setTotalOntologies(response.page.totalElements);
+                return response._embedded.ontologies;
+              } else {
+                throw new Error("Unexpected API response");
+              }
+            });
+      }
+  );
 
   const {
     data: totalTerms,
