@@ -1,1 +1,0 @@
-export { EntityInfoWidget } from "./EntityInfoWidget";
