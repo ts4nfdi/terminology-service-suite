@@ -24,7 +24,7 @@ export default {
       type: { required: false },
       defaultValue: true,
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -54,7 +54,7 @@ export const TermInfoWidget = Template.bind({});
 // @ts-ignore
 TermInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-  objType: "term",
+  entityType: "term",
   ontologyId: "efo",
   hasTitle: true,
 };
@@ -64,7 +64,7 @@ export const PropertyInfoWidget = Template.bind({});
 // @ts-ignore
 PropertyInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
   iri: "http://www.w3.org/2004/02/skos/core#altLabel",
-  objType: "property",
+  entityType: "property",
   ontologyId: "mesh",
   hasTitle: true,
 };
@@ -74,7 +74,7 @@ export const IndividualInfoWidget = Template.bind({});
 // @ts-ignore
 IndividualInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000423",
-  objType: "individual",
+  entityType: "individual",
   ontologyId: "clo",
   hasTitle: true,
 };
