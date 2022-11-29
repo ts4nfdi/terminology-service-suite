@@ -29,6 +29,7 @@ export default {
       control: {
         type: "radio",
         options: [
+          "ontology",
           "term",
           "class",
           "property",
@@ -49,13 +50,22 @@ const Template = (args: EntityInfoWidgetProps) => (
   </>
 );
 
+export const OntologyInfoWidget = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OntologyInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+  entityType: "ontology",
+  ontologyId: "ncit",
+  hasTitle: true,
+};
+
 export const TermInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TermInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   entityType: "term",
-  ontologyId: "efo",
+  ontologyId: "ncit",
   hasTitle: true,
 };
 
