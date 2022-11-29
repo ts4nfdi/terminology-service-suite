@@ -5,7 +5,7 @@ import { useQuery } from 'react-query'
 
 export interface EntityInfoWidgetProps {
     api: string;
-    iri: string;
+    iri?: string;
     ontologyId?: string;
     hasTitle?: boolean;
     entityType:
