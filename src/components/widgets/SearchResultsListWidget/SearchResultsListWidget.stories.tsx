@@ -50,17 +50,6 @@ SearchResultsListSafety.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
   targetLink: "https://semanticlookup.zbmed.de/safety/",
-};
-
-export const SearchResultsListNFDI4Health = Template.bind({});
-export const SearchResultsListSafety = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-SearchResultsListSafety.args = {
-  api: "https://semanticlookup.zbmed.de/api/",
-  query: "d*",
-  targetLink: "https://semanticlookup.zbmed.de/safety/",
   frontend: "safety",
 };
 
