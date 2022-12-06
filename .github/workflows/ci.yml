@@ -5,7 +5,7 @@ name: Build Storybook
 on:
   push:
     branches:
-      - main
+      - documentation-publication
     release:
       types:
         - published
