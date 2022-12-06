@@ -1,4 +1,6 @@
-name: Build Package
+# This workflow will build the storybook documentation with GitHub Pages
+
+name: Build Storybook
 
 on:
   push:
@@ -9,17 +11,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run rollup
 
   pages:
     runs-on: ubuntu-latest
