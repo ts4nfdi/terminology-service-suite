@@ -4,9 +4,9 @@ name: Publish
 
 on:
   push:
-    branches: [ master, alpha ]
+    branches: [ main, alpha ]
   pull_request:
-    branches: [ master, alpha ]
+    branches: [ main, alpha ]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
