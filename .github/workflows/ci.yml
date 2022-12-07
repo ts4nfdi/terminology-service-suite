@@ -40,6 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: public # The folder the action should deploy.
-          TARGET_FOLDER: ${{ env.widgetsDocVersion_PATH }}
+          TARGET_FOLDER: ${{ env.widgetsDocVersion_PATH }} # The folder the deployment folder content should be pushed to
           CLEAN: true # Automatically remove deleted files from the deploy branch
           CLEAN_EXCLUDE: '["version"]'
