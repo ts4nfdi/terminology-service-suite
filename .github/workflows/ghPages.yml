@@ -1,6 +1,6 @@
 # This workflow will build the storybook documentation with GitHub Pages
 
-name: Build Storybook
+name: Build Storybook and publish to GH Pages
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: public # The folder the action should deploy.
+          FOLDER: storybook-static # The folder the action should deploy.
           TARGET_FOLDER: ${{ env.widgetsDocVersion_PATH }} # The folder the deployment folder content should be pushed to
           CLEAN: true # Automatically remove deleted files from the deploy branch
           CLEAN_EXCLUDE: '["version"]'
