@@ -1,12 +1,11 @@
 # This workflow will build the storybook documentation with GitHub Pages
 
-
 name: Build Storybook
 
 on:
   push:
     branches:
-      - documentation-publication
+      - main
     release:
       types:
         - published

@@ -56,7 +56,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   return (
     <EuiComboBox
       aria-label="searchBar"
-      placeholder={props.placeholder ? props.placeholder : "Search for Term"}
+      placeholder={props.placeholder ? props.placeholder : "Search for Entity"}
       options={options}
       selectedOptions={selectedOptions}
       onChange={onChangeHandler}
