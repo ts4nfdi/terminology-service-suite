@@ -11,6 +11,7 @@ export type SearchBarWidgetProps = {
    */
   frontend?: string;
   onSearchValueChange: (suggestion: string) => void;
+  parameters?: string
 } & Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value">;
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
@@ -41,9 +42,8 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         query: value,
       },
       undefined,
-      {
-        frontend: frontend,
-      },
+      undefined,
+        props.parameters,
     ).then((response) => {
       if (response.response && response.response.docs) {
         setSuggestions(response.response.docs.map((suggestion: any) => (

@@ -101,7 +101,25 @@ export class OlsApi {
     return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams };
   }
 
-  private buildParamsForSuggest(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams) {
+  /**
+   * Function for creating an object from string of parameters for axios input params
+   * @param parameters
+   * @private
+   */
+  private buildOtherParams(parameters?: string){
+    var result: any = {}
+    if (parameters) {
+      const paramsSplitted = parameters.split(",")
+
+      paramsSplitted.forEach((param: string) => {
+      const key: string = param.split("=")[0]
+      const value: string = param.split("=")[1]
+      result[key] = value})
+    }
+    return result
+  }
+
+  private buildParamsForSuggest(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string) {
     const params: any = {
       q: queryParams.query,
     };
@@ -110,7 +128,7 @@ export class OlsApi {
       params.ontology = queryParams.ontology;
     }
 
-    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams };
+    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
   }
 
   public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
@@ -164,8 +182,8 @@ export class OlsApi {
     else return (await this.axiosInstance.get("select?q=" + queryParams + "&" + parameter)).data;
   }
 
-  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams): Promise<any> => {
-    return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams) })).data;
+  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string): Promise<any> => {
+    return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameters) })).data;
   }
 
   /**

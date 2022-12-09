@@ -194,6 +194,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 api={api}
                 query={searchValue}
                 onSearchValueChange={setSearchValue}
+                parameters={"frontend=" + props.frontend}
             />
 
             <EuiSpacer size="s"/>
