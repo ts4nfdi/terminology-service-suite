@@ -34,7 +34,6 @@ The widgets are built with React and TypeScript. The components can be viewed, b
 - [Storybook](https://storybook.js.org/)
 
 ## Requirements
-The following tool is required to run the storybook.
 
 - [Node.js 16](https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/)
 
