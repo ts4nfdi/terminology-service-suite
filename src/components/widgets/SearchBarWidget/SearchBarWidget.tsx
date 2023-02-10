@@ -9,16 +9,14 @@ export type SearchBarWidgetProps = {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  frontend?: string;
   onSearchValueChange: (suggestion: string) => void;
-  parameters?: string
+  parameter?: string
 } & Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value">;
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
     api,
     query,
-    frontend,
     onSearchValueChange,
     ...rest
   } = props;
@@ -43,7 +41,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
       },
       undefined,
       undefined,
-        props.parameters,
+        props.parameter,
     ).then((response) => {
       if (response.response && response.response.docs) {
         setSuggestions(response.response.docs.map((suggestion: any) => (

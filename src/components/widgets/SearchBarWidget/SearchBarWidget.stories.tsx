@@ -23,7 +23,7 @@ export default {
       description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
     },
-    parameters: {
+    parameter: {
       defaultValue: "frontend=nfdi4health",
     }
   },

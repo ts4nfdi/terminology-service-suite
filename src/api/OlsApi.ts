@@ -30,9 +30,12 @@ interface SearchQueryParams {
   groupByIri?: boolean;
 }
 
+interface SelectQueryParams {
+  query: string;
+}
+
 interface SuggestQueryParams {
   query: string;
-  ontology?: string;
 }
 
 interface JsTreeParams {
@@ -103,13 +106,13 @@ export class OlsApi {
 
   /**
    * Function for creating an object from string of parameters for axios input params
-   * @param parameters
+   * @param parameter
    * @private
    */
-  private buildOtherParams(parameters?: string){
-    var result: any = {}
-    if (parameters) {
-      const paramsSplitted = parameters.split(",")
+  private buildOtherParams(parameter?: string){
+    const result: any = {};
+    if (parameter) {
+      const paramsSplitted = parameter.split("&")
 
       paramsSplitted.forEach((param: string) => {
       const key: string = param.split("=")[0]
@@ -119,14 +122,19 @@ export class OlsApi {
     return result
   }
 
-  private buildParamsForSuggest(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string) {
+  private buildParamsForSelect(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string) {
     const params: any = {
       q: queryParams.query,
     };
 
-    if (queryParams.ontology) {
-      params.ontology = queryParams.ontology;
-    }
+    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
+  }
+
+
+  private buildParamsForSuggest(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string) {
+    const params: any = {
+      q: queryParams.query,
+    };
 
     return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
   }
@@ -177,13 +185,12 @@ export class OlsApi {
     return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams) })).data;
   }
 
-  public select = async(queryParams: string, parameter?: string, frontend?: string): Promise<any> => {
-    if (frontend) return (await this.axiosInstance.get("select?q=" + queryParams + "&" + parameter + "&frontend=" + frontend)).data;
-    else return (await this.axiosInstance.get("select?q=" + queryParams + "&" + parameter)).data;
+  public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
+    return (await this.axiosInstance.get("select", {params: this.buildParamsForSelect(queryParams, paginationParams, contentParams, parameter) })).data;
   }
 
-  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameters?: string): Promise<any> => {
-    return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameters) })).data;
+  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
+    return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameter) })).data;
   }
 
   /**
