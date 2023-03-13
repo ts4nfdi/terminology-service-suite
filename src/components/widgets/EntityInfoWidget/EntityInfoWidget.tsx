@@ -13,6 +13,7 @@ export interface EntityInfoWidgetProps {
       | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
       | "individual"
       | "property";
+    parameter?: string;
 }
 
 interface EntityInfo {
@@ -36,9 +37,9 @@ interface EntityInfo {
 
 const DEFAULT_HAS_TITLE = true;
 
-async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string): Promise<EntityInfo> {
+async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<EntityInfo> {
     if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId})
+        const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
           .catch((error) => console.log(error));
         return {
             iri: response.config.id,
@@ -53,7 +54,7 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
         };
     }
     if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri})
+        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
           .catch((error) => console.log(error));
         return {
             label: response._embedded.terms[0].label,
@@ -64,7 +65,7 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
         };
     }
     if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri})
+        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
           .catch((error) => console.log(error));
         return {
             label: response._embedded.properties[0].label,
@@ -74,7 +75,7 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
         };
     }
     if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri})
+        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
           .catch((error) => console.log(error));
         return {
             label: response._embedded.individuals[0].label,
@@ -92,14 +93,14 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
 }
 
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
         data: entityInfo,
         isLoading: isLoadingEntityInfo,
         isSuccess: isSuccessEntityInfo,
-    } = useQuery([api, iri, ontologyId, entityType, "getEntityInfo"], () => {
+    } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getEntityInfo(olsApi, entityType, iri, ontologyId);
     });
 

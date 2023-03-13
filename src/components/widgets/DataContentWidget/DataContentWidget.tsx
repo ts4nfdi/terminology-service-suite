@@ -8,14 +8,14 @@ export interface DataContentWidgetProps {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  parameter: string;
+  parameter?: string;
 }
 
 const NOT_AVAILABLE = "n/a";
 
 
 
-async function getTotalAmountOfTerms(apiCall: apiCallFn, parameter: string): Promise<number> {
+async function getTotalAmountOfTerms(apiCall: apiCallFn, parameter?: string): Promise<number> {
   const response = await apiCall({ size: "500" },undefined, undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
@@ -28,7 +28,7 @@ async function getTotalAmountOfTerms(apiCall: apiCallFn, parameter: string): Pro
   }
 }
 
-async function getTotalAmountOfProperties(apiCall: apiCallFn, parameter: string): Promise<number> {
+async function getTotalAmountOfProperties(apiCall: apiCallFn, parameter?: string): Promise<number> {
   const response = await apiCall({ size: "500" },undefined,undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
@@ -41,7 +41,7 @@ async function getTotalAmountOfProperties(apiCall: apiCallFn, parameter: string)
   }
 }
 
-async function getTotalAmountOfIndividuals(apiCall: apiCallFn, parameter: string): Promise<number> {
+async function getTotalAmountOfIndividuals(apiCall: apiCallFn, parameter?: string): Promise<number> {
   const response = await apiCall({ size: "500" },undefined,undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;

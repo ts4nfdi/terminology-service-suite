@@ -21,6 +21,7 @@ export default {
     },
     parameter: {
       defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };

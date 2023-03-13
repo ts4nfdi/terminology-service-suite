@@ -155,8 +155,8 @@ export class OlsApi {
     return (await this.axiosInstance.get("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
   }
 
-  public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId)).data;
+  public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId, { params: this.buildOtherParams(parameter) })).data;
   }
 
   /**
