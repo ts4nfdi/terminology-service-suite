@@ -10,6 +10,7 @@ import {
 export interface CrossRefWidgetProps {
   iri: string;
   api: string;
+  parameter?: string
 }
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {

@@ -4,6 +4,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from "@elastic/eui";
 export interface AlternativeNameTabWidgetProps {
   iri: string;
   api: string;
+  parameter?: string
 }
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {

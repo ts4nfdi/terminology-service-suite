@@ -12,6 +12,7 @@ export interface TabWidgetProps {
   iri: string;
   ontologyID: string;
   api: string;
+  parameter?: string
 }
 
 function TabWidget(props: TabWidgetProps) {

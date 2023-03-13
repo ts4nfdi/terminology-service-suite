@@ -13,6 +13,7 @@ export interface IriWidgetProps {
       | "ghost"
       | "text"
       | "subdued";
+  parameter?: string
 }
 
 function IriWidget(props: IriWidgetProps) {
