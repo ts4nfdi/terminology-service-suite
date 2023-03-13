@@ -6,6 +6,7 @@ import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 export interface OntologyInfoWidgetProps {
   ontologyID: string;
   api: string;
+  parameter?: string;
 }
 
 interface OntologyInfo {
@@ -17,8 +18,8 @@ interface OntologyInfo {
   annotations: object; //list of key&value string pairs
 }
 
-async function getOntoData(apiCall: apiCallFn, ontologyID: string): Promise<OntologyInfo> {
-  const response = await apiCall(undefined, undefined, {ontologyId: ontologyID});
+async function getOntoData(apiCall: apiCallFn, ontologyID: string, parameter?: string): Promise<OntologyInfo> {
+  const response = await apiCall(undefined, undefined, {ontologyId: ontologyID}, parameter);
 
   return {
     iri: response.config.id,
@@ -31,7 +32,7 @@ async function getOntoData(apiCall: apiCallFn, ontologyID: string): Promise<Onto
 }
 
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
-  const { ontologyID, api } = props;
+  const { ontologyID, api, parameter } = props;
   const olsApi = new OlsApi(api);
 
   const infoItemStyle = {
@@ -45,7 +46,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const {
     data: ontologyInfo,
     isLoading,
-  } = useQuery([api, "getOntology", ontologyID], () => { return getOntoData(olsApi.getOntology, ontologyID); });
+  } = useQuery([api, "getOntology", ontologyID, parameter], () => { return getOntoData(olsApi.getOntology, ontologyID, parameter); });
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
