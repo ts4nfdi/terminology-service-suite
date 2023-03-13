@@ -82,7 +82,7 @@ export class OlsApi {
     return params;
   }
 
-  private buildParamsForSearch(queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams) {
+  private buildParamsForSearch(queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string) {
     const params: any = {
       q: queryParams.query,
       exact: queryParams.exactMatch,
@@ -101,7 +101,7 @@ export class OlsApi {
       params.ontology = queryParams.ontology;
     }
 
-    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams };
+    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams, ...this.buildOtherParams(parameter) };
   }
 
   /**
@@ -181,8 +181,8 @@ export class OlsApi {
     return (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, frontend: contentParams?.frontend} })).data;
   }
 
-  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams): Promise<any> => {
-    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams) })).data;
+  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
+    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter) })).data;
   }
 
   public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
