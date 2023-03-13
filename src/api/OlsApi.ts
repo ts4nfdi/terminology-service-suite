@@ -19,7 +19,7 @@ interface ContentParams {
   frontend?: string;
 }
 
-export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams) => Promise<any>;
+export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
 
 interface SearchQueryParams {
   query: string;
@@ -59,11 +59,11 @@ export class OlsApi {
     });
   }
 
-  private buildParamsForGet(paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams) {
+  private buildParamsForGet(paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string) {
     if (sortingParams) {
-      return { ...paginationParams, sort: `${sortingParams.sortField},${sortingParams.sortDir}`, ...contentParams};
+      return { ...paginationParams, sort: `${sortingParams.sortField},${sortingParams.sortDir}`, ...contentParams, ...this.buildOtherParams(parameter)};
     }
-    return { ...paginationParams, ...contentParams };
+    return { ...paginationParams, ...contentParams, ...this.buildOtherParams(parameter) };
   }
 
   private buildPaginationParams(paginationParams?: PaginationParams) {
@@ -139,8 +139,8 @@ export class OlsApi {
     return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
   }
 
-  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-    return (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    return (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) })).data;
   }
 
   public getTerms: apiCallFn = async (paginationParams, sortingParams, contentParams) => {

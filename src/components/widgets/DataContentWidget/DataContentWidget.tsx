@@ -8,15 +8,15 @@ export interface DataContentWidgetProps {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  frontend?: string;
+  parameter: string;
 }
 
 const NOT_AVAILABLE = "n/a";
 
 
 
-async function getTotalAmountOfTerms(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
+async function getTotalAmountOfTerms(apiCall: apiCallFn, parameter: string): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined, undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -28,8 +28,8 @@ async function getTotalAmountOfTerms(apiCall: apiCallFn, frontend: string | unde
   }
 }
 
-async function getTotalAmountOfProperties(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
+async function getTotalAmountOfProperties(apiCall: apiCallFn, parameter: string): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined,undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -41,8 +41,8 @@ async function getTotalAmountOfProperties(apiCall: apiCallFn, frontend: string |
   }
 }
 
-async function getTotalAmountOfIndividuals(apiCall: apiCallFn, frontend: string | undefined): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined,{frontend:frontend});
+async function getTotalAmountOfIndividuals(apiCall: apiCallFn, parameter: string): Promise<number> {
+  const response = await apiCall({ size: "500" },undefined,undefined, parameter);
   if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
     let totalAmount = 0;
     for (const ontology of response._embedded.ontologies) {
@@ -55,7 +55,7 @@ async function getTotalAmountOfIndividuals(apiCall: apiCallFn, frontend: string 
 }
 
 function DataContentWidget(props: DataContentWidgetProps) {
-  const { api, frontend, ...rest } = props;
+  const { api, parameter, ...rest } = props;
   const olsApi = new OlsApi(api);
 
   const [totalOntologies, setTotalOntologies] = useState(0);
@@ -69,7 +69,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
       [
         api,
         "ontologiesMetadata",
-        frontend,
+        parameter,
       ],
       async () => {
         return olsApi
@@ -78,9 +78,8 @@ function DataContentWidget(props: DataContentWidgetProps) {
                   size: "500",
                 },
                 undefined,
-                {
-                  frontend: frontend,
-                }
+                undefined,
+                props.parameter
             )
             .then((response) => {
               if (
@@ -101,17 +100,17 @@ function DataContentWidget(props: DataContentWidgetProps) {
   const {
     data: totalTerms,
     isLoading: isLoadingTerms
-  } = useQuery([api, "getTerms", frontend], () => { return getTotalAmountOfTerms(olsApi.getOntologies, frontend); });
+  } = useQuery([api, "getTerms", parameter], () => { return getTotalAmountOfTerms(olsApi.getOntologies, props.parameter); });
 
   const {
     data: totalProperties,
     isLoading: isLoadingProperties
-  } = useQuery([api, "getProperties", frontend], () => { return getTotalAmountOfProperties(olsApi.getOntologies, frontend); });
+  } = useQuery([api, "getProperties", parameter], () => { return getTotalAmountOfProperties(olsApi.getOntologies, props.parameter); });
 
   const {
     data: totalIndividuals,
     isLoading: isLoadingIndividuals
-  } = useQuery([api, "getIndividuals", frontend], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies, frontend); });
+  } = useQuery([api, "getIndividuals", parameter], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies, props.parameter); });
 
   return (
     <>
