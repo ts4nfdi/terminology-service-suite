@@ -26,7 +26,7 @@ export interface ResourcesWidgetProps {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  frontend?: string;
+  parameter?: string;
 }
 
 export interface OlsResource {
@@ -60,7 +60,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     targetLink,
-    frontend,
+    parameter,
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -188,7 +188,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       pageIndex,
       sortField,
       sortDirection,
-      frontend,
+      parameter,
     ],
     async () => {
       return olsApi
@@ -201,9 +201,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             sortField: sortField,
             sortDir: sortDirection,
           },
-          {
-            frontend: frontend,
-          }
+          undefined,
+            props.parameter
         )
         .then((response) => {
           if (

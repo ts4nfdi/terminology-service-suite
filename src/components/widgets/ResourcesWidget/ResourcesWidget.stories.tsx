@@ -57,6 +57,10 @@ export default {
       control: "text",
     },
     actions: {},
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
+    },
   },
 };
 
@@ -75,7 +79,7 @@ ResourcesWidget1.args = {
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const,
   targetLink: "https://semanticlookup.zbmed.de/dev/",
-  frontend: "nfdi4health"
+  parameter: "frontend=nfdi4health"
 };
 export const withActions = Template.bind({});
 withActions.args = {
@@ -119,5 +123,5 @@ export const withActionsAndSafety = Template.bind({});
 withActionsAndSafety.args = {
   ...withActions.args,
   targetLink: "https://semanticlookup.zbmed.de/safety/",
-  frontend: "safety",
+  parameter: "frontend=safety",
 };
