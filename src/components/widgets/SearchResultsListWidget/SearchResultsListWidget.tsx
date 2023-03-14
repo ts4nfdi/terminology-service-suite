@@ -27,7 +27,7 @@ export type SearchResultsListWidgetProps = {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  frontend?: string;
+  parameter?: string;
   initialItemsPerPage?: number;
   itemsPerPageOptions?: number[];
   targetLink?: string;
@@ -40,7 +40,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     const {
         api,
         query,
-        frontend,
+        parameter,
         initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
         targetLink,
@@ -110,6 +110,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             itemsPerPage,
             filterByTypeOptions.filter(filterSelectedOptions),
             filterByOntologyOptions.filter(filterSelectedOptions),
+            parameter
         ],
         async () => {
             return olsApi.search(
@@ -125,9 +126,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     page: activePage.toString(),
                     size: itemsPerPage.toString(),
                 },
-                {
-                    frontend: frontend
-                }
+                undefined,
+                props.parameter
             ).then((response) => {
                 if (response.response && response.response.docs != null && response.response.numFound != null) {
                     setTotalItems(response.response.numFound);
@@ -194,6 +194,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 api={api}
                 query={searchValue}
                 onSearchValueChange={setSearchValue}
+                parameter={parameter}
             />
 
             <EuiSpacer size="s"/>

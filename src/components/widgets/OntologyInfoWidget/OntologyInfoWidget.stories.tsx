@@ -20,11 +20,12 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     ontologyID: {
       description: "ID of the ontology whose info should be displayed.",
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };

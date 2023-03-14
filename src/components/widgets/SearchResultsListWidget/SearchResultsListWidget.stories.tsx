@@ -16,9 +16,6 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     query: {
       description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
     },
@@ -32,6 +29,10 @@ export default {
     },
     targetLink: {
       description: "The link which should be the target of the EuiCard.",
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };
@@ -49,8 +50,8 @@ export const SearchResultsListSafety = Template.bind({});
 SearchResultsListSafety.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
-  targetLink: "https://semanticlookup.zbmed.de/safety/",
-  frontend: "safety",
+  targetLink: "",
+  parameter: "frontend=safety",
 };
 
 export const SearchResultsListNFDI4Health = Template.bind({});
@@ -60,6 +61,6 @@ export const SearchResultsListNFDI4Health = Template.bind({});
 SearchResultsListNFDI4Health.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
-  targetLink: "https://semanticlookup.zbmed.de/dev/",
-  frontend: "nfdi4health",
+  targetLink: "",
+  parameter: "frontend=nfdi4health",
 };

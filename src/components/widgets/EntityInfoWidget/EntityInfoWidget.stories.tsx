@@ -41,6 +41,10 @@ export default {
     iri: {
       description: "Entity IRI whose information you want to fetch.",
     },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
+    },
   },
 };
 

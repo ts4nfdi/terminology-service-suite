@@ -8,6 +8,7 @@ export type MetadataCompactProps = {
     api: string;
     result: any;
     targetLink?: string;
+    parameter?: string
 } & Partial<Omit<EuiCardProps, "layout">>;
 
 
@@ -18,8 +19,6 @@ function MetadataCompact(props: MetadataCompactProps) {
         targetLink,
         ...rest
     } = props;
-
-    console.dir(result)
 
     return (
         <EuiCard

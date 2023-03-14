@@ -15,6 +15,7 @@ export interface MetadataWidgetProps {
     | "individual"
     | "property"
     | string;
+  parameter?: string
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
@@ -22,7 +23,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem grow={false}>
         <span>
-          <BreadcrumbWidget api={props.api} iri={props.iri} objType={props.objType} ontologyID={props.ontologyID}/>
+          <BreadcrumbWidget api={props.api} iri={props.iri} objType={props.objType} ontologyID={props.ontologyID} parameter={props.parameter}/>
         </span>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -30,24 +31,25 @@ function MetadataWidget(props: MetadataWidgetProps) {
           <EuiFlexItem>
             <EuiFlexGroup>
               <EuiFlexItem grow={false}>
-                <IriWidget iri={props.iri} />
+                <IriWidget iri={props.iri} parameter={props.parameter}/>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TitleWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} />
+            <TitleWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} parameter={props.parameter} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
       <EuiFlexItem>
-        <DescriptionWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} />
+        <DescriptionWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} parameter={props.parameter}/>
       </EuiFlexItem>
       <EuiFlexItem>
         <TabWidget
           iri={props.iri}
           ontologyID={props.ontologyID}
           api={props.api}
+          parameter={props.parameter}
         />
       </EuiFlexItem>
     </EuiFlexGroup>

@@ -18,10 +18,6 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      */
     api: string;
     /**
-     * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-     */
-    frontend?: string;
-    /**
      * Additional parameter to pass to the API.
      *
      * This parameter could be used to filter the search results. Each parameter could be combined via
@@ -66,7 +62,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, frontend, parameter, ...rest } = props;
+    const { api, parameter, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -119,7 +115,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
             setLoadingState(true);
             olsApi.select(
-                props.selectOption?.iri, parameter, frontend
+                {query: props.selectOption?.iri},
+                undefined,
+                undefined,
+                props.parameter,
             ).then((response) => {
                 if (response.response && response.response.docs) {
                     response.response.docs.map((selection: any) => {
@@ -179,7 +178,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         if (searchValue.length > 0) {
             setLoadingState(true);
             return olsApi.select(
-                searchValue, parameter, frontend
+                {query: searchValue},
+                undefined,
+                undefined,
+                props.parameter,
             ).then((response) => {
                 if (response.response && response.response.docs) {
                     setOptions(response.response.docs.map((selection: any) => (

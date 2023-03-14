@@ -18,9 +18,6 @@ export default {
       },
       defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     selectionChangedEvent: {
       action: "selectionChangedEvent",
     },
@@ -29,7 +26,7 @@ export default {
     },
     selectOption: {},
     parameter: {
-      defaultValue: "ontology=mesh,efo&type=class",
+      defaultValue: "ontology=mesh,efo&type=class&frontend=nfdi4health",
     },
   },
 };
@@ -49,6 +46,12 @@ withInvalidValue.args = {
   selectOption: {
     iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
   },
+};
+
+export const withGermanInput = Template.bind({});
+withGermanInput.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "frontend=nfdi4health&lang=de&type=class",
 };
 
 

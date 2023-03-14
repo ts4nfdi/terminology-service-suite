@@ -22,9 +22,6 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     iri: {
       description:
         "Iri of the term you want to fetch the ontology hierarchy for.",
@@ -81,6 +78,10 @@ export default {
         ],
       },
     },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
+    },
   },
 };
 
@@ -95,7 +96,7 @@ export const BreadcrumbWidget1 = Template.bind({});
 BreadcrumbWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
-  frontend: "nfdi4health",
   ontologyID: "ncit",
   objType: "term",
+  parameter: "frontend=nfdi4health",
 };

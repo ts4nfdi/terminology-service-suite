@@ -33,6 +33,10 @@ export default {
     iri: {
       Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
+    },
   },
 };
 

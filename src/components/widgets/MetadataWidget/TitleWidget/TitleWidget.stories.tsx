@@ -20,9 +20,6 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     ontologyID: {
       description: "Ontology ID from where the object title/label should be taken.",
     },
@@ -46,6 +43,10 @@ export default {
     titleText: {
       description:
         "Set your own text manually that overwrites the text fetched from the API",
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };

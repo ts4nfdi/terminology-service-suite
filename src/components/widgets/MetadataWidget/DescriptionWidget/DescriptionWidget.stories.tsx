@@ -20,9 +20,6 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     color: {
       description: "Color of the text, names, hex or rgb",
       control: {
@@ -64,6 +61,10 @@ export default {
     iri: {
       description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
+    },
   },
 };
 
@@ -84,4 +85,5 @@ DescriptionWidget1.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   objType: "term",
+  parameter: "frontend=nfdi4health"
 };

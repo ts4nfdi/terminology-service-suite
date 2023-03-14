@@ -19,8 +19,9 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };
@@ -35,7 +36,9 @@ export const NFDI4HealthDataContentWidget = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-NFDI4HealthDataContentWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+NFDI4HealthDataContentWidget.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "frontend=nfdi4health"
 };
 
 export const SafetyDataContentWidget = Template.bind({});
@@ -44,5 +47,5 @@ export const SafetyDataContentWidget = Template.bind({});
 // @ts-ignore
 SafetyDataContentWidget.args = {
   api: "https://semanticlookup.zbmed.de/api/",
-  frontend: "safety",
+  parameter: "frontend=safety",
 };

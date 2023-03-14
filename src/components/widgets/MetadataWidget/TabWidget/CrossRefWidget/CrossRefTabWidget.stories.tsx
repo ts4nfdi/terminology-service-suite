@@ -19,12 +19,13 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     iri: {
       description:
         "Iri of the term you want to fetch the cross references for.",
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };

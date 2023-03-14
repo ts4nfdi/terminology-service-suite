@@ -10,7 +10,6 @@ export interface BreadcrumbWidgetProps {
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  frontend?: string;
   objType:
       | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
       | "individual"
@@ -27,13 +26,14 @@ export interface BreadcrumbWidgetProps {
     | "subdued"
     | string;
   colorSecond?: string;
+  parameter?: string
 }
 
 const NO_SHORTFORM = "No short form available.";
 
-async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string, iri?: string, frontend?: string): Promise<string> {
+async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string, iri?: string, parameter?: string): Promise<string> {
   if (objType == "term"){
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyID, termIri: iri, frontend: frontend})
+    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyID, termIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.terms[0].short_form != null && response._embedded.terms[0].short_form != null) {
       return response._embedded.terms[0].short_form.toUpperCase();
@@ -42,7 +42,7 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
     }
   }
   if (objType == "property"){
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyID, propertyIri: iri, frontend: frontend})
+    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyID, propertyIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.properties[0].short_form != null && response._embedded.properties[0].short_form != null) {
       return response._embedded.properties[0].short_form;
@@ -51,7 +51,7 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
     }
   }
   if (objType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyID, individualIri: iri, frontend: frontend})
+    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyID, individualIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.individuals[0].short_form != null && response._embedded.individuals[0].short_form != null) {
       return response._embedded.individuals[0].short_form;
@@ -64,14 +64,14 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
 }
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyID, iri, frontend, objType, colorFirst, colorSecond } = props;
+  const { api, ontologyID, iri, objType, colorFirst, colorSecond, parameter } = props;
   const fixedObjType = objType == "class" ? "term" : objType
   const olsApi = new OlsApi(api);
 
   const {
     data: shortForm,
     isLoading,
-  } = useQuery([api, "getDescription", fixedObjType, ontologyID, iri, frontend], () => { return getShortForm(olsApi, fixedObjType, ontologyID, iri, frontend); });
+  } = useQuery([api, "getDescription", fixedObjType, ontologyID, iri, parameter], () => { return getShortForm(olsApi, fixedObjType, ontologyID, iri, parameter); });
 
   return (
     <EuiFlexItem>

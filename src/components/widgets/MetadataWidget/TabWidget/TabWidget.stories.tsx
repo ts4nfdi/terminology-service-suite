@@ -19,14 +19,15 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     ontologyID: {
       description: "Ontology ID from where the term information should be taken.",
     },
     iri: {
       description: "Iri of the term you want to fetch the tab information for.",
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
+      type: { required: false }
     },
   },
 };

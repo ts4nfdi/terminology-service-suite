@@ -16,15 +16,15 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     query: {
       description: "The search term to receive suggestions for.",
     },
     onSearchValueChange: {
       description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
+    },
+    parameter: {
+      defaultValue: "frontend=nfdi4health",
     }
   },
 };
