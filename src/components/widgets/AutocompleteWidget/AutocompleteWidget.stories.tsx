@@ -26,7 +26,7 @@ export default {
     },
     selectOption: {},
     parameter: {
-      defaultValue: "ontology=mesh,efo&type=class&frontend=nfdi4health",
+      defaultValue: "ontology=mesh,efo&type=class&collection=nfdi4health",
     },
   },
 };
@@ -51,7 +51,7 @@ withInvalidValue.args = {
 export const withGermanInput = Template.bind({});
 withGermanInput.args = {
   api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "frontend=nfdi4health&lang=de&type=class",
+  parameter: "collection=nfdi4health&lang=de&type=class",
 };
 
 

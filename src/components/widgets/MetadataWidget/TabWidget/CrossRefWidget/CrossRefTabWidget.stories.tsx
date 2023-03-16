@@ -24,7 +24,7 @@ export default {
         "Iri of the term you want to fetch the cross references for.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },

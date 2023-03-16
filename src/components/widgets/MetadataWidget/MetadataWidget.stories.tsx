@@ -40,7 +40,7 @@ export default {
       },
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
@@ -62,5 +62,5 @@ MetadataWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
   objType: "term",
-  parameter: "frontend=nfdi4health"
+  parameter: "collection=nfdi4health"
 };

@@ -42,7 +42,7 @@ export default {
       description: "Entity IRI whose information you want to fetch.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },

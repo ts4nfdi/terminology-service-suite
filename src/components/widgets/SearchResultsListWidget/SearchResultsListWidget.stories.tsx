@@ -31,7 +31,7 @@ export default {
       description: "The link which should be the target of the EuiCard.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
@@ -51,7 +51,7 @@ SearchResultsListSafety.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
   targetLink: "",
-  parameter: "frontend=safety",
+  parameter: "collection=safety",
 };
 
 export const SearchResultsListNFDI4Health = Template.bind({});
@@ -62,5 +62,5 @@ SearchResultsListNFDI4Health.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
   targetLink: "",
-  parameter: "frontend=nfdi4health",
+  parameter: "collection=nfdi4health",
 };

@@ -27,7 +27,7 @@ export default {
         "Iri of the term you want to fetch the alternative names for.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },

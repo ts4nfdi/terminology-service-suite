@@ -16,7 +16,7 @@ interface ContentParams {
   propertyIri?: string;
   individualIri?: string;
   queryString?: string;
-  frontend?: string;
+
 }
 
 export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
