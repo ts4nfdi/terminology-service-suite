@@ -45,7 +45,7 @@ export default {
         "Set your own text manually that overwrites the text fetched from the API",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },

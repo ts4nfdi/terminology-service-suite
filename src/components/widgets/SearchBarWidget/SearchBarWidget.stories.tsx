@@ -24,7 +24,7 @@ export default {
       action: "onSearchValueChange"
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
     }
   },
 };

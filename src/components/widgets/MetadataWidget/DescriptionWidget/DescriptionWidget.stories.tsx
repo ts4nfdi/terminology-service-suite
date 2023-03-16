@@ -62,7 +62,7 @@ export default {
       description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
@@ -85,5 +85,5 @@ DescriptionWidget1.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
   objType: "term",
-  parameter: "frontend=nfdi4health"
+  parameter: "collection=nfdi4health"
 };

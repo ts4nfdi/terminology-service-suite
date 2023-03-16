@@ -24,7 +24,7 @@ export default {
       description: "ID of the ontology whose info should be displayed.",
     },
     parameter: {
-      defaultValue: "frontend=nfdi4health",
+      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
