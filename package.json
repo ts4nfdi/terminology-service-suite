@@ -67,5 +67,8 @@
   },
   "publishConfig": {
     "@nfdi4health:registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "@panosvoudouris/addon-versions": "^1.0.1"
   }
 }
