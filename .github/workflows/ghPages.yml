@@ -23,7 +23,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          npm install --legacy-peer-deps
+          npm install
           npm run build-storybook -- -o public
 
       - name: Upload artifact
