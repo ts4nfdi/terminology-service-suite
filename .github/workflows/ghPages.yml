@@ -7,17 +7,10 @@ on:
     branches:
       - main
 
-env:
-  widgetsDocVersion_PATH: /
-
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Update widgetsDocVersion_PATH
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: echo widgetsDocVersion_PATH=/version/$(echo $GITHUB_REF | cut -d / -f 3 | cut -d v -f 2- | cut -d . -f 1,2)/ >> $GITHUB_ENV
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -31,12 +24,33 @@ jobs:
         with:
           path: 'public'
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: storybook-static # The folder the action should deploy.
-          TARGET_FOLDER: ${{ env.widgetsDocVersion_PATH }} # The folder the deployment folder content should be pushed to
-          CLEAN: true # Automatically remove deleted files from the deploy branch
-          CLEAN_EXCLUDE: '["version"]'
+  deploy-storybook:
+    - runs-on: ubuntu-latest
+    - steps:
+      - name: Deploy Storybook
+        run: echo "Create environment."
+        environment:
+          name: storybook/$CI_COMMIT_REF_SLUG
+          url: https://github.com/nfdi4health/semlookp-widgets/$CI_COMMIT_REF_SLUG/storybook/
+        only:
+          - branches
+  pages:
+    - runs-on: ubuntu-latest
+    - steps:
+      - name: Pages
+        cache:
+          key: 'my-storybook'
+          paths:
+            - public
+        script:
+          - if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+            mkdir -p public;
+            touch public/index.html;
+            echo "<!DOCTYPE HTML><script>window.location.href = 'https://github.com/nfdi4health/semlookp-widgets/main/storybook'</script>" > public/index.html;
+            fi;
+          - rm -rf "public/$CI_COMMIT_REF_SLUG"
+          - mkdir -p "public/$CI_COMMIT_REF_SLUG";
+          - mv storybook "public/$CI_COMMIT_REF_SLUG"
+        artifacts:
+          paths:
+            - public
