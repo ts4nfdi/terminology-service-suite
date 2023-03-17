@@ -25,8 +25,8 @@ jobs:
           path: 'public'
 
   deploy-storybook:
-    - runs-on: ubuntu-latest
-    - steps:
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy Storybook
         run: echo "Create environment."
         environment:
@@ -35,8 +35,8 @@ jobs:
         only:
           - branches
   pages:
-    - runs-on: ubuntu-latest
-    - steps:
+    runs-on: ubuntu-latest
+    steps:
       - name: Pages
         cache:
           key: 'my-storybook'
