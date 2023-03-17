@@ -1,8 +1,7 @@
 "storybook": {
     "versions": {
       "availableVersions": [
-        "1.0.0",
-        "1.0.1"
+        "1.0.0"
       ],
       "hostname": "https://nfdi4health.github.io/semlookp-widgets/?path=/story/",
       "localhost": "localhost:8080",
