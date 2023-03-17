@@ -4,7 +4,6 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@panosvoudouris/addon-versions/register"
   ],
   framework: "@storybook/react",
 };
