@@ -28,12 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Storybook
-        run: echo "Create environment."
         environment:
           name: storybook/$CI_COMMIT_REF_SLUG
           url: https://github.com/nfdi4health/semlookp-widgets/$CI_COMMIT_REF_SLUG/storybook/
-        only:
-          - branches
+        run: echo "Create environment."
+
   pages:
     runs-on: ubuntu-latest
     steps:
