@@ -2,20 +2,22 @@
 
 ## About The Project
 
-This project includes a widget component library derived from the semantic lookup service SemLookP.
-[SemLookP](https://semanticlookup.zbmed.de/ols/index) supports metadata annotation as well as data search in the area of translational medicine. 
-The service is based on software developed by EBI: the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index) and the mapping service [Ontology Xref Service (OxO)](https://www.ebi.ac.uk/spot/oxo/). 
-The widgets are built with React and TypeScript. The components can be viewed, built and tested with the included Storybook.
+This project includes a widget component library derived from the semantic lookup service 
+[SemLookP](https://semanticlookup.zbmed.de/ols/index). The Terminology Service is a repository for biomedical resources 
+that aims to provide a single point of access to the latest ontology and terminology versions. User interface (UI) 
+functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, 
+thus simplifying the development of user interfaces and the visualization of semantic information. 
 
-After editing a component or adding new ones the CI/CD pipeline will publish a new package release 
-depending on the analysis of semantic release. The built registry module can then be integrated 
-into existing projects.
-
+The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
+based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
+The components can be viewed, built and tested with the included Storybook.
 
 ## Documentation
 
-[![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)  
 [Documentation](http://km.pages.gitlab.zbmed.de/semlookp/widgets-semlookp)
+
+[![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)  
+
 
 ## Built With
 
@@ -27,56 +29,32 @@ into existing projects.
 - [Storybook](https://storybook.js.org/)
 
 ## Requirements
-The following tool is required to run the storybook.
 
 - [Node.js 16](https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/)
 
 ## Setup
 
-Before starting the storybook for the first time you must run the following command.
+### Run Storybook
+
+Before starting the storybook for the first time you must run the following command:
 ```
 npm install
 ```
 
-### Run Storybook
-
-To start the storybook use the following command
+To start the storybook use the following command:
 
 ```
 npm run storybook
 ```
 Note: The Storybook uses per default port 6006.
 
-### Publish Components
-
-To publish a new release, add the semantic release trigger to the commit message.
-
-Start the commit with:
-
-```
-fix: for new patch release
-```
-
-```
-feat: for new minor release
-```
-
-```
-feat: for new major release
-BREAKING CHANGE: The new breaking change is...
-```
-
-The GitLab CI/CD pipeline will then start semantic release,
-publish a new package and increase the version number depending on the commit message.
-
-[Semantic Release](https://docs.gitlab.com/ee/ci/examples/semantic-release.html)
 
 ### Install package
 
 To use the module, you have to [authenticate](https://docs.gitlab.com/ee/user/packages/npm_registry/) with a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) or deploy token.
 
 Create a `.npmrc` file in your projects root folder.
-Paste your authentication token with read and/or write access to the registry and the registry link.
+Paste your authentication token with read and/or write access and the registry link to the file.
 
 ```
 @km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
@@ -109,22 +87,33 @@ For help see [ElasticUI Provider](https://elastic.github.io/eui/#/utilities/prov
 
 For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
 
-## Components
+### Development
 
-- IriWidget: Displays the IRI of a given term
-- TitleWidget: Widget displaying the title of an ontology, or the label of a term, property or individual
-- DescriptionWidget: Widget displaying the description of an ontology, a term, a property or an individual
-- MetaDataWidget: Widget that displays the name, IRI, ontology hierarchy, description, alternative names, hierarchy and cross-references of a term
-- OntologyInfoWidget: Widget that displays IRI, ID, version, term count, load date, and all the annotations of an ontology
-- BreadcrumbWidget: Widget that displays badges of the current term and its ontology
-- AlternativeNameTabWidget: Widget that displays all alternative names of a term
-- CrossRefTabWidget: Widget that displays all cross-references of a term
-- HierarchyWidget: Widget that displays the term hierarchy
-- TabWidget: Widget that combines the AlternativeNameTabWidget, HierarchyWidget, CrossRefTabWidget
-- Autocomplete Widget: Widget that searches an instance of OLS for matching terms
-- JsonApiWidget: Widget containing a button that opens a new page with the JSON result of any query to an API instance
+#### Publish components
 
-For more information about the existing widgets and its properties run the included Storybook.
+After editing a component the CI/CD pipeline will publish a new package release 
+depending on the analysis of [Semantic Release](https://docs.gitlab.com/ee/ci/examples/semantic-release.html). 
+The built registry module can then be integrated 
+into existing projects. To publish a new release, add the semantic release trigger to the commit message.
+
+Start the commit with:
+
+```
+fix: for new patch release
+```
+
+```
+feat: for new minor release
+```
+
+```
+feat: for new major release
+BREAKING CHANGE: The new breaking change is...
+```
+
+The GitLab CI/CD pipeline will then start semantic release,
+publish a new package and increase the version number depending on the commit message.
+
 
 ## Funding
 
