@@ -42,7 +42,7 @@ jobs:
           key: 'my-storybook'
           paths:
             - public
-        script:
+        run:
           - if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
             mkdir -p public;
             touch public/index.html;
