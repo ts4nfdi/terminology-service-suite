@@ -1,12 +1,12 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code
 
-name: Publish
+name: CI/CD
 
 on:
   push:
-    branches: [ main, alpha]
+    branches: [ main]
   pull_request:
-    branches: [ main, alpha]
+    branches: [ main]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
