@@ -1,0 +1,33 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code
+
+name: Publish
+
+on:
+  push:
+    branches: [ main, alpha]
+  pull_request:
+    branches: [ main, alpha]
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npx semantic-release
