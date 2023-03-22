@@ -13,7 +13,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      - name: Use Node.js 16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
       - name: Install and Build
         run: |
           npm install
@@ -23,3 +27,6 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: 'public'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
