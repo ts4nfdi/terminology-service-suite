@@ -66,6 +66,6 @@
     "react-query": "^3.39.2"
   },
   "publishConfig": {
-    "@nfdi4health:registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
