@@ -27,6 +27,7 @@
     "@rollup/plugin-typescript": "^8.3.4",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.6",
+    "@semantic-release/gitlab": "^9.4.1",
     "@semantic-release/npm": "^9.0.1",
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
