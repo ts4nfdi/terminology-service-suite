@@ -10,7 +10,7 @@
   ],
   "repository": "https://github.com/nfdi4health/semlookp-widgets.git",
   "scripts": {
-    "rollup": "npx rollup -c",
+    "build": "npx rollup -c",
     "semantic-release": "npx semantic-release",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
