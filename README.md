@@ -21,7 +21,7 @@ Once npm is configured you can install the library using:
 npm install @nfdi4health/semlookp-widgets
 ```
 
-For a list of available versions, see our [release page.](https://github.com/nfdi4health/semlookp-widgets/releases)  
+For a list of available versions, see our [release page](https://github.com/nfdi4health/semlookp-widgets/releases) or the [npm repository](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets)
 
 ### Peer dependencies
 The library depends on some peer dependencies that must be provided. The dependencies are explained below:
