@@ -10,13 +10,12 @@ thus simplifying the development of user interfaces and the visualization of sem
 
 The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
 based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
-The components can be viewed, built and tested with the included Storybook.
-
+  
 ## Documentation
 
-[Documentation](http://km.pages.gitlab.zbmed.de/semlookp/widgets-semlookp)
+As documentation we provide a so-called [Storybook](https://nfdi4health.github.io/semlookp-widgets/)  where you can view, build and test all widgets. When you select a widget, you can click on the 'Docs' tab in the top bar to get more information. In the right corner of the displayed widget, you can then click on "Show code" to see a sample code snippet, as shown below:  
 
-[![Latest Release](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/badges/release.svg)](https://gitlab.zbmed.de/km/semlookp/widgets-semlookp/-/releases)  
+<img src="img/example_widget.png"  width="600" height="300">
 
 
 ## Built With
@@ -51,14 +50,14 @@ Note: The Storybook uses per default port 6006.
 
 ### Install package
 
-To use the module, you have to [authenticate](https://docs.gitlab.com/ee/user/packages/npm_registry/) with a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) or deploy token.
+To use a module in your own project, you have to [authenticate](https://docs.gitlab.com/ee/user/packages/npm_registry/) with a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) or deploy token.
 
 Create a `.npmrc` file in your projects root folder.
 Paste your authentication token with read and/or write access and the registry link to the file.
 
 ```
-@km:registry https://gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/
-//gitlab.zbmed.de/api/v4/projects/<project_id>/packages/npm/:_authToken=<your_token>
+@nfdi4health:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
 ```
 
 Install from the command line:
@@ -70,7 +69,8 @@ Install via package.json:
  "@nfdi4health/semlookp-widgets": <version>
 ```
 
-For help see [NPM registry](https://gitlab.zbmed.de/help/user/packages/npm_registry/index)
+For help see [NPM registry](https://gitlab.zbmed.de/help/user/packages/npm_registry/index)  
+For our latest version, see [Latest Release](https://github.com/nfdi4health/semlookp-widgets/releases)  
 
 #### Other dependencies
 
@@ -111,7 +111,7 @@ feat: for new major release
 BREAKING CHANGE: The new breaking change is...
 ```
 
-The GitLab CI/CD pipeline will then start semantic release,
+The GitHub CI/CD pipeline will then start semantic release,
 publish a new package and increase the version number depending on the commit message.
 
 
