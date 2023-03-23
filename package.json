@@ -1,6 +1,6 @@
 {
-  "name": "@km/widgets-semlookp",
-  "version": "1.18.0",
+  "name": "@nfdi4health/semlookp-widgets",
+  "version": "1.5.0",
   "description": "Widget component library",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
@@ -8,6 +8,7 @@
     "dist",
     "package.json"
   ],
+  "repository": "https://github.com/nfdi4health/semlookp-widgets.git",
   "scripts": {
     "rollup": "npx rollup -c",
     "semantic-release": "npx semantic-release",
@@ -69,6 +70,6 @@
     "react-query": "^3.39.2"
   },
   "publishConfig": {
-    "@semlookp:registry": "https://gitlab.zbmed.de/api/v4/projects/550/packages/npm/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
