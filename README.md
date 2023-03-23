@@ -1,4 +1,4 @@
-# widgets-semlookp
+# semlookp-widgets
 
 ## About The Project
 
@@ -11,68 +11,20 @@ thus simplifying the development of user interfaces and the visualization of sem
 The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
 based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
   
-## Documentation
 
-As documentation we provide a so-called [Storybook](https://nfdi4health.github.io/semlookp-widgets/)  where you can view, build and test all widgets. When you select a widget, you can click on the 'Docs' tab in the top bar to get more information. In the right corner of the displayed widget, you can then click on "Show code" to see a sample code snippet, as shown below:  
+## Using this package
 
-<img src="img/example_widget.png"  width="600" height="300">
+This package is published as source code and compiled as an npm package on [GitHub.com](https://github.com/nfdi4health/semlookp-widgets/). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
 
-
-## Built With
-
-- [ReactJS 17](https://reactjs.org/blog/2020/10/20/react-v17.html)
-- [TypeScript 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)
-- [Rollup](https://rollupjs.org)
-- [Semantic Release](https://github.com/semantic-release/semantic-release)
-- [Elastic UI](https://elastic.github.io/eui/#/)
-- [Storybook](https://storybook.js.org/)
-
-## Requirements
-
-- [Node.js 16](https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/)
-
-## Setup
-
-### Run Storybook
-
-Before starting the storybook for the first time you must run the following command:
+Once npm is configured you can install the library using:
 ```
-npm install
+npm install @nfdi4health/semlookp-widgets
 ```
 
-To start the storybook use the following command:
+For a list of available versions, see our [release page.](https://github.com/nfdi4health/semlookp-widgets/releases)  
 
-```
-npm run storybook
-```
-Note: The Storybook uses per default port 6006.
-
-
-### Install package
-
-To use a module in your own project, you have to [authenticate](https://docs.gitlab.com/ee/user/packages/npm_registry/) with a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) or deploy token.
-
-Create a `.npmrc` file in your projects root folder.
-Paste your authentication token with read and/or write access and the registry link to the file.
-
-```
-@nfdi4health:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
-```
-
-Install from the command line:
-```
- npm install @km/widgets-semlookp
-```
-Install via package.json:
-```
- "@nfdi4health/semlookp-widgets": <version>
-```
-
-For help see [NPM registry](https://gitlab.zbmed.de/help/user/packages/npm_registry/index)  
-For our latest version, see [Latest Release](https://github.com/nfdi4health/semlookp-widgets/releases)  
-
-#### Other dependencies
+### Peer dependencies
+The library depends on some peer dependencies that must be provided. The dependencies are explained below:
 
 - The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
   `<EuiProvider>` component. Elastic UI needs following peer dependencies as well to work correctly:
@@ -85,35 +37,30 @@ For help see [ElasticUI Provider](https://elastic.github.io/eui/#/utilities/prov
 
 - The HierarchyWidget uses react-query to fetch data. To make the widget work properly, you have to wrap the component inside a `QueryClientProvider`.
 
+```
+npm install react-query
+```
+
 For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
 
-### Development
+### Documentation
 
-#### Publish components
+As documentation we provide a so-called [Storybook](https://nfdi4health.github.io/semlookp-widgets/)  where you can view, build and test all widgets. When you select a widget, you can click on the 'Docs' tab in the top bar to get more information. In the right corner of the displayed widget, you can then click on "Show code" to see a sample code snippet, as shown below:  
 
-After editing a component the CI/CD pipeline will publish a new package release 
-depending on the analysis of [Semantic Release](https://docs.gitlab.com/ee/ci/examples/semantic-release.html). 
-The built registry module can then be integrated 
-into existing projects. To publish a new release, add the semantic release trigger to the commit message.
+<img src="img/example_widget.png"  width="600" height="300">
 
-Start the commit with:
 
-```
-fix: for new patch release
-```
 
-```
-feat: for new minor release
-```
 
-```
-feat: for new major release
-BREAKING CHANGE: The new breaking change is...
-```
+## Development
 
-The GitHub CI/CD pipeline will then start semantic release,
-publish a new package and increase the version number depending on the commit message.
+### Run Storybook
 
+This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
+
+### Commit Message Formating 
+
+This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
 
 ## Funding
 
