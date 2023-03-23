@@ -16,6 +16,12 @@ based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), s
 
 This package is published as source code and compiled as an npm package on [GitHub.com](https://github.com/nfdi4health/semlookp-widgets/). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
 
+In short: add the following two lines to your local npm configuraiton `~/.npmrc`. Repleace `TOKEN` with yout personal access token (classic).
+```
+//npm.pkg.github.com/:_authToken=TOKEN
+@nfdi4health:registry=https://npm.pkg.github.com
+```
+
 Once npm is configured you can install the library using:
 ```
 npm install @nfdi4health/semlookp-widgets
