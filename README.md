@@ -1,4 +1,4 @@
-# semlookp-widgets
+# SemLookP Widgets
 
 ## About The Project
 
@@ -16,7 +16,7 @@ based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), s
 
 This package is published as source code and compiled as an npm package on [GitHub.com](https://github.com/nfdi4health/semlookp-widgets/). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
 
-In short: add the following two lines to your local npm configuraiton `~/.npmrc`. Repleace `TOKEN` with yout personal access token (classic).
+In short: add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access token (classic).
 ```
 //npm.pkg.github.com/:_authToken=TOKEN
 @nfdi4health:registry=https://npm.pkg.github.com
@@ -72,3 +72,5 @@ This project uses [Semantic Release](https://semantic-release.gitbook.io/semanti
 
 This work was done as part of the NFDI4Health Consortium and is published on behalf of this Consortium (www.nfdi4health.de). 
 It is funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – project number 442326535.
+
+This work was done at [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/)
