@@ -18,8 +18,6 @@
     "style:check": "npx prettier --check .",
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
     "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix",
-    "predeploy": "npm run build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static"
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "ZB MED - PB Knowledgemanagement",
@@ -50,7 +48,6 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "gh-pages": "^4.0.0",
     "prettier": "2.7.1",
     "react-docgen-typescript": "^2.2.2",
     "react-router": "^6.3.0",
