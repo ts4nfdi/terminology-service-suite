@@ -17,7 +17,7 @@
     "style:format": "npx prettier --write .",
     "style:check": "npx prettier --check .",
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
-    "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix",
+    "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix"
   },
   "types": "dist/esm/types/index.d.ts",
   "author": "ZB MED - PB Knowledgemanagement",
