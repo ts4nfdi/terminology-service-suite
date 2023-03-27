@@ -56,13 +56,17 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * Placeholder to show if no user input nor selection is performed.
      */
     placeholder?: string;
+    /**
+     * If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.
+     */
+    hasShortSelectedLabel?: boolean;
 }
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -173,6 +177,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     }, [selectedOptions]);
 
+    function generateDisplayLabel(item: any) {
+    return (
+      item.label +
+      " | " +
+      item.ontology_name.toUpperCase() +
+      " > " +
+      item.short_form
+    );
+  }
 
     const onSearchChange = (searchValue: string) => {
         if (searchValue.length > 0) {
@@ -186,7 +199,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 if (response.response && response.response.docs) {
                     setOptions(response.response.docs.map((selection: any) => (
                         {
-                            label: selection.label,
+                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
                             value: {
                                 iri: selection.iri,
                                 label: selection.label,

@@ -28,6 +28,11 @@ export default {
     parameter: {
       defaultValue: "ontology=mesh,efo&type=class&collection=nfdi4health",
     },
+    hasShortSelectedLabel: {
+      description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
+      type: { required: false },
+      defaultValue: true,
+    },
   },
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
@@ -54,6 +59,10 @@ withGermanInput.args = {
   parameter: "collection=nfdi4health&lang=de&type=class",
 };
 
+export const displaySelectedEntityWithLongForm = Template.bind({});
+displaySelectedEntityWithLongForm.args = {
+  hasShortSelectedLabel: false
+};
 
 
 
