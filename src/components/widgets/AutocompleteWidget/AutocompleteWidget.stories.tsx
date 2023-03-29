@@ -33,6 +33,11 @@ export default {
       type: { required: false },
       defaultValue: true,
     },
+    allowCustomTerms: {
+      description: "If true, custom terms that are not found in any ontology can be added.",
+      type: { required: false},
+      defaultValue: false
+    }
   },
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
@@ -62,6 +67,11 @@ withGermanInput.args = {
 export const displaySelectedEntityWithLongForm = Template.bind({});
 displaySelectedEntityWithLongForm.args = {
   hasShortSelectedLabel: false
+};
+
+export const allowAddingCustomTerms = Template.bind({});
+allowAddingCustomTerms.args = {
+  allowCustomTerms: true
 };
 
 

@@ -11,6 +11,7 @@ import {
     EuiHealth,
     EuiBadge
 } from "@elastic/eui";
+import {any} from "prop-types";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -43,15 +44,15 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * @param selectedOptions  The selected items
      */
     selectionChangedEvent: (selectedOption: {
-        label: string | undefined;
-        iri: string | undefined;
-        ontology_name: string | undefined;
-        type: string | undefined;
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string;
     }) => void;
     /**
      * Pass a pre select value.
      */
-    selectOption?: { label?: string; iri: string };
+    selectOption?: { label?: string; iri?: string };
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -60,6 +61,10 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.
      */
     hasShortSelectedLabel?: boolean;
+    /**
+     * If true, custom terms can be added that are not found via API.
+     */
+    allowCustomTerms: boolean;
 }
 
 /**
@@ -81,6 +86,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
      * Store current set of select Options. A subset of options.
      */
     const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  //   const [selectedOptions, setSelectedOptions] = useState<
+  //   { label: string; value: {iri: string, ontology_name: string, type: string, short_form: string, label: string}}[]
+  // >([]);
 
     const [hasLoadingState, setLoadingState] = useState<boolean>(false);
 
@@ -88,6 +96,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
+        let displayLabel = "";
+        if (props.hasShortSelectedLabel == false) {
+            displayLabel = label.slice(0,label.lastIndexOf("(")).trim()
+        } else {
+            displayLabel = label
+        }
         let color = "";
         if (value.type === "class") {
             color = visColorsBehindText[5];
@@ -100,7 +114,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         return (
             <EuiHealth title={value.type} color={dotColor}>
                 <span>
-                  <EuiHighlight search={searchValue}>{label}</EuiHighlight>
+                  <EuiHighlight search={searchValue}>{displayLabel}</EuiHighlight>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
                         <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
@@ -159,16 +173,17 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     }, []); // no dependencies - does only need to be executed once when mounting the component
 
+
     /**
      * Once the set of selected options changes, pass the event by invoking the passed function.
      */
     useEffect(() => {
-        if (selectedOptions.length >= 1) {
+        if (selectedOptions.length >= 1)  {
             props.selectionChangedEvent(
                 selectedOptions.map((x) => {
                     return {
                         iri: x.value.iri,
-                        label: x.value.label,
+                        label: x.label,
                         ontology_name: x.value.ontology_name,
                         type: x.value.type
                     };
@@ -180,10 +195,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     function generateDisplayLabel(item: any) {
     return (
       item.label +
-      " | " +
+      " (" +
       item.ontology_name.toUpperCase() +
-      " > " +
-      item.short_form
+      " " +
+      item.short_form +
+      ")"
     );
   }
 
@@ -208,7 +224,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                 short_form: selection.short_form,
                             },
                         })
-
                     ));
                     setSelectedOptions([]);
                     setLoadingState(false);
@@ -217,33 +232,79 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     };
 
-    function onChangeHandler(options: EuiComboBoxOptionOption<any>[]): void {
+
+    function onChangeHandler(options: Array<any>): void {
         setSelectedOptions(options);
     }
 
-    useEffect(() => {
-    }, [selectedOptions, options, props.selectOption])
+    function onCreateOptionHandler(searchValue: string) {
+        const normalizedSearchValue = searchValue.trim().toLowerCase();
+
+        if (!normalizedSearchValue) {
+          return;
+        }
+
+        const newOption = {
+          label: searchValue,
+          value: {
+            iri: "",
+            label: "",
+            ontology_name: "",
+            type: "",
+            short_form: "",
+          }
+    };
+
+    setOptions([...options, newOption]);
+    setSelectedOptions([...selectedOptions, newOption]);
+    }
+
+    // useEffect(() => {
+    // }, [selectedOptions, options, props.selectOption])
 
 
-    return (
-        <EuiComboBox
-            isClearable
-            aria-label="searchBar"
-            fullWidth={true}
-            {...rest} // items above can be overriden by a client
-            async={true}
-            isLoading={hasLoadingState}
-            singleSelection={{ asPlainText: true }}
-            placeholder={
-                props.placeholder ? props.placeholder : "Search for a Concept"
-            }
-            options={options}
-            selectedOptions={selectedOptions}
-            onSearchChange={onSearchChange}
-            onChange={onChangeHandler}
-            renderOption={renderOption}
-        />
-    );
+    if (props.allowCustomTerms) {
+        return (
+            <EuiComboBox
+                isClearable
+                aria-label="searchBar"
+                fullWidth={true}
+                {...rest} // items above can be overriden by a client
+                async={true}
+                isLoading={hasLoadingState}
+                singleSelection={{ asPlainText: true }}
+                placeholder={
+                    props.placeholder ? props.placeholder : "Search for a Concept"
+                }
+                options={options}
+                selectedOptions={selectedOptions}
+                onSearchChange={onSearchChange}
+                onChange={onChangeHandler}
+                renderOption={renderOption}
+                onCreateOption={onCreateOptionHandler}
+            />
+        );
+    } else {
+        return (
+            <EuiComboBox
+                isClearable
+                aria-label="searchBar"
+                fullWidth={true}
+                {...rest} // items above can be overriden by a client
+                async={true}
+                isLoading={hasLoadingState}
+                singleSelection={{ asPlainText: true }}
+                placeholder={
+                    props.placeholder ? props.placeholder : "Search for a Concept"
+                }
+                options={options}
+                selectedOptions={selectedOptions}
+                onSearchChange={onSearchChange}
+                onChange={onChangeHandler}
+                renderOption={renderOption}
+            />
+        );
+    }
 }
 
 export { AutocompleteWidget };
