@@ -74,11 +74,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const visColorsBehindText = euiPaletteColorBlindBehindText();
 
     /**
-     * The set of available options.s
+     * The set of available options.
      */
     const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
     /**
-     * Store current set of select Options. A subset of options.
+     * Store current set of selected options. A subset of options.
      */
     const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
@@ -141,7 +141,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ]);
                             setSelectedOptions([
                                 {
-                                    label: selection.label,
+                                    label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection.label, selection.ontology_name, selection.short_form),
                                     value: {
                                         iri: selection.iri,
                                         label: selection.label,
@@ -177,13 +177,19 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     }, [selectedOptions]);
 
-    function generateDisplayLabel(item: any) {
+    /**
+     * A function for generating the long form of the displayed label
+     * @param label
+     * @param ontology_name
+     * @param short_form
+     */
+    function generateDisplayLabel(label: string, ontology_name: string, short_form: string) {
     return (
-      item.label +
+      label +
       " | " +
-      item.ontology_name.toUpperCase() +
+      ontology_name.toUpperCase() +
       " > " +
-      item.short_form
+      short_form
     );
   }
 
@@ -199,7 +205,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 if (response.response && response.response.docs) {
                     setOptions(response.response.docs.map((selection: any) => (
                         {
-                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                            label: selection.label,
                             value: {
                                 iri: selection.iri,
                                 label: selection.label,
@@ -217,13 +223,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         }
     };
 
+
+
     function onChangeHandler(options: EuiComboBoxOptionOption<any>[]): void {
-        setSelectedOptions(options);
+        setSelectedOptions([
+            {
+                label: hasShortSelectedLabel ? options[0].label : generateDisplayLabel(options[0].label, options[0].value.ontology_name, options[0].value.short_form),
+                value: {
+                    iri: options[0].value.iri,
+                    label: options[0].label,
+                    ontology_name: options[0].value.ontology_name,
+                    type: options[0].value.type,
+                    short_form: options[0].value.short_form,
+                },
+            },
+        ]);
     }
-
-    useEffect(() => {
-    }, [selectedOptions, options, props.selectOption])
-
 
     return (
         <EuiComboBox
