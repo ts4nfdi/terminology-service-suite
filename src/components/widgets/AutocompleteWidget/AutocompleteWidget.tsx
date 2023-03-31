@@ -86,9 +86,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
      * Store current set of select Options. A subset of options.
      */
     const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
-  //   const [selectedOptions, setSelectedOptions] = useState<
-  //   { label: string; value: {iri: string, ontology_name: string, type: string, short_form: string, label: string}}[]
-  // >([]);
 
     const [hasLoadingState, setLoadingState] = useState<boolean>(false);
 
@@ -238,12 +235,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
 
     function onCreateOptionHandler(searchValue: string) {
-        const normalizedSearchValue = searchValue.trim().toLowerCase();
-
-        if (!normalizedSearchValue) {
-          return;
-        }
-
         const newOption = {
           label: searchValue,
           value: {
@@ -258,10 +249,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     setOptions([...options, newOption]);
     setSelectedOptions([...selectedOptions, newOption]);
     }
-
-    // useEffect(() => {
-    // }, [selectedOptions, options, props.selectOption])
-
 
     if (props.allowCustomTerms) {
         return (
