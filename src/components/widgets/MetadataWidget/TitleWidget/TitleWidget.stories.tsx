@@ -23,7 +23,7 @@ export default {
     ontologyID: {
       description: "Ontology ID from where the object title/label should be taken.",
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -66,5 +66,5 @@ export const TitleWidget1 = Template.bind({});
 TitleWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",  api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
-  objType: "term",
+  entityType: "term",
 };

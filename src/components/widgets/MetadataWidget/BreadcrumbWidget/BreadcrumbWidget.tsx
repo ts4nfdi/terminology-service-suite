@@ -5,12 +5,12 @@ import {useQuery} from "react-query";
 
 export interface BreadcrumbWidgetProps {
   iri?: string;
-  ontologyID?: string;
+  ontologyId?: string;
   api: string;
   /**
    * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
    */
-  objType:
+  entityType:
       | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
       | "individual"
       | "property"
@@ -31,9 +31,9 @@ export interface BreadcrumbWidgetProps {
 
 const NO_SHORTFORM = "No short form available.";
 
-async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string, iri?: string, parameter?: string): Promise<string> {
-  if (objType == "term"){
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyID, termIri: iri}, parameter)
+async function getShortForm(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
+  if (entityType == "term"){
+    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.terms[0].short_form != null && response._embedded.terms[0].short_form != null) {
       return response._embedded.terms[0].short_form.toUpperCase();
@@ -41,8 +41,8 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
       return NO_SHORTFORM;
     }
   }
-  if (objType == "property"){
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyID, propertyIri: iri}, parameter)
+  if (entityType == "property"){
+    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.properties[0].short_form != null && response._embedded.properties[0].short_form != null) {
       return response._embedded.properties[0].short_form;
@@ -50,8 +50,8 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
       return NO_SHORTFORM;
     }
   }
-  if (objType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyID, individualIri: iri}, parameter)
+  if (entityType == "individual"){
+    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
         .catch((error) => console.log(error));
     if (response?._embedded?.individuals[0].short_form != null && response._embedded.individuals[0].short_form != null) {
       return response._embedded.individuals[0].short_form;
@@ -64,19 +64,19 @@ async function getShortForm(olsApi: OlsApi, objType: string, ontologyID?: string
 }
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyID, iri, objType, colorFirst, colorSecond, parameter } = props;
-  const fixedObjType = objType == "class" ? "term" : objType
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter } = props;
+  const fixedEntityType = entityType == "class" ? "term" : entityType
   const olsApi = new OlsApi(api);
 
   const {
     data: shortForm,
     isLoading,
-  } = useQuery([api, "getDescription", fixedObjType, ontologyID, iri, parameter], () => { return getShortForm(olsApi, fixedObjType, ontologyID, iri, parameter); });
+  } = useQuery([api, "getDescription", fixedEntityType, ontologyId, iri, parameter], () => { return getShortForm(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
   return (
     <EuiFlexItem>
       <span>
-        <EuiBadge color={colorFirst || "primary"}>{ontologyID?.toUpperCase()}</EuiBadge>
+        <EuiBadge color={colorFirst || "primary"}>{ontologyId?.toUpperCase()}</EuiBadge>
         {" > "}
         <EuiBadge color={colorSecond || "success"}>{shortForm}</EuiBadge>
       </span>

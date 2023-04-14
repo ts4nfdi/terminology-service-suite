@@ -44,7 +44,7 @@ export default {
     ontologyID: {
       description: "Ontology ID from where the object description should be taken.",
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -84,6 +84,6 @@ DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyID: "ncit",
-  objType: "term",
+  entityType: "term",
   parameter: "collection=nfdi4health"
 };

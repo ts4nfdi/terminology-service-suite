@@ -22,7 +22,7 @@ export default {
     frontend: {
       defaultValue: "nfdi4health",
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the term hierarchy should be taken.",
     },
     iri: {
@@ -40,6 +40,6 @@ export const HierarchyWidget1 = Template.bind({});
 HierarchyWidget1.args = {
   iri: "http://purl.bioontology.org/ontology/MESH/D003704",
   api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "mesh",
+  ontologyId: "mesh",
   frontend: "nfdi4health",
 };

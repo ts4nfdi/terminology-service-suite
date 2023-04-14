@@ -8,9 +8,9 @@ import { TabWidget } from "./TabWidget";
 
 export interface MetadataWidgetProps {
   iri: string;
-  ontologyID: string;
+  ontologyId: string;
   api: string;
-  objType:
+  entityType:
     | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
     | "individual"
     | "property"
@@ -19,11 +19,12 @@ export interface MetadataWidgetProps {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
+    const { iri, api, parameter, entityType, ontologyId } = props;
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem grow={false}>
         <span>
-          <BreadcrumbWidget api={props.api} iri={props.iri} objType={props.objType} ontologyID={props.ontologyID} parameter={props.parameter}/>
+          <BreadcrumbWidget api={api} iri={iri} entityType={entityType} ontologyId={ontologyId} parameter={parameter}/>
         </span>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -31,26 +32,26 @@ function MetadataWidget(props: MetadataWidgetProps) {
           <EuiFlexItem>
             <EuiFlexGroup>
               <EuiFlexItem grow={false}>
-                <IriWidget iri={props.iri} parameter={props.parameter}/>
+                <IriWidget iri={iri} parameter={parameter}/>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TitleWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} parameter={props.parameter} />
+            <TitleWidget iri={iri} ontologyId={ontologyId} api={api} entityType={entityType} parameter={parameter} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
       <EuiFlexItem>
-        <DescriptionWidget iri={props.iri} ontologyID={props.ontologyID} api={props.api} objType={"term"} parameter={props.parameter}/>
+        <DescriptionWidget iri={iri} ontologyId={ontologyId} api={api} entityType={entityType} parameter={parameter}/>
       </EuiFlexItem>
       <EuiFlexItem>
         <TabWidget
-          iri={props.iri}
-          ontologyID={props.ontologyID}
-          api={props.api}
-          parameter={props.parameter}
-        />
+          iri={iri}
+          ontologyId={ontologyId}
+          api={api}
+          parameter={parameter}
+         entityType={entityType}/>
       </EuiFlexItem>
     </EuiFlexGroup>
   );

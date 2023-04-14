@@ -35,7 +35,7 @@ function MetadataCompact(props: MetadataCompactProps) {
                         <EuiTitle><h2>{result.label}</h2></EuiTitle>
                     </EuiFlexItem>
                     <EuiFlexItem>
-                        {result.type != "ontology" && <BreadcrumbWidget api={api} iri={result.iri} objType={result.type} ontologyID={result.ontology_name}/>}
+                        {result.type != "ontology" && <BreadcrumbWidget api={api} iri={result.iri} entityType={result.type} ontologyId={result.ontology_name}/>}
                     </EuiFlexItem>
                 </EuiFlexGroup>
             }
@@ -43,8 +43,8 @@ function MetadataCompact(props: MetadataCompactProps) {
                 <>
                     {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
                     <EuiSpacer size="s"/>
-                    <DescriptionWidget api={api} ontologyID={result.ontology_name} iri={result.iri}
-                                       objType={result.type}/>
+                    <DescriptionWidget api={api} ontologyId={result.ontology_name} iri={result.iri}
+                                       entityType={result.type}/>
                 </>
             }
         />

@@ -1,5 +1,5 @@
-export function switchEntityType(objType: string) {
-    switch (objType) {
+export function switchEntityType(entityType: string) {
+    switch (entityType) {
         case 'class':
             return 'terms';
         case 'property':
