@@ -29,7 +29,7 @@ stages:
 build:
   stage: build
   script:
-    - npm run rollup
+    - npm run build
   artifacts:
     paths:
       - dist/
