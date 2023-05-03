@@ -71,7 +71,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {
     data: shortForm,
     isLoading,
-  } = useQuery([api, "getDescription", fixedEntityType, ontologyId, iri, parameter], () => { return getShortForm(olsApi, fixedEntityType, ontologyId, iri, parameter); });
+  } = useQuery([api, "short_form", fixedEntityType, ontologyId, iri, parameter], () => { return getShortForm(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
   return (
     <EuiFlexItem>

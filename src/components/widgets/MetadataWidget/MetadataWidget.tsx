@@ -19,7 +19,7 @@ export interface MetadataWidgetProps {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-    const { iri, api, parameter, entityType, ontologyId } = props;
+    const { iri, api, ontologyId, entityType, parameter } = props;
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem grow={false}>
@@ -38,12 +38,12 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <TitleWidget iri={iri} ontologyId={ontologyId} api={api} entityType={entityType} parameter={parameter} />
+            <TitleWidget iri={iri} api={api} ontologyId={ontologyId} entityType={entityType} parameter={parameter} />
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexItem>
       <EuiFlexItem>
-        <DescriptionWidget iri={iri} ontologyId={ontologyId} api={api} entityType={entityType} parameter={parameter}/>
+        <DescriptionWidget iri={iri} api={api} ontologyId={ontologyId} entityType={entityType} parameter={parameter}/>
       </EuiFlexItem>
       <EuiFlexItem>
         <TabWidget

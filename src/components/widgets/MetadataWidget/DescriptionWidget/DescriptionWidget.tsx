@@ -65,11 +65,11 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   const {
     data: description,
     isLoading,
-  } = useQuery([api, "getDescription", fixedentityType, ontologyId, iri, parameter], () => { return getDescription(olsApi, fixedentityType, ontologyId, iri, parameter); });
+  } = useQuery([api, "description", fixedentityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedentityType, ontologyId, iri, parameter); });
 
   return (
     <>
-      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText {...rest}>{descText || description}</EuiText>}
+      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText {...rest}>{descText || description }</EuiText>}
     </>
   );
 }
