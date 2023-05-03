@@ -25,9 +25,6 @@ export default {
         ],
       },
     },
-    frontend: {
-      defaultValue: "nfdi4health",
-    },
     initialEntriesPerPage: {
       description: "Initial number of entries displayed per page.",
       control: "number",
