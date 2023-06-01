@@ -4,7 +4,7 @@ import {useQuery} from "react-query";
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
 
 export interface OntologyInfoWidgetProps {
-  ontologyID: string;
+  ontologyId: string;
   api: string;
   parameter?: string;
 }
@@ -18,8 +18,8 @@ interface OntologyInfo {
   annotations: object; //list of key&value string pairs
 }
 
-async function getOntoData(apiCall: apiCallFn, ontologyID: string, parameter?: string): Promise<OntologyInfo> {
-  const response = await apiCall(undefined, undefined, {ontologyId: ontologyID}, parameter);
+async function getOntoData(apiCall: apiCallFn, ontologyId: string, parameter?: string): Promise<OntologyInfo> {
+  const response = await apiCall(undefined, undefined, {ontologyId: ontologyId}, parameter);
 
   return {
     iri: response.config.id,
@@ -32,7 +32,7 @@ async function getOntoData(apiCall: apiCallFn, ontologyID: string, parameter?: s
 }
 
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
-  const { ontologyID, api, parameter } = props;
+  const { ontologyId, api, parameter } = props;
   const olsApi = new OlsApi(api);
 
   const infoItemStyle = {
@@ -46,7 +46,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const {
     data: ontologyInfo,
     isLoading,
-  } = useQuery([api, "getOntology", ontologyID, parameter], () => { return getOntoData(olsApi.getOntology, ontologyID, parameter); });
+  } = useQuery([api, "getOntology", ontologyId, parameter], () => { return getOntoData(olsApi.getOntology, ontologyId, parameter); });
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>

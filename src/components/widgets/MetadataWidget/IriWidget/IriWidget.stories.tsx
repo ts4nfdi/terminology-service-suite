@@ -31,7 +31,7 @@ export default {
           "Set your own text manually that overwrites the text fetched from the API",
     },
     iri: {
-      Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
+      Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     parameter: {
       defaultValue: "collection=nfdi4health",

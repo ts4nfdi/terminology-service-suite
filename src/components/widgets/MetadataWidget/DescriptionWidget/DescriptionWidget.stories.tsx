@@ -41,10 +41,10 @@ export default {
       description:
         "Set your own text manually that overwrites the text fetched from the API",
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the object description should be taken.",
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -59,7 +59,7 @@ export default {
       },
     },
     iri: {
-      description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
+      description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     parameter: {
       defaultValue: "collection=nfdi4health",
@@ -83,7 +83,7 @@ export const DescriptionWidget1 = Template.bind({});
 DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "ncit",
-  objType: "term",
+  ontologyId: "ncit",
+  entityType: "term",
   parameter: "collection=nfdi4health"
 };

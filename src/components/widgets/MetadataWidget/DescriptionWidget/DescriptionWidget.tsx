@@ -6,10 +6,10 @@ import { OlsApi } from "../../../../api/OlsApi";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
-  ontologyID?: string;
+  ontologyId?: string;
   api: string;
   descText?: string;
-  objType:
+  entityType:
     | "ontology"
     | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
     | "individual"
@@ -20,14 +20,14 @@ export interface DescriptionWidgetProps extends EuiTextProps {
 
 const NO_DESCRIPTION = "No description available.";
 
-async function getDescription(olsApi: OlsApi, objType: string, ontologyID?: string, iri?: string, parameter?: string): Promise<string> {
-  if (objType == "ontology"){
-    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyID}, parameter)
+async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
+  if (entityType == "ontology"){
+    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
       .catch((error) => console.log(error));
     return response?.config.description || NO_DESCRIPTION;
   }
-  if (objType == "term"){
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyID, termIri: iri}, parameter)
+  if (entityType == "term"){
+    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
       .catch((error) => console.log(error));
     if (response?._embedded?.terms[0].description != null && response._embedded.terms[0].description[0] != null) {
       return response._embedded.terms[0].description[0];
@@ -35,8 +35,8 @@ async function getDescription(olsApi: OlsApi, objType: string, ontologyID?: stri
       return NO_DESCRIPTION;
     }
   }
-  if (objType == "property"){
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyID, propertyIri: iri}, parameter)
+  if (entityType == "property"){
+    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
       .catch((error) => console.log(error));
     if (response?._embedded?.properties[0].description != null && response._embedded.properties[0].description[0] != null) {
       return response._embedded.properties[0].description[0];
@@ -44,8 +44,8 @@ async function getDescription(olsApi: OlsApi, objType: string, ontologyID?: stri
       return NO_DESCRIPTION;
     }
   }
-  if (objType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyID, individualIri: iri}, parameter)
+  if (entityType == "individual"){
+    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
       .catch((error) => console.log(error));
     if (response?._embedded?.individuals[0].description != null && response._embedded.individuals[0].description[0] != null) {
       return response._embedded.individuals[0].description[0];
@@ -58,18 +58,18 @@ async function getDescription(olsApi: OlsApi, objType: string, ontologyID?: stri
 }
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const { api, ontologyID, iri, descText, objType, parameter, ...rest } = props;
-  const fixedObjType = objType == "class" ? "term" : objType
+  const { api, ontologyId, iri, descText, entityType, parameter, ...rest } = props;
+  const fixedentityType = entityType == "class" ? "term" : entityType
   const olsApi = new OlsApi(api);
 
   const {
     data: description,
     isLoading,
-  } = useQuery([api, "getDescription", fixedObjType, ontologyID, iri, parameter], () => { return getDescription(olsApi, fixedObjType, ontologyID, iri, parameter); });
+  } = useQuery([api, "description", fixedentityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedentityType, ontologyId, iri, parameter); });
 
   return (
     <>
-      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText {...rest}>{descText || description}</EuiText>}
+      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText {...rest}>{descText || description }</EuiText>}
     </>
   );
 }

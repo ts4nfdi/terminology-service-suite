@@ -93,12 +93,12 @@ const create_tree = (
 
 export interface HierarchyWidgetProps {
   iri?: string;
-  ontologyID: string;
+  ontologyId: string;
   api: string;
 }
 
-async function getTree(olsApi: OlsApi, ontologyID: string, iri?: string): Promise<any> {
-  const response = await olsApi.getTermTree({ontologyId: ontologyID, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined)
+async function getTree(olsApi: OlsApi, ontologyId: string, iri?: string): Promise<any> {
+  const response = await olsApi.getTermTree({ontologyId: ontologyId, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined)
     .catch((error) => console.log(error));
   if (iri) return response
   else { //roots have been queried, and the response needs restructuring to become SemanticResponse
@@ -110,21 +110,21 @@ async function getTree(olsApi: OlsApi, ontologyID: string, iri?: string): Promis
 }
 
 const HierarchyWidget = (props: HierarchyWidgetProps) => {
-  const { iri, ontologyID, api } = props;
+  const { iri, ontologyId, api } = props;
   const [treeItems, setTreeItems] = useState<HierarchyTree[]>();
   const olsApi = new OlsApi(api);
-  const linkToSelf = api+"ontologies/"+ontologyID+"/terms/"
+  const linkToSelf = api+"ontologies/"+ontologyId+"/terms/"
 
   const fetchChildren = async (child: HierarchyTree) => { //could be given to HierarchyTree nodes for onClick callbacks
-    const response = await olsApi.getTermTree({ontologyId: ontologyID, termIri: iri}, {child: child.id}, undefined, undefined)
+    const response = await olsApi.getTermTree({ontologyId: ontologyId, termIri: iri}, {child: child.id}, undefined, undefined)
       .catch((error) => console.log(error));
     child.children = [];
     create_tree(child, response, get_url_prefix(linkToSelf));
   }
 
   //initial tree query
-  useQuery<Array<SemanticResponse>>([api, "getTermTree", ontologyID, iri], () => {
-    return getTree(olsApi, ontologyID, iri)
+  useQuery<Array<SemanticResponse>>([api, "getTermTree", ontologyId, iri], () => {
+    return getTree(olsApi, ontologyId, iri)
       .then((res) => {
         const root = new HierarchyTree("#", "#", "", "");
         if (res) create_tree(root, res, get_url_prefix(linkToSelf));

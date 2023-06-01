@@ -10,27 +10,44 @@ import { HierarchyWidget } from "./HierarchyWidget";
 
 export interface TabWidgetProps {
   iri: string;
-  ontologyID: string;
   api: string;
-  parameter?: string
+  ontologyId: string;
+  entityType:
+      | "ontology"
+      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
+      | "individual"
+      | "property"
+      | string;
+  parameter?: string;
 }
 
 function TabWidget(props: TabWidgetProps) {
+  const { iri, api, ontologyId, entityType, parameter, ...rest } = props;
   const tabs: Array<EuiTabbedContentTab> = [
     {
-      content: <AlternativeNameTabWidget api={props.api} iri={props.iri} />,
+      content: <AlternativeNameTabWidget
+          api={api}
+          iri={iri}
+          ontologyId={ontologyId}
+          entityType={entityType}
+      />,
       id: "tab1",
       name: "Alternative Names",
     },
     {
       content: (
-        <HierarchyWidget api={props.api} iri={props.iri} ontologyID={props.ontologyID} />
+        <HierarchyWidget api={api} iri={iri} ontologyId={ontologyId} />
       ),
       id: "tab2",
       name: "Hierarchy",
     },
     {
-      content: <CrossRefTabWidget api={props.api} iri={props.iri} />,
+      content: <CrossRefTabWidget
+          api={api}
+          iri={iri}
+          ontologyId={ontologyId}
+          entityType={entityType}
+      />,
       id: "tab3",
       name: "Cross references",
     },

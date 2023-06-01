@@ -26,6 +26,22 @@ export default {
       description:
         "Iri of the term you want to fetch the alternative names for.",
     },
+    ontologyId: {
+      description: "Ontology ID from where the entity metadata should be taken.",
+    },
+    entityType: {
+      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+      control: {
+        type: "radio",
+        options: [
+          "term",
+          "class",
+          "property",
+          "individual",
+          "INVALID STRING"
+        ],
+      },
+    },
     parameter: {
       defaultValue: "collection=nfdi4health",
       type: { required: false }
@@ -42,5 +58,8 @@ export const AlternativeNameTabWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 AlternativeNameTabWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",  api: "https://semanticlookup.zbmed.de/api/",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+  api: "https://semanticlookup.zbmed.de/api/",
+  entityType: "term",
+  ontologyId: "ncit",
 };

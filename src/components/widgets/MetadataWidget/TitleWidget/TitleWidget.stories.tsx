@@ -20,10 +20,10 @@ export default {
         ],
       },
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the object title/label should be taken.",
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -38,7 +38,7 @@ export default {
       },
     },
     iri: {
-      description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyID' arg is sufficient.",
+      description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     titleText: {
       description:
@@ -65,6 +65,6 @@ export const TitleWidget1 = Template.bind({});
 // @ts-ignore
 TitleWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "ncit",
-  objType: "term",
+  ontologyId: "ncit",
+  entityType: "term",
 };

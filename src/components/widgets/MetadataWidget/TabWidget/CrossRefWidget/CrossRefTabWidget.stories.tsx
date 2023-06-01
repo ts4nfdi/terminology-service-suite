@@ -21,7 +21,23 @@ export default {
     },
     iri: {
       description:
-        "Iri of the term you want to fetch the cross references for.",
+        "IRI of the entity you want to fetch the cross references for.",
+    },
+    ontologyId: {
+      description: "Ontology ID from where the entity metadata should be taken.",
+    },
+    entityType: {
+      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+      control: {
+        type: "radio",
+        options: [
+          "term",
+          "class",
+          "property",
+          "individual",
+          "INVALID STRING"
+        ],
+      },
     },
     parameter: {
       defaultValue: "collection=nfdi4health",
@@ -39,4 +55,6 @@ export const CrossRefTabWidget1 = Template.bind({});
 CrossRefTabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
   api: "https://www.ebi.ac.uk/ols/api/",
+  entityType: "term",
+  ontologyId: "rxno"
 };

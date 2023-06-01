@@ -20,13 +20,13 @@ export default {
         ],
       },
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the term metadata should be taken.",
     },
     iri: {
       description: "Iri of the term you want to fetch the metadata for.",
     },
-    objType: {
+    entityType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -59,8 +59,8 @@ export const MetadataWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 MetadataWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "ncit",
+  ontologyId: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
-  objType: "term",
+  entityType: "term",
   parameter: "collection=nfdi4health"
 };

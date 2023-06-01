@@ -20,7 +20,7 @@ export default {
         ],
       },
     },
-    ontologyID: {
+    ontologyId: {
       description: "ID of the ontology whose info should be displayed.",
     },
     parameter: {
@@ -43,5 +43,5 @@ export const OntologyInfoWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OntologyInfoWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "atc",
+  ontologyId: "atc",
 };
