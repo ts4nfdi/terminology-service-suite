@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   EuiFlexGroup,
   EuiFlexItem,
@@ -78,13 +78,24 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
     if (data?.crossrefs && data.crossrefs.length > 0) {
       return data?.crossrefs.map((item, index) => (
         <EuiFlexItem key={index}>
-              {item.url ? (
-                <EuiLink href={item.url} external target="_blank">
-                  {item.database}:{item.id}
-                </EuiLink>
-              ) : (
-                `${item.database}:${item.id}`
-              )}
+            {item.database ? (
+                item.url ? (
+                    <EuiLink href={item.url} external target="_blank">
+                        {item.database}:{item.id}
+                    </EuiLink>
+                ) : (
+                    `${item.database}:${item.id}`
+                )
+            ) : (//just show the ID if there is no value for the database
+                item.url ? (
+                    <EuiLink href={item.url} external target="_blank">
+                        {item.id}
+                    </EuiLink>
+                ) : (
+                    `${item.id}`
+                )
+            )}
+
             </EuiFlexItem>
       ));
     }
@@ -95,7 +106,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
     <EuiPanel>
       <EuiFlexGroup style={{ padding: 7 }} direction="column">
         {isSuccess && renderCrossRefs()}
-        {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
+        {isLoading && <EuiLoadingSpinner/>}
         {isError && <EuiText>No cross references available.</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
