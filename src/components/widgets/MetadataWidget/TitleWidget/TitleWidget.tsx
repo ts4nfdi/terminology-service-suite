@@ -22,12 +22,17 @@ const NO_TITLE = "No title available.";
 
 async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
     if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, { ontologyId: ontologyId }, parameter)
+        const response = await olsApi.getOntology(undefined, undefined, {
+            ontologyId: ontologyId
+        }, parameter)
             .catch((error) => console.log(error));
         return response?.config.title || NO_TITLE
     }
     if (entityType == "term") {
-        const response = await olsApi.getTerm(undefined, undefined, { ontologyId: ontologyId, termIri: iri }, parameter)
+        const response = await olsApi.getTerm(undefined, undefined, {
+            ontologyId: ontologyId,
+            termIri: iri
+        }, parameter)
             .catch((error) => console.log(error));
         return response?._embedded?.terms[0].label || NO_TITLE
     }
