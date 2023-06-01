@@ -26,7 +26,7 @@ export default {
       description:
         "Iri of the term you want to fetch the ontology hierarchy for.",
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the object description should be taken.",
     },
   entityType: {
@@ -96,7 +96,7 @@ export const BreadcrumbWidget1 = Template.bind({});
 BreadcrumbWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "ncit",
+  ontologyId: "ncit",
   entityType: "term",
   parameter: "collection=nfdi4health",
 };

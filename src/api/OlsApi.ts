@@ -162,8 +162,8 @@ export class OlsApi {
   /**
    * getTerm, getProperty, getIndividual:
    * These methods always require the respective object IRI in contentParams to be set
-   * If ontologyID is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
-   * If an ontologyID is provided in contentParams, the returned list will only contain the object from that specific ontology
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
 
   public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
@@ -195,7 +195,7 @@ export class OlsApi {
 
   /**
    * getTermTree:
-   * This method always requires an ontologyID in contentParams
+   * This method always requires an ontologyId in contentParams
    * 1) If no termIri is defined in contentParams, the ontology roots will be queried
    * 2) If a termIri is defined but no child in jsTreeParams, the hierarchy containing that term will be queried
    * 3) If a termIri is defined and also a child in jsTreeParams, the subhierarchy of that child will be queried

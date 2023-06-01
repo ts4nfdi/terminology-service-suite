@@ -19,7 +19,7 @@ export default {
         ],
       },
     },
-    ontologyID: {
+    ontologyId: {
       description: "Ontology ID from where the term information should be taken.",
     },
     iri: {
@@ -53,7 +53,7 @@ export const TabWidget1 = Template.bind({});
 // @ts-ignore
 TabWidget1.args = {
   api: "https://semanticlookup.zbmed.de/api/",
-  ontologyID: "ncit",
+  ontologyId: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   entityType: "term"
 };
