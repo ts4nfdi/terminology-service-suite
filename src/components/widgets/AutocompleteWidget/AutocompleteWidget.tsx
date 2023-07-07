@@ -180,7 +180,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 selectedOptions.map((x) => {
                     return {
                         iri: x.value.iri,
-                        label: x.label,
+                        label: hasShortSelectedLabel ? x.label : x.label.slice(0, x.label.lastIndexOf("("))
+                      .trim(),
                         ontology_name: x.value.ontology_name,
                         type: x.value.type
                     };
