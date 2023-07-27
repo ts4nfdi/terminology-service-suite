@@ -93,6 +93,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
+        if(props.allowCustomTerms && value.iri==""){
+            return label;
+        }
         let displayLabel = "";
         if (props.hasShortSelectedLabel == false) {
             displayLabel = label.slice(0,label.lastIndexOf("(")).trim()
