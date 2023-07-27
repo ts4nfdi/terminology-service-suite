@@ -51,7 +51,7 @@ withValue.args = {
   selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
 };
 export const withCustomValue = Template.bind({});
-withValue.args = {
+withCustomValue.args = {
   allowCustomTerms: true,
   selectOption: { label: "freetext" },
 };
