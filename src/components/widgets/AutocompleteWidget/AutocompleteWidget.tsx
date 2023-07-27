@@ -167,6 +167,33 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     })
                 }
             });
+        } else if (props.selectOption?.label && props.allowCustomTerms) { // when a custom term is passed
+            setLoadingState(true);
+            setOptions([
+                {
+                    label: props.selectOption?.label,
+                    value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                    }
+                },
+            ]);
+            setSelectedOptions([
+                {
+                    label: props.selectOption?.label,
+                    value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                    }
+                },
+            ]);
+            setLoadingState(false);
         }
     }, []); // no dependencies - does only need to be executed once when mounting the component
 
