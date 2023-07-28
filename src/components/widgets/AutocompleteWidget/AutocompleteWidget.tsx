@@ -207,12 +207,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             props.selectionChangedEvent(
                 selectedOptions.map((x) => {
                     // return the value object with the raw values from OLS to a client
-                    return {
-                        iri: x.value.iri,
-                        label: x.value.label,
-                        ontology_name: x.value.ontology_name,
-                        type: x.value.type
-                    };
+                    if(props.allowCustomTerms && x.value.iri=="") {
+                        return {
+                            iri: "",
+                            label: x.label,
+                            ontology_name: "",
+                            type: ""
+                        };
+                    } else {
+                        return {
+                            iri: x.value.iri,
+                            label: x.value.label,
+                            ontology_name: x.value.ontology_name,
+                            type: x.value.type
+                        };
+                    }
                 })[0]
             );
         }
