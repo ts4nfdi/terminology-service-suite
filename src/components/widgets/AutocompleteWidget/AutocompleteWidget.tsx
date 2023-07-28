@@ -92,34 +92,32 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
-        let displayLabel = "";
-        if(props.allowCustomTerms && value.iri==""){
-             displayLabel = label;
-        } else {
-            displayLabel = value.label
-        }
-        let color = "";
-        if (value.type === "class") {
-            color = visColorsBehindText[5];
-        } else if (value.type === "individual") {
-            color = visColorsBehindText[3];
-        } else if (value.type === "property") {
-            color = visColorsBehindText[1];
-        }
-        const dotColor = visColors[visColorsBehindText.indexOf(color)];
-        return (
-            <EuiHealth title={value.type} color={dotColor}>
-            <span>
-              <EuiHighlight search={searchValue}>{displayLabel}</EuiHighlight>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
-                    <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
-                    {" > "}
-                    <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
+        if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
+             return  label;
+        } else { // otherwise can we can use the semantic infomration to show some context information like ontology name
+            let color = "";
+            if (value.type === "class") {
+                color = visColorsBehindText[5];
+            } else if (value.type === "individual") {
+                color = visColorsBehindText[3];
+            } else if (value.type === "property") {
+                color = visColorsBehindText[1];
+            }
+            const dotColor = visColors[visColorsBehindText.indexOf(color)];
+            return (
+                <EuiHealth title={value.type} color={dotColor}>
+                <span>
+                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
+                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
+                        {" > "}
+                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
+                    </span>
                 </span>
-            </span>
-            </EuiHealth>
-        );
+                </EuiHealth>
+            );
+            }
     };
 
     /**
