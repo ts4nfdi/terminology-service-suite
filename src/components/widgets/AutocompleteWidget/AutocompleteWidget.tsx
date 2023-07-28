@@ -11,7 +11,6 @@ import {
     EuiHealth,
     EuiBadge
 } from "@elastic/eui";
-import {any} from "prop-types";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -93,37 +92,32 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
-        if(props.allowCustomTerms && value.iri==""){
-            return label;
-        }
-        let displayLabel = "";
-        if (props.hasShortSelectedLabel == false) {
-            displayLabel = label.slice(0,label.lastIndexOf("(")).trim()
-        } else {
-            displayLabel = label
-        }
-        let color = "";
-        if (value.type === "class") {
-            color = visColorsBehindText[5];
-        } else if  (value.type === "individual") {
-            color = visColorsBehindText[3];
-        } else if (value.type === "property") {
-            color = visColorsBehindText[1];
-        }
-        const dotColor = visColors[visColorsBehindText.indexOf(color)];
-        return (
-            <EuiHealth title={value.type} color={dotColor}>
+        if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
+             return  label;
+        } else { // otherwise can we can use the semantic infomration to show some context information like ontology name
+            let color = "";
+            if (value.type === "class") {
+                color = visColorsBehindText[5];
+            } else if (value.type === "individual") {
+                color = visColorsBehindText[3];
+            } else if (value.type === "property") {
+                color = visColorsBehindText[1];
+            }
+            const dotColor = visColors[visColorsBehindText.indexOf(color)];
+            return (
+                <EuiHealth title={value.type} color={dotColor}>
                 <span>
-                  <EuiHighlight search={searchValue}>{displayLabel}</EuiHighlight>
+                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
                         <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
-                                {" > "}
+                        {" > "}
                         <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
                     </span>
                 </span>
-            </EuiHealth>
-        );
+                </EuiHealth>
+            );
+            }
     };
 
     /**
@@ -143,7 +137,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                         if (props.selectOption?.iri === selection.iri) {
                             setOptions([
                                 {
-                                    label: selection.label,
+                                     // label to display within the combobox either raw value or generated one
+                                    // #renderOption() is used to display during selection.
+                                    label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
                                     value: {
                                         iri: selection.iri,
                                         label: selection.label,
@@ -155,7 +151,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ]);
                             setSelectedOptions([
                                 {
-                                    label: selection.label,
+                                     // label to display within the combobox either raw value or generated one
+                                    // #renderOption() is used to display during selection.
+                                    label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
                                     value: {
                                         iri: selection.iri,
                                         label: selection.label,
@@ -198,7 +196,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ]);
             setLoadingState(false);
         }
-    }, []); // no dependencies - does only need to be executed once when mounting the component
+    }, []); // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
 
 
     /**
@@ -208,13 +206,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         if (selectedOptions.length >= 1)  {
             props.selectionChangedEvent(
                 selectedOptions.map((x) => {
-                    return {
-                        iri: x.value.iri,
-                        label: hasShortSelectedLabel ? x.label : x.label.slice(0, x.label.lastIndexOf("("))
-                      .trim(),
-                        ontology_name: x.value.ontology_name,
-                        type: x.value.type
-                    };
+                    // return the value object with the raw values from OLS to a client
+                    if(props.allowCustomTerms && x.value.iri=="") {
+                        return {
+                            iri: "",
+                            label: x.label,
+                            ontology_name: "",
+                            type: ""
+                        };
+                    } else {
+                        return {
+                            iri: x.value.iri,
+                            label: x.value.label,
+                            ontology_name: x.value.ontology_name,
+                            type: x.value.type
+                        };
+                    }
                 })[0]
             );
         }
@@ -243,7 +250,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 if (response.response && response.response.docs) {
                     setOptions(response.response.docs.map((selection: any) => (
                         {
+                            // label to display within the combobox either raw value or generated one
+                            // #renderOption() is used to display during selection.
                             label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                            // values to pass to clients
                             value: {
                                 iri: selection.iri,
                                 label: selection.label,
