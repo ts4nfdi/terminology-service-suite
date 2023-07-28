@@ -92,32 +92,28 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
-        if (props.hasShortSelectedLabel) {
-            return value.label;
-        }else {
-            let color = "";
-            if (value.type === "class") {
-                color = visColorsBehindText[5];
-            } else if (value.type === "individual") {
-                color = visColorsBehindText[3];
-            } else if (value.type === "property") {
-                color = visColorsBehindText[1];
-            }
-            const dotColor = visColors[visColorsBehindText.indexOf(color)];
-            return (
-                <EuiHealth title={value.type} color={dotColor}>
-                <span>
-                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
-                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
-                        {" > "}
-                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
-                    </span>
-                </span>
-                </EuiHealth>
-            );
+        let color = "";
+        if (value.type === "class") {
+            color = visColorsBehindText[5];
+        } else if (value.type === "individual") {
+            color = visColorsBehindText[3];
+        } else if (value.type === "property") {
+            color = visColorsBehindText[1];
         }
+        const dotColor = visColors[visColorsBehindText.indexOf(color)];
+        return (
+            <EuiHealth title={value.type} color={dotColor}>
+            <span>
+              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
+                    <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
+                    {" > "}
+                    <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
+                </span>
+            </span>
+            </EuiHealth>
+        );
     };
 
     /**
