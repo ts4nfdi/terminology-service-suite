@@ -92,6 +92,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     // @ts-ignore
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
+        let displayLabel = "";
+        if(props.allowCustomTerms && value.iri==""){
+             displayLabel = label;
+        } else {
+            displayLabel = value.label
+        }
         let color = "";
         if (value.type === "class") {
             color = visColorsBehindText[5];
@@ -104,7 +110,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         return (
             <EuiHealth title={value.type} color={dotColor}>
             <span>
-              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+              <EuiHighlight search={searchValue}>{displayLabel}</EuiHighlight>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
                     <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
@@ -164,6 +170,33 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     })
                 }
             });
+        } else if (props.selectOption?.label && props.allowCustomTerms) { // when a custom term is passed
+            setLoadingState(true);
+            setOptions([
+                {
+                    label: props.selectOption?.label,
+                    value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                    }
+                },
+            ]);
+            setSelectedOptions([
+                {
+                    label: props.selectOption?.label,
+                    value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                    }
+                },
+            ]);
+            setLoadingState(false);
         }
     }, []); // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
 
