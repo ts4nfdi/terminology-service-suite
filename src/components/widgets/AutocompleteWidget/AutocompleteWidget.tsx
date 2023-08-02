@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 
 import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
@@ -9,8 +10,10 @@ import {
     euiPaletteColorBlind,
     EuiHighlight,
     EuiHealth,
-    EuiBadge
+    EuiBadge,
+    EuiProvider
 } from "@elastic/eui";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -335,4 +338,23 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
 }
 
-export { AutocompleteWidget };
+function createAutocomplete(props: AutocompleteWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
+}
+
+function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <AutocompleteWidget
+          api={props.api}
+          selectionChangedEvent={props.selectionChangedEvent}
+          allowCustomTerms={props.allowCustomTerms}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  )
+}
+
+export { AutocompleteWidget, createAutocomplete };

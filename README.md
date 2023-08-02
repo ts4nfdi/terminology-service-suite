@@ -64,6 +64,12 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
 
+### Build Widgets
+
+`npm run build` builds the standard React widgets. It uses rollup and the output can be found in `dist/esm/`.
+
+`npm run build:plainJS` (WIP) builds the widgets for non-React projects. It uses esbuild and the output can be found in `dist_plainjs/`. This process uses an adapted version of the community plugin [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import). The required adaptations can be found in PRs [#9](https://github.com/RTVision/esbuild-dynamic-import/pull/9) and [#10](https://github.com/RTVision/esbuild-dynamic-import/pull/10). The adapted version needs to be built and placed in `local_modules/dyn-import-plugin/`.
+
 ### Commit Message Formating 
 
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
