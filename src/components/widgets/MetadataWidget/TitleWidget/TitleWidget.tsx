@@ -1,7 +1,9 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from "../../../../api/OlsApi";
+import {AutocompleteWidget} from "../../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -74,4 +76,26 @@ function TitleWidget(props: TitleWidgetProps) {
     );
 }
 
-export { TitleWidget };
+function createTitle(props: TitleWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedTitleWidget(props), container, callback);
+}
+
+function WrappedTitleWidget(props: TitleWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <TitleWidget
+                    api={props.api}
+                    entityType={props.entityType}
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    titleText={props.titleText}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { TitleWidget, createTitle };

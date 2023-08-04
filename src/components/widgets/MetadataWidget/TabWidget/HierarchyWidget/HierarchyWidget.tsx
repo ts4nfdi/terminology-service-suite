@@ -1,10 +1,12 @@
-import { EuiPanel, EuiTreeView } from "@elastic/eui";
+import {EuiPanel, EuiProvider, EuiTreeView} from "@elastic/eui";
 import { Node } from "@elastic/eui/src/components/tree_view/tree_view";
 
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { fetch_data, get_url_prefix } from "../../../../../api/widget";
 import { OlsApi } from "../../../../../api/OlsApi";
+import ReactDOM from "react-dom";
+import {AutocompleteWidget} from "../../../AutocompleteWidget";
 
 /**
  * Response from OLS
@@ -146,4 +148,23 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
   );
 };
 
-export { HierarchyWidget };
+function createHierarchy(props: HierarchyWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedHierarchyWidget(props), container, callback);
+}
+
+function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <HierarchyWidget
+              ontologyId={props.ontologyId}
+              api={props.api}
+              iri={props.iri}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { HierarchyWidget, createHierarchy };

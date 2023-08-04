@@ -1,5 +1,8 @@
 import React from "react";
-import { EuiFlexItem, EuiLink } from "@elastic/eui";
+import {EuiFlexItem, EuiLink, EuiProvider} from "@elastic/eui";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {AutocompleteWidget} from "../../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface IriWidgetProps {
   iri: string;
@@ -36,4 +39,24 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-export { IriWidget };
+function createIri(props: IriWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedIriWidget(props), container, callback);
+}
+
+function WrappedIriWidget(props: IriWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <IriWidget
+                    iri={props.iri}
+                    iriText={props.iriText}
+                    color={props.color}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { IriWidget, createIri };

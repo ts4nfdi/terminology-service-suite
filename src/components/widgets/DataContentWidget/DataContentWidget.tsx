@@ -1,7 +1,16 @@
 import React, {useState} from "react";
-import { EuiText, EuiLoadingSpinner, EuiCard } from "@elastic/eui";
+import ReactDOM from "react-dom";
+
+import {
+  EuiText,
+  EuiLoadingSpinner,
+  EuiCard,
+  EuiProvider
+} from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
+import { QueryClient, QueryClientProvider } from "react-query";
+import {AutocompleteWidget} from "../AutocompleteWidget";
 
 export interface DataContentWidgetProps {
   api: string;
@@ -133,4 +142,22 @@ function DataContentWidget(props: DataContentWidgetProps) {
   );
 }
 
-export { DataContentWidget };
+function createDataContent(props: DataContentWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedDataContentWidget(props), container, callback);
+}
+
+function WrappedDataContentWidget(props: DataContentWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <DataContentWidget
+            api={props.api}
+            parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { DataContentWidget, createDataContent };

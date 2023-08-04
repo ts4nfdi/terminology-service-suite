@@ -1,7 +1,9 @@
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner } from "@elastic/eui";
-import {useQuery} from "react-query";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
+import {AutocompleteWidget} from "../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface OntologyInfoWidgetProps {
   ontologyId: string;
@@ -85,4 +87,24 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     </EuiFlexGroup>
   );
 }
-export { OntologyInfoWidget };
+
+function createOntologyInfo(props: OntologyInfoWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedOntologyInfoWidget(props), container, callback);
+}
+
+function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <OntologyInfoWidget
+              ontologyId={props.ontologyId}
+              api={props.api}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { OntologyInfoWidget, createOntologyInfo };

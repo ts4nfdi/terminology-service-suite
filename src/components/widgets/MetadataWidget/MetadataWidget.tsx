@@ -1,10 +1,13 @@
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiProvider} from "@elastic/eui";
 import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import { IriWidget } from "./IriWidget";
 import { TitleWidget } from "./TitleWidget";
 import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {AutocompleteWidget} from "../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface MetadataWidgetProps {
   iri: string;
@@ -56,4 +59,26 @@ function MetadataWidget(props: MetadataWidgetProps) {
     </EuiFlexGroup>
   );
 }
-export { MetadataWidget };
+
+function createMetadata(props: MetadataWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedMetadataWidget(props), container, callback);
+}
+
+function WrappedMetadataWidget(props: MetadataWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <MetadataWidget
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    api={props.api}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { MetadataWidget, createMetadata };

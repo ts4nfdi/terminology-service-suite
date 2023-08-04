@@ -4,13 +4,15 @@ import {
   EuiBasicTable,
   EuiButtonIcon,
   EuiLink,
-  CriteriaWithPagination,
+  CriteriaWithPagination, EuiProvider,
 } from "@elastic/eui";
-import { useQuery } from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
+import {AutocompleteWidget} from "../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -235,4 +237,28 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   return <EuiLoadingSpinner size="xl" />;
 }
 
-export { ResourcesWidget };
+function createResources(props: ResourcesWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedResourcesWidget(props), container, callback);
+}
+
+function WrappedResourcesWidget(props: ResourcesWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <ResourcesWidget
+              api={props.api}
+              initialEntriesPerPage={props.initialEntriesPerPage}
+              pageSizeOptions={props.pageSizeOptions}
+              initialSortField={props.initialSortField}
+              initialSortDir={props.initialSortDir}
+              targetLink={props.targetLink}
+              actions={props.actions}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { ResourcesWidget, createResources };

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { EuiBadge, EuiFlexItem } from "@elastic/eui";
+import {EuiBadge, EuiFlexItem, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
-import {useQuery} from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {AutocompleteWidget} from "../../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface BreadcrumbWidgetProps {
   iri?: string;
@@ -83,4 +85,28 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     </EuiFlexItem>
   );
 }
-export { BreadcrumbWidget };
+
+function createBreadcrumb(props: BreadcrumbWidgetProps, container: any, callback?:()=>void) {
+  ReactDOM.render(WrappedBreadcrumbWidget(props), container, callback);
+}
+
+function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <BreadcrumbWidget
+              api={props.api}
+              entityType={props.entityType}
+              iri={props.iri}
+              ontologyId={props.ontologyId}
+              colorFirst={props.colorFirst}
+              colorSecond={props.colorSecond}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { BreadcrumbWidget, createBreadcrumb };

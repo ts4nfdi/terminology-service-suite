@@ -1,13 +1,15 @@
 import React from "react";
 import {
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiLink, EuiLoadingSpinner,
-  EuiPanel,
-  EuiText,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiLink, EuiLoadingSpinner,
+    EuiPanel, EuiProvider,
+    EuiText,
 } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
-import { useQuery } from 'react-query'
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
+import {TabWidget} from "../TabWidget";
+import ReactDOM from "react-dom";
 
 export interface CrossRefWidgetProps {
   iri: string;
@@ -113,4 +115,25 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 }
 
-export { CrossRefTabWidget };
+function createCrossRefTab(props: CrossRefWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
+}
+
+function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <CrossRefTabWidget
+                    iri={props.iri}
+                    api={props.api}
+                    ontologyId={props.ontologyId}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { CrossRefTabWidget, createCrossRefTab };

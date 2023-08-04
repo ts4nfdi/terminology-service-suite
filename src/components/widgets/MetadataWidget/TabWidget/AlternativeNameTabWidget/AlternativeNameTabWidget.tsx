@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
-import { useQuery } from 'react-query'
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
+import {AutocompleteWidget} from "../../../AutocompleteWidget";
+import {TabWidget} from "../TabWidget";
+import ReactDOM from "react-dom";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -80,4 +83,25 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-export { AlternativeNameTabWidget };
+function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
+}
+
+function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <AlternativeNameTabWidget
+                    iri={props.iri}
+                    api={props.api}
+                    ontologyId={props.ontologyId}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { AlternativeNameTabWidget, createAlternativeNameTab };

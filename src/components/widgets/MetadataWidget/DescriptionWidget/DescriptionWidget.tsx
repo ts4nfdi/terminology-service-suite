@@ -1,8 +1,10 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
+import {AutocompleteWidget} from "../../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
@@ -74,4 +76,26 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   );
 }
 
-export { DescriptionWidget };
+function createDescription(props: DescriptionWidgetProps, container: any, callback?:()=>void) {
+  ReactDOM.render(WrappedDescriptionWidget(props), container, callback);
+}
+
+function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <DescriptionWidget
+              api={props.api}
+              ontologyId={props.ontologyId}
+              iri={props.iri}
+              descText={props.descText}
+              entityType={props.entityType}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { DescriptionWidget, createDescription };

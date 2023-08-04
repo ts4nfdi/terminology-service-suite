@@ -1,12 +1,15 @@
 import React from "react";
 import {
-  EuiFlexItem,
+  EuiFlexItem, EuiProvider,
   EuiTabbedContent,
   EuiTabbedContentTab,
 } from "@elastic/eui";
 import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
 import { CrossRefTabWidget } from "./CrossRefWidget";
 import { HierarchyWidget } from "./HierarchyWidget";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {AutocompleteWidget} from "../../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 export interface TabWidgetProps {
   iri: string;
@@ -62,4 +65,25 @@ function TabWidget(props: TabWidgetProps) {
   );
 }
 
-export { TabWidget };
+function createTab(props: TabWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedTabWidget(props), container, callback);
+}
+
+function WrappedTabWidget(props: TabWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <TabWidget
+              iri={props.iri}
+              api={props.api}
+              ontologyId={props.ontologyId}
+              entityType={props.entityType}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { TabWidget, createTab };

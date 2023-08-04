@@ -1,7 +1,16 @@
 import React from "react";
-import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText } from "@elastic/eui";
+import {
+    EuiCard,
+    EuiFlexItem,
+    EuiLoadingSpinner,
+    EuiSpacer,
+    EuiText,
+    EuiProvider
+} from "@elastic/eui";
 import { OlsApi } from "../../../api/OlsApi";
-import { useQuery } from 'react-query'
+import { useQuery, QueryClientProvider, QueryClient } from 'react-query'
+import ReactDOM from "react-dom";
+import {AutocompleteWidget} from "../AutocompleteWidget";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -191,4 +200,26 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     );
 }
 
-export { EntityInfoWidget };
+function createEntityInfo(props: EntityInfoWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedEntitiyInfoWidget(props), container, callback);
+}
+
+function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <EntityInfoWidget
+                    api={props.api}
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    hasTitle={props.hasTitle}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { EntityInfoWidget, createEntityInfo };

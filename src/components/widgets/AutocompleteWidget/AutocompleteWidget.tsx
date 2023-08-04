@@ -349,7 +349,11 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
       <QueryClientProvider client={queryClient}>
         <AutocompleteWidget
           api={props.api}
+          parameter={props.parameter}
           selectionChangedEvent={props.selectionChangedEvent}
+          selectOption={props.selectOption}
+          placeholder={props.placeholder}
+          hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
         />
       </QueryClientProvider>

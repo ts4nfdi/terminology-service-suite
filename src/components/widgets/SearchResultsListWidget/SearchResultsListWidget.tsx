@@ -6,7 +6,7 @@ import {
     EuiFormRow,
     EuiHorizontalRule,
     EuiLoadingSpinner,
-    EuiPanel,
+    EuiPanel, EuiProvider,
     EuiSelectable,
     EuiSelectableOption,
     EuiSpacer,
@@ -15,10 +15,12 @@ import {
     EuiText,
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
-import { useQuery } from 'react-query';
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
+import {AutocompleteWidget} from "../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 
 export type SearchResultsListWidgetProps = {
@@ -285,4 +287,26 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     );
 }
 
-export { SearchResultsListWidget };
+function createSearchResultsList(props: SearchResultsListWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedSearchResultsListWidget(props), container, callback);
+}
+
+function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <SearchResultsListWidget
+                    api={props.api}
+                    query={props.query}
+                    parameter={props.parameter}
+                    initialItemsPerPage={props.initialItemsPerPage}
+                    itemsPerPageOptions={props.itemsPerPageOptions}
+                    targetLink={props.targetLink}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { SearchResultsListWidget, createSearchResultsList };
