@@ -64,11 +64,17 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
 
-### Build Widgets
+### Build widgets for React projects
 
 `npm run build` builds the standard React widgets. It uses rollup and the output can be found in `dist/esm/`.
 
-`npm run build:plainJS` (WIP) builds the widgets for non-React projects. It uses esbuild and the output can be found in `dist_plainjs/`. This process uses an adapted version of the community plugin [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import). The required adaptations can be found in PRs [#9](https://github.com/RTVision/esbuild-dynamic-import/pull/9) and [#10](https://github.com/RTVision/esbuild-dynamic-import/pull/10). The adapted version needs to be built and placed in `local_modules/dyn-import-plugin/`.
+### Build widgets for non-React projects
+
+`npm run build:plainJS` (WIP) builds the widgets for non-React projects. It uses esbuild and the output can be found in `dist_plainjs/`. This process uses an adapted version of the community plugin [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import). The required adaptations can be found in PRs [#9](https://github.com/RTVision/esbuild-dynamic-import/pull/9) and [#10](https://github.com/RTVision/esbuild-dynamic-import/pull/10). The adapted version needs to be built and placed in `local_modules/dyn-import-plugin/`. 
+
+To use the widgets in a plainJS environment, embed the output javascript file in a script tag in the head of `index.html`. A DataContentWidget, for example, is then created by embedding it in an HTML-component with `window['SemLookPWidgets'].createDataContent(props,HTML-component)`.  
+
+If the environment features `npm`, the output file can also be used to create a local module. To achieve this, place the adapted version of [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import) in `local_modules/dyn-import-plugin/` and all the files generated inside `dist_plainjs/` in `local_modules/semlookp-widgets/` inside of your project. Now add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
 
 ### Commit Message Formating 
 
