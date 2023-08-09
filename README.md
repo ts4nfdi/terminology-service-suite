@@ -72,9 +72,26 @@ This project uses [Storybook](https://storybook.js.org/) to develop independent 
 
 `npm run build:plainJS` (WIP) builds the widgets for non-React projects. It uses esbuild and the output can be found in `dist_plainjs/`. This process uses an adapted version of the community plugin [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import). The required adaptations can be found in PRs [#9](https://github.com/RTVision/esbuild-dynamic-import/pull/9) and [#10](https://github.com/RTVision/esbuild-dynamic-import/pull/10). The adapted version needs to be built and placed in `local_modules/dyn-import-plugin/`. 
 
-To use the widgets in a plainJS environment, embed the output javascript file in a script tag in the head of `index.html`. A DataContentWidget, for example, is then created by embedding it in an HTML-component with `window['SemLookPWidgets'].createDataContent(props,HTML-component)`.  
+To use the widgets in a plain javascript environment, embed the output file in a script tag in the head of an `html` file and include a link to a stylesheet for Elastic UI:
 
-If the environment features `npm`, the output file can also be used to create a local module. To achieve this, place the adapted version of [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import) in `local_modules/dyn-import-plugin/` and all the files generated inside `dist_plainjs/` in `local_modules/semlookp-widgets/` inside of your project. Now add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
+```html
+<script type="text/javascript" src="path/to/semlookp_widgets.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@elastic/eui@62.2.4/dist/eui_theme_light.css">
+```
+
+A DataContentWidget, for example, is then created as follows:
+
+```html
+<div id="datacontentwidget"></div>
+
+<script>
+  let container = document.getElementById('datacontentwidget');
+  window['SemLookPWidgets'].createDataContent(
+      {api:"https://semanticlookup.zbmed.de/api/",}, container);
+</script>
+```
+
+If the environment features `npm`, a local module can be created from the output file. To do this, place the adapted version of [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import) in `local_modules/dyn-import-plugin/` and all the files generated inside `dist_plainjs/` in `local_modules/semlookp-widgets/` in your project. Now add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
 
 ### Commit Message Formating 
 
