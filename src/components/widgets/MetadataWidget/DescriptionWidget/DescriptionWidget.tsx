@@ -3,7 +3,6 @@ import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
-import {AutocompleteWidget} from "../../AutocompleteWidget";
 import ReactDOM from "react-dom";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
@@ -92,6 +91,7 @@ function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
               descText={props.descText}
               entityType={props.entityType}
               parameter={props.parameter}
+              color={props.color}
           />
         </QueryClientProvider>
       </EuiProvider>
