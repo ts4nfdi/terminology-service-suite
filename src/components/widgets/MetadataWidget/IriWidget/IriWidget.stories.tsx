@@ -10,28 +10,27 @@ export default {
   },
   argTypes: {
     color: {
-      Iri: "Color of the text, names, hex or rgb",
+      description: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
         options: [
-          "default",
-          "subdued",
-          "success",
+          "primary",
           "accent",
-          "danger",
+          "success",
           "warning",
+          "danger",
           "ghost",
-          "#00FFFF",
-          "rgb(255,0,255)",
+          "text",
+          "subdued",
         ],
       },
     },
-    descText: {
-      Iri:
+    iriText: {
+      description:
           "Set your own text manually that overwrites the text fetched from the API",
     },
     iri: {
-      Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
+      description: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     parameter: {
       defaultValue: "collection=nfdi4health",
