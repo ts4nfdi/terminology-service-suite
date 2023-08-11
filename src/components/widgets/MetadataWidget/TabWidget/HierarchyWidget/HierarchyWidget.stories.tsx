@@ -25,10 +25,6 @@ export default {
     iri: {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
-    },
   },
 };
 
@@ -42,5 +38,4 @@ HierarchyWidget1.args = {
   iri: "http://purl.bioontology.org/ontology/MESH/D003704",
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyId: "mesh",
-  parameter: "collection=nfdi4health",
 };
