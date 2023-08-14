@@ -1,8 +1,4 @@
-import type { Preview } from "@storybook/html";
-import '../../../semlookp-widgets-plainJS/local_modules/semlookp-widgets';
-
-const preview: Preview = {
-  parameters: {
+export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
@@ -11,7 +7,4 @@ const preview: Preview = {
       },
     },
     layout: 'centered'
-  },
 };
-
-export default preview;

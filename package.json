@@ -76,6 +76,7 @@
     "react-query": "^3.39.2"
   },
   "dependencies": {
-    "@storybook/html-vite": "^7.2.3"
+    "@storybook/html-vite": "^7.2.3",
+    "semlookp-widgets": "file:local_modules/semlookp-widgets"
   }
 }

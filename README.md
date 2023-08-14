@@ -62,7 +62,9 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 ### Run Storybook
 
-This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
+This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook:react`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
+
+The project also features a Storybook for HTML versions of the components. To start this Storybook, you have to install the HTML widgets as a local module in the project (see [Build widgets for non-React projects](#build-widgets-for-non-react-projects)). After that, run `npm install` and start the Storybook with `npm run storybook:html`. 
 
 ### Build widgets for React projects
 
