@@ -15,7 +15,8 @@
   "scripts": {
     "build": "npx rollup -c",
     "semantic-release": "npx semantic-release",
-    "storybook": "storybook dev -p 6006",
+    "storybook:react": "cross-env NODE_PATH=styles:components storybook dev -p 6006 -c .storybook/react",
+    "storybook:html": "cross-env NODE_PATH=styles:components storybook dev -p 6007 -c .storybook/html",
     "build-storybook": "storybook build",
     "build:plainJS": "dotenv -e .env.$REACT_APP_ENV -e .env -- node build_plainJS.mjs",
     "style:format": "npx prettier --write .",
@@ -61,7 +62,7 @@
     "rollup": "^2.77.2",
     "semantic-release": "^19.0.5",
     "storybook": "^7.2.3",
-    "typescript": "~4.5.3"
+    "typescript": "~5.0.2"
   },
   "peerDependencies": {
     "@elastic/datemath": "^5.0.3",
@@ -73,5 +74,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.39.2"
+  },
+  "dependencies": {
+    "@storybook/html-vite": "^7.2.3"
   }
 }
