@@ -62,7 +62,7 @@
     "rollup": "^2.77.2",
     "semantic-release": "^19.0.5",
     "storybook": "^7.2.3",
-    "typescript": "~5.0.2"
+    "typescript": "^4.5.3"
   },
   "peerDependencies": {
     "@elastic/datemath": "^5.0.3",
