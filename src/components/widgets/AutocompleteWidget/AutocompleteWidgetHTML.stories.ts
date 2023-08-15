@@ -181,7 +181,7 @@ export const withValue: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/ols/api/",
         parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {
             iri: "http://purl.bioontology.org/ontology/MESH/D000086382"
         },
@@ -195,7 +195,7 @@ export const withCustomValue: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/ols/api/",
         parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {
             label: "freetext"
         },
@@ -209,7 +209,7 @@ export const withInvalidValue: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/ols/api/",
         parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {
             iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
         },
@@ -223,7 +223,7 @@ export const withGermanInput: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/api/",
         parameter: "collection=nfdi4health&lang=de&type=class",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {},
         placeholder: "Search for Term",
         hasShortSelectedLabel: true,
@@ -235,7 +235,7 @@ export const displaySelectedEntityWithLongForm: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/ols/api/",
         parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {},
         placeholder: "Search for Term",
         hasShortSelectedLabel: false,
@@ -247,7 +247,7 @@ export const allowAddingCustomTerms: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/ols/api/",
         parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
-        selectionChangedEvent: ()=>{},
+        selectionChangedEvent: ()=>{return;},
         selectOption: {},
         placeholder: "Search for Term",
         hasShortSelectedLabel: true,
