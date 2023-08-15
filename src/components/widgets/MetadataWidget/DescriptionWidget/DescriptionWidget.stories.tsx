@@ -13,29 +13,29 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     color: {
       description: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
-        options: [
-          "default",
-          "subdued",
-          "success",
-          "accent",
-          "danger",
-          "warning",
-          "ghost",
-          "#00FFFF",
-          "rgb(255,0,255)",
-        ],
       },
+      options: [
+        "default",
+        "subdued",
+        "success",
+        "accent",
+        "danger",
+        "warning",
+        "ghost",
+        "#00FFFF",
+        "rgb(255,0,255)",
+      ],
     },
     descText: {
       description:
@@ -48,24 +48,26 @@ export default {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
-        options: [
-          "ontology",
-          "term",
-          "class",
-          "property",
-          "individual",
-          "INVALID STRING"
-        ],
       },
+      options: [
+        "ontology",
+        "term",
+        "class",
+        "property",
+        "individual",
+        "INVALID STRING"
+      ],
     },
     iri: {
       description: "Object IRI whose description you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: DescriptionWidgetProps) => (

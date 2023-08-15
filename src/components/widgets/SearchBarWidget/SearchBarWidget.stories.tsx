@@ -9,12 +9,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     query: {
       description: "The search term to receive suggestions for.",
@@ -24,7 +24,9 @@ export default {
       action: "onSearchValueChange"
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
+    },
+    args: {
+      parameter: "collection=nfdi4health",
     }
   },
 };

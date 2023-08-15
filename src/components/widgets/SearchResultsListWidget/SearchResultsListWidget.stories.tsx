@@ -9,12 +9,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     query: {
       description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
@@ -31,10 +31,11 @@ export default {
       description: "The link which should be the target of the EuiCard.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: SearchResultsListWidgetProps) => (

@@ -18,12 +18,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     initialEntriesPerPage: {
       description: "Initial number of entries displayed per page.",
@@ -37,15 +37,15 @@ export default {
       description: "Column the table is sorted by initially.",
       control: {
         type: "radio",
-        options: ["config.title", "config.preferredPrefix", "config.loaded"],
       },
+      options: ["config.title", "config.preferredPrefix", "config.loaded"],
     },
     initialSortDir: {
       description: "Initial sorting direction.",
       control: {
         type: "radio",
-        options: ["asc", "desc"],
       },
+      options: ["asc", "desc"],
     },
     targetLink: {
       description: "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want " +
@@ -54,11 +54,11 @@ export default {
       control: "text",
     },
     actions: {},
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
-    },
+    parameter: {},
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template: ComponentStory<typeof ResourcesWidget> = (args) => (

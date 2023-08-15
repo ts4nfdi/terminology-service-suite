@@ -13,17 +13,17 @@ export default {
       description: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
-        options: [
-          "primary",
-          "accent",
-          "success",
-          "warning",
-          "danger",
-          "ghost",
-          "text",
-          "subdued",
-        ],
       },
+      options: [
+        "primary",
+        "accent",
+        "success",
+        "warning",
+        "danger",
+        "ghost",
+        "text",
+        "subdued",
+      ],
     },
     iriText: {
       description:
@@ -32,11 +32,11 @@ export default {
     iri: {
       description: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
-    },
+    parameter: {},
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: IriWidgetProps) => (

@@ -1,7 +1,8 @@
 import React from "react";
-import { DataContentWidget, DataContentWidgetProps } from "./DataContentWidget";
+import { DataContentWidget } from "./DataContentWidget";
+import { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta: Meta<typeof DataContentWidget> = {
   title: "DataContentWidget",
   component: DataContentWidget,
   parameters: {
@@ -12,40 +13,32 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
-    },
+    parameter: {},
   },
+  render: (args) => <DataContentWidget {...args} />,
 };
 
-const Template = (args: DataContentWidgetProps) => (
-  <>
-    <DataContentWidget {...args} />
-  </>
-);
+export default meta;
 
-export const NFDI4HealthDataContentWidget = Template.bind({});
+type Story = StoryObj<typeof DataContentWidget>;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-NFDI4HealthDataContentWidget.args = {
-  api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "collection=nfdi4health"
-};
+export const NFDI4HealthDataContentWidget: Story = {
+  args: {
+    api: "https://semanticlookup.zbmed.de/api/",
+    parameter: "collection=nfdi4health",
+  }
+}
 
-export const SafetyDataContentWidget = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-SafetyDataContentWidget.args = {
-  api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "collection=safety",
-};
+export const SafetyDataContentWidget: Story = {
+  args: {
+    api: "https://semanticlookup.zbmed.de/api/",
+    parameter: "collection=safety",
+  }
+}
