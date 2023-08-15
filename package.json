@@ -15,8 +15,9 @@
   "scripts": {
     "build": "npx rollup -c",
     "semantic-release": "npx semantic-release",
-    "storybook:react": "cross-env NODE_PATH=styles:components storybook dev -p 6006 -c .storybook/react",
-    "storybook:html": "cross-env NODE_PATH=styles:components storybook dev -p 6007 -c .storybook/html",
+    "storybook:react": "cross-env NODE_PATH=styles:components storybook dev -s ./vendor -p 6006 -c .storybook/react",
+    "storybook:html": "cross-env NODE_PATH=styles:components storybook dev -s ./vendor -p 6007 -c .storybook/html",
+    "storybook": "cross-env NODE_PATH=styles:components storybook dev -s ./vendor -p 6008 -c .storybook",
     "build-storybook": "storybook build",
     "build:plainJS": "dotenv -e .env.$REACT_APP_ENV -e .env -- node build_plainJS.mjs",
     "style:format": "npx prettier --write .",

@@ -8,7 +8,7 @@ that aims to provide a single point of access to the latest ontology and termino
 functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, 
 thus simplifying the development of user interfaces and the visualization of semantic information. 
 
-The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
+The widgets are built with React and TypeScript and can be used in React applications as well as plain JavaScript projects. SemLookP and the widgets are 
 based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
   
 
@@ -64,7 +64,9 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook:react`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
 
-The project also features a Storybook for HTML versions of the components. To start this Storybook, you have to install the HTML widgets as a local module in the project (see [Build widgets for non-React projects](#build-widgets-for-non-react-projects)). After that, run `npm install` and start the Storybook with `npm run storybook:html`. 
+The project also features a Storybook for HTML versions of the components. To start this Storybook, you have to install the HTML widgets as a local module in the project (see [Build widgets for non-React projects](#build-widgets-for-non-react-projects)). After that, run `npm install` and start the Storybook with `npm run storybook:html`.  The interactive documentation is available via `http://localhost:6007`.
+
+The React and HTML components can be combined in one Storybook using `npm run storybook`. Notice that, for this to work, the React Storybook has to be running at `http://localhost:6006` and the HTML Storybook at `http://localhost:6007`.
 
 ### Build widgets for React projects
 
@@ -92,6 +94,8 @@ A DataContentWidget, for example, is then created as follows:
       {api:"https://semanticlookup.zbmed.de/api/",}, container);
 </script>
 ```
+
+For further information on the usage of the HTML widgets, please visit the interactive documentation in the [HTML Storybook](#run-storybook).
 
 If the environment features `npm`, a local module can be created from the output file. To do this, place the adapted version of [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import) in `local_modules/dyn-import-plugin/` and all the files generated inside `dist_plainjs/` in `local_modules/semlookp-widgets/` in your project. Now add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
 
