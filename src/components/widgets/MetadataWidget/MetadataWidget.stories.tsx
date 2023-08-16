@@ -47,11 +47,9 @@ export default {
 };
 
 const Template = (args: MetadataWidgetProps) => (
-  <>
-    <EuiPanel>
-      <MetadataWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <MetadataWidget {...args} />
+  </EuiPanel>
 );
 
 export const MetadataWidget1 = Template.bind({});

@@ -49,9 +49,7 @@ export default {
 };
 
 const Template = (args: EntityInfoWidgetProps) => (
-  <>
-    <EntityInfoWidget {...args} />
-  </>
+  <EntityInfoWidget {...args} />
 );
 
 export const OntologyInfoWidget = Template.bind({});

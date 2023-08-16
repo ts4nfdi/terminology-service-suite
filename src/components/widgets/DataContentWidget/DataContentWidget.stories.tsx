@@ -27,9 +27,7 @@ export default {
 };
 
 const Template = (args: DataContentWidgetProps) => (
-  <>
-    <DataContentWidget {...args} />
-  </>
+  <DataContentWidget {...args} />
 );
 
 export const NFDI4HealthDataContentWidget = Template.bind({});

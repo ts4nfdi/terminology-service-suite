@@ -30,9 +30,7 @@ export default {
 };
 
 const Template = (args: SearchBarWidgetProps) => (
-  <>
     <SearchBarWidget {...args} />
-  </>
 );
 
 export const SearchBarWidget1 = Template.bind({});

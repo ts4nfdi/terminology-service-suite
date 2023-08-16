@@ -38,9 +38,7 @@ export default {
 };
 
 const Template = (args: SearchResultsListWidgetProps) => (
-  <>
     <SearchResultsListWidget {...args} />
-  </>
 );
 
 export const SearchResultsListSafety = Template.bind({});

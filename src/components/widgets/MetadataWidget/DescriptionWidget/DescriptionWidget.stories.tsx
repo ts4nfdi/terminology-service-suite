@@ -69,11 +69,9 @@ export default {
 };
 
 const Template = (args: DescriptionWidgetProps) => (
-  <>
-    <EuiPanel>
-      <DescriptionWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <DescriptionWidget {...args} />
+  </EuiPanel>
 );
 
 export const DescriptionWidget1 = Template.bind({});

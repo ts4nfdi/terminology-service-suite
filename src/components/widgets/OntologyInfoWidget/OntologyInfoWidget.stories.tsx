@@ -31,11 +31,9 @@ export default {
 };
 
 const Template = (args: OntologyInfoWidgetProps) => (
-  <>
-    <EuiPanel>
-      <OntologyInfoWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <OntologyInfoWidget {...args} />
+  </EuiPanel>
 );
 
 export const OntologyInfoWidget1 = Template.bind({});

@@ -41,11 +41,9 @@ export default {
 };
 
 const Template = (args: IriWidgetProps) => (
-    <>
-      <EuiPanel>
-        <IriWidget {...args} />
-      </EuiPanel>
-    </>
+  <EuiPanel>
+    <IriWidget {...args} />
+  </EuiPanel>
 );
 
 export const IriWidget1 = Template.bind({});

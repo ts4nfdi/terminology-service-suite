@@ -30,11 +30,9 @@ export default {
 };
 
 const Template = (args: JsonApiWidgetProps) => (
-  <>
-    <EuiPanel>
-      <JsonApiWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <JsonApiWidget {...args} />
+  </EuiPanel>
 );
 
 export const JsonApiWidget1 = Template.bind({});
