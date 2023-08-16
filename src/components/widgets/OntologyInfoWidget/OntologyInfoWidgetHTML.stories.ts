@@ -26,7 +26,9 @@ const meta = {
         const num = getIncNum();
 
         return `
-<div id="ontology_info_widget_container_${num}"></div>
+<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
+    <div id="ontology_info_widget_container_${num}"></div>
+</div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createOntologyInfo(
