@@ -155,7 +155,34 @@ export const ResourceWidget1: Story = {
         initialSortField: "config.preferredPrefix",
         initialSortDir: "asc" as const,
         targetLink: "https://semanticlookup.zbmed.de/dev/",
-        actions: "",
+        actions: [],
         parameter: "collection=nfdi4health"
     },
 };
+
+export const withActions: Story = {
+    args: {
+        api: "https://semanticlookup.zbmed.de/api/",
+        initialEntriesPerPage: 10,
+        pageSizeOptions: Array(10, 25, 50, 100),
+        initialSortField: "config.preferredPrefix",
+        initialSortDir: "asc" as const,
+        targetLink: "https://semanticlookup.zbmed.de/dev/",
+        actions: [], // TODO
+        parameter: "collection=nfdi4health"
+    },
+};
+
+export const withActionsAndSafety: Story = {
+    args: {
+        api: "https://semanticlookup.zbmed.de/api/",
+        initialEntriesPerPage: 10,
+        pageSizeOptions: Array(10, 25, 50, 100),
+        initialSortField: "config.preferredPrefix",
+        initialSortDir: "asc" as const,
+        targetLink: "https://semanticlookup.zbmed.de/safety/",
+        actions: [], // TODO
+        parameter: "collection=safety",
+    },
+};
+
