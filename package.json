@@ -48,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "axios": "^1.1.2",
+    "cross-env": "^7.0.3",
     "custom-esbuild-dynamic-import": "file:local_modules/dyn-import-plugin",
     "dotenv-cli": "^7.2.1",
     "esbuild": "^0.18.11",
@@ -77,6 +78,7 @@
     "react-query": "^3.39.2"
   },
   "dependencies": {
-    "@storybook/html-vite": "^7.2.3"
+    "@storybook/html-vite": "^7.2.3",
+    "semlookp-widgets": "file:dist_plainjs/"
   }
 }
