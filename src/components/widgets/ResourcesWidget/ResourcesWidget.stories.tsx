@@ -55,10 +55,12 @@ export default {
     },
     actions: {},
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template: ComponentStory<typeof ResourcesWidget> = (args) => (

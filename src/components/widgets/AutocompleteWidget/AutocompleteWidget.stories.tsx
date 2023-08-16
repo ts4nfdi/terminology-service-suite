@@ -16,7 +16,6 @@ export default {
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
-      defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
     },
     selectionChangedEvent: {
       action: "selectionChangedEvent",
@@ -25,20 +24,22 @@ export default {
       defaultValue: "Search for Term",
     },
     selectOption: {},
-    parameter: {
-      defaultValue: "ontology=mesh,efo&type=class&collection=nfdi4health",
-    },
+    parameter: {},
     hasShortSelectedLabel: {
       description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
       type: { required: false },
-      defaultValue: true,
     },
     allowCustomTerms: {
       description: "If true, custom terms that are not found in any ontology can be added.",
       type: { required: false},
-      defaultValue: false
     }
   },
+  args: {
+    api: "https://semanticlookup.zbmed.de/ols/api/",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
+    hasShortSelectedLabel: true,
+    allowCustomTerms: false
+  }
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
   <AutocompleteWidget {...args} />

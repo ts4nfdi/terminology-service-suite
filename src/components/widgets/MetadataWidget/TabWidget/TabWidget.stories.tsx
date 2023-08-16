@@ -26,7 +26,6 @@ export default {
       description: "Iri of the term you want to fetch the tab information for.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
     entityType: {
@@ -43,6 +42,9 @@ export default {
       ],
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: TabWidgetProps) => <TabWidget {...args} />;

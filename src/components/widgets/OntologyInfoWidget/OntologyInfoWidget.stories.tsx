@@ -24,10 +24,12 @@ export default {
       description: "ID of the ontology whose info should be displayed.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: OntologyInfoWidgetProps) => (

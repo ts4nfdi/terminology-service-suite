@@ -22,7 +22,6 @@ export default {
     hasTitle: {
       description: "Show title, default is true",
       type: { required: false },
-      defaultValue: true,
     },
     entityType: {
       description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
@@ -42,10 +41,13 @@ export default {
       description: "Entity IRI whose information you want to fetch.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    hasTitle: true,
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: EntityInfoWidgetProps) => (

@@ -26,10 +26,12 @@ export default {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: HierarchyWidgetProps) => <HierarchyWidget {...args} />;

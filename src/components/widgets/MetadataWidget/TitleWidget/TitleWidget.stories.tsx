@@ -45,10 +45,12 @@ export default {
         "Set your own text manually that overwrites the text fetched from the API",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: TitleWidgetProps) => (

@@ -23,9 +23,10 @@ export default {
       description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
     },
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-    }
+    parameter: {}
+  },
+  args: {
+    parameter: "collection=nfdi4health",
   },
 };
 

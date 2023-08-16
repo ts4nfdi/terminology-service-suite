@@ -38,6 +38,9 @@ export default {
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: IriWidgetProps) => (

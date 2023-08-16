@@ -31,9 +31,11 @@ export default {
       description: "The link which should be the target of the EuiCard.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
+  },
+  args: {
+    parameter: "collection=nfdi4health",
   },
 };
 
