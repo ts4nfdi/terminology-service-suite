@@ -13,18 +13,18 @@ export default {
       description: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
-        options: [
-          "default",
-          "subdued",
-          "success",
-          "accent",
-          "danger",
-          "warning",
-          "ghost",
-          "#00FFFF",
-          "rgb(255,0,255)",
-        ],
       },
+      options: [
+        "default",
+        "subdued",
+        "success",
+        "accent",
+        "danger",
+        "warning",
+        "ghost",
+        "#00FFFF",
+        "rgb(255,0,255)",
+      ],
     },
     iriText: {
       description:

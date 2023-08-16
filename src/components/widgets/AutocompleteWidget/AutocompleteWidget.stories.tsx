@@ -10,12 +10,12 @@ export default {
     api: {
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
       defaultValue: "https://semanticlookup.zbmed.de/ols/api/",
     },
     selectionChangedEvent: {

@@ -15,12 +15,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     iri: {
       description:
@@ -33,50 +33,50 @@ export default {
     description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
     control: {
       type: "radio",
-      options: [
-        "term",
-        "class",
-        "property",
-        "individual",
-        "INVALID STRING"
-      ],
     },
+    options: [
+      "term",
+      "class",
+      "property",
+      "individual",
+      "INVALID STRING"
+    ],
   },
     colorFirst: {
       description:
         "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
       control: {
         type: "radio",
-        options: [
-          "primary",
-          "accent",
-          "success",
-          "warning",
-          "danger",
-          "ghost",
-          "text",
-          "subdued",
-          "#00FFFF",
-        ],
       },
+      options: [
+        "primary",
+        "accent",
+        "success",
+        "warning",
+        "danger",
+        "ghost",
+        "text",
+        "subdued",
+        "#00FFFF",
+      ],
     },
     colorSecond: {
       description:
         "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
       control: {
         type: "radio",
-        options: [
-          "primary",
-          "accent",
-          "success",
-          "warning",
-          "danger",
-          "ghost",
-          "text",
-          "subdued",
-          "#00FFFF",
-        ],
       },
+      options: [
+        "primary",
+        "accent",
+        "success",
+        "warning",
+        "danger",
+        "ghost",
+        "text",
+        "subdued",
+        "#00FFFF",
+      ],
     },
     parameter: {
       defaultValue: "collection=nfdi4health",

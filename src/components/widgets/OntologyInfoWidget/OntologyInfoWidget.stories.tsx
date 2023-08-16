@@ -13,12 +13,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     ontologyId: {
       description: "ID of the ontology whose info should be displayed.",

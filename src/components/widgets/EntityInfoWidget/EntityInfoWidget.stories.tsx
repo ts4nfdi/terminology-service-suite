@@ -12,12 +12,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     hasTitle: {
       description: "Show title, default is true",
@@ -28,15 +28,15 @@ export default {
       description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
-        options: [
-          "ontology",
-          "term",
-          "class",
-          "property",
-          "individual",
-          "INVALID STRING"
-        ],
       },
+      options: [
+        "ontology",
+        "term",
+        "class",
+        "property",
+        "individual",
+        "INVALID STRING"
+      ],
     },
     iri: {
       description: "Entity IRI whose information you want to fetch.",

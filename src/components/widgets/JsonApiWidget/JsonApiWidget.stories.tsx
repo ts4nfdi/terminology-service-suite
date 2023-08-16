@@ -20,11 +20,11 @@ export default {
         "Size of the button",
       control: {
         type: "radio",
-        options: [
-          "s",
-          "m",
-        ],
       },
+      options: [
+        "s",
+        "m",
+      ],
     },
   },
 };
