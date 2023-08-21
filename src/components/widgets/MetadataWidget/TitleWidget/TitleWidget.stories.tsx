@@ -44,6 +44,10 @@ export default {
       description:
         "Set your own text manually that overwrites the text fetched from the API",
     },
+    default_value:{
+        description:
+        "Set the default text shown if no API fails to retrieve one.",
+    },
     parameter: {
       defaultValue: "collection=nfdi4health",
       type: { required: false }
