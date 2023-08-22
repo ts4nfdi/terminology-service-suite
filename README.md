@@ -5,7 +5,7 @@
 This project includes a widget component library derived from the semantic lookup service 
 [SemLookP](https://semanticlookup.zbmed.de/ols/index). The Terminology Service is a repository for biomedical resources 
 that aims to provide a single point of access to the latest ontology and terminology versions. User interface (UI) 
-functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, 
+functionalities were extracted and implemented as separate reusable components (widgets) to allow integration into other 3rd party services, 
 thus simplifying the development of user interfaces and the visualization of semantic information. 
 
 The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
