@@ -118,7 +118,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
             parameter
         ],
-        async () => {
+        async ({signal}) => {
             return olsApi.search(
                 {
                     query: searchValue,
@@ -133,7 +133,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     size: itemsPerPage.toString(),
                 },
                 undefined,
-                props.parameter
+                props.parameter,
+                signal
             ).then((response) => {
                 if (response.response && response.response.docs != null && response.response.numFound != null) {
                     if (response.facet_counts && response.facet_counts.facet_fields) {
