@@ -155,7 +155,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     }
 
                     setTotalItems(response.response.numFound);
-                    setPageCount(Math.ceil(response.response.numFound / itemsPerPage));
+                    const newPageCount = Math.ceil(response.response.numFound / itemsPerPage)
+                    setPageCount(newPageCount);
+                    if(activePage >= newPageCount) {
+                        setActivePage(0);
+                    }
 
                     return response.response.docs;
                 } else {
