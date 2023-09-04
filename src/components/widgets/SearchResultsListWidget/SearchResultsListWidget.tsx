@@ -77,13 +77,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 return accumulator;
             }, []));
         } else {
-            const newOptions: EuiSelectableOption[] = [...currentOptions];
-            //TODO passing by value (however, setOptions leads to bug when double clicking)
-            /*
+            const newOptions: EuiSelectableOption[] = [];
             for(let i = 0; i < currentOptions.length; i++) {
-                newOptions.push(Object.assign({}, currentOptions[i]));
+                newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
             }
-            */
+
             optionCounts.forEach((currentValue: string, currentIndex: number, array: any[]) => {
                 if (currentIndex % 2 === 0) {
                     const option = newOptions.find((option: EuiSelectableOption) => option.key == currentValue);
@@ -96,7 +94,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     }
                 }
             });
-            // setOptions(newOptions);
+            setOptions(newOptions);
         }
     }
 
@@ -118,7 +116,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
             parameter
         ],
-        async () => {
+        async ({signal}) => {
             return olsApi.search(
                 {
                     query: searchValue,
@@ -133,7 +131,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     size: itemsPerPage.toString(),
                 },
                 undefined,
-                props.parameter
+                props.parameter,
+                signal
             ).then((response) => {
                 if (response.response && response.response.docs != null && response.response.numFound != null) {
                     if (response.facet_counts && response.facet_counts.facet_fields) {
