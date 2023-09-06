@@ -28,10 +28,10 @@ export default {
     },
     iriText: {
       description:
-          "Set your own text manually that overwrites the text fetched from the API",
+          "Set your own text manually, which will show as a clickable link instead of the IRI.",
     },
     iri: {
-      description: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
+      description: "Object IRI that you want to link.",
     },
     parameter: {
       defaultValue: "collection=nfdi4health",
