@@ -13,12 +13,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     ontologyId: {
       description: "Ontology ID from where the term metadata should be taken.",
@@ -30,28 +30,28 @@ export default {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
-        options: [
-          "term",
-          "class",
-          "property",
-          "individual",
-          "INVALID STRING"
-        ],
       },
+      options: [
+        "term",
+        "class",
+        "property",
+        "individual",
+        "INVALID STRING"
+      ],
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: MetadataWidgetProps) => (
-  <>
-    <EuiPanel>
-      <MetadataWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <MetadataWidget {...args} />
+  </EuiPanel>
 );
 
 export const MetadataWidget1 = Template.bind({});

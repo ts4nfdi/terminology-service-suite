@@ -20,19 +20,13 @@ function IriWidget(props: IriWidgetProps) {
   const { iri, iriText, color } = props;
 
   return (
-      <EuiFlexItem grow={false}>
-        <div>
-          {iriText ? (
-              <EuiLink href={iriText} target="_blank" color={color}>
-                {iriText}
-              </EuiLink>
-          ) : (
-              <EuiLink href={iri} target="_blank" color={color}>
-                {iri}
-              </EuiLink>
-          )}
-        </div>
-      </EuiFlexItem>
+    <EuiFlexItem grow={false}>
+      <div>
+        <EuiLink href={iri} target="_blank" color={color}>
+          {iriText ? iriText : iri}
+        </EuiLink>
+      </div>
+    </EuiFlexItem>
   );
 }
 

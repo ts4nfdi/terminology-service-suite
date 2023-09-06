@@ -57,11 +57,9 @@ export default {
 };
 
 const Template = (args: TitleWidgetProps) => (
-    <>
-        <EuiPanel>
-            <TitleWidget {...args} />
-        </EuiPanel>
-    </>
+    <EuiPanel>
+        <TitleWidget {...args} />
+    </EuiPanel>
 );
 
 export const TitleWidget1 = Template.bind({});

@@ -10,42 +10,43 @@ export default {
   },
   argTypes: {
     color: {
-      Iri: "Color of the text, names, hex or rgb",
+      description: "Color of the text, names, hex or rgb",
       control: {
         type: "radio",
-        options: [
-          "default",
-          "subdued",
-          "success",
-          "accent",
-          "danger",
-          "warning",
-          "ghost",
-          "#00FFFF",
-          "rgb(255,0,255)",
-        ],
       },
+      options: [
+        "default",
+        "subdued",
+        "success",
+        "accent",
+        "danger",
+        "warning",
+        "ghost",
+        "#00FFFF",
+        "rgb(255,0,255)",
+      ],
     },
-    descText: {
-      Iri:
-          "Set your own text manually that overwrites the text fetched from the API",
+    iriText: {
+      description:
+          "Set your own text manually, which will show as a clickable link instead of the IRI.",
     },
     iri: {
-      Iri: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
+      description: "Object IRI that you want to link.",
     },
     parameter: {
       defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: IriWidgetProps) => (
-    <>
-      <EuiPanel>
-        <IriWidget {...args} />
-      </EuiPanel>
-    </>
+  <EuiPanel>
+    <IriWidget {...args} />
+  </EuiPanel>
 );
 
 export const IriWidget1 = Template.bind({});

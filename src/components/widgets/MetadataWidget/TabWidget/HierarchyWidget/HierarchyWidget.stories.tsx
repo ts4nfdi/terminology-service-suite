@@ -12,12 +12,12 @@ export default {
       description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
-        options: [
-          "https://www.ebi.ac.uk/ols/api/",
-          "https://semanticlookup.zbmed.de/ols/api/",
-          "https://semanticlookup.zbmed.de/api/",
-        ],
       },
+      options: [
+        "https://www.ebi.ac.uk/ols/api/",
+        "https://semanticlookup.zbmed.de/ols/api/",
+        "https://semanticlookup.zbmed.de/api/",
+      ],
     },
     ontologyId: {
       description: "Ontology ID from where the term hierarchy should be taken.",
@@ -26,10 +26,12 @@ export default {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
     parameter: {
-      defaultValue: "collection=nfdi4health",
       type: { required: false }
     },
   },
+  args: {
+    parameter: "collection=nfdi4health",
+  }
 };
 
 const Template = (args: HierarchyWidgetProps) => <HierarchyWidget {...args} />;

@@ -77,7 +77,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 return accumulator;
             }, []));
         } else {
-            const newOptions = [...currentOptions];
+            const newOptions: EuiSelectableOption[] = [];
+            for(let i = 0; i < currentOptions.length; i++) {
+                newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
+            }
+
             optionCounts.forEach((currentValue: string, currentIndex: number, array: any[]) => {
                 if (currentIndex % 2 === 0) {
                     const option = newOptions.find((option: EuiSelectableOption) => option.key == currentValue);
@@ -108,11 +112,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             showObsoleteTerms,
             activePage,
             itemsPerPage,
-            filterByTypeOptions.filter(filterSelectedOptions),
-            filterByOntologyOptions.filter(filterSelectedOptions),
+            filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
+            filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
             parameter
         ],
-        async () => {
+        async ({signal}) => {
             return olsApi.search(
                 {
                     query: searchValue,
@@ -127,12 +131,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     size: itemsPerPage.toString(),
                 },
                 undefined,
-                props.parameter
+                props.parameter,
+                signal
             ).then((response) => {
                 if (response.response && response.response.docs != null && response.response.numFound != null) {
-                    setTotalItems(response.response.numFound);
-                    setPageCount(Math.ceil(response.response.numFound / itemsPerPage));
-
                     if (response.facet_counts && response.facet_counts.facet_fields) {
                         if (response.facet_counts.facet_fields.type) {
                             updateFilterOptions(
@@ -152,13 +154,22 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                         }
                     }
 
+                    setTotalItems(response.response.numFound);
+                    const newPageCount = Math.ceil(response.response.numFound / itemsPerPage)
+                    setPageCount(newPageCount);
+                    if(activePage >= newPageCount) {
+                        setActivePage(0);
+                    }
+
                     return response.response.docs;
                 } else {
                     throw new Error("Unexpected API response");
                 }
             });
         },
-        { keepPreviousData: true } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
+        {
+            keepPreviousData: true
+        } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
     );
 
     function onChangeItemsPerPage(newItemsPerPage: number) {

@@ -20,21 +20,19 @@ export default {
         "Size of the button",
       control: {
         type: "radio",
-        options: [
-          "s",
-          "m",
-        ],
       },
+      options: [
+        "s",
+        "m",
+      ],
     },
   },
 };
 
 const Template = (args: JsonApiWidgetProps) => (
-  <>
-    <EuiPanel>
-      <JsonApiWidget {...args} />
-    </EuiPanel>
-  </>
+  <EuiPanel>
+    <JsonApiWidget {...args} />
+  </EuiPanel>
 );
 
 export const JsonApiWidget1 = Template.bind({});
