@@ -180,7 +180,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
-  const { data: ontologies } = useQuery(
+  const {
+    data: ontologies,
+    isLoading: isLoadingOntologies
+  } = useQuery(
     [
       api,
       "ontologiesMetadata",
@@ -220,19 +223,20 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   );
 
-  if (ontologies) {
+  if (isLoadingOntologies) {
+    return <EuiLoadingSpinner size="xl" />;
+  }
+  else {
     return (
-      <EuiBasicTable
-        columns={columns}
-        items={ontologies}
-        onChange={onTableChange}
-        pagination={pagination}
-        sorting={sorting}
-      />
+        <EuiBasicTable
+            columns={columns}
+            items={ontologies}
+            onChange={onTableChange}
+            pagination={pagination}
+            sorting={sorting}
+        />
     );
   }
-
-  return <EuiLoadingSpinner size="xl" />;
 }
 
 export { ResourcesWidget };
