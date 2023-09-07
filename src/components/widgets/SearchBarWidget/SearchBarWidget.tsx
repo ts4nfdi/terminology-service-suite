@@ -2,6 +2,7 @@ import { EuiSuggest, EuiSuggestionProps } from "@elastic/eui";
 import { EuiSuggestProps } from "@elastic/eui/src/components";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
+import {useQuery} from "react-query";
 
 export type SearchBarWidgetProps = {
   api: string;
@@ -33,26 +34,34 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
     onSearchValueChange(searchValue);
   }, [searchValue]);
 
-  async function onChange(value: string) {
-    setSearchValue(value);
-    return olsApi.suggest(
-      {
-        query: value,
-      },
-      undefined,
-      undefined,
-        props.parameter,
-    ).then((response) => {
-      if (response.response && response.response.docs) {
-        setSuggestions(response.response.docs.map((suggestion: any) => (
-          {
-            label: suggestion.autosuggest,
-            type: { color: "tint1" },
-          }
-        )));
+  /**
+   * fetches suggestions when searchValue changes (setSearchValue is passed as EuiSuggest onChange)
+   */
+  useQuery(
+      [
+          "onChange",
+          searchValue
+      ],
+      async () => {
+          return olsApi.suggest(
+              {
+                query: searchValue,
+              },
+              undefined,
+              undefined,
+              props.parameter,
+          ).then((response) => {
+            if (response.response && response.response.docs) {
+              setSuggestions(response.response.docs.map((suggestion: any) => (
+                  {
+                    label: suggestion.autosuggest,
+                    type: { color: "tint1" },
+                  }
+              )));
+            }
+          });
       }
-    });
-  }
+  )
 
   function onItemClick(item: EuiSuggestionProps) {
     setSearchValue(item.label);
@@ -66,7 +75,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         isClearable
         {...rest}
         suggestions={suggestions}
-        onChange={onChange}
+        onChange={setSearchValue}
         onItemClick={onItemClick}
         value={searchValue}
       />

@@ -11,6 +11,7 @@ import {
     EuiHealth,
     EuiBadge
 } from "@elastic/eui";
+import {useQuery} from "react-query";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -78,6 +79,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const visColorsBehindText = euiPaletteColorBlindBehindText();
 
     /**
+     * The current search value
+     */
+    const [searchValue, setSearchValue] = useState<string>("");
+
+    /**
      * The set of available options.s
      */
     const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
@@ -85,8 +91,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
      * Store current set of select Options. A subset of options.
      */
     const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
-
-    const [hasLoadingState, setLoadingState] = useState<boolean>(false);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -121,83 +125,126 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     };
 
     /**
-     * If a selectOption is provided, we obtain the label via API
+     * on mount: fetches term for selectOption and sets it's label or sets a given label if no iri is provided or the given iri cannot be resolved only if allowCustomTerms is true
      */
-    useEffect(() => {
-        if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
-            setLoadingState(true);
-            olsApi.select(
-                {query: props.selectOption?.iri},
-                undefined,
-                undefined,
-                props.parameter,
-            ).then((response) => {
-                if (response.response && response.response.docs) {
-                    response.response.docs.map((selection: any) => {
-                        if (props.selectOption?.iri === selection.iri) {
-                            setOptions([
-                                {
-                                     // label to display within the combobox either raw value or generated one
-                                    // #renderOption() is used to display during selection.
-                                    label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                    value: {
-                                        iri: selection.iri,
-                                        label: selection.label,
-                                        ontology_name: selection.ontology_name,
-                                        type: selection.type,
-                                        short_form: selection.short_form,
+    const {
+        isLoading: isLoadingOnMount
+    } = useQuery(
+        [
+            "onMount" // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
+        ],
+        async () => {
+            if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
+                olsApi.select(
+                    {query: props.selectOption?.iri},
+                    undefined,
+                    undefined,
+                    parameter,
+                ).then((response) => {
+                    if (response.response && response.response.docs) {
+                        response.response.docs.map((selection: any) => {
+                            if (props.selectOption?.iri === selection.iri) {
+                                setOptions([
+                                    {
+                                        // label to display within the combobox either raw value or generated one
+                                        // #renderOption() is used to display during selection.
+                                        label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                        value: {
+                                            iri: selection.iri,
+                                            label: selection.label,
+                                            ontology_name: selection.ontology_name,
+                                            type: selection.type,
+                                            short_form: selection.short_form,
+                                        },
                                     },
-                                },
-                            ]);
-                            setSelectedOptions([
-                                {
-                                     // label to display within the combobox either raw value or generated one
-                                    // #renderOption() is used to display during selection.
-                                    label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                    value: {
-                                        iri: selection.iri,
-                                        label: selection.label,
-                                        ontology_name: selection.ontology_name,
-                                        type: selection.type,
-                                        short_form: selection.short_form,
+                                ]);
+                                setSelectedOptions([
+                                    {
+                                        // label to display within the combobox either raw value or generated one
+                                        // #renderOption() is used to display during selection.
+                                        label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                        value: {
+                                            iri: selection.iri,
+                                            label: selection.label,
+                                            ontology_name: selection.ontology_name,
+                                            type: selection.type,
+                                            short_form: selection.short_form,
+                                        },
                                     },
-                                },
-                            ]);
-                            setLoadingState(false);
+                                ]);
+                            }
+                        })
+                    }
+                });
+            } else if (props.selectOption?.label && props.allowCustomTerms) { // when a custom term is passed
+                setOptions([
+                    {
+                        label: props.selectOption?.label,
+                        value: {
+                            iri: "",
+                            label: "",
+                            ontology_name: "",
+                            type: "",
+                            short_form: "",
                         }
-                    })
-                }
-            });
-        } else if (props.selectOption?.label && props.allowCustomTerms) { // when a custom term is passed
-            setLoadingState(true);
-            setOptions([
-                {
-                    label: props.selectOption?.label,
-                    value: {
-                        iri: "",
-                        label: "",
-                        ontology_name: "",
-                        type: "",
-                        short_form: "",
-                    }
-                },
-            ]);
-            setSelectedOptions([
-                {
-                    label: props.selectOption?.label,
-                    value: {
-                        iri: "",
-                        label: "",
-                        ontology_name: "",
-                        type: "",
-                        short_form: "",
-                    }
-                },
-            ]);
-            setLoadingState(false);
+                    },
+                ]);
+                setSelectedOptions([
+                    {
+                        label: props.selectOption?.label,
+                        value: {
+                            iri: "",
+                            label: "",
+                            ontology_name: "",
+                            type: "",
+                            short_form: "",
+                        }
+                    },
+                ]);
+            }
         }
-    }, []); // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
+    )
 
+    /**
+     * fetches new options when searchValue changes
+     */
+    const {
+        isLoading: isLoadingTerms
+    } = useQuery(
+        [
+            "onSearchChange",
+            searchValue
+        ],
+        async () => {
+            if (searchValue.length > 0) {
+                return olsApi.select(
+                    {query: searchValue},
+                    undefined,
+                    undefined,
+                    parameter,
+                ).then((response) => {
+                    if (response.response && response.response.docs) {
+                        setOptions(response.response.docs.map((selection: any) => (
+                            {
+                                // label to display within the combobox either raw value or generated one
+                                // #renderOption() is used to display during selection.
+                                label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                // values to pass to clients
+                                value: {
+                                    iri: selection.iri,
+                                    label: selection.label,
+                                    ontology_name: selection.ontology_name,
+                                    type: selection.type,
+                                    short_form: selection.short_form,
+                                },
+                            })
+                        ));
+                        setSelectedOptions([]);
+                    }
+                });
+            }
+        }
+    )
 
     /**
      * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -238,39 +285,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     );
   }
 
-    const onSearchChange = (searchValue: string) => {
-        if (searchValue.length > 0) {
-            setLoadingState(true);
-            return olsApi.select(
-                {query: searchValue},
-                undefined,
-                undefined,
-                props.parameter,
-            ).then((response) => {
-                if (response.response && response.response.docs) {
-                    setOptions(response.response.docs.map((selection: any) => (
-                        {
-                            // label to display within the combobox either raw value or generated one
-                            // #renderOption() is used to display during selection.
-                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                            // values to pass to clients
-                            value: {
-                                iri: selection.iri,
-                                label: selection.label,
-                                ontology_name: selection.ontology_name,
-                                type: selection.type,
-                                short_form: selection.short_form,
-                            },
-                        })
-                    ));
-                    setSelectedOptions([]);
-                    setLoadingState(false);
-                }
-            });
-        }
-    };
-
-
     function onChangeHandler(options: Array<any>): void {
         setSelectedOptions(options);
     }
@@ -299,14 +313,14 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 fullWidth={true}
                 {...rest} // items above can be overriden by a client
                 async={true}
-                isLoading={hasLoadingState}
+                isLoading={isLoadingTerms || isLoadingOnMount}
                 singleSelection={{ asPlainText: true }}
                 placeholder={
                     props.placeholder ? props.placeholder : "Search for a Concept"
                 }
                 options={options}
                 selectedOptions={selectedOptions}
-                onSearchChange={onSearchChange}
+                onSearchChange={setSearchValue}
                 onChange={onChangeHandler}
                 renderOption={renderOption}
                 onCreateOption={onCreateOptionHandler}
@@ -320,14 +334,14 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 fullWidth={true}
                 {...rest} // items above can be overriden by a client
                 async={true}
-                isLoading={hasLoadingState}
+                isLoading={isLoadingTerms || isLoadingOnMount}
                 singleSelection={{ asPlainText: true }}
                 placeholder={
                     props.placeholder ? props.placeholder : "Search for a Concept"
                 }
                 options={options}
                 selectedOptions={selectedOptions}
-                onSearchChange={onSearchChange}
+                onSearchChange={setSearchValue}
                 onChange={onChangeHandler}
                 renderOption={renderOption}
             />
