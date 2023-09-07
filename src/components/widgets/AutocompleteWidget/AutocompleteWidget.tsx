@@ -206,7 +206,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     )
 
     /**
-     * fetches new options when searchValue changes (replaces method onSearchChange)
+     * fetches new options when searchValue changes
      */
     const {
         isLoading: isLoadingTerms
