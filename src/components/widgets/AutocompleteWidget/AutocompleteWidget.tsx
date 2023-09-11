@@ -243,7 +243,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                 },
                             })
                         ));
-                        setSelectedOptions([]);
                     }
                 });
             }
