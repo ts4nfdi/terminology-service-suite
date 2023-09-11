@@ -65,6 +65,10 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * If true, custom terms can be added that are not found via API.
      */
     allowCustomTerms: boolean;
+    /**
+     * If true, only one concept can be selected at once.
+     */
+    singleSelection: boolean;
 }
 
 /**
@@ -305,47 +309,91 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     setSelectedOptions([...selectedOptions, newOption]);
     }
 
-    if (props.allowCustomTerms) {
-        return (
-            <EuiComboBox
-                isClearable
-                aria-label="searchBar"
-                fullWidth={true}
-                {...rest} // items above can be overriden by a client
-                async={true}
-                isLoading={isLoadingTerms || isLoadingOnMount}
-                singleSelection={{ asPlainText: true }}
-                placeholder={
-                    props.placeholder ? props.placeholder : "Search for a Concept"
-                }
-                options={options}
-                selectedOptions={selectedOptions}
-                onSearchChange={setSearchValue}
-                onChange={onChangeHandler}
-                renderOption={renderOption}
-                onCreateOption={onCreateOptionHandler}
-            />
-        );
-    } else {
-        return (
-            <EuiComboBox
-                isClearable
-                aria-label="searchBar"
-                fullWidth={true}
-                {...rest} // items above can be overriden by a client
-                async={true}
-                isLoading={isLoadingTerms || isLoadingOnMount}
-                singleSelection={{ asPlainText: true }}
-                placeholder={
-                    props.placeholder ? props.placeholder : "Search for a Concept"
-                }
-                options={options}
-                selectedOptions={selectedOptions}
-                onSearchChange={setSearchValue}
-                onChange={onChangeHandler}
-                renderOption={renderOption}
-            />
-        );
+    if (props.singleSelection) {
+        if (props.allowCustomTerms) {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    singleSelection={{ asPlainText: true }}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                    onCreateOption={onCreateOptionHandler}
+                />
+            );
+        } else {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    singleSelection={{ asPlainText: true }}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                />
+            );
+        }
+    }
+    else {
+        if (props.allowCustomTerms) {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                    onCreateOption={onCreateOptionHandler}
+                />
+            );
+        } else {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                />
+            );
+        }
     }
 }
 
