@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { EuiBadge, EuiFlexItem } from "@elastic/eui";
+import React from "react";
+import { EuiBadge } from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {useQuery} from "react-query";
 
@@ -74,13 +74,11 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   } = useQuery([api, "short_form", fixedEntityType, ontologyId, iri, parameter], () => { return getShortForm(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
   return (
-    <EuiFlexItem>
       <span>
         <EuiBadge color={colorFirst || "primary"}>{ontologyId?.toUpperCase()}</EuiBadge>
         {" > "}
         <EuiBadge color={colorSecond || "success"}>{shortForm}</EuiBadge>
       </span>
-    </EuiFlexItem>
   );
 }
 export { BreadcrumbWidget };
