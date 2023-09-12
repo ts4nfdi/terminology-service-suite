@@ -171,6 +171,11 @@ export class OlsApi {
     return (await this.axiosInstance.get(queryPrefix+"terms", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
   }
 
+  public getClass: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"classes", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
   public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     return (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} })).data;
