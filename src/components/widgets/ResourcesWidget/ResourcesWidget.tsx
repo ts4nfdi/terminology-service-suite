@@ -5,6 +5,7 @@ import {
   EuiButtonIcon,
   EuiLink,
   CriteriaWithPagination,
+  EuiText,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -181,8 +182,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   };
 
   const {
-    data: ontologies,
-    isLoading: isLoadingOntologies
+      data: ontologies,
+      isLoading: isLoadingOntologies,
+      isError: isError,
   } = useQuery(
     [
       api,
@@ -225,6 +227,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
   if (isLoadingOntologies) {
     return <EuiLoadingSpinner size="xl" />;
+  }
+  else if (isError) {
+    return <EuiText>Error loading resources</EuiText>;
   }
   else {
     return (
