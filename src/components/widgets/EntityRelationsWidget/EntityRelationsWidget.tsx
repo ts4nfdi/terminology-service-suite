@@ -5,7 +5,7 @@ import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 
 export interface EntityRelationsWidgetProps {
     api: string;
-    iri?: string;
+    iri: string;
     ontologyId?: string;
     hasTitle?: boolean;
     entityType:
@@ -15,26 +15,6 @@ export interface EntityRelationsWidgetProps {
     parameter?: string;
 }
 
-interface EntityRelation {
-    subEntityOf?: {
-        label: string,
-        iri: string
-    }[],
-    relatedFrom?: {
-        label: string,
-        category: string,
-    }[],
-    equivalentTo?: {
-        label: string,
-        category: string,
-    }[],
-    differentFrom?: {
-        label: string,
-        iri: string
-    }[],
-    entityTypeName: string
-}
-
 const DEFAULT_HAS_TITLE = true;
 
 function getCapitalized(text: string | undefined) : string | undefined {
@@ -42,43 +22,91 @@ function getCapitalized(text: string | undefined) : string | undefined {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-async function getEntityRelation(api: OlsApi, entityType: string, iri: string, ontologyId?: string, parameter?: string) {
-    const returnVal: EntityRelation = {entityTypeName: entityType === "term" ? "class" : entityType};
+function getEntityTypeName(type: string) : string {
+    return type === "term" ? "class" : type;
+}
 
-    let response: any = "";
+function getPlural(type: string) : string {
+    if (type === "term" || type === "class") return "classes";
+    if (type === "property") return "properties";
+    if (type === "individual") return "individuals";
+    throw Error("Unexpected entity type. Has to be one of: 'term', 'class', 'property', 'individual'");
+}
 
+/*function getManhattanSyntax(currentResponsePath: any, props: EntityRelationsWidgetProps) {
+    let result = [];
+
+    if(currentResponsePath[])
+
+    return result;
+}*/
+
+function getLabeledJSON(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
+    return !Array.isArray(response.elements[0][sectionLabel]) ?
+        [{
+            label: response.elements[0]["linkedEntities"][response.elements[0][sectionLabel]].label,
+            iri: response.elements[0]["linkedEntities"][response.elements[0][sectionLabel]]
+        }] :
+        response.elements[0][sectionLabel].map((elem: string) => {
+            return {
+                label: response.elements[0]["linkedEntities"][elem].label,
+                iri: elem,
+            }
+        });
+}
+
+function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
+    if(response.elements[0] && response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
+        const subEntityOf = getLabeledJSON(response, props, "http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of");
+
+        return (<EuiFlexItem>
+            {
+                subEntityOf.length ?? -1 > 0 ? <b>Sub{getEntityTypeName(props.entityType)} of</b> : ""
+            }
+            <ul>
+                {
+                    // TODO Replace href with the link of the semlookp page
+                    subEntityOf.map((item: { label: string, iri: string }) => {return (<li key={item.iri}><a href={"https://www.ebi.ac.uk/ols4/ontologies/"+props.ontologyId+"/"+getPlural(getEntityTypeName(props.entityType))+"/" + encodeURIComponent(encodeURIComponent(item.iri))}>{item.label}</a></li>)})
+                }
+            </ul>
+        </EuiFlexItem>);
+    }
+}
+
+function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
+    if(response.elements[0] && response.elements[0]["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
+        const differentFrom = getLabeledJSON(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
+
+        return (<EuiFlexItem>
+            {
+                differentFrom?.length ?? -1 > 0 ? <b>Different from</b> : ""
+            }
+            <ul>
+                {
+                    // TODO Replace href with the link of the semlookp page
+                    differentFrom.map((item: { label: string, iri: string }) => {return (<li key={item.iri}><a href={"https://www.ebi.ac.uk/ols4/ontologies/"+props.ontologyId+"/"+getPlural(getEntityTypeName(props.entityType))+"/" + encodeURIComponent(encodeURIComponent(item.iri))}>{item.label}</a></li>)})
+                }
+            </ul>
+        </EuiFlexItem>);
+    }
+}
+
+async function getEntityJson(api: OlsApi, entityType: string, iri: string, ontologyId?: string, parameter?: string) {
     if (entityType == "term" || entityType == "class") {
-        response = await api.getClass(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
+        return await api.getClass(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
             .catch((error) => console.log(error));
     }
     else if (entityType == "property") {
-        response = await api.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri})
+        return await api.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri})
             .catch((error) => console.log(error));
     }
     else if (entityType == "individual") {
-        response = await api.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri})
+        return await api.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri})
             .catch((error) => console.log(error));
     }
-
-    if(response.elements[0]) {
-        if(response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(returnVal.entityTypeName)+"Of"] !== undefined) {
-            returnVal.subEntityOf = !Array.isArray(response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(returnVal.entityTypeName)+"Of"]) ?
-                [{
-                    label: response.elements[0]["linkedEntities"][response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(returnVal.entityTypeName)+"Of"]].label,
-                    iri: response.elements[0]["linkedEntities"][response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(returnVal.entityTypeName)+"Of"]]
-                }] :
-                response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(returnVal.entityTypeName)+"Of"].map((elem: string) => {
-                    return {
-                        label: response.elements[0]["linkedEntities"][elem].label,
-                        iri: elem,
-                    }
-                });
-        }
-        returnVal.differentFrom = response.elements[0]["http://www.w3.org/2002/07/owl#differentFrom"];
+    else {
+        throw Error("Unexpected entity type. Has to be one of: 'term', 'class', 'property', 'individual'");
     }
-
-
-    return returnVal;
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
@@ -86,12 +114,12 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     const olsApi = new OlsApi(api);
 
     const {
-        data: entityRelation,
+        data: entityJson,
         isLoading: isLoadingEntityRelation,
         isSuccess: isSuccessEntityRelation,
     } = useQuery(
         [
-            "entityRelation",
+            "entityJson",
             api,
             iri,
             ontologyId,
@@ -99,43 +127,21 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             parameter
         ],
         async () => {
-            return getEntityRelation(olsApi, entityType, iri, ontologyId, parameter);
+            return getEntityJson(olsApi, entityType, iri, ontologyId, parameter);
         }
     );
 
     return (
         <>
             <EuiCard
-                title={hasTitle ? (getCapitalized(entityRelation?.entityTypeName) +" Relations") : ""}
+                title={hasTitle ? (getCapitalized(getEntityTypeName(entityType)) +" Relations") : ""}
                 layout="horizontal"
             >
                 {isLoadingEntityRelation && <EuiLoadingSpinner size={'s'}/>}
                 {isSuccessEntityRelation &&
                     <EuiText {...rest}>
-                        {entityRelation?.subEntityOf &&
-                            <EuiFlexItem>
-                                {
-                                    entityRelation?.subEntityOf?.length ?? -1 > 0 ? <b>Sub{entityRelation?.entityTypeName} of</b> : ""
-                                }
-                                <ul>
-                                    {entityRelation?.subEntityOf &&
-                                        entityRelation?.subEntityOf.map((item) => {return (<li>{item.label}</li>)})
-                                    }
-                                </ul>
-                            </EuiFlexItem>
-                        }
-                        {entityRelation?.differentFrom &&
-                            <EuiFlexItem>
-                                {
-                                    entityRelation?.differentFrom?.length ?? -1 > 0 ? <b>Different from</b> : ""
-                                }
-                                <ul>
-                                    {entityRelation?.differentFrom &&
-                                        entityRelation?.differentFrom.map((item) => {return (<li>{item}</li>)})
-                                    }
-                                </ul>
-                            </EuiFlexItem>
-                        }
+                        {getSubEntityOf(entityJson, props)}
+                        {getDifferentFrom(entityJson, props)}
                     </EuiText>
                 }
             </EuiCard>
