@@ -26,33 +26,81 @@ function getEntityTypeName(type: string) : string {
     return type === "term" ? "class" : type;
 }
 
-function getPlural(type: string) : string {
-    if (type === "term" || type === "class") return "classes";
-    if (type === "property") return "properties";
-    if (type === "individual") return "individuals";
-    throw Error("Unexpected entity type. Has to be one of: 'term', 'class', 'property', 'individual'");
+function getLabel(response: any, iri: string) : string {
+    if (Array.isArray(response.elements[0]["linkedEntities"][iri].label)) {
+        return response.elements[0]["linkedEntities"][iri].label[0];
+    }
+    else {
+        return response.elements[0]["linkedEntities"][iri].label;
+    }
+
 }
 
-/*function getManhattanSyntax(currentResponsePath: any, props: EntityRelationsWidgetProps) {
-    let result = [];
+function getManhattanSyntax(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps) {
+    let result: {label: string, iri?: string}[] = [];
 
-    if(currentResponsePath[])
+    for(const label in currentResponsePath) {
+        if (label === "http://www.w3.org/2002/07/owl#onProperty") {
+            result.push({label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]});
+            result.push({label: " "});
+        }
+        else if (label === "http://www.w3.org/2002/07/owl#someValuesFrom") {
+            result.push({label: "some"});
+            result.push({label: " "});
+            if (typeof currentResponsePath[label] === "string") {
+                result.push({label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]});
+            }
+            else if (typeof currentResponsePath[label] === "object") {
+                result = result.concat(getManhattanSyntax(response, currentResponsePath[label], props));
+            }
+        }
+        else if (label === "http://www.w3.org/2002/07/owl#intersectionOf" || label === "http://www.w3.org/2002/07/owl#unionOf") {
+            result.push({label: "("});
+            let first = true;
+            for (const elem in currentResponsePath[label]) {
+                if (!first){
+                    result.push({label: " "});
+                    result.push({label: label === "http://www.w3.org/2002/07/owl#intersectionOf" ? "and" : "or"});
+                    result.push({label: " "});
+                }
+                first = false;
+                if (typeof currentResponsePath[label][elem] === "string") {
+                    result.push({label: getLabel(response, currentResponsePath[label][elem]), iri: elem})
+                } else if (typeof currentResponsePath[label][elem] === "object") {
+                    result = result.concat(getManhattanSyntax(response, currentResponsePath[label][elem], props));
+                }
+            }
+            result.push({label: ")"});
+        }
+    }
 
     return result;
-}*/
+}
 
 function getLabeledJSON(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
-    return !Array.isArray(response.elements[0][sectionLabel]) ?
-        [{
-            label: response.elements[0]["linkedEntities"][response.elements[0][sectionLabel]].label,
-            iri: response.elements[0]["linkedEntities"][response.elements[0][sectionLabel]]
-        }] :
-        response.elements[0][sectionLabel].map((elem: string) => {
-            return {
+    if (!Array.isArray(response.elements[0][sectionLabel])) {
+        response.elements[0][sectionLabel] = [response.elements[0][sectionLabel]];
+    }
+    return response.elements[0][sectionLabel].map((elem: any) => {
+        if(typeof elem === 'string') {
+            return [{
                 label: response.elements[0]["linkedEntities"][elem].label,
                 iri: elem,
+            }]
+        }
+        else if(typeof elem === 'object') {
+            if(elem.value !== undefined) {
+                return [{
+                    label: response.elements[0]["linkedEntities"][elem.value].label,
+                    iri: elem.value,
+                }]
             }
-        });
+            else {
+                return getManhattanSyntax(response, elem, props);
+            }
+
+        }
+    });
 }
 
 function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
@@ -66,7 +114,24 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
             <ul>
                 {
                     // TODO Replace href with the link of the semlookp page
-                    subEntityOf.map((item: { label: string, iri: string }) => {return (<li key={item.iri}><a href={"https://www.ebi.ac.uk/ols4/ontologies/"+props.ontologyId+"/"+getPlural(getEntityTypeName(props.entityType))+"/" + encodeURIComponent(encodeURIComponent(item.iri))}>{item.label}</a></li>)})
+                    subEntityOf.map((item: { label: string, iri?: string }[]) => {
+                        if(item.length === 1) {
+                            return (<li><a href={item[0].iri}>{item[0].label}</a></li>)
+                        }
+                        else return (<li>{item.map((item) => {
+                            if(item.iri === undefined) {
+                                if(item.label === "(" || item.label === ")" || item.label === " ") {
+                                    return item.label;
+                                }
+                                else {
+                                    return <i>{item.label}</i>;
+                                }
+                            }
+                            else {
+                                return (<a href={item.iri}>{item.label}</a>);
+                            }
+                        })}</li>)
+                    })
                 }
             </ul>
         </EuiFlexItem>);
@@ -84,7 +149,19 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
             <ul>
                 {
                     // TODO Replace href with the link of the semlookp page
-                    differentFrom.map((item: { label: string, iri: string }) => {return (<li key={item.iri}><a href={"https://www.ebi.ac.uk/ols4/ontologies/"+props.ontologyId+"/"+getPlural(getEntityTypeName(props.entityType))+"/" + encodeURIComponent(encodeURIComponent(item.iri))}>{item.label}</a></li>)})
+                    differentFrom.map((item: { label: string, iri?: string, type?: string }[]) => {
+                        if(item.length === 1) {
+                            return (<li><a href={item[0].iri}>{item[0].label}</a></li>)
+                        }
+                        else return (<li>{item.map((item) => {
+                            if(item.iri === undefined) {
+                                return <i>{item.label} </i>;
+                            }
+                            else if (item.type !== undefined) {
+                                return (<a href={item.iri}>{item.label}</a> );
+                            }
+                        })}</li>)
+                    })
                 }
             </ul>
         </EuiFlexItem>);
