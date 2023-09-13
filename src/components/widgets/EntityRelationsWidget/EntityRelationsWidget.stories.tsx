@@ -62,8 +62,8 @@ export const SubEntityOf = Template.bind({});
 SubEntityOf.args = {
     api: "https://www.ebi.ac.uk/ols4/api/v2",
     entityType: "term",
-    ontologyId: "go",
-    iri: "http://purl.obolibrary.org/obo/GO_0051296",
+    ontologyId: "agro",
+    iri: "http://purl.obolibrary.org/obo/AGRO_00000002",
 };
 
 export const DifferentFrom = Template.bind({});
