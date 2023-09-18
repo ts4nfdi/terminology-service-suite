@@ -85,3 +85,13 @@ DifferentFrom.args = {
     ontologyId: "bco",
     iri: "http://purl.obolibrary.org/obo/IAO_0000120",
 };
+
+export const EquivalentTo = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+EquivalentTo.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "go",
+    iri: "http://purl.obolibrary.org/obo/GO_0048021",
+};

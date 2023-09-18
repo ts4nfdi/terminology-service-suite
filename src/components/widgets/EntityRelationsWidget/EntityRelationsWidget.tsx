@@ -3,6 +3,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
+import {eq} from "@elastic/eui/src/components/search_bar/query/operators";
 
 export interface EntityRelationsWidgetProps {
     api: string;
@@ -59,7 +60,7 @@ function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetP
         );
     }
 
-    return <a href={iri}><i>{label}</i></a>;
+    return <a href={iri}>{label}</a>;
 
     // TODO: Badges for defined by etc.
 }
@@ -287,12 +288,32 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
             {
                 subEntityOf.length ?? -1 > 0 ? <b>Sub{getEntityTypeName(props.entityType)} of</b> : ""
             }
+            {subEntityOf.length === 1 ? (
+                <p>{subEntityOf[0]}</p>
+            ):
             <ul>
                 {
                     subEntityOf.map((item) => {
                         return (<li key={randomString()} >{item}</li>);
                     })
                 }
+            </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getEquivalentTo(response: any, props: EntityRelationsWidgetProps) {
+    if(response && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
+        const equivalents = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#equivalentClass");
+
+        return (<EuiFlexItem>
+            {
+                equivalents.length ?? -1 > 0 ? <b>Equivalent to</b> : ""
+            }
+            <ul>
+                {equivalents.map((elem) => {
+                  return (<li key={randomString()}>{elem}</li>);
+                })}
             </ul>
         </EuiFlexItem>);
     }
@@ -342,13 +363,16 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
             {
                 differentFrom?.length ?? -1 > 0 ? <b>Different from</b> : ""
             }
+            {differentFrom.length === 1 ? (
+                <p>{differentFrom[0]}</p>
+            ) :
             <ul>
                 {
                     differentFrom.map((item) => {
                         return (<li key={randomString()} >{item}</li>);
                     })
                 }
-            </ul>
+            </ul>}
         </EuiFlexItem>);
     }
 }
@@ -393,6 +417,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                         {getSubEntityOf(entityJson, props)}
                         {getDifferentFrom(entityJson, props)}
                         {getRelatedFrom(entityJson, props)}
+                        {getEquivalentTo(entityJson, props)}
                     </EuiText>
                 }
             </EuiCard>
