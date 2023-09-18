@@ -68,7 +68,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
     if (typeof currentResponsePath === "string") {
         return getEntityLink(response, currentResponsePath, props);
     }
-    else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) {
+    else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
         return getEntityLink(response, currentResponsePath["value"], props);
     }
     else { // type === "object"
@@ -298,6 +298,42 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
     }
 }
 
+function getRelatedFrom(response: any, props: EntityRelationsWidgetProps) {
+    if(response && response["relatedFrom"] !== undefined) {
+        const relatedFrom= response["relatedFrom"];
+
+        const predicates: string[] = Array.from(new Set(response["relatedFrom"].map((elem: any) => {return elem["property"]})));
+
+        return (<EuiFlexItem>
+            {
+                relatedFrom.length ?? -1 > 0 ? <b>Related from</b> : ""
+            }
+            <ul>
+                {
+                    predicates.map((p) => {
+                        const label = getLabel(response, p);
+                        return (
+                            <div key={p.toString() + randomString()}>
+                                <div>
+                                    <i>{label || p}</i>
+                                </div>
+                                <ul>
+                                    {relatedFrom.filter((elem: any) => {return elem["property"] === p})
+                                        .map((elem: object) => {
+                                            return(
+                                                <li key={randomString()}>{getSectionListElement(response, elem, props)}</li>
+                                            )
+                                        })}
+                                </ul>
+                            </div>
+                        );
+                    })
+                }
+            </ul>
+        </EuiFlexItem>);
+    }
+}
+
 function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
         const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
@@ -356,6 +392,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                     <EuiText {...rest}>
                         {getSubEntityOf(entityJson, props)}
                         {getDifferentFrom(entityJson, props)}
+                        {getRelatedFrom(entityJson, props)}
                     </EuiText>
                 }
             </EuiCard>
