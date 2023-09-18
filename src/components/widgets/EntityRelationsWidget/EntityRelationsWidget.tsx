@@ -2,6 +2,7 @@ import React from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 
 export interface EntityRelationsWidgetProps {
     api: string;
@@ -27,15 +28,7 @@ function getEntityTypeName(type: string) : string {
 }
 
 function getLabel(response: any, iri: string) : string {
-    if(response["linkedEntities"][iri] === undefined) {
-        iri = response["curie"];
-    }
-    if (Array.isArray(response["linkedEntities"][iri].label)) {
-        return response["linkedEntities"][iri].label[0];
-    }
-    else {
-        return response["linkedEntities"][iri].label;
-    }
+    return asArray(response["linkedEntities"][iri]["label"])[0];
 }
 
 function asArray(obj: any) {
@@ -44,126 +37,251 @@ function asArray(obj: any) {
     else return [];
 }
 
-function getManchesterSyntax(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps) {
+function randomString() {
+    return (Math.random() * Math.pow(2, 54)).toString(36);
+}
+
+function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetProps) {
+    // reference to self; just display label because we are already on that page
+    if (iri === response["iri"]) {
+        return <b>{response["label"]}</b>
+    }
+
+    const label = getLabel(response, iri) || iri.split("/").pop() || iri;
+    const linkedEntity = response["linkedEntities"][iri];
+
+    if (!linkedEntity) {
+        // So far only known occurrence of this branch is for owl#Thing
+        return iri.includes("http") ? (
+            <a href={iri}>{label}</a>
+        ) : (
+            <span>{label}</span>
+        );
+    }
+
+    return <a href={iri}><i>{label}</i></a>;
+
+    // TODO: Badges for defined by etc.
+}
+
+function getSectionListElement(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps): ReactJSXElement | undefined {
     if (typeof currentResponsePath === "string") {
-        return [{label: getLabel(response, currentResponsePath), iri: currentResponsePath}];
+        return getEntityLink(response, currentResponsePath, props);
     }
     else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) {
-        return [{label: getLabel(response, currentResponsePath["value"]), iri: currentResponsePath["value"]}];
+        return getEntityLink(response, currentResponsePath["value"], props);
     }
     else { // type === "object"
-        let result: {label: string, iri?: string}[] = [];
-
-        for(const label in currentResponsePath) {
-            if (label === "http://www.w3.org/2002/07/owl#someValuesFrom") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "some"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#allValuesFrom") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "only"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#hasValue") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "value"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#minCardinality" || label === "http://www.w3.org/2002/07/owl#minQualifiedCardinality") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "min"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#maxCardinality" || label === "http://www.w3.org/2002/07/owl#maxQualifiedCardinality") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "max"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#cardinality" || label === "http://www.w3.org/2002/07/owl#qualifiedCardinality") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "exactly"});
-                result.push({label: " "});
-                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#hasSelf") {
-                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-                result = result.concat(getManchesterSyntax(response, onProperty, props));
-                result.push({label: " "});
-                result.push({label: "Self"});
-                result.push({label: " "});
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#intersectionOf" || label === "http://www.w3.org/2002/07/owl#unionOf") {
-                result.push({label: "("});
-                let first = true;
-                for (const elem in currentResponsePath[label]) {
-                    if (!first){
-                        result.push({label: " "});
-                        result.push({label: label === "http://www.w3.org/2002/07/owl#intersectionOf" ? "and" : "or"});
-                        result.push({label: " "});
-                    }
-                    first = false;
-                    result = result.concat(getManchesterSyntax(response, currentResponsePath[label][elem], props));
-                }
-                result.push({label: ")"});
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#complementOf") {
-                result.push({label: "not"}, {label: " "});
-                result = result.concat(getManchesterSyntax(response, currentResponsePath[label], props));
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#oneOf") {
-                if(result.length > 0) result.push({label: " "});
-                result.push({label: "{"});
-                let first = true;
-                for (const elem in currentResponsePath[label]) {
-                    if (!first){
-                        result.push({label: ","});
-                    }
-                    first = false;
-                    result = result.concat(getManchesterSyntax(response, currentResponsePath[label][elem], props));
-                }
-                result.push({label: "}"});
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#inverseOf") {
-                result.push({label: "inverse"}, {label: " "});
-                result.push({label: "("});
-                result = result.concat(getManchesterSyntax(response, currentResponsePath[label], props));
-                result.push({label: ")"});
-            }
-            else if (label === "http://www.w3.org/2002/07/owl#onDatatype") {
-                // TODO: What does this do?
-            }
+        const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
+        if (someValuesFrom) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+              <>
+                  {getSectionListElement(response, onProperty, props)}
+                  <i style={{color: "purple"}}> some </i>
+                  {getSectionListElement(response, asArray(someValuesFrom)[0], props)}
+              </>
+            );
         }
-        return result;
+
+        const allValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
+        if (allValuesFrom) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> only </i>
+                    {getSectionListElement(response, asArray(allValuesFrom)[0], props)}
+                </>
+            );
+        }
+
+        const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
+        if (intersectionOf) {
+            const elements: (ReactJSXElement | undefined)[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#40;
+                </span>
+            ];
+            for (const elem of intersectionOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <i> and </i>
+                    );
+                }
+                elements.push(
+                    getSectionListElement(response, elem, props)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#41;
+                </span>
+            );
+            return (
+                <span>{elements}</span>
+            );
+        }
+
+        const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
+        if (unionOf) {
+            const elements: (ReactJSXElement | undefined)[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#40;
+                </span>
+            ];
+            for (const elem of unionOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <i> or </i>
+                    );
+                }
+                elements.push(
+                    getSectionListElement(response, elem, props)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#41;
+                </span>
+            );
+            return (
+                <span>{elements}</span>
+            );
+        }
+
+        const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
+        if (hasValue) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> value </i>
+                    {getSectionListElement(response, asArray(hasValue)[0], props)}
+                </>
+            );
+        }
+
+        const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
+        if (minCardinality) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> min </i>
+                    {getSectionListElement(response, asArray(minCardinality)[0], props)}
+                </>
+            );
+        }
+
+        const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
+        if (maxCardinality) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> max </i>
+                    {getSectionListElement(response, asArray(maxCardinality)[0], props)}
+                </>
+            );
+        }
+
+        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#cualifiedCardinality"];
+        if (cardinality) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> exactly </i>
+                    {getSectionListElement(response, asArray(cardinality)[0], props)}
+                </>
+            );
+        }
+
+        const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
+        if (hasSelf) {
+            const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+            return (
+                <>
+                    {getSectionListElement(response, onProperty, props)}
+                    <i style={{color: "purple"}}> Self </i>
+                    {getSectionListElement(response, asArray(hasSelf)[0], props)}
+                </>
+            );
+        }
+
+        const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
+        if (complementOf) {
+            return (
+                <>
+                    <i>not </i>
+                    {getSectionListElement(response, hasSelf, props)}
+                </>
+            );
+        }
+
+        const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
+        if (oneOf) {
+            const elements: (ReactJSXElement | undefined)[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#123;
+                </span>
+            ];
+            for (const elem of unionOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <span key={randomString()} className="text-neutral-default">
+                          &#44;&nbsp;
+                        </span>
+                    );
+                }
+                elements.push(
+                    getSectionListElement(response, elem, props)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#125;
+                </span>
+            );
+            return (
+                <span>{elements}</span>
+            );
+        }
+
+        const inverseOf = currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
+        if (inverseOf) {
+            return (
+                <>
+                    <span key={randomString()} className="text-neutral-default">
+                      &#40;
+                    </span>
+                    <i>inverse </i>
+                    {getSectionListElement(response, inverseOf, props)}
+                    <span key={randomString()} className="text-neutral-default">
+                      &#41;
+                    </span>
+                </>
+            );
+        }
+
+        const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
+        if (onDataType) {
+            // TODO: What does this do?
+            return <></>;
+        }
     }
 }
 
-function getLabeledJSON(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
+function getSectionListJSX(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
     return asArray(response[sectionLabel]).map((elem: any) => {
-        return getManchesterSyntax(response, elem, props);
+        return getSectionListElement(response, elem, props);
     });
 }
 
 function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
-        const subEntityOf = getLabeledJSON(response, props, "http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of");
+        const subEntityOf = getSectionListJSX(response, props, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
 
         return (<EuiFlexItem>
             {
@@ -171,29 +289,8 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
             }
             <ul>
                 {
-                    // TODO Replace href with the link of the semlookp page
-                    subEntityOf.map((item: { label: string, iri?: string }[]) => {
-                        if(item.length === 1) {
-                            return (<li><a href={item[0].iri}>{item[0].label}</a></li>)
-                        }
-                        else return (<li>{item.map((item) => {
-                            if(item.iri === undefined) {
-                                if(["(", ")", " "].includes(item.label)) {
-                                    return item.label;
-                                }
-                                else {
-                                    if (["inverse", "some", "only", "value", "min", "max", "exactly", "Self"].includes(item.label)) {
-                                        return <span style={{color: "purple"}}><i>{item.label}</i></span>;
-                                    }
-                                    else {
-                                        return <i>{item.label}</i>;
-                                    }
-                                }
-                            }
-                            else {
-                                return (<a href={item.iri}>{item.label}</a>);
-                            }
-                        })}</li>)
+                    subEntityOf.map((item) => {
+                        return (<li key={randomString()} >{item}</li>);
                     })
                 }
             </ul>
@@ -203,7 +300,7 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
 
 function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
-        const differentFrom = getLabeledJSON(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
+        const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
 
         return (<EuiFlexItem>
             {
@@ -211,16 +308,8 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
             }
             <ul>
                 {
-                    // TODO Replace href with the link of the semlookp page
-                    differentFrom.map((item: { label: string, iri?: string }[]) => {
-                        return (<li>{item.map((item) => {
-                            if(item.iri === undefined) {
-                                return <i>{item.label}</i>;
-                            }
-                            else {
-                                return (<a href={item.iri}>{item.label}</a> );
-                            }
-                        })}</li>)
+                    differentFrom.map((item) => {
+                        return (<li key={randomString()} >{item}</li>);
                     })
                 }
             </ul>
