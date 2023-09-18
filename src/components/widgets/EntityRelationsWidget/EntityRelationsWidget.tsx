@@ -27,88 +27,142 @@ function getEntityTypeName(type: string) : string {
 }
 
 function getLabel(response: any, iri: string) : string {
-    if(response["elements"][0]["linkedEntities"][iri] === undefined) {
-        iri = response["elements"][0]["curie"];
+    if(response["linkedEntities"][iri] === undefined) {
+        iri = response["curie"];
     }
-    if (Array.isArray(response.elements[0]["linkedEntities"][iri].label)) {
-        return response.elements[0]["linkedEntities"][iri].label[0];
+    if (Array.isArray(response["linkedEntities"][iri].label)) {
+        return response["linkedEntities"][iri].label[0];
     }
     else {
-        return response.elements[0]["linkedEntities"][iri].label;
+        return response["linkedEntities"][iri].label;
     }
 }
 
-function getManhattanSyntax(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps) {
-    let result: {label: string, iri?: string}[] = [];
+function asArray(obj: any) {
+    if (Array.isArray(obj)) return obj;
+    else if (obj) return [obj];
+    else return [];
+}
 
-    for(const label in currentResponsePath) {
-        if (label === "http://www.w3.org/2002/07/owl#onProperty") { // insert at right index
-            let pos = result.length - 1;
-            while (pos > 0 && result[pos].label !== ")") pos--;
-
-            result.splice(pos, 0, {label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]}, {label: " "});
-        }
-        else if (label === "http://www.w3.org/2002/07/owl#someValuesFrom" || label === "http://www.w3.org/2002/07/owl#allValuesFrom") {
-            result.push({label: label === "http://www.w3.org/2002/07/owl#someValuesFrom" ? "some" : "only"});
-            result.push({label: " "});
-            if (typeof currentResponsePath[label] === "string") {
-                result.push({label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]});
-            }
-            else if (typeof currentResponsePath[label] === "object") {
-                result = result.concat(getManhattanSyntax(response, currentResponsePath[label], props));
-            }
-        }
-        else if (label === "http://www.w3.org/2002/07/owl#intersectionOf" || label === "http://www.w3.org/2002/07/owl#unionOf") {
-            result.push({label: "("});
-            let first = true;
-            for (const elem in currentResponsePath[label]) {
-                if (!first){
-                    result.push({label: " "});
-                    result.push({label: label === "http://www.w3.org/2002/07/owl#intersectionOf" ? "and" : "or"});
-                    result.push({label: " "});
-                }
-                first = false;
-                if (typeof currentResponsePath[label][elem] === "string") {
-                    result.push({label: getLabel(response, currentResponsePath[label][elem]), iri: elem})
-                } else if (typeof currentResponsePath[label][elem] === "object") {
-                    result = result.concat(getManhattanSyntax(response, currentResponsePath[label][elem], props));
-                }
-            }
-            result.push({label: ")"});
-        }
+function getManchesterSyntax(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps) {
+    if (typeof currentResponsePath === "string") {
+        return [{label: getLabel(response, currentResponsePath), iri: currentResponsePath}];
     }
+    else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) {
+        return [{label: getLabel(response, currentResponsePath["value"]), iri: currentResponsePath["value"]}];
+    }
+    else { // type === "object"
+        let result: {label: string, iri?: string}[] = [];
 
-    return result;
+        for(const label in currentResponsePath) {
+            if (label === "http://www.w3.org/2002/07/owl#someValuesFrom") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "some"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#allValuesFrom") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "only"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#hasValue") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "value"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#minCardinality" || label === "http://www.w3.org/2002/07/owl#minQualifiedCardinality") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "min"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#maxCardinality" || label === "http://www.w3.org/2002/07/owl#maxQualifiedCardinality") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "max"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#cardinality" || label === "http://www.w3.org/2002/07/owl#qualifiedCardinality") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "exactly"});
+                result.push({label: " "});
+                result = result.concat(getManchesterSyntax(response, asArray(currentResponsePath[label])[0], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#hasSelf") {
+                const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+                result = result.concat(getManchesterSyntax(response, onProperty, props));
+                result.push({label: " "});
+                result.push({label: "Self"});
+                result.push({label: " "});
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#intersectionOf" || label === "http://www.w3.org/2002/07/owl#unionOf") {
+                result.push({label: "("});
+                let first = true;
+                for (const elem in currentResponsePath[label]) {
+                    if (!first){
+                        result.push({label: " "});
+                        result.push({label: label === "http://www.w3.org/2002/07/owl#intersectionOf" ? "and" : "or"});
+                        result.push({label: " "});
+                    }
+                    first = false;
+                    result = result.concat(getManchesterSyntax(response, currentResponsePath[label][elem], props));
+                }
+                result.push({label: ")"});
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#complementOf") {
+                result.push({label: "not"}, {label: " "});
+                result = result.concat(getManchesterSyntax(response, currentResponsePath[label], props));
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#oneOf") {
+                if(result.length > 0) result.push({label: " "});
+                result.push({label: "{"});
+                let first = true;
+                for (const elem in currentResponsePath[label]) {
+                    if (!first){
+                        result.push({label: ","});
+                    }
+                    first = false;
+                    result = result.concat(getManchesterSyntax(response, currentResponsePath[label][elem], props));
+                }
+                result.push({label: "}"});
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#inverseOf") {
+                result.push({label: "inverse"}, {label: " "});
+                result.push({label: "("});
+                result = result.concat(getManchesterSyntax(response, currentResponsePath[label], props));
+                result.push({label: ")"});
+            }
+            else if (label === "http://www.w3.org/2002/07/owl#onDatatype") {
+                // TODO: What does this do?
+            }
+        }
+        return result;
+    }
 }
 
 function getLabeledJSON(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
-    if (!Array.isArray(response.elements[0][sectionLabel])) {
-        response.elements[0][sectionLabel] = [response.elements[0][sectionLabel]];
-    }
-    return response.elements[0][sectionLabel].map((elem: any) => {
-        if(typeof elem === 'string') {
-            return [{
-                label: response.elements[0]["linkedEntities"][elem].label,
-                iri: elem,
-            }]
-        }
-        else if(typeof elem === 'object') {
-            if(elem.value !== undefined) {
-                return [{
-                    label: response.elements[0]["linkedEntities"][elem.value].label,
-                    iri: elem.value,
-                }]
-            }
-            else {
-                return getManhattanSyntax(response, elem, props);
-            }
-
-        }
+    return asArray(response[sectionLabel]).map((elem: any) => {
+        return getManchesterSyntax(response, elem, props);
     });
 }
 
 function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
-    if(response.elements[0] && response.elements[0]["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
+    if(response && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
         const subEntityOf = getLabeledJSON(response, props, "http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of");
 
         return (<EuiFlexItem>
@@ -124,11 +178,11 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
                         }
                         else return (<li>{item.map((item) => {
                             if(item.iri === undefined) {
-                                if(item.label === "(" || item.label === ")" || item.label === " ") {
+                                if(["(", ")", " "].includes(item.label)) {
                                     return item.label;
                                 }
                                 else {
-                                    if (item.label === "some" || item.label === "only") {
+                                    if (["inverse", "some", "only", "value", "min", "max", "exactly", "Self"].includes(item.label)) {
                                         return <span style={{color: "purple"}}><i>{item.label}</i></span>;
                                     }
                                     else {
@@ -148,7 +202,7 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
 }
 
 function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
-    if(response.elements[0] && response.elements[0]["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
+    if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
         const differentFrom = getLabeledJSON(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
 
         return (<EuiFlexItem>
@@ -158,15 +212,12 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
             <ul>
                 {
                     // TODO Replace href with the link of the semlookp page
-                    differentFrom.map((item: { label: string, iri?: string, type?: string }[]) => {
-                        if(item.length === 1) {
-                            return (<li><a href={item[0].iri}>{item[0].label}</a></li>)
-                        }
-                        else return (<li>{item.map((item) => {
+                    differentFrom.map((item: { label: string, iri?: string }[]) => {
+                        return (<li>{item.map((item) => {
                             if(item.iri === undefined) {
-                                return <i>{item.label} </i>;
+                                return <i>{item.label}</i>;
                             }
-                            else if (item.type !== undefined) {
+                            else {
                                 return (<a href={item.iri}>{item.label}</a> );
                             }
                         })}</li>)
@@ -178,8 +229,9 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
 }
 
 async function getEntityJson(api: OlsApi, entityType: string, iri: string, ontologyId?: string, parameter?: string) {
-    return await api.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
+    const response = await api.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
         .catch((error) => console.log(error));
+    return response["elements"][0];
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
