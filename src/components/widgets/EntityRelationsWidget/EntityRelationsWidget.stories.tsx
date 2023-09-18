@@ -95,3 +95,13 @@ EquivalentTo.args = {
     ontologyId: "go",
     iri: "http://purl.obolibrary.org/obo/GO_0048021",
 };
+
+export const SingleValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SingleValue.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "bfo",
+    iri: "http://purl.obolibrary.org/obo/BFO_0000001",
+};

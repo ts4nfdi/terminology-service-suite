@@ -3,7 +3,6 @@ import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
-import {eq} from "@elastic/eui/src/components/search_bar/query/operators";
 
 export interface EntityRelationsWidgetProps {
     api: string;
@@ -28,8 +27,12 @@ function getEntityTypeName(type: string) : string {
     return type === "term" ? "class" : type;
 }
 
-function getLabel(response: any, iri: string) : string {
-    return asArray(response["linkedEntities"][iri]["label"])[0];
+function getLabel(response: any, iri: string) : string | undefined {
+    if(response["linkedEntities"][iri]) {
+        return asArray(response["linkedEntities"][iri]["label"])[0];
+    }
+    else return undefined;
+
 }
 
 function asArray(obj: any) {
@@ -42,7 +45,7 @@ function randomString() {
     return (Math.random() * Math.pow(2, 54)).toString(36);
 }
 
-function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetProps) {
+function getEntityLink(response: any, iri: string) {
     // reference to self; just display label because we are already on that page
     if (iri === response["iri"]) {
         return <b>{response["label"]}</b>
@@ -67,10 +70,10 @@ function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetP
 
 function getSectionListElement(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps): ReactJSXElement | undefined {
     if (typeof currentResponsePath === "string") {
-        return getEntityLink(response, currentResponsePath, props);
+        return getEntityLink(response, currentResponsePath);
     }
     else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
-        return getEntityLink(response, currentResponsePath["value"], props);
+        return getEntityLink(response, currentResponsePath["value"]);
     }
     else { // type === "object"
         const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
