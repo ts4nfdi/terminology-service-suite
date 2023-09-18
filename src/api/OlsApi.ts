@@ -160,6 +160,17 @@ export class OlsApi {
   }
 
   /**
+   * Is used to fetch an entity from the api in ols4 (for ols3, getTerm, getProperty and getIndividual are used respectively).
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
+  public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
+  /**
    * Is used to fetch a term from the api in ols3 (for ols4, getClass is used).
    * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results

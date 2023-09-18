@@ -178,21 +178,8 @@ function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
 }
 
 async function getEntityJson(api: OlsApi, entityType: string, iri: string, ontologyId?: string, parameter?: string) {
-    if (entityType == "term" || entityType == "class") {
-        return await api.getClass(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-            .catch((error) => console.log(error));
-    }
-    else if (entityType == "property") {
-        return await api.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri})
-            .catch((error) => console.log(error));
-    }
-    else if (entityType == "individual") {
-        return await api.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri})
-            .catch((error) => console.log(error));
-    }
-    else {
-        throw Error("Unexpected entity type. Has to be one of: 'term', 'class', 'property', 'individual'");
-    }
+    return await api.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
+        .catch((error) => console.log(error));
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
