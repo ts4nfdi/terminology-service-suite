@@ -27,25 +27,29 @@ function getEntityTypeName(type: string) : string {
 }
 
 function getLabel(response: any, iri: string) : string {
+    if(response["elements"][0]["linkedEntities"][iri] === undefined) {
+        iri = response["elements"][0]["curie"];
+    }
     if (Array.isArray(response.elements[0]["linkedEntities"][iri].label)) {
         return response.elements[0]["linkedEntities"][iri].label[0];
     }
     else {
         return response.elements[0]["linkedEntities"][iri].label;
     }
-
 }
 
 function getManhattanSyntax(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps) {
     let result: {label: string, iri?: string}[] = [];
 
     for(const label in currentResponsePath) {
-        if (label === "http://www.w3.org/2002/07/owl#onProperty") {
-            result.push({label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]});
-            result.push({label: " "});
+        if (label === "http://www.w3.org/2002/07/owl#onProperty") { // insert at right index
+            let pos = result.length - 1;
+            while (pos > 0 && result[pos].label !== ")") pos--;
+
+            result.splice(pos, 0, {label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]}, {label: " "});
         }
-        else if (label === "http://www.w3.org/2002/07/owl#someValuesFrom") {
-            result.push({label: "some"});
+        else if (label === "http://www.w3.org/2002/07/owl#someValuesFrom" || label === "http://www.w3.org/2002/07/owl#allValuesFrom") {
+            result.push({label: label === "http://www.w3.org/2002/07/owl#someValuesFrom" ? "some" : "only"});
             result.push({label: " "});
             if (typeof currentResponsePath[label] === "string") {
                 result.push({label: getLabel(response, currentResponsePath[label]), iri: currentResponsePath[label]});
@@ -124,7 +128,12 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
                                     return item.label;
                                 }
                                 else {
-                                    return <i>{item.label}</i>;
+                                    if (item.label === "some" || item.label === "only") {
+                                        return <span style={{color: "purple"}}><i>{item.label}</i></span>;
+                                    }
+                                    else {
+                                        return <i>{item.label}</i>;
+                                    }
                                 }
                             }
                             else {

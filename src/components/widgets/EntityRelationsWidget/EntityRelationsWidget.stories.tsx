@@ -66,6 +66,16 @@ SubEntityOf.args = {
     iri: "http://purl.obolibrary.org/obo/AGRO_00000002",
 };
 
+export const AllValuesFrom = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+AllValuesFrom.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "go",
+    iri: "http://purl.obolibrary.org/obo/BFO_0000004",
+};
+
 export const DifferentFrom = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
