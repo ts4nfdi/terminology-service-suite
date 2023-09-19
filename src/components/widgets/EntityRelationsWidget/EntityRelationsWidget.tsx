@@ -358,6 +358,28 @@ function getRelatedFrom(response: any, props: EntityRelationsWidgetProps) {
     }
 }
 
+function getTypes(response: any, props: EntityRelationsWidgetProps) {
+    if(response && props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
+        const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && elem !== "http://www.w3.org/2002/07/owl#Thing" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
+
+        return (<EuiFlexItem>
+            {
+                types?.length ?? -1 > 0 ? <b>Type</b> : ""
+            }
+            {types.length === 1 ? (
+                    <p>{getSectionListElement(response, types[0], props)}</p>
+                ) :
+                <ul>
+                    {
+                        types.map((item: any) => {
+                            return (<li key={randomString()} >{getSectionListElement(response, item, props)}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
 function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
         const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
@@ -418,6 +440,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                 {isSuccessEntityRelation &&
                     <EuiText {...rest}>
                         {getSubEntityOf(entityJson, props)}
+                        {getTypes(entityJson, props)}
                         {getDifferentFrom(entityJson, props)}
                         {getRelatedFrom(entityJson, props)}
                         {getEquivalentTo(entityJson, props)}
