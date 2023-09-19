@@ -68,7 +68,7 @@ function getEntityLink(response: any, iri: string) {
     // TODO: Badges for defined by etc.
 }
 
-function getSectionListElement(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps): ReactJSXElement | undefined {
+function getSectionListElement(response: any, currentResponsePath: any): ReactJSXElement | undefined {
     if (typeof currentResponsePath === "string") {
         return getEntityLink(response, currentResponsePath);
     }
@@ -81,9 +81,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
               <>
-                  {getSectionListElement(response, onProperty, props)}
+                  {getSectionListElement(response, onProperty)}
                   <i style={{color: "purple"}}> some </i>
-                  {getSectionListElement(response, asArray(someValuesFrom)[0], props)}
+                  {getSectionListElement(response, asArray(someValuesFrom)[0])}
               </>
             );
         }
@@ -93,9 +93,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> only </i>
-                    {getSectionListElement(response, asArray(allValuesFrom)[0], props)}
+                    {getSectionListElement(response, asArray(allValuesFrom)[0])}
                 </>
             );
         }
@@ -114,7 +114,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem, props)
+                    getSectionListElement(response, elem)
                 );
             }
             elements.push(
@@ -141,7 +141,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem, props)
+                    getSectionListElement(response, elem)
                 );
             }
             elements.push(
@@ -159,9 +159,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> value </i>
-                    {getSectionListElement(response, asArray(hasValue)[0], props)}
+                    {getSectionListElement(response, asArray(hasValue)[0])}
                 </>
             );
         }
@@ -171,9 +171,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> min </i>
-                    {getSectionListElement(response, asArray(minCardinality)[0], props)}
+                    {getSectionListElement(response, asArray(minCardinality)[0])}
                 </>
             );
         }
@@ -183,9 +183,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> max </i>
-                    {getSectionListElement(response, asArray(maxCardinality)[0], props)}
+                    {getSectionListElement(response, asArray(maxCardinality)[0])}
                 </>
             );
         }
@@ -195,9 +195,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> exactly </i>
-                    {getSectionListElement(response, asArray(cardinality)[0], props)}
+                    {getSectionListElement(response, asArray(cardinality)[0])}
                 </>
             );
         }
@@ -207,9 +207,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
             return (
                 <>
-                    {getSectionListElement(response, onProperty, props)}
+                    {getSectionListElement(response, onProperty)}
                     <i style={{color: "purple"}}> Self </i>
-                    {getSectionListElement(response, asArray(hasSelf)[0], props)}
+                    {getSectionListElement(response, asArray(hasSelf)[0])}
                 </>
             );
         }
@@ -219,7 +219,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
             return (
                 <>
                     <i>not </i>
-                    {getSectionListElement(response, hasSelf, props)}
+                    {getSectionListElement(response, hasSelf)}
                 </>
             );
         }
@@ -240,7 +240,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem, props)
+                    getSectionListElement(response, elem)
                 );
             }
             elements.push(
@@ -261,7 +261,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
                     <span key={randomString()} className="text-neutral-default">
                       &#40;
                     </span>
-                    {getSectionListElement(response, inverseOf, props)}
+                    {getSectionListElement(response, inverseOf)}
                     <span key={randomString()} className="text-neutral-default">
                       &#41;
                     </span>
@@ -277,9 +277,9 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
     }
 }
 
-function getSectionListJSX(response: any, props: EntityRelationsWidgetProps, sectionLabel: string) {
+function getSectionListJSX(response: any, sectionLabel: string) {
     return asArray(response[sectionLabel]).map((elem: any) => {
-        return getSectionListElement(response, elem, props);
+        return getSectionListElement(response, elem);
     });
 }
 
@@ -292,12 +292,12 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
                 types?.length ?? -1 > 0 ? <b>Type</b> : ""
             }
             {types.length === 1 ? (
-                    <p>{getSectionListElement(response, types[0], props)}</p>
+                    <p>{getSectionListElement(response, types[0])}</p>
                 ) :
                 <ul>
                     {
                         types.map((item: any) => {
-                            return (<li key={randomString()} >{getSectionListElement(response, item, props)}</li>);
+                            return (<li key={randomString()} >{getSectionListElement(response, item)}</li>);
                         })
                     }
                 </ul>}
@@ -307,7 +307,7 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
 
 function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
-        const sameAs = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#sameAs");
+        const sameAs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#sameAs");
 
         return (<EuiFlexItem>
             {
@@ -328,8 +328,8 @@ function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidg
 }
 
 function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
-        const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
+    if(response && props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
+        const differentFrom = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#differentFrom");
 
         return (<EuiFlexItem>
             {
@@ -351,7 +351,7 @@ function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelati
 
 function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
-        const disjointWiths = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#disjointWith");
+        const disjointWiths = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#disjointWith");
 
         return (<EuiFlexItem>
             {
@@ -373,7 +373,7 @@ function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetPr
 
 function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
-        const inverseOfs = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#inverseOf");
+        const inverseOfs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#inverseOf");
 
         return (<EuiFlexItem>
             {
@@ -393,7 +393,24 @@ function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWid
     }
 }
 
-function getPropertyChainsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+function getPropertyChainJSX(propertyChain: any[], response: any) {
+    return asArray(propertyChain).slice().reverse().map((propertyExpr, i) => { // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
+        return (
+            <span key={propertyExpr}>
+                {getSectionListElement(response, propertyExpr)}
+                <>
+                    {i < asArray(propertyChain).length - 1 && (
+                        <span style={{ color: "gray", fontSize: "small"}}>
+                          {" "}◂{" "}
+                        </span>
+                    )}
+                </>
+            </span>
+        );
+    });
+}
+
+function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#propertyChainAxiom"] !== undefined) {
         const propertyChains = response["http://www.w3.org/2002/07/owl#propertyChainAxiom"];
 
@@ -404,40 +421,12 @@ function getPropertyChainsSectionJSX(response: any, props: EntityRelationsWidget
                 propertyChains.length ?? -1 > 0 ? <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b> : ""
             }
             {!hasMultipleChains ? (
-                    <p>{asArray(propertyChains).slice().reverse().map((propertyExpr, i) => {
-                        return (
-                            <span key={propertyExpr}>
-                                {getSectionListElement(response, propertyExpr, props)}
-                                <>
-                                    {i < asArray(propertyChains).length - 1 && (
-                                        <span style={{ color: "gray", fontSize: "small"}}>
-                                          {" "}◂{" "}
-                                        </span>
-                                    )}
-                                </>
-                            </span>
-                        )
-                    })}</p>
+                    <p>{getPropertyChainJSX(propertyChains, response)}</p>
                 ):
                 <ul>
                     {
                         propertyChains.map((item: any) => {
-                            return (<li key={randomString()} >{
-                                asArray(item).slice().reverse().map((propertyExpr, i) => {
-                                    return (
-                                        <span key={propertyExpr}>
-                                            {getSectionListElement(response, propertyExpr, props)}
-                                                        <>
-                                                {i < asArray(item).length - 1 && (
-                                                    <span style={{ color: "gray", fontSize: "small"}}>
-                                                      {" "}◂{" "}
-                                                    </span>
-                                                )}
-                                            </>
-                                        </span>
-                                    )
-                                })
-                            }</li>);
+                            return (<li key={randomString()}>{getPropertyChainJSX(item, response)}</li>);
                         })
                     }
                 </ul>}
@@ -446,8 +435,8 @@ function getPropertyChainsSectionJSX(response: any, props: EntityRelationsWidget
 }
 
 function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
-        const equivalents = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#equivalentClass");
+    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
+        const equivalents = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#equivalentClass");
 
         return (<EuiFlexItem>
             {
@@ -463,8 +452,8 @@ function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWi
 }
 
 function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
-        const subEntityOf = getSectionListJSX(response, props, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
+    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
+        const subEntityOf = getSectionListJSX(response, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
 
         return (<EuiFlexItem>
             {
@@ -485,7 +474,7 @@ function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetPro
 }
 
 function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["relatedFrom"] !== undefined) {
+    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["relatedFrom"] !== undefined) {
         const relatedFrom= response["relatedFrom"];
 
         const predicates: string[] = Array.from(new Set(response["relatedFrom"].map((elem: any) => {return elem["property"]})));
@@ -507,7 +496,7 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
                                     {relatedFrom.filter((elem: any) => {return elem["property"] === p})
                                         .map((elem: object) => {
                                             return(
-                                                <li key={randomString()}>{getSectionListElement(response, elem, props)}</li>
+                                                <li key={randomString()}>{getSectionListElement(response, elem)}</li>
                                             )
                                         })}
                                 </ul>
@@ -520,7 +509,7 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
     }
 }
 
-function getClassInstancesSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+function getClassInstancesSectionJSX(response: any) {
     if(response !== undefined) {
         const instances = response;
 
@@ -615,11 +604,11 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                         {getIndividualDifferentFromSectionJSX(entityJson, props)}
                         {getDisjointWithSectionJSX(entityJson, props)}
                         {getPropertyInverseOfSectionJSX(entityJson, props)}
-                        {getPropertyChainsSectionJSX(entityJson, props)}
+                        {getPropertyChainSectionJSX(entityJson, props)}
                         {getEntityEquivalentToSectionJSX(entityJson, props)}
                         {getSubentityOfSectionJSX(entityJson, props)}
                         {getEntityRelatedFromSectionJSX(entityJson, props)}
-                        {getClassInstancesSectionJSX(instancesJson, props)}
+                        {getClassInstancesSectionJSX(instancesJson)}
                     </EuiText>
                 }
             </EuiCard>
