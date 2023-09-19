@@ -360,7 +360,7 @@ function getRelatedFrom(response: any, props: EntityRelationsWidgetProps) {
 
 function getTypes(response: any, props: EntityRelationsWidgetProps) {
     if(response && props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
-        const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && elem !== "http://www.w3.org/2002/07/owl#Thing" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
+        const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
 
         return (<EuiFlexItem>
             {
