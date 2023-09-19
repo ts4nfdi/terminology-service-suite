@@ -193,6 +193,17 @@ export class OlsApi {
   }
 
   /**
+   * Is used to fetch a classes instances from the api.
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
+  public getClassInstances: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
+  /**
    * Is used to fetch a property from the api in ols3.
    * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results

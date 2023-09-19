@@ -257,10 +257,10 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
         if (inverseOf) {
             return (
                 <>
+                    <i style={{color: "purple"}}>inverse </i>
                     <span key={randomString()} className="text-neutral-default">
                       &#40;
                     </span>
-                    <i>inverse </i>
                     {getSectionListElement(response, inverseOf, props)}
                     <span key={randomString()} className="text-neutral-default">
                       &#41;
@@ -283,7 +283,186 @@ function getSectionListJSX(response: any, props: EntityRelationsWidgetProps, sec
     });
 }
 
-function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
+function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
+        const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
+
+        return (<EuiFlexItem>
+            {
+                types?.length ?? -1 > 0 ? <b>Type</b> : ""
+            }
+            {types.length === 1 ? (
+                    <p>{getSectionListElement(response, types[0], props)}</p>
+                ) :
+                <ul>
+                    {
+                        types.map((item: any) => {
+                            return (<li key={randomString()} >{getSectionListElement(response, item, props)}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
+        const sameAs = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#sameAs");
+
+        return (<EuiFlexItem>
+            {
+                sameAs?.length ?? -1 > 0 ? <b>Same As</b> : ""
+            }
+            {sameAs.length === 1 ? (
+                    <p>{sameAs[0]}</p>
+                ) :
+                <ul>
+                    {
+                        sameAs.map((item: any) => {
+                            return (<li key={randomString()} >{item}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
+        const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
+
+        return (<EuiFlexItem>
+            {
+                differentFrom?.length ?? -1 > 0 ? <b>Different from</b> : ""
+            }
+            {differentFrom.length === 1 ? (
+                    <p>{differentFrom[0]}</p>
+                ) :
+                <ul>
+                    {
+                        differentFrom.map((item) => {
+                            return (<li key={randomString()} >{item}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
+        const disjointWiths = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#disjointWith");
+
+        return (<EuiFlexItem>
+            {
+                disjointWiths.length ?? -1 > 0 ? <b>Disjoint with</b> : ""
+            }
+            {disjointWiths.length === 1 ? (
+                    <p>{disjointWiths[0]}</p>
+                ):
+                <ul>
+                    {
+                        disjointWiths.map((item) => {
+                            return (<li key={randomString()} >{item}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
+        const inverseOfs = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#inverseOf");
+
+        return (<EuiFlexItem>
+            {
+                inverseOfs.length ?? -1 > 0 ? <b>Inverse of</b> : ""
+            }
+            {inverseOfs.length === 1 ? (
+                    <p>{inverseOfs[0]}</p>
+                ):
+                <ul>
+                    {
+                        inverseOfs.map((item) => {
+                            return (<li key={randomString()} >{item}</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getPropertyChainsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#propertyChainAxiom"] !== undefined) {
+        const propertyChains = response["http://www.w3.org/2002/07/owl#propertyChainAxiom"];
+
+        const hasMultipleChains = propertyChains.filter((elem: any) => Array.isArray(elem)).length > 0;
+
+        return (<EuiFlexItem>
+            {
+                propertyChains.length ?? -1 > 0 ? <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b> : ""
+            }
+            {!hasMultipleChains ? (
+                    <p>{asArray(propertyChains).slice().reverse().map((propertyExpr, i) => {
+                        return (
+                            <span key={propertyExpr}>
+                                {getSectionListElement(response, propertyExpr, props)}
+                                <>
+                                    {i < asArray(propertyChains).length - 1 && (
+                                        <span style={{ color: "gray", fontSize: "small"}}>
+                                          {" "}◂{" "}
+                                        </span>
+                                    )}
+                                </>
+                            </span>
+                        )
+                    })}</p>
+                ):
+                <ul>
+                    {
+                        propertyChains.map((item: any) => {
+                            return (<li key={randomString()} >{
+                                asArray(item).slice().reverse().map((propertyExpr, i) => {
+                                    return (
+                                        <span key={propertyExpr}>
+                                            {getSectionListElement(response, propertyExpr, props)}
+                                                        <>
+                                                {i < asArray(item).length - 1 && (
+                                                    <span style={{ color: "gray", fontSize: "small"}}>
+                                                      {" "}◂{" "}
+                                                    </span>
+                                                )}
+                                            </>
+                                        </span>
+                                    )
+                                })
+                            }</li>);
+                        })
+                    }
+                </ul>}
+        </EuiFlexItem>);
+    }
+}
+
+function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
+        const equivalents = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#equivalentClass");
+
+        return (<EuiFlexItem>
+            {
+                equivalents.length ?? -1 > 0 ? <b>Equivalent to</b> : ""
+            }
+            <ul>
+                {equivalents.map((elem) => {
+                    return (<li key={randomString()}>{elem}</li>);
+                })}
+            </ul>
+        </EuiFlexItem>);
+    }
+}
+
+function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
         const subEntityOf = getSectionListJSX(response, props, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
 
@@ -305,24 +484,7 @@ function getSubEntityOf(response: any, props: EntityRelationsWidgetProps) {
     }
 }
 
-function getEquivalentTo(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
-        const equivalents = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#equivalentClass");
-
-        return (<EuiFlexItem>
-            {
-                equivalents.length ?? -1 > 0 ? <b>Equivalent to</b> : ""
-            }
-            <ul>
-                {equivalents.map((elem) => {
-                  return (<li key={randomString()}>{elem}</li>);
-                })}
-            </ul>
-        </EuiFlexItem>);
-    }
-}
-
-function getRelatedFrom(response: any, props: EntityRelationsWidgetProps) {
+function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
     if(response && response["relatedFrom"] !== undefined) {
         const relatedFrom= response["relatedFrom"];
 
@@ -358,52 +520,46 @@ function getRelatedFrom(response: any, props: EntityRelationsWidgetProps) {
     }
 }
 
-function getTypes(response: any, props: EntityRelationsWidgetProps) {
-    if(response && props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
-        const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
+function getClassInstancesSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+    if(response !== undefined) {
+        const instances = response;
 
-        return (<EuiFlexItem>
-            {
-                types?.length ?? -1 > 0 ? <b>Type</b> : ""
-            }
-            {types.length === 1 ? (
-                    <p>{getSectionListElement(response, types[0], props)}</p>
-                ) :
+        console.dir(instances);
+
+        if(instances.length > 0) {
+            return (<EuiFlexItem>
+                {
+                    <b>Instances</b>
+                }
                 <ul>
                     {
-                        types.map((item: any) => {
-                            return (<li key={randomString()} >{getSectionListElement(response, item, props)}</li>);
+                        instances.map((item: any) => {
+                            console.dir(item);
+                            return (<li key={randomString()} ><a href={item["iri"]}>{item["label"]}</a></li>);
                         })
                     }
-                </ul>}
-        </EuiFlexItem>);
+                </ul>
+            </EuiFlexItem>);
+        }
+
     }
 }
 
-function getDifferentFrom(response: any, props: EntityRelationsWidgetProps) {
-    if(response && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
-        const differentFrom = getSectionListJSX(response, props, "http://www.w3.org/2002/07/owl#differentFrom");
-
-        return (<EuiFlexItem>
-            {
-                differentFrom?.length ?? -1 > 0 ? <b>Different from</b> : ""
-            }
-            {differentFrom.length === 1 ? (
-                <p>{differentFrom[0]}</p>
-            ) :
-            <ul>
-                {
-                    differentFrom.map((item) => {
-                        return (<li key={randomString()} >{item}</li>);
-                    })
-                }
-            </ul>}
-        </EuiFlexItem>);
+async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
+    if(getEntityTypeName(props.entityType) === "class") {
+        const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(props.iri));
+        const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId, termIri: doubleEncodedTermIri}, props.parameter)
+            .catch((error) => console.log(error));
+        console.dir(asArray(response["elements"]));
+        return asArray(response["elements"]);
+    }
+    else {
+        return [];
     }
 }
 
-async function getEntityJson(api: OlsApi, entityType: string, iri: string, ontologyId?: string, parameter?: string) {
-    const response = await api.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
+async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
+    const response = await api.getEntity(undefined, undefined, {ontologyId: props.ontologyId, termIri: props.iri}, props.parameter)
         .catch((error) => console.log(error));
     return response["elements"][0];
 }
@@ -426,8 +582,23 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             parameter
         ],
         async () => {
-            return getEntityJson(olsApi, entityType, iri, ontologyId, parameter);
-        }
+            return fetchEntityJson(olsApi, props);
+        },
+    );
+
+    const {
+        data: instancesJson,
+        isLoading: isLoadingInstances,
+        isSuccess: isSuccessInstances,
+    } = useQuery({
+        queryKey: [
+            "instancesJson",
+            entityJson
+        ],
+        queryFn: async () => {
+            return (getEntityTypeName(entityType) === "class" && entityJson["hasDirectChildren"]) ? fetchInstances(olsApi, props) : [];
+        },
+        enabled: !!entityJson },
     );
 
     return (
@@ -436,14 +607,19 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                 title={hasTitle ? (getCapitalized(getEntityTypeName(entityType)) +" Relations") : ""}
                 layout="horizontal"
             >
-                {isLoadingEntityRelation && <EuiLoadingSpinner size={'s'}/>}
-                {isSuccessEntityRelation &&
+                {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
+                {(isSuccessEntityRelation && isSuccessInstances) &&
                     <EuiText {...rest}>
-                        {getSubEntityOf(entityJson, props)}
-                        {getTypes(entityJson, props)}
-                        {getDifferentFrom(entityJson, props)}
-                        {getRelatedFrom(entityJson, props)}
-                        {getEquivalentTo(entityJson, props)}
+                        {getIndividualTypesSectionJSX(entityJson, props)}
+                        {getIndividualSameAsSectionJSX(entityJson, props)}
+                        {getIndividualDifferentFromSectionJSX(entityJson, props)}
+                        {getDisjointWithSectionJSX(entityJson, props)}
+                        {getPropertyInverseOfSectionJSX(entityJson, props)}
+                        {getPropertyChainsSectionJSX(entityJson, props)}
+                        {getEntityEquivalentToSectionJSX(entityJson, props)}
+                        {getSubentityOfSectionJSX(entityJson, props)}
+                        {getEntityRelatedFromSectionJSX(entityJson, props)}
+                        {getClassInstancesSectionJSX(instancesJson, props)}
                     </EuiText>
                 }
             </EuiCard>

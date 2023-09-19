@@ -105,3 +105,33 @@ SingleValue.args = {
     ontologyId: "bfo",
     iri: "http://purl.obolibrary.org/obo/BFO_0000001",
 };
+
+export const InverseOf = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InverseOf.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "property",
+    ontologyId: "ro",
+    iri: "http://purl.obolibrary.org/obo/RO_0000057",
+};
+
+export const PropertyChain = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+PropertyChain.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "property",
+    ontologyId: "ro",
+    iri: "http://purl.obolibrary.org/obo/RO_0002170",
+};
+
+export const Instances = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+Instances.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "apollo_sv",
+    iri: "http://purl.obolibrary.org/obo/APOLLO_SV_00000107",
+};
