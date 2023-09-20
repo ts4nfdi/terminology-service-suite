@@ -2,7 +2,6 @@ import React from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
-import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 
 export interface EntityRelationsWidgetProps {
     api: string;
@@ -18,34 +17,58 @@ export interface EntityRelationsWidgetProps {
 
 const DEFAULT_HAS_TITLE = true;
 
-function getCapitalized(text: string | undefined) : string | undefined {
-    if(text === undefined) return undefined;
+/**
+ * Capitalizes {@link text}.
+ */
+function getCapitalized(text: string) : string {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+/**
+ * Returns {@link type}. If {@link type} equals 'term', 'class' gets returned instead.
+ */
 function getEntityTypeName(type: string) : string {
     return type === "term" ? "class" : type;
 }
 
+/**
+ * Fetches an iri's label inside the response object and returns the label or undefined if not found.
+ * @param response  an entities' data JSON as JS-object
+ * @param iri   an entities' iri
+ * @returns {string | undefined} the label or undefined if not found
+ */
 function getLabel(response: any, iri: string) : string | undefined {
     if(response["linkedEntities"][iri]) {
         return asArray(response["linkedEntities"][iri]["label"])[0];
     }
     else return undefined;
-
 }
 
-function asArray(obj: any) {
+/**
+ * Returns an array version of the given object.
+ * @param obj   the given object
+ * @returns {any[]} the array
+ */
+function asArray(obj: any): any[] {
     if (Array.isArray(obj)) return obj;
     else if (obj) return [obj];
     else return [];
 }
 
+/**
+ * Returns a random string used mainly for component keys.
+ */
 function randomString() {
     return (Math.random() * Math.pow(2, 54)).toString(36);
 }
 
-function getEntityLink(response: any, iri: string) {
+/**
+ * Returns a labeled entity link as JSX element
+ * @param response  the entities' data JSON as JS-object
+ * @param iri   the entities' iri
+ * @returns {JSX.Element} the entity link
+ */
+function getEntityLink(response: any, iri: string): JSX.Element {
     // reference to self; just display label because we are already on that page
     if (iri === response["iri"]) {
         return <b>{response["label"]}</b>
@@ -68,7 +91,13 @@ function getEntityLink(response: any, iri: string) {
     // TODO: Badges for defined by etc.
 }
 
-function getSectionListElement(response: any, currentResponsePath: any): ReactJSXElement | undefined {
+/**
+ * Builds and returns one element of a sections' list, possibly in a recursive fashion by parsing the response object at the currentResponsePath to show Manchester syntax.
+ * @param response  the entities' data JSON as JS-object
+ * @param currentResponsePath   the currently parsed subpart of the response object
+ * @returns {JSX.Element} the list element
+ */
+function getSectionListElement(response: any, currentResponsePath: any): JSX.Element {
     if (typeof currentResponsePath === "string") {
         return getEntityLink(response, currentResponsePath);
     }
@@ -102,7 +131,7 @@ function getSectionListElement(response: any, currentResponsePath: any): ReactJS
 
         const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
         if (intersectionOf) {
-            const elements: (ReactJSXElement | undefined)[] = [
+            const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
                 </span>
@@ -129,7 +158,7 @@ function getSectionListElement(response: any, currentResponsePath: any): ReactJS
 
         const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
         if (unionOf) {
-            const elements: (ReactJSXElement | undefined)[] = [
+            const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
                 </span>
@@ -226,7 +255,7 @@ function getSectionListElement(response: any, currentResponsePath: any): ReactJS
 
         const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
         if (oneOf) {
-            const elements: (ReactJSXElement | undefined)[] = [
+            const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#123;
                 </span>
@@ -274,16 +303,30 @@ function getSectionListElement(response: any, currentResponsePath: any): ReactJS
             // TODO: What does this do?
             return <></>;
         }
+
+        return <></>;
     }
 }
 
-function getSectionListJSX(response: any, sectionLabel: string) {
+/**
+ * Builds and returns a sections list as JSX element array. Is useful if the whole section inside the response object can be parsed via Manchester syntax as done in {@link getSectionListElement}.
+ * @param response  the entities' data JSON as JS-object
+ * @param sectionLabel  the label of the current section
+ * @returns {JSX.Element[]} the sections' list
+ */
+function getSectionListJSX(response: any, sectionLabel: string): JSX.Element[] {
     return asArray(response[sectionLabel]).map((elem: any) => {
         return getSectionListElement(response, elem);
     });
 }
 
-function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the type section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
         const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
 
@@ -303,9 +346,18 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the same as section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
         const sameAs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#sameAs");
 
@@ -325,9 +377,18 @@ function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidg
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the different from section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
         const differentFrom = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#differentFrom");
 
@@ -347,9 +408,18 @@ function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelati
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the disjoint with section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
         const disjointWiths = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#disjointWith");
 
@@ -369,9 +439,18 @@ function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetPr
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the inverse of section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
         const inverseOfs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#inverseOf");
 
@@ -391,9 +470,18 @@ function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWid
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getPropertyChainJSX(propertyChain: any[], response: any) {
+/**
+ * Builds and returns one property chain JSX element. Is used for {@link getPropertyChainSectionJSX}.
+ * @param propertyChain the property chain
+ * @param response  the entities' data JSON as JS-object
+ * @returns {JSX.Element[]} the chains JSX element
+ */
+function getPropertyChainJSX(propertyChain: any[], response: any): JSX.Element[] {
     return asArray(propertyChain).slice().reverse().map((propertyExpr, i) => { // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
         return (
             <span key={propertyExpr}>
@@ -410,7 +498,13 @@ function getPropertyChainJSX(propertyChain: any[], response: any) {
     });
 }
 
-function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the property chains section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#propertyChainAxiom"] !== undefined) {
         const propertyChains = response["http://www.w3.org/2002/07/owl#propertyChainAxiom"];
 
@@ -432,9 +526,18 @@ function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetP
                 </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the equivalent to section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
         const equivalents = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#equivalentClass");
 
@@ -449,9 +552,18 @@ function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWi
             </ul>
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the subentity of section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
         const subEntityOf = getSectionListJSX(response, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
 
@@ -471,9 +583,18 @@ function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetPro
             </ul>}
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
+/**
+ * Builds and returns the related from section JSX element.
+ * @param response  the entities' data JSON as JS-object
+ * @param props the entities' properties
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["relatedFrom"] !== undefined) {
         const relatedFrom = response["relatedFrom"];
 
@@ -507,9 +628,17 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
             </ul>
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
-function getClassInstancesSectionJSX(instances: any) {
+/**
+ * Builds and returns the class instances section JSX element.
+ * @param instances an array of the classes' instances
+ * @returns {JSX.Element} the sections' JSX element
+ */
+function getClassInstancesSectionJSX(instances: any): JSX.Element {
     if(instances.length > 0) {
         return (<EuiFlexItem>
             {
@@ -524,8 +653,16 @@ function getClassInstancesSectionJSX(instances: any) {
             </ul>
         </EuiFlexItem>);
     }
+    else {
+        return <></>;
+    }
 }
 
+/**
+ * Fetches a classes instances from the JSON api.
+ * @param api   a reference to the api
+ * @param props the classes' properties
+ */
 async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
     if(getEntityTypeName(props.entityType) === "class") {
         const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(props.iri));
@@ -543,6 +680,11 @@ async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
     }
 }
 
+/**
+ * Fetches an entities data from the JSON api.
+ * @param api   a reference to the api
+ * @param props the entities' properties
+ */
 async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
     const response = await api.getEntity(undefined, undefined, {ontologyId: props.ontologyId, termIri: props.iri}, props.parameter)
         .catch((error) => console.log(error));
@@ -558,6 +700,9 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
     const olsApi = new OlsApi(api);
 
+    /**
+     * Used to fetch an entities' data to be shown in different sections
+     */
     const {
         data: entityJson,
         isLoading: isLoadingEntityRelation,
@@ -577,6 +722,9 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
         },
     );
 
+    /**
+     * Used to fetch a classes instances to be shown in class instances section
+     */
     const {
         data: instancesJson,
         isLoading: isLoadingInstances,
