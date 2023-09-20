@@ -747,7 +747,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                 layout="horizontal"
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
-                {isErrorEntityRelation && <EuiText>Terminology is not available</EuiText>}
+                {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
                 {(isSuccessEntityRelation && isSuccessInstances) &&
                     <EuiText {...rest}>
                         {getIndividualTypesSectionJSX(entityJson, props)}
