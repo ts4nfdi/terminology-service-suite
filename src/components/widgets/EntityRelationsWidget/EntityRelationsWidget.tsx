@@ -284,7 +284,7 @@ function getSectionListJSX(response: any, sectionLabel: string) {
 }
 
 function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
+    if(props.entityType === "individual" && response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !== undefined) {
         const types = asArray(response["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]).filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
 
         return (<EuiFlexItem>
@@ -306,7 +306,7 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
 }
 
 function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
+    if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
         const sameAs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#sameAs");
 
         return (<EuiFlexItem>
@@ -328,7 +328,7 @@ function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidg
 }
 
 function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
+    if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
         const differentFrom = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#differentFrom");
 
         return (<EuiFlexItem>
@@ -350,7 +350,7 @@ function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelati
 }
 
 function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
+    if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
         const disjointWiths = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#disjointWith");
 
         return (<EuiFlexItem>
@@ -372,7 +372,7 @@ function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetPr
 }
 
 function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
+    if(["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
         const inverseOfs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#inverseOf");
 
         return (<EuiFlexItem>
@@ -411,7 +411,7 @@ function getPropertyChainJSX(propertyChain: any[], response: any) {
 }
 
 function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#propertyChainAxiom"] !== undefined) {
+    if(["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#propertyChainAxiom"] !== undefined) {
         const propertyChains = response["http://www.w3.org/2002/07/owl#propertyChainAxiom"];
 
         const hasMultipleChains = propertyChains.filter((elem: any) => Array.isArray(elem)).length > 0;
@@ -435,7 +435,7 @@ function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetP
 }
 
 function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
+    if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
         const equivalents = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#equivalentClass");
 
         return (<EuiFlexItem>
@@ -452,7 +452,7 @@ function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWi
 }
 
 function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
+    if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
         const subEntityOf = getSectionListJSX(response, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
 
         return (<EuiFlexItem>
@@ -474,8 +474,8 @@ function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetPro
 }
 
 function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWidgetProps) {
-    if(response && ["property", "class"].includes(getEntityTypeName(props.entityType)) && response["relatedFrom"] !== undefined) {
-        const relatedFrom= response["relatedFrom"];
+    if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["relatedFrom"] !== undefined) {
+        const relatedFrom = response["relatedFrom"];
 
         const predicates: string[] = Array.from(new Set(response["relatedFrom"].map((elem: any) => {return elem["property"]})));
 
@@ -509,25 +509,20 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
     }
 }
 
-function getClassInstancesSectionJSX(response: any) {
-    if(response !== undefined) {
-        const instances = response;
-
-        if(instances.length > 0) {
-            return (<EuiFlexItem>
+function getClassInstancesSectionJSX(instances: any) {
+    if(instances.length > 0) {
+        return (<EuiFlexItem>
+            {
+                <b>Instances</b>
+            }
+            <ul>
                 {
-                    <b>Instances</b>
+                    instances.map((item: any) => {
+                        return (<li key={randomString()} ><a href={item["iri"]}>{item["label"]}</a></li>);
+                    })
                 }
-                <ul>
-                    {
-                        instances.map((item: any) => {
-                            return (<li key={randomString()} ><a href={item["iri"]}>{item["label"]}</a></li>);
-                        })
-                    }
-                </ul>
-            </EuiFlexItem>);
-        }
-
+            </ul>
+        </EuiFlexItem>);
     }
 }
 
@@ -536,7 +531,12 @@ async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
         const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(props.iri));
         const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId, termIri: doubleEncodedTermIri}, props.parameter)
             .catch((error) => console.log(error));
-        return asArray(response["elements"]);
+        if (response["elements"] !== undefined) {
+            return asArray(response["elements"]);
+        }
+        else {
+            throw Error("Error fetching instances of '" + props.iri + "'");
+        }
     }
     else {
         return [];
