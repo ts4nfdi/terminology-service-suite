@@ -260,7 +260,7 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     &#123;
                 </span>
             ];
-            for (const elem of unionOf) {
+            for (const elem of oneOf) {
                 if (elements.length > 1) {
                     elements.push(
                         <span key={randomString()} className="text-neutral-default">
@@ -604,7 +604,6 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
             {
                 relatedFrom.length ?? -1 > 0 ? <b>Related from</b> : ""
             }
-            <ul>
                 {
                     predicates.map((p) => {
                         const label = getLabel(response, p);
@@ -613,7 +612,7 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
                                 <div>
                                     <a style={{color: "black"}} href={p}><i>{label || p}</i></a>
                                 </div>
-                                <ul>
+                                <ul style={{marginBottom: 0}}>
                                     {relatedFrom.filter((elem: any) => {return elem["property"] === p})
                                         .map((elem: object) => {
                                             return(
@@ -621,11 +620,11 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
                                             )
                                         })}
                                 </ul>
+                                <p></p> {/* Works as empty space left to next section */}
                             </div>
                         );
                     })
                 }
-            </ul>
         </EuiFlexItem>);
     }
     else {

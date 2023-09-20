@@ -132,6 +132,6 @@ export const Instances = Template.bind({});
 Instances.args = {
     api: "https://www.ebi.ac.uk/ols4/api/v2",
     entityType: "term",
-    ontologyId: "apollo_sv",
-    iri: "http://purl.obolibrary.org/obo/APOLLO_SV_00000107",
+    ontologyId: "iao",
+    iri: "http://purl.obolibrary.org/obo/IAO_0000078",
 };
