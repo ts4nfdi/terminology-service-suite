@@ -513,8 +513,6 @@ function getClassInstancesSectionJSX(response: any) {
     if(response !== undefined) {
         const instances = response;
 
-        console.dir(instances);
-
         if(instances.length > 0) {
             return (<EuiFlexItem>
                 {
@@ -523,7 +521,6 @@ function getClassInstancesSectionJSX(response: any) {
                 <ul>
                     {
                         instances.map((item: any) => {
-                            console.dir(item);
                             return (<li key={randomString()} ><a href={item["iri"]}>{item["label"]}</a></li>);
                         })
                     }
@@ -539,7 +536,6 @@ async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
         const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(props.iri));
         const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId, termIri: doubleEncodedTermIri}, props.parameter)
             .catch((error) => console.log(error));
-        console.dir(asArray(response["elements"]));
         return asArray(response["elements"]);
     }
     else {
@@ -550,7 +546,12 @@ async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
 async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
     const response = await api.getEntity(undefined, undefined, {ontologyId: props.ontologyId, termIri: props.iri}, props.parameter)
         .catch((error) => console.log(error));
-    return response["elements"][0];
+    if (response["elements"][0] !== undefined) {
+        return response["elements"][0];
+    }
+    else {
+        throw Error("Requested entity '" + props.iri + "' could not be resolved");
+    }
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
@@ -561,6 +562,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
         data: entityJson,
         isLoading: isLoadingEntityRelation,
         isSuccess: isSuccessEntityRelation,
+        isError: isErrorEntityRelation,
     } = useQuery(
         [
             "entityJson",
@@ -597,6 +599,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                 layout="horizontal"
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
+                {isErrorEntityRelation && <EuiText>Terminology is not available</EuiText>}
                 {(isSuccessEntityRelation && isSuccessInstances) &&
                     <EuiText {...rest}>
                         {getIndividualTypesSectionJSX(entityJson, props)}
