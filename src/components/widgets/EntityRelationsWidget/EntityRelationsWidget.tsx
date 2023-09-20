@@ -611,7 +611,7 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
                         return (
                             <div key={p.toString() + randomString()}>
                                 <div>
-                                    <i>{label || p}</i>
+                                    <a style={{color: "black"}} href={p}><i>{label || p}</i></a>
                                 </div>
                                 <ul>
                                     {relatedFrom.filter((elem: any) => {return elem["property"] === p})
