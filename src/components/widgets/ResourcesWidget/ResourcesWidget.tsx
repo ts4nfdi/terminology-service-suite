@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import {
-  EuiLoadingSpinner,
   EuiBasicTable,
   EuiButtonIcon,
   EuiLink,
-  CriteriaWithPagination, EuiText,
+  CriteriaWithPagination,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import {getErrorMessageToDisplay} from "../index";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -239,10 +237,25 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             />
         }
         {isLoading &&
-            <EuiLoadingSpinner size="xl" />
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                loading
+            />
+
         }
         {isError &&
-            <EuiText>No resources available - {getErrorMessageToDisplay(error)}</EuiText>
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                error={"No items available"}
+            />
         }
       </>
   )

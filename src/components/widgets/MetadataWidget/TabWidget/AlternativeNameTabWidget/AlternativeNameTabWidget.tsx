@@ -1,7 +1,7 @@
 import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
-import {getErrorMessageToDisplay} from "../../../index";
+import React from "react";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -75,7 +75,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
       <EuiFlexGroup style={{ padding: 10 }} direction="column">
           {isSuccess && renderAltLabel()}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
-          {isError && <EuiText>No alternative names available - {getErrorMessageToDisplay(error)}</EuiText>}
+          {isError && <EuiText>No alternative names available</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );

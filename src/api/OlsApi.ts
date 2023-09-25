@@ -142,7 +142,7 @@ export class OlsApi {
   public check_for_errors(response: any): any {
     // resource not found/illegal argument exception in semanticlookup
     if(response["error"]) {
-      throw Error(response["status"] + " " + response["error"] + "\n\texception: " + response["exception"] + "\n\tmessage: " + response["message"] +"\n\tpath: " + response["path"]);
+      throw Error(response["status"] + " " + response["error"] + " - " + response["message"] + " - " + response["exception"] + " at " + response["path"]);
     }
     // empty response - can be caught if this is expected, e.g. for fetching instances
     if(response["page"] !== undefined && response["page"]["totalElements"] === 0) {

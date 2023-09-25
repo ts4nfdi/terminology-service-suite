@@ -19,7 +19,6 @@ import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
-import {getErrorMessageToDisplay} from "../index";
 
 
 export type SearchResultsListWidgetProps = {
@@ -213,13 +212,6 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             <EuiFlexGroup>
                 <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
                     <EuiPanel>
-                        {isError &&
-                            <>
-                                <EuiText size="s">{getErrorMessageToDisplay(error)}</EuiText>
-                                <EuiSpacer></EuiSpacer>
-                            </>
-                        }
-
                         {isSuccess &&
                             <EuiFormRow label="Filter by type">
                                 <EuiSelectable

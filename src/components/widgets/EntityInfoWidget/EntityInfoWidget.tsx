@@ -2,7 +2,6 @@ import React from "react";
 import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText } from "@elastic/eui";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from 'react-query'
-import {getErrorMessageToDisplay} from "../index";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -185,7 +184,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         )) : ""}
                     </EuiText>
                 }
-                {isErrorEntityInfo && <EuiText>{getErrorMessageToDisplay(errorEntityInfo)}</EuiText>}
+                {isErrorEntityInfo && <EuiText>No information available</EuiText>}
             </EuiCard>
         </>
     );

@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
-import {getErrorMessageToDisplay} from "../../index";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
@@ -57,7 +56,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     <>
       {isSuccess && <EuiText {...rest}>{descText || description}</EuiText>}
       {isLoading && <EuiLoadingSpinner size="s" />}
-      {isError && <EuiText>No description available - {getErrorMessageToDisplay(error)}</EuiText>}
+      {isError && <EuiText>No description available</EuiText>}
     </>
   );
 }

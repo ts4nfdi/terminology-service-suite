@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { EuiText, EuiLoadingSpinner, EuiCard } from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
-import {getErrorMessageToDisplay} from "../index";
 
 export interface DataContentWidgetProps {
   api: string;
@@ -130,7 +129,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
       >
         <EuiText {...rest}>
           {(isErrorIndividuals || isErrorProperties || isErrorOntologies || isErrorTerms) ?
-            <EuiText>No data content available - {getErrorMessageToDisplay(errorOntologies || errorIndividuals || errorProperties || errorTerms)}</EuiText> :
+            <EuiText>No data content available</EuiText> :
             <ul>
               <li>{isLoadingOntologies ? <EuiLoadingSpinner size="s" /> : (totalOntologies ? totalOntologies.toLocaleString() : NOT_AVAILABLE)} ontologies and terminologies</li>
               <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : (totalTerms ? totalTerms.toLocaleString() : NOT_AVAILABLE)} terms</li>

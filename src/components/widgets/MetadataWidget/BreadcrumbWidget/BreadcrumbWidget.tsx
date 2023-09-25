@@ -2,7 +2,6 @@ import React from "react";
 import {EuiBadge, EuiLoadingSpinner} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {useQuery} from "react-query";
-import {getErrorMessageToDisplay} from "../../index";
 
 export interface BreadcrumbWidgetProps {
   iri?: string;
@@ -64,7 +63,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       <EuiBadge color={colorFirst || "primary"}>{ontologyId?.toUpperCase()}</EuiBadge>
         {" > "}
       <>{
-        isErrorShortForm ? <EuiBadge color={colorSecond || "danger"}>No short form available - {getErrorMessageToDisplay(errorShortForm)}</EuiBadge> :
+        isErrorShortForm ? <EuiBadge color={colorSecond || "danger"}>No short form available</EuiBadge> :
             isLoadingShortForm ? <EuiBadge color={colorSecond || "warning"}><EuiLoadingSpinner size="s" /></EuiBadge> :
                 <EuiBadge color={colorSecond || "success"}>{shortForm}</EuiBadge>
       }</>
