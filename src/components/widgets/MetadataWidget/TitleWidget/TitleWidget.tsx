@@ -2,6 +2,7 @@ import React from "react";
 import {useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
+import {getErrorMessageToDisplay} from "../../index";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -18,42 +19,36 @@ export interface TitleWidgetProps {
     default_value?: string
 }
 
-const NO_TITLE = "No title available.";
-
-
 async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string, default_value?: string): Promise<string> {
     if (entityType == "ontology") {
         const response = await olsApi.getOntology(undefined, undefined, {
             ontologyId: ontologyId
         }, parameter)
-            .catch((error) => console.log(error));
-        return response?.config.title || default_value || NO_TITLE
+        return response?.config.title || default_value
     }
     if (entityType == "term") {
         const response = await olsApi.getTerm(undefined, undefined, {
             ontologyId: ontologyId,
             termIri: iri
         }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.terms[0].label ||  default_value || NO_TITLE
+        return response?._embedded?.terms[0].label ||  default_value
     }
     if (entityType == "property") {
         const response = await olsApi.getProperty(undefined, undefined, {
             ontologyId: ontologyId,
             propertyIri: iri
         }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.properties[0].label ||  default_value || NO_TITLE
+        return response?._embedded?.properties[0].label ||  default_value
     }
     if (entityType == "individual") {
         const response = await olsApi.getIndividual(undefined, undefined, {
             ontologyId: ontologyId,
             individualIri: iri
         }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.individuals[0].label ||  default_value || NO_TITLE
+        return response?._embedded?.individuals[0].label ||  default_value
     }
-    return  default_value || NO_TITLE;
+    //unacceptable object type
+    throw Error("Unacceptable object type. Should be one of: 'ontology', 'term', 'class', 'property', 'individual'");
 }
 
 function TitleWidget(props: TitleWidgetProps) {
@@ -64,13 +59,18 @@ function TitleWidget(props: TitleWidgetProps) {
     const {
         data: label,
         isLoading,
+        isSuccess,
+        isError,
+        error,
     } = useQuery([api, "getTitle", fixedEntityType, ontologyId, iri, parameter], () => {
         return getTitle(olsApi, fixedEntityType, ontologyId, iri, parameter, default_value);
     });
 
     return (
         <>
-            {isLoading ? <EuiLoadingSpinner size="s"/> : <EuiText>{titleText || label}</EuiText>}
+            {isSuccess && <EuiText>{titleText || label}</EuiText>}
+            {isLoading && <EuiLoadingSpinner size="s"/>}
+            {isError && <EuiText>No title available - {getErrorMessageToDisplay(error)}</EuiText>}
         </>
     );
 }

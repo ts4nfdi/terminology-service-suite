@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -55,7 +55,8 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
         data,
         isLoading,
         isSuccess,
-        isError
+        isError,
+        error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getSynonyms(olsApi, entityType, iri, ontologyId);
     });
@@ -74,7 +75,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
       <EuiFlexGroup style={{ padding: 10 }} direction="column">
           {isSuccess && renderAltLabel()}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
-          {isError && <EuiText>No cross references available.</EuiText>}
+          {isError && <EuiText>No alternative names available - {getErrorMessageToDisplay(error)}</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );

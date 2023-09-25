@@ -4,13 +4,14 @@ import {
   EuiBasicTable,
   EuiButtonIcon,
   EuiLink,
-  CriteriaWithPagination,
+  CriteriaWithPagination, EuiText,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
+import {getErrorMessageToDisplay} from "../index";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -180,7 +181,13 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
-  const { data: ontologies } = useQuery(
+  const {
+    data: ontologies,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     [
       api,
       "ontologiesMetadata",
@@ -220,19 +227,25 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   );
 
-  if (ontologies) {
-    return (
-      <EuiBasicTable
-        columns={columns}
-        items={ontologies}
-        onChange={onTableChange}
-        pagination={pagination}
-        sorting={sorting}
-      />
-    );
-  }
-
-  return <EuiLoadingSpinner size="xl" />;
+  return (
+      <>
+        {isSuccess &&
+            <EuiBasicTable
+                columns={columns}
+                items={ontologies}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+            />
+        }
+        {isLoading &&
+            <EuiLoadingSpinner size="xl" />
+        }
+        {isError &&
+            <EuiText>No resources available - {getErrorMessageToDisplay(error)}</EuiText>
+        }
+      </>
+  )
 }
 
 export { ResourcesWidget };

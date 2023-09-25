@@ -64,3 +64,14 @@ SearchResultsListNFDI4Health.args = {
   targetLink: "",
   parameter: "collection=nfdi4health",
 };
+
+export const ErrorSearchResultsList = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorSearchResultsList.args = {
+  api: "ht3ps://semanticlookup.zbmed.de/api/",
+  query: "d*",
+  targetLink: "",
+  parameter: "collection=nfdi4health",
+};

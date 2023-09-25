@@ -8,6 +8,7 @@ import {
 } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface CrossRefWidgetProps {
   iri: string;
@@ -70,6 +71,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         isLoading,
         isSuccess,
         isError,
+        error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getCorssRefs(olsApi, entityType, iri, ontologyId);
     });
@@ -107,7 +109,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
       <EuiFlexGroup style={{ padding: 7 }} direction="column">
         {isSuccess && renderCrossRefs()}
         {isLoading && <EuiLoadingSpinner/>}
-        {isError && <EuiText>No cross references available.</EuiText>}
+        {isError && <EuiText>No cross references available - {getErrorMessageToDisplay(error)}</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );

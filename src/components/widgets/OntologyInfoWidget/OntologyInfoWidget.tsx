@@ -1,7 +1,8 @@
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner } from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {useQuery} from "react-query";
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
+import {getErrorMessageToDisplay} from "../index";
 
 export interface OntologyInfoWidgetProps {
   ontologyId: string;
@@ -46,41 +47,46 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const {
     data: ontologyInfo,
     isLoading,
+    isError,
+    error,
   } = useQuery([api, "getOntology", ontologyId, parameter], () => { return getOntoData(olsApi.getOntology, ontologyId, parameter); });
 
   return (
     <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
       <EuiFlexItem>
-        <EuiFlexGroup direction="column">
-          <EuiFlexItem grow={false}>
-            <b>Ontology IRI:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.iri) ? ontologyInfo.iri.toLocaleString() : "-")}</p>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <b>Ontology ID:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.id) ? ontologyInfo.id.toLocaleString() : "-")}</p>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <b>Version:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.version) ? ontologyInfo.version.toLocaleString() : "-")}</p>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <b>Number of terms:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.termNum) ? ontologyInfo.termNum.toLocaleString() : "-")}</p>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <b>Last loaded:</b>
-            <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.lastLoad) ? new Date(ontologyInfo.lastLoad).toLocaleString() : "-")}</p>
-          </EuiFlexItem>
-          {ontologyInfo ? (
-            Object.entries(ontologyInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
-              <EuiFlexItem grow={false} key={annoKey}>
-                <b>{annoKey}:</b>
-                <p style={infoItemStyle}>{isAvailable(annoVal) ? annoVal.toLocaleString() : "-"}</p>
-              </EuiFlexItem>
-              ))
-          ) : ''}
-        </EuiFlexGroup>
+        {
+          isError ? <EuiText>No ontology info available - {getErrorMessageToDisplay(error)}</EuiText> :
+              <EuiFlexGroup direction="column">
+                <EuiFlexItem grow={false}>
+                  <b>Ontology IRI:</b>
+                  <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.iri) ? ontologyInfo.iri.toLocaleString() : "-")}</p>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <b>Ontology ID:</b>
+                  <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.id) ? ontologyInfo.id.toLocaleString() : "-")}</p>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <b>Version:</b>
+                  <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.version) ? ontologyInfo.version.toLocaleString() : "-")}</p>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <b>Number of terms:</b>
+                  <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.termNum) ? ontologyInfo.termNum.toLocaleString() : "-")}</p>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <b>Last loaded:</b>
+                  <p style={infoItemStyle}>{isLoading ? <EuiLoadingSpinner size="s" /> : (ontologyInfo && isAvailable(ontologyInfo.lastLoad) ? new Date(ontologyInfo.lastLoad).toLocaleString() : "-")}</p>
+                </EuiFlexItem>
+                {ontologyInfo ? (
+                    Object.entries(ontologyInfo.annotations).map(([annoKey,annoVal]) => (/*TODO clickable annoKey*/
+                        <EuiFlexItem grow={false} key={annoKey}>
+                          <b>{annoKey}:</b>
+                          <p style={infoItemStyle}>{isAvailable(annoVal) ? annoVal.toLocaleString() : "-"}</p>
+                        </EuiFlexItem>
+                    ))
+                ) : ''}
+              </EuiFlexGroup>
+        }
       </EuiFlexItem>
     </EuiFlexGroup>
   );

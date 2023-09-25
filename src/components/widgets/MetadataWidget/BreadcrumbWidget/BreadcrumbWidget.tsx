@@ -64,7 +64,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       <EuiBadge color={colorFirst || "primary"}>{ontologyId?.toUpperCase()}</EuiBadge>
         {" > "}
       <>{
-        isErrorShortForm ? <EuiBadge color={colorSecond || "danger"}>{getErrorMessageToDisplay(errorShortForm)}</EuiBadge> :
+        isErrorShortForm ? <EuiBadge color={colorSecond || "danger"}>No short form available - {getErrorMessageToDisplay(errorShortForm)}</EuiBadge> :
             isLoadingShortForm ? <EuiBadge color={colorSecond || "warning"}><EuiLoadingSpinner size="s" /></EuiBadge> :
                 <EuiBadge color={colorSecond || "success"}>{shortForm}</EuiBadge>
       }</>
