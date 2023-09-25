@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { EuiText, EuiLoadingSpinner, EuiCard } from "@elastic/eui";
 import { useQuery } from 'react-query';
 import { apiCallFn, OlsApi } from "../../../api/OlsApi";
+import {getErrorMessageToDisplay} from "../index";
 
 export interface DataContentWidgetProps {
   api: string;
@@ -64,6 +65,8 @@ function DataContentWidget(props: DataContentWidgetProps) {
   const {
     data: getOntologies,
     isLoading: isLoadingOntologies,
+    isError: isErrorOntologies,
+    error: errorOntologies,
     dataUpdatedAt: dataUpdatedAtOntologies
   } = useQuery(
       [
@@ -99,17 +102,23 @@ function DataContentWidget(props: DataContentWidgetProps) {
 
   const {
     data: totalTerms,
-    isLoading: isLoadingTerms
+    isLoading: isLoadingTerms,
+    isError: isErrorTerms,
+    error: errorTerms,
   } = useQuery([api, "getTerms", parameter], () => { return getTotalAmountOfTerms(olsApi.getOntologies, props.parameter); });
 
   const {
     data: totalProperties,
-    isLoading: isLoadingProperties
+    isLoading: isLoadingProperties,
+    isError: isErrorProperties,
+    error: errorProperties,
   } = useQuery([api, "getProperties", parameter], () => { return getTotalAmountOfProperties(olsApi.getOntologies, props.parameter); });
 
   const {
     data: totalIndividuals,
-    isLoading: isLoadingIndividuals
+    isLoading: isLoadingIndividuals,
+    isError: isErrorIndividuals,
+    error: errorIndividuals,
   } = useQuery([api, "getIndividuals", parameter], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies, props.parameter); });
 
   return (
@@ -120,13 +129,16 @@ function DataContentWidget(props: DataContentWidgetProps) {
         layout="horizontal"
       >
         <EuiText {...rest}>
-          <ul>
-            <li>{isLoadingOntologies ? <EuiLoadingSpinner size="s" /> : (totalOntologies ? totalOntologies.toLocaleString() : NOT_AVAILABLE)} ontologies and terminologies</li>
-            <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : (totalTerms ? totalTerms.toLocaleString() : NOT_AVAILABLE)} terms</li>
-            <li>{isLoadingProperties ? <EuiLoadingSpinner size="s" /> : (totalProperties ? totalProperties.toLocaleString() : NOT_AVAILABLE)} properties</li>
-            <li>{isLoadingIndividuals ? <EuiLoadingSpinner size="s" /> : (totalIndividuals ? totalIndividuals.toLocaleString() : NOT_AVAILABLE)} individuals</li>
-            {/* <li>Version {NOT_AVAILABLE}</li> */} {/* TODO how to get API version? */}
-          </ul>
+          {(isErrorIndividuals || isErrorProperties || isErrorOntologies || isErrorTerms) ?
+            <EuiText>{getErrorMessageToDisplay(errorOntologies || errorIndividuals || errorProperties || errorTerms)}</EuiText> :
+            <ul>
+              <li>{isLoadingOntologies ? <EuiLoadingSpinner size="s" /> : (totalOntologies ? totalOntologies.toLocaleString() : NOT_AVAILABLE)} ontologies and terminologies</li>
+              <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : (totalTerms ? totalTerms.toLocaleString() : NOT_AVAILABLE)} terms</li>
+              <li>{isLoadingProperties ? <EuiLoadingSpinner size="s" /> : (totalProperties ? totalProperties.toLocaleString() : NOT_AVAILABLE)} properties</li>
+              <li>{isLoadingIndividuals ? <EuiLoadingSpinner size="s" /> : (totalIndividuals ? totalIndividuals.toLocaleString() : NOT_AVAILABLE)} individuals</li>
+              {/* <li>Version {NOT_AVAILABLE}</li> */} {/* TODO how to get API version? */}
+            </ul>
+          }
         </EuiText>
       </EuiCard>
     </>

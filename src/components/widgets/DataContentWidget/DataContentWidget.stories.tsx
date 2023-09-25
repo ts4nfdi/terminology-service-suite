@@ -49,3 +49,12 @@ SafetyDataContentWidget.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "collection=safety",
 };
+
+export const ErrorDataContentWidget = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorDataContentWidget.args = {
+  api: "ht3ps://semanticlookup.zbmed.de/api/",
+  parameter: "collection=safety",
+};
