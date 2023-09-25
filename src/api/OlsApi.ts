@@ -139,24 +139,41 @@ export class OlsApi {
     return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
   }
 
+  public check_for_errors(response: any): any {
+    // resource not found/illegal argument exception in semanticlookup
+    if(response["error"]) {
+      throw Error(response["status"] + " " + response["error"] + "\n\texception: " + response["exception"] + "\n\tmessage: " + response["message"] +"\n\tpath: " + response["path"]);
+    }
+    // empty response - can be caught if this is expected, e.g. for fetching instances
+    if(response["page"] !== undefined && response["page"]["totalElements"] === 0) {
+      throw Error("Response contains 0 elements");
+    }
+    return response;
+  }
+
   public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) })).data;
+    const response = (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) })).data;
+    return this.check_for_errors(response);
   }
 
   public getTerms: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-    return (await this.axiosInstance.get("terms", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    const response = (await this.axiosInstance.get("terms", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    return this.check_for_errors(response);
   }
 
   public getProperties: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-    return (await this.axiosInstance.get("properties", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    const response = (await this.axiosInstance.get("properties", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    return this.check_for_errors(response);
   }
 
   public getIndividuals: apiCallFn = async (paginationParams, sortingParams, contentParams) => {
-    return (await this.axiosInstance.get("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    const response = (await this.axiosInstance.get("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) })).data;
+    return this.check_for_errors(response);
   }
 
   public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId, { params: this.buildOtherParams(parameter) })).data;
+    const response = (await this.axiosInstance.get("ontologies/"+contentParams?.ontologyId, { params: this.buildOtherParams(parameter) })).data;
+    return this.check_for_errors(response);
   }
 
   /**
@@ -168,17 +185,20 @@ export class OlsApi {
 
   public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return (await this.axiosInstance.get(queryPrefix+"terms", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+    const response = (await this.axiosInstance.get(queryPrefix+"terms", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+    return this.check_for_errors(response);
   }
 
   public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} })).data;
+    const response = (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} })).data;
+    return this.check_for_errors(response);
   }
 
   public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} })).data;
+    const response = (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} })).data;
+    return this.check_for_errors(response);
   }
 
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
