@@ -30,35 +30,21 @@ export interface BreadcrumbWidgetProps {
   parameter?: string
 }
 
-const NO_SHORTFORM = "No short form available.";
-
 async function getShortForm(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
   if (entityType == "term"){
     const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-    if (response?._embedded?.terms[0].short_form != null && response._embedded.terms[0].short_form != null) {
-      return response._embedded.terms[0].short_form.toUpperCase();
-    } else {
-      return NO_SHORTFORM;
-    }
+    return response._embedded.terms[0].short_form.toUpperCase();
   }
   if (entityType == "property"){
     const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-    if (response?._embedded?.properties[0].short_form != null && response._embedded.properties[0].short_form != null) {
-      return response._embedded.properties[0].short_form;
-    } else {
-      return NO_SHORTFORM;
-    }
+    return response._embedded.properties[0].short_form;
   }
   if (entityType == "individual"){
     const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-    if (response?._embedded?.individuals[0].short_form != null && response._embedded.individuals[0].short_form != null) {
-      return response._embedded.individuals[0].short_form;
-    } else {
-      return NO_SHORTFORM;
-    }
+    return response._embedded.individuals[0].short_form;
   }
   //unacceptable object type
-  return NO_SHORTFORM;
+  throw Error("Unacceptable object type. Should be one of: 'term', 'class', 'property', 'individual'");
 }
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
