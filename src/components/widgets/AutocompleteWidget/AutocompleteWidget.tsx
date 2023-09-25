@@ -127,7 +127,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         isLoading: isLoadingOnMount
     } = useQuery(
         [
-            "onMount" // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
+            "onMount", // no dependencies - does only need to be executed once when mounting the component
+            props.selectOption
         ],
         async () => {
             if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
