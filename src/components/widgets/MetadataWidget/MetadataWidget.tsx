@@ -7,6 +7,7 @@ import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
+import {getPreferredOntologyJSON} from "./index";
 
 export interface MetadataWidgetProps {
   iri: string;
@@ -20,38 +21,8 @@ export interface MetadataWidgetProps {
   parameter?: string
 }
 
-/**
- * returns JSON of defining ontology or of first ontology if defining ontology is not found
- */
-async function getPreferredOntologyJSON(olsApi: OlsApi, entityType: string, iri: string, parameter: string) {
-    if(entityType === "term" || entityType === "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {termIri: iri}, parameter)
-            .catch((error) => console.log(error));
-        const definingOntologyArr = response["_embedded"]["terms"].filter((term: any) => {return term["is_defining_ontology"]});
-        if(definingOntologyArr.length > 0) return definingOntologyArr[0];
-        else return response["_embedded"]["terms"][0];
-    }
-    else if(entityType === "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {propertyIri: iri}, parameter)
-            .catch((error) => console.log(error));
-        const definingOntologyArr = response["_embedded"]["terms"].filter((term: any) => {return term["is_defining_ontology"]});
-        if(definingOntologyArr.length > 0) return definingOntologyArr[0];
-        else return response["_embedded"]["terms"][0];
-    }
-    else if(entityType === "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {individualIri: iri}, parameter)
-            .catch((error) => console.log(error));
-        const definingOntologyArr = response["_embedded"]["terms"].filter((term: any) => {return term["is_defining_ontology"]});
-        if(definingOntologyArr.length > 0) return definingOntologyArr[0];
-        else return response["_embedded"]["terms"][0];
-    }
-    else {
-        throw Error("Unexpected entity type. Should be one of: 'term', 'class', 'property', 'individual'");
-    }
-}
-
 function MetadataWidget(props: MetadataWidgetProps) {
-    const { iri, api, entityType, parameter } = props;
+    const { iri, api, ontologyId, entityType, parameter } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -71,7 +42,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
             props.ontologyId
         ],
         async () => {
-            return getPreferredOntologyJSON(olsApi, entityType, iri, parameter || "");
+            return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
         },
         {
 
@@ -86,8 +57,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
                   {
                       !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
                       <EuiFlexItem>
-                          <EuiText color="danger">
-                              Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.
+                          <EuiText>
+                              <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
                           </EuiText>
                       </EuiFlexItem>
                   }

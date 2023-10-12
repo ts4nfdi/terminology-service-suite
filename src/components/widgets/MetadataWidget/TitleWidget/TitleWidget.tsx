@@ -1,7 +1,8 @@
 import React from "react";
 import {useQuery} from "react-query";
-import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
+import {getPreferredOntologyJSON} from "../index";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -21,39 +22,45 @@ export interface TitleWidgetProps {
 const NO_TITLE = "No title available.";
 
 
-async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string, default_value?: string): Promise<string> {
-    if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, {
-            ontologyId: ontologyId
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?.config.title || default_value || NO_TITLE
+async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string, default_value?: string): Promise<any> {
+    if (entityType === "ontology") {
+        if(!ontologyId) {
+            console.error(Error("ontology id has to be provided"))
+            return {
+                title: default_value || NO_TITLE
+            }
+        }
+        else {
+            const response = await olsApi.getOntology(undefined, undefined, {
+                ontologyId: ontologyId
+            }, parameter)
+                .catch((error) => console.log(error));
+            return {
+                title: response?.config.title || default_value || NO_TITLE
+            }
+        }
     }
-    if (entityType == "term") {
-        const response = await olsApi.getTerm(undefined, undefined, {
-            ontologyId: ontologyId,
-            termIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.terms[0].label ||  default_value || NO_TITLE
+    if (entityType === "term" || entityType === "property" || entityType === "individual") {
+        if(!iri) {
+            console.error(Error("iri has to be provided"))
+            return {
+                title: default_value || NO_TITLE
+            }
+        }
+        else {
+            const response = await getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter)
+            return {
+                title: response['label'] || default_value || NO_TITLE,
+                inDefiningOntology: response['is_defining_ontology'],
+                ontology: response['ontology_name']
+            }
+        }
     }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {
-            ontologyId: ontologyId,
-            propertyIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.properties[0].label ||  default_value || NO_TITLE
+    //unacceptable object type
+    console.error(Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'"));
+    return {
+         title: default_value || NO_TITLE
     }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {
-            ontologyId: ontologyId,
-            individualIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.individuals[0].label ||  default_value || NO_TITLE
-    }
-    return  default_value || NO_TITLE;
 }
 
 function TitleWidget(props: TitleWidgetProps) {
@@ -62,15 +69,31 @@ function TitleWidget(props: TitleWidgetProps) {
     const olsApi = new OlsApi(api);
 
     const {
-        data: label,
+        data: response,
         isLoading,
+        isSuccess,
+        isError,
+        error,
     } = useQuery([api, "getTitle", fixedEntityType, ontologyId, iri, parameter], () => {
         return getTitle(olsApi, fixedEntityType, ontologyId, iri, parameter, default_value);
     });
 
     return (
         <>
-            {isLoading ? <EuiLoadingSpinner size="s"/> : <EuiText>{titleText || label}</EuiText>}
+            {isLoading && <EuiLoadingSpinner size="s"/>}
+            {isSuccess &&
+                <>
+                    {
+                        !props.ontologyId && !titleText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+                        <EuiFlexItem>
+                            <EuiText>
+                                <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
+                            </EuiText>
+                        </EuiFlexItem>
+                    }
+                    <EuiText>{titleText || response.title}</EuiText>
+                </>}
+            {isError && <EuiText>{NO_TITLE}</EuiText>}
         </>
     );
 }

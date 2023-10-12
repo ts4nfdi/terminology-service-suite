@@ -1,8 +1,9 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import {EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
+import {getPreferredOntologyJSON} from "../index";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
@@ -20,56 +21,70 @@ export interface DescriptionWidgetProps extends EuiTextProps {
 
 const NO_DESCRIPTION = "No description available.";
 
-async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
+async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<any> {
   if (entityType == "ontology"){
-    const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
-      .catch((error) => console.log(error));
-    return response?.config.description || NO_DESCRIPTION;
-  }
-  if (entityType == "term"){
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-      .catch((error) => console.log(error));
-    if (response?._embedded?.terms[0].description != null && response._embedded.terms[0].description[0] != null) {
-      return response._embedded.terms[0].description[0];
-    } else {
-      return NO_DESCRIPTION;
+    if(!ontologyId) {
+      console.error(Error("ontology id has to be provided"))
+      return {description: NO_DESCRIPTION}
+    }
+    else {
+      const response = await olsApi.getOntology(undefined, undefined, {
+        ontologyId: ontologyId
+      }, parameter)
+          .catch((error) => console.log(error));
+      return {
+        description: response?.config.description || NO_DESCRIPTION
+      }
     }
   }
-  if (entityType == "property"){
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-      .catch((error) => console.log(error));
-    if (response?._embedded?.properties[0].description != null && response._embedded.properties[0].description[0] != null) {
-      return response._embedded.properties[0].description[0];
-    } else {
-      return NO_DESCRIPTION;
+  if (entityType === "term" || entityType === "property" || entityType === "individual") {
+    if(!iri) {
+      console.error(Error("iri has to be provided"))
+      return {description: NO_DESCRIPTION}
     }
-  }
-  if (entityType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-      .catch((error) => console.log(error));
-    if (response?._embedded?.individuals[0].description != null && response._embedded.individuals[0].description[0] != null) {
-      return response._embedded.individuals[0].description[0];
-    } else {
-      return NO_DESCRIPTION;
+    else {
+      const response = await getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter)
+      return {
+        description: response['description'] || NO_DESCRIPTION,
+        inDefiningOntology: response['is_defining_ontology'],
+        ontology: response['ontology_name']
+      }
     }
   }
   //unacceptable object type
-  return NO_DESCRIPTION;
+  console.error(Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'"));
+  return {
+    description: NO_DESCRIPTION
+  };
 }
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
   const { api, ontologyId, iri, descText, entityType, parameter, ...rest } = props;
-  const fixedentityType = entityType == "class" ? "term" : entityType
+  const fixedEntityType = entityType == "class" ? "term" : entityType
   const olsApi = new OlsApi(api);
 
   const {
-    data: description,
+    data: response,
     isLoading,
-  } = useQuery([api, "description", fixedentityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedentityType, ontologyId, iri, parameter); });
+    isSuccess,
+  } = useQuery([api, "description", fixedEntityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
   return (
     <>
-      {isLoading ? <EuiLoadingSpinner size="s" /> : <EuiText {...rest}>{descText || description }</EuiText>}
+      {isLoading && <EuiLoadingSpinner size="s" />}
+      {isSuccess &&
+          <>
+            {
+                !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+                <EuiFlexItem>
+                  <EuiText>
+                    <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
+                  </EuiText>
+                </EuiFlexItem>
+            }
+            <EuiText {...rest}>{descText || response.description}</EuiText>
+          </>
+      }
     </>
   );
 }

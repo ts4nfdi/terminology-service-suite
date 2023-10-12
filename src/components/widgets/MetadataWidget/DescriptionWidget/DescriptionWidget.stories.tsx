@@ -87,3 +87,23 @@ DescriptionWidget1.args = {
   entityType: "term",
   parameter: "collection=nfdi4health"
 };
+
+export const SelectingDefiningOntology = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+  iri: "http://purl.obolibrary.org/obo/IAO_0000631",
+  entityType: "term",
+  parameter: ""
+};
+
+export const DefiningOntologyUnavailable = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+  iri: "http://identifiers.org/uniprot/Q9VAM9",
+  entityType: "term",
+  parameter: ""
+};
