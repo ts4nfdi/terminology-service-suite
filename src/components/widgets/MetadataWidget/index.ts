@@ -1,7 +1,7 @@
 import {OlsApi} from "../../../api/OlsApi";
 
 /**
- * returns JSON of defining ontology or of first ontology if defining ontology is not found
+ * returns JSON of specified ontology or, if not provided, of defining ontology or of first ontology if defining ontology is not found
  */
 export async function getPreferredOntologyJSON(olsApi: OlsApi, entityType: string, ontologyId: string | undefined, iri: string, parameter: string | undefined) {
     if(entityType === "term" || entityType === "class") {
