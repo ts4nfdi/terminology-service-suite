@@ -27,6 +27,7 @@ export async function getPreferredOntologyJSON(olsApi: OlsApi, entityType: strin
     }
     else {
         console.error(Error("Unexpected entity type. Should be one of: 'term', 'class', 'property', 'individual'"));
+        return undefined;
     }
 }
 
