@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import {EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
 import {getPreferredOntologyJSON} from "../index";
@@ -69,19 +69,21 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     isSuccess,
   } = useQuery([api, "description", fixedEntityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
+  // TODO: Should DescriptionWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
+  /*{
+    !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+    <EuiFlexItem>
+      <EuiText>
+        <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
+      </EuiText>
+    </EuiFlexItem>
+  }*/
+
   return (
     <>
       {isLoading && <EuiLoadingSpinner size="s" />}
       {isSuccess &&
           <>
-            {
-                !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
-                <EuiFlexItem>
-                  <EuiText>
-                    <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
-                  </EuiText>
-                </EuiFlexItem>
-            }
             <EuiText {...rest}>{descText || response.description}</EuiText>
           </>
       }

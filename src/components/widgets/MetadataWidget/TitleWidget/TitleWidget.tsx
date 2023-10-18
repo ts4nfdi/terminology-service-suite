@@ -1,6 +1,6 @@
 import React from "react";
 import {useQuery} from "react-query";
-import {EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {getPreferredOntologyJSON} from "../index";
 
@@ -78,19 +78,21 @@ function TitleWidget(props: TitleWidgetProps) {
         return getTitle(olsApi, fixedEntityType, ontologyId, iri, parameter, default_value);
     });
 
+    // TODO: Should TitleWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
+    /*{
+        !props.ontologyId && !titleText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+        <EuiFlexItem>
+            <EuiText>
+                <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
+            </EuiText>
+        </EuiFlexItem>
+    }*/
+
     return (
         <>
             {isLoading && <EuiLoadingSpinner size="s"/>}
             {isSuccess &&
                 <>
-                    {
-                        !props.ontologyId && !titleText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
-                        <EuiFlexItem>
-                            <EuiText>
-                                <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
-                            </EuiText>
-                        </EuiFlexItem>
-                    }
                     <EuiText>{titleText || response.title}</EuiText>
                 </>}
             {isError && <EuiText>{NO_TITLE}</EuiText>}

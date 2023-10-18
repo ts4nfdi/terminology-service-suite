@@ -3,7 +3,7 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiLink, EuiLoadingSpinner,
-    EuiPanel, EuiSpacer,
+    EuiPanel,
     EuiText,
 } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
@@ -78,18 +78,20 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
     return <EuiText>No cross references exist.</EuiText>;
   }
 
+    // TODO: Should CrossRefTabWidget show the following info message if defining ontology is not available (placed inside EuiPanel span)?
+    /*{
+        isSuccess && !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
+        <EuiFlexItem>
+            <EuiText>
+                <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
+            </EuiText>
+            <EuiSpacer size={"s"}></EuiSpacer>
+        </EuiFlexItem>
+    }*/
+
   return (
     <EuiPanel>
         <>
-            {
-                isSuccess && !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
-                <EuiFlexItem>
-                    <EuiText>
-                        <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
-                    </EuiText>
-                    <EuiSpacer size={"s"}></EuiSpacer>
-                </EuiFlexItem>
-            }
             <EuiFlexGroup style={{ padding: 7 }} direction="column">
                 {isSuccess && renderCrossRefs(getCrossRefs(ontologyJSON))}
                 {isLoading && <EuiLoadingSpinner/>}
