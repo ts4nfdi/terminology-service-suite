@@ -2,6 +2,7 @@ import React from "react";
 import {useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
+import {getErrorMessageToDisplay} from "../../index";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -69,7 +70,7 @@ function TitleWidget(props: TitleWidgetProps) {
         <>
             {isSuccess && <EuiText>{titleText || label}</EuiText>}
             {isLoading && <EuiLoadingSpinner size="s"/>}
-            {isError && <EuiText>No title available</EuiText>}
+            {isError && <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>}
         </>
     );
 }

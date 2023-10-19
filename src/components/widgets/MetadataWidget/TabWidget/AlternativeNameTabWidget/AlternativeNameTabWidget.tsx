@@ -2,6 +2,7 @@ import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from 
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
 import React from "react";
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -22,22 +23,19 @@ interface Synonyms {
 
 async function getSynonyms(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<Synonyms> {
     if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
         return {
             synonyms: response._embedded.terms[0].synonyms,
         };
     }
     if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
         return {
             synonyms: response._embedded.properties[0].synonyms,
         };
     }
     if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
         return {
             synonyms: response._embedded.individuals[0].synonyms,
         };
@@ -75,7 +73,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
       <EuiFlexGroup style={{ padding: 10 }} direction="column">
           {isSuccess && renderAltLabel()}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
-          {isError && <EuiText>No alternative names available</EuiText>}
+          {isError && <EuiText>{getErrorMessageToDisplay(error, "alternative names")}</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );

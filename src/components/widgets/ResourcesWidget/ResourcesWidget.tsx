@@ -10,6 +10,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
+import {getErrorMessageToDisplay} from "../index";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -254,7 +255,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
                 onChange={onTableChange}
                 pagination={pagination}
                 sorting={sorting}
-                error={"No items available"}
+                error={getErrorMessageToDisplay(error, "resources")}
             />
         }
       </>
