@@ -3,6 +3,7 @@ import {useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {getPreferredOntologyJSON} from "../index";
+import {getErrorMessageToDisplay} from "../../index";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -21,20 +22,15 @@ export interface TitleWidgetProps {
 
 const NO_TITLE = "No title available.";
 
-
 async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string, default_value?: string): Promise<any> {
     if (entityType === "ontology") {
         if(!ontologyId) {
-            console.error(Error("ontology id has to be provided"))
-            return {
-                title: default_value || NO_TITLE
-            }
+            throw Error("ontology id has to be provided")
         }
         else {
             const response = await olsApi.getOntology(undefined, undefined, {
                 ontologyId: ontologyId
             }, parameter)
-                .catch((error) => console.log(error));
             return {
                 title: response?.config.title || default_value || NO_TITLE
             }
@@ -42,10 +38,7 @@ async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string,
     }
     if (entityType === "term" || entityType === "property" || entityType === "individual") {
         if(!iri) {
-            console.error(Error("iri has to be provided"))
-            return {
-                title: default_value || NO_TITLE
-            }
+            throw Error("iri has to be provided")
         }
         else {
             const response = await getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter)
@@ -57,10 +50,7 @@ async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string,
         }
     }
     //unacceptable object type
-    console.error(Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'"));
-    return {
-         title: default_value || NO_TITLE
-    }
+    throw Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'");
 }
 
 function TitleWidget(props: TitleWidgetProps) {
@@ -95,7 +85,7 @@ function TitleWidget(props: TitleWidgetProps) {
                 <>
                     <EuiText>{titleText || response.title}</EuiText>
                 </>}
-            {isError && <EuiText>{NO_TITLE}</EuiText>}
+            {isError && <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>}
         </>
     );
 }

@@ -122,3 +122,15 @@ DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols/api/",
   entityType: "term",
   parameter: ""
 };
+
+export const ErrorBreadcrumbWidget = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorBreadcrumbWidget.args = {
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985987654345678",
+  api: "https://semanticlookup.zbmed.de/api/",
+  ontologyId: "ncit",
+  entityType: "term",
+  parameter: "collection=nfdi4health",
+};

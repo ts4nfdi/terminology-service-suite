@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  EuiFlexItem, EuiLoadingSpinner,
+  EuiFlexItem,
   EuiTabbedContent, EuiText,
 } from "@elastic/eui";
 import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
@@ -32,6 +32,8 @@ function TabWidget(props: TabWidgetProps) {
     data: ontologyJSON,
     isLoading: isLoading,
     isSuccess: isSuccess,
+    isError: isError,
+    error: error,
   } = useQuery(
       [
           api,
@@ -46,55 +48,49 @@ function TabWidget(props: TabWidgetProps) {
 
   return (
       <>
-        {isLoading && <EuiLoadingSpinner size="s"></EuiLoadingSpinner>}
-        {isSuccess &&
-            <>
-              {
-                  !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
-                  <EuiFlexItem>
-                    <EuiText>
+          {
+              isSuccess && !props.ontologyId && ontologyJSON && !ontologyJSON["is_defining_ontology"] &&
+              <EuiFlexItem>
+                  <EuiText>
                       <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
-                    </EuiText>
-                  </EuiFlexItem>
-              }
-              <div>
-                <EuiFlexItem>
+                  </EuiText>
+              </EuiFlexItem>
+          }
+          <div>
+              <EuiFlexItem>
                   <EuiTabbedContent size="s" tabs={
-                    [
-                      {
-                        content: <AlternativeNameTabWidget
-                            api={api}
-                            iri={iri}
-                            ontologyId={ontologyJSON['ontology_name']}
-                            entityType={entityType}
-                        />,
-                        id: "tab1",
-                        name: "Alternative Names",
-                      },
-                      {
-                        content: (
-                            <HierarchyWidget api={api} iri={iri} ontologyId={ontologyJSON['ontology_name']} />
-                        ),
-                        id: "tab2",
-                        name: "Hierarchy",
-                      },
-                      {
-                        content: <CrossRefTabWidget
-                            api={api}
-                            iri={iri}
-                            ontologyId={ontologyJSON['ontology_name']}
-                            entityType={entityType}
-                        />,
-                        id: "tab3",
-                        name: "Cross references",
-                      },
-                    ]
+                      [
+                          {
+                              content: <AlternativeNameTabWidget
+                                  api={api}
+                                  iri={iri}
+                                  ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")}
+                                  entityType={entityType}
+                              />,
+                              id: "tab1",
+                              name: "Alternative Names",
+                          },
+                          {
+                              content: (
+                                  <HierarchyWidget api={api} iri={iri} ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")} />
+                              ),
+                              id: "tab2",
+                              name: "Hierarchy",
+                          },
+                          {
+                              content: <CrossRefTabWidget
+                                  api={api}
+                                  iri={iri}
+                                  ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")}
+                                  entityType={entityType}
+                              />,
+                              id: "tab3",
+                              name: "Cross references",
+                          },
+                      ]
                   } />
-                </EuiFlexItem>
-              </div>
-            </>
-
-        }
+              </EuiFlexItem>
+          </div>
       </>
   );
 }

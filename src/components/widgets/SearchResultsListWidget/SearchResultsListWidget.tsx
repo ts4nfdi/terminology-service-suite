@@ -102,7 +102,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
     const {
         data: searchResults,
-        isLoading: resultsAreLoading
+        isLoading,
+        isSuccess,
+        isError,
+        error,
     } = useQuery(
         [
             "searchResults",
@@ -195,10 +198,6 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
     }
 
-    if (resultsAreLoading) {
-        return <EuiLoadingSpinner size="xl"/>;
-    }
-
     return (
         <>
             <SearchBarWidget
@@ -213,31 +212,73 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             <EuiFlexGroup>
                 <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
                     <EuiPanel>
-                        <EuiFormRow label="Filter by type">
-                            <EuiSelectable
-                                options={filterByTypeOptions}
-                                onChange={setFilterByTypeOptions}
-                                listProps={{ bordered: true }}
-                            >
-                                {(list) => list}
-                            </EuiSelectable>
-                        </EuiFormRow>
+                        {isSuccess &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiSelectable
+                                    options={filterByTypeOptions}
+                                    onChange={setFilterByTypeOptions}
+                                    listProps={{ bordered: true }}
+                                >
+                                    {(list) => list}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
+                        {isLoading &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiLoadingSpinner size="s" />
+                            </EuiFormRow>
+                        }
+                        {isError &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiSelectable
+                                    options={[]}
+                                    onChange={setFilterByTypeOptions}
+                                    listProps={{ bordered: true }}
+                                >
+                                    {(list) => list}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
 
-                        <EuiFormRow label="Filter by ontology">
-                            <EuiSelectable
-                                options={filterByOntologyOptions}
-                                onChange={setFilterByOntologyOptions}
-                                listProps={{ bordered: true }}
-                                searchable
-                            >
-                                {(list, search) => (
-                                    <>
-                                        {search}
-                                        {list}
-                                    </>
-                                )}
-                            </EuiSelectable>
-                        </EuiFormRow>
+                        {isSuccess &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiSelectable
+                                    options={filterByOntologyOptions}
+                                    onChange={setFilterByOntologyOptions}
+                                    listProps={{ bordered: true }}
+                                    searchable
+                                >
+                                    {(list, search) => (
+                                        <>
+                                            {search}
+                                            {list}
+                                        </>
+                                    )}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
+                        {isLoading &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiLoadingSpinner size="s" />
+                            </EuiFormRow>
+                        }
+                        {isError &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiSelectable
+                                    options={[]}
+                                    onChange={setFilterByOntologyOptions}
+                                    listProps={{ bordered: true }}
+                                    searchable
+                                >
+                                    {(list, search) => (
+                                        <>
+                                            {search}
+                                            {list}
+                                        </>
+                                    )}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
 
                         <EuiButtonEmpty
                             onClick={clearAllFilters}

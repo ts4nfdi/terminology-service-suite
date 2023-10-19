@@ -4,6 +4,7 @@ import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
 import {getPreferredOntologyJSON} from "../index";
+import {getErrorMessageToDisplay} from "../../index";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
@@ -24,14 +25,12 @@ const NO_DESCRIPTION = "No description available.";
 async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<any> {
   if (entityType == "ontology"){
     if(!ontologyId) {
-      console.error(Error("ontology id has to be provided"))
-      return {description: NO_DESCRIPTION}
+      throw Error("ontology id has to be provided")
     }
     else {
       const response = await olsApi.getOntology(undefined, undefined, {
         ontologyId: ontologyId
       }, parameter)
-          .catch((error) => console.log(error));
       return {
         description: response?.config.description || NO_DESCRIPTION
       }
@@ -39,8 +38,7 @@ async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: s
   }
   if (entityType === "term" || entityType === "property" || entityType === "individual") {
     if(!iri) {
-      console.error(Error("iri has to be provided"))
-      return {description: NO_DESCRIPTION}
+      throw Error("iri has to be provided")
     }
     else {
       const response = await getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter)
@@ -52,10 +50,7 @@ async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: s
     }
   }
   //unacceptable object type
-  console.error(Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'"));
-  return {
-    description: NO_DESCRIPTION
-  };
+  throw Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'");
 }
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
@@ -66,18 +61,20 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   const {
     data: response,
     isLoading,
+    isError,
     isSuccess,
+    error,
   } = useQuery([api, "description", fixedEntityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedEntityType, ontologyId, iri, parameter); });
 
-  // TODO: Should DescriptionWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
-  /*{
-    !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
-    <EuiFlexItem>
-      <EuiText>
-        <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
-      </EuiText>
-    </EuiFlexItem>
-  }*/
+    // TODO: Should DescriptionWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
+    /*{
+      !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+      <EuiFlexItem>
+        <EuiText>
+          <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
+        </EuiText>
+      </EuiFlexItem>
+    }*/
 
   return (
     <>
@@ -87,6 +84,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
             <EuiText {...rest}>{descText || response.description}</EuiText>
           </>
       }
+      {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
     </>
   );
 }

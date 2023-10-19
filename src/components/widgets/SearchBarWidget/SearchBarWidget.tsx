@@ -55,7 +55,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
               setSuggestions(response.response.docs.map((suggestion: any) => (
                   {
                     label: suggestion.autosuggest,
-                    type: { color: "tint1" },
+                    type: { color: "tint1", iconType: ""},
                   }
               )));
             }

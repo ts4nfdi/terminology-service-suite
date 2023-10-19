@@ -9,6 +9,7 @@ import {
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
 import {getPreferredOntologyJSON} from "../../index";
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface CrossRefWidgetProps {
   iri: string;
@@ -45,14 +46,14 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         isLoading,
         isSuccess,
         isError,
+        error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
     });
 
   function renderCrossRefs(data: any) {
-    console.dir(data.crossrefs)
     if (data?.crossrefs && data.crossrefs.length > 0) {
-      return data?.crossrefs.map((item, index) => (
+      return data?.crossrefs.map((item: any, index: any) => (
         <EuiFlexItem key={index}>
             {item.database ? (
                 item.url ? (
@@ -95,7 +96,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
             <EuiFlexGroup style={{ padding: 7 }} direction="column">
                 {isSuccess && renderCrossRefs(getCrossRefs(ontologyJSON))}
                 {isLoading && <EuiLoadingSpinner/>}
-                {isError && <EuiText>No cross references available.</EuiText>}
+                {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
             </EuiFlexGroup>
         </>
     </EuiPanel>

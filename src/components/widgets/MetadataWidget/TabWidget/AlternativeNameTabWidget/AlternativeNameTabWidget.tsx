@@ -3,6 +3,7 @@ import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText} from "@
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
 import {getPreferredOntologyJSON} from "../../index";
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -26,7 +27,8 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
         data: ontologyJSON,
         isLoading: isLoading,
         isSuccess: isSuccess,
-        isError: isError
+        isError: isError,
+        error: error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
     });
@@ -53,14 +55,11 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
 
   return (
     <EuiPanel>
-      <>
-        <EuiFlexGroup style={{ padding: 10 }} direction="column">
+      <EuiFlexGroup style={{ padding: 10 }} direction="column">
           {isSuccess && renderAltLabel()}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
-          {isError && <EuiText>No cross references available.</EuiText>}
-        </EuiFlexGroup>
-      </>
-
+          {isError && <EuiText>{getErrorMessageToDisplay(error, "alternative names")}</EuiText>}
+      </EuiFlexGroup>
     </EuiPanel>
   );
 }
