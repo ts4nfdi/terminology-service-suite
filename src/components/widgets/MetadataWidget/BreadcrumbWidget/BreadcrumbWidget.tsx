@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiBadge, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiBadge, EuiFlexItem, EuiLoadingSpinner, EuiText, EuiIconTip} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {useQuery} from "react-query";
 import {getPreferredOntologyJSON} from "../index";
@@ -51,8 +51,13 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
               {
                   !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
                   <EuiFlexItem>
-                    <EuiText>
-                      <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
+                    <EuiText size={"s"}>
+                      <i>Defining ontology not available </i>
+                      <EuiIconTip type={"iInCircle"}
+                                  color={"subdued"}
+                                  content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}
+                      >
+                      </EuiIconTip>
                     </EuiText>
                   </EuiFlexItem>
               }
