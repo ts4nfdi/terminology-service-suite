@@ -8,9 +8,7 @@ export interface BreadcrumbWidgetProps {
   iri: string;
   ontologyId?: string;
   api: string;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
+
   entityType:
       | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
       | "individual"
@@ -27,6 +25,9 @@ export interface BreadcrumbWidgetProps {
     | "subdued"
     | string;
   colorSecond?: string;
+  /**
+   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
+   */
   parameter?: string
 }
 
