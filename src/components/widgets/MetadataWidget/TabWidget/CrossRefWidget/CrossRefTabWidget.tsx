@@ -8,6 +8,7 @@ import {
 } from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface CrossRefWidgetProps {
   iri: string;
@@ -32,22 +33,19 @@ interface CrossRefs {
 
 async function getCorssRefs(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<CrossRefs> {
     if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
         return {
             crossrefs: response._embedded.terms[0].obo_xref,
         };
     }
     if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
         return {
             crossrefs: response._embedded.properties[0].obo_xref,
         };
     }
     if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
+        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
         return {
             crossrefs: response._embedded.individuals[0].obo_xref,
         };
@@ -70,6 +68,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         isLoading,
         isSuccess,
         isError,
+        error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getCorssRefs(olsApi, entityType, iri, ontologyId);
     });
@@ -107,7 +106,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
       <EuiFlexGroup style={{ padding: 7 }} direction="column">
         {isSuccess && renderCrossRefs()}
         {isLoading && <EuiLoadingSpinner/>}
-        {isError && <EuiText>No cross references available.</EuiText>}
+        {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );
