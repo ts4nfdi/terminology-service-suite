@@ -1,7 +1,7 @@
 import React from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText, EuiIconTip, EuiBadge} from "@elastic/eui";
 
 export interface EntityRelationsWidgetProps {
     api: string;
@@ -13,6 +13,7 @@ export interface EntityRelationsWidgetProps {
         | "individual"
         | "property";
     parameter?: string;
+    showBadges?: boolean;
 }
 
 const DEFAULT_HAS_TITLE = true;
@@ -66,9 +67,10 @@ function randomString() {
  * Returns a labeled entity link as JSX element
  * @param response  the entities' data JSON as JS-object
  * @param iri   the entities' iri
+ * @param props     the entities' properties
  * @returns {JSX.Element} the entity link
  */
-function getEntityLink(response: any, iri: string): JSX.Element {
+function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetProps): JSX.Element {
     // reference to self; just display label because we are already on that page
     if (iri === response["iri"]) {
         return <b>{response["label"]}</b>
@@ -86,51 +88,155 @@ function getEntityLink(response: any, iri: string): JSX.Element {
         );
     }
 
-    return <a href={iri}>{label}</a>;
+    if(props.showBadges) {
+        let otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== response["ontologyId"]}) : [];
 
-    // TODO: Badges for defined by etc.
+        // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
+        if(otherDefinedBy.length === 1) {
+            if(linkedEntity["hasLocalDefinition"]) {
+                // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
+                // TODO: link correct urls
+                return (
+                    <>
+                        <a href={iri}>{label}</a>
+                        &nbsp;
+                        <a href={iri}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                    </>
+                )
+            }
+            else {
+                // show <label> <ontologyId> linking to the term in the defining ontology
+                // TODO: link correct urls
+                return (
+                    <>
+                        <a href={iri}>{label}</a>
+                        &nbsp;
+                        <a href={iri}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                    </>
+                )
+            }
+        }
+        else if(otherDefinedBy.length > 1) {
+            if(linkedEntity["hasLocalDefinition"]) {
+                // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
+                // TODO: link correct urls
+                return (
+                    <>
+                        <a href={iri}>{label}</a>
+                        &nbsp;
+                        {otherDefinedBy.map((elem: any) => {
+                            return (
+                                <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                            );
+                        })}
+
+                    </>
+                )
+            }
+            else {
+                // show <label><ICON> linking to disambiguation page
+                // TODO: link correct urls, show disambiguation page?
+                return (
+                    <>
+                        <a href={iri}>{label}</a>
+                        &nbsp;
+                        {otherDefinedBy.map((elem: any) => {
+                            return (
+                                <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                            );
+                        })}
+                    </>
+                );
+            }
+        }
+        else {
+            if(linkedEntity["hasLocalDefinition"]) {
+                // show <label> where <label> links to the term in this ontology
+                return (
+                    <>
+                        <a href={iri}>{label}</a>
+                    </>
+                )
+            }
+            else {
+                if(parseInt(linkedEntity["numAppearsIn"]) > 0) {
+                    // show <label><ICON> linking to disambiguation page
+                    // TODO: link correct urls, show disambiguation page?
+                    return (
+                        <>
+                            <a href={iri}>{label}</a>
+                        </>
+                    )
+                }
+                else {
+                    // show raw iri
+                    return (
+                        <>
+                            <a href={iri}>{label}</a>
+                        </>
+                    )
+                }
+            }
+        }
+    }
+    else {
+        return <a href={iri}>{label}</a>;
+    }
 }
 
 /**
  * Builds and returns one element of a sections' list, possibly in a recursive fashion by parsing the response object at the currentResponsePath to show Manchester syntax.
  * @param response  the entities' data JSON as JS-object
  * @param currentResponsePath   the currently parsed subpart of the response object
+ * @param props     the entities' properties
  * @returns {JSX.Element} the list element
  */
-function getSectionListElement(response: any, currentResponsePath: any): JSX.Element {
+function getSectionListElement(response: any, currentResponsePath: any, props: EntityRelationsWidgetProps): JSX.Element {
+    let result = <></>;
+
     if (typeof currentResponsePath === "string") {
-        return getEntityLink(response, currentResponsePath);
+        result = getEntityLink(response, currentResponsePath, props);
     }
     else if (typeof currentResponsePath === "object" && currentResponsePath["value"]) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
-        return getEntityLink(response, currentResponsePath["value"]);
+        result = getSectionListElement(response, currentResponsePath["value"], props);
     }
     else { // type === "object"
         const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
+        const allValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
+        const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
+        const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
+        const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
+        const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
+        const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
+        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#cualifiedCardinality"];
+        const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
+        const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
+        const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
+        const inverseOf = currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
+        // not relevant for relations widget, only for information widget
+        // const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
+
         if (someValuesFrom) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
               <>
-                  {getSectionListElement(response, onProperty)}
+                  {getSectionListElement(response, onProperty, props)}
                   <i style={{color: "purple"}}> some </i>
-                  {getSectionListElement(response, asArray(someValuesFrom)[0])}
+                  {getSectionListElement(response, asArray(someValuesFrom)[0], props)}
               </>
             );
         }
-
-        const allValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
-        if (allValuesFrom) {
+        else if (allValuesFrom) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> only </i>
-                    {getSectionListElement(response, asArray(allValuesFrom)[0])}
+                    {getSectionListElement(response, asArray(allValuesFrom)[0], props)}
                 </>
             );
         }
-
-        const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
-        if (intersectionOf) {
+        else if (intersectionOf) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
@@ -143,7 +249,7 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem)
+                    getSectionListElement(response, elem, props)
                 );
             }
             elements.push(
@@ -151,13 +257,11 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     &#41;
                 </span>
             );
-            return (
+            result = (
                 <span>{elements}</span>
             );
         }
-
-        const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
-        if (unionOf) {
+        else if (unionOf) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
@@ -170,7 +274,7 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem)
+                    getSectionListElement(response, elem, props)
                 );
             }
             elements.push(
@@ -178,83 +282,69 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     &#41;
                 </span>
             );
-            return (
+            result = (
                 <span>{elements}</span>
             );
         }
-
-        const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
-        if (hasValue) {
+        else if (hasValue) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> value </i>
-                    {getSectionListElement(response, asArray(hasValue)[0])}
+                    {getSectionListElement(response, asArray(hasValue)[0], props)}
                 </>
             );
         }
-
-        const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
-        if (minCardinality) {
+        else if (minCardinality) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> min </i>
-                    {getSectionListElement(response, asArray(minCardinality)[0])}
+                    {getSectionListElement(response, asArray(minCardinality)[0], props)}
                 </>
             );
         }
-
-        const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
-        if (maxCardinality) {
+        else if (maxCardinality) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> max </i>
-                    {getSectionListElement(response, asArray(maxCardinality)[0])}
+                    {getSectionListElement(response, asArray(maxCardinality)[0], props)}
                 </>
             );
         }
-
-        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#cualifiedCardinality"];
-        if (cardinality) {
+        else if (cardinality) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> exactly </i>
-                    {getSectionListElement(response, asArray(cardinality)[0])}
+                    {getSectionListElement(response, asArray(cardinality)[0], props)}
                 </>
             );
         }
-
-        const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
-        if (hasSelf) {
+        else if (hasSelf) {
             const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-            return (
+            result = (
                 <>
-                    {getSectionListElement(response, onProperty)}
+                    {getSectionListElement(response, onProperty, props)}
                     <i style={{color: "purple"}}> Self </i>
-                    {getSectionListElement(response, asArray(hasSelf)[0])}
+                    {getSectionListElement(response, asArray(hasSelf)[0], props)}
                 </>
             );
         }
-
-        const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
-        if (complementOf) {
-            return (
+        else if (complementOf) {
+            result = (
                 <>
                     <i>not </i>
-                    {getSectionListElement(response, hasSelf)}
+                    {getSectionListElement(response, hasSelf, props)}
                 </>
             );
         }
-
-        const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
-        if (oneOf) {
+        else if (oneOf) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#123;
@@ -269,7 +359,7 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     );
                 }
                 elements.push(
-                    getSectionListElement(response, elem)
+                    getSectionListElement(response, elem, props)
                 );
             }
             elements.push(
@@ -277,46 +367,82 @@ function getSectionListElement(response: any, currentResponsePath: any): JSX.Ele
                     &#125;
                 </span>
             );
-            return (
+            result = (
                 <span>{elements}</span>
             );
         }
-
-        const inverseOf = currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
-        if (inverseOf) {
-            return (
+        else if (inverseOf) {
+            result = (
                 <>
                     <i style={{color: "purple"}}>inverse </i>
                     <span key={randomString()} className="text-neutral-default">
                       &#40;
                     </span>
-                    {getSectionListElement(response, inverseOf)}
+                    {getSectionListElement(response, inverseOf, props)}
                     <span key={randomString()} className="text-neutral-default">
                       &#41;
                     </span>
                 </>
             );
         }
+    }
 
-        const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
-        if (onDataType) {
-            // TODO: What does this do?
-            return <></>;
+    return result;
+}
+
+/**
+ * Builds and returns the axioms section of a section list element as EuiIconTip
+ * @param response  the entities' data JSON as JS-object
+ * @param currentResponsePath   the sub-element of response of the current section list element
+ */
+function getAxiomsJSX(response: any, currentResponsePath: any): JSX.Element {
+    if(currentResponsePath["axioms"]) {
+        let axioms: any = {}
+
+        for(const elem of currentResponsePath["axioms"]) {
+            for(const key of Object.keys(elem)){
+                const value = elem[key];
+                let exists = axioms[key] !== undefined;
+                if(exists) {
+                    axioms[key].push(value);
+                } else {
+                    axioms[key] = asArray(value);
+                }
+            }
         }
 
-        return <></>;
+        let axiomsText = Object.keys(axioms).map((key) => {
+            let label = response["linkedEntities"][key]["label"] || key;
+            if (label) {
+                return (
+                    "*" + axioms[key] + " (" + label + ")"
+                );
+            }
+            else return "";
+        }).join("\n")
+
+        return (
+            <EuiIconTip type={"iInCircle"}
+                        color={"subdued"}
+                        content={axiomsText}></EuiIconTip>
+        );
     }
+    return <></>;
 }
 
 /**
  * Builds and returns a sections list as JSX element array. Is useful if the whole section inside the response object can be parsed via Manchester syntax as done in {@link getSectionListElement}.
  * @param response  the entities' data JSON as JS-object
  * @param sectionLabel  the label of the current section
+ * @param props     the entities' properties
  * @returns {JSX.Element[]} the sections' list
  */
-function getSectionListJSX(response: any, sectionLabel: string): JSX.Element[] {
+function getSectionListJSX(response: any, sectionLabel: string, props: EntityRelationsWidgetProps): JSX.Element[] {
     return asArray(response[sectionLabel]).map((elem: any) => {
-        return getSectionListElement(response, elem);
+        return (<>
+            {getSectionListElement(response, elem, props)}{" "}
+            {getAxiomsJSX(response, elem)}
+        </>)
     });
 }
 
@@ -335,12 +461,12 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
                 types?.length ?? -1 > 0 ? <b>Type</b> : ""
             }
             {types.length === 1 ? (
-                    <p>{getSectionListElement(response, types[0])}</p>
+                    <p>{getSectionListElement(response, types[0], props)}</p>
                 ) :
                 <ul>
                     {
                         types.map((item: any) => {
-                            return (<li key={randomString()} >{getSectionListElement(response, item)}</li>);
+                            return (<li key={randomString()} >{getSectionListElement(response, item, props)}</li>);
                         })
                     }
                 </ul>}
@@ -359,7 +485,7 @@ function getIndividualTypesSectionJSX(response: any, props: EntityRelationsWidge
  */
 function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#sameAs"] !== undefined) {
-        const sameAs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#sameAs");
+        const sameAs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#sameAs", props);
 
         return (<EuiFlexItem>
             {
@@ -390,7 +516,7 @@ function getIndividualSameAsSectionJSX(response: any, props: EntityRelationsWidg
  */
 function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(props.entityType === "individual" && response["http://www.w3.org/2002/07/owl#differentFrom"] !== undefined) {
-        const differentFrom = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#differentFrom");
+        const differentFrom = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#differentFrom", props);
 
         return (<EuiFlexItem>
             {
@@ -421,7 +547,7 @@ function getIndividualDifferentFromSectionJSX(response: any, props: EntityRelati
  */
 function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#disjointWith"] !== undefined) {
-        const disjointWiths = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#disjointWith");
+        const disjointWiths = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#disjointWith", props);
 
         return (<EuiFlexItem>
             {
@@ -452,7 +578,7 @@ function getDisjointWithSectionJSX(response: any, props: EntityRelationsWidgetPr
  */
 function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#inverseOf"] !== undefined) {
-        const inverseOfs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#inverseOf");
+        const inverseOfs = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#inverseOf", props);
 
         return (<EuiFlexItem>
             {
@@ -479,13 +605,14 @@ function getPropertyInverseOfSectionJSX(response: any, props: EntityRelationsWid
  * Builds and returns one property chain JSX element. Is used for {@link getPropertyChainSectionJSX}.
  * @param propertyChain the property chain
  * @param response  the entities' data JSON as JS-object
+ * @param props     the entities' properties
  * @returns {JSX.Element[]} the chains JSX element
  */
-function getPropertyChainJSX(propertyChain: any[], response: any): JSX.Element[] {
+function getPropertyChainJSX(propertyChain: any[], response: any, props: EntityRelationsWidgetProps): JSX.Element[] {
     return asArray(propertyChain).slice().reverse().map((propertyExpr, i) => { // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
         return (
             <span key={propertyExpr}>
-                {getSectionListElement(response, propertyExpr)}
+                {getSectionListElement(response, propertyExpr, props)}
                 <>
                     {i < asArray(propertyChain).length - 1 && (
                         <span style={{ color: "gray", fontSize: "small"}}>
@@ -515,12 +642,12 @@ function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetP
                 propertyChains.length ?? -1 > 0 ? <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b> : ""
             }
             {!hasMultipleChains ? (
-                    <p>{getPropertyChainJSX(propertyChains, response)}</p>
+                    <p>{getPropertyChainJSX(propertyChains, response, props)}</p>
                 ):
                 <ul>
                     {
                         propertyChains.map((item: any) => {
-                            return (<li key={randomString()}>{getPropertyChainJSX(item, response)}</li>);
+                            return (<li key={randomString()}>{getPropertyChainJSX(item, response, props)}</li>);
                         })
                     }
                 </ul>}
@@ -539,7 +666,7 @@ function getPropertyChainSectionJSX(response: any, props: EntityRelationsWidgetP
  */
 function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2002/07/owl#equivalentClass"] !== undefined) {
-        const equivalents = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#equivalentClass");
+        const equivalents = getSectionListJSX(response, "http://www.w3.org/2002/07/owl#equivalentClass", props);
 
         return (<EuiFlexItem>
             {
@@ -565,7 +692,7 @@ function getEntityEquivalentToSectionJSX(response: any, props: EntityRelationsWi
  */
 function getSubentityOfSectionJSX(response: any, props: EntityRelationsWidgetProps): JSX.Element {
     if(["property", "class"].includes(getEntityTypeName(props.entityType)) && response["http://www.w3.org/2000/01/rdf-schema#sub"+getCapitalized(getEntityTypeName(props.entityType))+"Of"] !== undefined) {
-        const subEntityOf = getSectionListJSX(response, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of");
+        const subEntityOf = getSectionListJSX(response, "http://www.w3.org/2000/01/rdf-schema#sub" + getCapitalized(getEntityTypeName(props.entityType)) + "Of", props);
 
         return (<EuiFlexItem>
             {
@@ -616,7 +743,7 @@ function getEntityRelatedFromSectionJSX(response: any, props: EntityRelationsWid
                                     {relatedFrom.filter((elem: any) => {return elem["property"] === p})
                                         .map((elem: object) => {
                                             return(
-                                                <li key={randomString()}>{getSectionListElement(response, elem)}</li>
+                                                <li key={randomString()}>{getSectionListElement(response, elem, props)}</li>
                                             )
                                         })}
                                 </ul>
@@ -696,7 +823,19 @@ async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, showBadges = true, parameter, ...rest } = props;
+
+    // reset props so that default values get applied
+    props = {
+        api: api,
+        iri: iri,
+        entityType: entityType,
+        ontologyId: ontologyId,
+        hasTitle: hasTitle,
+        showBadges: showBadges,
+        parameter: parameter,
+    }
+
     const olsApi = new OlsApi(api);
 
     /**
@@ -714,7 +853,8 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             iri,
             ontologyId,
             entityType,
-            parameter
+            parameter,
+            showBadges
         ],
         async () => {
             return fetchEntityJson(olsApi, props);

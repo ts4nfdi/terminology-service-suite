@@ -45,10 +45,21 @@ export default {
         },
         ontologyId: {
             type: { required: false }
+        },
+        showBadges: {
+            description: "Enable / disable showing badges for defining ontologies.",
+            control: {
+                type: "radio",
+            },
+            options: [
+                true,
+                false
+            ],
         }
     },
     args: {
         hasTitle: true,
+        showBadges: true,
     }
 };
 
@@ -134,4 +145,14 @@ Instances.args = {
     entityType: "term",
     ontologyId: "iao",
     iri: "http://purl.obolibrary.org/obo/IAO_0000078",
+};
+
+export const Axioms = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+Axioms.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "aism",
+    iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
 };
