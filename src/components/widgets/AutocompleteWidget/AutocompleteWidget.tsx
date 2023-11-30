@@ -9,9 +9,9 @@ import {
     euiPaletteColorBlind,
     EuiHighlight,
     EuiHealth,
-    EuiBadge
 } from "@elastic/eui";
 import {useQuery} from "react-query";
+import {BreadcrumbWidget} from "../MetadataWidget";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -113,11 +113,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 <span>
                   <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
-                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
-                        {" > "}
-                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
-                    </span>
+                    <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name} iri={value.iri} colorFirst={"primary"} colorSecond={"success"} parameter={value.parameter}></BreadcrumbWidget>
                 </span>
                 </EuiHealth>
             );
@@ -131,7 +127,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         isLoading: isLoadingOnMount
     } = useQuery(
         [
-            "onMount" // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
+            "onMount", // no dependencies - does only need to be executed once when mounting the component
+            props.selectOption
         ],
         async () => {
             if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {

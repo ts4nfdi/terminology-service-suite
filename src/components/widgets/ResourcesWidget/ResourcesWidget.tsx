@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  EuiLoadingSpinner,
   EuiBasicTable,
   EuiButtonIcon,
   EuiLink,
@@ -12,6 +11,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
+import {getErrorMessageToDisplay} from "../index";
 
 export interface ResourcesWidgetProps {
   api: string;
@@ -182,9 +182,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   };
 
   const {
-      data: ontologies,
-      isLoading: isLoadingOntologies,
-      isError: isError,
+    data: ontologies,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
   } = useQuery(
     [
       api,
@@ -225,23 +227,40 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   );
 
-  if (isLoadingOntologies) {
-    return <EuiLoadingSpinner size="xl" />;
-  }
-  else if (isError) {
-    return <EuiText>Error loading resources</EuiText>;
-  }
-  else {
-    return (
-      <EuiBasicTable
-        columns={columns}
-        items={ontologies}
-        onChange={onTableChange}
-        pagination={pagination}
-        sorting={sorting}
-      />
-    );
-  }
+  return (
+      <>
+        {isSuccess &&
+            <EuiBasicTable
+                columns={columns}
+                items={ontologies}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+            />
+        }
+        {isLoading &&
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                loading
+            />
+
+        }
+        {isError &&
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                error={getErrorMessageToDisplay(error, "resources")}
+            />
+        }
+      </>
+  )
 }
 
 export { ResourcesWidget };
