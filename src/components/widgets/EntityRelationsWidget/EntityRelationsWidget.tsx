@@ -208,7 +208,7 @@ function getSectionListElement(response: any, currentResponsePath: any, props: E
         const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
         const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
         const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
-        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#cualifiedCardinality"];
+        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#qualifiedCardinality"];
         const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
         const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
         const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
