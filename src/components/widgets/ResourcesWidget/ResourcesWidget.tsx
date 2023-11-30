@@ -4,6 +4,7 @@ import {
   EuiButtonIcon,
   EuiLink,
   CriteriaWithPagination,
+  EuiText,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
