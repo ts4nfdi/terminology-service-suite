@@ -17,6 +17,7 @@ export default {
                 "https://www.ebi.ac.uk/ols4/api/v2",
                 "https://semanticlookup.zbmed.de/ols/api/",
                 "https://semanticlookup.zbmed.de/api/",
+                "http://ols4.qa.km.k8s.zbmed.de/ols4/api/v2/"
             ],
         },
         hasTitle: {
@@ -155,4 +156,14 @@ Axioms.args = {
     entityType: "term",
     ontologyId: "aism",
     iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
+};
+
+export const QualifiedCardinality = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+QualifiedCardinality.args = {
+    api: "https://www.ebi.ac.uk/ols4/api/v2",
+    entityType: "term",
+    ontologyId: "foodon",
+    iri: "http://purl.obolibrary.org/obo/FOODON_00003382",
 };
