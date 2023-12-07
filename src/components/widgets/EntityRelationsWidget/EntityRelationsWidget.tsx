@@ -875,20 +875,18 @@ async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, showBadges = true, parameter, ...rest } = props;
-
     // reset props so that default values get applied
     props = {
-        api: api,
-        iri: iri,
-        entityType: entityType,
-        ontologyId: ontologyId,
-        hasTitle: hasTitle,
-        showBadges: showBadges,
-        parameter: parameter,
+        api: props.api + (props.api[props.api.length - 1] === '/' ? "" : "/") + "v2",
+        iri: props.iri,
+        entityType: props.entityType,
+        ontologyId: props.ontologyId,
+        hasTitle: props.hasTitle || DEFAULT_HAS_TITLE,
+        showBadges: props.showBadges || true,
+        parameter: props.parameter,
     }
 
-    const olsApi = new OlsApi(api);
+    const olsApi = new OlsApi(props.api);
 
     /**
      * Used to fetch an entities' data to be shown in different sections
@@ -901,12 +899,12 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     } = useQuery(
         [
             "entityJson",
-            api,
-            iri,
-            ontologyId,
-            entityType,
-            parameter,
-            showBadges
+            props.api,
+            props.iri,
+            props.ontologyId,
+            props.entityType,
+            props.parameter,
+            props.showBadges
         ],
         async () => {
             return fetchEntityJson(olsApi, props);
@@ -926,7 +924,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             entityJson
         ],
         queryFn: async () => {
-            return (getEntityTypeName(entityType) === "class" && entityJson["hasDirectChildren"]) ? fetchInstances(olsApi, props) : [];
+            return (getEntityTypeName(props.entityType) === "class" && entityJson["hasDirectChildren"]) ? fetchInstances(olsApi, props) : [];
         },
         enabled: !!entityJson },
     );
@@ -934,13 +932,13 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     return (
         <>
             <EuiCard
-                title={hasTitle ? (getCapitalized(getEntityTypeName(entityType)) +" Relations") : ""}
+                title={props.hasTitle ? (getCapitalized(getEntityTypeName(props.entityType)) +" Relations") : ""}
                 layout="horizontal"
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
                 {(isSuccessEntityRelation && isSuccessInstances) &&
-                    <EuiText {...rest}>
+                    <EuiText>
                         {getIndividualTypesSectionJSX(entityJson, props)}
                         {getIndividualSameAsSectionJSX(entityJson, props)}
                         {getIndividualDifferentFromSectionJSX(entityJson, props)}
