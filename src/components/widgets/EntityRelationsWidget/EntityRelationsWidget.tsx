@@ -19,17 +19,35 @@ export interface EntityRelationsWidgetProps {
 const DEFAULT_HAS_TITLE = true;
 
 /**
- * Capitalizes {@link text}.
- */
-function getCapitalized(text: string) : string {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-/**
  * Returns {@link type}. If {@link type} equals 'term', 'class' gets returned instead.
  */
 function getEntityTypeName(type: string) : string {
     return type === "term" ? "class" : type;
+}
+
+/**
+ * Returns "/ontologies/{ontologyId}/entities?iri={termIri}", which can be concatenated with frontendApi to get full link
+ * @param ontologyId the entities' ontologyId
+ * @param termIri the entities' iri
+ * @param entityTypeArray the entities' type array (from api JSON linkedEntities)
+ */
+function getTermInOntologySuffix(ontologyId: string, termIri: string, entityTypeArray: string[]) : string {
+    return "/ontologies/" + ontologyId + "/" + pluralizeType(entityTypeArray) + "?iri=" + termIri;
+}
+
+/**
+ * Returns trimmed api (omits /api/v2 at the end)
+ * @param api
+ */
+function getFrontEndApi(api: string) : string {
+    return api.replace("/api/v2", "");
+}
+
+/**
+ * Capitalizes {@link text}.
+ */
+function getCapitalized(text: string) : string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 /**
@@ -56,6 +74,21 @@ function asArray(obj: any): any[] {
     else return [];
 }
 
+function pluralizeType(typeArray: string[]) : string | undefined {
+    let plural = undefined;
+    for(let type of typeArray) {
+        plural = {
+            "class": "classes",
+            "property": "properties",
+            "individual": "individuals",
+            "term": "classes" // just for convenience reasons
+        }[type];
+
+        if (plural !== undefined) return plural;
+    }
+    return undefined;
+}
+
 /**
  * Returns a random string used mainly for component keys.
  */
@@ -71,116 +104,135 @@ function randomString() {
  * @returns {JSX.Element} the entity link
  */
 function getEntityLink(response: any, iri: string, props: EntityRelationsWidgetProps): JSX.Element {
-    // reference to self; just display label because we are already on that page
+    const frontendApi = getFrontEndApi(props.api);
+    const label = getLabel(response, iri) || iri.split("/").pop() || iri;
+    const linkedEntity = response["linkedEntities"][iri];
+    const localOntology = response["ontologyId"];
+
+    // reference to self: just display label because we are already on that page
     if (iri === response["iri"]) {
         return <b>{response["label"]}</b>
     }
 
-    const label = getLabel(response, iri) || iri.split("/").pop() || iri;
-    const linkedEntity = response["linkedEntities"][iri];
-
     if (!linkedEntity) {
-        // So far only known occurrence of this branch is for owl#Thing
-        return iri.includes("http") ? (
-            <a href={iri}>{label}</a>
-        ) : (
-            <span>{label}</span>
-        );
+        if(iri.includes("http")) {
+            return <a href={iri}>{label}</a>;
+        }
+        else {
+            // So far only known occurrence of this branch is for owl#Thing
+            return <span>{label}</span>;
+        }
     }
 
-    if(props.showBadges) {
-        let otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== response["ontologyId"]}) : [];
+    let otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== response["ontologyId"]}) : [];
+    const linkedEntityType = linkedEntity["type"]; // TODO: does type key always exist in linkedEntity relevant for relationsWidget?
 
-        // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
-        if(otherDefinedBy.length === 1) {
-            if(linkedEntity["hasLocalDefinition"]) {
-                // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
-                // TODO: link correct urls
-                return (
-                    <>
-                        <a href={iri}>{label}</a>
-                        &nbsp;
-                        <a href={iri}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
-                    </>
-                )
-            }
-            else {
-                // show <label> <ontologyId> linking to the term in the defining ontology
-                // TODO: link correct urls
-                return (
-                    <>
-                        <a href={iri}>{label}</a>
-                        &nbsp;
-                        <a href={iri}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
-                    </>
-                )
-            }
+    // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
+    if(otherDefinedBy.length === 1) {
+        if(linkedEntity["hasLocalDefinition"]) {
+            // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
+            return (
+                <>
+                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                    {
+                        props.showBadges ?
+                            <>
+                                &nbsp;
+                                <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                            </> :
+                            <></>
+                    }
+                </>
+            )
         }
-        else if(otherDefinedBy.length > 1) {
-            if(linkedEntity["hasLocalDefinition"]) {
-                // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
-                // TODO: link correct urls
-                return (
-                    <>
-                        <a href={iri}>{label}</a>
-                        &nbsp;
-                        {otherDefinedBy.map((elem: any) => {
-                            return (
-                                <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
-                            );
-                        })}
-
-                    </>
-                )
-            }
-            else {
+        else {
+            // show <label> <ontologyId> linking to the term in the defining ontology
+            return (
+                <>
+                    <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{label}</a>
+                    {
+                        props.showBadges ?
+                            <>
+                                &nbsp;
+                                <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                            </> :
+                            <></>
+                    }
+                </>
+            )
+        }
+    }
+    else if(otherDefinedBy.length > 1) {
+        if(linkedEntity["hasLocalDefinition"]) {
+            // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
+            return (
+                <>
+                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                    {
+                        props.showBadges ?
+                            <>
+                                &nbsp;
+                                {otherDefinedBy.map((elem: any) => {
+                                    return (
+                                        <a href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                    );
+                                })}
+                            </> :
+                            <></>
+                    }
+                </>
+            )
+        }
+        else {
+            // show <label><ICON> linking to disambiguation page
+            // TODO: link correct urls, show disambiguation page?
+            return (
+                <>
+                    <a href={iri}>{label}</a>
+                    {
+                        props.showBadges ?
+                            <>
+                                &nbsp;
+                                {otherDefinedBy.map((elem: any) => {
+                                    return (
+                                        <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                    );
+                                })}
+                            </> :
+                            <></>
+                    }
+                </>
+            );
+        }
+    }
+    else {
+        if(linkedEntity["hasLocalDefinition"]) {
+            // show <label> where <label> links to the term in this ontology
+            return (
+                <>
+                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                </>
+            )
+        }
+        else {
+            if(parseInt(linkedEntity["numAppearsIn"]) > 0) {
                 // show <label><ICON> linking to disambiguation page
                 // TODO: link correct urls, show disambiguation page?
                 return (
                     <>
                         <a href={iri}>{label}</a>
-                        &nbsp;
-                        {otherDefinedBy.map((elem: any) => {
-                            return (
-                                <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
-                            );
-                        })}
                     </>
-                );
+                )
             }
-        }
-        else {
-            if(linkedEntity["hasLocalDefinition"]) {
-                // show <label> where <label> links to the term in this ontology
+            else {
+                // show raw iri
                 return (
                     <>
                         <a href={iri}>{label}</a>
                     </>
                 )
             }
-            else {
-                if(parseInt(linkedEntity["numAppearsIn"]) > 0) {
-                    // show <label><ICON> linking to disambiguation page
-                    // TODO: link correct urls, show disambiguation page?
-                    return (
-                        <>
-                            <a href={iri}>{label}</a>
-                        </>
-                    )
-                }
-                else {
-                    // show raw iri
-                    return (
-                        <>
-                            <a href={iri}>{label}</a>
-                        </>
-                    )
-                }
-            }
         }
-    }
-    else {
-        return <a href={iri}>{label}</a>;
     }
 }
 
