@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from "@elastic/eui";
+import React from "react";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
+import {getPreferredOntologyJSON} from "../../index";
+import {getErrorMessageToDisplay} from "../../../index";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
@@ -16,65 +18,47 @@ export interface AlternativeNameTabWidgetProps {
   parameter?: string;
 }
 
-interface Synonyms {
-    synonyms: []
-}
-
-async function getSynonyms(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<Synonyms> {
-    if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            synonyms: response._embedded.terms[0].synonyms,
-        };
-    }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            synonyms: response._embedded.properties[0].synonyms,
-        };
-    }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            synonyms: response._embedded.individuals[0].synonyms,
-        };
-    }
-    return {
-        synonyms: [],
-    };
-}
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId } = props;
   const olsApi = new OlsApi(api);
 
   const {
-        data,
-        isLoading,
-        isSuccess,
-        isError
+        data: ontologyJSON,
+        isLoading: isLoading,
+        isSuccess: isSuccess,
+        isError: isError,
+        error: error,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return getSynonyms(olsApi, entityType, iri, ontologyId);
+        return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
     });
 
   function renderAltLabel() {
-    if (data?.synonyms && data.synonyms.length > 0) {
-      return data.synonyms.map((value, index) => (
+    if (ontologyJSON['synonyms'] && ontologyJSON['synonyms'].length > 0) {
+      return ontologyJSON['synonyms'].map((value: string, index: number) => (
         <EuiFlexItem key={value + index}>{value}</EuiFlexItem>
       ));
     }
     return <EuiText>No alternative names exist.</EuiText>;
   }
 
+    // TODO: Should AlternativeNameTabWidget show the following info message if defining ontology is not available (placed inside EuiPanel span)?
+    /*{
+        isSuccess && !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
+        <EuiFlexItem>
+            <EuiText>
+                <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
+            </EuiText>
+            <EuiSpacer size={"s"}></EuiSpacer>
+        </EuiFlexItem>
+    }*/
+
   return (
     <EuiPanel>
       <EuiFlexGroup style={{ padding: 10 }} direction="column">
           {isSuccess && renderAltLabel()}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
-          {isError && <EuiText>No cross references available.</EuiText>}
+          {isError && <EuiText>{getErrorMessageToDisplay(error, "alternative names")}</EuiText>}
       </EuiFlexGroup>
     </EuiPanel>
   );

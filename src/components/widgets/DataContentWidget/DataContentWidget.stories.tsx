@@ -14,7 +14,7 @@ export default {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
@@ -47,5 +47,14 @@ export const SafetyDataContentWidget = Template.bind({});
 // @ts-ignore
 SafetyDataContentWidget.args = {
   api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "collection=safety",
+};
+
+export const ErrorDataContentWidget = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorDataContentWidget.args = {
+  api: "ht3ps://semanticlookup.zbmed.de/api/",
   parameter: "collection=safety",
 };

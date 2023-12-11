@@ -11,7 +11,7 @@ export default {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
@@ -60,6 +60,17 @@ export const SearchResultsListNFDI4Health = Template.bind({});
 // @ts-ignore
 SearchResultsListNFDI4Health.args = {
   api: "https://semanticlookup.zbmed.de/api/",
+  query: "d*",
+  targetLink: "",
+  parameter: "collection=nfdi4health",
+};
+
+export const ErrorSearchResultsList = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+ErrorSearchResultsList.args = {
+  api: "ht3ps://semanticlookup.zbmed.de/api/",
   query: "d*",
   targetLink: "",
   parameter: "collection=nfdi4health",
