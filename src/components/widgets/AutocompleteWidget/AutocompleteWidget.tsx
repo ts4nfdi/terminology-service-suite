@@ -98,7 +98,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         const { label, value } = option;
         if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
              return  label;
-        } else { // otherwise can we can use the semantic infomration to show some context information like ontology name
+        } else { // otherwise can we can use the semantic information to show some context information like ontology name
             let color = "";
             if (value.type === "class") {
                 color = visColorsBehindText[5];
@@ -108,6 +108,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 color = visColorsBehindText[1];
             }
             const dotColor = visColors[visColorsBehindText.indexOf(color)];
+            if (value.type === "ontology") {
+                return (
+                    <EuiHealth title={value.type} color={dotColor}>
+                        <span>
+                            <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                        </span>
+                    </EuiHealth>
+                );
+            }
             return (
                 <EuiHealth title={value.type} color={dotColor}>
                 <span>
