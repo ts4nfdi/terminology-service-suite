@@ -108,24 +108,53 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 color = visColorsBehindText[1];
             }
             const dotColor = visColors[visColorsBehindText.indexOf(color)];
-            if (value.type === "ontology") {
-                return (
-                    <EuiHealth title={value.type} color={dotColor}>
+            if (value.description != undefined) {
+                if (value.type === "ontology") {
+                    return (
+                        <EuiHealth title={"type: " + value.type + "\n\nlabel: " + value.label + "\n\nprefix: " + value.ontology_name  + "\n\ndescription: " + value.description} color={dotColor}>
                         <span>
                             <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                            <br/>
+                            {value.description}
+                        </span>
+                        </EuiHealth>
+                    );
+                }
+                return (
+                    <span style={{height: 200 + "px"}}>
+                        <EuiHealth title={"type: " + value.type + "\n\nlabel: " + value.label + "\n\nprefix > short_form: " + value.ontology_name + " > " + value.short_form + "\n\ndescription: " + value.description} color={dotColor}>
+                            <span>
+                                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name} iri={value.iri} colorFirst={"primary"} colorSecond={"success"} parameter={value.parameter}/>
+                                <br/>
+                                {value.description.substring(0, 40) + "..."}
+                            </span>
+                        </EuiHealth>
+                    </span>
+
+                );
+            } else {
+                if (value.type === "ontology") {
+                    return (
+                        <EuiHealth title={"type: " + value.type + "\n\nlabel: " + value.label + "\n\nprefix: " + value.ontology_name} color={dotColor}>
+                            <span>
+                                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                            </span>
+                        </EuiHealth>
+                    );
+                }
+                return (
+                    <EuiHealth title={"type: " + value.type + "\n\nlabel: " + value.label + "\n\nprefix > short_form: " + value.ontology_name + " > " + value.short_form} color={dotColor}>
+                        <span>
+                          <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name} iri={value.iri} colorFirst={"primary"} colorSecond={"success"} parameter={value.parameter}/>
                         </span>
                     </EuiHealth>
                 );
             }
-            return (
-                <EuiHealth title={value.type} color={dotColor}>
-                <span>
-                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name} iri={value.iri} colorFirst={"primary"} colorSecond={"success"} parameter={value.parameter}></BreadcrumbWidget>
-                </span>
-                </EuiHealth>
-            );
+
         }
     };
 
@@ -274,6 +303,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             short_form: x.value.short_form,
                             description: x.value.description
                         };
+                    } else if (x.value.iri=="") {
+                        return {
+                            iri: "",
+                            label: "",
+                            ontology_name: "",
+                            type: "",
+                            short_form: "",
+                            description: ""
+                        };
                     } else {
                         return {
                             iri: x.value.iri,
@@ -360,6 +398,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 onSearchChange={setSearchValue}
                 onChange={onChangeHandler}
                 renderOption={renderOption}
+                rowHeight={50}
             />
         );
     }
