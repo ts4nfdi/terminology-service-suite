@@ -17,6 +17,7 @@ export interface EntityRelationsWidgetProps {
 }
 
 const DEFAULT_HAS_TITLE = true;
+const DEFAULT_SHOW_BADGES = true;
 
 /**
  * Returns {@link type}. If {@link type} equals 'term', 'class' gets returned instead.
@@ -40,7 +41,7 @@ function getTermInOntologySuffix(ontologyId: string, termIri: string, entityType
  * @param api
  */
 function getFrontEndApi(api: string) : string {
-    return api.replace("/api/v2", "");
+    return api.replace("/api/", "").replace("/api", "");
 }
 
 /**
@@ -875,18 +876,11 @@ async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
 }
 
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
-    // reset props so that default values get applied
-    props = {
-        api: props.api + (props.api[props.api.length - 1] === '/' ? "" : "/") + "v2",
-        iri: props.iri,
-        entityType: props.entityType,
-        ontologyId: props.ontologyId,
-        hasTitle: props.hasTitle || DEFAULT_HAS_TITLE,
-        showBadges: props.showBadges || true,
-        parameter: props.parameter,
-    }
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, showBadges = DEFAULT_SHOW_BADGES, entityType, parameter, ...rest } = props;
 
-    const olsApi = new OlsApi(props.api);
+    // entity relations widget works with v2 api
+    const v2api = props.api + (props.api[props.api.length - 1] === '/' ? "" : "/") + "v2"
+    const olsApi = new OlsApi(v2api);
 
     /**
      * Used to fetch an entities' data to be shown in different sections
