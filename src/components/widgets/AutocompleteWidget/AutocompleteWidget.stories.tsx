@@ -69,6 +69,12 @@ withGermanInput.args = {
   parameter: "collection=nfdi4health&lang=de&type=class",
 };
 
+export const withDescriptionAndShortForm = Template.bind({});
+withDescriptionAndShortForm.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
+};
+
 export const displaySelectedEntityWithLongForm = Template.bind({});
 displaySelectedEntityWithLongForm.args = {
   hasShortSelectedLabel: false

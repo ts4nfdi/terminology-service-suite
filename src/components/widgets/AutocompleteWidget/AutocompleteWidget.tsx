@@ -97,7 +97,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
         if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
-             return  label;
+            return  label;
         } else { // otherwise can we can use the semantic information to show some context information like ontology name
             let color = "";
             if (value.type === "class") {
@@ -126,7 +126,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 </span>
                 </EuiHealth>
             );
-            }
+        }
     };
 
     /**
@@ -161,6 +161,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -175,6 +176,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -192,6 +194,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -204,6 +207,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -242,6 +246,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                     ontology_name: selection.ontology_name,
                                     type: selection.type,
                                     short_form: selection.short_form,
+                                    description: selection.description?.join()
                                 },
                             })
                         ));
@@ -265,14 +270,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             iri: "",
                             label: x.label,
                             ontology_name: "",
-                            type: ""
+                            type: "",
+                            short_form: x.value.short_form,
+                            description: x.value.description
                         };
                     } else {
                         return {
                             iri: x.value.iri,
                             label: x.value.label,
                             ontology_name: x.value.ontology_name,
-                            type: x.value.type
+                            type: x.value.type,
+                            short_form: x.value.short_form,
+                            description: x.value.description
                         };
                     }
                 })[0]
@@ -281,15 +290,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }, [selectedOptions]);
 
     function generateDisplayLabel(item: any) {
-    return (
-      item.label +
-      " (" +
-      item.ontology_name.toUpperCase() +
-      " " +
-      item.short_form +
-      ")"
-    );
-  }
+        return (
+            item.label +
+            " (" +
+            item.ontology_name.toUpperCase() +
+            " " +
+            item.short_form +
+            ")"
+        );
+    }
 
     function onChangeHandler(options: Array<any>): void {
         setSelectedOptions(options);
@@ -297,18 +306,19 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     function onCreateOptionHandler(searchValue: string) {
         const newOption = {
-          label: searchValue,
-          value: {
-            iri: "",
-            label: "",
-            ontology_name: "",
-            type: "",
-            short_form: "",
-          }
-    };
+            label: searchValue,
+            value: {
+                iri: "",
+                label: "",
+                ontology_name: "",
+                type: "",
+                short_form: "",
+                description: ""
+            }
+        };
 
-    setOptions([...options, newOption]);
-    setSelectedOptions([...selectedOptions, newOption]);
+        setOptions([...options, newOption]);
+        setSelectedOptions([...selectedOptions, newOption]);
     }
 
     if (props.allowCustomTerms) {
