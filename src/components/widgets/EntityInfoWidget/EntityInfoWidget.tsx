@@ -2,6 +2,7 @@ import React from "react";
 import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText } from "@elastic/eui";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from 'react-query'
+import {getErrorMessageToDisplay} from "../index";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -40,7 +41,6 @@ const DEFAULT_HAS_TITLE = true;
 async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<EntityInfo> {
     if (entityType == "ontology") {
         const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
-          .catch((error) => console.log(error));
         return {
             iri: response.config.id,
             versionIri: response.config.versionIri,
@@ -55,7 +55,6 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
     }
     if (entityType == "term" || entityType == "class") {
         const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
         return {
             label: response._embedded.terms[0].label,
             synonyms: response._embedded.terms[0].synonyms,
@@ -66,7 +65,6 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
     }
     if (entityType == "property") {
         const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
         return {
             label: response._embedded.properties[0].label,
             synonyms: response._embedded.properties[0].synonyms,
@@ -76,7 +74,6 @@ async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, o
     }
     if (entityType == "individual") {
         const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
         return {
             label: response._embedded.individuals[0].label,
             synonyms: response._embedded.individuals[0].synonyms,
@@ -100,6 +97,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         data: entityInfo,
         isLoading: isLoadingEntityInfo,
         isSuccess: isSuccessEntityInfo,
+        isError: isErrorEntityInfo,
+        error: errorEntityInfo,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
         return getEntityInfo(olsApi, entityType, iri, ontologyId);
     });
@@ -114,7 +113,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 : "-"
         );
     }
-
 
     return (
         <>
@@ -186,6 +184,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         )) : ""}
                     </EuiText>
                 }
+                {isErrorEntityInfo && <EuiText>{getErrorMessageToDisplay(errorEntityInfo, "information")}</EuiText>}
             </EuiCard>
         </>
     );

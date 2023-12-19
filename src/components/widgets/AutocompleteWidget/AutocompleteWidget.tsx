@@ -9,9 +9,9 @@ import {
     euiPaletteColorBlind,
     EuiHighlight,
     EuiHealth,
-    EuiBadge
 } from "@elastic/eui";
 import {useQuery} from "react-query";
+import {BreadcrumbWidget} from "../MetadataWidget";
 
 export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
@@ -101,8 +101,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
         if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
-             return  label;
-        } else { // otherwise can we can use the semantic infomration to show some context information like ontology name
+            return  label;
+        } else { // otherwise can we can use the semantic information to show some context information like ontology name
             let color = "";
             if (value.type === "class") {
                 color = visColorsBehindText[5];
@@ -112,20 +112,25 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 color = visColorsBehindText[1];
             }
             const dotColor = visColors[visColorsBehindText.indexOf(color)];
+            if (value.type === "ontology") {
+                return (
+                    <EuiHealth title={value.type} color={dotColor}>
+                        <span>
+                            <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                        </span>
+                    </EuiHealth>
+                );
+            }
             return (
                 <EuiHealth title={value.type} color={dotColor}>
                 <span>
                   <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>{/* TODO: replace that afterwards with the refactored breadcrumb widget */}
-                        <EuiBadge color={"primary"}>{value.ontology_name.toUpperCase()}</EuiBadge>
-                        {" > "}
-                        <EuiBadge color={"success"}>{value.short_form}</EuiBadge>
-                    </span>
+                    <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name} iri={value.iri} colorFirst={"primary"} colorSecond={"success"} parameter={value.parameter}></BreadcrumbWidget>
                 </span>
                 </EuiHealth>
             );
-            }
+        }
     };
 
     /**
@@ -135,7 +140,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         isLoading: isLoadingOnMount
     } = useQuery(
         [
-            "onMount" // no dependencies - does only need to be executed once when mounting the component @TODO: Dependency on props.selectOption
+            "onMount", // no dependencies - does only need to be executed once when mounting the component
+            props.selectOption
         ],
         async () => {
             if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
@@ -159,6 +165,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -173,6 +180,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -190,6 +198,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -202,6 +211,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -240,6 +250,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                     ontology_name: selection.ontology_name,
                                     type: selection.type,
                                     short_form: selection.short_form,
+                                    description: selection.description?.join()
                                 },
                             })
                         ));
@@ -261,14 +272,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                         iri: "",
                         label: x.label,
                         ontology_name: "",
-                        type: ""
+                        type: "",
+                        short_form: x.value.short_form,
+                        description: x.value.description
                     };
                 } else {
                     return {
                         iri: x.value.iri,
                         label: x.value.label,
                         ontology_name: x.value.ontology_name,
-                        type: x.value.type
+                        type: x.value.type,
+                        short_form: x.value.short_form,
+                        description: x.value.description
                     };
                 }
             })
@@ -276,15 +291,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }, [selectedOptions]);
 
     function generateDisplayLabel(item: any) {
-    return (
-      item.label +
-      " (" +
-      item.ontology_name.toUpperCase() +
-      " " +
-      item.short_form +
-      ")"
-    );
-  }
+        return (
+            item.label +
+            " (" +
+            item.ontology_name.toUpperCase() +
+            " " +
+            item.short_form +
+            ")"
+        );
+    }
 
     function onChangeHandler(options: Array<any>): void {
         setSelectedOptions(options);
@@ -292,18 +307,19 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     function onCreateOptionHandler(searchValue: string) {
         const newOption = {
-          label: searchValue,
-          value: {
-            iri: "",
-            label: "",
-            ontology_name: "",
-            type: "",
-            short_form: "",
-          }
-    };
+            label: searchValue,
+            value: {
+                iri: "",
+                label: "",
+                ontology_name: "",
+                type: "",
+                short_form: "",
+                description: ""
+            }
+        };
 
-    setOptions([...options, newOption]);
-    setSelectedOptions([...selectedOptions, newOption]);
+        setOptions([...options, newOption]);
+        setSelectedOptions([...selectedOptions, newOption]);
     }
 
     if (props.singleSelection) {

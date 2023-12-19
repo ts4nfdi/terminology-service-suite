@@ -14,7 +14,7 @@ export default {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
@@ -56,7 +56,28 @@ export const CrossRefTabWidget1 = Template.bind({});
 // @ts-ignore
 CrossRefTabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-  api: "https://www.ebi.ac.uk/ols/api/",
+  api: "https://www.ebi.ac.uk/ols4/api/",
   entityType: "term",
-  ontologyId: "rxno"
+  ontologyId: "rxno",
+  parameter: ""
+};
+
+export const SelectingDefiningOntology = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+  iri: "http://purl.obolibrary.org/obo/IAO_0000631",
+  entityType: "term",
+  parameter: ""
+};
+
+export const DefiningOntologyUnavailable = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+  iri: "http://identifiers.org/uniprot/Q9VAM9",
+  entityType: "term",
+  parameter: ""
 };

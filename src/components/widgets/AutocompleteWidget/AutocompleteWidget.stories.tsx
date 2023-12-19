@@ -12,7 +12,7 @@ export default {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
@@ -72,6 +72,12 @@ export const withGermanInput = Template.bind({});
 withGermanInput.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "collection=nfdi4health&lang=de&type=class",
+};
+
+export const withDescriptionAndShortForm = Template.bind({});
+withDescriptionAndShortForm.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
 export const displaySelectedEntityWithLongForm = Template.bind({});
