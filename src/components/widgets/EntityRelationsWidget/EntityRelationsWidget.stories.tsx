@@ -49,13 +49,6 @@ export default {
         },
         showBadges: {
             description: "Enable / disable showing badges for defining ontologies.",
-            control: {
-                type: "radio",
-            },
-            options: [
-                true,
-                false
-            ],
         }
     },
     args: {
