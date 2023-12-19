@@ -220,32 +220,30 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             searchValue
         ],
         async () => {
-            if (searchValue.length > 0) {
-                return olsApi.select(
-                    {query: searchValue},
-                    undefined,
-                    undefined,
-                    parameter,
-                ).then((response) => {
-                    if (response.response && response.response.docs) {
-                        setOptions(response.response.docs.map((selection: any) => (
-                            {
-                                // label to display within the combobox either raw value or generated one
-                                // #renderOption() is used to display during selection.
-                                label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                // values to pass to clients
-                                value: {
-                                    iri: selection.iri,
-                                    label: selection.label,
-                                    ontology_name: selection.ontology_name,
-                                    type: selection.type,
-                                    short_form: selection.short_form,
-                                },
-                            })
-                        ));
-                    }
-                });
-            }
+            return olsApi.select(
+                {query: searchValue},
+                undefined,
+                undefined,
+                parameter,
+            ).then((response) => {
+                if (response.response && response.response.docs) {
+                    setOptions(response.response.docs.map((selection: any) => (
+                        {
+                            // label to display within the combobox either raw value or generated one
+                            // #renderOption() is used to display during selection.
+                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                            // values to pass to clients
+                            value: {
+                                iri: selection.iri,
+                                label: selection.label,
+                                ontology_name: selection.ontology_name,
+                                type: selection.type,
+                                short_form: selection.short_form,
+                            },
+                        })
+                    ));
+                }
+            });
         }
     )
 
@@ -253,28 +251,26 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
      * Once the set of selected options changes, pass the event by invoking the passed function.
      */
     useEffect(() => {
-        if (selectedOptions.length >= 1)  {
-            props.selectionChangedEvent(
-                selectedOptions.map((x) => {
-                    // return the value object with the raw values from OLS to a client
-                    if(props.allowCustomTerms && x.value.iri=="") {
-                        return {
-                            iri: "",
-                            label: x.label,
-                            ontology_name: "",
-                            type: ""
-                        };
-                    } else {
-                        return {
-                            iri: x.value.iri,
-                            label: x.value.label,
-                            ontology_name: x.value.ontology_name,
-                            type: x.value.type
-                        };
-                    }
-                })[0]
-            );
-        }
+        props.selectionChangedEvent(
+            selectedOptions.map((x) => {
+                // return the value object with the raw values from OLS to a client
+                if(props.allowCustomTerms && x.value.iri=="") {
+                    return {
+                        iri: "",
+                        label: x.label,
+                        ontology_name: "",
+                        type: ""
+                    };
+                } else {
+                    return {
+                        iri: x.value.iri,
+                        label: x.value.label,
+                        ontology_name: x.value.ontology_name,
+                        type: x.value.type
+                    };
+                }
+            })[0]
+        );
     }, [selectedOptions]);
 
     function generateDisplayLabel(item: any) {
