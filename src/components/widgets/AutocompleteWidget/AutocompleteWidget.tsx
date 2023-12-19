@@ -220,30 +220,32 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             searchValue
         ],
         async () => {
-            return olsApi.select(
-                {query: searchValue},
-                undefined,
-                undefined,
-                parameter,
-            ).then((response) => {
-                if (response.response && response.response.docs) {
-                    setOptions(response.response.docs.map((selection: any) => (
-                        {
-                            // label to display within the combobox either raw value or generated one
-                            // #renderOption() is used to display during selection.
-                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                            // values to pass to clients
-                            value: {
-                                iri: selection.iri,
-                                label: selection.label,
-                                ontology_name: selection.ontology_name,
-                                type: selection.type,
-                                short_form: selection.short_form,
-                            },
-                        })
-                    ));
-                }
-            });
+            if(searchValue.length > 0) {
+                return olsApi.select(
+                    {query: searchValue},
+                    undefined,
+                    undefined,
+                    parameter,
+                ).then((response) => {
+                    if (response.response && response.response.docs) {
+                        setOptions(response.response.docs.map((selection: any) => (
+                            {
+                                // label to display within the combobox either raw value or generated one
+                                // #renderOption() is used to display during selection.
+                                label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                // values to pass to clients
+                                value: {
+                                    iri: selection.iri,
+                                    label: selection.label,
+                                    ontology_name: selection.ontology_name,
+                                    type: selection.type,
+                                    short_form: selection.short_form,
+                                },
+                            })
+                        ));
+                    }
+                });
+            }
         }
     )
 
