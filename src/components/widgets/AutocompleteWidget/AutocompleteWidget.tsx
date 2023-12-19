@@ -43,12 +43,12 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * A method that is called once the set of selection changes
      * @param selectedOptions  The selected items
      */
-    selectionChangedEvent: (selectedOption: {
+    selectionChangedEvent: (selectedOptions: {
         label: string;
         iri?: string;
         ontology_name?: string;
         type?: string;
-    }) => void;
+    }[]) => void;
     /**
      * Pass a pre select value.
      */
@@ -65,6 +65,10 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
      * If true, custom terms can be added that are not found via API.
      */
     allowCustomTerms: boolean;
+    /**
+     * If true, only one concept can be selected at once.
+     */
+    singleSelection: boolean;
 }
 
 /**
@@ -97,7 +101,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const renderOption = (option, searchValue) => {
         const { label, value } = option;
         if(props.allowCustomTerms && value.iri==""){// if we have a custom term, just show the label
-             return  label;
+            return  label;
         } else { // otherwise can we can use the semantic information to show some context information like ontology name
             let color = "";
             if (value.type === "class") {
@@ -126,7 +130,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 </span>
                 </EuiHealth>
             );
-            }
+        }
     };
 
     /**
@@ -161,6 +165,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -175,6 +180,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             ontology_name: selection.ontology_name,
                                             type: selection.type,
                                             short_form: selection.short_form,
+                                            description: selection.description?.join()
                                         },
                                     },
                                 ]);
@@ -192,6 +198,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -204,6 +211,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             ontology_name: "",
                             type: "",
                             short_form: "",
+                            description: ""
                         }
                     },
                 ]);
@@ -222,7 +230,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             searchValue
         ],
         async () => {
-            if (searchValue.length > 0) {
+            if(searchValue.length > 0) {
                 return olsApi.select(
                     {query: searchValue},
                     undefined,
@@ -242,10 +250,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                     ontology_name: selection.ontology_name,
                                     type: selection.type,
                                     short_form: selection.short_form,
+                                    description: selection.description?.join()
                                 },
                             })
                         ));
-                        setSelectedOptions([]);
                     }
                 });
             }
@@ -256,40 +264,42 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
      * Once the set of selected options changes, pass the event by invoking the passed function.
      */
     useEffect(() => {
-        if (selectedOptions.length >= 1)  {
-            props.selectionChangedEvent(
-                selectedOptions.map((x) => {
-                    // return the value object with the raw values from OLS to a client
-                    if(props.allowCustomTerms && x.value.iri=="") {
-                        return {
-                            iri: "",
-                            label: x.label,
-                            ontology_name: "",
-                            type: ""
-                        };
-                    } else {
-                        return {
-                            iri: x.value.iri,
-                            label: x.value.label,
-                            ontology_name: x.value.ontology_name,
-                            type: x.value.type
-                        };
-                    }
-                })[0]
-            );
-        }
+        props.selectionChangedEvent(
+            selectedOptions.map((x) => {
+                // return the value object with the raw values from OLS to a client
+                if(props.allowCustomTerms && x.value.iri=="") {
+                    return {
+                        iri: "",
+                        label: x.label,
+                        ontology_name: "",
+                        type: "",
+                        short_form: x.value.short_form,
+                        description: x.value.description
+                    };
+                } else {
+                    return {
+                        iri: x.value.iri,
+                        label: x.value.label,
+                        ontology_name: x.value.ontology_name,
+                        type: x.value.type,
+                        short_form: x.value.short_form,
+                        description: x.value.description
+                    };
+                }
+            })
+        );
     }, [selectedOptions]);
 
     function generateDisplayLabel(item: any) {
-    return (
-      item.label +
-      " (" +
-      item.ontology_name.toUpperCase() +
-      " " +
-      item.short_form +
-      ")"
-    );
-  }
+        return (
+            item.label +
+            " (" +
+            item.ontology_name.toUpperCase() +
+            " " +
+            item.short_form +
+            ")"
+        );
+    }
 
     function onChangeHandler(options: Array<any>): void {
         setSelectedOptions(options);
@@ -297,61 +307,106 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     function onCreateOptionHandler(searchValue: string) {
         const newOption = {
-          label: searchValue,
-          value: {
-            iri: "",
-            label: "",
-            ontology_name: "",
-            type: "",
-            short_form: "",
-          }
-    };
+            label: searchValue,
+            value: {
+                iri: "",
+                label: "",
+                ontology_name: "",
+                type: "",
+                short_form: "",
+                description: ""
+            }
+        };
 
-    setOptions([...options, newOption]);
-    setSelectedOptions([...selectedOptions, newOption]);
+        setOptions([...options, newOption]);
+        setSelectedOptions([...selectedOptions, newOption]);
     }
 
-    if (props.allowCustomTerms) {
-        return (
-            <EuiComboBox
-                isClearable
-                aria-label="searchBar"
-                fullWidth={true}
-                {...rest} // items above can be overriden by a client
-                async={true}
-                isLoading={isLoadingTerms || isLoadingOnMount}
-                singleSelection={{ asPlainText: true }}
-                placeholder={
-                    props.placeholder ? props.placeholder : "Search for a Concept"
-                }
-                options={options}
-                selectedOptions={selectedOptions}
-                onSearchChange={setSearchValue}
-                onChange={onChangeHandler}
-                renderOption={renderOption}
-                onCreateOption={onCreateOptionHandler}
-            />
-        );
-    } else {
-        return (
-            <EuiComboBox
-                isClearable
-                aria-label="searchBar"
-                fullWidth={true}
-                {...rest} // items above can be overriden by a client
-                async={true}
-                isLoading={isLoadingTerms || isLoadingOnMount}
-                singleSelection={{ asPlainText: true }}
-                placeholder={
-                    props.placeholder ? props.placeholder : "Search for a Concept"
-                }
-                options={options}
-                selectedOptions={selectedOptions}
-                onSearchChange={setSearchValue}
-                onChange={onChangeHandler}
-                renderOption={renderOption}
-            />
-        );
+    if (props.singleSelection) {
+        if (props.allowCustomTerms) {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    singleSelection={{ asPlainText: true }}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                    onCreateOption={onCreateOptionHandler}
+                />
+            );
+        } else {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    singleSelection={{ asPlainText: true }}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                />
+            );
+        }
+    }
+    else {
+        if (props.allowCustomTerms) {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                    onCreateOption={onCreateOptionHandler}
+                />
+            );
+        } else {
+            return (
+                <EuiComboBox
+                    isClearable
+                    aria-label="searchBar"
+                    fullWidth={true}
+                    {...rest} // items above can be overriden by a client
+                    async={true}
+                    isLoading={isLoadingTerms || isLoadingOnMount}
+                    placeholder={
+                        props.placeholder ? props.placeholder : "Search for a Concept"
+                    }
+                    options={options}
+                    selectedOptions={selectedOptions}
+                    onSearchChange={setSearchValue}
+                    onChange={onChangeHandler}
+                    renderOption={renderOption}
+                />
+            );
+        }
     }
 }
 

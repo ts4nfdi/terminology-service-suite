@@ -32,13 +32,18 @@ export default {
     allowCustomTerms: {
       description: "If true, custom terms that are not found in any ontology can be added.",
       type: { required: false},
+    },
+    singleSelection: {
+      description: "If true, only one concept can be selected at once.",
+      type: { required: false},
     }
   },
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
     hasShortSelectedLabel: true,
-    allowCustomTerms: false
+    allowCustomTerms: false,
+    singleSelection: true,
   }
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
@@ -67,6 +72,12 @@ export const withGermanInput = Template.bind({});
 withGermanInput.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "collection=nfdi4health&lang=de&type=class",
+};
+
+export const withDescriptionAndShortForm = Template.bind({});
+withDescriptionAndShortForm.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
 export const displaySelectedEntityWithLongForm = Template.bind({});
