@@ -159,6 +159,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                         // label to display within the combobox either raw value or generated one
                                         // #renderOption() is used to display during selection.
                                         label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                        // key to distinguish the options (especially those with same label)
+                                        key: selection.iri,
                                         value: {
                                             iri: selection.iri,
                                             label: selection.label,
@@ -174,6 +176,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                         // label to display within the combobox either raw value or generated one
                                         // #renderOption() is used to display during selection.
                                         label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                        // key to distinguish the options (especially those with same label)
+                                        key: selection.iri,
                                         value: {
                                             iri: selection.iri,
                                             label: selection.label,
@@ -243,6 +247,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                 // label to display within the combobox either raw value or generated one
                                 // #renderOption() is used to display during selection.
                                 label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                // key to distinguish the options (especially those with same label)
+                                key: selection.iri,
                                 // values to pass to clients
                                 value: {
                                     iri: selection.iri,
