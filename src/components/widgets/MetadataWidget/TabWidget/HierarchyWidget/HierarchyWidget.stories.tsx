@@ -17,6 +17,7 @@ export default {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
+        "https://www.ebi.ac.uk/ols4/",
       ],
     },
     ontologyId: {
@@ -41,8 +42,8 @@ export const HierarchyWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 HierarchyWidget1.args = {
-  iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyId: "mesh",
+  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  api: "https://www.ebi.ac.uk/ols4/",
+  ontologyId: "efo",
   parameter: "collection=nfdi4health",
 };

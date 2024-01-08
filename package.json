@@ -72,5 +72,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-query": "^3.39.2"
+  },
+  "dependencies": {
+    "@zbmed/ols-treeview": "^4.0.8"
   }
 }
