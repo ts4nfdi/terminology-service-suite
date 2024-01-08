@@ -51,6 +51,8 @@ jobs:
         run: |
           npm install
           npm run build-storybook -- -o public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
