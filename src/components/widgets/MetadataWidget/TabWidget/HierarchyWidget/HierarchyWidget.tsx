@@ -16,7 +16,7 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
     const treeContainer = document.querySelector('#tree_container');
     (window as any)["OLSWidgets"].createEntityTree({
         ontologyId: props.ontologyId,
-        apiUrl: props.api,
+        apiUrl: props.api.substring(0, props.api.lastIndexOf("api")),
         iri: props.iri
       }, treeContainer);
   });

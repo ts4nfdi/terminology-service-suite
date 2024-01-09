@@ -17,7 +17,7 @@ export default {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
-        "https://www.ebi.ac.uk/ols4/",
+        "http://ols4.qa.km.k8s.zbmed.de/ols4/api/"
       ],
     },
     ontologyId: {
@@ -43,7 +43,7 @@ export const HierarchyWidget1 = Template.bind({});
 // @ts-ignore
 HierarchyWidget1.args = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-  api: "https://www.ebi.ac.uk/ols4/",
+  api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
   ontologyId: "efo",
   parameter: "collection=nfdi4health",
 };
