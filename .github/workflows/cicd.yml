@@ -47,12 +47,13 @@ jobs:
         with:
           node-version: 16.16.0
           cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+          token: ${{ secrets.TREEVIEW_TOKEN }}
       - name: Install and Build
         run: |
           npm install
           npm run build-storybook -- -o public
-        env:
-          NPM_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
