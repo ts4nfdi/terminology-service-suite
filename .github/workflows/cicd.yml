@@ -4,9 +4,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ main]
+    branches: [ main ]
   pull_request:
-    branches: [ main]
+    branches: [ main ]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -18,22 +18,22 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ 16.x ]
     steps:
-    - uses: actions/checkout@v3
-      with:
-        # Make sure the release step uses its own credentials.
-        persist-credentials: false
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npx semantic-release
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+      - uses: actions/checkout@v3
+        with:
+          # Make sure the release step uses its own credentials.
+          persist-credentials: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
   documentation:
     runs-on: ubuntu-latest
     permissions:
@@ -49,11 +49,13 @@ jobs:
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@zbmed'
-          token: ${{ secrets.TREEVIEW_TOKEN }}
+          token: ${{ secrets.TREEVIEW_SECRET }}
       - name: Install and Build
         run: |
           npm install
           npm run build-storybook -- -o public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
