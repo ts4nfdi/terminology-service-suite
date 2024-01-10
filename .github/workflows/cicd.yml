@@ -15,15 +15,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [ 16.x ]
     steps:
       - uses: actions/checkout@v3
         with:
-          # Make sure the release step uses its own credentials.
-          persist-credentials: false
+          persist-credentials: false # Make sure the release step uses its own credentials.
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
