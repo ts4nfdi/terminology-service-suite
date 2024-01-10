@@ -2,8 +2,7 @@ import React from "react";
 import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
-import {getPreferredOntologyJSON} from "../../index";
-import {getErrorMessageToDisplay} from "../../../index";
+import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../../utils/helper";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;

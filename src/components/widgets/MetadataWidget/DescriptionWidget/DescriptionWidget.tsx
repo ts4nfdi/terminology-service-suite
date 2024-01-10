@@ -3,8 +3,7 @@ import { useQuery } from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
-import {getPreferredOntologyJSON} from "../index";
-import {getErrorMessageToDisplay} from "../../index";
+import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
 
 export interface DescriptionWidgetProps extends EuiTextProps {
   iri?: string;
