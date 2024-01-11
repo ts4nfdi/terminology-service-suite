@@ -1,0 +1,27 @@
+import Thing from "./Thing";
+
+export default interface Ontology extends Thing {
+    getOntologyId(): string;
+    getName(): string;
+    getDescription(): string;
+    getCreators(): string[];
+    getSourceFileTimestamp(): string;
+    getNumEntities(): number;
+    getNumClasses(): number;
+    getNumProperties(): number;
+    getNumIndividuals(): number;
+    getLogoURL(): string | undefined;
+    getOntologyPurl(): string;
+    getHomepage(): string;
+    getMailingList(): string;
+    getTracker(): string;
+    getVersionIri(): string;
+    getVersion(): string;
+    getVersionFromIri(): string;
+    getLoaded(): string;
+    getPreferredRoots(): string[];
+    getLanguages(): string[];
+    getImportsFrom(): string[];
+    getExportsTo(): string[];
+    getAllowDownload(): string;
+}
