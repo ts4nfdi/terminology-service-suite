@@ -149,7 +149,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             let uniqueValues = [...new Set(props.preselected)]
                 .filter((option) => {
                     return (props.allowCustomTerms && option.label) || option.iri;
-                })
+                });
+
+            if(props.singleSelection) uniqueValues = [uniqueValues[0]];
 
             for(let option of uniqueValues) {
                 if (option.iri && option.iri.startsWith("http")) {
