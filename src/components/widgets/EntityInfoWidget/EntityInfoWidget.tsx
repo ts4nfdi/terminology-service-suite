@@ -3,6 +3,12 @@ import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText } from "@el
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from 'react-query'
 import {getErrorMessageToDisplay} from "../index";
+import {capitalize} from "../../../app/util";
+import Ontology from "./../../../model/interfaces/Ontology"
+import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
+import Thing from "../../../model/interfaces/Thing";
+import Entity from "../../../model/interfaces/Entity";
+import Class from "../../../model/interfaces/Class";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -38,57 +44,6 @@ interface EntityInfo {
 
 const DEFAULT_HAS_TITLE = true;
 
-async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<EntityInfo> {
-    if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
-        return {
-            iri: response.config.id,
-            versionIri: response.config.versionIri,
-            id: response.ontologyId,
-            version: response.config.version,
-            termNum: response.numberOfTerms,
-            lastLoad: response.loaded,
-            creators: response.creators,
-            annotations: response.config.annotations ? response.config.annotations : [],
-            entityTypeName: 'Ontology'
-        };
-    }
-    if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-        return {
-            label: response._embedded.terms[0].label,
-            synonyms: response._embedded.terms[0].synonyms,
-            subsets: response._embedded.terms[0].in_subset,
-            annotations: response._embedded.terms[0].annotation,
-            entityTypeName: 'Term'
-        };
-    }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-        return {
-            label: response._embedded.properties[0].label,
-            synonyms: response._embedded.properties[0].synonyms,
-            annotations: response._embedded.properties[0].annotation,
-            entityTypeName: 'Property'
-        };
-    }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-        return {
-            label: response._embedded.individuals[0].label,
-            synonyms: response._embedded.individuals[0].synonyms,
-            annotations: response._embedded.individuals[0].annotation,
-            entityTypeName: 'Individual'
-        };
-    }
-    return {
-        label: 'INVALID ENTITY TYPE',
-        synonyms: [],
-        annotations: {},
-        entityTypeName: 'No'
-    };
-}
-
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
     const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
     const olsApi = new OlsApi(api);
@@ -100,7 +55,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         isError: isErrorEntityInfo,
         error: errorEntityInfo,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return getEntityInfo(olsApi, entityType, iri, ontologyId);
+        return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, true);
     });
 
     function generateDisplayItems(item: any) {
@@ -114,74 +69,257 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
+    function getOntologyIriSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {(castedEntity.getIri() || castedEntity.getOntologyPurl()) &&
+                        <EuiFlexItem>
+                            <b>Ontology IRI:</b>
+                            <p><a id={"ontologyIri"} href={castedEntity.getIri() || castedEntity.getOntologyPurl()}>
+                                {castedEntity.getIri() || castedEntity.getOntologyPurl()}
+                            </a></p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getVersionIriSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getVersionIri() &&
+                        <EuiFlexItem>
+                            <b>Version IRI:</b>
+                            <p><a id={"versionIri"} href={castedEntity.getVersionIri()}>
+                                {castedEntity.getVersionIri()}
+                            </a></p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getLastLoadSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getSourceFileTimestamp() &&
+                        <EuiFlexItem>
+                            <b>Last loaded:</b>
+                            <p>{new Date(castedEntity.getSourceFileTimestamp()).toString()}</p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getOntologyIdSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getOntologyId() &&
+                        <EuiFlexItem>
+                            <b>Ontology ID:</b>
+                            <p>{castedEntity.getOntologyId()}</p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getVersionSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getVersion() &&
+                        <EuiFlexItem>
+                            <b>Version:</b>
+                            <p>{castedEntity.getVersion()}</p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getNumClassesSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getNumClasses() &&
+                        <EuiFlexItem>
+                            <b>Number of classes:</b>
+                            <p>{castedEntity.getNumClasses().toLocaleString()}</p>
+                        </EuiFlexItem>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getCreatorsSection(entity?: Thing) : JSX.Element {
+        if(entity?.getType() != "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Ontology;
+            return (
+                <>
+                    {castedEntity.getCreators().length > 0 &&
+                        <><EuiFlexItem>
+                            <b>Creators:</b>
+                            {generateDisplayItems(castedEntity.getCreators())}
+                        </EuiFlexItem><EuiSpacer/></>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getAnnotationSection(entity?: Thing) : JSX.Element {
+        if(entity == undefined) return <></>;
+        return (
+            <>
+                {entity.getAnnotationPredicates().map((annoKey) => (
+                    <EuiFlexItem grow={false} key={annoKey}>
+                        <b>{entity.getAnnotationTitleById(annoKey)}:</b>
+                        {entity.getAnnotationById(annoKey).length > 1 ?
+                            <ul>{entity.getAnnotationById(annoKey).map((annotation) => {
+                                return <li id={annotation.value}>{annotation.value}</li>;
+                            })}</ul> :
+                            <p>{entity.getAnnotationById(annoKey)[0].value}</p>
+                        }
+                    </EuiFlexItem>
+                ))}
+            </>
+        );
+    }
+
+    function getLabelSection(entity?: Thing) : JSX.Element {
+        if(entity == undefined || entity.getType() == "ontology") {
+            return <></>;
+        }
+        else {
+            return (
+                <>
+                    {entity.getLabel() &&
+                        <><EuiFlexItem>
+                            <b>Label:</b>
+                            {entity.getLabel()}
+                        </EuiFlexItem><EuiSpacer/></>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getSynonymsSection(entity?: Thing) : JSX.Element {
+        if(entity == undefined || entity.getType() == "ontology") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Entity;
+            return (
+                <>
+                    { castedEntity.getSynonyms().length > 0 &&
+                        <><EuiFlexItem>
+                            <b>Synonyms:</b>
+                            {castedEntity.getSynonyms().length > 1 ?
+                                <ul>{castedEntity.getSynonyms().map((synonym) => {
+                                    return <li id={synonym.value}>{synonym.value}</li>;
+                                })}</ul> :
+                                <p>{castedEntity.getSynonyms()[0].value}</p>
+                            }
+                        </EuiFlexItem><EuiSpacer/></>
+                    }
+                </>
+            );
+        }
+    }
+
+    function getSubsetsSection(entity?: Thing) : JSX.Element {
+        if(entity == undefined || entity.getType() != "class") {
+            return <></>;
+        }
+        else {
+            const castedEntity = entity as Class;
+            return (
+                <>
+                    { castedEntity.getSubsets().length > 0 &&
+                        <><EuiFlexItem>
+                            <b>In Subsets:</b>
+                            {generateDisplayItems(castedEntity.getSubsets())}
+                        </EuiFlexItem><EuiSpacer/></>
+                    }
+                </>
+            );
+        }
+    }
+
     return (
         <>
             <EuiCard
-                title={hasTitle ? entityInfo?.entityTypeName+" Information" : ""}
+                title={hasTitle ? (entityType ? capitalize(entityType) : (isSuccessEntityInfo && entityInfo) ? capitalize(entityInfo.getType()) : "")  +" Information" : ""}
                 layout="horizontal"
             >
+
                 {isLoadingEntityInfo && <EuiLoadingSpinner size={'s'}/>}
                 {isSuccessEntityInfo &&
                     <EuiText {...rest}>
-                        {entityInfo?.iri &&
-                          <EuiFlexItem>
-                              <b>Ontology IRI:</b>
-                              <p>{entityInfo.iri.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.versionIri &&
-                          <EuiFlexItem>
-                              <b>Version IRI:</b>
-                              <p>{entityInfo.versionIri.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.id &&
-                          <EuiFlexItem>
-                              <b>Ontology ID:</b>
-                              <p>{entityInfo.id.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.version &&
-                          <EuiFlexItem>
-                              <b>Version:</b>
-                              <p>{entityInfo.version.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.termNum &&
-                          <EuiFlexItem>
-                              <b>Number of terms:</b>
-                              <p>{entityInfo.termNum.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.lastLoad &&
-                          <EuiFlexItem>
-                              <b>Last loaded:</b>
-                              <p>{entityInfo.lastLoad.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.creators &&
-                          <><EuiFlexItem>
-                              <b>Creators:</b>
-                              {generateDisplayItems(entityInfo?.creators)}
-                          </EuiFlexItem><EuiSpacer/></>}
+                        {getOntologyIriSection(entityInfo)}
+                        {getVersionIriSection(entityInfo)}
+                        {getLastLoadSection(entityInfo)}
 
-                        {entityInfo?.label &&
-                          <EuiFlexItem>
-                              <b>Label:</b>
-                              <p>{entityInfo?.label}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.synonyms &&
-                          <><EuiFlexItem>
-                              <b>Synonyms:</b>
-                              {generateDisplayItems(entityInfo?.synonyms)}
-                          </EuiFlexItem><EuiSpacer/></>}
-                        {entityInfo?.subsets &&
-                          <><EuiFlexItem>
-                              <b>In Subsets:</b>
-                              {generateDisplayItems(entityInfo?.subsets)}
-                          </EuiFlexItem><EuiSpacer/></>}
+                        {/* TODO: Do we want the following on the information widget?
+                                  Ebi does not have them there, but on other parts of the entity page */
+                            <>
+                                {getOntologyIdSection(entityInfo)}
+                                {getVersionSection(entityInfo)}
+                                {getNumClassesSection(entityInfo)}
+                                {   // redundant as it's listed in annotations anyway
+                                /*{getCreatorsSection(entityInfo)}*/}
+                            </>
+                        }
 
+                        {getLabelSection(entityInfo)}
 
-                        {entityInfo ? Object.entries(entityInfo.annotations).map(([annoKey, annoVal]) => (
-                            <EuiFlexItem grow={false} key={annoKey}>
-                                <b>{annoKey}:</b>
-                                <p>{generateDisplayItems(annoVal)}</p>
-                            </EuiFlexItem>
-                        )) : ""}
+                        {/* TODO: improve synonyms & annotation rendering (in general Reified rendering) (Metadata Tooltips, no list for single entry, ...)
+                               -> https://github.com/EBISPOT/ols4/blob/dev/frontend/src/pages/ontologies/entities/entityPageSections/MetadataTooltip.tsx,
+                               -> https://github.com/EBISPOT/ols4/blob/dev/frontend/src/pages/ontologies/entities/entityPageSections/EntityAnnotationsSection.tsx
+                        */}
+                        {getSynonymsSection(entityInfo)}
+                        {getSubsetsSection(entityInfo)}
+                        {getAnnotationSection(entityInfo)}
                     </EuiText>
                 }
                 {isErrorEntityInfo && <EuiText>{getErrorMessageToDisplay(errorEntityInfo, "information")}</EuiText>}
