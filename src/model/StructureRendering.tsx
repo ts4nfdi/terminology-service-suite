@@ -1,7 +1,7 @@
 import Thing from "./interfaces/Thing";
 import React from "react";
 import {EuiBadge, EuiIconTip} from "@elastic/eui";
-import {getFrontEndApi, getTermInOntologySuffix} from "../app/util";
+import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 
@@ -44,7 +44,7 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
  * @param showBadges    boolean which indicates if badges should be shown
  * @returns JSX.Element the entity link JSX
  */
-export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = true) {
+export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = true): JSX.Element {
     const frontendApi = getFrontEndApi(api);
     const label = linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
     const linkedEntity = linkedEntities.get(iri);
@@ -177,7 +177,213 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
     }
 }
 
-// TODO: ClassExpression (probably best to take it from EBI OLS4 and insert own JSX design from getSectionListElement() function in EntityRelationsWidget)
+// TODO: compare with ClassExpression.tsx in ols4 project
+/**
+ * ONLY USABLE WITH V2-API ENTITIES
+ *
+ * Builds and returns one element of a sections' list, possibly in a recursive fashion by parsing the response object at the currentResponsePath to show Manchester syntax.
+ * @returns {JSX.Element} the list element
+ * @param parentEntity the entity object possessing the whole response object
+ * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
+ * @param currentResponsePath the current sub-object of the parentEntities response object parsed as class expression
+ * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
+ * @param showBadges boolean which indicates if badges should be shown
+ * @returns JSX.Element the class expression JSX
+ */
+function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean): JSX.Element {
+    let result = <></>;
+
+    if (typeof currentResponsePath === "string") {
+        result = getEntityLinkJSX(parentEntity, linkedEntities, currentResponsePath, api, showBadges);
+    }
+    else if (typeof currentResponsePath === "object" && Array.isArray(currentResponsePath["type"]) && currentResponsePath["type"].indexOf("reification") !== -1) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
+        // current response path is reification
+        result = getReifiedJSX(parentEntity, Reified.fromJson<any>(currentResponsePath)[0], api, showBadges);
+    }
+    else { // type === "object"
+        const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
+        const allValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
+        const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
+        const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
+        const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
+        const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
+        const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
+        const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#qualifiedCardinality"];
+        const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
+        const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
+        const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
+        const inverseOf = currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
+        const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+
+        // not relevant for relations widget, only for information widget
+        // const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
+
+        if (someValuesFrom) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> some </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(someValuesFrom)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (allValuesFrom) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> only </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(allValuesFrom)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (intersectionOf) {
+            const elements: JSX.Element[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#40;
+                </span>
+            ];
+            for (const elem of intersectionOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <i> and </i>
+                    );
+                }
+                elements.push(
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#41;
+                </span>
+            );
+            result = (
+                <span>{elements}</span>
+            );
+        }
+        else if (unionOf) {
+            const elements: JSX.Element[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#40;
+                </span>
+            ];
+            for (const elem of unionOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <i> or </i>
+                    );
+                }
+                elements.push(
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#41;
+                </span>
+            );
+            result = (
+                <span>{elements}</span>
+            );
+        }
+        else if (hasValue) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> value </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasValue)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (minCardinality) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> min </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(minCardinality)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (maxCardinality) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> max </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(maxCardinality)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (cardinality) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> exactly </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(cardinality)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (hasSelf) {
+            result = (
+                <>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    <i style={{color: "purple"}}> Self </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasSelf)[0], api, showBadges)}
+                </>
+            );
+        }
+        else if (complementOf) {
+            result = (
+                <>
+                    <i>not </i>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, hasSelf, api, showBadges)}
+                </>
+            );
+        }
+        else if (oneOf) {
+            const elements: JSX.Element[] = [
+                <span key={randomString()} className="text-neutral-default">
+                    &#123;
+                </span>
+            ];
+            for (const elem of oneOf) {
+                if (elements.length > 1) {
+                    elements.push(
+                        <span key={randomString()} className="text-neutral-default">
+                          &#44;&nbsp;
+                        </span>
+                    );
+                }
+                elements.push(
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                );
+            }
+            elements.push(
+                <span className="text-neutral-default">
+                    &#125;
+                </span>
+            );
+            result = (
+                <span>{elements}</span>
+            );
+        }
+        else if (inverseOf) {
+            result = (
+                <>
+                    <i style={{color: "purple"}}>inverse </i>
+                    <span key={randomString()} className="text-neutral-default">
+                      &#40;
+                    </span>
+                    {getClassExpressionJSX(parentEntity, linkedEntities, inverseOf, api, showBadges)}
+                    <span key={randomString()} className="text-neutral-default">
+                      &#41;
+                    </span>
+                </>
+            );
+        }
+    }
+
+    return result;
+}
 
 /**
  * Renders a given Reified
@@ -206,21 +412,11 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
                         return <>{JSON.stringify(value.value)}</>;
                     }
                     else {
-                        /*
-                        return (
-                            <ClassExpression
-                                ontologyId={entity.getOntologyId()}
-                                currentEntity={entity}
-                                expr={value.value}
-                                entityType={entity.getTypePlural() as any}
-                                linkedEntities={linkedEntities}
-                            />
-                        );
-                        */
-                        return <></>;
+                        return getClassExpressionJSX(entity, linkedEntities, value.value, api, showBadges);
                     }
                 }
                 else {
+                    // TODO
                     /*
                     return (
                         <span>
