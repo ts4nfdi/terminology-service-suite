@@ -27,7 +27,7 @@ function getEntityTypeName(type: string) : string {
 }
 
 /**
- * Returns "/ontologies/{ontologyId}/entities?iri={termIri}", which can be concatenated with frontendApi to get full link
+ * Returns "/ontologies/{ontologyId}/{entityType}?iri={termIri}", which can be concatenated with frontendApi to get full link
  * @param ontologyId the entities' ontologyId
  * @param termIri the entities' iri
  * @param entityTypeArray the entities' type array (from api JSON linkedEntities)
