@@ -1,4 +1,15 @@
 import axios, { AxiosInstance } from "axios";
+import OLS4Entity from "../model/ols4-model/OLS4Entity";
+import OLS4Class from "../model/ols4-model/OLS4Class";
+import OLS4Individual from "../model/ols4-model/OLS4Individual";
+import OLS4Property from "../model/ols4-model/OLS4Property";
+import Entity from "../model/interfaces/Entity";
+import StandardClass from "../model/standard-model/StandardClass";
+import StandardOntology from "../model/standard-model/StandardOntology";
+import Thing from "../model/interfaces/Thing";
+import StandardProperty from "../model/standard-model/StandardProperty";
+import StandardIndividual from "../model/standard-model/StandardIndividual";
+import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
 
 interface PaginationParams {
   size?: string;
@@ -184,7 +195,8 @@ export class OlsApi {
    */
   public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return (await this.axiosInstance.get(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+    const response = (await this.axiosInstance.get(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+    return this.check_for_errors(response);
   }
 
   /**
@@ -208,6 +220,99 @@ export class OlsApi {
   public getClass: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     return (await this.axiosInstance.get(queryPrefix+"classes", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
+  /**
+   * Returns a response Object (implementing 'Class', 'Property', 'Individual' or 'Ontology').
+   * Indirectly fetches the response JSON for the specified entityType, iri, ontologyId, parameter and API version (useLegacy).
+   * 
+   * @param entityType
+   * @param iri
+   * @param ontologyId
+   * @param parameter
+   * @param useLegacy
+   */
+  public async getResponseObject(entityType?: string, iri?: string, ontologyId?: string, parameter?: string, useLegacy: boolean = false) : Promise<Thing> {
+    if(useLegacy) {
+      if(entityType) {
+        let response;
+        switch (entityType) {
+          case 'ontology':
+            if(!ontologyId) throw Error("ontologyId has to be specified if entityType == 'ontology'");
+            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+            return new StandardOntology(response);
+
+          case 'term':
+            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+            return new StandardClass(response["_embedded"]["terms"][0]);
+
+          case 'property':
+            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
+            return new StandardProperty(response["_embedded"]["properties"][0]);
+
+          case 'individual':
+            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
+            return new StandardIndividual(response["_embedded"]["individuals"][0]);
+
+          default:
+            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'ontology', 'property', 'individual'}");
+        }
+      }
+      else {
+        throw Error("Entity type must be specified when using legacy API."); // TODO: for now just throw error
+      }
+    }
+    else {
+      if(entityType) {
+        let response;
+        switch (entityType) {
+          case "ontology":
+            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+            return new OLS4Ontology(response);
+
+          case "class":
+            response = await this.getClass(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+            return new OLS4Class(response["elements"][0]);
+
+          case "property":
+            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
+            return new OLS4Property(response["elements"][0]);
+
+          case "individual":
+            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
+            return new OLS4Individual(response["elements"][0]);
+
+          default:
+            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'ontology', 'property', 'individual'}");
+        }
+      }
+      else {
+        if(iri) {
+          const response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+          const types = response["elements"][0]["type"]
+
+          if(types.includes("class")) {
+            return new OLS4Class(response["elements"][0]);
+          }
+          else if(types.includes("property")) {
+            return new OLS4Property(response["elements"][0]);
+          }
+          else if(types.includes("individual")) {
+            return new OLS4Individual(response["elements"][0]);
+          }
+          else {
+            throw Error("Response object does not have a 'type' property");
+          }
+        }
+        else if(!iri && ontologyId) {
+          const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+          return new OLS4Ontology(response);
+        }
+        else {
+          throw Error("Neither ontologyId nor iri was provided.");
+        }
+      }
+    }
   }
 
   /**
