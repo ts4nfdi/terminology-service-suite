@@ -52,7 +52,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
     /**
      * Pass a pre select value.
      */
-    selectOption?: { label?: string; iri?: string };
+    preselected?: { label?: string; iri?: string }[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -75,7 +75,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, hasShortSelectedLabel, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -141,21 +141,28 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     } = useQuery(
         [
             "onMount", // no dependencies - does only need to be executed once when mounting the component
-            props.selectOption
+            props.preselected
         ],
         async () => {
-            if (props.selectOption?.iri && props.selectOption?.iri.startsWith("http")) {
-                olsApi.select(
-                    {query: props.selectOption?.iri},
-                    undefined,
-                    undefined,
-                    parameter,
-                ).then((response) => {
-                    if (response.response && response.response.docs) {
-                        response.response.docs.map((selection: any) => {
-                            if (props.selectOption?.iri === selection.iri) {
-                                setOptions([
-                                    {
+            let preselectedValues : EuiComboBoxOptionOption<any>[] = [];
+
+            let uniqueValues = [...new Set(props.preselected)]
+                .filter((option) => {
+                    return (props.allowCustomTerms && option.label) || option.iri;
+                })
+
+            for(let option of uniqueValues) {
+                if (option.iri && option.iri.startsWith("http")) {
+                    await olsApi.select(
+                        {query: option.iri},
+                        undefined,
+                        undefined,
+                        parameter,
+                    ).then((response) => {
+                        if (response.response && response.response.docs) {
+                            response.response.docs.map((selection: any) => {
+                                if (option.iri === selection.iri) {
+                                    preselectedValues.push({
                                         // label to display within the combobox either raw value or generated one
                                         // #renderOption() is used to display during selection.
                                         label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
@@ -169,33 +176,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                             short_form: selection.short_form,
                                             description: selection.description?.join()
                                         },
-                                    },
-                                ]);
-                                setSelectedOptions([
-                                    {
-                                        // label to display within the combobox either raw value or generated one
-                                        // #renderOption() is used to display during selection.
-                                        label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                        // key to distinguish the options (especially those with same label)
-                                        key: selection.iri,
-                                        value: {
-                                            iri: selection.iri,
-                                            label: selection.label,
-                                            ontology_name: selection.ontology_name,
-                                            type: selection.type,
-                                            short_form: selection.short_form,
-                                            description: selection.description?.join()
-                                        },
-                                    },
-                                ]);
-                            }
-                        })
-                    }
-                });
-            } else if (props.selectOption?.label && props.allowCustomTerms) { // when a custom term is passed
-                setOptions([
-                    {
-                        label: props.selectOption?.label,
+                                    });
+                                }
+                            })
+                        }
+                    });
+                } else if (option.label && props.allowCustomTerms) {
+                    preselectedValues.push({
+                        label: option.label,
+                        key: option.label,
                         value: {
                             iri: "",
                             label: "",
@@ -204,22 +193,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             short_form: "",
                             description: ""
                         }
-                    },
-                ]);
-                setSelectedOptions([
-                    {
-                        label: props.selectOption?.label,
-                        value: {
-                            iri: "",
-                            label: "",
-                            ontology_name: "",
-                            type: "",
-                            short_form: "",
-                            description: ""
-                        }
-                    },
-                ]);
+                    });
+                }
             }
+
+            setOptions(preselectedValues);
+            setSelectedOptions(preselectedValues);
         }
     )
 

@@ -23,7 +23,7 @@ export default {
     placeholder: {
       defaultValue: "Search for Term",
     },
-    selectOption: {},
+    preselected: {},
     parameter: {},
     hasShortSelectedLabel: {
       description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
@@ -54,18 +54,18 @@ export const withDefaults = Template.bind({});
 
 export const withValue = Template.bind({});
 withValue.args = {
-  selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }],
 };
 export const withCustomValue = Template.bind({});
 withCustomValue.args = {
   allowCustomTerms: true,
-  selectOption: { label: "freetext" },
+  preselected: [{ label: "freetext" }],
 };
 export const withInvalidValue = Template.bind({});
 withInvalidValue.args = {
-  selectOption: {
+  preselected: [{
     iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
-  },
+  }],
 };
 
 export const withGermanInput = Template.bind({});
@@ -88,6 +88,17 @@ displaySelectedEntityWithLongForm.args = {
 export const allowAddingCustomTerms = Template.bind({});
 allowAddingCustomTerms.args = {
   allowCustomTerms: true
+};
+
+export const allowMultipleTerms = Template.bind({});
+allowMultipleTerms.args = {
+  singleSelection: false,
+};
+
+export const withMultipleValues = Template.bind({});
+withMultipleValues.args = {
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }, { iri: "http://purl.bioontology.org/ontology/MESH/D003920" }],
+  singleSelection: false,
 };
 
 
