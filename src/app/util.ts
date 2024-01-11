@@ -51,3 +51,10 @@ export function pluralizeType(typeArray: string[]) : string | undefined {
     }
     return undefined;
 }
+
+/**
+ * Returns a random string used mainly for component keys.
+ */
+export function randomString() {
+    return (Math.random() * Math.pow(2, 54)).toString(36);
+}
