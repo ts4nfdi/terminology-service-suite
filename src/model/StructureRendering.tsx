@@ -1,29 +1,48 @@
 import Thing from "./interfaces/Thing";
 import React from "react";
-import {EuiBadge} from "@elastic/eui";
+import {EuiBadge, EuiIconTip} from "@elastic/eui";
 import {getFrontEndApi, getTermInOntologySuffix} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 
 /**
+ * ONLY USABLE WITH V2-API ENTITIES
  *
- * @param entity the surrounding entity of the axioms array (for eventual label fetching)
- * @param axioms the entities axioms
+ * Returns Reified axioms as JSX element (similar to MetadataTooltip component in ols4 project)
+ * @param parentEntity the surrounding entity of the axioms array (for eventual label fetching)
+ * @param axiomsDict the entities axioms in the format returned by Reified::getMetadata()
  * @returns JSX.Element the axioms in JSX format to display
  */
-export function getAxiomsInformationJSX(entity: Thing, axioms: any[] | null) : JSX.Element {
-    // TODO
-    return (<></>);
+export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | null) : JSX.Element {
+    let axiomsText = Object.keys(axiomsDict)
+        .map((key) => {
+            let label = parentEntity.getLinkedEntities().getLabelForIri(key) || key;
+            if (label) {
+                return (
+                    "*" + axiomsDict[key] + " (" + label + ")"
+                );
+            }
+            else return "";
+        })
+        .join("\n")
+
+    return (
+        <EuiIconTip type={"iInCircle"}
+                    color={"subdued"}
+                    content={axiomsText}></EuiIconTip>
+    );
 }
 
 /**
+ * ONLY USABLE WITH V2-API ENTITIES
+ *
  * Returns a labeled entity link as JSX element
  * @param parentEntity the entity object in which the linked entity exists
  * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
  * @param iri   the entities' iri
  * @param api   the api used to extract the frontend api to link to linked entity
  * @param showBadges    boolean which indicates if badges should be shown
- * @returns JSX.Element the entity link
+ * @returns JSX.Element the entity link JSX
  */
 export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = true) {
     const frontendApi = getFrontEndApi(api);
@@ -224,7 +243,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
     return (
         <>
             {getValueJSX(reified)}
-            {reified.hasMetadata() && getAxiomsInformationJSX(entity, reified.axioms)}
+            {reified.hasMetadata() && getAxiomsInformationJSX(entity, reified.getMetadata())}
         </>
     );
 }
