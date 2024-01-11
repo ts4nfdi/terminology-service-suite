@@ -50,7 +50,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
         type?: string;
     }[]) => void;
     /**
-     * Pass a pre select value.
+     * Pass preselected values. If `singleSelection == true`, only the first one is displayed.
      */
     preselected?: { label?: string; iri?: string }[];
     /**
