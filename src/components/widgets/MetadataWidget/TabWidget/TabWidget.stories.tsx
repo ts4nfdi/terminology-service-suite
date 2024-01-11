@@ -20,7 +20,7 @@ export default {
       ],
     },
     ontologyId: {
-      description: "Ontology ID from where the term information should be taken.",
+      description: "StandardOntology ID from where the term information should be taken.",
     },
     iri: {
       description: "Iri of the term you want to fetch the tab information for.",

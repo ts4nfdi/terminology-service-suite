@@ -27,7 +27,7 @@ export default {
         "Iri of the term you want to fetch the ontology hierarchy for.",
     },
     ontologyId: {
-      description: "Ontology ID from where the object description should be taken.",
+      description: "StandardOntology ID from where the object description should be taken.",
     },
   entityType: {
     description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",

@@ -9,7 +9,7 @@ functionalities were extracted and implemented as separate reusable components (
 thus simplifying the development of user interfaces and the visualization of semantic information. 
 
 The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
-based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
+based on the [StandardOntology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
   
 
 ## Using this package
