@@ -1,8 +1,7 @@
 import { EuiPanel } from "@elastic/eui";
 import React, { useEffect } from "react";
 import "@zbmed/ols-treeview"
-import "./style/treestyles.css";
-
+import "../../../../../style/treestyles.css";
 
 export interface HierarchyWidgetProps {
   iri?: string;
