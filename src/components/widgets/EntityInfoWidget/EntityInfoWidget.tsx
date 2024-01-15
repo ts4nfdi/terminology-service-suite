@@ -5,10 +5,10 @@ import { useQuery } from 'react-query'
 import {getErrorMessageToDisplay} from "../index";
 import {capitalize} from "../../../app/util";
 import Ontology from "./../../../model/interfaces/Ontology"
-import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import Thing from "../../../model/interfaces/Thing";
 import Entity from "../../../model/interfaces/Entity";
 import Class from "../../../model/interfaces/Class";
+import {getReifiedJSX} from "../../../model/StructureRendering";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -215,9 +215,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         <b>{entity.getAnnotationTitleById(annoKey)}:</b>
                         {entity.getAnnotationById(annoKey).length > 1 ?
                             <ul>{entity.getAnnotationById(annoKey).map((annotation) => {
-                                return <li id={annotation.value}>{annotation.value}</li>;
+                                return <li id={annotation.value}>{getReifiedJSX(entity, annotation, api, /*TODO: showBadges as widget prop*/)}</li>;
                             })}</ul> :
-                            <p>{entity.getAnnotationById(annoKey)[0].value}</p>
+                            <p>{getReifiedJSX(entity, entity.getAnnotationById(annoKey)[0], api, /*TODO: showBadges as widget prop*/)}</p>
                         }
                     </EuiFlexItem>
                 ))}
@@ -251,16 +251,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             const castedEntity = entity as Entity;
             return (
                 <>
-                    { castedEntity.getSynonyms().length > 0 &&
+                    {castedEntity.getSynonyms().length > 0 &&
                         <><EuiFlexItem>
                             <b>Synonyms:</b>
                             {castedEntity.getSynonyms().length > 1 ?
                                 <ul>{castedEntity.getSynonyms().map((synonym) => {
-                                    return <li id={synonym.value}>{synonym.value}</li>;
+                                    return <li id={synonym.value}>{getReifiedJSX(castedEntity, synonym, api, /*TODO: showBadges as widget prop*/)}</li>;
                                 })}</ul> :
-                                <p>{castedEntity.getSynonyms()[0].value}</p>
+                                <p>{getReifiedJSX(castedEntity, castedEntity.getSynonyms()[0], api, /*TODO: showBadges as widget prop*/)}</p>
                             }
-                        </EuiFlexItem><EuiSpacer/></>
+                        </EuiFlexItem></>
                     }
                 </>
             );

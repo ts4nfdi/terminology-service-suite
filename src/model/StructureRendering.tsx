@@ -398,7 +398,13 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
 
         // linkedEntities not existent on entity (-> probably legacy api version)
         if(Object.keys(linkedEntities.linkedEntities).length == 0) {
-            return <>{JSON.stringify(value.value)}</>;
+            if(typeof value.value == "string") {
+                return <>{value.value}</>
+            }
+            else {
+                // TODO: should not happen, prove that this is never the case
+                return <>{JSON.stringify(value.value)}</>;
+            }
         }
         else {
             let linkedEntity = linkedEntities.get(value.value);
