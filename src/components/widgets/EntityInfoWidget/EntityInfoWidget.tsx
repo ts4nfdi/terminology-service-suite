@@ -3,12 +3,12 @@ import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText } from "@el
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from 'react-query'
 import {getErrorMessageToDisplay} from "../index";
-import {capitalize} from "../../../app/util";
+import {capitalize, randomString} from "../../../app/util";
 import Ontology from "./../../../model/interfaces/Ontology"
 import Thing from "../../../model/interfaces/Thing";
 import Entity from "../../../model/interfaces/Entity";
 import Class from "../../../model/interfaces/Class";
-import {getReifiedJSX} from "../../../model/StructureRendering";
+import {getEntityLinkJSX, getReifiedJSX} from "../../../model/StructureRendering";
 
 export interface EntityInfoWidgetProps {
     api: string;
@@ -21,31 +21,16 @@ export interface EntityInfoWidgetProps {
       | "individual"
       | "property";
     parameter?: string;
-}
-
-interface EntityInfo {
-    //ontology:
-    iri?: string,
-    versionIri?: string,
-    id?: string,
-    version?: string,
-    termNum?: number,
-    lastLoad?: string,
-    creators?: [],
-    //term:
-    subsets?: [],
-    //term, property, individual:
-    label?: string,
-    synonyms?: [],
-    //all:
-    annotations: {},
-    entityTypeName: string
+    showBadges?: boolean; // default is true
+    useLegacy?: boolean; // default is true
 }
 
 const DEFAULT_HAS_TITLE = true;
+const DEFAULT_SHOW_BADGES = true;
+const DEFAULT_USE_LEGACY = true;
 
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges = DEFAULT_SHOW_BADGES, useLegacy = DEFAULT_USE_LEGACY, ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
@@ -55,19 +40,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         isError: isErrorEntityInfo,
         error: errorEntityInfo,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, true);
+        return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
     });
-
-    function generateDisplayItems(item: any) {
-        return (
-            item ?
-                item.length > 1 ?
-                    item.map((element: string, i: any) =>
-                        <dd key={i}>{element.split(",")}</dd>)
-                    : item
-                : "-"
-        );
-    }
 
     function getOntologyIriSection(entity?: Thing) : JSX.Element {
         if(entity?.getType() != "ontology") {
@@ -198,7 +172,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {castedEntity.getCreators().length > 0 &&
                         <><EuiFlexItem>
                             <b>Creators:</b>
-                            {generateDisplayItems(castedEntity.getCreators())}
+                            {castedEntity.getCreators().length > 1 ?
+                                <ul>{castedEntity.getCreators().map((creator) => {
+                                    return <li id={creator + randomString()}>{getEntityLinkJSX(castedEntity, castedEntity.getLinkedEntities(), creator, api, showBadges)}</li>
+                                })}</ul> :
+                                <p>{getEntityLinkJSX(castedEntity, castedEntity.getLinkedEntities(), castedEntity.getCreators()[0], api, showBadges)}</p>
+                            }
                         </EuiFlexItem><EuiSpacer/></>
                     }
                 </>
@@ -215,9 +194,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         <b>{entity.getAnnotationTitleById(annoKey)}:</b>
                         {entity.getAnnotationById(annoKey).length > 1 ?
                             <ul>{entity.getAnnotationById(annoKey).map((annotation) => {
-                                return <li id={annotation.value}>{getReifiedJSX(entity, annotation, api, /*TODO: showBadges as widget prop*/)}</li>;
+                                return <li id={annotation.value}>{getReifiedJSX(entity, annotation, api, showBadges)}</li>;
                             })}</ul> :
-                            <p>{getReifiedJSX(entity, entity.getAnnotationById(annoKey)[0], api, /*TODO: showBadges as widget prop*/)}</p>
+                            <p>{getReifiedJSX(entity, entity.getAnnotationById(annoKey)[0], api, showBadges)}</p>
                         }
                     </EuiFlexItem>
                 ))}
@@ -256,9 +235,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                             <b>Synonyms:</b>
                             {castedEntity.getSynonyms().length > 1 ?
                                 <ul>{castedEntity.getSynonyms().map((synonym) => {
-                                    return <li id={synonym.value}>{getReifiedJSX(castedEntity, synonym, api, /*TODO: showBadges as widget prop*/)}</li>;
+                                    return <li id={synonym.value}>{getReifiedJSX(castedEntity, synonym, api, showBadges)}</li>;
                                 })}</ul> :
-                                <p>{getReifiedJSX(castedEntity, castedEntity.getSynonyms()[0], api, /*TODO: showBadges as widget prop*/)}</p>
+                                <p>{getReifiedJSX(castedEntity, castedEntity.getSynonyms()[0], api, showBadges)}</p>
                             }
                         </EuiFlexItem></>
                     }
@@ -278,8 +257,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     { castedEntity.getSubsets().length > 0 &&
                         <><EuiFlexItem>
                             <b>In Subsets:</b>
-                            {generateDisplayItems(castedEntity.getSubsets())}
-                        </EuiFlexItem><EuiSpacer/></>
+                            {castedEntity.getSubsets().length > 1 ?
+                                <ul>{castedEntity.getSubsets().map((subset) => {
+                                    return <li id={subset + randomString()}>{getEntityLinkJSX(castedEntity, castedEntity.getLinkedEntities(), subset, api, showBadges)}</li>
+                                })}</ul> :
+                                <p>{getEntityLinkJSX(castedEntity, castedEntity.getLinkedEntities(), castedEntity.getSubsets()[0], api, showBadges)}</p>
+                            }
+                        </EuiFlexItem></>
                     }
                 </>
             );
@@ -312,11 +296,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         }
 
                         {getLabelSection(entityInfo)}
-
-                        {/* TODO: improve synonyms & annotation rendering (in general Reified rendering) (Metadata Tooltips, no list for single entry, ...)
-                               -> https://github.com/EBISPOT/ols4/blob/dev/frontend/src/pages/ontologies/entities/entityPageSections/MetadataTooltip.tsx,
-                               -> https://github.com/EBISPOT/ols4/blob/dev/frontend/src/pages/ontologies/entities/entityPageSections/EntityAnnotationsSection.tsx
-                        */}
                         {getSynonymsSection(entityInfo)}
                         {getSubsetsSection(entityInfo)}
                         {getAnnotationSection(entityInfo)}
