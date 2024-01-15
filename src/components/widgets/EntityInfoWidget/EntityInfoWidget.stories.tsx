@@ -14,6 +14,7 @@ export default {
         type: "radio",
       },
       options: [
+        "https://www.ebi.ac.uk/ols4/api/v2",
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
@@ -43,10 +44,21 @@ export default {
     parameter: {
       type: { required: false }
     },
+    showBadges: {
+      type: { required: false },
+      description: "If true, entity badges linking to their defining ontologies are shown."
+    },
+    useLegacy: {
+      type: { required: false },
+      description: "Specifies the API version used."
+    }
   },
   args: {
+    api: "https://semanticlookup.zbmed.de/api/",
     hasTitle: true,
-    parameter: "collection=nfdi4health",
+    showBadges: true,
+    useLegacy: true,
+    iri: ""
   }
 };
 
@@ -57,38 +69,55 @@ const Template = (args: EntityInfoWidgetProps) => (
 export const OntologyInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-OntologyInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+OntologyInfoWidget.args = {
   entityType: "ontology",
-  ontologyId: "ncit",
-  hasTitle: true,
+  ontologyId: "ncit"
 };
 
 export const TermInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-TermInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+TermInfoWidget.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   entityType: "term",
-  ontologyId: "ncit",
-  hasTitle: true,
+  ontologyId: "ncit"
 };
 
 export const PropertyInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-PropertyInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+PropertyInfoWidget.args = {
   iri: "http://www.w3.org/2004/02/skos/core#altLabel",
   entityType: "property",
-  ontologyId: "mesh",
-  hasTitle: true,
+  ontologyId: "mesh"
 };
 
 export const IndividualInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-IndividualInfoWidget.args = {  api: "https://semanticlookup.zbmed.de/api/",
+IndividualInfoWidget.args = {
   iri: "http://purl.obolibrary.org/obo/IAO_0000423",
   entityType: "individual",
-  ontologyId: "clo",
-  hasTitle: true,
+  ontologyId: "clo"
+};
+
+export const OntologyInfoWidgetNewAPI = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OntologyInfoWidgetNewAPI.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/v2",
+  useLegacy: false,
+  entityType: "ontology",
+  ontologyId: "mp" // "uberon" is also good for demonstration
+};
+
+export const InfoWidgetBadges = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InfoWidgetBadges.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/v2",
+  useLegacy: false,
+  entityType: "class",
+  iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
+  ontologyId: "uberon"
 };
