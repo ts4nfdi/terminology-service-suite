@@ -243,6 +243,7 @@ export class OlsApi {
             return new StandardOntology(response);
 
           case 'term':
+          case 'class': // also allow "class" even if it should actually be "term"
             response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
             return new StandardClass(response["_embedded"]["terms"][0]);
 
@@ -255,7 +256,7 @@ export class OlsApi {
             return new StandardIndividual(response["_embedded"]["individuals"][0]);
 
           default:
-            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'ontology', 'property', 'individual'}");
+            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'class', 'ontology', 'property', 'individual'}");
         }
       }
       else {
@@ -271,6 +272,7 @@ export class OlsApi {
             return new OLS4Ontology(response);
 
           case "class":
+          case "term": // also allow "term" even if it should actually be "class"
             response = await this.getClass(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
             return new OLS4Class(response["elements"][0]);
 
@@ -283,7 +285,7 @@ export class OlsApi {
             return new OLS4Individual(response["elements"][0]);
 
           default:
-            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'ontology', 'property', 'individual'}");
+            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'class', 'ontology', 'property', 'individual'}");
         }
       }
       else {
