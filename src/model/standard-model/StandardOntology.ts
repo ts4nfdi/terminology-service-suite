@@ -95,10 +95,16 @@ export default class StandardOntology extends StandardThing implements Ontology{
    *  but in semanticlookup.zbmed.de/api.
    */
   getAnnotationPredicates(): string[] {
-    /* ols4 excludes "has preferred root term",
+    if(this.properties["config"] && this.properties["config"]["annotations"]) {
+      /* ols4 excludes "has preferred root term",
        properties without an IRI and anything in rdf, rdfs and owl namespaces,
        but this is not possible here as the labels are keys here, not the IRI's */
-    return asArray<string>(Object.keys(this.properties["config"]["annotations"]));
+      return asArray<string>(Object.keys(this.properties["config"]["annotations"]));
+    }
+    else {
+      // "annotations" key is not present in ols4/api
+      return [];
+    }
   }
 
   getAnnotationTitleById(id: string): string {
