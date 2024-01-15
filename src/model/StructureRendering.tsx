@@ -386,6 +386,100 @@ function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntiti
 }
 
 /**
+ * Inserts links into text (potentially with label instead of link displayed if link exists as key inside linkedEntities) and returns the resulting JSX element
+ * @param parentEntity the entity object possessing the whole response object
+ * @param text the text to insert links into
+ * @param linkedEntities the linkedEntities object (if undefined, no labels are inferred)
+ * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
+ * @param showBadges boolean which indicates if badges should be shown
+ */
+function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean) {
+    let linksToSplice: Array<{ start: number; end: number; link: JSX.Element }> =
+        [];
+
+    if(linkedEntities) {
+        for (let entityId of Object.keys(linkedEntities.linkedEntities)) {
+            for (
+                let n = text.indexOf(entityId, 0);
+                n !== -1;
+                n = text.indexOf(entityId, n)
+            ) {
+                linksToSplice.push({
+                    start: n,
+                    end: n + entityId.length,
+                    link: getEntityLinkJSX(parentEntity, linkedEntities, entityId, api, showBadges),
+                });
+
+                n += entityId.length;
+            }
+        }
+    }
+
+    const urlRe = /[A-z]+:\/\/[^\s]+/g;
+    for (let match = urlRe.exec(text); match; match = urlRe.exec(text)) {
+        const url = match[0];
+        // console.log("found match " + url);
+
+        linksToSplice.push({
+            start: match.index,
+            end: match.index + url.length,
+            link: (
+                <>
+                    <a href={url}>{url}</a>
+                </>
+            ),
+        });
+    }
+
+    linksToSplice.sort((a,b) => a.start - b.start);
+
+    removeOverlapping: for (let n = 0; n < linksToSplice.length; ) {
+        for (let n2 = n + 1; n2 < linksToSplice.length; ++n2) {
+            let spliceA = linksToSplice[n];
+            let spliceB = linksToSplice[n2];
+
+            if (spliceA === spliceB) continue;
+
+            // The splices overlap if neither ends before the other starts
+            if (spliceA.end >= spliceB.start && spliceB.end >= spliceA.start) {
+                // console.log("Removing overlapping");
+
+                // remove the shorter link of both
+                if(spliceA.end - spliceA.start < spliceB.end - spliceB.start) {
+                    linksToSplice.splice(n, 1);
+                }
+                else {
+                    linksToSplice.splice(n2, 1);
+                }
+                continue removeOverlapping;
+            }
+        }
+        ++n;
+    }
+
+    if (linksToSplice.length === 0) return <>{text}</>;
+
+    let res: JSX.Element[] = [];
+    let n = 0;
+
+    for (let link of linksToSplice) {
+        res.push(
+            <>
+                {text.substring(n, link.start)}
+            </>
+        );
+        res.push(link.link);
+        n = link.end;
+    }
+    res.push(
+        <>{text.slice(n)}</>
+    );
+
+    return <>{res}</>;
+}
+
+
+/**
  * Renders a given Reified
  * @param entity the entity the Reified exists in
  * @param reified the Reified
@@ -399,7 +493,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
         // linkedEntities not existent on entity (-> probably legacy api version)
         if(Object.keys(linkedEntities.linkedEntities).length == 0) {
             if(typeof value.value == "string") {
-                return <>{value.value}</>
+                return addLinksToText(entity, value.value.toString(), undefined, api, showBadges);
             }
             else {
                 // TODO: should not happen, prove that this is never the case
@@ -422,21 +516,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
                     }
                 }
                 else {
-                    // TODO
-                    /*
-                    return (
-                        <span>
-                          {addLinksToText(
-                              value.value.toString(),
-                              linkedEntities,
-                              entity.getOntologyId(),
-                              entity,
-                              entity.getTypePlural()
-                          )}
-                        </span>
-                    );
-                    */
-                    return <></>;
+                    return addLinksToText(entity, value.value.toString(), linkedEntities, api, showBadges);
                 }
             }
         }
