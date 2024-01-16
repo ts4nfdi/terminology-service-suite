@@ -1,9 +1,9 @@
 import {asArray, deCamelCase} from "../../app/util";
 import Reified from "../Reified";
-import StandardThing from "./StandardThing";
+import OLS3Thing from "./OLS3Thing";
 import Ontology from "../interfaces/Ontology";
 
-export default class StandardOntology extends StandardThing implements Ontology{
+export default class OLS3Ontology extends OLS3Thing implements Ontology{
 
   getType(): "ontology" | "class" | "property" | "individual" {
     return "ontology";

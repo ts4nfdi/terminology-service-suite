@@ -1,14 +1,12 @@
 import axios, { AxiosInstance } from "axios";
-import OLS4Entity from "../model/ols4-model/OLS4Entity";
 import OLS4Class from "../model/ols4-model/OLS4Class";
 import OLS4Individual from "../model/ols4-model/OLS4Individual";
 import OLS4Property from "../model/ols4-model/OLS4Property";
-import Entity from "../model/interfaces/Entity";
-import StandardClass from "../model/standard-model/StandardClass";
-import StandardOntology from "../model/standard-model/StandardOntology";
+import OLS3Class from "../model/ols3-model/OLS3Class";
+import OLS3Ontology from "../model/ols3-model/OLS3Ontology";
 import Thing from "../model/interfaces/Thing";
-import StandardProperty from "../model/standard-model/StandardProperty";
-import StandardIndividual from "../model/standard-model/StandardIndividual";
+import OLS3Property from "../model/ols3-model/OLS3Property";
+import OLS3Individual from "../model/ols3-model/OLS3Individual";
 import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
 
 interface PaginationParams {
@@ -240,20 +238,20 @@ export class OlsApi {
           case 'ontology':
             if(!ontologyId) throw Error("ontologyId has to be specified if entityType == 'ontology'");
             response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
-            return new StandardOntology(response);
+            return new OLS3Ontology(response);
 
           case 'term':
           case 'class': // also allow "class" even if it should actually be "term"
             response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
-            return new StandardClass(response["_embedded"]["terms"][0]);
+            return new OLS3Class(response["_embedded"]["terms"][0]);
 
           case 'property':
             response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
-            return new StandardProperty(response["_embedded"]["properties"][0]);
+            return new OLS3Property(response["_embedded"]["properties"][0]);
 
           case 'individual':
             response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
-            return new StandardIndividual(response["_embedded"]["individuals"][0]);
+            return new OLS3Individual(response["_embedded"]["individuals"][0]);
 
           default:
             throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'class', 'ontology', 'property', 'individual'}");

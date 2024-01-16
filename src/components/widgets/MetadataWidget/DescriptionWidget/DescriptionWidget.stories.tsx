@@ -42,7 +42,7 @@ export default {
         "Set your own text manually that overwrites the text fetched from the API",
     },
     ontologyId: {
-      description: "StandardOntology ID from where the object description should be taken.",
+      description: "Ontology ID from where the object description should be taken.",
     },
     entityType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",

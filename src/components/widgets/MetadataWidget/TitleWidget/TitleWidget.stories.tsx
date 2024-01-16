@@ -21,7 +21,7 @@ export default {
             },
         },
         ontologyId: {
-            description: "StandardOntology ID from where the object title/label should be taken.",
+            description: "Ontology ID from where the object title/label should be taken.",
         },
         entityType: {
             description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",

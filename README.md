@@ -9,7 +9,7 @@ functionalities were extracted and implemented as separate reusable components (
 thus simplifying the development of user interfaces and the visualization of semantic information. 
 
 The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are 
-based on the [StandardOntology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
+based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), software developed by EBI.
   
 
 ## Using this package
@@ -53,7 +53,7 @@ For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryCli
 
 As documentation we provide a so-called [Storybook](https://nfdi4health.github.io/semlookp-widgets/)  where you can view, build and test all widgets. When you select a widget, you can click on the 'Docs' tab in the top bar to get more information. In the right corner of the displayed widget, you can then click on "Show code" to see a sample code snippet, as shown below:  
 
-<img src="img/example_widget.png"  width="600" height="300">
+<img alt="autocomplete-sample-code" src="img/example_widget.png"  width="600" height="300">
 
 
 

@@ -24,7 +24,7 @@ export default {
         "IRI of the entity you want to fetch the cross references for.",
     },
     ontologyId: {
-      description: "StandardOntology ID from where the entity metadata should be taken.",
+      description: "Ontology ID from where the entity metadata should be taken.",
     },
     entityType: {
       description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",

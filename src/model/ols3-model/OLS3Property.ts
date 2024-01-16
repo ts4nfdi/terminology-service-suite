@@ -1,9 +1,9 @@
 import { asArray } from "../../app/util";
-import StandardEntity from "./StandardEntity";
+import OLS3Entity from "./OLS3Entity";
 import Reified from "../Reified";
 import Property from "../interfaces/Property";
 
-export default class StandardProperty extends StandardEntity implements Property{
+export default class OLS3Property extends OLS3Entity implements Property{
 
   getType(): "ontology" | "class" | "property" | "individual" {
     return "property";

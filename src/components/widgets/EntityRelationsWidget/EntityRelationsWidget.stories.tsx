@@ -39,7 +39,7 @@ export default {
             ],
         },
         iri: {
-            description: "StandardEntity IRI whose information you want to fetch.",
+            description: "Entity IRI whose information you want to fetch.",
         },
         parameter: {
             type: { required: false }

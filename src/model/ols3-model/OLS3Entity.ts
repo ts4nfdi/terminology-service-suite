@@ -1,9 +1,9 @@
 import {asArray, deUnderscore} from "../../app/util";
 import Reified from "../Reified";
-import StandardThing from "./StandardThing";
+import OLS3Thing from "./OLS3Thing";
 import Entity from "../interfaces/Entity";
 
-export default abstract class StandardEntity extends StandardThing implements Entity{
+export default abstract class OLS3Entity extends OLS3Thing implements Entity{
   abstract getParents(): Reified<any>[];
   abstract getSuperEntities(): Reified<any>[];
   abstract getEquivalents(): Reified<any>[];

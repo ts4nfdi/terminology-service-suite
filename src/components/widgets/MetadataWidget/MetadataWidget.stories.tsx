@@ -21,7 +21,7 @@ export default {
       ],
     },
     ontologyId: {
-      description: "StandardOntology ID from where the term metadata should be taken.",
+      description: "Ontology ID from where the term metadata should be taken.",
     },
     iri: {
       description: "Iri of the term you want to fetch the metadata for.",

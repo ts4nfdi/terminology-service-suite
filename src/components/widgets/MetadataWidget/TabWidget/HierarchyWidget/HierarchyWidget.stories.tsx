@@ -20,7 +20,7 @@ export default {
       ],
     },
     ontologyId: {
-      description: "StandardOntology ID from where the term hierarchy should be taken.",
+      description: "Ontology ID from where the term hierarchy should be taken.",
     },
     iri: {
       description: "Iri of the term you want to fetch the term hierarchy for.",

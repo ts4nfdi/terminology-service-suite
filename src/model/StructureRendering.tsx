@@ -60,7 +60,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             return <a href={iri}>{label}</a>;
         }
         else {
-            // So far only known occurrence of this branch is for owl#StandardThing
+            // So far only known occurrence of this branch is for owl#Thing
             return <span>{label}</span>;
         }
     }
