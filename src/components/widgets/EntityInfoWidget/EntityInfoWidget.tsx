@@ -27,10 +27,9 @@ export interface EntityInfoWidgetProps {
 
 const DEFAULT_HAS_TITLE = true;
 const DEFAULT_SHOW_BADGES = true;
-const DEFAULT_USE_LEGACY = true;
 
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges = DEFAULT_SHOW_BADGES, useLegacy = DEFAULT_USE_LEGACY, ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges = DEFAULT_SHOW_BADGES, ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
@@ -40,7 +39,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         isError: isErrorEntityInfo,
         error: errorEntityInfo,
     } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
+        return olsApi.getResponseObject(entityType, iri, ontologyId, parameter);
     });
 
     function getOntologyIriSection(entity?: Thing) : JSX.Element {
