@@ -7,7 +7,7 @@ import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
-import {getPreferredOntologyJSON} from "./index";
+import { getPreferredOntologyJSON } from "../../../utils/helper";
 
 export interface MetadataWidgetProps {
   iri: string;

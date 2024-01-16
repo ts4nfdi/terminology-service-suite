@@ -11,7 +11,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import {getErrorMessageToDisplay} from "../index";
+import { getErrorMessageToDisplay } from "../../../utils/helper";
 
 export interface ResourcesWidgetProps {
   api: string;

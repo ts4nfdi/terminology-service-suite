@@ -2,8 +2,8 @@ import React from "react";
 import {EuiBadge, EuiFlexItem, EuiLoadingSpinner, EuiText, EuiIconTip} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {useQuery} from "react-query";
-import {getErrorMessageToDisplay} from "../../index";
-import {getPreferredOntologyJSON} from "../index";
+import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
+
 
 export interface BreadcrumbWidgetProps {
   iri: string;
@@ -63,8 +63,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
                       <EuiIconTip type={"iInCircle"}
                                   color={"subdued"}
                                   content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}
-                      >
-                      </EuiIconTip>
+                      />
                     </EuiText>
                   </EuiFlexItem>
               }
