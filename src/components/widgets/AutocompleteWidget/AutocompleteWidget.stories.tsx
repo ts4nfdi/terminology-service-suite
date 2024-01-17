@@ -8,6 +8,7 @@ export default {
   component: AutocompleteWidget,
   argTypes: {
     api: {
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
