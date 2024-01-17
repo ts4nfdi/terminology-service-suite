@@ -20,8 +20,6 @@ jobs:
         node-version: [ 16.x ]
     steps:
       - uses: actions/checkout@v3
-        with:
-          persist-credentials: false # Make sure the release step uses its own credentials.
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -35,6 +33,20 @@ jobs:
           npm run build --if-present
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # Make sure the release step uses its own credentials.
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
