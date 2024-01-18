@@ -865,7 +865,7 @@ async function fetchInstances(api: OlsApi, props: EntityRelationsWidgetProps) {
  * @param props the entities' properties
  */
 async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
-    const response = await api.getEntity(undefined, undefined, {ontologyId: props.ontologyId, termIri: props.iri}, props.parameter)
+    const response = await api.getEntity(undefined, undefined, {ontologyId: props.ontologyId, termIri: props.iri}, props.parameter, false)
         .catch((error) => console.log(error));
     if (response["elements"][0] !== undefined) {
         return response["elements"][0];
@@ -878,9 +878,7 @@ async function fetchEntityJson(api: OlsApi, props: EntityRelationsWidgetProps) {
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, showBadges = DEFAULT_SHOW_BADGES, entityType, parameter, ...rest } = props;
 
-    // entity relations widget works with v2 api
-    const v2api = props.api + (props.api[props.api.length - 1] === '/' ? "" : "/") + "v2"
-    const olsApi = new OlsApi(v2api);
+    const olsApi = new OlsApi(api);
 
     /**
      * Used to fetch an entities' data to be shown in different sections

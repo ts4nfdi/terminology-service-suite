@@ -8,6 +8,8 @@ import Thing from "../model/interfaces/Thing";
 import OLS3Property from "../model/ols3-model/OLS3Property";
 import OLS3Individual from "../model/ols3-model/OLS3Individual";
 import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
+import {type} from "os";
+import {useQuery} from "react-query";
 
 interface PaginationParams {
   size?: string;
@@ -28,7 +30,7 @@ interface ContentParams {
 
 }
 
-export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
+export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string, useLegacy?: boolean) => Promise<any>;
 
 interface SearchQueryParams {
   query: string;
@@ -115,21 +117,6 @@ export class OlsApi {
   }
 
   /**
-   * Extracts useLegacy from parameter
-   * @param parameter
-   * @private
-   */
-  private useLegacy(parameter?: string) {
-    const useLegacy : string = this.buildOtherParams(parameter)["useLegacy"];
-
-    if(useLegacy === undefined) return DEFAULT_USE_LEGACY;
-
-    if(useLegacy.toLowerCase() === "true") return true;
-    else if(useLegacy.toLowerCase() === "false") return false;
-    else return DEFAULT_USE_LEGACY;
-  }
-
-  /**
    * Function for creating an object from string of parameters for axios input params
    * @param parameter
    * @private
@@ -176,59 +163,43 @@ export class OlsApi {
     return response;
   }
 
-  /**
-   * Generic apiCall function which other functions build up on
-   * @param parameter the parameter (e.g. containing the useLegacy flag)
-   * @param url the url to query
-   * @param config the config object for the query
-   */
-  public async apiCall(url: string, config?: AxiosRequestConfig<any> | undefined, parameter?: string,) {
-    const apiVersionPrefix: string = (this.useLegacy(parameter) ? "" : "v2/");
+  public getUseLegacy(useLegacy?: boolean): boolean {
+    return (useLegacy !== undefined) ? useLegacy : DEFAULT_USE_LEGACY;
+  }
 
-    // remove useLegacy param from config object
-    let {useLegacy, ...cleanedUpParams} = config?.params;
-
-    let newConfig = config;
-    if(newConfig !== undefined) newConfig.params = cleanedUpParams;
-
-    const response = (await this.axiosInstance.get(apiVersionPrefix + url, newConfig)).data;
+  public async makeCall(url: string, config: AxiosRequestConfig<any> | undefined, useLegacy: boolean) {
+    const apiVersionPrefix = this.getUseLegacy(useLegacy) ? "" : "v2/";
+    const response = (await this.axiosInstance.get(apiVersionPrefix + url, config)).data;
     return this.check_for_errors(response);
   }
 
-  public async apiGetCall(url: string, paginationParams: PaginationParams | undefined, sortingParams: SortingParams | undefined, contentParams: ContentParams | undefined, parameter: string | undefined) {
-    return await this.apiCall(url, { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, parameter);
+  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    return this.makeCall("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, this.getUseLegacy(useLegacy));
   }
 
-  public async apiSearchCall(url: string, queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal) {
-    return await this.apiCall(url, { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter), signal: abortSignal }, parameter);
+  /**
+   * Is used to fetch all terms from the api
+   * @param paginationParams
+   * @param sortingParams
+   * @param contentParams
+   * @param parameter
+   * @param `useLegacy` Depending on the value of `useLegacy`, `"terms"` (`useLegacy == true`) or `"classes"` (`useLegacy == false`) will be used in the query url
+   */
+  public getTerms: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    const typePrefix = this.getUseLegacy(useLegacy) ? "terms" : "classes";
+    return this.makeCall(typePrefix, { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) }, this.getUseLegacy(useLegacy));
   }
 
-  public async apiSelectCall(url: string, queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string,) {
-    return await this.apiCall(url, {params: this.buildParamsForSelect(queryParams, paginationParams, contentParams, parameter) }, parameter);
+  public getProperties: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    return this.makeCall("properties", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) }, this.getUseLegacy(useLegacy));
   }
 
-  public async apiSuggestCall(url: string, queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string,) {
-    return await this.apiCall(url, {params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameter) }, parameter);
+  public getIndividuals: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    return this.makeCall("individuals", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams) }, this.getUseLegacy(useLegacy));
   }
 
-  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return await this.apiGetCall("ontologies", paginationParams, sortingParams, contentParams, parameter);
-  }
-
-  public getTerms: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return await this.apiGetCall(this.useLegacy(parameter) ? "terms" : "classes", paginationParams, sortingParams, contentParams, parameter);
-  }
-
-  public getProperties: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return await this.apiGetCall("properties", paginationParams, sortingParams, contentParams, parameter);
-  }
-
-  public getIndividuals: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return await this.apiGetCall("individuals", paginationParams, sortingParams, contentParams, parameter);
-  }
-
-  public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return await this.apiGetCall("ontologies/"+contentParams?.ontologyId, undefined, undefined, undefined, parameter);
+  public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    return this.makeCall("ontologies/"+contentParams?.ontologyId, { params: this.buildOtherParams(parameter) }, this.getUseLegacy(useLegacy));
   }
 
   /**
@@ -237,65 +208,113 @@ export class OlsApi {
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
-  public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : "";
-    return await this.apiGetCall(queryPrefix+"entities", undefined, undefined, undefined, parameter+"&iri="+contentParams?.termIri);
+  public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return this.makeCall(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
   }
 
   /**
-   * Is used to fetch a term from the api in ols3 (for ols4, getClass is used).
+   * Is used to fetch a term from the api
+   * @param paginationParams
+   * @param sortingParams
+   * @param `contentParams` Always requires the respective object IRI in `contentParams` to be set.
+   *                      If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results.
+   *                      If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology.
+   * @param parameter
+   * @param `useLegacy` Depending on the value of `useLegacy`, `"terms"` (`useLegacy == true`) or `"classes"` (`useLegacy == false`) will be used in the query url
+   */
+  public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    const ontologyPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    const typePrefix = this.getUseLegacy(useLegacy) ? "terms" : "classes";
+    return this.makeCall(ontologyPrefix + typePrefix, { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
+  }
+
+  /**
+   * Is used to fetch a property from the api in ols3.
    * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
-  public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : "";
-    return await this.apiGetCall(queryPrefix+(this.useLegacy(parameter) ? "terms" : "classes"), undefined, undefined, undefined, parameter+"&iri="+contentParams?.termIri);
+  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return this.makeCall(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
   }
 
   /**
-   * Is used to fetch a class from the api in ols4 (for ols3, getTerm is used).
+   * Is used to fetch an individual from the api in ols3.
    * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
-  /*public getClass: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : "";
+  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return this.makeCall(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
+  }
 
-    return (await this.axiosInstance.get(queryPrefix+"classes", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
-  }*/
+  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
+    return this.makeCall("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter), signal: abortSignal }, true);
+  }
+
+  public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
+    return this.makeCall("select", {params: this.buildParamsForSelect(queryParams, paginationParams, contentParams, parameter) }, true);
+  }
+
+  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
+    return this.makeCall("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameter) }, true);
+  }
+
+  /**
+   * getTermTree:
+   * This method always requires an ontologyId in contentParams
+   * 1) If no termIri is defined in contentParams, the ontology roots will be queried
+   * 2) If a termIri is defined but no child in jsTreeParams, the hierarchy containing that term will be queried
+   * 3) If a termIri is defined and also a child in jsTreeParams, the subhierarchy of that child will be queried
+   */
+  public getTermTree = async (contentParams: ContentParams, treeParams: JsTreeParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
+    let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
+    if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
+    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/jstree"
+    if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data; //3)
+    else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data; //2)
+  }
+
+  public getTermRelations = async (contentParams: ContentParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
+    let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
+    if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
+    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/graph"
+  }
 
   /**
    * Returns a response Object (implementing 'Class', 'Property', 'Individual' or 'Ontology').
    * Indirectly fetches the response JSON for the specified entityType, iri, ontologyId, parameter and API version (useLegacy).
-   * 
+   *
    * @param entityType
    * @param iri
    * @param ontologyId
    * @param parameter
    * @param useLegacy
    */
-  public async getResponseObject(entityType?: string, iri?: string, ontologyId?: string, parameter?: string) : Promise<Thing> {
-    if(this.useLegacy(parameter)) {
+  public async getResponseObject(entityType?: string, iri?: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Thing> {
+    if(useLegacy) {
       if(entityType) {
         let response;
         switch (entityType) {
           case 'ontology':
             if(!ontologyId) throw Error("ontologyId has to be specified if entityType == 'ontology'");
-            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
             return new OLS3Ontology(response);
 
           case 'term':
           case 'class': // also allow "class" even if it should actually be "term"
-            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
             return new OLS3Class(response["_embedded"]["terms"][0]);
 
           case 'property':
-            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
+            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
             return new OLS3Property(response["_embedded"]["properties"][0]);
 
           case 'individual':
-            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
+            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
             return new OLS3Individual(response["_embedded"]["individuals"][0]);
 
           default:
@@ -311,20 +330,20 @@ export class OlsApi {
         let response;
         switch (entityType) {
           case "ontology":
-            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
             return new OLS4Ontology(response);
 
           case "class":
           case "term": // also allow "term" even if it should actually be "class"
-            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
             return new OLS4Class(response["elements"][0]);
 
           case "property":
-            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter);
+            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
             return new OLS4Property(response["elements"][0]);
 
           case "individual":
-            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter);
+            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
             return new OLS4Individual(response["elements"][0]);
 
           default:
@@ -350,7 +369,7 @@ export class OlsApi {
           }
         }
         else if(!iri && ontologyId) {
-          const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter);
+          const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
           return new OLS4Ontology(response);
         }
         else {
@@ -368,63 +387,6 @@ export class OlsApi {
    */
   public getClassInstances: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return (await this.axiosInstance.get(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} })).data;
-  }
-
-  /**
-   * Is used to fetch a property from the api in ols3.
-   * Always requires the respective object IRI in contentParams to be set
-   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
-   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
-   */
-  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    const response = (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} })).data;
-    return this.check_for_errors(response);
-  }
-
-  /**
-   * Is used to fetch an individual from the api in ols3.
-   * Always requires the respective object IRI in contentParams to be set
-   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
-   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
-   */
-  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    const response = (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} })).data;
-    return this.check_for_errors(response);
-  }
-
-  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
-    return (await this.axiosInstance.get("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter), signal: abortSignal })).data;
-  }
-
-  public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
-    return (await this.axiosInstance.get("select", {params: this.buildParamsForSelect(queryParams, paginationParams, contentParams, parameter) })).data;
-  }
-
-  public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
-    return (await this.axiosInstance.get("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameter) })).data;
-  }
-
-  /**
-   * getTermTree:
-   * This method always requires an ontologyId in contentParams
-   * 1) If no termIri is defined in contentParams, the ontology roots will be queried
-   * 2) If a termIri is defined but no child in jsTreeParams, the hierarchy containing that term will be queried
-   * 3) If a termIri is defined and also a child in jsTreeParams, the subhierarchy of that child will be queried
-   */
-  public getTermTree = async (contentParams: ContentParams, treeParams: JsTreeParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
-    let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
-    if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
-    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/jstree"
-    if (treeParams.child) return (await this.axiosInstance.get(baseRequest+"/children/"+treeParams.child)).data; //3)
-    else return (await this.axiosInstance.get(baseRequest, { params: treeParams })).data; //2)
-  }
-
-  public getTermRelations = async (contentParams: ContentParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
-    let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
-    if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
-    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/graph"
+    return this.makeCall(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} }, false);
   }
 }

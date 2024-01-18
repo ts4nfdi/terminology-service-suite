@@ -47,11 +47,16 @@ export default {
       type: { required: false },
       description: "If true, entity badges linking to their defining ontologies are shown."
     },
+    useLegacy: {
+      type: { required: false },
+      description: "Specifies the API version used."
+    }
   },
   args: {
     api: "https://semanticlookup.zbmed.de/api/",
     hasTitle: true,
     showBadges: true,
+    useLegacy: true,
     iri: ""
   }
 };
@@ -100,7 +105,7 @@ export const OntologyInfoWidgetNewAPI = Template.bind({});
 // @ts-ignore
 OntologyInfoWidgetNewAPI.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
-  parameter: "useLegacy=false",
+  useLegacy: false,
   entityType: "ontology",
   ontologyId: "mp" // "uberon" is also good for demonstration
 };
@@ -110,7 +115,7 @@ export const InfoWidgetBadges = Template.bind({});
 // @ts-ignore
 InfoWidgetBadges.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
-  parameter: "useLegacy=false",
+  useLegacy: false,
   entityType: "class",
   iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
   ontologyId: "uberon"
