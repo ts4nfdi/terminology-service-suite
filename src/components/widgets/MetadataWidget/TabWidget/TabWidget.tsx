@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  EuiFlexItem,
-  EuiTabbedContent, EuiText,
+    EuiFlexItem, EuiIconTip,
+    EuiTabbedContent, EuiText,
 } from "@elastic/eui";
 import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
 import { CrossRefTabWidget } from "./CrossRefWidget";
@@ -51,8 +51,13 @@ function TabWidget(props: TabWidgetProps) {
           {
               isSuccess && !props.ontologyId && ontologyJSON && !ontologyJSON["is_defining_ontology"] &&
               <EuiFlexItem>
-                  <EuiText>
-                      <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
+                  <EuiText size={"m"}>
+                      <i>Defining ontology not available </i>
+                      <EuiIconTip type={"iInCircle"}
+                                  color={"subdued"}
+                                  content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}
+                      >
+                      </EuiIconTip>
                   </EuiText>
               </EuiFlexItem>
           }

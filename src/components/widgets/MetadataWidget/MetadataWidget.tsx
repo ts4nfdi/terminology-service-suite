@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiIconTip, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import { IriWidget } from "./IriWidget";
 import { TitleWidget } from "./TitleWidget";
@@ -8,6 +8,7 @@ import { TabWidget } from "./TabWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
 import {getPreferredOntologyJSON} from "./index";
+import {never} from "@elastic/eui/src/services/predicate/common_predicates";
 
 export interface MetadataWidgetProps {
   iri: string;
@@ -57,8 +58,13 @@ function MetadataWidget(props: MetadataWidgetProps) {
                   {
                       !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
                       <EuiFlexItem>
-                          <EuiText>
-                              <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
+                          <EuiText size={"m"}>
+                              <i>Defining ontology not available </i>
+                              <EuiIconTip type={"iInCircle"}
+                                          color={"subdued"}
+                                          content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}
+                              >
+                              </EuiIconTip>
                           </EuiText>
                       </EuiFlexItem>
                   }
