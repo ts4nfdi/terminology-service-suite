@@ -34,6 +34,7 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
   documentation:
     runs-on: ubuntu-latest
