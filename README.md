@@ -36,7 +36,7 @@ For a list of available versions, see our [release page](https://github.com/nfdi
 The library depends on some peer dependencies that must be provided.
 
 ```
-npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types react-query react-query axios
+npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types react-query react-query axios@1.1.2
 ```
 
 - The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
