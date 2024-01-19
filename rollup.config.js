@@ -5,7 +5,7 @@ import copy from "rollup-plugin-copy";
 export default [
   {
     input: "src/index.ts",
-    external: ["@elastic/eui", "react", "react-query", "@emotion/react", "@zbmed/ols-treeview", "axios"],
+    external: ["@elastic/eui", "react", "react-query", "@emotion/react", "axios"],
     output: {
       dir: "dist/esm",
       format: "esm",
