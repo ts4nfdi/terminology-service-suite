@@ -26,6 +26,8 @@ jobs:
           scope: '@zbmed'
       - name: Run npm clean install
         run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Run npm build
         run: npm run build --if-present
         env:
