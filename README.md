@@ -64,6 +64,36 @@ This project uses [Storybook](https://storybook.js.org/) to develop independent 
 
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
 
+### Test the package locally
+
+When developing a new version of widgets, it might be helpful to include the current locally developed version in another consumer project. Changes in the widgets can be tested before publishing a new release. Two methods are described in the following.
+
+#### Publish package locally for testing
+Build the package locally in the widgets project and install it in the consumer project for testing:
+
+To prevent unexpected behaviour remove the `node_modules` folder and `package-lock.json` file in the widgets project before using 
+
+```npm install```
+
+```npm run build --if-present```
+
+```npm pack```
+
+A `.tgz` folder will be created with the bundled module. Add `"@nfdi4health/semlookp-widgets": "file:../path/to/nfdi4health-semlookp-widgets-1.17.4.tgz",` to your package.json of the consumer project and do `npm install`. 
+
+#### Link the widgets locally for testing
+Link the widgets project to the consumer project for testing/development:
+
+Run the following commands in the widgets project:
+
+Build the widgets: ```npm run build --if-present```
+
+Link the peer dependencies from the consumer project: ```npm link path/to/consumer/node_modules/react path/to/consumer/node_modules/react-query path/to/consumer/node_modules/@emotion/react path/to/consumer/node_modules/axios```
+
+Run the following command in the consumer project: ```npm link path/to/widgets-project-root```
+
+Start the application: ```npm start```
+
 ## Funding
 
 This work was done as part of the NFDI4Health Consortium and is published on behalf of this Consortium (www.nfdi4health.de). 
