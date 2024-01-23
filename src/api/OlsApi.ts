@@ -8,8 +8,6 @@ import Thing from "../model/interfaces/Thing";
 import OLS3Property from "../model/ols3-model/OLS3Property";
 import OLS3Individual from "../model/ols3-model/OLS3Individual";
 import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
-import {type} from "os";
-import {useQuery} from "react-query";
 
 interface PaginationParams {
   size?: string;
@@ -30,7 +28,7 @@ interface ContentParams {
 
 }
 
-export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string, useLegacy?: boolean) => Promise<any>;
+export type apiCallFn = (paginationParams?: PaginationParams, sortingParams?: SortingParams, contentParams?: ContentParams, parameter?: string, useLegacy?: boolean, abortSignal?: AbortSignal) => Promise<any>;
 
 interface SearchQueryParams {
   query: string;
@@ -222,11 +220,12 @@ export class OlsApi {
    *                      If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology.
    * @param parameter
    * @param `useLegacy` Depending on the value of `useLegacy`, `"terms"` (`useLegacy == true`) or `"classes"` (`useLegacy == false`) will be used in the query url
+   * @param abortSignal
    */
-  public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+  public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const ontologyPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     const typePrefix = this.getUseLegacy(useLegacy) ? "terms" : "classes";
-    return this.makeCall(ontologyPrefix + typePrefix, { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
+    return this.makeCall(ontologyPrefix + typePrefix, { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, this.getUseLegacy(useLegacy));
   }
 
   /**
@@ -235,9 +234,9 @@ export class OlsApi {
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
-  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+  public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
+    return this.makeCall(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, this.getUseLegacy(useLegacy));
   }
 
   /**
@@ -246,9 +245,9 @@ export class OlsApi {
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
-  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
+  public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} }, this.getUseLegacy(useLegacy));
+    return this.makeCall(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, this.getUseLegacy(useLegacy));
   }
 
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
@@ -295,63 +294,79 @@ export class OlsApi {
    * @param useLegacy
    */
   public async getResponseObject(entityType?: string, iri?: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Thing> {
-    if(useLegacy) {
-      if(entityType) {
-        let response;
-        switch (entityType) {
-          case 'ontology':
-            if(!ontologyId) throw Error("ontologyId has to be specified if entityType == 'ontology'");
-            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
-            return new OLS3Ontology(response);
+    if(entityType) {
+      let response;
 
-          case 'term':
-          case 'class': // also allow "class" even if it should actually be "term"
+      if(entityType === "ontology") {
+        if(!ontologyId) throw Error("ontologyId has to be specified if entityType == 'ontology'");
+        response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
+        return useLegacy ? new OLS3Ontology(response) : new OLS4Ontology(response);
+      }
+      else {
+        if(!iri) throw Error("iri has to be specified if entityType != 'ontology'");
+        switch (entityType) {
+          case 'term' || 'class': // also allow "class" even if it should actually be "term"
             response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
-            return new OLS3Class(response["_embedded"]["terms"][0]);
+            return useLegacy ? new OLS3Class(response["_embedded"]["terms"][0]) : new OLS4Class(response["elements"][0]);
 
           case 'property':
             response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
-            return new OLS3Property(response["_embedded"]["properties"][0]);
+            return useLegacy ? new OLS3Property(response["_embedded"]["properties"][0]) : new OLS4Property(response["elements"][0]);
 
           case 'individual':
             response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
-            return new OLS3Individual(response["_embedded"]["individuals"][0]);
+            return useLegacy ? new OLS3Individual(response["_embedded"]["individuals"][0]) : new OLS4Individual(response["elements"][0]);
 
           default:
             throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'class', 'ontology', 'property', 'individual'}");
         }
-      }
-      else {
-        throw Error("Entity type must be specified when using legacy API."); // TODO: for now just throw error
       }
     }
     else {
-      if(entityType) {
-        let response;
-        switch (entityType) {
-          case "ontology":
-            response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
-            return new OLS4Ontology(response);
+      if(iri) {
+        if(useLegacy) {
+          /*
+            Test all types of entities (term, property, individual) manually with separate queries (as /entities does not exist for legacy API)
+            -> return the response object which resolves with a contained entity
+            -> throw error if none of the types contains an entity
+          */
+          const controller = new AbortController();
+          const signal = controller.signal;
 
-          case "class":
-          case "term": // also allow "term" even if it should actually be "class"
-            response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
-            return new OLS4Class(response["elements"][0]);
+          let entity; // stores the entity to be returned in the end
 
-          case "property":
-            response = await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
-            return new OLS4Property(response["elements"][0]);
+          function setAndStop(response: any, type: "term" | "property" | "individual") {
+            if (response["_embedded"] !== undefined) {
+              switch (type) {
+                case "term":
+                  entity = new OLS3Class(response["_embedded"]["terms"][0]);
+                  break;
+                case "property":
+                  entity = new OLS3Property(response["_embedded"]["properties"][0]);
+                  break;
+                case "individual":
+                  entity = new OLS3Individual(response["_embedded"]["individuals"][0]);
+                  break;
+              }
+              controller.abort(); // abort queries for other entityTypes
+            }
+          }
 
-          case "individual":
-            response = await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
-            return new OLS4Individual(response["elements"][0]);
+          await Promise.allSettled(
+              [
+                this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy, signal)
+                    .then((response: any) => {setAndStop(response, "term")}),
+                this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy, signal)
+                    .then((response: any) => {setAndStop(response, "property")}),
+                this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy, signal)
+                    .then((response: any) => {setAndStop(response, "individual")})
+              ]
+          );
 
-          default:
-            throw Error("Invalid entity type '" + entityType + "'. Must be one of {'term', 'class', 'ontology', 'property', 'individual'}");
+          if(entity !== undefined) return entity;
+          else throw Error("Iri " + iri + " could not be resolved.");
         }
-      }
-      else {
-        if(iri) {
+        else {
           const response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
           const types = response["elements"][0]["type"]
 
@@ -368,13 +383,11 @@ export class OlsApi {
             throw Error("Response object does not have a 'type' property");
           }
         }
-        else if(!iri && ontologyId) {
-          const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
-          return new OLS4Ontology(response);
-        }
-        else {
-          throw Error("Neither ontologyId nor iri was provided.");
-        }
+      }
+      else {
+        if(!ontologyId) throw Error("ontologyId has to be specified if no iri is specified");
+        const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
+        return useLegacy ? new OLS3Ontology(response) : new OLS4Ontology(response);
       }
     }
   }

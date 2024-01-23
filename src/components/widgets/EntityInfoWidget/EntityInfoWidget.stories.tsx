@@ -34,7 +34,8 @@ export default {
         "class",
         "property",
         "individual",
-        "INVALID STRING"
+        "INVALID STRING",
+        ""
       ],
     },
     iri: {
@@ -119,4 +120,12 @@ InfoWidgetBadges.args = {
   entityType: "class",
   iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
   ontologyId: "uberon"
+};
+
+export const OptionalEntityTypeLegacyAPI = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OptionalEntityTypeLegacyAPI.args = {
+  api: "https://semanticlookup.zbmed.de/ols/api/",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
 };
