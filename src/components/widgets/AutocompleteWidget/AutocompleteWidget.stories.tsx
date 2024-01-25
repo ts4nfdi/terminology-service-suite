@@ -8,6 +8,7 @@ export default {
   component: AutocompleteWidget,
   argTypes: {
     api: {
+      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -32,13 +33,18 @@ export default {
     allowCustomTerms: {
       description: "If true, custom terms that are not found in any ontology can be added.",
       type: { required: false},
+    },
+    singleSelection: {
+      description: "If true, only one concept can be selected at once.",
+      type: { required: false},
     }
   },
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
     hasShortSelectedLabel: true,
-    allowCustomTerms: false
+    allowCustomTerms: false,
+    singleSelection: true,
   }
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (

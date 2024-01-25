@@ -1,34 +1,41 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code
-
 name: CI/CD
 
 on:
   push:
-    branches: [ main]
+    branches: [ main ]
   pull_request:
-    branches: [ main]
-
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ 16.x ]
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npx semantic-release
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false # Make sure the release step uses its own credentials.
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+      - name: Run npm clean install
+        run: npm ci
+      - name: Run npm build
+        run: npm run build --if-present
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Run semantic release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
   documentation:
     runs-on: ubuntu-latest
     permissions:
@@ -42,10 +49,15 @@ jobs:
         with:
           node-version: 16.16.0
           cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+          token: ${{ secrets.TREEVIEW_SECRET }}
       - name: Install and Build
         run: |
           npm install
           npm run build-storybook -- -o public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

@@ -177,24 +177,68 @@ export class OlsApi {
   }
 
   /**
-   * getTerm, getProperty, getIndividual:
-   * These methods always require the respective object IRI in contentParams to be set
+   * Is used to fetch an entity from the api in ols4 (for ols3, getTerm, getProperty and getIndividual are used respectively).
+   * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
    */
+  public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+  }
 
+  /**
+   * Is used to fetch a term from the api in ols3 (for ols4, getClass is used).
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
   public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     const response = (await this.axiosInstance.get(queryPrefix+"terms", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
     return this.check_for_errors(response);
   }
 
+  /**
+   * Is used to fetch a class from the api in ols4 (for ols3, getTerm is used).
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
+  public getClass: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"classes", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
+  /**
+   * Is used to fetch a classes instances from the api.
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
+  public getClassInstances: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
+    return (await this.axiosInstance.get(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} })).data;
+  }
+
+  /**
+   * Is used to fetch a property from the api in ols3.
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
   public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     const response = (await this.axiosInstance.get(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)} })).data;
     return this.check_for_errors(response);
   }
 
+  /**
+   * Is used to fetch an individual from the api in ols3.
+   * Always requires the respective object IRI in contentParams to be set
+   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
+   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
+   */
   public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     const response = (await this.axiosInstance.get(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)} })).data;

@@ -1,4 +1,5 @@
 # SemLookP Widgets
+[Demo and Documentation](https://nfdi4health.github.io/semlookp-widgets/)
 
 ## About The Project
 
@@ -13,6 +14,8 @@ based on the [Ontology Lookup Service (OLS)](https://www.ebi.ac.uk/ols/index), s
   
 
 ## Using this package
+
+A demo project and step by step instruction on how to integrate a widget in a React app can be found here: https://github.com/nfdi4health/semlookp-widgets-demo
 
 This package is published as source code and compiled as an npm package on [GitHub.com](https://github.com/nfdi4health/semlookp-widgets/). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
 
@@ -30,23 +33,16 @@ npm install @nfdi4health/semlookp-widgets
 For a list of available versions, see our [release page](https://github.com/nfdi4health/semlookp-widgets/releases) or the [npm repository](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets)
 
 ### Peer dependencies
-The library depends on some peer dependencies that must be provided. The dependencies are explained below:
+The library depends on some peer dependencies that must be provided.
+
+```
+npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types react-query react-query axios
+```
 
 - The widgets are based on Elastic UI components. To load the correct appearance of the widgets, wrap them inside the
-  `<EuiProvider>` component. Elastic UI needs following peer dependencies as well to work correctly:
-
-```
-npm install @elastic/eui @elastic/datemath @emotion/react moment prop-types
-```
-
-For help see [ElasticUI Provider](https://elastic.github.io/eui/#/utilities/provider)
+  `<EuiProvider>` component. For help see [ElasticUI Provider](https://elastic.github.io/eui/#/utilities/provider)
 
 - The HierarchyWidget uses react-query to fetch data. To make the widget work properly, you have to wrap the component inside a `QueryClientProvider`.
-
-```
-npm install react-query
-```
-
 For help see [QueryClient](https://tanstack.com/query/v4/docs/reference/QueryClient?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/QueryClient)
 
 ### Documentation
