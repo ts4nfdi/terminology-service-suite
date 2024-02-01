@@ -668,9 +668,7 @@ function getPropertyChainJSX(propertyChain: any[], response: any, props: EntityR
                 {getSectionListElement(response, propertyExpr, props)}
                 <>
                     {i < asArray(propertyChain).length - 1 && (
-                        <span style={{ color: "gray", fontSize: "small"}}>
-                          {" "}◂{" "}
-                        </span>
+                        <span style={{fontSize: "medium", color: "gray"}}>&nbsp;&#9666;&nbsp;</span>
                     )}
                 </>
             </span>
