@@ -122,10 +122,48 @@ InfoWidgetBadges.args = {
   ontologyId: "uberon"
 };
 
+/*
 export const OptionalEntityTypeLegacyAPI = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OptionalEntityTypeLegacyAPI.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
   iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
+};
+*/
+
+export const InfoWidgetDomain = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InfoWidgetDomain.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  useLegacy: false,
+  iri: "http://purl.obolibrary.org/obo/NCIT_R89",
+};
+
+export const InfoWidgetRange = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InfoWidgetRange.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  useLegacy: false,
+  iri: "http://purl.obolibrary.org/obo/RO_0002029",
+};
+
+export const InfoWidgetPropertyAssertion = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InfoWidgetPropertyAssertion.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  useLegacy: false,
+  iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+};
+
+export const InfoWidgetPropertyCharacteristics = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+InfoWidgetPropertyCharacteristics.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  useLegacy: false,
+  iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
 };
