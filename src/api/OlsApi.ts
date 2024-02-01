@@ -305,7 +305,7 @@ export class OlsApi {
       else {
         if(!iri) throw Error("iri has to be specified if entityType != 'ontology'");
         switch (entityType) {
-          case 'term' || 'class': // also allow "class" even if it should actually be "term"
+          case 'term': case 'class': // also allow "class" even if it should actually be "term"
             response = await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
             return useLegacy ? new OLS3Class(response["_embedded"]["terms"][0]) : new OLS4Class(response["elements"][0]);
 
@@ -367,7 +367,7 @@ export class OlsApi {
           else throw Error("Iri " + iri + " could not be resolved.");
         }
         else {
-          const response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter);
+          const response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
           const types = response["elements"][0]["type"]
 
           if(types.includes("class")) {
