@@ -11,7 +11,6 @@ import Class from "../../../model/interfaces/Class";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
 import Property from "../../../model/interfaces/Property";
 import Individual from "../../../model/interfaces/Individual";
-import {type} from "os";
 
 export interface EntityInfoWidgetProps {
     api: string;
