@@ -5,6 +5,15 @@ import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "..
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 
+export function getTooltip(text: string) : JSX.Element {
+    return (
+        <EuiIconTip type={"iInCircle"}
+                    color={"subdued"}
+                    content={text}>
+        </EuiIconTip>
+    );
+}
+
 /**
  * ONLY USABLE WITH V2-API ENTITIES
  *
@@ -26,11 +35,7 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
         })
         .join("\n")
 
-    return (
-        <EuiIconTip type={"iInCircle"}
-                    color={"subdued"}
-                    content={axiomsText}></EuiIconTip>
-    );
+    return getTooltip(axiomsText);
 }
 
 /**
@@ -177,7 +182,6 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
     }
 }
 
-// TODO: compare with ClassExpression.tsx in ols4 project
 /**
  * ONLY USABLE WITH V2-API ENTITIES
  *
@@ -190,35 +194,66 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
  * @param showBadges boolean which indicates if badges should be shown
  * @returns JSX.Element the class expression JSX
  */
-function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean): JSX.Element {
+export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean): JSX.Element {
     let result = <></>;
+
+    // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
+    linkedEntities = linkedEntities.mergeWith(currentResponsePath.linkedEntities);
 
     if (typeof currentResponsePath === "string") {
         result = getEntityLinkJSX(parentEntity, linkedEntities, currentResponsePath, api, showBadges);
     }
-    else if (typeof currentResponsePath === "object" && Array.isArray(currentResponsePath["type"]) && currentResponsePath["type"].indexOf("reification") !== -1) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
+    else if (typeof currentResponsePath === "object" && !Array.isArray(currentResponsePath) && Array.isArray(currentResponsePath["type"]) && currentResponsePath["type"].indexOf("reification") !== -1) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
         // current response path is reification
         result = getReifiedJSX(parentEntity, Reified.fromJson<any>(currentResponsePath)[0], api, showBadges);
     }
     else { // type === "object"
         const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
         const allValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
-        const intersectionOf = currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"];
-        const unionOf = currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"];
+        const intersectionOf = asArray(currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"]);
+        const unionOf = asArray(currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"]);
         const hasValue = currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
         const minCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#minQualifiedCardinality"];
         const maxCardinality = currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#maxQualifiedCardinality"];
         const cardinality = currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] || currentResponsePath["http://www.w3.org/2002/07/owl#qualifiedCardinality"];
         const hasSelf = currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
         const complementOf = currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
-        const oneOf = currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"];
+        const oneOf = asArray(currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"]);
         const inverseOf = currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
         const onProperty = currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
+        const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
 
-        // not relevant for relations widget, only for information widget
-        // const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
+        if(onDataType) {
+            const elements: JSX.Element[] = [
+                getClassExpressionJSX(parentEntity, linkedEntities, onDataType, api, showBadges)
+            ];
 
-        if (someValuesFrom) {
+            const withRestrictions = asArray(currentResponsePath["http://www.w3.org/2002/07/owl#withRestrictions"]);
+            if(withRestrictions.length > 0) {
+                elements.push(<>[</>);
+
+                let isFirst = true;
+                for(let restriction of withRestrictions) {
+                    if(isFirst) isFirst = false;
+                    else elements.push(<>,&nbsp;</>);
+
+                    const minExclusive = restriction["http://www.w3.org/2001/XMLSchema#minExclusive"];
+                    const minInclusive = restriction["http://www.w3.org/2001/XMLSchema#minInclusive"];
+                    const maxExclusive = restriction["http://www.w3.org/2001/XMLSchema#maxExclusive"];
+                    const maxInclusive = restriction["http://www.w3.org/2001/XMLSchema#maxInclusive"];
+
+                    if(minExclusive) elements.push(<>&gt; {minExclusive}</>);
+                    else if(minInclusive) elements.push(<>&ge; {minInclusive}</>);
+                    else if(maxExclusive) elements.push(<>&lt; {maxExclusive}</>);
+                    else if(maxInclusive) elements.push(<>&le; {maxInclusive}</>);
+                }
+
+                elements.push(<>]</>);
+            }
+
+            result = <span children={elements}></span>
+        }
+        else if (someValuesFrom) {
             result = (
                 <>
                     {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
@@ -236,7 +271,7 @@ function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntiti
                 </>
             );
         }
-        else if (intersectionOf) {
+        else if (intersectionOf.length > 0) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
@@ -335,11 +370,11 @@ function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntiti
             result = (
                 <>
                     <i>not </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, hasSelf, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(complementOf)[0], api, showBadges)}
                 </>
             );
         }
-        else if (oneOf) {
+        else if (oneOf.length > 0) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#123;
@@ -424,9 +459,9 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
             start: match.index,
             end: match.index + url.length,
             link: (
-                <>
+                <span key={randomString()}>
                     <a href={url}>{url}</a>
-                </>
+                </span>
             ),
         });
     }
@@ -464,15 +499,15 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
 
     for (let link of linksToSplice) {
         res.push(
-            <>
+            <span key={randomString()}>
                 {text.substring(n, link.start)}
-            </>
+            </span>
         );
         res.push(link.link);
         n = link.end;
     }
     res.push(
-        <>{text.slice(n)}</>
+        <span key={randomString()}>{text.slice(n)}</span>
     );
 
     return <>{res}</>;
