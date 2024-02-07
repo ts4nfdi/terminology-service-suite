@@ -8,6 +8,8 @@ import Thing from "../model/interfaces/Thing";
 import OLS3Property from "../model/ols3-model/OLS3Property";
 import OLS3Individual from "../model/ols3-model/OLS3Individual";
 import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
+import OLS3Ontologies from "../model/ols3-model/OLS3Ontologies";
+import Ontologies from "../model/interfaces/Ontologies";
 
 interface PaginationParams {
   size?: string;
@@ -171,8 +173,27 @@ export class OlsApi {
     return this.check_for_errors(response);
   }
 
-  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
-    return this.makeCall("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, this.getUseLegacy(useLegacy));
+  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
+    const response = (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) })).data;
+    return this.check_for_errors(response);
+  }
+
+  /**
+   * Fetch all ontologies. Currently only available for useLegacy since parameters aren't allowed in the OLS v2 API ontologies endpoint
+   * @param parameter
+   */
+  public async getOntologiesData(parameter?: string): Promise<Ontologies> {
+    let response;
+    response = await this.getOntologies(undefined, undefined, undefined, parameter);
+    if (!response || !response["_embedded"] || !response["_embedded"]["ontologies"]) {
+      throw new Error("Ontologies data not found"); //TODO consistent error handling
+    } else {
+      let ontologiesData: OLS3Ontology[];
+      ontologiesData = response["_embedded"]["ontologies"].map((ontologyData: any) => {
+        return new OLS3Ontology(ontologyData);
+      });
+      return new OLS3Ontologies(ontologiesData)
+    }
   }
 
   /**
