@@ -1,9 +1,11 @@
-import {asArray, deCamelCase} from "../../app/util";
-import Reified from "../Reified";
-import OLS3Thing from "./OLS3Thing";
-import Ontology from "../interfaces/Ontology";
+import {Ontology} from "../interfaces";
+import {OLS3Thing} from "./OLS3Thing";
 
-export default class OLS3Ontology extends OLS3Thing implements Ontology{
+import Reified from "../Reified";
+
+import {asArray, deCamelCase} from "../../app/util";
+
+export class OLS3Ontology extends OLS3Thing implements Ontology{
 
   getType(): "ontology" | "class" | "property" | "individual" {
     return "ontology";

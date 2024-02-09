@@ -1,9 +1,11 @@
-import { asArray } from "../../app/util";
-import OLS4Entity from "./OLS4Entity";
-import Reified from "../Reified";
-import Class from "../interfaces/Class";
+import {Class} from "../interfaces";
+import {OLS4Entity} from "./OLS4Entity";
 
-export default class OLS4Class extends OLS4Entity implements Class {
+import Reified from "../Reified";
+
+import { asArray } from "../../app/util";
+
+export class OLS4Class extends OLS4Entity implements Class {
   getParents(): Reified<any>[] {
     return Reified.fromJson<any>(
       this.properties["hierarchicalParent"]

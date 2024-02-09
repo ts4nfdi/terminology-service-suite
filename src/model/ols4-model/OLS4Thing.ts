@@ -1,11 +1,11 @@
-import { asArray } from "../../app/util";
+import {Thing} from "../interfaces";
+
 import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
-import Thing from "../interfaces/Thing";
-import {types} from "util";
-import {type} from "os";
 
-export default abstract class OLS4Thing implements Thing {
+import { asArray } from "../../app/util";
+
+export abstract class OLS4Thing implements Thing {
   properties: any;
 
   constructor(properties: any) {

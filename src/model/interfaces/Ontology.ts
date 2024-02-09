@@ -1,6 +1,6 @@
-import Thing from "./Thing";
+import { Thing } from "./";
 
-export default interface Ontology extends Thing {
+export interface Ontology extends Thing {
     getOntologyId(): string;
     getName(): string;
     getDescription(): string;

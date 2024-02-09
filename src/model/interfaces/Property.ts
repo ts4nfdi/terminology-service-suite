@@ -1,7 +1,7 @@
-import Entity from "./Entity";
+import { Entity } from "./";
 import Reified from "../Reified";
 
-export default interface Property extends Entity {
+export interface Property extends Entity {
     getDisjointWith(): any[];
     getInverseOf(): any[];
     getDomain(): any[];

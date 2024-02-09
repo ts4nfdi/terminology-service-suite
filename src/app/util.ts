@@ -7,6 +7,15 @@ export function asArray<T>(obj: T | T[]): T[] {
     return [] as T[];
 }
 
+const DEFAULT_USE_LEGACY = true;
+/**
+ * Returns `useLegacy` if undefined, otherwise returns default value for useLegacy
+ * @param useLegacy
+ */
+export function getUseLegacy(useLegacy?: boolean) : boolean {
+    return (useLegacy !== undefined) ? useLegacy : DEFAULT_USE_LEGACY;
+}
+
 export function capitalize(str: string) : string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
