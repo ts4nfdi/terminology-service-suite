@@ -183,16 +183,26 @@ export class OlsApi {
    */
   public async getOntologiesData(parameter?: string): Promise<Ontologies> {
     let response;
-    response = await this.getOntologies(undefined, undefined, undefined, parameter);
-    if (!response || !response["_embedded"] || !response["_embedded"]["ontologies"]) {
-      throw new Error("Ontologies data not found"); //TODO consistent error handling
-    } else {
-      let ontologiesData: OLS3Ontology[];
-      ontologiesData = response["_embedded"]["ontologies"].map((ontologyData: any) => {
-        return new OLS3Ontology(ontologyData);
-      });
-      return new OLS3Ontologies(ontologiesData);
-    }
+    let ontologiesData: OLS3Ontology[] = [];
+
+    let pageNum = 0;
+    let pageSize = 500;
+
+    do {
+      response = await this.getOntologies({ size: pageSize.toString(), page: pageNum.toString() }, undefined, undefined, parameter); // assuming there are no more than 500 ontologies
+      if (!response || !response["_embedded"] || !response["_embedded"]["ontologies"]) {
+        throw new Error("Ontologies data not found"); //TODO consistent error handling
+      } else {
+
+        ontologiesData = ontologiesData.concat(response["_embedded"]["ontologies"].map((ontologyData: any) => {
+          return new OLS3Ontology(ontologyData);
+        }));
+      }
+
+      pageNum += 1;
+    } while(pageNum < response["page"]["totalPages"]);
+
+    return new OLS3Ontologies(ontologiesData);
   }
 
   /**
