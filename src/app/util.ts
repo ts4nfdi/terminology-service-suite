@@ -16,6 +16,13 @@ export function getUseLegacy(useLegacy?: boolean) : boolean {
     return (useLegacy !== undefined) ? useLegacy : DEFAULT_USE_LEGACY;
 }
 
+/**
+ * Returns {@link type}. If {@link type} equals 'term', 'class' gets returned instead.
+ */
+export function getEntityTypeName(type: string) : string {
+    return type === "term" ? "class" : type;
+}
+
 export function capitalize(str: string) : string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }

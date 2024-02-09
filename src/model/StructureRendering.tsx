@@ -1,9 +1,11 @@
-import Thing from "./interfaces/Thing";
+import {Thing} from "./interfaces";
 import React from "react";
 import {EuiBadge, EuiIconTip} from "@elastic/eui";
 import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
+
+const DEFAULT_SHOW_BADGES = true;
 
 export function getTooltip(text: string) : JSX.Element {
     return (
@@ -49,7 +51,7 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
  * @param showBadges    boolean which indicates if badges should be shown
  * @returns JSX.Element the entity link JSX
  */
-export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = true): JSX.Element {
+export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = DEFAULT_SHOW_BADGES): JSX.Element {
     const frontendApi = getFrontEndApi(api);
     const label = linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
     const linkedEntity = linkedEntities.get(iri);
@@ -57,11 +59,11 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
 
     // reference to self: just display label because we are already on that page
     if (parentEntity.getType() !== "ontology" && iri === parentEntity?.getIri()) {
-        return <b>{parentEntity.getIri()}</b>
+        return <b>{parentEntity.getLabel()}</b>
     }
 
     if (!linkedEntity) {
-        if(iri.includes("http")) {
+        if(iri.startsWith("http")) {
             return <a href={iri}>{label}</a>;
         }
         else {
@@ -194,7 +196,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
  * @param showBadges boolean which indicates if badges should be shown
  * @returns JSX.Element the class expression JSX
  */
-export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean): JSX.Element {
+export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
     let result = <></>;
 
     // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
@@ -296,7 +298,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 <span>{elements}</span>
             );
         }
-        else if (unionOf) {
+        else if (unionOf.length > 0) {
             const elements: JSX.Element[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
@@ -421,6 +423,31 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
 }
 
 /**
+ * Builds and returns an array of section list elements specified at `currentResponsePath`
+ * @param parentEntity
+ * @param linkedEntities
+ * @param array
+ * @param api
+ * @param showBadges
+ */
+export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
+    return (
+        <>
+            {array.length === 1 ? (
+                <p>{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), array[0], api, showBadges)}</p>
+            ) :
+            <ul>
+                {
+                    array.map((item: any) => {
+                        return (<li key={randomString()} >{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), item, api, showBadges)}</li>);
+                    })
+                }
+            </ul>}
+        </>
+    );
+}
+
+/**
  * Inserts links into text (potentially with label instead of link displayed if link exists as key inside linkedEntities) and returns the resulting JSX element
  * @param parentEntity the entity object possessing the whole response object
  * @param text the text to insert links into
@@ -428,7 +455,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
  * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
  * @param showBadges boolean which indicates if badges should be shown
  */
-function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean) {
+function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES) {
     let linksToSplice: Array<{ start: number; end: number; link: JSX.Element }> =
         [];
 
@@ -521,7 +548,7 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
  * @param api the api used to extract the frontend api to link to linked entities
  * @param showBadges boolean which indicates if badges should be shown
  */
-export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string, showBadges: boolean = true): JSX.Element {
+export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
     function getValueJSX(value: Reified<any>): JSX.Element {
         const linkedEntities = entity.getLinkedEntities();
 
@@ -542,7 +569,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
                 return getEntityLinkJSX(entity, linkedEntities, value.value, api, showBadges);
             }
             else {
-                if (typeof value.value !== "string") {
+                if (typeof value.value !== "string" || value.value.startsWith("http")) {
                     if(entity.getType() == "ontology") {
                         return <>{JSON.stringify(value.value)}</>;
                     }
