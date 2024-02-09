@@ -174,8 +174,7 @@ export class OlsApi {
   }
 
   public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const response = (await this.axiosInstance.get("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) })).data;
-    return this.check_for_errors(response);
+    return this.makeCall("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, true);
   }
 
   /**
@@ -192,7 +191,7 @@ export class OlsApi {
       ontologiesData = response["_embedded"]["ontologies"].map((ontologyData: any) => {
         return new OLS3Ontology(ontologyData);
       });
-      return new OLS3Ontologies(ontologiesData)
+      return new OLS3Ontologies(ontologiesData);
     }
   }
 
