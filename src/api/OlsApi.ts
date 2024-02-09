@@ -1,11 +1,8 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
-import {Thing} from "../model/interfaces";
-
-import Ontologies from "../model/interfaces/Ontologies";
-import OLS3Ontologies from "../model/ols3-model/OLS3Ontologies";
-import {OLS3Ontology} from "../model/ols3-model";
+import {Ontology, Ontologies, Thing} from "../model/interfaces";
+import {OLS3Ontologies} from "../model/ols3-model";
 
 interface PaginationParams {
   size?: string;
@@ -174,7 +171,7 @@ export class OlsApi {
    */
   public async getOntologiesData(parameter?: string): Promise<Ontologies> {
     let response;
-    let ontologiesData: OLS3Ontology[] = [];
+    let ontologiesData: Ontology[] = [];
 
     let pageNum = 0;
     let pageSize = 500;
@@ -186,7 +183,7 @@ export class OlsApi {
       } else {
 
         ontologiesData = ontologiesData.concat(response["_embedded"]["ontologies"].map((ontologyData: any) => {
-          return new OLS3Ontology(ontologyData);
+          return createModelObject(ontologyData);
         }));
       }
 

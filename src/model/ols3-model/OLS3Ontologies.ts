@@ -1,7 +1,7 @@
-import Ontologies from "../interfaces/Ontologies";
-import OLS3Ontology from "./OLS3Ontology";
+import {Ontologies} from "../interfaces";
+import {OLS3Ontology} from "./OLS3Ontology";
 
-export default class OLS3Ontologies implements Ontologies {
+export class OLS3Ontologies implements Ontologies {
   properties: OLS3Ontology[];
 
   constructor(properties: OLS3Ontology[]) {
