@@ -1,8 +1,9 @@
+import {Thing} from "../interfaces";
+
 import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
-import Thing from "../interfaces/Thing";
 
-export default abstract class OLS3Thing implements Thing {
+export abstract class OLS3Thing implements Thing {
   properties: any;
 
   constructor(properties: any) {

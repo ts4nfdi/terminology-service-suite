@@ -1,9 +1,11 @@
-import { asArray } from "../../app/util";
-import Reified from "../Reified";
-import OLS4Thing from "./OLS4Thing";
-import Entity from "../interfaces/Entity";
+import {Entity} from "../interfaces";
+import {OLS4Thing} from "./OLS4Thing";
 
-export default abstract class OLS4Entity extends OLS4Thing implements Entity{
+import Reified from "../Reified";
+
+import { asArray } from "../../app/util";
+
+export abstract class OLS4Entity extends OLS4Thing implements Entity{
   abstract getParents(): Reified<any>[];
   abstract getSuperEntities(): Reified<any>[];
   abstract getEquivalents(): Reified<any>[];

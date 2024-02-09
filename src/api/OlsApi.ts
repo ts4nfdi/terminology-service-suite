@@ -1,15 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import OLS4Class from "../model/ols4-model/OLS4Class";
-import OLS4Individual from "../model/ols4-model/OLS4Individual";
-import OLS4Property from "../model/ols4-model/OLS4Property";
-import OLS3Class from "../model/ols3-model/OLS3Class";
-import OLS3Ontology from "../model/ols3-model/OLS3Ontology";
-import Thing from "../model/interfaces/Thing";
-import OLS3Property from "../model/ols3-model/OLS3Property";
-import OLS3Individual from "../model/ols3-model/OLS3Individual";
-import OLS4Ontology from "../model/ols4-model/OLS4Ontology";
 import {getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
+import {Thing} from "../model/interfaces";
 
 interface PaginationParams {
   size?: string;

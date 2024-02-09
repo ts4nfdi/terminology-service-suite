@@ -1,9 +1,11 @@
-import { asArray } from "../../app/util";
-import OLS3Entity from "./OLS3Entity";
-import Reified from "../Reified";
-import Individual from "../interfaces/Individual";
+import {Individual} from "../interfaces";
+import {OLS3Entity} from "./OLS3Entity";
 
-export default class OLS3Individual extends OLS3Entity implements Individual{
+import Reified from "../Reified";
+
+import { asArray } from "../../app/util";
+
+export class OLS3Individual extends OLS3Entity implements Individual{
 
   getType(): "ontology" | "class" | "property" | "individual" {
     return "individual";

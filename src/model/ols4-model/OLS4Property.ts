@@ -1,9 +1,11 @@
-import { asArray } from "../../app/util";
-import OLS4Entity from "./OLS4Entity";
-import Reified from "../Reified";
-import Property from "../interfaces/Property";
+import {Property} from "../interfaces";
+import {OLS4Entity} from "./OLS4Entity";
 
-export default class OLS4Property extends OLS4Entity implements Property{
+import Reified from "../Reified";
+
+import { asArray } from "../../app/util";
+
+export class OLS4Property extends OLS4Entity implements Property{
   getParents(): Reified<any>[] {
     return Reified.fromJson<any>(
       this.properties["http://www.w3.org/2000/01/rdf-schema#subPropertyOf"]
