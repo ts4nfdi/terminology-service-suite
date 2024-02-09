@@ -1,7 +1,7 @@
 import Reified from "../Reified";
 import LinkedEntities from "../LinkedEntities";
 
-export default interface Thing {
+export interface Thing {
     properties: any;
 
     getLabel(): string | undefined;

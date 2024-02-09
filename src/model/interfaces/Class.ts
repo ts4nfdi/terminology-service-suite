@@ -1,6 +1,6 @@
-import Entity from "./Entity";
+import { Entity } from "./";
 
-export default interface Class extends Entity {
+export interface Class extends Entity {
     getDisjointWith(): any[];
     getHasKey(): any[];
     getSubsets(): any[];

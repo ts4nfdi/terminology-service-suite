@@ -1,6 +1,6 @@
-import Entity from "./Entity";
+import { Entity } from "./";
 
-export default interface Individual extends Entity {
+export interface Individual extends Entity {
     getDifferentFrom(): any[];
     getSameAs(): any[];
     getIndividualTypes(): string[];

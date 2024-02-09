@@ -1,7 +1,7 @@
-import Thing from "./Thing";
+import { Thing } from "./";
 import Reified from "../Reified";
 
-export default interface Entity extends Thing {
+export interface Entity extends Thing {
     getParents(): Reified<any>[];
     getSuperEntities(): Reified<any>[];
     getEquivalents(): Reified<any>[];
