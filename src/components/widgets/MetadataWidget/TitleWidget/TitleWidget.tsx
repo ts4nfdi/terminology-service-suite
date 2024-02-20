@@ -3,6 +3,7 @@ import {useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
+import { TitlePresentation } from "./TitlePresentation";
 
 export interface TitleWidgetProps {
     iri?: string;
@@ -102,9 +103,8 @@ function TitleWidget(props: TitleWidgetProps) {
         <>
             {isLoading && <EuiLoadingSpinner size="s"/>}
             {isSuccess &&
-                <>
-                    <EuiText>{titleText || response.title}</EuiText>
-                </>}
+                <TitlePresentation title={response?.title}/>
+            }
             {isError && <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>}
         </>
     );
