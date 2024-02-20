@@ -6,11 +6,12 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types/"],
+    "typeRoots": ["node_modules/@types/", "node_modules/@zbmed/ols-treeview/dist_widgets"],
     "jsx": "react",
     "declaration": true,
-    "declarationDir": "dist/esm/types"
+    "declarationDir": "dist/esm/types",
+    "module": "ESNext"
   },
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["dist"],
   "include": ["./src/**/*"]
 }
