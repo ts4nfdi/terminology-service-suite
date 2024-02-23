@@ -28,7 +28,7 @@ export function capitalize(str: string) : string {
 }
 
 export function deCamelCase(str: string) : string {
-    return capitalize(str).split(/(?=[A-Z])/).join(" ");
+    return capitalize(str).split(/(?=[A-Z][a-z])/).join(" ");
 }
 
 export function deUnderscore(str: string) : string {

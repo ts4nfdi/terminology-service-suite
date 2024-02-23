@@ -174,7 +174,7 @@ export class OlsApi {
     let ontologiesData: Ontology[] = [];
 
     let pageNum = 0;
-    let pageSize = 500;
+    const pageSize = 500;
 
     do {
       response = await this.getOntologies({ size: pageSize.toString(), page: pageNum.toString() }, undefined, undefined, parameter); // assuming there are no more than 500 ontologies

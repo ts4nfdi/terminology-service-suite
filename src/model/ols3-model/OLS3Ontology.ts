@@ -56,7 +56,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
 
   // used as IRI
   getOntologyPurl(): string {
-    return this.properties["config"]["fileLocation"];
+    return this.properties["config"]["id"];
   }
 
   getHomepage(): string {

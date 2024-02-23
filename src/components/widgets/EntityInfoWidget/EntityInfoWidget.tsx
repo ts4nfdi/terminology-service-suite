@@ -3,7 +3,7 @@ import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elas
 import {OlsApi} from "../../../api/OlsApi";
 import {useQuery} from 'react-query'
 import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {asArray, capitalize, randomString} from "../../../app/util";
+import {asArray, capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
 import {Ontology, Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
 import {isEntity, isOntology, isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
@@ -157,7 +157,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         <b>Creators:</b>
                         {ontology.getCreators().length > 1 ?
                             <ul>{ontology.getCreators().map((creator) => {
-                                return <li id={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, api, showBadges)}</li>
+                                return <li key={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, api, showBadges)}</li>
                             })}</ul> :
                             <p>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), ontology.getCreators()[0], api, showBadges)}</p>
                         }
@@ -311,9 +311,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)!.type.indexOf("dataProperty") !== -1)
         const propertyAssertions: JSX.Element[] = [];
 
-        for(let iri of objectProperties) {
+        for(const iri of objectProperties) {
             const values = asArray(individual.properties[iri]);
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
@@ -331,9 +331,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
         }
 
-        for(let iri of dataProperties) {
+        for(const iri of dataProperties) {
             const values = asArray(individual.properties[iri]);
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
@@ -348,14 +348,14 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
         }
 
-        for(let key of negativeProperties) {
+        for(const key of negativeProperties) {
             const iri = key.slice("negativePropertyAssertion+".length);
             const linkedEntity = individual.getLinkedEntities().get(iri);
             const hasDataProperty = linkedEntity!.type.indexOf("dataProperty") !== -1;
             const hasObjectProperty = linkedEntity!.type.indexOf("objectProperty") !== -1;
             const values = asArray(individual.properties[key]);
 
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         <i style={{color: "purple"}}>not</i>{" "}
@@ -409,7 +409,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             <>
                 {thing.getAnnotationPredicates().map((annoKey) => (
                     <EuiFlexItem grow={false} key={annoKey}>
-                        <b>{thing.getAnnotationTitleById(annoKey)}:</b>
+                        <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
                         {thing.getAnnotationById(annoKey).length > 1 ?
                             <ul>{thing.getAnnotationById(annoKey).map((annotation) => {
                                 return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, api, showBadges)}</li>;
