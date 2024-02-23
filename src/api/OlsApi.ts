@@ -316,7 +316,7 @@ export class OlsApi {
     let response;
 
     if(entityType) {
-      response = await this.getEntityObjectWithEntityTypeProvided(entityType, iri, ontologyId, parameter, useLegacy);
+      response = await this.getEntityObjectWithEntityTypeProvided(iri, entityType, ontologyId, parameter, useLegacy);
     }
     else {
       if(getUseLegacy(useLegacy)) {
@@ -355,7 +355,7 @@ export class OlsApi {
     return this.makeCall(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} }, false);
   }
 
-  private async getEntityObjectWithEntityTypeProvided(entityType: EntityTypeName, iri: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
+  private async getEntityObjectWithEntityTypeProvided(iri: string, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
     switch (entityType) {
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
         return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
