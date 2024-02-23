@@ -81,11 +81,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
                       <EuiFlexItem>
                           <EuiText size={"m"}>
                               <i>Defining ontology not available </i>
-                              <EuiIconTip type={"iInCircle"}
-                                          color={"subdued"}
-                                          content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}
-                              >
-                              </EuiIconTip>
+                              <EuiIconTip type={"iInCircle"} color={"subdued"} content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}/>
                           </EuiText>
                       </EuiFlexItem>
                   }
