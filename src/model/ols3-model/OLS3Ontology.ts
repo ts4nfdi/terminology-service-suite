@@ -114,7 +114,11 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   }
 
   getAnnotationById(id: string):Reified<any>[] {
-    return Reified.fromJson(asArray(this.properties["config"]["annotations"][id]))
+    return Reified.fromJson(asArray(this.properties["config"]["annotations"][id])
+        .filter((elem) => {
+          return typeof elem === "string" && elem !== ""
+        })
+    )
   }
 
   getPreferredRoots(): string[] {
