@@ -9,10 +9,7 @@ const DEFAULT_SHOW_BADGES = true;
 
 export function getTooltip(text: string) : JSX.Element {
     return (
-        <EuiIconTip type={"iInCircle"}
-                    color={"subdued"}
-                    content={text}>
-        </EuiIconTip>
+        <EuiIconTip type={"iInCircle"} color={"subdued"} content={text}/>
     );
 }
 
@@ -25,9 +22,9 @@ export function getTooltip(text: string) : JSX.Element {
  * @returns JSX.Element the axioms in JSX format to display
  */
 export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | null) : JSX.Element {
-    let axiomsText = Object.keys(axiomsDict)
+    const axiomsText = Object.keys(axiomsDict)
         .map((key) => {
-            let label = parentEntity.getLinkedEntities().getLabelForIri(key) || key;
+            const label = parentEntity.getLinkedEntities().getLabelForIri(key) || key;
             if (label) {
                 return (
                     "*" + axiomsDict[key] + " (" + label + ")"
@@ -72,7 +69,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
         }
     }
 
-    let otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== localOntology}) : [];
+    const otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== localOntology}) : [];
     const linkedEntityType = linkedEntity["type"]; // TODO: does type key always exist in linkedEntity relevant for relationsWidget?
 
     // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
@@ -122,7 +119,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                 &nbsp;
                                 {otherDefinedBy.map((elem: any) => {
                                     return (
-                                        <a href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                        <a key={randomString()} href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
                                     );
                                 })}
                             </> :
@@ -143,7 +140,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                 &nbsp;
                                 {otherDefinedBy.map((elem: any) => {
                                     return (
-                                        <a href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                        <a key={randomString()} href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
                                     );
                                 })}
                             </> :
@@ -235,7 +232,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 elements.push(<>[</>);
 
                 let isFirst = true;
-                for(let restriction of withRestrictions) {
+                for(const restriction of withRestrictions) {
                     if(isFirst) isFirst = false;
                     else elements.push(<>,&nbsp;</>);
 
@@ -253,7 +250,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 elements.push(<>]</>);
             }
 
-            result = <span children={elements}></span>
+            result = <>{elements.map((elem) => <span key={randomString()}>{elem}</span>)}</>
         }
         else if (someValuesFrom) {
             result = (
@@ -295,7 +292,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 </span>
             );
             result = (
-                <span>{elements}</span>
+                <span>{elements.map((elem) => <span key={randomString()}>{elem}</span>)}</span>
             );
         }
         else if (unionOf.length > 0) {
@@ -320,7 +317,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 </span>
             );
             result = (
-                <span>{elements}</span>
+                <span>{elements.map((elem) => <span key={randomString()}>{elem}</span>)}</span>
             );
         }
         else if (hasValue) {
@@ -400,7 +397,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                 </span>
             );
             result = (
-                <span>{elements}</span>
+                <span>{elements.map((elem) => <span key={randomString()}>{elem}</span>)}</span>
             );
         }
         else if (inverseOf) {
@@ -456,11 +453,11 @@ export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEnt
  * @param showBadges boolean which indicates if badges should be shown
  */
 function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES) {
-    let linksToSplice: Array<{ start: number; end: number; link: JSX.Element }> =
+    const linksToSplice: Array<{ start: number; end: number; link: JSX.Element }> =
         [];
 
     if(linkedEntities) {
-        for (let entityId of Object.keys(linkedEntities.linkedEntities)) {
+        for (const entityId of Object.keys(linkedEntities.linkedEntities)) {
             for (
                 let n = text.indexOf(entityId, 0);
                 n !== -1;
@@ -497,8 +494,8 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
 
     removeOverlapping: for (let n = 0; n < linksToSplice.length; ) {
         for (let n2 = n + 1; n2 < linksToSplice.length; ++n2) {
-            let spliceA = linksToSplice[n];
-            let spliceB = linksToSplice[n2];
+            const spliceA = linksToSplice[n];
+            const spliceB = linksToSplice[n2];
 
             if (spliceA === spliceB) continue;
 
@@ -521,10 +518,10 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
 
     if (linksToSplice.length === 0) return <>{text}</>;
 
-    let res: JSX.Element[] = [];
+    const res: JSX.Element[] = [];
     let n = 0;
 
-    for (let link of linksToSplice) {
+    for (const link of linksToSplice) {
         res.push(
             <span key={randomString()}>
                 {text.substring(n, link.start)}
@@ -563,7 +560,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
             }
         }
         else {
-            let linkedEntity = linkedEntities.get(value.value);
+            const linkedEntity = linkedEntities.get(value.value);
 
             if (linkedEntity) {
                 return getEntityLinkJSX(entity, linkedEntities, value.value, api, showBadges);

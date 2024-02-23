@@ -1,8 +1,9 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
-import {Ontology, Ontologies, Thing} from "../model/interfaces";
+import {Ontology, Ontologies, Thing, Entity} from "../model/interfaces";
 import {OLS3Ontologies} from "../model/ols3-model";
+import {EntityTypeName} from "../model/ModelTypeCheck";
 
 interface PaginationParams {
   size?: string;
@@ -219,7 +220,7 @@ export class OlsApi {
   }
 
   /**
-   * Is used to fetch an entity from the api in ols4 (for ols3, getTerm, getProperty and getIndividual are used respectively).
+   * Is used to fetch an entity from the /entities endpoint in the api in ols4.
    * Always requires the respective object IRI in contentParams to be set
    * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
    * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
@@ -302,7 +303,7 @@ export class OlsApi {
   }
 
   /**
-   * Returns a response Object (implementing 'Class', 'Property', 'Individual' or 'Ontology').
+   * Returns an Entity object (implementing 'Class', 'Property' or 'Individual').
    * Indirectly fetches the response JSON for the specified entityType, iri, ontologyId, parameter and API version (useLegacy).
    *
    * @param entityType
@@ -311,28 +312,36 @@ export class OlsApi {
    * @param parameter
    * @param useLegacy
    */
-  public async getResponseObject(entityType?: string, iri?: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Thing> {
+  public async getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Entity> {
     let response;
 
     if(entityType) {
-      response = await this.getResponseObjectWithEntityTypeProvided(entityType, iri, ontologyId, parameter, useLegacy);
+      response = await this.getEntityObjectWithEntityTypeProvided(entityType, iri, ontologyId, parameter, useLegacy);
     }
     else {
-      if(iri) {
-        if(getUseLegacy(useLegacy)) {
-          response = await this.getResponseObjectWithInferredEntityType(iri, ontologyId, parameter);
-        }
-        else {
-          response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
-        }
+      if(getUseLegacy(useLegacy)) {
+        response = await this.getEntityObjectWithInferredEntityType(iri, ontologyId, parameter);
       }
       else {
-        if(!ontologyId) throw Error("ontologyId has to be specified if no iri is specified");
-        response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
+        response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
       }
     }
 
-    return createModelObject(response);
+    return createModelObject(response) as Entity;
+  }
+
+  /**
+   * Returns an Ontology object.
+   * Indirectly fetches the response JSON for the specified ontologyId, parameter and API version (useLegacy).
+   *
+   * @param ontologyId
+   * @param parameter
+   * @param useLegacy
+   */
+  public async getOntologyObject(ontologyId: string, parameter?: string, useLegacy?: boolean) : Promise<Ontology> {
+    const response = await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
+
+    return createModelObject(response) as Ontology;
   }
 
   /**
@@ -346,30 +355,23 @@ export class OlsApi {
     return this.makeCall(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} }, false);
   }
 
-  private async getResponseObjectWithEntityTypeProvided(entityType: string, iri?: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
-    if(entityType === "ontology") {
-      if(!ontologyId) throw Error('ontologyId has to be specified if entityType == "ontology"');
-      return await this.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter, useLegacy);
-    }
-    else {
-      if(!iri) throw Error("iri has to be specified if entityType != 'ontology'");
-      switch (entityType) {
-        case 'term': case 'class': // also allow "class" even if it should actually be "term"
-          return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
+  private async getEntityObjectWithEntityTypeProvided(entityType: EntityTypeName, iri: string, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
+    switch (entityType) {
+      case 'term': case 'class': // also allow "class" even if it should actually be "term"
+        return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
 
-        case 'property':
-          return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
+      case 'property':
+        return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
 
-        case 'individual':
-          return await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
+      case 'individual':
+        return await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
 
-        default:
-          throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "ontology", "property", "individual"}');
-      }
+      default:
+        throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "property", "individual"}');
     }
   }
 
-  private async getResponseObjectWithInferredEntityType(iri: string, ontologyId?: string, parameter?: string) : Promise<any> {
+  private async getEntityObjectWithInferredEntityType(iri: string, ontologyId?: string, parameter?: string) : Promise<any> {
     /*
             Test all types of entities (term, property, individual) manually with separate queries (as /entities does not exist for legacy API)
             -> return the response object which resolves with a contained entity

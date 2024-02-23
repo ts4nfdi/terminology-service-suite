@@ -57,7 +57,7 @@ const DEFAULT_HAS_TITLE = true;
  * @returns {JSX.Element} the sections' JSX element
  */
 function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): JSX.Element {
-    const types = individual.getRdfTypes().filter((elem: any) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && (!(typeof elem === "string") || !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")));
+    const types = individual.getRdfTypes().filter((elem: string) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#"));
 
     if(individual.getRdfTypes().length > 0) {
         return (<EuiFlexItem>
@@ -259,7 +259,7 @@ function getSubentityOfSectionJSX(entity: Property | Class, props: EntityRelatio
                         <ul>
                             {
                                 superEntities.map((item: any) => {
-                                    return (<li key={randomString()} >{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
+                                    return (<li key={randomString()}>{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
                                 })
                             }
                         </ul>
@@ -382,7 +382,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             props.showBadges
         ],
         async () => {
-            return olsApi.getResponseObject(props.entityType, props.iri, props.ontologyId, props.parameter,  false); // always use v2/ API
+            return olsApi.getEntityObject(props.iri, props.entityType, props.ontologyId, props.parameter,  false); // always use v2/ API
         },
     );
 

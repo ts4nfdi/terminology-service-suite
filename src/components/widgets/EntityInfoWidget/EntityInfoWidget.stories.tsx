@@ -22,35 +22,58 @@ export default {
     hasTitle: {
       description: "Show title, default is true",
       type: { required: false },
+      table: {
+        defaultValue: { summary: true }
+      }
+    },
+    ontologyId: {
+      description: "ID of the ontology whose info should be displayed.",
+      table: {
+        defaultValue: { summary: undefined }
+      }
     },
     entityType: {
-      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+      type: { required: false },
+      description: "Sets the type of the entity whose information you want to fetch.",
       control: {
         type: "radio",
       },
+      table: {
+        type: { summary: "'term' | 'class' | 'property' | 'individual'" },
+        defaultValue: { summary: undefined }
+      },
       options: [
-        "ontology",
         "term",
         "class",
         "property",
         "individual",
         "INVALID STRING",
-        ""
+        "",
+        undefined
       ],
     },
     iri: {
       description: "Entity IRI whose information you want to fetch.",
     },
     parameter: {
-      type: { required: false }
+      type: { required: false },
+      table: {
+        defaultValue: { summary: undefined }
+      }
     },
     showBadges: {
       type: { required: false },
-      description: "If true, entity badges linking to their defining ontologies are shown."
+      description: "If true, entity badges linking to their defining ontologies are shown.",
+      table: {
+        defaultValue: { summary: true }
+      }
     },
     useLegacy: {
       type: { required: false },
-      description: "Specifies the API version used."
+      description: "Specifies the API version used.",
+      table: {
+        defaultValue: { summary: true }
+      }
     }
   },
   args: {
@@ -58,21 +81,12 @@ export default {
     hasTitle: true,
     showBadges: true,
     useLegacy: true,
-    iri: ""
   }
 };
 
 const Template = (args: EntityInfoWidgetProps) => (
   <EntityInfoWidget {...args} />
 );
-
-export const OntologyInfoWidget = Template.bind({});
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-OntologyInfoWidget.args = {
-  entityType: "ontology",
-  ontologyId: "ncit"
-};
 
 export const TermInfoWidget = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -99,16 +113,6 @@ IndividualInfoWidget.args = {
   iri: "http://purl.obolibrary.org/obo/IAO_0000423",
   entityType: "individual",
   ontologyId: "clo"
-};
-
-export const OntologyInfoWidgetNewAPI = Template.bind({});
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-OntologyInfoWidgetNewAPI.args = {
-  api: "https://www.ebi.ac.uk/ols4/api/",
-  useLegacy: false,
-  entityType: "ontology",
-  ontologyId: "mp" // "uberon" is also good for demonstration
 };
 
 export const InfoWidgetBadges = Template.bind({});
