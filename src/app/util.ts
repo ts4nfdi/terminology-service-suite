@@ -55,7 +55,7 @@ export function getTermInOntologySuffix(ontologyId: string, termIri: string, ent
 
 export function pluralizeType(typeArray: string[]) : string | undefined {
     let plural = undefined;
-    for(let type of typeArray) {
+    for(const type of typeArray) {
         plural = {
             "class": "classes",
             "property": "properties",

@@ -202,8 +202,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     function getIndividualPropertyAssertionsSection(individual: Individual) : JSX.Element {
         const propertyIris = Object.keys(individual.properties);
         const negativeProperties = propertyIris.filter((key) => key.startsWith("negativePropertyAssertion+"));
-        const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)!.type.indexOf("objectProperty") !== -1)
-        const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)!.type.indexOf("dataProperty") !== -1)
+        const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("objectProperty") !== -1)
+        const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("dataProperty") !== -1)
         const propertyAssertions: JSX.Element[] = [];
 
         for(const iri of objectProperties) {

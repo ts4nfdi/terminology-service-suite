@@ -7,7 +7,6 @@ import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
-import {never} from "@elastic/eui/src/services/predicate/common_predicates";
 import { getPreferredOntologyJSON } from "../../../utils/helper";
 
 export interface MetadataWidgetProps {

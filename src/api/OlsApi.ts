@@ -1,7 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
-import {Ontology, Ontologies, Thing, Entity} from "../model/interfaces";
+import {Ontology, Ontologies, Entity} from "../model/interfaces";
 import {OLS3Ontologies} from "../model/ols3-model";
 import {EntityTypeName} from "../model/ModelTypeCheck";
 
