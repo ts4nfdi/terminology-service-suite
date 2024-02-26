@@ -215,7 +215,10 @@ export class OlsApi {
   }
 
   public getOntology: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
-    return this.makeCall("ontologies/"+contentParams?.ontologyId, { params: this.buildOtherParams(parameter) }, getUseLegacy(useLegacy));
+    const params = {
+      ...this.buildOtherParams(parameter)
+    };
+    return this.makeCall("ontologies/"+contentParams?.ontologyId, params, getUseLegacy(useLegacy));
   }
 
   /**
@@ -226,7 +229,11 @@ export class OlsApi {
    */
   public getEntity: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"entities", { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)} }, getUseLegacy(useLegacy));
+    const params = {
+      iri: contentParams?.termIri,
+      ...this.buildOtherParams(parameter)
+    };
+    return this.makeCall(queryPrefix+"entities", params, getUseLegacy(useLegacy));
   }
 
   /**
@@ -243,7 +250,11 @@ export class OlsApi {
   public getTerm: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const ontologyPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
     const typePrefix = getUseLegacy(useLegacy) ? "terms" : "classes";
-    return this.makeCall(ontologyPrefix + typePrefix, { params: {iri: contentParams?.termIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, getUseLegacy(useLegacy));
+    const params = {
+      iri: contentParams?.termIri,
+      ...this.buildOtherParams(parameter)
+    };
+    return this.makeCall(ontologyPrefix + typePrefix, { params: params, signal: abortSignal }, getUseLegacy(useLegacy));
   }
 
   /**
@@ -254,7 +265,11 @@ export class OlsApi {
    */
   public getProperty: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"properties", { params: {iri: contentParams?.propertyIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, getUseLegacy(useLegacy));
+    const params = {
+      iri: contentParams?.termIri,
+      ...this.buildOtherParams(parameter)
+    };
+    return this.makeCall(queryPrefix+"properties", { params: params, signal: abortSignal }, getUseLegacy(useLegacy));
   }
 
   /**
@@ -265,7 +280,11 @@ export class OlsApi {
    */
   public getIndividual: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy?: boolean, abortSignal?: AbortSignal) => {
     const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"individuals", { params: {iri: contentParams?.individualIri, parameter: this.buildOtherParams(parameter)}, signal: abortSignal }, getUseLegacy(useLegacy));
+    const params = {
+      iri: contentParams?.termIri,
+      ...this.buildOtherParams(parameter)
+    };
+    return this.makeCall(queryPrefix+"individuals", { params: params, signal: abortSignal }, getUseLegacy(useLegacy));
   }
 
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
