@@ -10,13 +10,13 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
     return this.properties["ontologyId"];
   }
   getName(): string {
-    let names = Reified.fromJson<string>(
+    const names = Reified.fromJson<string>(
       this.properties["label"] || this.properties["title"] || ""
     );
     return (names[0] && names[0].value) || this.getOntologyId();
   }
   getDescription(): string {
-    let descriptions = Reified.fromJson<string>(
+    const descriptions = Reified.fromJson<string>(
       this.properties["definition"] || this.properties["description"] || ""
     );
     return (descriptions[0] && descriptions[0].value) || "";
@@ -80,9 +80,9 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
     return this.properties["loaded"];
   }
   getAnnotationPredicates(): string[] {
-    let annotationPredicates = new Set();
+    const annotationPredicates = new Set();
 
-    for (let predicate of Object.keys(this.properties)) {
+    for (const predicate of Object.keys(this.properties)) {
       // properties without an IRI are things that were added by rdf2json so should not
       // be included as annotations
       if (predicate.indexOf("://") === -1) continue;

@@ -44,12 +44,12 @@ export default class Reified<T> {
       return null;
     }
 
-    let properties: any = {};
+    const properties: any = {};
 
-    for (let axiom of this.axioms) {
-      for (let k of Object.keys(axiom)) {
-        let v = axiom[k];
-        let existing: any[] | undefined = properties[k];
+    for (const axiom of this.axioms) {
+      for (const k of Object.keys(axiom)) {
+        const v = axiom[k];
+        const existing: any[] | undefined = properties[k];
         if (existing !== undefined) {
           existing.push(v);
         } else {

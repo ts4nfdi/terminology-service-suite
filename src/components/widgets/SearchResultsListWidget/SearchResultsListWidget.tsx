@@ -155,28 +155,28 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 props.parameter,
                 signal
             ).then((response) => {
-                if (response.response && response.response.docs != null && response.response.numFound != null) {
-                    if (response.facet_counts && response.facet_counts.facet_fields) {
-                        if (response.facet_counts.facet_fields.type) {
+                if (response["response"] && response["response"]["docs"] != null && response["response"]["numFound"] != null) {
+                    if (response["facet_counts"] && response["facet_counts"]["facet_fields"]) {
+                        if (response["facet_counts"]["facet_fields"]["type"]) {
                             updateFilterOptions(
                                 filterByTypeOptions,
-                                response.facet_counts.facet_fields.type,
+                                response["facet_counts"]["facet_fields"]["type"],
                                 setFilterByTypeOptions,
                                 (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
                             );
                         }
-                        if (response.facet_counts.facet_fields.ontology_name) {
+                        if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
                             updateFilterOptions(
                                 filterByOntologyOptions,
-                                response.facet_counts.facet_fields.ontology_name,
+                                response["facet_counts"]["facet_fields"]["ontology_name"],
                                 setFilterByOntologyOptions,
                                 (currentValue: string) => currentValue.toUpperCase()
                             );
                         }
                     }
 
-                    setTotalItems(response.response.numFound);
-                    const newPageCount = Math.ceil(response.response.numFound / itemsPerPage)
+                    setTotalItems(response["response"]["numFound"]);
+                    const newPageCount = Math.ceil(response["response"]["numFound"] / itemsPerPage)
                     setPageCount(newPageCount);
                     if(activePage >= newPageCount) {
                         setActivePage(0);

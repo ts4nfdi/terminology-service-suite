@@ -144,11 +144,11 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
 
   // TODO: Can be inferred via "links"->"hierarchicalParents"
   getHierarchicalParentReificationAxioms(parentIri: string): any {
-    let hierarchicalParents = Reified.fromJson<any>(
+    const hierarchicalParents = Reified.fromJson<any>(
       this.properties["hierarchicalParent"]
     );
 
-    for (let p of hierarchicalParents) {
+    for (const p of hierarchicalParents) {
       if (p.value === parentIri) {
         return p.getMetadata();
       }

@@ -1,5 +1,5 @@
 import {Thing} from "./interfaces";
-import React from "react";
+import React, {ReactElement} from "react";
 import {EuiBadge, EuiIconTip} from "@elastic/eui";
 import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
@@ -7,7 +7,7 @@ import Reified from "./Reified";
 
 const DEFAULT_SHOW_BADGES = true;
 
-export function getTooltip(text: string) : JSX.Element {
+export function getTooltip(text: string) : ReactElement {
     return (
         <EuiIconTip type={"iInCircle"} color={"subdued"} content={text}/>
     );
@@ -19,9 +19,9 @@ export function getTooltip(text: string) : JSX.Element {
  * Returns Reified axioms as JSX element (similar to MetadataTooltip component in ols4 project)
  * @param parentEntity the surrounding entity of the axioms array (for eventual label fetching)
  * @param axiomsDict the entities axioms in the format returned by Reified::getMetadata()
- * @returns JSX.Element the axioms in JSX format to display
+ * @returns ReactElement the axioms in JSX format to display
  */
-export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | null) : JSX.Element {
+export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | null) : ReactElement {
     const axiomsText = Object.keys(axiomsDict)
         .map((key) => {
             const label = parentEntity.getLinkedEntities().getLabelForIri(key) || key;
@@ -46,9 +46,9 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
  * @param iri   the entities' iri
  * @param api   the api used to extract the frontend api to link to linked entity
  * @param showBadges    boolean which indicates if badges should be shown
- * @returns JSX.Element the entity link JSX
+ * @returns ReactElement the entity link JSX
  */
-export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = DEFAULT_SHOW_BADGES): JSX.Element {
+export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = DEFAULT_SHOW_BADGES): ReactElement {
     const frontendApi = getFrontEndApi(api);
     const label = linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
     const linkedEntity = linkedEntities.get(iri);
@@ -185,15 +185,14 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
  * ONLY USABLE WITH V2-API ENTITIES
  *
  * Builds and returns one element of a sections' list, possibly in a recursive fashion by parsing the response object at the currentResponsePath to show Manchester syntax.
- * @returns {JSX.Element} the list element
  * @param parentEntity the entity object possessing the whole response object
  * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
  * @param currentResponsePath the current sub-object of the parentEntities response object parsed as class expression
  * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
  * @param showBadges boolean which indicates if badges should be shown
- * @returns JSX.Element the class expression JSX
+ * @returns ReactElement the class expression JSX
  */
-export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
+export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
     let result = <></>;
 
     // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
@@ -223,7 +222,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
         const onDataType = currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
 
         if(onDataType) {
-            const elements: JSX.Element[] = [
+            const elements: ReactElement[] = [
                 getClassExpressionJSX(parentEntity, linkedEntities, onDataType, api, showBadges)
             ];
 
@@ -271,7 +270,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
             );
         }
         else if (intersectionOf.length > 0) {
-            const elements: JSX.Element[] = [
+            const elements: ReactElement[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
                 </span>
@@ -296,7 +295,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
             );
         }
         else if (unionOf.length > 0) {
-            const elements: JSX.Element[] = [
+            const elements: ReactElement[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#40;
                 </span>
@@ -374,7 +373,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
             );
         }
         else if (oneOf.length > 0) {
-            const elements: JSX.Element[] = [
+            const elements: ReactElement[] = [
                 <span key={randomString()} className="text-neutral-default">
                     &#123;
                 </span>
@@ -427,7 +426,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
  * @param api
  * @param showBadges
  */
-export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
+export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
     return (
         <>
             {array.length === 1 ? (
@@ -453,7 +452,7 @@ export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEnt
  * @param showBadges boolean which indicates if badges should be shown
  */
 function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES) {
-    const linksToSplice: Array<{ start: number; end: number; link: JSX.Element }> =
+    const linksToSplice: Array<{ start: number; end: number; link: ReactElement }> =
         [];
 
     if(linkedEntities) {
@@ -518,7 +517,7 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
 
     if (linksToSplice.length === 0) return <>{text}</>;
 
-    const res: JSX.Element[] = [];
+    const res: ReactElement[] = [];
     let n = 0;
 
     for (const link of linksToSplice) {
@@ -545,8 +544,8 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
  * @param api the api used to extract the frontend api to link to linked entities
  * @param showBadges boolean which indicates if badges should be shown
  */
-export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): JSX.Element {
-    function getValueJSX(value: Reified<any>): JSX.Element {
+export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
+    function getValueJSX(value: Reified<any>): ReactElement {
         const linkedEntities = entity.getLinkedEntities();
 
         // linkedEntities not existent on entity (-> probably legacy api version)

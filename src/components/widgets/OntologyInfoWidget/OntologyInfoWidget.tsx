@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
 import {useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -59,7 +59,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       }
   );
 
-  function getOntologyIriSection(ontology: Ontology): JSX.Element {
+  function getOntologyIriSection(ontology: Ontology): ReactElement {
     return (
         <>
           {(ontology.getIri() || ontology.getOntologyPurl()) &&
@@ -74,7 +74,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getVersionIriSection(ontology: Ontology) : JSX.Element {
+  function getVersionIriSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getVersionIri() &&
@@ -89,7 +89,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getLastLoadSection(ontology: Ontology) : JSX.Element {
+  function getLastLoadSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getSourceFileTimestamp() &&
@@ -102,7 +102,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getOntologyIdSection(ontology: Ontology) : JSX.Element {
+  function getOntologyIdSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getOntologyId() &&
@@ -115,7 +115,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getVersionSection(ontology: Ontology) : JSX.Element {
+  function getVersionSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getVersion() &&
@@ -128,7 +128,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getNumClassesSection(ontology: Ontology) : JSX.Element {
+  function getNumClassesSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getNumClasses() &&
@@ -141,7 +141,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getCreatorsSection(ontology: Ontology) : JSX.Element {
+  function getCreatorsSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getCreators().length > 0 &&
@@ -159,7 +159,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getAnnotationSection(thing: Thing) : JSX.Element {
+  function getAnnotationSection(thing: Thing) : ReactElement {
     return (
         <>
           {thing.getAnnotationPredicates().map((annoKey) => {

@@ -29,11 +29,10 @@ export default class LinkedEntities {
 	}
 
 	getLabelForIri(iri:string):string|undefined {
-
-		let linkedEntity = this.linkedEntities[iri]
+		const linkedEntity = this.linkedEntities[iri]
 
 		if(linkedEntity) {
-			let label = Reified.fromJson<string>( linkedEntity.label )
+			const label = Reified.fromJson<string>( linkedEntity.label )
 			if(label && label.length > 0) {
 				return label[0].value
 			}

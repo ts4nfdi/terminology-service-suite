@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../api/OlsApi";
 import {useQuery} from 'react-query'
@@ -62,7 +62,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         }
     );
 
-    function getLabelSection(entity: Entity) : JSX.Element {
+    function getLabelSection(entity: Entity) : ReactElement {
         return (
             <>
                 {entity.getLabel() &&
@@ -75,7 +75,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getSynonymsSection(entity: Entity) : JSX.Element {
+    function getSynonymsSection(entity: Entity) : ReactElement {
         return (
             <>
                 {entity.getSynonyms().length > 0 &&
@@ -93,7 +93,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getHasKeySection(term: Class) : JSX.Element {
+    function getHasKeySection(term: Class) : ReactElement {
         const keys = term.getHasKey();
         return (
             <>
@@ -112,7 +112,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getSubsetsSection(term: Class) : JSX.Element {
+    function getSubsetsSection(term: Class) : ReactElement {
         return (
             <>
                 { term.getSubsets().length > 0 &&
@@ -130,7 +130,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getPropertyCharacteristicsSection(property: Property) : JSX.Element {
+    function getPropertyCharacteristicsSection(property: Property) : ReactElement {
         const characteristics = property.getRdfTypes().map(type => {
             return ({
                 'http://www.w3.org/2002/07/owl#FunctionalProperty': 'Functional',
@@ -161,7 +161,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getDomainSection(property: Property) : JSX.Element {
+    function getDomainSection(property: Property) : ReactElement {
         const domains = property.getDomain();
         return (
             <>
@@ -180,7 +180,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getRangeSection(property: Property) : JSX.Element {
+    function getRangeSection(property: Property) : ReactElement {
         const ranges = property.getRange();
         return (
             <>
@@ -199,12 +199,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getIndividualPropertyAssertionsSection(individual: Individual) : JSX.Element {
+    function getIndividualPropertyAssertionsSection(individual: Individual) : ReactElement {
         const propertyIris = Object.keys(individual.properties);
         const negativeProperties = propertyIris.filter((key) => key.startsWith("negativePropertyAssertion+"));
         const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("objectProperty") !== -1)
         const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("dataProperty") !== -1)
-        const propertyAssertions: JSX.Element[] = [];
+        const propertyAssertions: ReactElement[] = [];
 
         for(const iri of objectProperties) {
             const values = asArray(individual.properties[iri]);
@@ -299,7 +299,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getAnnotationSection(thing: Thing) : JSX.Element {
+    function getAnnotationSection(thing: Thing) : ReactElement {
         return (
             <>
                 {thing.getAnnotationPredicates().map((annoKey) => {

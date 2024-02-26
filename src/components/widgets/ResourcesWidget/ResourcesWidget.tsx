@@ -4,7 +4,6 @@ import {
   EuiButtonIcon,
   EuiLink,
   CriteriaWithPagination,
-  EuiText,
 } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -231,13 +230,13 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         )
         .then((response) => {
           if (
-            response.page.totalElements != null &&
-            response._embedded &&
-            response._embedded.ontologies
+            response["page"]["totalElements"] != null &&
+            response["_embedded"] &&
+            response["_embedded"]["ontologies"]
           ) {
             // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-            setTotalOntologies(response.page.totalElements);
-            return response._embedded.ontologies;
+            setTotalOntologies(response["page"]["totalElements"]);
+            return response["_embedded"]["ontologies"];
           } else {
             throw new Error("Unexpected API response");
           }
