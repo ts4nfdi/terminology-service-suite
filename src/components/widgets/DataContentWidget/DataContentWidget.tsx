@@ -2,7 +2,7 @@ import React from "react";
 import { EuiCard, EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
-import Ontologies from "../../../model/interfaces/Ontologies";
+import { Ontologies } from "../../../model/interfaces";
 
 export interface DataContentWidgetProps {
   api: string;

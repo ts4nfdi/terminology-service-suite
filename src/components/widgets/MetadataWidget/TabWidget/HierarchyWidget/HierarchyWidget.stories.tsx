@@ -1,5 +1,8 @@
 import React from "react";
 import { HierarchyWidgetProps, HierarchyWidget } from "./HierarchyWidget";
+import { Entity, Ontology, Thing } from "../../../../../model/interfaces";
+import { useQuery } from "react-query";
+import { OlsApi } from "../../../../../api/OlsApi";
 
 export default {
   title: "HierarchyWidget",
@@ -34,6 +37,46 @@ export default {
     parameter: "collection=nfdi4health",
   }
 };
+
+const iri = "http://www.ebi.ac.uk/efo/EFO_0000400"
+const api = "http://ols4.qa.km.k8s.zbmed.de/ols4/api/"
+const ontologyId = "efo"
+const entityType = "term"
+const parameter = "collection=nfdi4health"
+const useLegacy = false
+const olsApi = new OlsApi(api);
+
+function getData(){
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
+    }
+  );
+}
+
+function getOntologyData(){
+  const {
+    data: ontologyData,
+    isLoading: isLoadingOntology,
+    isSuccess: isSuccessOntology,
+    isError: isErrorOntology,
+    error: errorOntology
+  } = useQuery<Thing>(
+    ["ontologyData", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getResponseObject("ontology", iri, ontologyId, parameter, useLegacy);
+    }
+  );
+}
+
+
 
 const Template = (args: HierarchyWidgetProps) => <HierarchyWidget {...args} />;
 

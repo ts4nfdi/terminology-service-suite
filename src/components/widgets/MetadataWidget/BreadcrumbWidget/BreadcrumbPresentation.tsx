@@ -23,19 +23,6 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (
     <>
         <span>
-              {
-                !props.ontologyId && !props.isDefiningOntology &&
-                <EuiFlexItem>
-                  <EuiText size={"s"}>
-                    <i>Defining ontology not available </i>
-                    <EuiIconTip
-                      type={"iInCircle"}
-                      color={"subdued"}
-                      content={`Showing occurence inside ${props.ontologyName} instead.`}
-                    />
-                  </EuiText>
-                </EuiFlexItem>
-              }
           <EuiBadge color={props.colorFirst || "primary"}>
             {props.ontologyName.toUpperCase()}
           </EuiBadge>

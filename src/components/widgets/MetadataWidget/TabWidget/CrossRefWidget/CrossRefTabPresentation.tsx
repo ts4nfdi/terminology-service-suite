@@ -7,6 +7,7 @@ export interface CrossRefPresentationProps {
 
 function CrossRefTabPresentation(props: CrossRefPresentationProps) {
 
+  // TODO adapt to v2 response if linkedEntites is the same as obo_xref
   function renderCrossRefs(crossrefs: any) {
     if (crossrefs && crossrefs.length > 0) {
       return crossrefs?.map((item: any, index: any) => (

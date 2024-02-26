@@ -42,9 +42,6 @@ export default {
     parameter: {
       type: { required: false }
     },
-  },
-  args: {
-    parameter: "collection=nfdi4health",
   }
 };
 
@@ -55,14 +52,51 @@ const Template = (args: MetadataWidgetProps) => (
 );
 
 export const MetadataWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-MetadataWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
+MetadataWidget1.storyName = "Metadata Widget"
+// @ts-ignore
+MetadataWidget1.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
   ontologyId: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
   entityType: "term",
-  parameter: "collection=nfdi4health"
+  useLegacy: true
+};
+
+export const OLS3 = Template.bind({});
+// @ts-ignore
+OLS3.storyName = "OLS3"
+// @ts-ignore
+OLS3.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  ontologyId: "ncit",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+  entityType: "term",
+  useLegacy: true
+};
+
+export const OLS4V1 = Template.bind({});
+// @ts-ignore
+OLS4V1.storyName = "OLS4 V1"
+// @ts-ignore
+OLS4V1.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  ontologyId: "ncit",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+  entityType: "term",
+  useLegacy: true
+};
+
+export const OLS4V2 = Template.bind({});
+// @ts-ignore
+OLS4V2.storyName = "OLS4 V2"
+// @ts-ignore
+OLS4V2.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  ontologyId: "ncit",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+  entityType: "term",
+  useLegacy: false
 };
 
 export const SelectingDefiningOntology = Template.bind({});
