@@ -90,6 +90,10 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     return (this.properties["definedBy"] || []) as string[];
   }
 
+  getIsDefiningOntology(): boolean {
+    return (this.properties["is_defining_ontology"] || undefined ) as boolean;
+  }
+
   getShortForm(): string {
     return this.properties["obo_id"] || this.properties["shortForm"];
   }
@@ -152,6 +156,25 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
       if (p.value === parentIri) {
         return p.getMetadata();
       }
+    }
+  }
+
+  getCrossReferences(): any[] {
+    return this.properties["obo_xref"];
+  }
+
+  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
+    const type = this.getType();
+
+    switch (type) {
+      case "class":
+        return "classes";
+      case "property":
+        return "properties";
+      case "individual":
+        return "individuals";
+      default:
+        throw new Error("unknown type");
     }
   }
 }

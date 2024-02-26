@@ -79,6 +79,10 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     return (this.properties["definedBy"] || []) as string[];
   }
 
+  getIsDefiningOntology(): boolean {
+    return (this.properties["is_defining_ontology"] || undefined ) as boolean;
+  }
+
   getShortForm(): string {
     return this.properties["curie"] || this.properties["shortForm"];
   }
@@ -190,6 +194,26 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
       if (p.value === parentIri) {
         return p.getMetadata();
       }
+    }
+  }
+
+  // TODO linked entities same as obo_xref? nope - adapt
+  getCrossReferences(): any[] {
+    return this.properties["linkedEntities"];
+  }
+
+    getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
+      const type = this.getType();
+
+    switch (type) {
+      case "class":
+        return "classes";
+      case "property":
+        return "properties";
+      case "individual":
+        return "individuals";
+      default:
+        throw new Error("unknown type");
     }
   }
 }

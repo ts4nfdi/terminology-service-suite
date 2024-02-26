@@ -26,4 +26,7 @@ export interface Entity extends Thing {
     getNumHierarchicalDescendants(): number;
     getNumDescendants(): number;
     getHierarchicalParentReificationAxioms(parentIri: string): any;
+    getIsDefiningOntology(): boolean;
+    getCrossReferences(): Reified<any>[];
+    getTypePlural(): "entities" | "classes" | "properties" | "individuals";
 }

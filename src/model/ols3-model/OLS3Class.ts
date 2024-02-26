@@ -11,7 +11,7 @@ export class OLS3Class extends OLS3Entity implements Class {
     return "class"
   }
 
-  getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" {
+  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
     return "classes"
   }
 

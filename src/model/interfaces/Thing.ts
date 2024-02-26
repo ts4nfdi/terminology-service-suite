@@ -8,7 +8,7 @@ export interface Thing {
     getId(): string;
     getIri(): string;
     getType(): "ontology" | "class" | "property" | "individual";
-    getTypePlural(): "ontologies" | "classes" | "properties" | "individuals";
+    getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "entities";
     getRdfTypes(): string[];
     getName(): string;
     getNames(): string[];

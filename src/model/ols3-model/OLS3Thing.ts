@@ -27,7 +27,7 @@ export abstract class OLS3Thing implements Thing {
   abstract getType(): "ontology" | "class" | "property" | "individual";
 
   // standard responses dont have "type" key -> implement statically in subtypes
-  abstract getTypePlural(): "ontologies" | "classes" | "properties" | "individuals";
+  abstract getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "entities";
 
   // not available in standard responses
   getRdfTypes(): string[] {
