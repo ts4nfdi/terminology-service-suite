@@ -1,5 +1,6 @@
 import React from "react";
 import { EntityInfoWidget, EntityInfoWidgetProps } from "./EntityInfoWidget";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
   title: "EntityInfoWidget",
@@ -39,7 +40,7 @@ export default {
         type: "radio",
       },
       table: {
-        type: { summary: "'term' | 'class' | 'property' | 'individual'" },
+        type: { summary: `${entityTypeNames.join(" | ")}` },
         defaultValue: { summary: undefined }
       },
       options: [

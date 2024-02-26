@@ -9,7 +9,7 @@ import {
     getReifiedJSX,
     getSectionListJSX
 } from "../../../model/StructureRendering";
-import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
+import {EntityTypeName, isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
@@ -19,10 +19,7 @@ export interface EntityRelationsWidgetProps {
     iri: string;
     ontologyId?: string;
     hasTitle?: boolean;
-    entityType:
-        | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-        | "individual"
-        | "property";
+    entityType?: EntityTypeName;
     /**
      * Additional parameters to pass to the API.
      *
@@ -407,7 +404,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     return (
         <>
             <EuiCard
-                title={hasTitle ? (capitalize(getEntityTypeName(entityType)) +" Relations") : ""}
+                title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntityRelation && entity) ? capitalize(entity.getType()) : "") + " Relations" : ""}
                 layout="horizontal"
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}

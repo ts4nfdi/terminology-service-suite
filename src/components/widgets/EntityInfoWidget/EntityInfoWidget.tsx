@@ -3,17 +3,17 @@ import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elas
 import {OlsApi} from "../../../api/OlsApi";
 import {useQuery} from 'react-query'
 import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {asArray, capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
+import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString} from "../../../app/util";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
 import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
 import {isClass, isProperty, isIndividual, EntityTypeName} from "../../../model/ModelTypeCheck";
 
-export interface EntityInfoWidgetProps {
+export type EntityInfoWidgetProps = {
     api: string;
     iri: string;
     ontologyId?: string;
     hasTitle?: boolean;
-    entityType: EntityTypeName
+    entityType?: EntityTypeName
     /**
      * Additional parameters to pass to the API.
      *
@@ -324,7 +324,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     return (
         <>
             <EuiCard
-                title={hasTitle ? (entityType ? capitalize(entityType) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  +" Information" : ""}
+                title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  + " Information" : ""}
                 layout="horizontal"
             >
 
