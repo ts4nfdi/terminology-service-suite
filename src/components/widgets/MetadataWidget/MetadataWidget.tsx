@@ -10,6 +10,7 @@ import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentatio
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TabPresentation } from "./TabWidget/TabPresentation";
+import {pluralizeType} from "../../../app/util";
 
 export interface MetadataWidgetProps {
   iri: string;
@@ -116,6 +117,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
             <TabPresentation
               data={data}
               iri={iri}
+              ontology={ontologyData}
+              entityType={pluralizeType([entityType]) || "entities"}
               api={api}
               ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
               useLegacy={useLegacy}
