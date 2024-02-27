@@ -44,12 +44,61 @@ type UseLegacyObj = {
      useLegacy?: boolean;
 };
 
-type EntityTypeObj = {
+type OptionalThingTypeObj = {
     /**
-     * Sets the type of the entity whose information you want to fetch..
+     * Sets the type of the thing whose information you want to fetch.
+     */
+    thingType?: ThingTypeName;
+};
+
+type OptionalEntityTypeObj = {
+    /**
+     * Sets the type of the entity whose information you want to fetch.
      */
     entityType?: EntityTypeName;
 };
+
+type OptionalOntologyIdObj = {
+    /**
+     * Select a specific ontology by id
+     */
+    ontologyId?: string;
+}
+
+type ForcedOntologyIdObj = {
+    /**
+     * Select a specific ontology by id
+     */
+    ontologyId?: string;
+}
+
+type OptionalIriObj = {
+    /**
+     * Entity IRI whose information you want to fetch.
+     */
+    iri?: string;
+}
+
+type ForcedIriObj = {
+    /**
+     * Entity IRI whose information you want to fetch.
+     */
+    iri: string;
+}
+
+type HasTitleObj = {
+    /**
+     * Show title, default is true
+     */
+    hasTitle?: boolean;
+}
+
+type ShowBadgesObj = {
+    /**
+     * If true (default), entity badges linking to their defining ontologies are shown.
+     */
+    showBadges?: boolean;
+}
 
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
@@ -86,21 +135,9 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
 
 export type DataContentWidgetProps = ApiObj & ParameterObj & UseLegacyObj;
 
-export type EntityInfoWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
-    iri: string;
-    ontologyId?: string;
-    hasTitle?: boolean;
-    entityType?: EntityTypeName
-    showBadges?: boolean; // default is true
-}
+export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
-export type EntityRelationsWidgetProps = ApiObj & ParameterObj & {
-    iri: string;
-    ontologyId?: string;
-    hasTitle?: boolean;
-    entityType?: EntityTypeName;
-    showBadges?: boolean;
-}
+export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj;
 
 export type JsonApiWidgetProps = {
     apiQuery: string;
@@ -108,10 +145,8 @@ export type JsonApiWidgetProps = {
     buttonSize?: "s" | "m";
 }
 
-export type BreadcrumbWidgetProps = ApiObj & ParameterObj & {
-    iri: string;
-    ontologyId?: string;
-    entityType: EntityTypeName;
+// TODO: entityType optional for BreadcrumbWidget
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & {
     colorFirst?:
         | "primary"
         | "accent"
@@ -125,15 +160,12 @@ export type BreadcrumbWidgetProps = ApiObj & ParameterObj & {
     colorSecond?: string;
 }
 
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & ParameterObj & {
-    iri?: string;
-    ontologyId?: string;
+// TODO: thingType optional for DescriptionWidget
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
     descText?: string;
-    thingType: ThingTypeName;
 }
 
-export type IriWidgetProps = ParameterObj & {
-    iri: string;
+export type IriWidgetProps = ForcedIriObj & ParameterObj & {
     iriText?: string;
     color?:
         | "primary"
@@ -146,40 +178,25 @@ export type IriWidgetProps = ParameterObj & {
         | "subdued";
 }
 
-export type TabWidgetProps = ApiObj & ParameterObj & {
-    iri: string;
-    ontologyId?: string;
-    thingType: ThingTypeName;
-}
+// TODO: thingType optional for TabWidget
+export type TabWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
 
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
 export type CrossRefWidgetProps = TabWidgetProps;
 
-export type HierarchyWidgetProps = ApiObj & {
-    iri?: string;
-    ontologyId: string;
-}
+export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalIriObj;
 
-export type TitleWidgetProps = ApiObj & ParameterObj & {
-    iri?: string;
-    ontologyId?: string;
+// TODO: thingType optional for TitleWidget
+export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
     titleText?: string;
-    thingType: ThingTypeName;
     default_value?: string
 }
 
-export type MetadataWidgetProps = ApiObj & ParameterObj & {
-    iri: string;
-    ontologyId?: string;
-    entityType: EntityTypeName;
-}
+// TODO: entityType optional for MetadataWidget
+export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
 
-export type OntologyInfoWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
-    ontologyId: string;
-    showBadges?: boolean;
-    hasTitle?: boolean;
-}
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
 export type ResourcesWidgetProps = ApiObj & ParameterObj & {
     initialEntriesPerPage?: number;
@@ -193,8 +210,7 @@ export type ResourcesWidgetProps = ApiObj & ParameterObj & {
     actions?: Array<Action<OlsResource>>;
 }
 
-export type OlsResource = {
-    ontologyId: string;
+export type OlsResource = ForcedOntologyIdObj & {
     loaded: string;
     numberOfTerms: number;
     numberOfProperties: number;
