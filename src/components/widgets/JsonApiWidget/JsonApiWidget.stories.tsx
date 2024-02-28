@@ -1,5 +1,6 @@
 import React from "react";
-import { JsonApiWidget, JsonApiWidgetProps } from "./JsonApiWidget";
+import { JsonApiWidget } from "./JsonApiWidget";
+import {JsonApiWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
