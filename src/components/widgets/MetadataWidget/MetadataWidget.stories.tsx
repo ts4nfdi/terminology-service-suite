@@ -1,5 +1,6 @@
 import React from "react";
-import { MetadataWidget, MetadataWidgetProps } from "./MetadataWidget";
+import { MetadataWidget } from "./MetadataWidget";
+import {MetadataWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
