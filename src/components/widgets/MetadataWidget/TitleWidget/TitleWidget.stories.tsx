@@ -1,5 +1,6 @@
 import React from "react";
-import {TitleWidget, TitleWidgetProps} from "./TitleWidget";
+import {TitleWidget} from "./TitleWidget";
+import {TitleWidgetProps} from "../../../../utils/types";
 import {EuiPanel} from "@elastic/eui";
 
 export default {
@@ -23,7 +24,7 @@ export default {
         ontologyId: {
             description: "Ontology ID from where the object title/label should be taken.",
         },
-        entityType: {
+        thingType: {
             description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
             control: {
                 type: "radio",
@@ -69,7 +70,7 @@ export const TitleWidget1 = Template.bind({});
 TitleWidget1.args = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985", api: "https://semanticlookup.zbmed.de/api/",
     ontologyId: "ncit",
-    entityType: "term",
+    thingType: "term",
 };
 
 export const SelectingDefiningOntology = Template.bind({});
@@ -78,7 +79,7 @@ export const SelectingDefiningOntology = Template.bind({});
 // @ts-ignore
 SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
     iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-    entityType: "term",
+    thingType: "term",
     parameter: ""
 };
 
@@ -88,6 +89,6 @@ export const DefiningOntologyUnavailable = Template.bind({});
 // @ts-ignore
 DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
     iri: "http://identifiers.org/uniprot/Q9VAM9",
-    entityType: "term",
+    thingType: "term",
     parameter: ""
 };
