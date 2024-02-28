@@ -33,7 +33,10 @@ type ParameterObj = {
 
 type ApiObj = {
     /**
-     * Instance of the OLS API to call.
+     * The API instance for the API call.
+     * - **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
+     * - **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
+     * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
      */
     api: string;
 };
