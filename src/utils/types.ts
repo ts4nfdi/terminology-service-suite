@@ -4,6 +4,7 @@ import {EuiTextProps} from "@elastic/eui/src/components/text/text";
 import {Action} from "@elastic/eui/src/components/basic_table/action_types";
 import {EuiSuggestProps} from "@elastic/eui/src/components";
 import {EuiCardProps} from "@elastic/eui";
+import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
 
 type ParameterObj = {
     /**
@@ -51,11 +52,26 @@ type OptionalThingTypeObj = {
     thingType?: ThingTypeName;
 };
 
+type ForcedThingTypeObj = {
+    /**
+     * Sets the type of the thing whose information you want to fetch.
+     */
+    thingType: ThingTypeName;
+};
+
 type OptionalEntityTypeObj = {
     /**
      * Sets the type of the entity whose information you want to fetch.
      */
     entityType?: EntityTypeName;
+};
+
+// TODO: only temporary for widgets that not yet have entityType optional
+type ForcedEntityTypeObj = {
+    /**
+     * Sets the type of the entity whose information you want to fetch.
+     */
+    entityType: EntityTypeName;
 };
 
 type OptionalOntologyIdObj = {
@@ -146,40 +162,23 @@ export type JsonApiWidgetProps = {
 }
 
 // TODO: entityType optional for BreadcrumbWidget
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & {
-    colorFirst?:
-        | "primary"
-        | "accent"
-        | "success"
-        | "warning"
-        | "danger"
-        | "ghost"
-        | "text"
-        | "subdued"
-        | string;
-    colorSecond?: string;
+export type BreadcrumbWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & {
+    colorFirst?: EuiLinkColor | string;
+    colorSecond?: EuiLinkColor | string;
 }
 
 // TODO: thingType optional for DescriptionWidget
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
     descText?: string;
 }
 
 export type IriWidgetProps = ForcedIriObj & ParameterObj & {
     iriText?: string;
-    color?:
-        | "primary"
-        | "accent"
-        | "success"
-        | "warning"
-        | "danger"
-        | "ghost"
-        | "text"
-        | "subdued";
+    color?: EuiLinkColor | string;
 }
 
 // TODO: thingType optional for TabWidget
-export type TabWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
+export type TabWidgetProps = ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
 
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
@@ -188,13 +187,13 @@ export type CrossRefWidgetProps = TabWidgetProps;
 export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalIriObj;
 
 // TODO: thingType optional for TitleWidget
-export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+export type TitleWidgetProps = ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
     titleText?: string;
     default_value?: string
 }
 
 // TODO: entityType optional for MetadataWidget
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
+export type MetadataWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
