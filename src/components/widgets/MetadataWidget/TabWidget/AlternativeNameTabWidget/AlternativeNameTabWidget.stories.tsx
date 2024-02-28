@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  AlternativeNameTabWidget,
-  AlternativeNameTabWidgetProps,
-} from "./AlternativeNameTabWidget";
+import {AlternativeNameTabWidget} from "./AlternativeNameTabWidget";
+import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
 
 export default {
   title: "AlternativeNameTabWidget",
@@ -29,7 +27,7 @@ export default {
     ontologyId: {
       description: "Ontology ID from where the entity metadata should be taken.",
     },
-    entityType: {
+    thingType: {
       description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -62,7 +60,7 @@ export const AlternativeNameTabWidget1 = Template.bind({});
 AlternativeNameTabWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
-  entityType: "term",
+  thingType: "term",
   ontologyId: "ncit",
 };
 
@@ -70,9 +68,10 @@ export const SelectingDefiningOntology = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
+SelectingDefiningOntology.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };
 
@@ -82,7 +81,7 @@ export const DefiningOntologyUnavailable = Template.bind({});
 // @ts-ignore
 DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://identifiers.org/uniprot/Q9VAM9",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };
 
