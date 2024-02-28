@@ -177,8 +177,8 @@ export type IriWidgetProps = ForcedIriObj & ParameterObj & {
     color?: EuiLinkColor | string;
 }
 
-// TODO: thingType optional for TabWidget
-export type TabWidgetProps = ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
+// TODO: entityType optional for TabWidget
+export type TabWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
 
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
