@@ -1,5 +1,6 @@
 import React from "react";
-import { DataContentWidget, DataContentWidgetProps } from "./DataContentWidget";
+import {DataContentWidget} from "./DataContentWidget";
+import {DataContentWidgetProps} from "../../../utils/types";
 
 export default {
   title: "DataContentWidget",
