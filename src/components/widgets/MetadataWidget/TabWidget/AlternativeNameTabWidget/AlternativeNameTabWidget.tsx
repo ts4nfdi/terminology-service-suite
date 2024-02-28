@@ -6,7 +6,7 @@ import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../
 import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const { iri, api, parameter, thingType, ontologyId } = props;
+  const { iri, api, parameter, entityType, ontologyId } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -15,8 +15,8 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
         isSuccess: isSuccess,
         isError: isError,
         error: error,
-    } = useQuery([api, iri, ontologyId, thingType, parameter, "entityInfo"], () => {
-        return getPreferredOntologyJSON(olsApi, thingType, ontologyId, iri, parameter);
+    } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
+        return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
     });
 
   function renderAltLabel() {
