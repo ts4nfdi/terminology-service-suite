@@ -11,7 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -22,31 +21,27 @@ export default {
       ],
     },
     initialEntriesPerPage: {
-      description: "Initial number of entries displayed per page.",
       control: "number",
     },
     pageSizeOptions: {
-      description: "Possible values for number of entries displayed per page.",
       control: "array",
     },
     initialSortField: {
-      description: "Column the table is sorted by initially.",
       control: {
         type: "radio",
       },
       options: ["config.title", "config.preferredPrefix", "config.loaded"],
     },
     initialSortDir: {
-      description: "Initial sorting direction.",
+      table: {
+        type: { summary: `asc | desc` },
+      },
       control: {
         type: "radio",
       },
       options: ["asc", "desc"],
     },
     targetLink: {
-      description: "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want " +
-          "a hyperlink to the terminology overview of your terminology service. Leave it blank if your application " +
-          "isn't  a terminology service.",
       control: "text",
     },
     actions: {},

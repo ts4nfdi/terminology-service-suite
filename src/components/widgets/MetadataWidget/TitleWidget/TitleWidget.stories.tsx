@@ -2,6 +2,7 @@ import React from "react";
 import {TitleWidget} from "./TitleWidget";
 import {TitleWidgetProps} from "../../../../utils/types";
 import {EuiPanel} from "@elastic/eui";
+import {thingTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
     title: "TitleWidget",
@@ -11,7 +12,6 @@ export default {
     },
     argTypes: {
         api: {
-            description: "Instance of the OLS API to call.",
             control: {
                 type: "radio",
                 options: [
@@ -26,6 +26,9 @@ export default {
         },
         thingType: {
             description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+            table: {
+                type: { summary: `${thingTypeNames.join(" | ")}` },
+            },
             control: {
                 type: "radio",
                 options: [
@@ -41,14 +44,9 @@ export default {
         iri: {
             description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
         },
-        titleText: {
-            description:
-                "Set your own text manually that overwrites the text fetched from the API",
-        },
+        titleText: {},
         default_value: {
             control: 'text',
-            description:
-                "Set the default text shown if no API fails to retrieve one.",
         },
         parameter: {
             defaultValue: "collection=nfdi4health",

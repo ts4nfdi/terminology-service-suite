@@ -6,7 +6,7 @@ const propertyTypeNames = ["property"] as const;
 const individualTypeNames = ["individual"] as const;
 const ontologyTypeNames = ["ontology"] as const;
 export const entityTypeNames = [...classTypeNames, ...individualTypeNames, ...propertyTypeNames] as const;
-const thingTypeNames = [...entityTypeNames, ...ontologyTypeNames] as const;
+export const thingTypeNames = [...entityTypeNames, ...ontologyTypeNames] as const;
 
 // Type-creation out of READONLY arrays
 export type ClassTypeName = typeof classTypeNames[number];

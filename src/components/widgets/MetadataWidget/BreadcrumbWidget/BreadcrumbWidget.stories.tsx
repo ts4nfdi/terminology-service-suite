@@ -10,7 +10,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -20,15 +19,9 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    iri: {
-      description:
-        "Iri of the term you want to fetch the ontology hierarchy for.",
-    },
-    ontologyId: {
-      description: "Ontology ID from where the object description should be taken.",
-    },
+    iri: {},
+    ontologyId: {},
   entityType: {
-    description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
     control: {
       type: "radio",
     },
@@ -41,8 +34,9 @@ export default {
     ],
   },
     colorFirst: {
-      description:
-        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
@@ -59,8 +53,9 @@ export default {
       ],
     },
     colorSecond: {
-      description:
-        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },

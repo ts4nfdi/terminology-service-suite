@@ -7,7 +7,6 @@ export default {
   component: SearchResultsListWidget,
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -17,20 +16,14 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    query: {
-      description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
-    },
+    query: {},
     initialItemsPerPage: {
-      description: "Initial number of items displayed per page.",
       control: "number",
     },
     itemsPerPageOptions: {
-      description: "Possible values for number of items displayed per page.",
       control: "array",
     },
-    targetLink: {
-      description: "The link which should be the target of the EuiCard.",
-    },
+    targetLink: {},
     parameter: {
       type: { required: false }
     },

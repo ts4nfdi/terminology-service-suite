@@ -116,6 +116,15 @@ type ShowBadgesObj = {
     showBadges?: boolean;
 }
 
+type TargetLinkObj = {
+    /**
+     * Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want
+     * a hyperlink to the terminology overview of your terminology service. Leave it blank if your application
+     * isn't a terminology service.
+     */
+    targetLink?: string;
+}
+
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
@@ -140,7 +149,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      */
     hasShortSelectedLabel?: boolean;
     /**
-     * If true, custom terms can be added that are not found via API.
+     * If true, custom terms that are not found in any ontology can be added.
      */
     allowCustomTerms: boolean;
     /**
@@ -156,24 +165,56 @@ export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOnt
 export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj;
 
 export type JsonApiWidgetProps = {
+    /**
+     * The API query whose response JSON should be displayed on click.
+     */
     apiQuery: string;
+
+    /**
+     * The text displayed on the button.
+     */
     buttonText: string;
+
+    /**
+     * Size of the button.
+     */
     buttonSize?: "s" | "m";
 }
 
 // TODO: entityType optional for BreadcrumbWidget
 export type BreadcrumbWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & {
+    /**
+     * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+     */
     colorFirst?: EuiLinkColor | string;
+
+    /**
+     * Color of the second badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+     */
     colorSecond?: EuiLinkColor | string;
 }
 
 // TODO: thingType optional for DescriptionWidget
 export type DescriptionWidgetProps = EuiTextProps & ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+    /**
+     * Set your own text manually that overwrites the text fetched from the API
+     */
     descText?: string;
+
+    /**
+     * Color of the text, names, hex or rgb
+     */
+    color?: EuiLinkColor | string;
 }
 
 export type IriWidgetProps = ForcedIriObj & ParameterObj & {
+    /**
+     * Set your own text manually, which will show as a clickable link instead of the IRI.
+     */
     iriText?: string;
+    /**
+     * Color of the text, names, hex or rgb
+     */
     color?: EuiLinkColor | string;
 }
 
@@ -188,7 +229,14 @@ export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalIriO
 
 // TODO: thingType optional for TitleWidget
 export type TitleWidgetProps = ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+    /**
+     * Set your own text manually that overwrites the text fetched from the API
+     */
     titleText?: string;
+
+    /**
+     * Set the default text shown if the API fails to retrieve one.
+     */
     default_value?: string
 }
 
@@ -197,15 +245,30 @@ export type MetadataWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntolog
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
-export type ResourcesWidgetProps = ApiObj & ParameterObj & {
+export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
+    /**
+     * Initial number of entries displayed per page.
+     */
     initialEntriesPerPage?: number;
+
+    /**
+     * Possible values for number of entries displayed per page.
+     */
     pageSizeOptions?: number[];
+
+    /**
+     * Column the table is sorted by initially.
+     */
     initialSortField?: string;
+
+    /**
+     * Initial sorting direction.
+     */
     initialSortDir?: "asc" | "desc";
+
     /**
      * Pass actions to each item in the table.
      */
-    targetLink?: string;
     actions?: Array<Action<OlsResource>>;
 }
 
@@ -227,21 +290,35 @@ export type OlsResource = ForcedOntologyIdObj & {
 }
 
 export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value"> & ApiObj & ParameterObj & {
-    query: string;
     /**
-     * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
+     * The search term to receive suggestions for.
+     */
+    query: string;
+
+    /**
+     * Function to be called when the search value in the search bar changes.
+     * @param suggestion
      */
     onSearchValueChange: (suggestion: string) => void;
 };
 
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & ParameterObj & {
+export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+    /**
+     * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
+     */
     query: string;
+
+    /**
+     * Initial number of items displayed per page.
+     */
     initialItemsPerPage?: number;
+
+    /**
+     * Possible values for number of items displayed per page.
+     */
     itemsPerPageOptions?: number[];
-    targetLink?: string;
 };
 
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & ParameterObj & {
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
     result: any;
-    targetLink?: string;
 };

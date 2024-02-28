@@ -2,6 +2,7 @@ import React from "react";
 import { MetadataWidget } from "./MetadataWidget";
 import {MetadataWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
   title: "MetadataWidget",
@@ -11,7 +12,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -28,7 +28,9 @@ export default {
       description: "Iri of the term you want to fetch the metadata for.",
     },
     entityType: {
-      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },

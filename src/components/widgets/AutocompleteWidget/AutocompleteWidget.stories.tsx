@@ -8,7 +8,6 @@ export default {
   component: AutocompleteWidget,
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -27,15 +26,12 @@ export default {
     selectOption: {},
     parameter: {},
     hasShortSelectedLabel: {
-      description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
       type: { required: false },
     },
     allowCustomTerms: {
-      description: "If true, custom terms that are not found in any ontology can be added.",
       type: { required: false},
     },
     singleSelection: {
-      description: "If true, only one concept can be selected at once.",
       type: { required: false},
     }
   },

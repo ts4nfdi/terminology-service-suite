@@ -2,6 +2,7 @@ import React from "react";
 import { DescriptionWidget } from "./DescriptionWidget";
 import {DescriptionWidgetProps} from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
+import {thingTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
   title: "DescriptionWidget",
@@ -11,7 +12,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -22,7 +22,9 @@ export default {
       ],
     },
     color: {
-      description: "Color of the text, names, hex or rgb",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
@@ -38,15 +40,15 @@ export default {
         "rgb(255,0,255)",
       ],
     },
-    descText: {
-      description:
-        "Set your own text manually that overwrites the text fetched from the API",
-    },
+    descText: {},
     ontologyId: {
       description: "Ontology ID from where the object description should be taken.",
     },
     thingType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+      table: {
+        type: { summary: `${thingTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },

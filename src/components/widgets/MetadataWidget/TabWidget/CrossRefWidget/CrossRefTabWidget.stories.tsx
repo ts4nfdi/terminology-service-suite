@@ -1,6 +1,7 @@
 import React from "react";
 import { CrossRefTabWidget } from "./CrossRefTabWidget";
 import {CrossRefWidgetProps} from "../../../../../utils/types";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 
 export default {
   title: "CrossRefTabWidget",
@@ -10,7 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -21,14 +21,13 @@ export default {
       ],
     },
     iri: {
-      description:
-        "IRI of the entity you want to fetch the cross references for.",
+      description: "IRI of the entity you want to fetch the cross references for.",
     },
-    ontologyId: {
-      description: "Ontology ID from where the entity metadata should be taken.",
-    },
+    ontologyId: {},
     entityType: {
-      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },

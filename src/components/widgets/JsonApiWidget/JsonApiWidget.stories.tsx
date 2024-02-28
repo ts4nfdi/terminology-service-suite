@@ -10,15 +10,12 @@ export default {
     layout: "centered",
   },
   argTypes: {
-    apiQuery: {
-      description: "The API query whose response JSON should be displayed on click.",
-    },
-    buttonText: {
-      description: "The text displayed on the button.",
-    },
+    apiQuery: {},
+    buttonText: {},
     buttonSize: {
-      description:
-        "Size of the button",
+      table: {
+        type: { summary: `s | m` },
+      },
       control: {
         type: "radio",
       },

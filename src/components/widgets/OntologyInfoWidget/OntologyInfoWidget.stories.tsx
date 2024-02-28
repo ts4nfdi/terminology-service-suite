@@ -11,7 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -22,14 +21,12 @@ export default {
       ],
     },
     hasTitle: {
-      description: "Show title, default is true",
       type: { required: false },
       table: {
         defaultValue: { summary: true }
       }
     },
     ontologyId: {
-      description: "ID of the ontology whose info should be displayed.",
       table: {
         defaultValue: { summary: undefined }
       }
@@ -42,14 +39,12 @@ export default {
     },
     showBadges: {
       type: { required: false },
-      description: "If true, entity badges linking to their defining ontologies are shown.",
       table: {
         defaultValue: { summary: true }
       }
     },
     useLegacy: {
       type: { required: false },
-      description: "Specifies the API version used.",
       table: {
         defaultValue: { summary: true }
       }

@@ -11,7 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -22,27 +21,23 @@ export default {
       ],
     },
     hasTitle: {
-      description: "Show title, default is true",
       type: { required: false },
       table: {
         defaultValue: { summary: true }
       }
     },
     ontologyId: {
-      description: "ID of the ontology whose info should be displayed.",
       table: {
         defaultValue: { summary: undefined }
       }
     },
     entityType: {
       type: { required: false },
-      description: "Sets the type of the entity whose information you want to fetch.",
       control: {
         type: "radio",
       },
       table: {
         type: { summary: `${entityTypeNames.join(" | ")}` },
-        defaultValue: { summary: undefined }
       },
       options: [
         "term",
@@ -54,9 +49,7 @@ export default {
         undefined
       ],
     },
-    iri: {
-      description: "Entity IRI whose information you want to fetch.",
-    },
+    iri: {},
     parameter: {
       type: { required: false },
       table: {
@@ -65,14 +58,12 @@ export default {
     },
     showBadges: {
       type: { required: false },
-      description: "If true, entity badges linking to their defining ontologies are shown.",
       table: {
         defaultValue: { summary: true }
       }
     },
     useLegacy: {
       type: { required: false },
-      description: "Specifies the API version used.",
       table: {
         defaultValue: { summary: true }
       }

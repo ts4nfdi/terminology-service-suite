@@ -1,6 +1,7 @@
 import React from "react";
 import { EntityRelationsWidget } from "./EntityRelationsWidget";
 import {EntityRelationsWidgetProps} from "../../../utils/types";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
     title: "EntityRelationsWidget",
@@ -10,7 +11,6 @@ export default {
     },
     argTypes: {
         api: {
-            description: "Instance of the OLS API to call.",
             control: {
                 type: "radio",
             },
@@ -22,11 +22,12 @@ export default {
             ],
         },
         hasTitle: {
-            description: "Show title, default is true",
             type: { required: false },
         },
         entityType: {
-            description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+            table: {
+                type: { summary: `${entityTypeNames.join(" | ")}` },
+            },
             control: {
                 type: "radio",
             },
@@ -39,18 +40,14 @@ export default {
                 "INVALID STRING"
             ],
         },
-        iri: {
-            description: "Entity IRI whose information you want to fetch.",
-        },
+        iri: {},
         parameter: {
             type: { required: false }
         },
         ontologyId: {
             type: { required: false }
         },
-        showBadges: {
-            description: "Enable / disable showing badges for defining ontologies.",
-        }
+        showBadges: {}
     },
     args: {
         hasTitle: true,

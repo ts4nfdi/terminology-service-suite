@@ -10,7 +10,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -26,13 +25,10 @@ export default {
     },
     iri: {
       description: "Iri of the term you want to fetch the term hierarchy for.",
-    },
-    parameter: {
-      type: { required: false }
-    },
+    }
   },
   args: {
-    parameter: "collection=nfdi4health",
+
   }
 };
 
@@ -46,5 +42,4 @@ HierarchyWidget1.args = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
   api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
   ontologyId: "efo",
-  parameter: "collection=nfdi4health",
 };

@@ -7,7 +7,6 @@ export default {
   component: SearchBarWidget,
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
@@ -17,11 +16,8 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    query: {
-      description: "The search term to receive suggestions for.",
-    },
+    query: {},
     onSearchValueChange: {
-      description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
     },
     parameter: {}
