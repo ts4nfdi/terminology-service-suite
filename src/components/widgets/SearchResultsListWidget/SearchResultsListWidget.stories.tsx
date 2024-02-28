@@ -1,5 +1,6 @@
 import React from "react";
-import { SearchResultsListWidget, SearchResultsListWidgetProps } from "./SearchResultsListWidget";
+import { SearchResultsListWidget } from "./SearchResultsListWidget";
+import {SearchResultsListWidgetProps} from "../../../utils/types";
 
 export default {
   title: "SearchResultsListWidget",
