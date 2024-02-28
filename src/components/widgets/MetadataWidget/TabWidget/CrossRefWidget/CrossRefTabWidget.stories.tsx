@@ -1,5 +1,6 @@
 import React from "react";
-import { CrossRefTabWidget, CrossRefWidgetProps } from "./CrossRefTabWidget";
+import { CrossRefTabWidget } from "./CrossRefTabWidget";
+import {CrossRefWidgetProps} from "../../../../../utils/types";
 
 export default {
   title: "CrossRefTabWidget",
