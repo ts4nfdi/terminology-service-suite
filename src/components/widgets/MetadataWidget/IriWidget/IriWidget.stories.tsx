@@ -1,5 +1,6 @@
 import React from "react";
-import { IriWidget, IriWidgetProps } from "./IriWidget";
+import { IriWidget } from "./IriWidget";
+import { IriWidgetProps } from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -15,7 +16,7 @@ export default {
         type: "radio",
       },
       options: [
-        "default",
+        "primary",
         "subdued",
         "success",
         "accent",
