@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  BreadcrumbWidget,
-  BreadcrumbWidgetProps,
-} from "./BreadcrumbWidget";
+import {BreadcrumbWidget} from "./BreadcrumbWidget";
+import {BreadcrumbWidgetProps} from "../../../../utils/types";
 
 export default {
   title: "BreadcrumbWidget",
