@@ -1,7 +1,7 @@
 import React from "react";
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import "@elastic/eui/dist/eui_theme_light.json";
-import { ComponentStory } from "@storybook/react";
+import {AutocompleteWidgetProps} from "../../../utils/types";
 
 export default {
   title: "Autocomplete Widget",
@@ -47,47 +47,62 @@ export default {
     singleSelection: true,
   }
 };
-const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
-  <AutocompleteWidget {...args} />
+
+const Template = (args: AutocompleteWidgetProps) => (
+    <AutocompleteWidget {...args} />
 );
 
-export const withDefaults = Template.bind({});
+export const WithDefaults = Template.bind({});
 
-export const withValue = Template.bind({});
-withValue.args = {
+export const WithValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithValue.args = {
   selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
 };
-export const withCustomValue = Template.bind({});
-withCustomValue.args = {
+export const WithCustomValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithCustomValue.args = {
   allowCustomTerms: true,
   selectOption: { label: "freetext" },
 };
-export const withInvalidValue = Template.bind({});
-withInvalidValue.args = {
+export const WithInvalidValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithInvalidValue.args = {
   selectOption: {
     iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
   },
 };
 
-export const withGermanInput = Template.bind({});
-withGermanInput.args = {
+export const WithGermanInput = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithGermanInput.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "collection=nfdi4health&lang=de&type=class",
 };
 
-export const withDescriptionAndShortForm = Template.bind({});
-withDescriptionAndShortForm.args = {
+export const WithDescriptionAndShortForm = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithDescriptionAndShortForm.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const displaySelectedEntityWithLongForm = Template.bind({});
-displaySelectedEntityWithLongForm.args = {
+export const DisplaySelectedEntityWithLongForm = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+DisplaySelectedEntityWithLongForm.args = {
   hasShortSelectedLabel: false
 };
 
-export const allowAddingCustomTerms = Template.bind({});
-allowAddingCustomTerms.args = {
+export const AllowAddingCustomTerms = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+AllowAddingCustomTerms.args = {
   allowCustomTerms: true
 };
 
