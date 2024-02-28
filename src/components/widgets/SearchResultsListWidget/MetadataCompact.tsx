@@ -31,15 +31,11 @@ function MetadataCompact(props: MetadataCompactProps) {
                     </EuiFlexItem>
                 </EuiFlexGroup>
             }
-            children={
-                <>
-                    {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
-                    <EuiSpacer size="s"/>
-                    <DescriptionWidget api={api} ontologyId={result.ontology_name} iri={result.iri}
-                                       thingType={result.type}/>
-                </>
-            }
-        />
+        >
+            {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
+            <EuiSpacer size="s"/>
+            <DescriptionWidget api={api} ontologyId={result.ontology_name} iri={result.iri} thingType={result.type}/>
+        </EuiCard>
 
     );
 }
