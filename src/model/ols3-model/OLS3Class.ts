@@ -49,6 +49,6 @@ export class OLS3Class extends OLS3Entity implements Class {
   }
 
   getSubsets(): any[] {
-    return this.properties["in_subset"];
+    return this.properties["in_subset"] || [];
   }
 }

@@ -31,6 +31,6 @@ export class OLS4Class extends OLS4Entity implements Class {
   }
 
   getSubsets(): any[] {
-    return this.properties["http://www.geneontology.org/formats/oboInOwl#inSubset"];
+    return this.properties["http://www.geneontology.org/formats/oboInOwl#inSubset"] || [];
   }
 }
