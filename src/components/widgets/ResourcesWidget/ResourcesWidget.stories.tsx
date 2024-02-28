@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  OlsResource,
-  ResourcesWidget,
-  ResourcesWidgetProps,
-} from "./ResourcesWidget";
-import { ComponentStory } from "@storybook/react";
+import {ResourcesWidget} from "./ResourcesWidget";
+import {ResourcesWidgetProps, OlsResource} from "../../../utils/types";
 import { EuiButton, EuiButtonIcon } from "@elastic/eui";
 
 export default {
@@ -63,7 +59,7 @@ export default {
   }
 };
 
-const Template: ComponentStory<typeof ResourcesWidget> = (args) => (
+const Template = (args : ResourcesWidgetProps) => (
   <ResourcesWidget {...args} />
 );
 
@@ -80,8 +76,12 @@ ResourcesWidget1.args = {
   targetLink: "https://semanticlookup.zbmed.de/dev/",
   parameter: "collection=nfdi4health"
 };
-export const withActions = Template.bind({});
-withActions.args = {
+export const WithActions = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithActions.args = {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   ...ResourcesWidget1.args,
   actions: [
     // TODO Allow usage of react-router links
@@ -118,9 +118,13 @@ withActions.args = {
   ],
 };
 
-export const withActionsAndSafety = Template.bind({});
-withActionsAndSafety.args = {
-  ...withActions.args,
+export const WithActionsAndSafety = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithActionsAndSafety.args = {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  ...WithActions.args,
   targetLink: "https://semanticlookup.zbmed.de/safety/",
   parameter: "collection=safety",
 };
