@@ -1,5 +1,6 @@
 import React from "react";
-import { TabWidget, TabWidgetProps } from "./TabWidget";
+import { TabWidget } from "./TabWidget";
+import {TabWidgetProps} from "../../../../utils/types";
 
 export default {
   title: "TabWidget",
