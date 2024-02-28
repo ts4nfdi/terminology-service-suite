@@ -1,5 +1,6 @@
 import React from "react";
-import { EntityInfoWidget, EntityInfoWidgetProps } from "./EntityInfoWidget";
+import { EntityInfoWidget } from "./EntityInfoWidget";
+import {EntityInfoWidgetProps} from "../../../utils/types";
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
@@ -127,7 +128,6 @@ InfoWidgetBadges.args = {
   ontologyId: "uberon"
 };
 
-/*
 export const OptionalEntityTypeLegacyAPI = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -135,7 +135,6 @@ OptionalEntityTypeLegacyAPI.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
   iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
 };
-*/
 
 export const InfoWidgetDomain = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
