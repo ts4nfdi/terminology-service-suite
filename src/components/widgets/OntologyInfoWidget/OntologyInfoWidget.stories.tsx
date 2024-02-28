@@ -1,5 +1,6 @@
 import React from "react";
-import { OntologyInfoWidget, OntologyInfoWidgetProps } from "./OntologyInfoWidget";
+import { OntologyInfoWidget } from "./OntologyInfoWidget";
+import {OntologyInfoWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {

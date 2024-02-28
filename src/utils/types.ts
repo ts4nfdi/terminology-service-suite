@@ -85,7 +85,7 @@ type ForcedOntologyIdObj = {
     /**
      * Select a specific ontology by id
      */
-    ontologyId?: string;
+    ontologyId: string;
 }
 
 type OptionalIriObj = {
