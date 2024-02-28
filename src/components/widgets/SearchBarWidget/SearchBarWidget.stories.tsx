@@ -1,5 +1,6 @@
 import React from "react";
-import { SearchBarWidget, SearchBarWidgetProps } from "./SearchBarWidget";
+import { SearchBarWidget } from "./SearchBarWidget";
+import {SearchBarWidgetProps} from "../../../utils/types";
 
 export default {
   title: "SearchBarWidget",
