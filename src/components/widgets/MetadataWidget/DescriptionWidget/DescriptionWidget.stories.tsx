@@ -1,5 +1,6 @@
 import React from "react";
-import { DescriptionWidget, DescriptionWidgetProps } from "./DescriptionWidget";
+import { DescriptionWidget } from "./DescriptionWidget";
+import {DescriptionWidgetProps} from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -44,7 +45,7 @@ export default {
     ontologyId: {
       description: "Ontology ID from where the object description should be taken.",
     },
-    entityType: {
+    thingType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
       control: {
         type: "radio",
@@ -84,7 +85,7 @@ DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyId: "ncit",
-  entityType: "term",
+  thingType: "term",
   parameter: "collection=nfdi4health"
 };
 
@@ -94,7 +95,7 @@ export const SelectingDefiningOntology = Template.bind({});
 // @ts-ignore
 SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };
 
@@ -104,6 +105,6 @@ export const DefiningOntologyUnavailable = Template.bind({});
 // @ts-ignore
 DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://identifiers.org/uniprot/Q9VAM9",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };

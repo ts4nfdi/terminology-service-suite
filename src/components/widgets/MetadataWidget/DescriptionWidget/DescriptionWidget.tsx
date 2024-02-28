@@ -1,49 +1,14 @@
 import React from "react";
 import { useQuery } from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
-import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { OlsApi } from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
-
-export interface DescriptionWidgetProps extends EuiTextProps {
-  iri?: string;
-  ontologyId?: string;
-  api: string;
-  descText?: string;
-  entityType:
-    | "ontology"
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property"
-    | string;
-  /**
-     * Additional parameters to pass to the API.
-     *
-     * This parameters can be used to filter the search results. Each parameter can be combined via
-     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
-     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
-     *  <table>
-     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-     *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
-     *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-     *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
-     *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
-     *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
-     *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
-     *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
-     *  <tr><td>rows</td><td>Set results per page</td></tr>
-     *  <tr><td>start</td><td>Set the results page number</td></tr>
-     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td></tr>
-     * </table>
-     */
-  parameter?: string
-}
+import {DescriptionWidgetProps} from "../../../../utils/types";
 
 const NO_DESCRIPTION = "No description available.";
 
-async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<any> {
-  if (entityType == "ontology"){
+async function getDescription(olsApi: OlsApi, thingType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<any> {
+  if (thingType == "ontology"){
     if(!ontologyId) {
       throw Error("ontology id has to be provided")
     }
@@ -56,12 +21,12 @@ async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: s
       }
     }
   }
-  if (entityType === "term" || entityType === "property" || entityType === "individual") {
+  if (thingType === "term" || thingType === "property" || thingType === "individual") {
     if(!iri) {
       throw Error("iri has to be provided")
     }
     else {
-      const response = await getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter)
+      const response = await getPreferredOntologyJSON(olsApi, thingType, ontologyId, iri, parameter)
       return {
         description: response['description'] || NO_DESCRIPTION,
         inDefiningOntology: response['is_defining_ontology'],
@@ -70,12 +35,12 @@ async function getDescription(olsApi: OlsApi, entityType: string, ontologyId?: s
     }
   }
   //unacceptable object type
-  throw Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'");
+  throw Error(`Unexpected entity type ${thingType}. Should be one of 'ontology', 'term', 'class', 'individual', 'property'`);
 }
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const { api, ontologyId, iri, descText, entityType, parameter, ...rest } = props;
-  const fixedEntityType = entityType == "class" ? "term" : entityType
+  const { api, ontologyId, iri, descText, thingType, parameter, ...rest } = props;
+  const fixedThingType = thingType == "class" ? "term" : thingType
   const olsApi = new OlsApi(api);
 
   const {
@@ -84,11 +49,11 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     isError,
     isSuccess,
     error,
-  } = useQuery([api, "description", fixedEntityType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedEntityType, ontologyId, iri, parameter); });
+  } = useQuery([api, "description", fixedThingType, ontologyId, iri, parameter], () => {return getDescription(olsApi, fixedThingType, ontologyId, iri, parameter); });
 
     // TODO: Should DescriptionWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
     /*{
-      !props.ontologyId && !descText && !response.inDefiningOntology && fixedEntityType !== "ontology" &&
+      !props.ontologyId && !descText && !response.inDefiningOntology && fixedThingType !== "ontology" &&
       <EuiFlexItem>
         <EuiText>
           <i>Defining ontology not available. Showing occurrence inside {response.ontology} instead.</i>
