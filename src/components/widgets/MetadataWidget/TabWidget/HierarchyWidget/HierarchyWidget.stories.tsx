@@ -1,5 +1,6 @@
 import React from "react";
-import { HierarchyWidgetProps, HierarchyWidget } from "./HierarchyWidget";
+import { HierarchyWidget } from "./HierarchyWidget";
+import {HierarchyWidgetProps} from "../../../../../utils/types";
 
 export default {
   title: "HierarchyWidget",
