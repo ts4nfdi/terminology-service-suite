@@ -1,5 +1,6 @@
 import React from "react";
-import { EntityRelationsWidget, EntityRelationsWidgetProps } from "./EntityRelationsWidget";
+import { EntityRelationsWidget } from "./EntityRelationsWidget";
+import {EntityRelationsWidgetProps} from "../../../utils/types";
 
 export default {
     title: "EntityRelationsWidget",
