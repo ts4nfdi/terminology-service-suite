@@ -13,8 +13,6 @@ export interface TabPresentationProps {
   api: string;
   ontologyId?: string;
   useLegacy?: boolean;
-  selectedEntity: Entity;
-  ontology: Ontology;
   entityType: "entities" | "classes" | "properties" | "individuals";
 }
 
@@ -53,8 +51,6 @@ function TabPresentation(props: TabPresentationProps) {
                           api={props.api}
                           iri={props.iri}
                           ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
-                          selectedEntity={props.selectedEntity}
-                          ontology={props.ontology}
                           entityType={props.entityType}
                         />
                     }

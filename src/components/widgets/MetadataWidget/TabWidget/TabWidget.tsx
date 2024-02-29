@@ -82,8 +82,6 @@ function TabWidget(props: TabWidgetProps) {
         iri={iri}
         api={api}
         useLegacy={useLegacy}
-        selectedEntity={data}
-        ontology={ontologyData}
         entityType={data.getTypePlural()}
       />
     );

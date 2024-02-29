@@ -8,8 +8,6 @@ export interface HierarchyWidgetProps {
   iri?: string;
   ontologyId: string;
   api: string;
-  selectedEntity: Entity;
-  ontology: Ontology;
   entityType: "entities" | "classes" | "properties" | "individuals",
   onNavigateToEntity?: (ontology: Ontology, entity: Entity) => void,
   onNavigateToOntology?: (ontologyId: string, entity: Entity) => void
@@ -23,8 +21,6 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
       iri: props.iri,
       ontologyId: props.ontologyId,
       apiUrl: props.api.substring(0, props.api.lastIndexOf("api")),
-      selectedEntity: props.selectedEntity,
-      ontology: props.ontology,
       entityType: props.entityType,
       onNavigateToEntity: (ontology: Ontology, entity: Entity) => {
         console.log(ontology as Ontology, entity as Entity);

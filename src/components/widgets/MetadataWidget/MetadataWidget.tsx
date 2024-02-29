@@ -62,19 +62,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
     }
   );
 
-  const {
-    data: ontologyData,
-    isLoading: isLoadingOntology,
-    isSuccess: isSuccessOntology,
-    isError: isErrorOntology,
-    error: errorOntology
-  } = useQuery<Thing>(
-    ["ontologyData", api, parameter, entityType, iri, ontologyId, useLegacy],
-    async () => {
-      return olsApi.getResponseObject("ontology", iri, ontologyId, parameter, useLegacy);
-    }
-  );
-
   function render(data: Entity) {
     return (
       <>
@@ -113,17 +100,14 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
           <EuiFlexItem>
-            {isSuccessOntology && ontologyData &&
             <TabPresentation
               data={data}
               iri={iri}
-              ontology={ontologyData}
               entityType={pluralizeType([entityType]) || "entities"}
               api={api}
               ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
               useLegacy={useLegacy}
-              selectedEntity={data}
-            />}
+            />
           </EuiFlexItem>
           {!props.ontologyId || !data.getIsDefiningOntology() &&
             <EuiFlexItem>
