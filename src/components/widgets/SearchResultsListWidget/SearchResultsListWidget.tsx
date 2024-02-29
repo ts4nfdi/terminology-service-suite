@@ -19,6 +19,7 @@ import { useQuery } from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
+import { AutocompleteWidget } from '../AutocompleteWidget'
 
 
 export type SearchResultsListWidgetProps = {
@@ -96,7 +97,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             }, []));
         } else {
             const newOptions: EuiSelectableOption[] = [];
-            for(let i = 0; i < currentOptions.length; i++) {
+            for (let i = 0; i < currentOptions.length; i++) {
                 newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
             }
 
@@ -137,7 +138,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
             parameter
         ],
-        async ({signal}) => {
+        async ({ signal }) => {
             return olsApi.search(
                 {
                     query: searchValue,
@@ -178,7 +179,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     setTotalItems(response.response.numFound);
                     const newPageCount = Math.ceil(response.response.numFound / itemsPerPage)
                     setPageCount(newPageCount);
-                    if(activePage >= newPageCount) {
+                    if (activePage >= newPageCount) {
                         setActivePage(0);
                     }
 
@@ -216,13 +217,27 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
     }
 
+    function transform_to_searchValue(selectedOption: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string
+    }[]) {
+        setSearchValue(selectedOption[0] ? selectedOption[0].label : "")
+    }
+
+
     return (
         <>
-            <SearchBarWidget
+            <AutocompleteWidget
                 api={api}
-                query={searchValue}
-                onSearchValueChange={setSearchValue}
-                parameter={parameter}
+                selectionChangedEvent={(selectedOption) => {
+                    transform_to_searchValue(selectedOption);
+                }}
+                allowCustomTerms={true}
+                singleSelection={true}
+                hasShortSelectedLabel={true}
+                placeholder={"Search"}
             />
 
             <EuiSpacer size="s"/>
@@ -243,7 +258,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                         }
                         {isLoading &&
                             <EuiFormRow label="Filter by type">
-                                <EuiLoadingSpinner size="s" />
+                                <EuiLoadingSpinner size="s"/>
                             </EuiFormRow>
                         }
                         {isError &&
@@ -277,7 +292,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                         }
                         {isLoading &&
                             <EuiFormRow label="Filter by ontology">
-                                <EuiLoadingSpinner size="s" />
+                                <EuiLoadingSpinner size="s"/>
                             </EuiFormRow>
                         }
                         {isError &&
