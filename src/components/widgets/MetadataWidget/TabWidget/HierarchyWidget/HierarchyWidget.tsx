@@ -22,11 +22,11 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
       ontologyId: props.ontologyId,
       apiUrl: props.api.substring(0, props.api.lastIndexOf("api")),
       entityType: props.entityType,
-      onNavigateToEntity: (ontology: Ontology, entity: Entity) => {
-        console.log(ontology as Ontology, entity as Entity);
+      onNavigateToEntity: (ontologyId: string, entityType: string, iri: string) => {
+        console.log(`navigate to entity with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       },
-      onNavigateToOntology: (ontologyId: string, entity: Entity) => {
-        console.log(ontologyId, entity as Entity);
+      onNavigateToOntology: (ontologyId: string, entityType: string, iri: string) => {
+        console.log(`navigate to ontology with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       }
     }, treeContainer);
   });
