@@ -5,16 +5,14 @@ import { CrossRefTabWidget } from "./CrossRefWidget";
 import { HierarchyWidget } from "./HierarchyWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../../api/OlsApi";
-import { getPreferredOntologyJSON } from "../../../../utils/helper";
 import {TabWidgetProps} from "../../../../utils/types";
 
 function TabWidget(props: TabWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, ...rest } = props;
-  const fixedEntityType = entityType == "class" ? "term" : entityType
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, ...rest } = props;
   const olsApi = new OlsApi(api);
 
   const {
-    data: ontologyJSON,
+    data: entity,
     isLoading: isLoading,
     isSuccess: isSuccess,
     isError: isError,
@@ -23,22 +21,23 @@ function TabWidget(props: TabWidgetProps) {
       [
           api,
           "tab-widget",
-          fixedEntityType,
+          entityType,
           ontologyId,
           iri,
-          parameter
+          parameter,
+          useLegacy
       ],
-      () => { return getPreferredOntologyJSON(olsApi, fixedEntityType, ontologyId, iri, parameter); }
+      () => { return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy); }
   );
 
   return (
       <>
           {
-              isSuccess && !props.ontologyId && ontologyJSON && !ontologyJSON["is_defining_ontology"] &&
+              isSuccess && !props.ontologyId && entity && !entity.isCanonical() &&
               <EuiFlexItem>
                   <EuiText size={"m"}>
                       <i>Defining ontology not available </i>
-                      <EuiIconTip type={"iInCircle"} color={"subdued"} content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}/>
+                      <EuiIconTip type={"iInCircle"} color={"subdued"} content={`Showing occurrence inside ${entity.getOntologyId()} instead.`}/>
                   </EuiText>
               </EuiFlexItem>
           }
@@ -50,15 +49,19 @@ function TabWidget(props: TabWidgetProps) {
                               content: <AlternativeNameTabWidget
                                   api={api}
                                   iri={iri}
-                                  ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")}
+                                  ontologyId={props.ontologyId || entity?.getOntologyId() || ""}
                                   entityType={entityType}
+                                  useLegacy={useLegacy}
                               />,
                               id: "tab1",
                               name: "Alternative Names",
                           },
                           {
                               content: (
-                                  <HierarchyWidget api={api} iri={iri} ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")} />
+                                  <HierarchyWidget
+                                      api={api}
+                                      iri={iri}
+                                      ontologyId={props.ontologyId || entity?.getOntologyId() || ""} />
                               ),
                               id: "tab2",
                               name: "Hierarchy",
@@ -67,8 +70,9 @@ function TabWidget(props: TabWidgetProps) {
                               content: <CrossRefTabWidget
                                   api={api}
                                   iri={iri}
-                                  ontologyId={props.ontologyId || ((ontologyJSON && ontologyJSON['ontology_name']) ? ontologyJSON['ontology_name'] : "")}
+                                  ontologyId={props.ontologyId || entity?.getOntologyId() || ""}
                                   entityType={entityType}
+                                  useLegacy={useLegacy}
                               />,
                               id: "tab3",
                               name: "Cross references",

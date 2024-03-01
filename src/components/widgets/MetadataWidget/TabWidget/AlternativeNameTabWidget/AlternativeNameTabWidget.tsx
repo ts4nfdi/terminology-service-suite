@@ -1,28 +1,31 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiPanel, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import { useQuery } from 'react-query'
-import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../../../utils/helper";
 import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
+import {Entity} from "../../../../../model/interfaces";
+import Reified from "../../../../../model/Reified";
+import {getReifiedJSX} from "../../../../../model/StructureRendering";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);
 
   const {
-        data: ontologyJSON,
+        data: entity,
         isLoading: isLoading,
         isSuccess: isSuccess,
         isError: isError,
         error: error,
-    } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
+    } = useQuery([api, iri, ontologyId, entityType, parameter, useLegacy, "entityInfo"], () => {
+        return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     });
 
-  function renderAltLabel() {
-    if (ontologyJSON['synonyms'] && ontologyJSON['synonyms'].length > 0) {
-      return ontologyJSON['synonyms'].map((value: string, index: number) => (
-        <EuiFlexItem key={value + index}>{value}</EuiFlexItem>
+  function renderAltLabel(entity: Entity) {
+    if (entity.getSynonyms().length > 0) {
+      return entity.getSynonyms().map((rf: Reified<any>, index: number) => (
+        <p key={rf.value + index}>{getReifiedJSX(entity, rf, api)}</p>
       ));
     }
     return <EuiText>No alternative names exist.</EuiText>;
@@ -41,11 +44,11 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
 
   return (
     <EuiPanel>
-      <EuiFlexGroup style={{ padding: 10 }} direction="column">
-          {isSuccess && renderAltLabel()}
+      <EuiText style={{ padding: 10 }}>
+          {isSuccess && entity && renderAltLabel(entity)}
           {isLoading && <EuiLoadingSpinner></EuiLoadingSpinner>}
           {isError && <EuiText>{getErrorMessageToDisplay(error, "alternative names")}</EuiText>}
-      </EuiFlexGroup>
+      </EuiText>
     </EuiPanel>
   );
 }

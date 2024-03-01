@@ -28,6 +28,7 @@ export default {
       type: { required: false }
     },
     entityType: {
+      type: { required: false },
       table: {
         type: { summary: `${entityTypeNames.join(" | ")}` },
       },
@@ -39,12 +40,14 @@ export default {
         "class",
         "property",
         "individual",
+        undefined,
         "INVALID STRING"
       ],
     },
   },
   args: {
     parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 

@@ -583,6 +583,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
     return (
         <>
             {getValueJSX(reified)}
+            &nbsp;
             {reified.hasMetadata() && getAxiomsInformationJSX(entity, reified.getMetadata())}
         </>
     );
