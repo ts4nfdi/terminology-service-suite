@@ -1,6 +1,7 @@
 import React from "react";
 import {BreadcrumbWidget} from "./BreadcrumbWidget";
 import {BreadcrumbWidgetProps} from "../../../../utils/types";
+import {entityTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
   title: "BreadcrumbWidget",
@@ -22,6 +23,9 @@ export default {
     iri: {},
     ontologyId: {},
   entityType: {
+    table: {
+      type: { summary: `${entityTypeNames.join(" | ")}` },
+    },
     control: {
       type: "radio",
     },
@@ -30,6 +34,7 @@ export default {
       "class",
       "property",
       "individual",
+      undefined,
       "INVALID STRING"
     ],
   },
@@ -74,9 +79,13 @@ export default {
     parameter: {
       type: { required: false }
     },
+    useLegacy: {
+      type: { required: false }
+    }
   },
   args: {
     parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 

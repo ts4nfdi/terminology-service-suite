@@ -184,8 +184,7 @@ export type JsonApiWidgetProps = {
     buttonSize?: "s" | "m";
 }
 
-// TODO: entityType optional for BreadcrumbWidget
-export type BreadcrumbWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & {
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & {
     /**
      * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
      */
