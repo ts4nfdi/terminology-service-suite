@@ -5,17 +5,13 @@ import { OlsApi } from "../../../../api/OlsApi";
 import { Entity, Ontology, Thing } from "../../../../model/interfaces";
 import { getErrorMessageToDisplay } from "../../../../utils/helper";
 import { TabPresentation } from "./TabPresentation";
-import { isEntity, isOntology } from "../../../../model/ModelTypeCheck";
+import { EntityTypeName, isEntity, isOntology } from "../../../../model/ModelTypeCheck";
 
 export interface TabWidgetProps {
   iri: string;
   api: string;
   ontologyId?: string;
-  entityType:
-    | "ontology"
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property";
+  entityType: EntityTypeName
   /**
    * Additional parameters to pass to the API.
    *
@@ -54,28 +50,11 @@ function TabWidget(props: TabWidgetProps) {
   } = useQuery<Thing>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 
-  const {
-    data: ontologyData,
-    isLoading: isLoadingOntology,
-    isSuccess: isSuccessOntology,
-    isError: isErrorOntology,
-    error: errorOntology
-  } = useQuery<Thing>({
-      queryKey: ["ontologyData", api, parameter, entityType, iri, ontologyId, useLegacy
-      ],
-      queryFn: async () => {
-        return olsApi.getResponseObject("ontology", iri, data ? data.getOntologyId() : undefined, parameter, useLegacy);
-      },
-      enabled:
-        !!data
-    }
-  );
-
-  function render(data: Entity, ontologyData: Ontology) {
+  function render(data: Entity) {
     return (
       <TabPresentation
         data={data}
@@ -91,9 +70,9 @@ function TabWidget(props: TabWidgetProps) {
     <>
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
-      {isSuccess && data && isSuccessOntology && ontologyData &&
+      {isSuccess && data &&
         <>
-          {isEntity(data) && isOntology(ontologyData) ? render(data, ontologyData) : null}
+          {isEntity(data) ? render(data) : null}
         </>
       }
     </>

@@ -2,19 +2,17 @@ import React from "react";
 import { EuiBadge } from "@elastic/eui";
 import { OlsApi } from "../../../../api/OlsApi";
 import { useQuery } from "react-query";
-import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../../utils/helper";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
+import { Thing } from "../../../../model/interfaces";
+import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 
 
 export interface BreadcrumbWidgetProps {
   iri: string;
   ontologyId?: string;
   api: string;
-  entityType:
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property"
-    | string;
+  entityType: EntityTypeName;
   colorFirst?:
     | "primary"
     | "accent"
@@ -56,33 +54,35 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const olsApi = new OlsApi(api);
 
   const {
-    data: ontologyJSON,
-    isLoading: isLoading,
-    isSuccess: isSuccess,
-    isError: isError,
-    error: error
-  } = useQuery([api, "short_form", fixedEntityType, ontologyId, iri, parameter], () => {
-    return getPreferredOntologyJSON(olsApi, fixedEntityType, ontologyId, iri, parameter);
-  });
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+    }
+  );
 
-  console.log(ontologyJSON);
   return (
     <>
-      {isSuccess &&
+      {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
-          isDefiningOntology={ontologyJSON["is_defining_ontology"]}
-          ontologyName={ontologyJSON["ontology_name"]}
-          shortForm={ontologyJSON["short_form"]}
+          isDefiningOntology={data.getIsDefiningOntology()}
+          ontologyName={data.getOntologyId()}
+          shortForm={data.getShortForm()}
           ontologyId={ontologyId}
         />
       }
-      {isError &&
+      {isError && data && isEntity(data) &&
         <span>
                 <EuiBadge
-                  color={colorFirst || ((props.ontologyId || (ontologyJSON && ontologyJSON["ontology_name"])) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (ontologyJSON && ontologyJSON["ontology_name"]?.toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
+                  color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId()?.toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
           {" > "}
           <EuiBadge
-            color={colorSecond || ((ontologyJSON && ontologyJSON["short_form"]) ? "success" : "danger")}>{(ontologyJSON && ontologyJSON["short_form"]) ? ontologyJSON["short_form"].toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
+            color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
             </span>
       }
     </>

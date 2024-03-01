@@ -4,17 +4,14 @@ import { OlsApi } from "../../../../../api/OlsApi";
 import { useQuery } from "react-query";
 import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../../utils/helper";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
+import { EntityTypeName, isEntity } from "../../../../../model/ModelTypeCheck";
+import { Thing } from "../../../../../model/interfaces";
 
 export interface CrossRefWidgetProps {
   iri: string;
   api: string;
   ontologyId?: string;
-  entityType:
-    | "ontology"
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property"
-    | string;
+  entityType: EntityTypeName
   /**
    * Additional parameters to pass to the API.
    *
@@ -44,18 +41,21 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const olsApi = new OlsApi(api);
 
   const {
-    data: ontologyJSON,
+    data,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-    return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
-  });
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+    }
+  );
 
   return (
     <>
-      {isSuccess && <CrossRefTabPresentation crossrefs={ontologyJSON["obo_xref"]} />}
+      {isSuccess && data && isEntity(data) && <CrossRefTabPresentation crossrefs={data.getCrossReferences()} />}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
     </>

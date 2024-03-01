@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../utils/helper";
 import { Entity, Ontologies, Thing } from "../../../model/interfaces";
-import { isEntity, isIndividual, isOntology, isProperty } from "../../../model/ModelTypeCheck";
+import { EntityTypeName, isEntity, isIndividual, isOntology, isProperty } from "../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
@@ -16,10 +16,7 @@ export interface MetadataWidgetProps {
   iri: string;
   ontologyId?: string;
   api: string;
-  entityType:
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property";
+  entityType: EntityTypeName
   /**
    * Additional parameters to pass to the API.
    *
@@ -58,7 +55,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 

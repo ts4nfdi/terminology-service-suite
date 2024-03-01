@@ -4,17 +4,14 @@ import { OlsApi } from "../../../../../api/OlsApi";
 import { useQuery } from "react-query";
 import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../../utils/helper";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
+import { EntityTypeName, isEntity } from "../../../../../model/ModelTypeCheck";
+import { Thing } from "../../../../../model/interfaces";
 
 export interface AlternativeNameTabWidgetProps {
   iri: string;
   api: string;
   ontologyId?: string;
-  entityType:
-    | "ontology"
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property"
-    | string;
+  entityType: EntityTypeName
   /**
    * Additional parameters to pass to the API.
    *
@@ -45,14 +42,17 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const olsApi = new OlsApi(api);
 
   const {
-    data: ontologyJSON,
-    isLoading: isLoading,
-    isSuccess: isSuccess,
-    isError: isError,
-    error: error
-  } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-    return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
-  });
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+    }
+  );
 
   // TODO: Should AlternativeNameTabWidget show the following info message if defining ontology is not available (placed inside EuiPanel span)?
   /*{
@@ -67,8 +67,8 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
 
   return (
     <>
-      {isSuccess &&
-        <AlternativeNameTabPresentation synonyms={ontologyJSON["synonyms"]} />}
+      {isSuccess && data && isEntity(data) &&
+        <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "alternative names")}</EuiText>}
     </>

@@ -13,7 +13,7 @@ export interface TabPresentationProps {
   api: string;
   ontologyId?: string;
   useLegacy?: boolean;
-  entityType: "entities" | "classes" | "properties" | "individuals";
+  entityType: "entities" | "classes" | "properties" | "individuals" | string;
 }
 
 function TabPresentation(props: TabPresentationProps) {

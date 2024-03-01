@@ -8,7 +8,7 @@ export interface HierarchyWidgetProps {
   iri?: string;
   ontologyId: string;
   api: string;
-  entityType: "entities" | "classes" | "properties" | "individuals",
+  entityType: "entities" | "classes" | "properties" | "individuals" | string,
   onNavigateToEntity?: (ontology: Ontology, entity: Entity) => void,
   onNavigateToOntology?: (ontologyId: string, entity: Entity) => void
 }
