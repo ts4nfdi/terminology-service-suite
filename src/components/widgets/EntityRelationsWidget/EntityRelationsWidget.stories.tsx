@@ -37,6 +37,7 @@ export default {
                 "class",
                 "property",
                 "individual",
+                undefined,
                 "INVALID STRING"
             ],
         },

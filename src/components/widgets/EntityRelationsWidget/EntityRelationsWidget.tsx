@@ -310,7 +310,7 @@ function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: Ent
  */
 async function fetchInstances(term: Class, api: OlsApi, props: EntityRelationsWidgetProps)  {
     const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(term.getIri()));
-    const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId, termIri: doubleEncodedTermIri}, props.parameter)
+    const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId || term.getOntologyId(), termIri: doubleEncodedTermIri}, props.parameter)
         .catch((error) => console.log(error));
     if (response["elements"] !== undefined) {
         return asArray(response["elements"]).map((instance) => createModelObject({elements: [instance]}));
