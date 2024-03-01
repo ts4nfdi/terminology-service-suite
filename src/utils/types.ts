@@ -196,8 +196,7 @@ export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOnt
     colorSecond?: EuiLinkColor | string;
 }
 
-// TODO: thingType optional for DescriptionWidget
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & {
     /**
      * Set your own text manually that overwrites the text fetched from the API
      */

@@ -4,7 +4,7 @@ import { Thing, Entity, Class, Property, Individual, Ontology } from "./interfac
 const classTypeNames = ["class" , "term"] as const;
 const propertyTypeNames = ["property"] as const;
 const individualTypeNames = ["individual"] as const;
-const ontologyTypeNames = ["ontology"] as const;
+export const ontologyTypeNames = ["ontology"] as const;
 export const entityTypeNames = [...classTypeNames, ...individualTypeNames, ...propertyTypeNames] as const;
 export const thingTypeNames = [...entityTypeNames, ...ontologyTypeNames] as const;
 
