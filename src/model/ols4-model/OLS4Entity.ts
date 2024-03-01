@@ -197,9 +197,8 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     }
   }
 
-  // TODO linked entities same as obo_xref? nope - adapt
   getCrossReferences(): any[] {
-    return this.properties["linkedEntities"];
+    return this.properties["elements"]["http://www.geneontology.org/formats/oboInOwl#hasDbXref"];
   }
 
     getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
