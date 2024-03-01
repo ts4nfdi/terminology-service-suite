@@ -3,21 +3,17 @@ import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elas
 import {OlsApi} from "../../../api/OlsApi";
 import {useQuery} from 'react-query'
 import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {asArray, capitalize, randomString} from "../../../app/util";
+import {asArray, capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
-import {Ontology, Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
-import {isEntity, isOntology, isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
+import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
+import {isClass, isProperty, isIndividual, EntityTypeName} from "../../../model/ModelTypeCheck";
 
 export interface EntityInfoWidgetProps {
     api: string;
-    iri?: string;
+    iri: string;
     ontologyId?: string;
     hasTitle?: boolean;
-    entityType:
-      | "ontology"
-      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-      | "individual"
-      | "property";
+    entityType: EntityTypeName
     /**
      * Additional parameters to pass to the API.
      *
@@ -45,127 +41,26 @@ export interface EntityInfoWidgetProps {
 }
 
 const DEFAULT_HAS_TITLE = true;
-const DEFAULT_SHOW_BADGES = true;
 
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges = DEFAULT_SHOW_BADGES, useLegacy , ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges , useLegacy , ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
-        data: entityInfo,
-        isLoading: isLoadingEntityInfo,
-        isSuccess: isSuccessEntityInfo,
-        isError: isErrorEntityInfo,
-        error: errorEntityInfo,
+        data: entity,
+        isLoading: isLoadingEntity,
+        isSuccess: isSuccessEntity,
+        isError: isErrorEntity,
+        error: errorEntity,
     } = useQuery(
         [
             "entityInfo",
             props
         ],
         () => {
-            return olsApi.getResponseObject(entityType, iri, ontologyId, parameter, useLegacy);
+            return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
         }
     );
-
-    function getOntologyIriSection(ontology: Ontology): JSX.Element {
-        return (
-            <>
-                {(ontology.getIri() || ontology.getOntologyPurl()) &&
-                    <EuiFlexItem>
-                        <b>Ontology IRI:</b>
-                        <p><a id={"ontologyIri"} href={ontology.getIri() || ontology.getOntologyPurl()}>
-                            {ontology.getIri() || ontology.getOntologyPurl()}
-                        </a></p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getVersionIriSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getVersionIri() &&
-                    <EuiFlexItem>
-                        <b>Version IRI:</b>
-                        <p><a id={"versionIri"} href={ontology.getVersionIri()}>
-                            {ontology.getVersionIri()}
-                        </a></p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getLastLoadSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getSourceFileTimestamp() &&
-                    <EuiFlexItem>
-                        <b>Last loaded:</b>
-                        <p>{new Date(ontology.getSourceFileTimestamp()).toString()}</p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getOntologyIdSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getOntologyId() &&
-                    <EuiFlexItem>
-                        <b>Ontology ID:</b>
-                        <p>{ontology.getOntologyId()}</p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getVersionSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getVersion() &&
-                    <EuiFlexItem>
-                        <b>Version:</b>
-                        <p>{ontology.getVersion()}</p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getNumClassesSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getNumClasses() &&
-                    <EuiFlexItem>
-                        <b>Number of classes:</b>
-                        <p>{ontology.getNumClasses().toLocaleString()}</p>
-                    </EuiFlexItem>
-                }
-            </>
-        );
-    }
-
-    function getCreatorsSection(ontology: Ontology) : JSX.Element {
-        return (
-            <>
-                {ontology.getCreators().length > 0 &&
-                    <><EuiFlexItem>
-                        <b>Creators:</b>
-                        {ontology.getCreators().length > 1 ?
-                            <ul>{ontology.getCreators().map((creator) => {
-                                return <li id={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, api, showBadges)}</li>
-                            })}</ul> :
-                            <p>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), ontology.getCreators()[0], api, showBadges)}</p>
-                        }
-                    </EuiFlexItem><EuiSpacer/></>
-                }
-            </>
-        );
-    }
 
     function getLabelSection(entity: Entity) : JSX.Element {
         return (
@@ -290,7 +185,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         return (
             <>
                 {ranges.length > 0 &&
-                    <><EuiFlexItem>
+                    <EuiFlexItem>
                         <b>Range:</b>
                         {ranges.length > 1 ?
                             <ul>{ranges.map((ranges) => {
@@ -298,7 +193,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                             })}</ul> :
                             <p>{getClassExpressionJSX(property, property.getLinkedEntities(), ranges[0], api, showBadges)}</p>
                         }
-                    </EuiFlexItem></>
+                    </EuiFlexItem>
                 }
             </>
         );
@@ -307,13 +202,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     function getIndividualPropertyAssertionsSection(individual: Individual) : JSX.Element {
         const propertyIris = Object.keys(individual.properties);
         const negativeProperties = propertyIris.filter((key) => key.startsWith("negativePropertyAssertion+"));
-        const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)!.type.indexOf("objectProperty") !== -1)
-        const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)!.type.indexOf("dataProperty") !== -1)
+        const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("objectProperty") !== -1)
+        const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("dataProperty") !== -1)
         const propertyAssertions: JSX.Element[] = [];
 
-        for(let iri of objectProperties) {
+        for(const iri of objectProperties) {
             const values = asArray(individual.properties[iri]);
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
@@ -331,9 +226,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
         }
 
-        for(let iri of dataProperties) {
+        for(const iri of dataProperties) {
             const values = asArray(individual.properties[iri]);
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
@@ -348,14 +243,14 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
         }
 
-        for(let key of negativeProperties) {
+        for(const key of negativeProperties) {
             const iri = key.slice("negativePropertyAssertion+".length);
             const linkedEntity = individual.getLinkedEntities().get(iri);
-            const hasDataProperty = linkedEntity!.type.indexOf("dataProperty") !== -1;
-            const hasObjectProperty = linkedEntity!.type.indexOf("objectProperty") !== -1;
+            const hasDataProperty = linkedEntity?.type.indexOf("dataProperty") !== -1;
+            const hasObjectProperty = linkedEntity?.type.indexOf("objectProperty") !== -1;
             const values = asArray(individual.properties[key]);
 
-            for(let v of values) {
+            for(const v of values) {
                 propertyAssertions.push(
                     <>
                         <i style={{color: "purple"}}>not</i>{" "}
@@ -407,17 +302,21 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     function getAnnotationSection(thing: Thing) : JSX.Element {
         return (
             <>
-                {thing.getAnnotationPredicates().map((annoKey) => (
-                    <EuiFlexItem grow={false} key={annoKey}>
-                        <b>{thing.getAnnotationTitleById(annoKey)}:</b>
-                        {thing.getAnnotationById(annoKey).length > 1 ?
-                            <ul>{thing.getAnnotationById(annoKey).map((annotation) => {
+                {thing.getAnnotationPredicates().map((annoKey) => {
+                    const annos = thing.getAnnotationById(annoKey);
+                    if(annos.length == 0) return <></>;
+
+                    return <EuiFlexItem grow={false} key={annoKey}>
+                        <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
+                        {annos.length > 1 ?
+                            <ul>{annos.map((annotation) => {
                                 return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, api, showBadges)}</li>;
                             })}</ul> :
-                            <p key={randomString()}>{getReifiedJSX(thing, thing.getAnnotationById(annoKey)[0], api, showBadges)}</p>
+                            <p key={randomString()}>{getReifiedJSX(thing, annos[0], api, showBadges)}</p>
                         }
                     </EuiFlexItem>
-                ))}
+                    }
+                )}
             </>
         );
     }
@@ -425,62 +324,41 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     return (
         <>
             <EuiCard
-                title={hasTitle ? (entityType ? capitalize(entityType) : (isSuccessEntityInfo && entityInfo) ? capitalize(entityInfo.getType()) : "")  +" Information" : ""}
+                title={hasTitle ? (entityType ? capitalize(entityType) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  +" Information" : ""}
                 layout="horizontal"
             >
 
-                {isLoadingEntityInfo && <EuiLoadingSpinner size={'s'}/>}
-                {isSuccessEntityInfo && entityInfo !== undefined &&
+                {isLoadingEntity && <EuiLoadingSpinner size={'s'}/>}
+                {isSuccessEntity && entity !== undefined &&
                     <EuiText {...rest}>
-                        {isOntology(entityInfo) &&
+                        {getLabelSection(entity)}
+                        {getSynonymsSection(entity)}
+
+                        {isClass(entity) &&
                             <>
-                                {getOntologyIriSection(entityInfo)}
-                                {getVersionIriSection(entityInfo)}
-                                {getLastLoadSection(entityInfo)}
-                                {/* TODO: Do we want the following on the information widget?
-                                          Ebi does not have them there, but on other parts of the entity page */
-                                    <>
-                                        {getOntologyIdSection(entityInfo)}
-                                        {getVersionSection(entityInfo)}
-                                        {getNumClassesSection(entityInfo)}
-                                        {/*{getCreatorsSection(entityInfo)}*/ /* redundant as it's listed in annotations anyway */}
-                                    </>
-                                }
+                                {getSubsetsSection(entity)}
+                                {getHasKeySection(entity)}
                             </>
                         }
 
-                        {isEntity(entityInfo) &&
+                        {isProperty(entity) &&
                             <>
-                                {getLabelSection(entityInfo)}
-                                {getSynonymsSection(entityInfo)}
+                                {getPropertyCharacteristicsSection(entity)}
+                                {getDomainSection(entity)}
+                                {getRangeSection(entity)}
                             </>
                         }
 
-                        {isClass(entityInfo) &&
+                        {isIndividual(entity) &&
                             <>
-                                {getSubsetsSection(entityInfo)}
-                                {getHasKeySection(entityInfo)}
+                                {getIndividualPropertyAssertionsSection(entity)}
                             </>
                         }
 
-                        {isProperty(entityInfo) &&
-                            <>
-                                {getPropertyCharacteristicsSection(entityInfo)}
-                                {getDomainSection(entityInfo)}
-                                {getRangeSection(entityInfo)}
-                            </>
-                        }
-
-                        {isIndividual(entityInfo) &&
-                            <>
-                                {getIndividualPropertyAssertionsSection(entityInfo)}
-                            </>
-                        }
-
-                        {getAnnotationSection(entityInfo)}
+                        {getAnnotationSection(entity)}
                     </EuiText>
                 }
-                {isErrorEntityInfo && <EuiText>{getErrorMessageToDisplay(errorEntityInfo, "information")}</EuiText>}
+                {isErrorEntity && <EuiText>{getErrorMessageToDisplay(errorEntity, "information")}</EuiText>}
             </EuiCard>
         </>
     );

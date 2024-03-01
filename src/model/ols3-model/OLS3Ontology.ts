@@ -19,13 +19,13 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
     return this.properties["ontologyId"];
   }
   getName(): string {
-    let names = Reified.fromJson<string>(
+    const names = Reified.fromJson<string>(
         this.properties["config"]["title"] || ""
     );
     return (names[0] && names[0].value) || this.getOntologyId();
   }
   getDescription(): string {
-    let descriptions = Reified.fromJson<string>(
+    const descriptions = Reified.fromJson<string>(
       this.properties["description"] || ""
     );
     return (descriptions[0] && descriptions[0].value) || "";
@@ -56,7 +56,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
 
   // used as IRI
   getOntologyPurl(): string {
-    return this.properties["config"]["fileLocation"];
+    return this.properties["config"]["id"];
   }
 
   getHomepage(): string {
@@ -114,7 +114,11 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   }
 
   getAnnotationById(id: string):Reified<any>[] {
-    return Reified.fromJson(asArray(this.properties["config"]["annotations"][id]))
+    return Reified.fromJson(asArray(this.properties["config"]["annotations"][id])
+        .filter((elem) => {
+          return typeof elem !== "string" || elem !== ""
+        })
+    )
   }
 
   getPreferredRoots(): string[] {

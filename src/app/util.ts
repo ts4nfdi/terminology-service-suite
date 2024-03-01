@@ -28,7 +28,7 @@ export function capitalize(str: string) : string {
 }
 
 export function deCamelCase(str: string) : string {
-    return capitalize(str).split(/(?=[A-Z])/).join(" ");
+    return capitalize(str).split(/(?=[A-Z][a-z])/).join(" ");
 }
 
 export function deUnderscore(str: string) : string {
@@ -53,16 +53,17 @@ export function getTermInOntologySuffix(ontologyId: string, termIri: string, ent
     return "/ontologies/" + ontologyId + "/" + pluralizeType(entityTypeArray) + "?iri=" + termIri;
 }
 
-export function pluralizeType(typeArray: string[]) : "classes" | "properties" | "individuals" | undefined {
+export function pluralizeType(typeArray: string[]) : string | undefined {
+    let plural = undefined;
     for(const type of typeArray) {
-        switch (type) {
-            case "class": case "term":
-                return "classes";
-            case "property":
-                return "properties";
-            case "individuals":
-                return "individuals";
-        }
+        plural = {
+            "class": "classes",
+            "property": "properties",
+            "individual": "individuals",
+            "term": "classes" // just for convenience reasons
+        }[type];
+
+        if (plural !== undefined) return plural;
     }
     return undefined;
 }
