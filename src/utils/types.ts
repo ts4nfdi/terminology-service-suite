@@ -239,8 +239,7 @@ export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyI
     default_value?: string
 }
 
-// TODO: entityType optional for MetadataWidget
-export type MetadataWidgetProps = ApiObj & ForcedEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj;
+export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 

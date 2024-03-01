@@ -7,11 +7,10 @@ import { DescriptionWidget } from "./DescriptionWidget";
 import { TabWidget } from "./TabWidget";
 import {useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
-import { getPreferredOntologyJSON } from "../../../utils/helper";
 import {MetadataWidgetProps} from "../../../utils/types";
 
 function MetadataWidget(props: MetadataWidgetProps) {
-    const { iri, api, ontologyId, entityType, parameter } = props;
+    const { iri, api, ontologyId, entityType, parameter, useLegacy } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -28,10 +27,11 @@ function MetadataWidget(props: MetadataWidgetProps) {
             api,
             entityType,
             parameter,
-            props.ontologyId
+            ontologyId,
+            useLegacy
         ],
         async () => {
-            return getPreferredOntologyJSON(olsApi, entityType, ontologyId, iri, parameter);
+            return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
         },
         {
 
@@ -44,17 +44,17 @@ function MetadataWidget(props: MetadataWidgetProps) {
           {(props.ontologyId || isSuccessOntologyId) &&
               <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
                   {
-                      !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
+                      !props.ontologyId && !ontologyJSON?.isCanonical() &&
                       <EuiFlexItem>
                           <EuiText size={"m"}>
                               <i>Defining ontology not available </i>
-                              <EuiIconTip type={"iInCircle"} color={"subdued"} content={`Showing occurence inside ${ontologyJSON["ontology_name"]} instead.`}/>
+                              <EuiIconTip type={"iInCircle"} color={"subdued"} content={`Showing occurrence inside ${ontologyJSON?.getOntologyId()} instead.`}/>
                           </EuiText>
                       </EuiFlexItem>
                   }
                   <EuiFlexItem grow={false}>
                 <span>
-                  <BreadcrumbWidget api={api} iri={iri} entityType={entityType} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON["ontology_name"]} parameter={parameter}/>
+                  <BreadcrumbWidget api={api} iri={iri} entityType={entityType} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON?.getOntologyId()} parameter={parameter}/>
                 </span>
                   </EuiFlexItem>
                   <EuiFlexItem>
@@ -68,20 +68,22 @@ function MetadataWidget(props: MetadataWidgetProps) {
                           </EuiFlexItem>
 
                           <EuiFlexItem grow={false}>
-                              <TitleWidget iri={iri} api={api} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON["ontology_name"]} thingType={entityType} parameter={parameter} />
+                              <TitleWidget iri={iri} api={api} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON?.getOntologyId()} thingType={entityType} parameter={parameter} />
                           </EuiFlexItem>
                       </EuiFlexGroup>
                   </EuiFlexItem>
                   <EuiFlexItem>
-                      <DescriptionWidget iri={iri} api={api} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON["ontology_name"]} thingType={entityType} parameter={parameter}/>
+                      <DescriptionWidget iri={iri} api={api} ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON?.getOntologyId()} thingType={entityType} parameter={parameter}/>
                   </EuiFlexItem>
                   <EuiFlexItem>
                       <TabWidget
                           iri={iri}
-                          ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON["ontology_name"]}
+                          ontologyId={props.ontologyId ? props.ontologyId : ontologyJSON?.getOntologyId()}
                           api={api}
                           parameter={parameter}
-                          entityType={entityType}/>
+                          entityType={entityType}
+                          useLegacy={useLegacy}
+                      />
                   </EuiFlexItem>
               </EuiFlexGroup>
           }

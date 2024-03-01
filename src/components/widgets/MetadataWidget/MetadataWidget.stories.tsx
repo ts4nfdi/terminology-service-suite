@@ -39,6 +39,7 @@ export default {
         "class",
         "property",
         "individual",
+        undefined,
         "INVALID STRING"
       ],
     },
@@ -48,6 +49,7 @@ export default {
   },
   args: {
     parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 
