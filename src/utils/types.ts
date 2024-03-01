@@ -55,26 +55,11 @@ type OptionalThingTypeObj = {
     thingType?: ThingTypeName;
 };
 
-type ForcedThingTypeObj = {
-    /**
-     * Sets the type of the thing whose information you want to fetch.
-     */
-    thingType: ThingTypeName;
-};
-
 type OptionalEntityTypeObj = {
     /**
      * Sets the type of the entity whose information you want to fetch.
      */
     entityType?: EntityTypeName;
-};
-
-// TODO: only temporary for widgets that not yet have entityType optional
-type ForcedEntityTypeObj = {
-    /**
-     * Sets the type of the entity whose information you want to fetch.
-     */
-    entityType: EntityTypeName;
 };
 
 type OptionalOntologyIdObj = {
@@ -317,6 +302,18 @@ export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">>
     itemsPerPageOptions?: number[];
 };
 
+export type SearchResultProps = {
+    description: string[];
+    id: string;
+    iri: string;
+    is_defining_ontology: boolean;
+    label: string;
+    ontology_name: string;
+    ontology_prefix: string;
+    short_form: string;
+    type: ThingTypeName;
+}
+
 export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
-    result: any;
+    result: SearchResultProps;
 };
