@@ -75,6 +75,10 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     return (this.properties["appearsIn"] || []) as string[];
   }
 
+  getCrossReferences(): any[] {
+    return (this.properties["http://www.geneontology.org/formats/oboInOwl#hasDbXref"] || []) as string[];
+  }
+
   getDefinedBy(): string[] {
     return (this.properties["definedBy"] || []) as string[];
   }

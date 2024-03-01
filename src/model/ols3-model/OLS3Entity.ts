@@ -84,6 +84,10 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     return (this.properties["appearsIn"] || []) as string[];
   }
 
+  getCrossReferences(): any[] {
+    return this.properties["annotation"]["has_dbxref"] || [];
+  }
+
   // TODO: not existent in standard. Standard seems to have problems with is_defining_ontology as well
   //       (http://www.ebi.ac.uk/ols4/api/v2/ontologies/ro/properties?iri=http://purl.obolibrary.org/obo/RO_0002175)
   getDefinedBy(): string[] {

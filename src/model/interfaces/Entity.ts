@@ -7,6 +7,7 @@ export interface Entity extends Thing {
     getEquivalents(): Reified<any>[];
     isCanonical(): boolean;
     isDeprecated(): boolean;
+    getCrossReferences(): any[];
     getDeprecationVersion(): string;
     getDeprecationReason(): Reified<any>[];
     getDeprecationReplacement(): string;
