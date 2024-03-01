@@ -100,14 +100,16 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
           <EuiFlexItem>
-            <TabPresentation
-              data={data}
-              iri={iri}
-              entityType={pluralizeType([entityType]) || "entities"}
-              api={api}
-              ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
-              useLegacy={useLegacy}
-            />
+            <div style={{ maxHeight: "500px", overflow: "auto" }}>
+              <TabPresentation
+                data={data}
+                iri={iri}
+                entityType={pluralizeType([entityType]) || "entities"}
+                api={api}
+                ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
+                useLegacy={useLegacy}
+              />
+            </div>
           </EuiFlexItem>
           {!props.ontologyId || !data.getIsDefiningOntology() &&
             <EuiFlexItem>
