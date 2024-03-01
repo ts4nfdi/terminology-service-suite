@@ -36,12 +36,13 @@ export interface DescriptionWidgetProps extends EuiTextProps {
    * </table>
    */
   parameter?: string;
+  useLegacy?: boolean;
 }
 
 const NO_DESCRIPTION = "No description available.";
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const { api, ontologyId, iri, descText, entityType, parameter, ...rest } = props;
+  const { api, ontologyId, iri, descText, entityType, parameter, useLegacy, ...rest } = props;
   const fixedEntityType = entityType == "class" ? "term" : entityType;
   const olsApi = new OlsApi(api);
 
@@ -54,7 +55,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, entityType, iri, ontologyId],
     async () => {
-      return olsApi.getEntityObject(iri as string, entityType, ontologyId, parameter);
+      return olsApi.getEntityObject(iri as string, entityType, ontologyId, parameter, useLegacy);
     }, {
       enabled: iri !== undefined
     }

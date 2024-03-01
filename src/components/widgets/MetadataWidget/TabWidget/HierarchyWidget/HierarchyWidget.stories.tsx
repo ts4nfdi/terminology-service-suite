@@ -1,46 +1,51 @@
 import React from "react";
-import { HierarchyWidgetProps, HierarchyWidget } from "./HierarchyWidget";
+import { HierarchyWidget, HierarchyWidgetProps } from "./HierarchyWidget";
 
 export default {
   title: "HierarchyWidget",
   component: HierarchyWidget,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: "The HierarchyWidget is a component designed to visualize and interact with hierarchical data structures of ontology hierarchies, specifically tailored for the OLS4 API to retrieve and display hierarchical relationships between terms within a given ontology."
+      }
+    }
   },
   argTypes: {
     api: {
       description: "Instance of the OLS API to call.",
       control: {
-        type: "radio",
+        type: "radio"
       },
       options: [
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
         "http://ols4.qa.km.k8s.zbmed.de/ols4/api/"
-      ],
+      ]
     },
     ontologyId: {
-      description: "Ontology ID from where the term hierarchy should be taken.",
+      description: "Ontology ID from where the term hierarchy should be taken."
     },
     entityType: {
       control: { type: "radio" },
       options: [
-          "properties",
-          "individuals",
-          "classes",
-          ""
+        "properties",
+        "individuals",
+        "classes",
+        ""
       ]
     },
     iri: {
-      description: "Iri of the term you want to fetch the term hierarchy for.",
+      description: "Iri of the term you want to fetch the term hierarchy for."
     },
     parameter: {
       type: { required: false }
-    },
+    }
   },
   args: {
-    parameter: "collection=nfdi4health",
+    parameter: "collection=nfdi4health"
   }
 };
 
@@ -54,6 +59,6 @@ HierarchyWidget1.args = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000741",
   api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
   ontologyId: "efo",
-  entityType: "properties",
+  entityType: "properties"
   //parameter: "collection=nfdi4health",
 };

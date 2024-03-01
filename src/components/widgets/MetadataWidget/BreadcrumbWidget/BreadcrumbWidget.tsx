@@ -46,10 +46,11 @@ export interface BreadcrumbWidgetProps {
    * </table>
    */
   parameter?: string;
+  useLegacy?: boolean;
 }
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter } = props;
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter, useLegacy } = props;
   const fixedEntityType = entityType == "class" ? "term" : entityType;
   const olsApi = new OlsApi(api);
 
@@ -62,7 +63,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, entityType, iri, ontologyId],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 

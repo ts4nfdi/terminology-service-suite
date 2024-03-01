@@ -42,6 +42,12 @@ export default {
     parameter: {
       type: { required: false }
     },
+    useLegacy: {
+      type: { required: false },
+      control: "boolean",
+      description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
+      default: true
+    }
   },
   args: {
     parameter: "collection=nfdi4health",

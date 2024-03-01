@@ -34,11 +34,12 @@ export interface AlternativeNameTabWidgetProps {
    * </table>
    */
   parameter?: string;
+  useLegacy?: boolean;
 }
 
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -50,7 +51,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, entityType, iri, ontologyId],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 

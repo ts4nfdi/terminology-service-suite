@@ -34,10 +34,11 @@ export interface CrossRefWidgetProps {
    * </table>
    */
   parameter?: string;
+  useLegacy?: boolean;
 }
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -49,7 +50,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, entityType, iri, ontologyId],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter);
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 
