@@ -228,8 +228,7 @@ export type CrossRefWidgetProps = TabWidgetProps;
 
 export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalIriObj;
 
-// TODO: thingType optional for TitleWidget
-export type TitleWidgetProps = ApiObj & ForcedThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & {
+export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & {
     /**
      * Set your own text manually that overwrites the text fetched from the API
      */

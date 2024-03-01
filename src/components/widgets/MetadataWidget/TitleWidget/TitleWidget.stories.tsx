@@ -14,12 +14,12 @@ export default {
         api: {
             control: {
                 type: "radio",
-                options: [
+            },
+            options: [
                     "https://www.ebi.ac.uk/ols4/api/",
                     "https://semanticlookup.zbmed.de/ols/api/",
                     "https://semanticlookup.zbmed.de/api/",
-                ],
-            },
+            ],
         },
         ontologyId: {
             description: "Ontology ID from where the object title/label should be taken.",
@@ -31,15 +31,17 @@ export default {
             },
             control: {
                 type: "radio",
-                options: [
-                    "ontology",
-                    "term",
-                    "class",
-                    "property",
-                    "individual",
-                    "INVALID STRING"
-                ],
+
             },
+            options: [
+                "ontology",
+                "term",
+                "class",
+                "property",
+                "individual",
+                undefined,
+                "INVALID STRING"
+            ],
         },
         iri: {
             description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
@@ -49,9 +51,12 @@ export default {
             control: 'text',
         },
         parameter: {
-            defaultValue: "collection=nfdi4health",
-            type: {required: false}
+            type: {required: false},
         },
+    },
+    args: {
+      parameter: "collection=nfdi4health",
+      useLegacy: true,
     },
 };
 
@@ -66,7 +71,8 @@ export const TitleWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TitleWidget1.args = {
-    iri: "http://purl.obolibrary.org/obo/NCIT_C2985", api: "https://semanticlookup.zbmed.de/api/",
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: "https://semanticlookup.zbmed.de/api/",
     ontologyId: "ncit",
     thingType: "term",
 };

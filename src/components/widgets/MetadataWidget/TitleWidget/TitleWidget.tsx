@@ -2,55 +2,24 @@ import React from "react";
 import {useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay, getPreferredOntologyJSON } from "../../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../../utils/helper";
 import {TitleWidgetProps} from "../../../../utils/types";
+import {isOntology} from "../../../../model/ModelTypeCheck";
 
 const NO_TITLE = "No title available.";
 
-async function getTitle(olsApi: OlsApi, thingType: string, ontologyId?: string, iri?: string, parameter?: string, default_value?: string): Promise<any> {
-    if (thingType === "ontology") {
-        if(!ontologyId) {
-            throw Error("ontology id has to be provided")
-        }
-        else {
-            const response = await olsApi.getOntology(undefined, undefined, {
-                ontologyId: ontologyId
-            }, parameter)
-            return {
-                title: response?.config.title || default_value || NO_TITLE
-            }
-        }
-    }
-    if (thingType === "term" || thingType === "property" || thingType === "individual") {
-        if(!iri) {
-            throw Error("iri has to be provided")
-        }
-        else {
-            const response = await getPreferredOntologyJSON(olsApi, thingType, ontologyId, iri, parameter)
-            return {
-                title: response['label'] || default_value || NO_TITLE,
-                inDefiningOntology: response['is_defining_ontology'],
-                ontology: response['ontology_name']
-            }
-        }
-    }
-    //unacceptable object type
-    throw Error("Unexpected entity type. Should be one of 'ontology', 'term', 'class', 'individual', 'property'");
-}
-
 function TitleWidget(props: TitleWidgetProps) {
-    const {iri, ontologyId, api, titleText, thingType, parameter, default_value} = props;
-    const fixedEntityType = thingType == "class" ? "term" : thingType
+    const {iri, ontologyId, api, titleText, thingType, parameter, useLegacy, default_value} = props;
     const olsApi = new OlsApi(api);
 
     const {
-        data: response,
+        data: thing,
         isLoading,
         isSuccess,
         isError,
         error,
-    } = useQuery([api, "getTitle", fixedEntityType, ontologyId, iri, parameter], () => {
-        return getTitle(olsApi, fixedEntityType, ontologyId, iri, parameter, default_value);
+    } = useQuery([api, "getTitle", thingType, ontologyId, iri, parameter, useLegacy], () => {
+        return olsApi.getThingObject(iri, thingType, ontologyId, parameter, useLegacy);
     });
 
     // TODO: Should TitleWidget show the following info message if defining ontology is not available (placed inside isSuccess span)?
@@ -66,9 +35,9 @@ function TitleWidget(props: TitleWidgetProps) {
     return (
         <>
             {isLoading && <EuiLoadingSpinner size="s"/>}
-            {isSuccess &&
+            {isSuccess && thing &&
                 <>
-                    <EuiText>{titleText || response.title}</EuiText>
+                    <EuiText>{titleText || (isOntology(thing) ? thing.getName() : thing.getLabel()) || default_value || NO_TITLE}</EuiText>
                 </>}
             {isError && <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>}
         </>
