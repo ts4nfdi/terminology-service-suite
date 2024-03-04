@@ -1,0 +1,13 @@
+{
+  "storybook": {
+    "versions": {
+      "availableVersions": [
+        "latest",
+        "v1.0.0"
+      ],
+      "hostname": "https://nfdi4health.github.io/semlookp-widgets",
+      "localhost": "http://localhost:6006",
+      "regex": "\/([^\/]+?)\/?$"
+    }
+  }
+}
