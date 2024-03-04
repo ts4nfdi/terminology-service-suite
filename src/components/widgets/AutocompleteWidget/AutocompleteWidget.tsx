@@ -29,7 +29,7 @@ export interface AutocompleteWidgetProps extends EuiComboBoxProps<string> {
    *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
    *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
    *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-   *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
+   *  <tr><td>fieldList</td><td>Specify the fields to return. Pass {fieldList=description,label,iri,ontology_name,type,short_form} to display descriptions in search results.</td></tr>
    *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
    *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
    *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
