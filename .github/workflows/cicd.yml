@@ -66,7 +66,7 @@ jobs:
           path: 'public'
       - name: Deploy to GitHub Pages
         run: |
-          npx gh-pages-multi --dist public --branch gh-pages --repo ${{ github.repository }} --message "Deploy Storybook version ${{ github.ref }}"
+          npx gh-pages-multi deploy -s public --no-history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
