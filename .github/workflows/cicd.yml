@@ -68,6 +68,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+      - name: Configure Git to Use PAT for Authentication
+        run: |
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
       - name: Deploy to GitHub Pages
         run: |
           npx gh-pages-multi deploy -s public --no-history
