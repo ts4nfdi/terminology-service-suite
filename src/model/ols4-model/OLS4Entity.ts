@@ -201,10 +201,6 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     }
   }
 
-  getCrossReferences(): any[] {
-    return this.properties["elements"]["http://www.geneontology.org/formats/oboInOwl#hasDbXref"];
-  }
-
     getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
       const type = this.getType();
 
