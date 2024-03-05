@@ -11,7 +11,7 @@ export class OLS3Class extends OLS3Entity implements Class {
     return "class"
   }
 
-  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
+  getTypePlural(): "classes" | "properties" | "individuals" {
     return "classes"
   }
 
@@ -49,6 +49,6 @@ export class OLS3Class extends OLS3Entity implements Class {
   }
 
   getSubsets(): any[] {
-    return this.properties["in_subset"] || [];
+    return asArray(this.properties["in_subset"]) || [];
   }
 }
