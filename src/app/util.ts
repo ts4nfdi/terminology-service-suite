@@ -1,3 +1,5 @@
+import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
+
 export function asArray<T>(obj: T | T[]): T[] {
     if (Array.isArray(obj)) {
         return obj;
@@ -73,4 +75,16 @@ export function pluralizeType(typeArray: string[]) : string | undefined {
  */
 export function randomString() {
     return (Math.random() * Math.pow(2, 54)).toString(36);
+}
+
+export function isHexColor(str: string) : boolean {
+    return /^#[0-9A-F]{6}$/i.test(str);
+}
+
+export function isRgbColor(str: string) : boolean {
+    return /^(rgb|hsl)(a?)[(]\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*,\s*([\d.]+\s*%?)\s*(?:,\s*([\d.]+)\s*)?[)]$/i.test(str);
+}
+
+export function isEuiLinkColor(str: string) : str is EuiLinkColor {
+    return ["primary", "subdued", "success", "accent", "danger", "warning", "text", "ghost"].includes(str);
 }

@@ -1,15 +1,12 @@
 import React from "react";
-import { SearchResultsListWidget, SearchResultsListWidgetProps } from "./SearchResultsListWidget";
+import { SearchResultsListWidget } from "./SearchResultsListWidget";
+import {SearchResultsListWidgetProps} from "../../../utils/types";
 
 export default {
   title: "SearchResultsListWidget",
   component: SearchResultsListWidget,
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -19,20 +16,14 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    query: {
-      description: "The terms to search. By default the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.",
-    },
+    query: {},
     initialItemsPerPage: {
-      description: "Initial number of items displayed per page.",
       control: "number",
     },
     itemsPerPageOptions: {
-      description: "Possible values for number of items displayed per page.",
       control: "array",
     },
-    targetLink: {
-      description: "The link which should be the target of the EuiCard.",
-    },
+    targetLink: {},
     parameter: {
       type: { required: false }
     },

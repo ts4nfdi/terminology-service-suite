@@ -1,44 +1,13 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../api/OlsApi";
 import {useQuery} from 'react-query'
 import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {asArray, capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
+import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString} from "../../../app/util";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
 import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
-import {isClass, isProperty, isIndividual, EntityTypeName} from "../../../model/ModelTypeCheck";
-
-export interface EntityInfoWidgetProps {
-    api: string;
-    iri: string;
-    ontologyId?: string;
-    hasTitle?: boolean;
-    entityType: EntityTypeName
-    /**
-     * Additional parameters to pass to the API.
-     *
-     * This parameters can be used to filter the search results. Each parameter can be combined via
-     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
-     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
-     *  <table>
-     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-     *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
-     *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-     *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
-     *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
-     *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
-     *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
-     *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
-     *  <tr><td>rows</td><td>Set results per page</td></tr>
-     *  <tr><td>start</td><td>Set the results page number</td></tr>
-     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td></tr>
-     * </table>
-     */
-    parameter?: string;
-    showBadges?: boolean; // default is true
-    useLegacy?: boolean; // default is true
-}
+import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
+import {EntityInfoWidgetProps} from "../../../utils/types";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -62,7 +31,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         }
     );
 
-    function getLabelSection(entity: Entity) : JSX.Element {
+    function getLabelSection(entity: Entity) : ReactElement {
         return (
             <>
                 {entity.getLabel() &&
@@ -75,7 +44,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getSynonymsSection(entity: Entity) : JSX.Element {
+    function getSynonymsSection(entity: Entity) : ReactElement {
         return (
             <>
                 {entity.getSynonyms().length > 0 &&
@@ -93,7 +62,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getHasKeySection(term: Class) : JSX.Element {
+    function getHasKeySection(term: Class) : ReactElement {
         const keys = term.getHasKey();
         return (
             <>
@@ -112,7 +81,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getSubsetsSection(term: Class) : JSX.Element {
+    function getSubsetsSection(term: Class) : ReactElement {
         return (
             <>
                 { term.getSubsets().length > 0 &&
@@ -130,7 +99,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getPropertyCharacteristicsSection(property: Property) : JSX.Element {
+    function getPropertyCharacteristicsSection(property: Property) : ReactElement {
         const characteristics = property.getRdfTypes().map(type => {
             return ({
                 'http://www.w3.org/2002/07/owl#FunctionalProperty': 'Functional',
@@ -161,7 +130,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getDomainSection(property: Property) : JSX.Element {
+    function getDomainSection(property: Property) : ReactElement {
         const domains = property.getDomain();
         return (
             <>
@@ -180,7 +149,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getRangeSection(property: Property) : JSX.Element {
+    function getRangeSection(property: Property) : ReactElement {
         const ranges = property.getRange();
         return (
             <>
@@ -199,12 +168,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getIndividualPropertyAssertionsSection(individual: Individual) : JSX.Element {
+    function getIndividualPropertyAssertionsSection(individual: Individual) : ReactElement {
         const propertyIris = Object.keys(individual.properties);
         const negativeProperties = propertyIris.filter((key) => key.startsWith("negativePropertyAssertion+"));
         const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("objectProperty") !== -1)
         const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("dataProperty") !== -1)
-        const propertyAssertions: JSX.Element[] = [];
+        const propertyAssertions: ReactElement[] = [];
 
         for(const iri of objectProperties) {
             const values = asArray(individual.properties[iri]);
@@ -299,7 +268,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
     }
 
-    function getAnnotationSection(thing: Thing) : JSX.Element {
+    function getAnnotationSection(thing: Thing) : ReactElement {
         return (
             <>
                 {thing.getAnnotationPredicates().map((annoKey) => {
@@ -324,7 +293,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     return (
         <>
             <EuiCard
-                title={hasTitle ? (entityType ? capitalize(entityType) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  +" Information" : ""}
+                title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  + " Information" : ""}
                 layout="horizontal"
             >
 

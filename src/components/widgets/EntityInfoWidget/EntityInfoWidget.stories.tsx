@@ -1,5 +1,7 @@
 import React from "react";
-import { EntityInfoWidget, EntityInfoWidgetProps } from "./EntityInfoWidget";
+import { EntityInfoWidget } from "./EntityInfoWidget";
+import {EntityInfoWidgetProps} from "../../../utils/types";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
   title: "EntityInfoWidget",
@@ -9,10 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -23,27 +21,23 @@ export default {
       ],
     },
     hasTitle: {
-      description: "Show title, default is true",
       type: { required: false },
       table: {
         defaultValue: { summary: true }
       }
     },
     ontologyId: {
-      description: "ID of the ontology whose info should be displayed.",
       table: {
         defaultValue: { summary: undefined }
       }
     },
     entityType: {
       type: { required: false },
-      description: "Sets the type of the entity whose information you want to fetch.",
       control: {
         type: "radio",
       },
       table: {
-        type: { summary: "'term' | 'class' | 'property' | 'individual'" },
-        defaultValue: { summary: undefined }
+        type: { summary: `${entityTypeNames.join(" | ")}` },
       },
       options: [
         "term",
@@ -55,9 +49,7 @@ export default {
         undefined
       ],
     },
-    iri: {
-      description: "Entity IRI whose information you want to fetch.",
-    },
+    iri: {},
     parameter: {
       type: { required: false },
       table: {
@@ -66,14 +58,12 @@ export default {
     },
     showBadges: {
       type: { required: false },
-      description: "If true, entity badges linking to their defining ontologies are shown.",
       table: {
         defaultValue: { summary: true }
       }
     },
     useLegacy: {
       type: { required: false },
-      description: "Specifies the API version used.",
       table: {
         defaultValue: { summary: true }
       }
@@ -129,7 +119,6 @@ InfoWidgetBadges.args = {
   ontologyId: "uberon"
 };
 
-/*
 export const OptionalEntityTypeLegacyAPI = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -137,7 +126,6 @@ OptionalEntityTypeLegacyAPI.args = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
   iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
 };
-*/
 
 export const InfoWidgetDomain = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

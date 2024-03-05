@@ -1,5 +1,6 @@
 import React from "react";
-import { DataContentWidget, DataContentWidgetProps } from "./DataContentWidget";
+import {DataContentWidget} from "./DataContentWidget";
+import {DataContentWidgetProps} from "../../../utils/types";
 
 export default {
   title: "DataContentWidget",
@@ -9,10 +10,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },

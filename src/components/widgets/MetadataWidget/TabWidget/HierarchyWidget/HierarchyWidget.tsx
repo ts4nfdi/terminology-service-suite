@@ -1,22 +1,13 @@
 import { EuiPanel } from "@elastic/eui";
 import React, { useEffect } from "react";
-import "@zbmed/ols-treeview";
+import "@zbmed/ols-treeview"
 import "../../../../../style/treestyles.css";
-import { Entity, Ontology } from "../../../../../model/interfaces";
-
-export interface HierarchyWidgetProps {
-  iri?: string;
-  ontologyId: string;
-  api: string;
-  entityType: "entities" | "classes" | "properties" | "individuals" | string,
-  onNavigateToEntity?: (ontology: Ontology, entity: Entity) => void,
-  onNavigateToOntology?: (ontologyId: string, entity: Entity) => void
-}
+import {HierarchyWidgetProps} from "../../../../../utils/types";
 
 const HierarchyWidget = (props: HierarchyWidgetProps) => {
 
   useEffect(() => {
-    const treeContainer = document.querySelector("#tree_container");
+    const treeContainer = document.querySelector('#tree_container');
     (window as any)["OLSWidgets"].createEntityTree({
       iri: props.iri,
       ontologyId: props.ontologyId,
@@ -33,8 +24,8 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
 
   return (
     //minWidth required workaround until overlapping checkboxes are fixed in ols4-widgets
-    <EuiPanel style={{ minWidth: "600px" }}>
-      <div id="tree_container" />
+    <EuiPanel style={{minWidth: "600px"}}>
+      <div id="tree_container"/>
     </EuiPanel>
   );
 };

@@ -1,6 +1,8 @@
 import React from "react";
-import { MetadataWidget, MetadataWidgetProps } from "./MetadataWidget";
+import { MetadataWidget } from "./MetadataWidget";
+import {MetadataWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
   title: "MetadataWidget",
@@ -10,10 +12,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -30,7 +28,9 @@ export default {
       description: "Iri of the term you want to fetch the metadata for.",
     },
     entityType: {
-      description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },
@@ -39,12 +39,17 @@ export default {
         "class",
         "property",
         "individual",
+        undefined,
         "INVALID STRING"
       ],
     },
     parameter: {
       type: { required: false }
     },
+  },
+  args: {
+    parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 

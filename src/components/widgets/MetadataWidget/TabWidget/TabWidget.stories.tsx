@@ -1,5 +1,7 @@
 import React from "react";
-import { TabWidget, TabWidgetProps } from "./TabWidget";
+import { TabWidget } from "./TabWidget";
+import {TabWidgetProps} from "../../../../utils/types";
+import {entityTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
   title: "TabWidget",
@@ -9,10 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -22,9 +20,7 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    ontologyId: {
-      description: "Ontology ID from where the term information should be taken.",
-    },
+    ontologyId: {},
     iri: {
       description: "Iri of the term you want to fetch the tab information for.",
     },
@@ -32,7 +28,10 @@ export default {
       type: { required: false }
     },
     entityType: {
-      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+      type: { required: false },
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },
@@ -41,9 +40,14 @@ export default {
         "class",
         "property",
         "individual",
+        undefined,
         "INVALID STRING"
       ],
     },
+  },
+  args: {
+    parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 
@@ -94,8 +98,7 @@ export const SelectingDefiningOntology = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SelectingDefiningOntology.args = {
-  api: "https://www.ebi.ac.uk/ols4/api/",
+SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000631",
   entityType: "term",
   parameter: ""
@@ -105,8 +108,7 @@ export const DefiningOntologyUnavailable = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-DefiningOntologyUnavailable.args = {
-  api: "https://www.ebi.ac.uk/ols4/api/",
+DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://identifiers.org/uniprot/Q9VAM9",
   entityType: "term",
   parameter: ""

@@ -1,5 +1,6 @@
 import React from "react";
-import { IriWidget, IriWidgetProps } from "./IriWidget";
+import { IriWidget } from "./IriWidget";
+import { IriWidgetProps } from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -10,12 +11,14 @@ export default {
   },
   argTypes: {
     color: {
-      description: "Color of the text, names, hex or rgb",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
       options: [
-        "default",
+        "primary",
         "subdued",
         "success",
         "accent",
@@ -26,10 +29,7 @@ export default {
         "rgb(255,0,255)",
       ],
     },
-    iriText: {
-      description:
-          "Set your own text manually, which will show as a clickable link instead of the IRI.",
-    },
+    iriText: {},
     iri: {
       description: "Object IRI that you want to link.",
     },

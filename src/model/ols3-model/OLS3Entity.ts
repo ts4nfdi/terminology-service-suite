@@ -84,6 +84,10 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     return (this.properties["appearsIn"] || []) as string[];
   }
 
+  getCrossReferences(): any[] {
+    return this.properties["annotation"]["has_dbxref"] || [];
+  }
+
   // TODO: not existent in standard. Standard seems to have problems with is_defining_ontology as well
   //       (http://www.ebi.ac.uk/ols4/api/v2/ontologies/ro/properties?iri=http://purl.obolibrary.org/obo/RO_0002175)
   getDefinedBy(): string[] {
@@ -148,11 +152,11 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
 
   // TODO: Can be inferred via "links"->"hierarchicalParents"
   getHierarchicalParentReificationAxioms(parentIri: string): any {
-    let hierarchicalParents = Reified.fromJson<any>(
+    const hierarchicalParents = Reified.fromJson<any>(
       this.properties["hierarchicalParent"]
     );
 
-    for (let p of hierarchicalParents) {
+    for (const p of hierarchicalParents) {
       if (p.value === parentIri) {
         return p.getMetadata();
       }

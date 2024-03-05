@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
 import {useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -6,36 +6,7 @@ import {Ontology, Thing} from "../../../model/interfaces";
 import {capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import {getEntityLinkJSX, getReifiedJSX} from "../../../model/StructureRendering";
 import {getErrorMessageToDisplay} from "../../../utils/helper";
-
-export interface OntologyInfoWidgetProps {
-  ontologyId: string;
-  api: string;
-  /**
-     * Additional parameters to pass to the API.
-     *
-     * This parameters can be used to filter the search results. Each parameter can be combined via
-     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
-     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
-     *  <table>
-     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-     *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
-     *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-     *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
-     *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
-     *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
-     *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
-     *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
-     *  <tr><td>rows</td><td>Set results per page</td></tr>
-     *  <tr><td>start</td><td>Set the results page number</td></tr>
-     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td></tr>
-     * </table>
-     */
-  parameter?: string;
-  showBadges?: boolean;
-  useLegacy?: boolean;
-  hasTitle?: boolean;
-}
+import {OntologyInfoWidgetProps} from "../../../utils/types";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -59,7 +30,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
       }
   );
 
-  function getOntologyIriSection(ontology: Ontology): JSX.Element {
+  function getOntologyIriSection(ontology: Ontology): ReactElement {
     return (
         <>
           {(ontology.getIri() || ontology.getOntologyPurl()) &&
@@ -74,7 +45,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getVersionIriSection(ontology: Ontology) : JSX.Element {
+  function getVersionIriSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getVersionIri() &&
@@ -89,7 +60,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getLastLoadSection(ontology: Ontology) : JSX.Element {
+  function getLastLoadSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getSourceFileTimestamp() &&
@@ -102,7 +73,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getOntologyIdSection(ontology: Ontology) : JSX.Element {
+  function getOntologyIdSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getOntologyId() &&
@@ -115,7 +86,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getVersionSection(ontology: Ontology) : JSX.Element {
+  function getVersionSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getVersion() &&
@@ -128,7 +99,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getNumClassesSection(ontology: Ontology) : JSX.Element {
+  function getNumClassesSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getNumClasses() &&
@@ -141,7 +112,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getCreatorsSection(ontology: Ontology) : JSX.Element {
+  function getCreatorsSection(ontology: Ontology) : ReactElement {
     return (
         <>
           {ontology.getCreators().length > 0 &&
@@ -159,7 +130,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-  function getAnnotationSection(thing: Thing) : JSX.Element {
+  function getAnnotationSection(thing: Thing) : ReactElement {
     return (
         <>
           {thing.getAnnotationPredicates().map((annoKey) => {

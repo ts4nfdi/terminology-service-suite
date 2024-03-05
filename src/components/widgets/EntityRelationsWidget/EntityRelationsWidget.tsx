@@ -1,52 +1,14 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
 import {Class, Individual, Property, Thing} from "../../../model/interfaces";
-import {
-    getClassExpressionJSX,
-    getEntityLinkJSX,
-    getReifiedJSX,
-    getSectionListJSX
-} from "../../../model/StructureRendering";
+import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getSectionListJSX} from "../../../model/StructureRendering";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
-
-export interface EntityRelationsWidgetProps {
-    api: string;
-    iri: string;
-    ontologyId?: string;
-    hasTitle?: boolean;
-    entityType:
-        | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-        | "individual"
-        | "property";
-    /**
-     * Additional parameters to pass to the API.
-     *
-     * This parameters can be used to filter the search results. Each parameter can be combined via
-     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
-     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
-     *  <table>
-     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-     *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
-     *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-     *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
-     *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
-     *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
-     *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
-     *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
-     *  <tr><td>rows</td><td>Set results per page</td></tr>
-     *  <tr><td>start</td><td>Set the results page number</td></tr>
-     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td></tr>
-     * </table>
-     */
-    parameter?: string;
-    showBadges?: boolean;
-}
+import {EntityRelationsWidgetProps} from "../../../utils/types";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -54,9 +16,9 @@ const DEFAULT_HAS_TITLE = true;
  * Builds and returns the type section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): JSX.Element {
+function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
     const types = individual.getRdfTypes().filter((elem: string) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#"));
 
     if(individual.getRdfTypes().length > 0) {
@@ -72,9 +34,9 @@ function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelat
  * Builds and returns the same as section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getIndividualSameAsSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): JSX.Element {
+function getIndividualSameAsSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
     const sameAs = individual.getSameAs();
 
     return (
@@ -92,9 +54,9 @@ function getIndividualSameAsSectionJSX(individual: Individual, props: EntityRela
  * Builds and returns the different from section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getIndividualDifferentFromSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): JSX.Element {
+function getIndividualDifferentFromSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
     const differentFrom = individual.getDifferentFrom();
 
     return (
@@ -113,9 +75,9 @@ function getIndividualDifferentFromSectionJSX(individual: Individual, props: Ent
  * Builds and returns the disjoint with section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getDisjointWithSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): JSX.Element {
+function getDisjointWithSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
     const disjointWith = entity.getDisjointWith();
 
     return (
@@ -134,9 +96,9 @@ function getDisjointWithSectionJSX(entity: Property | Class, props: EntityRelati
  * Builds and returns the inverse of section JSX element.
  * @param property
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getPropertyInverseOfSectionJSX(property: Property, props: EntityRelationsWidgetProps): JSX.Element {
+function getPropertyInverseOfSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement {
     const inverseOfs = property.getInverseOf();
 
     return (
@@ -156,9 +118,9 @@ function getPropertyInverseOfSectionJSX(property: Property, props: EntityRelatio
  * @param propertyChain the property chain
  * @param property
  * @param props     the entities' properties
- * @returns {JSX.Element[]} the chains JSX element
+ * @returns {ReactElement[]} the chains JSX element
  */
-function getPropertyChainJSX(propertyChain: any[], property: Property, props: EntityRelationsWidgetProps): JSX.Element[] {
+function getPropertyChainJSX(propertyChain: any[], property: Property, props: EntityRelationsWidgetProps): ReactElement[] {
     return asArray(propertyChain).slice().reverse().map((propertyExpr, i) => { // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
         return (
             <span key={propertyExpr}>
@@ -177,9 +139,9 @@ function getPropertyChainJSX(propertyChain: any[], property: Property, props: En
  * Builds and returns the property chains section JSX element.
  * @param property
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWidgetProps): JSX.Element {
+function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement {
     const propertyChains = property.getPropertyChains().map((reified : Reified<any>) => reified.value);
 
     const hasMultipleChains = propertyChains.filter((elem: any) => Array.isArray(elem)).length > 0;
@@ -211,9 +173,9 @@ function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWi
  * Builds and returns the equivalent to section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getEntityEquivalentToSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): JSX.Element {
+function getEntityEquivalentToSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
     const equivalents = entity.getEquivalents();
 
     return (
@@ -243,9 +205,9 @@ function getEntityEquivalentToSectionJSX(entity: Property | Class, props: Entity
  * Builds and returns the subentity of section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getSubentityOfSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): JSX.Element {
+function getSubEntityOfSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
     const superEntities = entity.getSuperEntities();
     return (
         <>
@@ -274,9 +236,9 @@ function getSubentityOfSectionJSX(entity: Property | Class, props: EntityRelatio
  * Builds and returns the related from section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): JSX.Element {
+function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
     const relatedFroms = entity.getRelatedFrom();
     const predicates: string[] = Array.from(new Set(relatedFroms.map((elem: any) => {return elem.value["property"]})));
 
@@ -315,9 +277,9 @@ function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityR
  * @param term
  * @param instances an array of the classes' instances
  * @param props
- * @returns {JSX.Element} the sections' JSX element
+ * @returns {ReactElement} the sections' JSX element
  */
-function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: EntityRelationsWidgetProps): JSX.Element {
+function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: EntityRelationsWidgetProps): ReactElement {
     if(instances.length > 0) {
         return (<EuiFlexItem>
             {
@@ -348,7 +310,7 @@ function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: Ent
  */
 async function fetchInstances(term: Class, api: OlsApi, props: EntityRelationsWidgetProps)  {
     const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(term.getIri()));
-    const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId, termIri: doubleEncodedTermIri}, props.parameter)
+    const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId || term.getOntologyId(), termIri: doubleEncodedTermIri}, props.parameter)
         .catch((error) => console.log(error));
     if (response["elements"] !== undefined) {
         return asArray(response["elements"]).map((instance) => createModelObject({elements: [instance]}));
@@ -374,15 +336,15 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     } = useQuery(
         [
             "entityJson",
-            props.api,
-            props.iri,
-            props.ontologyId,
-            props.entityType,
-            props.parameter,
-            props.showBadges
+            api,
+            iri,
+            ontologyId,
+            entityType,
+            parameter,
+            showBadges
         ],
         async () => {
-            return olsApi.getEntityObject(props.iri, props.entityType, props.ontologyId, props.parameter,  false); // always use v2/ API
+            return olsApi.getEntityObject(iri, entityType, ontologyId, parameter,  false); // always use v2/ API
         },
     );
 
@@ -407,13 +369,13 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     return (
         <>
             <EuiCard
-                title={props.hasTitle ? (capitalize(getEntityTypeName(props.entityType)) +" Relations") : ""}
+                title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntityRelation && entity) ? capitalize(entity.getType()) : "") + " Relations" : ""}
                 layout="horizontal"
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
                 {(isSuccessEntityRelation && isSuccessInstances) && entity !== undefined && instancesJson !== undefined &&
-                    <EuiText>
+                    <EuiText {...rest}>
                         {isIndividual(entity) &&
                             <>
                                 {getIndividualTypesSectionJSX(entity, props)}
@@ -438,7 +400,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                         {(isProperty(entity) || isClass(entity)) &&
                             <>
                                 {getEntityEquivalentToSectionJSX(entity, props)}
-                                {getSubentityOfSectionJSX(entity, props)}
+                                {getSubEntityOfSectionJSX(entity, props)}
                                 {getEntityRelatedFromSectionJSX(entity, props)}
                             </>
                         }

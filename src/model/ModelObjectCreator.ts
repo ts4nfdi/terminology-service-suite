@@ -1,7 +1,8 @@
-import {OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual, OLS3Entity} from "./ols3-model";
+import {OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual} from "./ols3-model";
 import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual} from "./ols4-model";
 import {Thing} from "./interfaces";
 import {ThingTypeName, isThingTypeName} from "./ModelTypeCheck";
+import {asArray} from "../app/util";
 
 export function createModelObject(response: any) {
     let useLegacy : boolean;
@@ -45,16 +46,27 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
 
         case "term" :
         case "class": // allow BOTH, even if it should actually be "term"
-            return useLegacy ? new OLS3Class(response["_embedded"]["terms"][0]) : new OLS4Class(response["elements"][0]);
+            return useLegacy ? new OLS3Class(getPreferredOntologyJSON(asArray(response["_embedded"]["terms"]), useLegacy)) : new OLS4Class(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
         case "property":
-            return useLegacy ? new OLS3Property(response["_embedded"]["properties"][0]) : new OLS4Property(response["elements"][0]);
+            return useLegacy ? new OLS3Property(getPreferredOntologyJSON(asArray(response["_embedded"]["properties"]), useLegacy)) : new OLS4Property(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
         case "individual":
-            return useLegacy ? new OLS3Individual(response["_embedded"]["individuals"][0]) : new OLS4Individual(response["elements"][0]);
+            return useLegacy ? new OLS3Individual(getPreferredOntologyJSON(asArray(response["_embedded"]["individuals"]), useLegacy)) : new OLS4Individual(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
         default:
             throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "ontology", "property", "individual"}');
     }
 }
 
+/**
+ * Returns the JSON of the entity in its defining ontology, or, if not available, just the first JSON in the array.
+ * If ontologyId was provided in the response request, the array should only contain one element, thus the functionality is as expected as well
+ * @param entityArrayResponse the sub-response of the initial query response containing just the entity array
+ * @param useLegacy api version (needed because key giving information about defining ontology has different names in both versions)
+ */
+function getPreferredOntologyJSON(entityArrayResponse: any[], useLegacy: boolean) {
+    const definingOntologyArr = asArray(entityArrayResponse).filter((entity) => useLegacy ? entity["is_defining_ontology"] : entity["isDefiningOntology"]);
+    if(definingOntologyArr.length > 0) return definingOntologyArr[0];
+    else return entityArrayResponse[0];
+}

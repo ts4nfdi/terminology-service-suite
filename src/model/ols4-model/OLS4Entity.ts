@@ -75,6 +75,10 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     return (this.properties["appearsIn"] || []) as string[];
   }
 
+  getCrossReferences(): any[] {
+    return (this.properties["http://www.geneontology.org/formats/oboInOwl#hasDbXref"] || []) as string[];
+  }
+
   getDefinedBy(): string[] {
     return (this.properties["definedBy"] || []) as string[];
   }
@@ -101,14 +105,14 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
         predicate.startsWith("http://schema.org/")
   }
   getAnnotationPredicates(): string[] {
-    let definitionProperties = asArray(this.properties["definitionProperty"]);
-    let synonymProperties = asArray(this.properties["synonymProperty"]);
-    let hierarchicalProperties = asArray(
+    const definitionProperties = asArray(this.properties["definitionProperty"]);
+    const synonymProperties = asArray(this.properties["synonymProperty"]);
+    const hierarchicalProperties = asArray(
       this.properties["hierarchicalProperty"]
     );
-    let annotationPredicates = new Set();
+    const annotationPredicates = new Set();
 
-    for (let predicate of Object.keys(this.properties)) {
+    for (const predicate of Object.keys(this.properties)) {
       // properties without an IRI are things that were added by rdf2json so should not
       // be included as annotations
       if (predicate.indexOf("://") === -1) continue;
@@ -122,7 +126,7 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
 
       // Object properties and data properties are not annotation properties, except in the case of informal vocabularies.
       if (!this.isPredicateFromInformalVocabulary(predicate)) {
-        let linkedEntity = this.getLinkedEntities().get(predicate)
+        const linkedEntity = this.getLinkedEntities().get(predicate)
         if (linkedEntity != undefined && linkedEntity.type.indexOf("objectProperty") !== -1) continue;
         if (linkedEntity != undefined && linkedEntity.type.indexOf("dataProperty") !== -1) continue;
       }
@@ -186,11 +190,11 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getHierarchicalParentReificationAxioms(parentIri: string): any {
-    let hierarchicalParents = Reified.fromJson<any>(
+    const hierarchicalParents = Reified.fromJson<any>(
       this.properties["hierarchicalParent"]
     );
 
-    for (let p of hierarchicalParents) {
+    for (const p of hierarchicalParents) {
       if (p.value === parentIri) {
         return p.getMetadata();
       }

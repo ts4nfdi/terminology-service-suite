@@ -1,9 +1,15 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
-import {Ontology, Ontologies, Entity} from "../model/interfaces";
+import {Ontology, Ontologies, Entity, Thing} from "../model/interfaces";
 import {OLS3Ontologies} from "../model/ols3-model";
-import {EntityTypeName} from "../model/ModelTypeCheck";
+import {
+  EntityTypeName,
+  entityTypeNames,
+  isEntityTypeName,
+  isOntologyTypeName,
+  ontologyTypeNames, ThingTypeName, thingTypeNames
+} from "../model/ModelTypeCheck";
 
 interface PaginationParams {
   size?: string;
@@ -335,11 +341,11 @@ export class OlsApi {
     let response;
 
     if(entityType) {
-      response = await this.getEntityObjectWithEntityTypeProvided(iri, entityType, ontologyId, parameter, useLegacy);
+      response = await this.getEntityWithEntityTypeProvided(iri, entityType, ontologyId, parameter, useLegacy);
     }
     else {
       if(getUseLegacy(useLegacy)) {
-        response = await this.getEntityObjectWithInferredEntityType(iri, ontologyId, parameter);
+        response = await this.getEntityWithInferredEntityType(iri, ontologyId, parameter);
       }
       else {
         response = await this.getEntity(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
@@ -363,6 +369,29 @@ export class OlsApi {
     return createModelObject(response) as Ontology;
   }
 
+  public async getThingObject(iri?: string, thingType?: ThingTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Thing> {
+    if(thingType) {
+      if(isOntologyTypeName(thingType)) {
+        if(!ontologyId) throw new Error(`ontologyId has to be provided if thingType in {"${ontologyTypeNames.join('", "')}"}.`);
+        else return await this.getOntologyObject(ontologyId, parameter, useLegacy);
+      }
+      else if(isEntityTypeName(thingType)) {
+        if(!iri) throw new Error(`iri has to be provided if thingType in {"${entityTypeNames.join('", "')}"}.`);
+        else return await this.getEntityObject(iri, thingType, ontologyId, parameter, useLegacy);
+      }
+      else throw new Error(`Unsupported thingType "${thingType}" provided. Must be in {"${thingTypeNames.join('", "')}"}.`);
+    }
+    else {
+      if(!iri && ontologyId) {
+        return await this.getOntologyObject(ontologyId, parameter, useLegacy);
+      }
+      else if(iri) {
+        return await this.getEntityObject(iri, thingType, ontologyId, parameter, useLegacy);
+      }
+      else throw new Error(`iri or ontologyId has to be provided if thingType is not provided.`);
+    }
+  }
+
   /**
    * Is used to fetch a classes instances from the api.
    * Always requires the respective object IRI in contentParams to be set
@@ -374,7 +403,7 @@ export class OlsApi {
     return this.makeCall(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} }, false);
   }
 
-  private async getEntityObjectWithEntityTypeProvided(iri: string, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
+  private async getEntityWithEntityTypeProvided(iri: string, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
     switch (entityType) {
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
         return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
@@ -390,7 +419,7 @@ export class OlsApi {
     }
   }
 
-  private async getEntityObjectWithInferredEntityType(iri: string, ontologyId?: string, parameter?: string) : Promise<any> {
+  private async getEntityWithInferredEntityType(iri: string, ontologyId?: string, parameter?: string) : Promise<any> {
     /*
             Test all types of entities (term, property, individual) manually with separate queries (as /entities does not exist for legacy API)
             -> return the response object which resolves with a contained entity

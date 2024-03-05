@@ -26,7 +26,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   }
   getDescription(): string {
     const descriptions = Reified.fromJson<string>(
-      this.properties["description"] || ""
+      this.properties["config"]["description"] || ""
     );
     return (descriptions[0] && descriptions[0].value) || "";
   }
