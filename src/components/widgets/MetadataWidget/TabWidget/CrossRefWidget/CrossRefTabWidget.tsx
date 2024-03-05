@@ -1,15 +1,13 @@
 import React from "react";
-import {
-    EuiLoadingSpinner,
-    EuiText,
-} from "@elastic/eui";
-import { OlsApi } from '../../../../../api/OlsApi'
-import { useQuery } from 'react-query'
+import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import { OlsApi } from "../../../../../api/OlsApi";
+import { useQuery } from "react-query";
 import { getErrorMessageToDisplay } from "../../../../../utils/helper";
-import {CrossRefWidgetProps} from "../../../../../utils/types";
+import { CrossRefWidgetProps } from "../../../../../utils/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
+import Reified from "../../../../../model/Reified";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
@@ -30,7 +28,10 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
 
   return (
     <>
-      {isSuccess && data && isEntity(data) && <CrossRefTabPresentation crossrefs={data.getCrossReferences()} />}
+      {isSuccess && data && isEntity(data) &&
+        <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
+          return value.value;
+        })} />}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
     </>

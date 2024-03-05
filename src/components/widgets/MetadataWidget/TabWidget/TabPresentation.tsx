@@ -1,11 +1,12 @@
 import React from "react";
 import { EuiFlexItem, EuiTabbedContent } from "@elastic/eui";
 import { HierarchyWidget } from "./HierarchyWidget";
-import { Entity, Ontology, Thing } from "../../../../model/interfaces";
-import { isEntity, isIndividual, isOntology, isProperty } from "../../../../model/ModelTypeCheck";
+import { Entity, Thing } from "../../../../model/interfaces";
+import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
+import Reified from "../../../../model/Reified";
 
 export interface TabPresentationProps {
   data: Thing;
@@ -61,7 +62,9 @@ function TabPresentation(props: TabPresentationProps) {
               },
               {
                 content:
-                  <CrossRefTabPresentation crossrefs={data.getCrossReferences()} />,
+                  <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
+                    return value.value;
+                  })} />,
                 id: "tab3",
                 name: "Cross references"
               }

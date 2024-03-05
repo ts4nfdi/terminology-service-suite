@@ -163,11 +163,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     }
   }
 
-  getCrossReferences(): any[] {
-    return this.properties["obo_xref"];
-  }
-
-  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
+  getTypePlural(): "classes" | "properties" | "individuals" {
     const type = this.getType();
 
     switch (type) {

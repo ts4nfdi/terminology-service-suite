@@ -17,16 +17,15 @@ function AlternativeNameTabPresentation(props: AlternativeNameTabWidgetPresentat
     return <EuiText>No alternative names exist.</EuiText>;
   }
 
-  // TODO: Should AlternativeNameTabWidget show the following info message if defining ontology is not available (placed inside EuiPanel span)?
-  /*{
-      isSuccess && !props.ontologyId && !ontologyJSON["is_defining_ontology"] &&
-      <EuiFlexItem>
-          <EuiText>
-              <i>Defining ontology not available. Showing occurrence inside {ontologyJSON["ontology_name"]} instead.</i>
-          </EuiText>
-          <EuiSpacer size={"s"}></EuiSpacer>
-      </EuiFlexItem>
-  }*/
+  // Using reification/passing the Entity class could provide more information
+  // function renderAltLabel(entity: Entity) {
+  //   if (entity.getSynonyms().length > 0) {
+  //     return entity.getSynonyms().map((rf: Reified<any>, index: number) => (
+  //       <p key={rf.value + index}>{getReifiedJSX(entity, rf, api)}</p>
+  //     ));
+  //   }
+  //   return <EuiText>No alternative names exist.</EuiText>;
+  // }
 
   return (
     <EuiPanel>
