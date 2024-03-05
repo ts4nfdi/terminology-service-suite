@@ -44,7 +44,7 @@ type ApiObj = {
 
 type UseLegacyObj = {
     /**
-     * Specifies the API version used.
+     * Toggle between OLS3 (legacy) and OLS4 API versions.
      */
      useLegacy?: boolean;
 };
