@@ -211,9 +211,21 @@ export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
 export type CrossRefWidgetProps = TabWidgetProps;
 
-export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalIriObj & {
-    entityType: "entities" | "classes" | "properties" | "individuals" | string;
+export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
+    /**
+     * This function is called every time an entity link is clicked
+     * @param ontologyId obtains the ontologyId of the current ontology
+     * @param entityType obtains the entityType of the clicked entity links' entity
+     * @param iri obtains the iri of the clicked entity links' entity
+     */
     onNavigateToEntity?:  (ontologyId: string, entityType: string, iri: string) => void;
+
+    /**
+     * This function is called every time a badge linking to an entity in its defining ontology is clicked
+     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
+     * @param entityType obtains the entityType of the clicked entity links' entity
+     * @param iri obtains the iri of the clicked entity links' entity
+     */
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 };
 

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import "@zbmed/ols-treeview"
 import "../../../../../style/treestyles.css";
 import {HierarchyWidgetProps} from "../../../../../utils/types";
+import {asArray, pluralizeType} from "../../../../../app/util";
 
 const HierarchyWidget = (props: HierarchyWidgetProps) => {
 
@@ -12,11 +13,11 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
       iri: props.iri,
       ontologyId: props.ontologyId,
       apiUrl: props.api.substring(0, props.api.lastIndexOf("api")),
-      entityType: props.entityType,
-      onNavigateToEntity: (ontologyId: string, entityType: string, iri: string) => {
+      entityType: (props.entityType ? pluralizeType(asArray(props.entityType)) : undefined) || "entities",
+      onNavigateToEntity: props.onNavigateToEntity ? props.onNavigateToOntology : (ontologyId: string, entityType: string, iri: string) => {
         console.log(`navigate to entity with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       },
-      onNavigateToOntology: (ontologyId: string, entityType: string, iri: string) => {
+      onNavigateToOntology: props.onNavigateToOntology ? props.onNavigateToOntology : (ontologyId: string, entityType: string, iri: string) => {
         console.log(`navigate to ontology with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       }
     }, treeContainer);

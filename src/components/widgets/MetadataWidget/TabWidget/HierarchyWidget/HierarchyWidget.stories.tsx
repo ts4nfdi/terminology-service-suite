@@ -1,6 +1,7 @@
 import React from "react";
 import { HierarchyWidget } from "./HierarchyWidget";
 import {HierarchyWidgetProps} from "../../../../../utils/types";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 
 export default {
   title: "HierarchyWidget",
@@ -32,11 +33,14 @@ export default {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
     entityType: {
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
       control: { type: "radio" },
       options: [
-        "properties",
-        "individuals",
-        "classes",
+        "property",
+        "individual",
+        "class",
         ""
       ]
     },
@@ -56,5 +60,5 @@ HierarchyWidget1.args = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
   api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
   ontologyId: "efo",
-  entityType: "properties"
+  entityType: "class"
 };
