@@ -55,17 +55,16 @@ export function getTermInOntologySuffix(ontologyId: string, termIri: string, ent
     return "/ontologies/" + ontologyId + "/" + pluralizeType(entityTypeArray) + "?iri=" + termIri;
 }
 
-export function pluralizeType(typeArray: string[]) : string | undefined {
-    let plural = undefined;
+export function pluralizeType(typeArray: string[]) : "classes" | "properties" | "individuals" | undefined {
     for(const type of typeArray) {
-        plural = {
-            "class": "classes",
-            "property": "properties",
-            "individual": "individuals",
-            "term": "classes" // just for convenience reasons
-        }[type];
-
-        if (plural !== undefined) return plural;
+        switch (type){
+            case "class": case "term": // allow both
+                return "classes"
+            case "property":
+                return "properties"
+            case "individual":
+                return "individuals"
+        }
     }
     return undefined;
 }
