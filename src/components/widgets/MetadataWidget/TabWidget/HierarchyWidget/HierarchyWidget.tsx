@@ -21,7 +21,7 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
         console.log(`navigate to ontology with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       }
     }, treeContainer);
-  });
+  }, [props.api, props.iri, props.ontologyId, props.entityType, props.onNavigateToEntity, props.onNavigateToOntology, "hierarchyWidget"]);
 
   return (
     //minWidth required workaround until overlapping checkboxes are fixed in ols4-widgets
