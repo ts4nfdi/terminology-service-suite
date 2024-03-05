@@ -60,8 +60,10 @@ const Template = (args: MetadataWidgetProps) => (
 );
 
 export const MetadataWidget1 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 MetadataWidget1.storyName = "Metadata Widget"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 MetadataWidget1.args = {
   api: "https://semanticlookup.zbmed.de/api/",
@@ -72,8 +74,10 @@ MetadataWidget1.args = {
 };
 
 export const OLS3 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS3.storyName = "OLS3"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS3.args = {
   api: "https://semanticlookup.zbmed.de/api/",
@@ -84,8 +88,10 @@ OLS3.args = {
 };
 
 export const OLS4V1 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS4V1.storyName = "OLS4 V1"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS4V1.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
@@ -96,15 +102,18 @@ OLS4V1.args = {
 };
 
 export const OLS4V2 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS4V2.storyName = "OLS4 V2"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 OLS4V2.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
   ontologyId: "ncit",
   iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
   entityType: "term",
-  useLegacy: false
+  useLegacy: false,
+  parameter: ""
 };
 
 export const SelectingDefiningOntology = Template.bind({});
