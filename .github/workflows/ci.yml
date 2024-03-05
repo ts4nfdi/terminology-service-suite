@@ -38,9 +38,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
+      - name: Debug semantic-release output
+        run: npx semantic-release --dry-run
       - name: Capture version number
         id: capture_version
-        run: echo "VERSION=$(npx semantic-release --dry-run | grep 'next release version is' | awk '{print $5}')" >> $GITHUB_ENV
+        run: echo "SR_VERSION=$(npx semantic-release --dry-run | grep 'next release version is' | awk '{print $5}')" >> $GITHUB_ENV
+      - name: Debug VERSION variable
+        run: echo "The value of VERSION is $VERSION"
   documentation:
     runs-on: ubuntu-latest
     permissions:
@@ -76,7 +80,7 @@ jobs:
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
       - name: Deploy to GitHub Pages
         run: |
-          npx gh-pages-multi deploy -s public --no-history -t $VERSION
+          npx gh-pages-multi deploy -s public --no-history -t $SR_VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy as Latest to GitHub Pages
