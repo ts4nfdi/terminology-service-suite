@@ -82,6 +82,8 @@ jobs:
           npx gh-pages-multi deploy -s public --no-history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print SR_VERSION
+        run:  echo "SR_VERSION is $SR_VERSION"
       - name: Deploy to GitHub Pages
         run: |
           npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
