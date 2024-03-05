@@ -8,10 +8,11 @@ export interface DescriptionPresentationProps {
 
 
 function DescriptionPresentation(props: DescriptionPresentationProps) {
+  const {descText, description, ...rest} = props;
 
   return (
     <>
-      <EuiText>{props.descText || props.description}</EuiText>
+      <EuiText {...rest}>{descText || description}</EuiText>
     </>
   );
 }
