@@ -47,6 +47,10 @@ jobs:
       - name: Extract version number
         run: |
           npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
       - name: Use SR_VERSION
         run: echo "SR_VERSION is $SR_VERSION"
         env:
