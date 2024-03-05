@@ -162,7 +162,7 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
       // of them we don't want to display
       //
       if (
-        //predicate === "http://www.geneontology.org/formats/oboInOwl#inSubset"
+        predicate === "http://www.geneontology.org/formats/oboInOwl#inSubset" ||
         predicate === "http://www.geneontology.org/formats/oboInOwl#id"
       ) {
         continue;
