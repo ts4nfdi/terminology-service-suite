@@ -565,7 +565,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
                 return getEntityLinkJSX(entity, linkedEntities, value.value, api, showBadges);
             }
             else {
-                if (typeof value.value !== "string" || value.value.startsWith("http")) {
+                if (typeof value.value !== "string") {
                     if(entity.getType() == "ontology") {
                         return <>{JSON.stringify(value.value)}</>;
                     }
