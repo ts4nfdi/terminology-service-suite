@@ -78,19 +78,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
               />
             </div>
           </EuiFlexItem>
-          {!props.ontologyId || !data.getIsDefiningOntology() &&
-            <EuiFlexItem>
-              <EuiText size={"s"}>
-                <i>Defining ontology information not available </i>
-                <EuiIconTip
-                  type={"iInCircle"}
-                  color={"subdued"}
-                  content={`Showing occurence inside ${data.getOntologyId()}.`}
-                />
-              </EuiText>
-            </EuiFlexItem>
-          }
-
         </EuiFlexGroup>
       </>
     );
