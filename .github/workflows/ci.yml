@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI
 
 on:
   push:
@@ -38,6 +38,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
+      - name: Capture version number
+        id: capture_version
+        run: echo "::set-output name=version::$(npx semantic-release --dry-run | grep 'next release version is' | awk '{print $5}')"
   documentation:
     runs-on: ubuntu-latest
     permissions:
@@ -73,7 +76,11 @@ jobs:
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
       - name: Deploy to GitHub Pages
         run: |
-          npx gh-pages-multi deploy -s public --no-history -t v1.0.0
+          npx gh-pages-multi deploy -s public --no-history -t ${{ steps.capture_version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Deploy as Latest to GitHub Pages
+        run: |
+          npx gh-pages-multi deploy -s public --no-history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
