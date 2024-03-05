@@ -54,8 +54,10 @@ export default {
 const Template = (args: TabWidgetProps) => <TabWidget {...args} />;
 
 export const Default = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 Default.storyName = "Default"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 Default.args = {
   api: "https://semanticlookup.zbmed.de/api/",
@@ -64,8 +66,10 @@ Default.args = {
   useLegacy: true
 };
 export const TabWidgetOLS3 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS3.storyName = "OLS3"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS3.args = {
   api: "https://semanticlookup.zbmed.de/api/",
@@ -74,8 +78,10 @@ TabWidgetOLS3.args = {
   useLegacy: true
 };
 export const TabWidgetOLS4V1 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS4V1.storyName = "OLS4 V1"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS4V1.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
@@ -84,14 +90,17 @@ TabWidgetOLS4V1.args = {
   useLegacy: true
 };
 export const TabWidgetOLS4V2 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS4V2.storyName = "OLS4 V2"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 TabWidgetOLS4V2.args = {
   api: "https://www.ebi.ac.uk/ols4/api/",
   ontologyId: "efo",
   iri: "http://www.ebi.ac.uk/efo/EFO_0009644",
-  useLegacy: false
+  useLegacy: false,
+  parameter: ""
 };
 
 export const SelectingDefiningOntology = Template.bind({});
