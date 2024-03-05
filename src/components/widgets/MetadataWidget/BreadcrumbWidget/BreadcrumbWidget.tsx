@@ -1,10 +1,9 @@
 import React from "react";
-import {EuiBadge} from "@elastic/eui";
+import {EuiBadge, EuiLoadingSpinner} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import {useQuery} from "react-query";
 import { getErrorMessageToDisplay } from "../../../../utils/helper";
 import {BreadcrumbWidgetProps} from "../../../../utils/types";
-import { Thing } from "../../../../model/interfaces";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 
@@ -18,7 +17,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     isSuccess,
     isError,
     error
-  } = useQuery<Thing>(
+  } = useQuery(
     ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
@@ -27,6 +26,13 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
 
   return (
     <>
+      {isLoading &&
+          <span>
+                <EuiBadge color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+            {" > "}
+            <EuiBadge color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+          </span>
+      }
       {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
           isDefiningOntology={data.getIsDefiningOntology()}
@@ -35,15 +41,13 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
           ontologyId={ontologyId}
         />
       }
-      {isError && data && isEntity(data) &&
-        <span>
-                <EuiBadge
-                  color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId()?.toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
-          {" > "}
-          <EuiBadge
-            color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
+      {isError &&
+          <span>
+                <EuiBadge color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
+            {" > "}
+            <EuiBadge color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
             </span>
-        }
+      }
       </>
   );
 }
