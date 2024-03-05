@@ -23,7 +23,7 @@ function TitleWidget(props: TitleWidgetProps) {
   } = useQuery<Thing>(
     ["metadata", api, parameter, thingType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getThingObject(iri, thingType, ontologyId, parameter);
+      return olsApi.getThingObject(iri, thingType, ontologyId, parameter, useLegacy);
     }
   );
 
