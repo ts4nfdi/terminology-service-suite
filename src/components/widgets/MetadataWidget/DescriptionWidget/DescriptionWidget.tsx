@@ -30,7 +30,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     <>
       {isLoading && <EuiLoadingSpinner size="s" />}
       {isSuccess && data &&
-        <DescriptionPresentation description={data.getDescription()} descText={descText} />
+        <DescriptionPresentation description={descText || data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
       }
       {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
     </>
