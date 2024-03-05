@@ -77,13 +77,14 @@ jobs:
       - name: Configure Git to Use PAT for Authentication
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
-      - name: Deploy to GitHub Pages
-        run: |
-          npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy as Latest to GitHub Pages
         run: |
           npx gh-pages-multi deploy -s public --no-history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub Pages
+        run: |
+          npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
