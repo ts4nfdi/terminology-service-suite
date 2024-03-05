@@ -96,4 +96,3 @@ jobs:
           npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
