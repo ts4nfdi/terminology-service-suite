@@ -44,9 +44,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
-      - name: Extract version number
+      - name: Run semantic-release dry-run
         run: |
-          npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/'
+          npx semantic-release --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
