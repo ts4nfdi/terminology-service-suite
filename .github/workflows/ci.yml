@@ -39,15 +39,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Capture version number
-        run: echo "SR_VERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+        run: echo "SRVERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Set output
-        run: echo "sr_version=$SR_VERSION" >> $GITHUB_OUTPUT
-      - name: Debug SR_VERSION
-        run: echo "SR_VERSION is $SR_VERSION"
+        run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
+      - name: Debug SRVERSION
+        run: echo "SRVERSION is $SRVERSION"
   documentation:
     needs: build
     runs-on: ubuntu-latest
@@ -87,14 +87,14 @@ jobs:
           npx gh-pages-multi deploy -s public --no-history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Use SR_VERSION
+      - name: Use SRVERSION
         env:
-          SR_VERSION: ${{ needs.build.outputs.sr_version }}
-        run: echo "SR_VERSION is $SR_VERSION"
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
       - name: Deploy to GitHub Pages
         env:
-          SR_VERSION: ${{ needs.build.outputs.sr_version }}
+          SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
+          npx gh-pages-multi deploy -s public --no-history -t "$SRVERSION"
           
