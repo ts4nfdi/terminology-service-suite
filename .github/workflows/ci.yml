@@ -39,22 +39,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Capture version number
-        run: echo "SR_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | sed -E 's/.* ([[:digit:].]+)$/\1/')" >> $GITHUB_ENV
+        run: echo "SR_VERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
-      - name: Run semantic-release dry-run
-        run: |
-          npx semantic-release --dry-run
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@nfdi4health'
-      - name: Use SR_VERSION
-        run: echo "SR_VERSION is $SR_VERSION"
-        env:
-          SR_VERSION: ${{ env.SR_VERSION }}
   documentation:
     runs-on: ubuntu-latest
     permissions:
