@@ -41,7 +41,7 @@ export default {
         "property",
         "individual",
         "class",
-        ""
+        "not specified"
       ]
     },
   },

@@ -45,7 +45,7 @@ export default {
         "property",
         "individual",
         "INVALID STRING",
-        "",
+        "not specified",
         undefined
       ],
     },
