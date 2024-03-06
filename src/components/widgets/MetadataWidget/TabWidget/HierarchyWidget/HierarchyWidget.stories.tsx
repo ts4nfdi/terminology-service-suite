@@ -9,7 +9,10 @@ export default {
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
+      description: `The API instance for the API call.
+- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
+- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
+- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -17,6 +20,7 @@ export default {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
+        "http://ols4.qa.km.k8s.zbmed.de/ols4/api/"
       ],
     },
     ontologyId: {
@@ -41,8 +45,8 @@ export const HierarchyWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 HierarchyWidget1.args = {
-  iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyId: "mesh",
+  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
+  ontologyId: "efo",
   parameter: "collection=nfdi4health",
 };

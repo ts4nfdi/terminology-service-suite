@@ -8,42 +8,46 @@ export default {
   component: AutocompleteWidget,
   argTypes: {
     api: {
+      description: `The API instance for the API call.
+- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
+- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
+- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
-        type: "radio",
+        type: "radio"
       },
       options: [
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-      ],
+        "https://semanticlookup.zbmed.de/api/"
+      ]
     },
     selectionChangedEvent: {
-      action: "selectionChangedEvent",
+      action: "selectionChangedEvent"
     },
     placeholder: {
-      defaultValue: "Search for Term",
+      defaultValue: "Search for Term"
     },
     preselected: {},
     parameter: {},
     hasShortSelectedLabel: {
       description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
-      type: { required: false },
+      type: { required: false }
     },
     allowCustomTerms: {
       description: "If true, custom terms that are not found in any ontology can be added.",
-      type: { required: false},
+      type: { required: false }
     },
     singleSelection: {
       description: "If true, only one concept can be selected at once.",
-      type: { required: false},
+      type: { required: false }
     }
   },
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
-    singleSelection: true,
+    singleSelection: true
   }
 };
 const Template: ComponentStory<typeof AutocompleteWidget> = (args) => (
@@ -71,13 +75,13 @@ withInvalidValue.args = {
 export const withGermanInput = Template.bind({});
 withGermanInput.args = {
   api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "collection=nfdi4health&lang=de&type=class",
+  parameter: "collection=nfdi4health&lang=de&type=class"
 };
 
 export const withDescriptionAndShortForm = Template.bind({});
 withDescriptionAndShortForm.args = {
   api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form"
 };
 
 export const displaySelectedEntityWithLongForm = Template.bind({});

@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+    outputs:
+      srversion: ${{ steps.setoutput.outputs.srversion }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false # Make sure the release step uses its own credentials.
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+      - name: Run npm clean install
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Run npm build
+        run: npm run build --if-present
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Run semantic release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
+      - name: Capture version number
+        run: echo "SRVERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
+      - name: Set output
+        id: setoutput
+        run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
+      - name: Debug SRVERSION
+        run: echo "SRVERSION is $SRVERSION"
+  documentation:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js 16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+          token: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build-storybook -- -o public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'public'
+      - name: Set Git Author Identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      - name: Configure Git to Use PAT for Authentication
+        run: |
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+      - name: Deploy as Latest to GitHub Pages
+        run: |
+          npx gh-pages-multi deploy -s public --no-history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Use SRVERSION
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
+      - name: Deploy to GitHub Pages
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages-multi deploy -s public --no-history -t "$SRVERSION"
+          
