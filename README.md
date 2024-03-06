@@ -1,5 +1,7 @@
 # SemLookP Widgets
-[Demo and Documentation](https://nfdi4health.github.io/semlookp-widgets/)
+[Latest demo and documentation](https://nfdi4health.github.io/semlookp-widgets/latest/)
+
+[All versions](https://nfdi4health.github.io/semlookp-widgets/)
 
 ## About The Project
 
