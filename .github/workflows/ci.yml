@@ -45,8 +45,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Set output
-        id: set_version
-        run: echo "::set-output name=version::$SR_VERSION"
+        run: echo "sr_version=$SR_VERSION" >> $GITHUB_OUTPUT
   documentation:
     needs: build
     runs-on: ubuntu-latest
