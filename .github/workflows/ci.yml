@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [ 16.x ]
+    outputs:
+      srversion: ${{ steps.setoutput.outputs.srversion }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -45,6 +47,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Set output
+        id: setoutput
         run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
