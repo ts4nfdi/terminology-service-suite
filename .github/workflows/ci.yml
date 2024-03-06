@@ -86,9 +86,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Use SR_VERSION
-        run: echo "SR_VERSION is ${{ needs.build.outputs.version }}"
+        run: echo "SR_VERSION is ${{ needs.build.outputs.sr_version }}"
       - name: Deploy to GitHub Pages
         run: |
-          npx gh-pages-multi deploy -s public --no-history -t ${{ needs.build.outputs.version }}
+          npx gh-pages-multi deploy -s public --no-history -t ${{ needs.build.outputs.sr_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
