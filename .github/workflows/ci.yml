@@ -46,6 +46,8 @@ jobs:
           SCOPE: '@nfdi4health'
       - name: Set output
         run: echo "sr_version=$SR_VERSION" >> $GITHUB_OUTPUT
+      - name: Debug SR_VERSION
+        run: echo "SR_VERSION is $SR_VERSION"
   documentation:
     needs: build
     runs-on: ubuntu-latest
@@ -86,9 +88,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Use SR_VERSION
-        run: echo "SR_VERSION is ${{ needs.build.outputs.sr_version }}"
-      - name: Deploy to GitHub Pages
-        run: |
-          npx gh-pages-multi deploy -s public --no-history -t ${{ needs.build.outputs.sr_version }}
         env:
+          SR_VERSION: ${{ needs.build.outputs.sr_version }}
+        run: echo "SR_VERSION is $SR_VERSION"
+      - name: Deploy to GitHub Pages
+        env:
+          SR_VERSION: ${{ needs.build.outputs.sr_version }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages-multi deploy -s public --no-history -t "$SR_VERSION"
+          
