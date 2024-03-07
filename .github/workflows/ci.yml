@@ -99,5 +99,5 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s public --no-history -t "$SRVERSION"
+          npx gh-pages-multi deploy -s public --no-history -t "1.19.13"
           
