@@ -126,9 +126,9 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
         type?: string;
     }[]) => void;
     /**
-     * Pass a pre select value.
+     * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
      */
-    selectOption?: { label?: string; iri?: string };
+    preselected?: { label?: string; iri?: string }[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */

@@ -23,7 +23,7 @@ export default {
     placeholder: {
       defaultValue: "Search for Term",
     },
-    selectOption: {},
+    preselected: {},
     parameter: {},
     hasShortSelectedLabel: {
       type: { required: false },
@@ -37,7 +37,7 @@ export default {
   },
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
     singleSelection: true,
@@ -50,26 +50,26 @@ const Template = (args: AutocompleteWidgetProps) => (
 
 export const WithDefaults = Template.bind({});
 
-export const WithValue = Template.bind({});
+export const withValue = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-WithValue.args = {
-  selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
+withValue.args = {
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }],
 };
 export const WithCustomValue = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 WithCustomValue.args = {
   allowCustomTerms: true,
-  selectOption: { label: "freetext" },
+  preselected: [{ label: "freetext" }],
 };
-export const WithInvalidValue = Template.bind({});
+export const withInvalidValue = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-WithInvalidValue.args = {
-  selectOption: {
+withInvalidValue.args = {
+  preselected: [{
     iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
-  },
+  }],
 };
 
 export const WithGermanInput = Template.bind({});
@@ -100,6 +100,21 @@ export const AllowAddingCustomTerms = Template.bind({});
 // @ts-ignore
 AllowAddingCustomTerms.args = {
   allowCustomTerms: true
+};
+
+export const allowMultipleTerms = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+allowMultipleTerms.args = {
+  singleSelection: false,
+};
+
+export const withMultipleValues = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+withMultipleValues.args = {
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }, { iri: "http://purl.bioontology.org/ontology/MESH/D003920" }],
+  singleSelection: false,
 };
 
 

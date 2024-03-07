@@ -19,6 +19,7 @@ import { OlsApi } from "../../../api/OlsApi";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
 import {SearchResultsListWidgetProps} from "../../../utils/types";
+import { AutocompleteWidget } from "../AutocompleteWidget";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -185,13 +186,27 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
     }
 
+    function transform_to_searchValue(selectedOption: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string
+    }[]) {
+        setSearchValue(selectedOption[0] ? selectedOption[0].label : "")
+    }
+
+
     return (
         <>
-            <SearchBarWidget
+            <AutocompleteWidget
                 api={api}
-                query={searchValue}
-                onSearchValueChange={setSearchValue}
-                parameter={parameter}
+                selectionChangedEvent={(selectedOption) => {
+                    transform_to_searchValue(selectedOption);
+                }}
+                allowCustomTerms={true}
+                singleSelection={true}
+                hasShortSelectedLabel={true}
+                placeholder={"Search"}
             />
 
             <EuiSpacer size="s"/>

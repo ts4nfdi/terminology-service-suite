@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI
 
 on:
   push:
@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [ 16.x ]
+    outputs:
+      srversion: ${{ steps.setoutput.outputs.srversion }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,7 +40,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
+      - name: Capture version number
+        run: echo "SRVERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
+      - name: Set output
+        id: setoutput
+        run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
+      - name: Debug SRVERSION
+        run: echo "SRVERSION is $SRVERSION"
   documentation:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       pages: write      # to deploy to Pages
@@ -64,6 +78,26 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: 'public'
+      - name: Set Git Author Identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      - name: Configure Git to Use PAT for Authentication
+        run: |
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+      - name: Deploy as Latest to GitHub Pages
+        run: |
+          npx gh-pages-multi deploy -s public --no-history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Use SRVERSION
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages-multi deploy -s public --no-history -t "$SRVERSION"
+          
