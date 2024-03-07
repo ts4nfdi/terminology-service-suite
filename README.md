@@ -3,6 +3,8 @@
 
 [All versions](https://nfdi4health.github.io/semlookp-widgets/)
 
+If you are missing a version of the documentation, please open an issue.
+
 ## About The Project
 
 This project includes a widget component library derived from the semantic lookup service 
