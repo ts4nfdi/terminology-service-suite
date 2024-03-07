@@ -71,7 +71,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               <TabPresentation
                 data={data}
                 iri={iri}
-                entityType={data.getTypePlural() || "entities"}
+                entityType={props.entityType}
                 api={api}
                 ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
                 useLegacy={useLegacy}

@@ -2,7 +2,7 @@ import React from "react";
 import { EuiFlexItem, EuiTabbedContent } from "@elastic/eui";
 import { HierarchyWidget } from "./HierarchyWidget";
 import { Entity, Thing } from "../../../../model/interfaces";
-import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
+import { EntityTypeName, isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
@@ -14,7 +14,7 @@ export interface TabPresentationProps {
   api: string;
   ontologyId?: string;
   useLegacy?: boolean;
-  entityType: "entities" | "classes" | "properties" | "individuals" | string;
+  entityType?: EntityTypeName;
 }
 
 function TabPresentation(props: TabPresentationProps) {
@@ -34,26 +34,19 @@ function TabPresentation(props: TabPresentationProps) {
               {
                 content: (
                   <>
-                    {props.useLegacy == undefined
+                    {props.useLegacy == undefined || props.useLegacy
                       ? <HierarchyWidgetDeprecated
                         ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
                         api={props.api}
                         iri={props.iri}
 
                       />
-                      : props.useLegacy
-                        ? <HierarchyWidgetDeprecated
-                          ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
-                          api={props.api}
-                          iri={props.iri}
-                        />
-                        :
-                        <HierarchyWidget
-                          api={props.api}
-                          iri={props.iri}
-                          ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
-                          entityType={props.entityType}
-                        />
+                      : <HierarchyWidget
+                        api={props.api}
+                        iri={props.iri}
+                        ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
+                        entityType={props.entityType}
+                      />
                     }
                   </>
                 ),
