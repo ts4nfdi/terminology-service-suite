@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  OlsResource,
-  ResourcesWidget,
-  ResourcesWidgetProps,
-} from "./ResourcesWidget";
-import { ComponentStory } from "@storybook/react";
+import {ResourcesWidget} from "./ResourcesWidget";
+import {ResourcesWidgetProps, OlsResource} from "../../../utils/types";
 import { EuiButton, EuiButtonIcon } from "@elastic/eui";
 
 export default {
@@ -15,10 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -29,31 +21,27 @@ export default {
       ],
     },
     initialEntriesPerPage: {
-      description: "Initial number of entries displayed per page.",
       control: "number",
     },
     pageSizeOptions: {
-      description: "Possible values for number of entries displayed per page.",
       control: "array",
     },
     initialSortField: {
-      description: "Column the table is sorted by initially.",
       control: {
         type: "radio",
       },
       options: ["config.title", "config.preferredPrefix", "config.loaded"],
     },
     initialSortDir: {
-      description: "Initial sorting direction.",
+      table: {
+        type: { summary: `asc | desc` },
+      },
       control: {
         type: "radio",
       },
       options: ["asc", "desc"],
     },
     targetLink: {
-      description: "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want " +
-          "a hyperlink to the terminology overview of your terminology service. Leave it blank if your application " +
-          "isn't  a terminology service.",
       control: "text",
     },
     actions: {},
@@ -66,7 +54,7 @@ export default {
   }
 };
 
-const Template: ComponentStory<typeof ResourcesWidget> = (args) => (
+const Template = (args : ResourcesWidgetProps) => (
   <ResourcesWidget {...args} />
 );
 
@@ -83,8 +71,12 @@ ResourcesWidget1.args = {
   targetLink: "https://semanticlookup.zbmed.de/dev/",
   parameter: "collection=nfdi4health"
 };
-export const withActions = Template.bind({});
-withActions.args = {
+export const WithActions = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithActions.args = {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   ...ResourcesWidget1.args,
   actions: [
     // TODO Allow usage of react-router links
@@ -121,9 +113,13 @@ withActions.args = {
   ],
 };
 
-export const withActionsAndSafety = Template.bind({});
-withActionsAndSafety.args = {
-  ...withActions.args,
+export const WithActionsAndSafety = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithActionsAndSafety.args = {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  ...WithActions.args,
   targetLink: "https://semanticlookup.zbmed.de/safety/",
   parameter: "collection=safety",
 };

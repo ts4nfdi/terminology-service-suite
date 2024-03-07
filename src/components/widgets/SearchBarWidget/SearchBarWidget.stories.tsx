@@ -1,15 +1,12 @@
 import React from "react";
-import { SearchBarWidget, SearchBarWidgetProps } from "./SearchBarWidget";
+import { SearchBarWidget } from "./SearchBarWidget";
+import {SearchBarWidgetProps} from "../../../utils/types";
 
 export default {
   title: "SearchBarWidget",
   component: SearchBarWidget,
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -19,11 +16,8 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    query: {
-      description: "The search term to receive suggestions for.",
-    },
+    query: {},
     onSearchValueChange: {
-      description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
     },
     parameter: {}

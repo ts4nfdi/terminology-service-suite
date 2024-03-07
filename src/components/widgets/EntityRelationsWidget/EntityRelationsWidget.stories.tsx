@@ -1,5 +1,7 @@
 import React from "react";
-import { EntityRelationsWidget, EntityRelationsWidgetProps } from "./EntityRelationsWidget";
+import { EntityRelationsWidget } from "./EntityRelationsWidget";
+import {EntityRelationsWidgetProps} from "../../../utils/types";
+import {entityTypeNames} from "../../../model/ModelTypeCheck";
 
 export default {
     title: "EntityRelationsWidget",
@@ -9,10 +11,6 @@ export default {
     },
     argTypes: {
         api: {
-            description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
             control: {
                 type: "radio",
             },
@@ -24,11 +22,12 @@ export default {
             ],
         },
         hasTitle: {
-            description: "Show title, default is true",
             type: { required: false },
         },
         entityType: {
-            description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
+            table: {
+                type: { summary: `${entityTypeNames.join(" | ")}` },
+            },
             control: {
                 type: "radio",
             },
@@ -38,21 +37,18 @@ export default {
                 "class",
                 "property",
                 "individual",
+                undefined,
                 "INVALID STRING"
             ],
         },
-        iri: {
-            description: "Entity IRI whose information you want to fetch.",
-        },
+        iri: {},
         parameter: {
             type: { required: false }
         },
         ontologyId: {
             type: { required: false }
         },
-        showBadges: {
-            description: "Enable / disable showing badges for defining ontologies.",
-        }
+        showBadges: {}
     },
     args: {
         hasTitle: true,

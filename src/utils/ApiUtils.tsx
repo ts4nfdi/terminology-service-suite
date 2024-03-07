@@ -1,3 +1,4 @@
+// TODO: not really useful anymore, name does not express conversion to plural, class and term have to be used for different api versions respectively
 export function switchEntityType(entityType: string) {
     switch (entityType) {
         case 'class':
@@ -10,3 +11,4 @@ export function switchEntityType(entityType: string) {
             return 'terms'
     }
 }
+

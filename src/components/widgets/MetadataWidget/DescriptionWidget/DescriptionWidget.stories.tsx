@@ -1,6 +1,8 @@
 import React from "react";
-import { DescriptionWidget, DescriptionWidgetProps } from "./DescriptionWidget";
+import { DescriptionWidget } from "./DescriptionWidget";
+import {DescriptionWidgetProps} from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
+import {thingTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
   title: "DescriptionWidget",
@@ -10,10 +12,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -24,7 +22,9 @@ export default {
       ],
     },
     color: {
-      description: "Color of the text, names, hex or rgb",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
@@ -40,15 +40,15 @@ export default {
         "rgb(255,0,255)",
       ],
     },
-    descText: {
-      description:
-        "Set your own text manually that overwrites the text fetched from the API",
-    },
+    descText: {},
     ontologyId: {
       description: "Ontology ID from where the object description should be taken.",
     },
-    entityType: {
+    thingType: {
       description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+      table: {
+        type: { summary: `${thingTypeNames.join(" | ")}` },
+      },
       control: {
         type: "radio",
       },
@@ -58,6 +58,7 @@ export default {
         "class",
         "property",
         "individual",
+        undefined,
         "INVALID STRING"
       ],
     },
@@ -67,9 +68,11 @@ export default {
     parameter: {
       type: { required: false }
     },
+    useLegacy: { required: false }
   },
   args: {
     parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 
@@ -87,7 +90,7 @@ DescriptionWidget1.args = {
   iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
   api: "https://semanticlookup.zbmed.de/api/",
   ontologyId: "ncit",
-  entityType: "term",
+  thingType: "term",
   parameter: "collection=nfdi4health"
 };
 
@@ -95,9 +98,9 @@ export const SelectingDefiningOntology = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };
 
@@ -105,8 +108,8 @@ export const DefiningOntologyUnavailable = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://identifiers.org/uniprot/Q9VAM9",
-  entityType: "term",
+  thingType: "term",
   parameter: ""
 };

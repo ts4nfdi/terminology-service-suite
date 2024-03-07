@@ -1,8 +1,7 @@
 import React from "react";
-import {
-  BreadcrumbWidget,
-  BreadcrumbWidgetProps,
-} from "./BreadcrumbWidget";
+import {BreadcrumbWidget} from "./BreadcrumbWidget";
+import {BreadcrumbWidgetProps} from "../../../../utils/types";
+import {entityTypeNames} from "../../../../model/ModelTypeCheck";
 
 export default {
   title: "BreadcrumbWidget",
@@ -12,10 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -25,15 +20,12 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    iri: {
-      description:
-        "Iri of the term you want to fetch the ontology hierarchy for.",
-    },
-    ontologyId: {
-      description: "Ontology ID from where the object description should be taken.",
-    },
+    iri: {},
+    ontologyId: {},
   entityType: {
-    description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+    table: {
+      type: { summary: `${entityTypeNames.join(" | ")}` },
+    },
     control: {
       type: "radio",
     },
@@ -42,12 +34,14 @@ export default {
       "class",
       "property",
       "individual",
+      undefined,
       "INVALID STRING"
     ],
   },
     colorFirst: {
-      description:
-        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
@@ -64,8 +58,9 @@ export default {
       ],
     },
     colorSecond: {
-      description:
-        "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or hex",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
@@ -84,9 +79,13 @@ export default {
     parameter: {
       type: { required: false }
     },
+    useLegacy: {
+      type: { required: false }
+    }
   },
   args: {
     parameter: "collection=nfdi4health",
+    useLegacy: true,
   }
 };
 
@@ -110,7 +109,7 @@ export const SelectingDefiningOntology = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+SelectingDefiningOntology.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://purl.obolibrary.org/obo/IAO_0000631",
   entityType: "term",
   parameter: ""
@@ -120,7 +119,7 @@ export const DefiningOntologyUnavailable = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols/api/",
+DefiningOntologyUnavailable.args = {  api: "https://www.ebi.ac.uk/ols4/api/",
   iri: "http://identifiers.org/uniprot/Q9VAM9",
   entityType: "term",
   parameter: ""

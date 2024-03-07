@@ -1,18 +1,21 @@
 import React from "react";
-import { HierarchyWidgetProps, HierarchyWidget } from "./HierarchyWidget";
+import { HierarchyWidget } from "./HierarchyWidget";
+import {HierarchyWidgetProps} from "../../../../../utils/types";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 
 export default {
   title: "HierarchyWidget",
   component: HierarchyWidget,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: "The HierarchyWidget is a component designed to visualize and interact with hierarchical data structures of ontology hierarchies, specifically tailored for the OLS4 API to retrieve and display hierarchical relationships between terms within a given ontology."
+      }
+    }
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -29,12 +32,21 @@ export default {
     iri: {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
-    parameter: {
-      type: { required: false }
+    entityType: {
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
+      control: { type: "radio" },
+      options: [
+        "property",
+        "individual",
+        "class",
+        "not specified"
+      ]
     },
   },
   args: {
-    parameter: "collection=nfdi4health",
+
   }
 };
 
@@ -48,5 +60,5 @@ HierarchyWidget1.args = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
   api: "http://ols4.qa.km.k8s.zbmed.de/ols4/api/",
   ontologyId: "efo",
-  parameter: "collection=nfdi4health",
+  entityType: "class"
 };

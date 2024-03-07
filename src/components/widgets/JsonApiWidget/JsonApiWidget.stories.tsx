@@ -1,5 +1,6 @@
 import React from "react";
-import { JsonApiWidget, JsonApiWidgetProps } from "./JsonApiWidget";
+import { JsonApiWidget } from "./JsonApiWidget";
+import {JsonApiWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -9,15 +10,12 @@ export default {
     layout: "centered",
   },
   argTypes: {
-    apiQuery: {
-      description: "The API query whose response JSON should be displayed on click.",
-    },
-    buttonText: {
-      description: "The text displayed on the button.",
-    },
+    apiQuery: {},
+    buttonText: {},
     buttonSize: {
-      description:
-        "Size of the button",
+      table: {
+        type: { summary: `s | m` },
+      },
       control: {
         type: "radio",
       },

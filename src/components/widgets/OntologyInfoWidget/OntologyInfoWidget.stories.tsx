@@ -1,5 +1,6 @@
 import React from "react";
-import { OntologyInfoWidget, OntologyInfoWidgetProps } from "./OntologyInfoWidget";
+import { OntologyInfoWidget } from "./OntologyInfoWidget";
+import {OntologyInfoWidgetProps} from "../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -10,10 +11,6 @@ export default {
   },
   argTypes: {
     api: {
-      description: `The API instance for the API call.
-- **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-- **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-- **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)`,
       control: {
         type: "radio",
       },
@@ -23,15 +20,40 @@ export default {
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
+    hasTitle: {
+      type: { required: false },
+      table: {
+        defaultValue: { summary: true }
+      }
+    },
     ontologyId: {
-      description: "ID of the ontology whose info should be displayed.",
+      table: {
+        defaultValue: { summary: undefined }
+      }
     },
     parameter: {
-      type: { required: false }
+      type: { required: false },
+      table: {
+        defaultValue: { summary: undefined }
+      }
     },
+    showBadges: {
+      type: { required: false },
+      table: {
+        defaultValue: { summary: true }
+      }
+    },
+    useLegacy: {
+      type: { required: false },
+      table: {
+        defaultValue: { summary: true }
+      }
+    }
   },
   args: {
-    parameter: "collection=nfdi4health",
+    hasTitle: true,
+    showBadges: true,
+    useLegacy: true,
   }
 };
 
@@ -45,6 +67,24 @@ export const OntologyInfoWidget1 = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-OntologyInfoWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
+OntologyInfoWidget1.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
   ontologyId: "atc",
+};
+
+export const OntologyInfoWidget2 = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OntologyInfoWidget2.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  ontologyId: "ncit"
+};
+
+export const OntologyInfoWidgetOLS4API = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OntologyInfoWidgetOLS4API.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  useLegacy: false,
+  ontologyId: "mp" // "uberon" is also good for demonstration
 };

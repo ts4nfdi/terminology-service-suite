@@ -1,11 +1,6 @@
 import React from "react";
 import {EuiButton} from "@elastic/eui";
-
-export interface JsonApiWidgetProps {
-  apiQuery: string;
-  buttonText: string;
-  buttonSize?: "s" | "m";
-}
+import {JsonApiWidgetProps} from "../../../utils/types";
 
 function JsonApiWidget(props: JsonApiWidgetProps) {
   const { apiQuery, buttonText, buttonSize } = props;
