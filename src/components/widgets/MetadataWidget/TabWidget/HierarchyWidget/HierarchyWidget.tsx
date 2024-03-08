@@ -14,7 +14,7 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
       ontologyId: props.ontologyId,
       apiUrl: props.api.substring(0, props.api.lastIndexOf("api")),
       entityType: (props.entityType ? pluralizeType(asArray(props.entityType)) : undefined) || "entities",
-      onNavigateToEntity: props.onNavigateToEntity ? props.onNavigateToOntology : (ontologyId: string, entityType: string, iri: string) => {
+      onNavigateToEntity: props.onNavigateToEntity ? props.onNavigateToEntity : (ontologyId: string, entityType: string, iri: string) => {
         console.log(`navigate to entity with ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`,);
       },
       onNavigateToOntology: props.onNavigateToOntology ? props.onNavigateToOntology : (ontologyId: string, entityType: string, iri: string) => {
