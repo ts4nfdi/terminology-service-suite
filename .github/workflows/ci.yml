@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -52,6 +48,7 @@ jobs:
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
   documentation:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -95,6 +92,7 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
         run: echo "SRVERSION is $SRVERSION"
       - name: Deploy to GitHub Pages
+        if: env.SRVERSION != ''
         env:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
