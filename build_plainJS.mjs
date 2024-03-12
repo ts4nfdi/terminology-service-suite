@@ -14,6 +14,7 @@ build({
 	plugins: [
 		DynamicImport({ transformExtensions: [''], filter: /@elastic/ })
 	],
+	loader: { '.png': 'dataurl' },
 	logLevel: 'info',
 	sourcemap: 'inline'
 });
@@ -28,6 +29,7 @@ build({
 	plugins: [
 		DynamicImport({ transformExtensions: [''], filter: /@elastic/ })
 	],
+	loader: { '.png': 'dataurl' },
 	logLevel: 'info',
 	minify: true,
 	sourcemap: false
