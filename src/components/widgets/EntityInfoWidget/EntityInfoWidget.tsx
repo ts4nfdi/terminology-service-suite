@@ -1,200 +1,334 @@
-import React from "react";
-import {
-    EuiCard,
-    EuiFlexItem,
-    EuiLoadingSpinner,
-    EuiSpacer,
-    EuiText,
-    EuiProvider
-} from "@elastic/eui";
-import { OlsApi } from "../../../api/OlsApi";
-import { useQuery, QueryClientProvider, QueryClient } from 'react-query'
+import React, {ReactElement} from "react";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
+import {OlsApi} from "../../../api/OlsApi";
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
+import { getErrorMessageToDisplay } from "../../../utils/helper";
+import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString} from "../../../app/util";
+import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
+import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
+import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
+import {EntityInfoWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-import {AutocompleteWidget} from "../AutocompleteWidget";
-
-export interface EntityInfoWidgetProps {
-    api: string;
-    iri?: string;
-    ontologyId?: string;
-    hasTitle?: boolean;
-    entityType:
-      | "ontology"
-      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-      | "individual"
-      | "property";
-    parameter?: string;
-}
-
-interface EntityInfo {
-    //ontology:
-    iri?: string,
-    versionIri?: string,
-    id?: string,
-    version?: string,
-    termNum?: number,
-    lastLoad?: string,
-    creators?: [],
-    //term:
-    subsets?: [],
-    //term, property, individual:
-    label?: string,
-    synonyms?: [],
-    //all:
-    annotations: {},
-    entityTypeName: string
-}
 
 const DEFAULT_HAS_TITLE = true;
 
-async function getEntityInfo(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<EntityInfo> {
-    if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, {ontologyId: ontologyId}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            iri: response.config.id,
-            versionIri: response.config.versionIri,
-            id: response.ontologyId,
-            version: response.config.version,
-            termNum: response.numberOfTerms,
-            lastLoad: response.loaded,
-            creators: response.creators,
-            annotations: response.config.annotations ? response.config.annotations : [],
-            entityTypeName: 'Ontology'
-        };
-    }
-    if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            label: response._embedded.terms[0].label,
-            synonyms: response._embedded.terms[0].synonyms,
-            subsets: response._embedded.terms[0].in_subset,
-            annotations: response._embedded.terms[0].annotation,
-            entityTypeName: 'Term'
-        };
-    }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            label: response._embedded.properties[0].label,
-            synonyms: response._embedded.properties[0].synonyms,
-            annotations: response._embedded.properties[0].annotation,
-            entityTypeName: 'Property'
-        };
-    }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            label: response._embedded.individuals[0].label,
-            synonyms: response._embedded.individuals[0].synonyms,
-            annotations: response._embedded.individuals[0].annotation,
-            entityTypeName: 'Individual'
-        };
-    }
-    return {
-        label: 'INVALID ENTITY TYPE',
-        synonyms: [],
-        annotations: {},
-        entityTypeName: 'No'
-    };
-}
-
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
-    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, ...rest } = props;
+    const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, entityType, parameter, showBadges , useLegacy , ...rest } = props;
     const olsApi = new OlsApi(api);
 
     const {
-        data: entityInfo,
-        isLoading: isLoadingEntityInfo,
-        isSuccess: isSuccessEntityInfo,
-    } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return getEntityInfo(olsApi, entityType, iri, ontologyId);
-    });
+        data: entity,
+        isLoading: isLoadingEntity,
+        isSuccess: isSuccessEntity,
+        isError: isErrorEntity,
+        error: errorEntity,
+    } = useQuery(
+        [
+            "entityInfo",
+            props
+        ],
+        () => {
+            return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+        }
+    );
 
-    function generateDisplayItems(item: any) {
+    function getLabelSection(entity: Entity) : ReactElement {
         return (
-            item ?
-                item.length > 1 ?
-                    item.map((element: string, i: any) =>
-                        <dd key={i}>{element.split(",")}</dd>)
-                    : item
-                : "-"
+            <>
+                {entity.getLabel() &&
+                    <><EuiFlexItem>
+                        <b>Label:</b>
+                        {entity.getLabel()}
+                    </EuiFlexItem><EuiSpacer/></>
+                }
+            </>
         );
     }
 
+    function getSynonymsSection(entity: Entity) : ReactElement {
+        return (
+            <>
+                {entity.getSynonyms().length > 0 &&
+                    <><EuiFlexItem>
+                        <b>Synonyms:</b>
+                        {entity.getSynonyms().length > 1 ?
+                            <ul>{entity.getSynonyms().map((synonym) => {
+                                return <li key={randomString()} id={synonym.value}>{getReifiedJSX(entity, synonym, api, showBadges)}</li>;
+                            })}</ul> :
+                            <p>{getReifiedJSX(entity, entity.getSynonyms()[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getHasKeySection(term: Class) : ReactElement {
+        const keys = term.getHasKey();
+        return (
+            <>
+                {keys.length > 0 &&
+                    <><EuiFlexItem>
+                        <b>Has Key:</b>
+                        {keys.length > 1 ?
+                            <ul>{keys.map((keys) => {
+                                return <li key={randomString()}>{getClassExpressionJSX(term, term.getLinkedEntities(), keys, api, showBadges)}</li>
+                            })}</ul> :
+                            <p>{getClassExpressionJSX(term, term.getLinkedEntities(), keys[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getSubsetsSection(term: Class) : ReactElement {
+        return (
+            <>
+                { term.getSubsets().length > 0 &&
+                    <><EuiFlexItem>
+                        <b>In Subsets:</b>
+                        {term.getSubsets().length > 1 ?
+                            <ul>{term.getSubsets().map((subset) => {
+                                return <li key={randomString()} id={subset + randomString()}>{getEntityLinkJSX(term, term.getLinkedEntities(), subset, api, showBadges)}</li>
+                            })}</ul> :
+                            <p>{getEntityLinkJSX(term, term.getLinkedEntities(), term.getSubsets()[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getPropertyCharacteristicsSection(property: Property) : ReactElement {
+        const characteristics = property.getRdfTypes().map(type => {
+            return ({
+                'http://www.w3.org/2002/07/owl#FunctionalProperty': 'Functional',
+                'http://www.w3.org/2002/07/owl#InverseFunctionalProperty': 'Inverse Functional',
+                'http://www.w3.org/2002/07/owl#TransitiveProperty': 'Transitive',
+                'http://www.w3.org/2002/07/owl#SymmetricProperty': 'Symmetric',
+                'http://www.w3.org/2002/07/owl#AsymmetricProperty': 'Asymmetric',
+                'http://www.w3.org/2002/07/owl#ReflexiveProperty': 'Reflexive',
+                'http://www.w3.org/2002/07/owl#IrreflexiveProperty': 'Irreflexive',
+            })[type];
+        }).filter((type) => !!type);
+
+        return (
+            <>
+                {characteristics.length > 0 &&
+                    <><EuiFlexItem>
+                        <b>Characteristics:</b>
+                        {characteristics.length > 1 ?
+                            <ul>{characteristics.map((characteristic) => {
+                                return <li key={randomString()}>{characteristic}</li>
+                            })
+                                .sort()}</ul> :
+                            <p>{characteristics[0]}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getDomainSection(property: Property) : ReactElement {
+        const domains = property.getDomain();
+        return (
+            <>
+                {domains.length > 0 &&
+                    <><EuiFlexItem>
+                        <b>Domain:</b>
+                        {domains.length > 1 ?
+                            <ul>{domains.map((domains) => {
+                                return <li key={randomString()}>{getClassExpressionJSX(property, property.getLinkedEntities(), domains, api, showBadges)}</li>
+                            })}</ul> :
+                            <p>{getClassExpressionJSX(property, property.getLinkedEntities(), domains[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getRangeSection(property: Property) : ReactElement {
+        const ranges = property.getRange();
+        return (
+            <>
+                {ranges.length > 0 &&
+                    <EuiFlexItem>
+                        <b>Range:</b>
+                        {ranges.length > 1 ?
+                            <ul>{ranges.map((ranges) => {
+                                return <li key={randomString()}>{getClassExpressionJSX(property, property.getLinkedEntities(), ranges, api, showBadges)}</li>
+                            })}</ul> :
+                            <p>{getClassExpressionJSX(property, property.getLinkedEntities(), ranges[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem>
+                }
+            </>
+        );
+    }
+
+    function getIndividualPropertyAssertionsSection(individual: Individual) : ReactElement {
+        const propertyIris = Object.keys(individual.properties);
+        const negativeProperties = propertyIris.filter((key) => key.startsWith("negativePropertyAssertion+"));
+        const objectProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("objectProperty") !== -1)
+        const dataProperties = propertyIris.filter((key) => individual.getLinkedEntities().get(key) && individual.getLinkedEntities().get(key)?.type.indexOf("dataProperty") !== -1)
+        const propertyAssertions: ReactElement[] = [];
+
+        for(const iri of objectProperties) {
+            const values = asArray(individual.properties[iri]);
+            for(const v of values) {
+                propertyAssertions.push(
+                    <>
+                        {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
+                        {typeof v === "string" && v.includes("http") ?
+                            <>
+                                &nbsp;
+                                <span style={{fontSize: "medium", color: "gray"}}>&#9656;</span>
+                                &nbsp;
+                                {getEntityLinkJSX(individual, individual.getLinkedEntities(), v, api, showBadges)}
+                            </> :
+                            getTooltip((typeof v === "string" ? v : typeof v === "object" && !Array.isArray(v) && v.value ? JSON.stringify(v.value) : JSON.stringify(v)))
+                        }
+                    </>
+                )
+            }
+        }
+
+        for(const iri of dataProperties) {
+            const values = asArray(individual.properties[iri]);
+            for(const v of values) {
+                propertyAssertions.push(
+                    <>
+                        {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
+                        {<>
+                            &nbsp;
+                            <span style={{fontSize: "medium", color: "gray"}}>&#9656;</span>
+                            &nbsp;
+                            {getEntityLinkJSX(individual, individual.getLinkedEntities(), v, api, showBadges)}
+                        </>}
+                    </>
+                )
+            }
+        }
+
+        for(const key of negativeProperties) {
+            const iri = key.slice("negativePropertyAssertion+".length);
+            const linkedEntity = individual.getLinkedEntities().get(iri);
+            const hasDataProperty = linkedEntity?.type.indexOf("dataProperty") !== -1;
+            const hasObjectProperty = linkedEntity?.type.indexOf("objectProperty") !== -1;
+            const values = asArray(individual.properties[key]);
+
+            for(const v of values) {
+                propertyAssertions.push(
+                    <>
+                        <i style={{color: "purple"}}>not</i>{" "}
+                        {getClassExpressionJSX(individual, individual.getLinkedEntities(), iri, api, showBadges)}
+                        {typeof v === "string" && v.includes("http") ? (
+                            <>
+                                &nbsp;
+                                <span style={{fontSize: "medium", color: "gray"}}>&#9656;</span>
+                                &nbsp;
+                                {getEntityLinkJSX(individual, individual.getLinkedEntities(), v, api, showBadges)}
+                            </>
+                        ) :
+                        hasObjectProperty ? (
+                            getTooltip((typeof v === "string" ? v : typeof v === "object" && !Array.isArray(v) && v.value ? JSON.stringify(v.value) : JSON.stringify(v)))
+                        ) :
+                        hasDataProperty ? (
+                            <>
+                                &nbsp;
+                                <span style={{fontSize: "medium", color: "gray"}}>&#9656;</span>
+                                &nbsp;
+                                {getEntityLinkJSX(individual, individual.getLinkedEntities(), v, api, showBadges)}
+                            </>
+                        ) :
+                            <></>
+                        }
+                    </>
+                )
+            }
+        }
+
+        return (
+            <>
+                {propertyAssertions.length > 0 &&
+                    <><EuiFlexItem>
+                        <b>Property assertions:</b>
+                        {propertyAssertions.length > 1 ?
+                            <ul>{propertyAssertions.map((pa) => {
+                                return <li key={randomString()}>{pa}</li>
+                            })
+                                .sort()}</ul> :
+                            <p>{propertyAssertions[0]}</p>
+                        }
+                    </EuiFlexItem></>
+                }
+            </>
+        );
+    }
+
+    function getAnnotationSection(thing: Thing) : ReactElement {
+        return (
+            <>
+                {thing.getAnnotationPredicates().map((annoKey) => {
+                    const annos = thing.getAnnotationById(annoKey);
+                    if(annos.length == 0) return <></>;
+
+                    return <EuiFlexItem grow={false} key={annoKey}>
+                        <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
+                        {annos.length > 1 ?
+                            <ul>{annos.map((annotation) => {
+                                return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, api, showBadges)}</li>;
+                            })}</ul> :
+                            <p key={randomString()}>{getReifiedJSX(thing, annos[0], api, showBadges)}</p>
+                        }
+                    </EuiFlexItem>
+                    }
+                )}
+            </>
+        );
+    }
 
     return (
         <>
             <EuiCard
-                title={hasTitle ? entityInfo?.entityTypeName+" Information" : ""}
+                title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  + " Information" : ""}
                 layout="horizontal"
             >
-                {isLoadingEntityInfo && <EuiLoadingSpinner size={'s'}/>}
-                {isSuccessEntityInfo &&
+
+                {isLoadingEntity && <EuiLoadingSpinner size={'s'}/>}
+                {isSuccessEntity && entity !== undefined &&
                     <EuiText {...rest}>
-                        {entityInfo?.iri &&
-                          <EuiFlexItem>
-                              <b>Ontology IRI:</b>
-                              <p>{entityInfo.iri.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.versionIri &&
-                          <EuiFlexItem>
-                              <b>Version IRI:</b>
-                              <p>{entityInfo.versionIri.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.id &&
-                          <EuiFlexItem>
-                              <b>Ontology ID:</b>
-                              <p>{entityInfo.id.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.version &&
-                          <EuiFlexItem>
-                              <b>Version:</b>
-                              <p>{entityInfo.version.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.termNum &&
-                          <EuiFlexItem>
-                              <b>Number of terms:</b>
-                              <p>{entityInfo.termNum.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.lastLoad &&
-                          <EuiFlexItem>
-                              <b>Last loaded:</b>
-                              <p>{entityInfo.lastLoad.toLocaleString()}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.creators &&
-                          <><EuiFlexItem>
-                              <b>Creators:</b>
-                              {generateDisplayItems(entityInfo?.creators)}
-                          </EuiFlexItem><EuiSpacer/></>}
+                        {getLabelSection(entity)}
+                        {getSynonymsSection(entity)}
 
-                        {entityInfo?.label &&
-                          <EuiFlexItem>
-                              <b>Label:</b>
-                              <p>{entityInfo?.label}</p>
-                          </EuiFlexItem>}
-                        {entityInfo?.synonyms &&
-                          <><EuiFlexItem>
-                              <b>Synonyms:</b>
-                              {generateDisplayItems(entityInfo?.synonyms)}
-                          </EuiFlexItem><EuiSpacer/></>}
-                        {entityInfo?.subsets &&
-                          <><EuiFlexItem>
-                              <b>In Subsets:</b>
-                              {generateDisplayItems(entityInfo?.subsets)}
-                          </EuiFlexItem><EuiSpacer/></>}
+                        {isClass(entity) &&
+                            <>
+                                {getSubsetsSection(entity)}
+                                {getHasKeySection(entity)}
+                            </>
+                        }
 
+                        {isProperty(entity) &&
+                            <>
+                                {getPropertyCharacteristicsSection(entity)}
+                                {getDomainSection(entity)}
+                                {getRangeSection(entity)}
+                            </>
+                        }
 
-                        {entityInfo ? Object.entries(entityInfo.annotations).map(([annoKey, annoVal]) => (
-                            <EuiFlexItem grow={false} key={annoKey}>
-                                <b>{annoKey}:</b>
-                                <p>{generateDisplayItems(annoVal)}</p>
-                            </EuiFlexItem>
-                        )) : ""}
+                        {isIndividual(entity) &&
+                            <>
+                                {getIndividualPropertyAssertionsSection(entity)}
+                            </>
+                        }
+
+                        {getAnnotationSection(entity)}
                     </EuiText>
                 }
+                {isErrorEntity && <EuiText>{getErrorMessageToDisplay(errorEntity, "information")}</EuiText>}
             </EuiCard>
         </>
     );
@@ -216,6 +350,7 @@ function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
                     hasTitle={props.hasTitle}
                     entityType={props.entityType}
                     parameter={props.parameter}
+                    useLegacy={props.useLegacy}
                 />
             </QueryClientProvider>
         </EuiProvider>

@@ -1,40 +1,34 @@
 import React from "react";
-import { SearchBarWidget, SearchBarWidgetProps } from "./SearchBarWidget";
+import { SearchBarWidget } from "./SearchBarWidget";
+import {SearchBarWidgetProps} from "../../../utils/types";
 
 export default {
   title: "SearchBarWidget",
   component: SearchBarWidget,
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
     },
-    query: {
-      description: "The search term to receive suggestions for.",
-    },
+    query: {},
     onSearchValueChange: {
-      description: "Function to be called when the search value in the search bar changes.",
       action: "onSearchValueChange"
     },
-    parameter: {
-    },
-    args: {
-      parameter: "collection=nfdi4health",
-    }
+    parameter: {}
+  },
+  args: {
+    parameter: "collection=nfdi4health",
   },
 };
 
 const Template = (args: SearchBarWidgetProps) => (
-  <>
     <SearchBarWidget {...args} />
-  </>
 );
 
 export const SearchBarWidget1 = Template.bind({});

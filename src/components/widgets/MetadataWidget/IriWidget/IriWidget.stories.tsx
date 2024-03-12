@@ -1,5 +1,6 @@
 import React from "react";
-import { IriWidget, IriWidgetProps } from "./IriWidget";
+import { IriWidget } from "./IriWidget";
+import { IriWidgetProps } from "../../../../utils/types";
 import { EuiPanel } from "@elastic/eui";
 
 export default {
@@ -10,27 +11,27 @@ export default {
   },
   argTypes: {
     color: {
-      description: "Color of the text, names, hex or rgb",
+      table: {
+        type: { summary: `EuiLinkColor | string` },
+      },
       control: {
         type: "radio",
       },
       options: [
         "primary",
-        "accent",
-        "success",
-        "warning",
-        "danger",
-        "ghost",
-        "text",
         "subdued",
+        "success",
+        "accent",
+        "danger",
+        "warning",
+        "ghost",
+        "#00FFFF",
+        "rgb(255,0,255)",
       ],
     },
-    iriText: {
-      description:
-          "Set your own text manually that overwrites the text fetched from the API",
-    },
+    iriText: {},
     iri: {
-      description: "Object IRI whose Iri you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
+      description: "Object IRI that you want to link.",
     },
     parameter: {},
   },
@@ -40,11 +41,9 @@ export default {
 };
 
 const Template = (args: IriWidgetProps) => (
-    <>
-      <EuiPanel>
-        <IriWidget {...args} />
-      </EuiPanel>
-    </>
+  <EuiPanel>
+    <IriWidget {...args} />
+  </EuiPanel>
 );
 
 export const IriWidget1 = Template.bind({});

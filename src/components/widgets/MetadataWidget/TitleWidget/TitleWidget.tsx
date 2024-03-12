@@ -1,79 +1,44 @@
 import React from "react";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
-import { OlsApi } from "../../../../api/OlsApi";
-import {AutocompleteWidget} from "../../AutocompleteWidget";
+import {OlsApi} from "../../../../api/OlsApi";
+import { getErrorMessageToDisplay } from "../../../../utils/helper";
+import {TitleWidgetProps} from "../../../../utils/types";
+import {isOntology} from "../../../../model/ModelTypeCheck";
+import { Thing } from "../../../../model/interfaces";
+import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
-
-export interface TitleWidgetProps {
-    iri?: string;
-    ontologyId?: string;
-    api: string;
-    titleText?: string;
-    entityType:
-        | "ontology"
-        | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-        | "individual"
-        | "property"
-        | string;
-    parameter?: string
-}
 
 const NO_TITLE = "No title available.";
 
-
-async function getTitle(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
-    if (entityType == "ontology") {
-        const response = await olsApi.getOntology(undefined, undefined, {
-            ontologyId: ontologyId
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?.config.title || NO_TITLE
-    }
-    if (entityType == "term") {
-        const response = await olsApi.getTerm(undefined, undefined, {
-            ontologyId: ontologyId,
-            termIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.terms[0].label || NO_TITLE
-    }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {
-            ontologyId: ontologyId,
-            propertyIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.properties[0].label || NO_TITLE
-    }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {
-            ontologyId: ontologyId,
-            individualIri: iri
-        }, parameter)
-            .catch((error) => console.log(error));
-        return response?._embedded?.individuals[0].label || NO_TITLE
-    }
-    return NO_TITLE;
-}
-
 function TitleWidget(props: TitleWidgetProps) {
-    const { iri, ontologyId, api, titleText, entityType, parameter } = props;
-    const fixedEntityType = entityType == "class" ? "term" : entityType
+    const {iri, ontologyId, api, titleText, thingType, parameter, useLegacy, default_value} = props;
     const olsApi = new OlsApi(api);
 
-    const {
-        data: label,
-        isLoading,
-    } = useQuery([api, "getTitle", fixedEntityType, ontologyId, iri, parameter], () => {
-        return getTitle(olsApi, fixedEntityType, ontologyId, iri, parameter);
-    });
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, thingType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getThingObject(iri, thingType, ontologyId, parameter, useLegacy);
+    }
+  );
 
-    return (
-        <>
-            {isLoading ? <EuiLoadingSpinner size="s"/> : <EuiText>{titleText || label}</EuiText>}
-        </>
-    );
+
+
+  return (
+    <>
+      {isLoading && <EuiLoadingSpinner size="s" />}
+      {isSuccess && data &&
+        <TitlePresentation title={titleText || (isOntology(data) ? data.getName() : data.getLabel()) || default_value || NO_TITLE} />
+      }
+      {isError && <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>}
+    </>
+  );
 }
 
 function createTitle(props: TitleWidgetProps, container: any, callback?: ()=>void) {
@@ -87,11 +52,13 @@ function WrappedTitleWidget(props: TitleWidgetProps) {
             <QueryClientProvider client={queryClient}>
                 <TitleWidget
                     api={props.api}
-                    entityType={props.entityType}
+                    thingType={props.thingType}
                     iri={props.iri}
                     ontologyId={props.ontologyId}
                     titleText={props.titleText}
                     parameter={props.parameter}
+                    useLegacy={props.useLegacy}
+                    default_value={props.default_value}
                 />
             </QueryClientProvider>
         </EuiProvider>

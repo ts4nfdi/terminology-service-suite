@@ -1,16 +1,8 @@
-import { EuiCard, EuiCardProps, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import React from "react";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
 import { switchEntityType } from '../../../utils/ApiUtils'
-
-
-export type MetadataCompactProps = {
-    api: string;
-    result: any;
-    targetLink?: string;
-    parameter?: string
-} & Partial<Omit<EuiCardProps, "layout">>;
-
+import {MetadataCompactProps} from "../../../utils/types";
 
 function MetadataCompact(props: MetadataCompactProps) {
     const {
@@ -39,15 +31,11 @@ function MetadataCompact(props: MetadataCompactProps) {
                     </EuiFlexItem>
                 </EuiFlexGroup>
             }
-            children={
-                <>
-                    {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
-                    <EuiSpacer size="s"/>
-                    <DescriptionWidget api={api} ontologyId={result.ontology_name} iri={result.iri}
-                                       entityType={result.type}/>
-                </>
-            }
-        />
+        >
+            {result.type != "ontology" ? <IriWidget iri={result.iri}/> : undefined}
+            <EuiSpacer size="s"/>
+            <DescriptionWidget api={api} ontologyId={result.ontology_name} iri={result.iri} thingType={result.type}/>
+        </EuiCard>
 
     );
 }

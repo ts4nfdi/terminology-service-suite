@@ -1,22 +1,29 @@
 import React from "react";
-import { HierarchyWidgetProps, HierarchyWidget } from "./HierarchyWidget";
+import { HierarchyWidget } from "./HierarchyWidget";
+import {HierarchyWidgetProps} from "../../../../../utils/types";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 
 export default {
   title: "HierarchyWidget",
   component: HierarchyWidget,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: "The HierarchyWidget is a component designed to visualize and interact with hierarchical data structures of ontology hierarchies, specifically tailored for the OLS4 API to retrieve and display hierarchical relationships between terms within a given ontology."
+      }
+    }
   },
   argTypes: {
     api: {
-      description: "Instance of the OLS API to call.",
       control: {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
+        "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/"
       ],
     },
     ontologyId: {
@@ -25,7 +32,22 @@ export default {
     iri: {
       description: "Iri of the term you want to fetch the term hierarchy for.",
     },
+    entityType: {
+      table: {
+        type: { summary: `${entityTypeNames.join(" | ")}` },
+      },
+      control: { type: "radio" },
+      options: [
+        "property",
+        "individual",
+        "class",
+        "not specified"
+      ]
+    },
   },
+  args: {
+
+  }
 };
 
 const Template = (args: HierarchyWidgetProps) => <HierarchyWidget {...args} />;
@@ -35,7 +57,8 @@ export const HierarchyWidget1 = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 HierarchyWidget1.args = {
-  iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-  api: "https://semanticlookup.zbmed.de/api/",
-  ontologyId: "mesh",
+  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  api: "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
+  ontologyId: "efo",
+  entityType: "class"
 };

@@ -1,117 +1,41 @@
 import React from "react";
-import {
-    EuiFlexGroup,
-    EuiFlexItem,
-    EuiLink, EuiLoadingSpinner,
-    EuiPanel, EuiProvider,
-    EuiText,
-} from "@elastic/eui";
-import { OlsApi } from '../../../../../api/OlsApi'
-import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
-import {TabWidget} from "../TabWidget";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import { OlsApi } from "../../../../../api/OlsApi";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import { getErrorMessageToDisplay } from "../../../../../utils/helper";
+import { CrossRefWidgetProps } from "../../../../../utils/types";
+import { Thing } from "../../../../../model/interfaces";
+import { isEntity } from "../../../../../model/ModelTypeCheck";
+import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
+import Reified from "../../../../../model/Reified";
 import ReactDOM from "react-dom";
 
-export interface CrossRefWidgetProps {
-  iri: string;
-  api: string;
-  ontologyId?: string;
-  entityType:
-      | "ontology"
-      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-      | "individual"
-      | "property"
-      | string;
-  parameter?: string;
-}
-
-interface CrossRefs {
-    crossrefs: [{
-      database: string,
-      id: string,
-      url: string
-    }]
-}
-
-async function getCorssRefs(olsApi: OlsApi, entityType: string, iri?: string, ontologyId?: string, parameter?: string): Promise<CrossRefs> {
-    if (entityType == "term" || entityType == "class") {
-        const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            crossrefs: response._embedded.terms[0].obo_xref,
-        };
-    }
-    if (entityType == "property") {
-        const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            crossrefs: response._embedded.properties[0].obo_xref,
-        };
-    }
-    if (entityType == "individual") {
-        const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-          .catch((error) => console.log(error));
-        return {
-            crossrefs: response._embedded.individuals[0].obo_xref,
-        };
-    }
-    return {
-       crossrefs : [{
-         database: "",
-         id: "",
-         url: ""
-       }],
-    };
-}
-
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);
 
   const {
-        data,
-        isLoading,
-        isSuccess,
-        isError,
-    } = useQuery([api, iri, ontologyId, entityType, parameter, "entityInfo"], () => {
-        return getCorssRefs(olsApi, entityType, iri, ontologyId);
-    });
-
-  function renderCrossRefs() {
-    if (data?.crossrefs && data.crossrefs.length > 0) {
-      return data?.crossrefs.map((item, index) => (
-        <EuiFlexItem key={index}>
-            {item.database ? (
-                item.url ? (
-                    <EuiLink href={item.url} external target="_blank">
-                        {item.database}:{item.id}
-                    </EuiLink>
-                ) : (
-                    `${item.database}:${item.id}`
-                )
-            ) : (//just show the ID if there is no value for the database
-                item.url ? (
-                    <EuiLink href={item.url} external target="_blank">
-                        {item.id}
-                    </EuiLink>
-                ) : (
-                    `${item.id}`
-                )
-            )}
-
-            </EuiFlexItem>
-      ));
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
-    return <EuiText>No cross references exist.</EuiText>;
-  }
+  );
 
   return (
-    <EuiPanel>
-      <EuiFlexGroup style={{ padding: 7 }} direction="column">
-        {isSuccess && renderCrossRefs()}
-        {isLoading && <EuiLoadingSpinner/>}
-        {isError && <EuiText>No cross references available.</EuiText>}
-      </EuiFlexGroup>
-    </EuiPanel>
+    <>
+      {isSuccess && data && isEntity(data) &&
+        <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
+          return value.value;
+        })} />}
+      {isLoading && <EuiLoadingSpinner />}
+      {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
+    </>
   );
 }
 
@@ -130,6 +54,7 @@ function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
                     ontologyId={props.ontologyId}
                     entityType={props.entityType}
                     parameter={props.parameter}
+                    useLegacy={props.useLegacy}
                 />
             </QueryClientProvider>
         </EuiProvider>

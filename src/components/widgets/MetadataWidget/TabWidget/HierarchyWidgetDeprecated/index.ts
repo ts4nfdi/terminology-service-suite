@@ -1,0 +1,1 @@
+export { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";

@@ -1,10 +1,9 @@
 import React from "react";
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import "@elastic/eui/dist/eui_theme_light.json";
-import { Meta } from "@storybook/react";
-import { StoryObj } from "@storybook/react";
+import {AutocompleteWidgetProps} from "../../../utils/types";
 
-const meta: Meta<typeof AutocompleteWidget> = {
+export default {
   title: "Autocomplete Widget",
   component: AutocompleteWidget,
   argTypes: {
@@ -13,7 +12,7 @@ const meta: Meta<typeof AutocompleteWidget> = {
         type: "radio",
       },
       options: [
-        "https://www.ebi.ac.uk/ols/api/",
+        "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
       ],
@@ -21,72 +20,102 @@ const meta: Meta<typeof AutocompleteWidget> = {
     selectionChangedEvent: {
       action: "selectionChangedEvent",
     },
-    placeholder: {
-    },
-    selectOption: {},
-    parameter: {
-    },
+    placeholder: {},
+    preselected: {},
+    parameter: {},
     hasShortSelectedLabel: {
-      description: "If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.",
+      type: { required: false },
     },
     allowCustomTerms: {
-      description: "If true, custom terms that are not found in any ontology can be added.",
+      type: { required: false},
+    },
+    singleSelection: {
+      type: { required: false},
     }
   },
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    selectionChangedEvent: () => {return;},
-    placeholder: "Search for Term",
-    selectOption: {},
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
+    singleSelection: true,
   },
-  render: (args) => <AutocompleteWidget {...args} />,
 };
-export default meta;
 
-type Story = StoryObj<typeof AutocompleteWidget>;
+const Template = (args: AutocompleteWidgetProps) => (
+    <AutocompleteWidget {...args} />
+);
 
-export const withDefaults: Story = {
-}
+export const WithDefaults = Template.bind({});
 
-export const withValue: Story = {
-  args: {
-    selectOption: { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
-  },
-}
+export const withValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+withValue.args = {
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }],
+};
+export const WithCustomValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithCustomValue.args = {
+  allowCustomTerms: true,
+  preselected: [{ label: "freetext" }],
+};
+export const withInvalidValue = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+withInvalidValue.args = {
+  preselected: [{
+    iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
+  }],
+};
 
-export const withCustomValue: Story = {
-  args: {
-    allowCustomTerms: true,
-    selectOption: { label: "freetext" },
-  },
-}
+export const WithGermanInput = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithGermanInput.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "collection=nfdi4health&lang=de&type=class",
+};
 
-export const withInvalidValue: Story = {
-  args: {
-    selectOption: { iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382", },
-  },
-}
+export const WithDescriptionAndShortForm = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithDescriptionAndShortForm.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
+};
 
-export const withGermanInput: Story = {
-  args: {
-    api: "https://semanticlookup.zbmed.de/api/",
-    parameter: "collection=nfdi4health&lang=de&type=class",
-  },
-}
+export const DisplaySelectedEntityWithLongForm = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+DisplaySelectedEntityWithLongForm.args = {
+  hasShortSelectedLabel: false
+};
 
-export const displaySelectedEntityWithLongForm: Story = {
-  args: {
-    hasShortSelectedLabel: false
-  },
-}
+export const AllowAddingCustomTerms = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+AllowAddingCustomTerms.args = {
+  allowCustomTerms: true
+};
 
-export const allowAddingCustomTerms: Story = {
-  args: {
-    allowCustomTerms: true
-  },
-}
+export const allowMultipleTerms = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+allowMultipleTerms.args = {
+  singleSelection: false,
+};
+
+export const withMultipleValues = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+withMultipleValues.args = {
+  preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }, { iri: "http://purl.bioontology.org/ontology/MESH/D003920" }],
+  singleSelection: false,
+};
+
+
+
 
 

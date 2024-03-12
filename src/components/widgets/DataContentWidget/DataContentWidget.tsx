@@ -1,141 +1,57 @@
-import React, {useState} from "react";
+import React from "react";
+import {EuiCard, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import { OlsApi } from "../../../api/OlsApi";
+import {Ontologies} from "../../../model/interfaces";
+import {DataContentWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-
-import {
-  EuiText,
-  EuiLoadingSpinner,
-  EuiCard,
-  EuiProvider
-} from "@elastic/eui";
-import { useQuery } from 'react-query';
-import { apiCallFn, OlsApi } from "../../../api/OlsApi";
-import { QueryClient, QueryClientProvider } from "react-query";
-import {AutocompleteWidget} from "../AutocompleteWidget";
-
-export interface DataContentWidgetProps {
-  api: string;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
-  parameter?: string;
-}
-
-const NOT_AVAILABLE = "n/a";
-
-
-
-async function getTotalAmountOfTerms(apiCall: apiCallFn, parameter?: string): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined, undefined, parameter);
-  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
-    let totalAmount = 0;
-    for (const ontology of response._embedded.ontologies) {
-      totalAmount += ontology.numberOfTerms;
-    }
-    return totalAmount;
-  } else {
-    throw new Error("Unexpected API response");
-  }
-}
-
-async function getTotalAmountOfProperties(apiCall: apiCallFn, parameter?: string): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined,undefined, parameter);
-  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
-    let totalAmount = 0;
-    for (const ontology of response._embedded.ontologies) {
-      totalAmount += ontology.numberOfProperties;
-    }
-    return totalAmount;
-  } else {
-    throw new Error("Unexpected API response");
-  }
-}
-
-async function getTotalAmountOfIndividuals(apiCall: apiCallFn, parameter?: string): Promise<number> {
-  const response = await apiCall({ size: "500" },undefined,undefined, parameter);
-  if (response.page.totalElements != null && response._embedded && response._embedded.ontologies) {
-    let totalAmount = 0;
-    for (const ontology of response._embedded.ontologies) {
-      totalAmount += ontology.numberOfIndividuals;
-    }
-    return totalAmount;
-  } else {
-    throw new Error("Unexpected API response");
-  }
-}
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
   const olsApi = new OlsApi(api);
 
-  const [totalOntologies, setTotalOntologies] = useState(0);
-
-
   const {
-    data: getOntologies,
-    isLoading: isLoadingOntologies,
-    dataUpdatedAt: dataUpdatedAtOntologies
-  } = useQuery(
-      [
-        api,
-        "ontologiesMetadata",
-        parameter,
-      ],
-      async () => {
-        return olsApi
-            .getOntologies(
-                {
-                  size: "500",
-                },
-                undefined,
-                undefined,
-                props.parameter
-            )
-            .then((response) => {
-              if (
-                  response.page.totalElements != null &&
-                  response._embedded &&
-                  response._embedded.ontologies
-              ) {
-                // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-                setTotalOntologies(response.page.totalElements);
-                return response._embedded.ontologies;
-              } else {
-                throw new Error("Unexpected API response");
-              }
-            });
-      }
+    data: ontologiesData,
+    isLoading,
+    isError,
+    dataUpdatedAt
+  } = useQuery<Ontologies>(
+    ["ontologiesData", api, parameter],
+    async () => {
+      return olsApi.getOntologiesData(
+        props.parameter
+      );
+    }
   );
-
-  const {
-    data: totalTerms,
-    isLoading: isLoadingTerms
-  } = useQuery([api, "getTerms", parameter], () => { return getTotalAmountOfTerms(olsApi.getOntologies, props.parameter); });
-
-  const {
-    data: totalProperties,
-    isLoading: isLoadingProperties
-  } = useQuery([api, "getProperties", parameter], () => { return getTotalAmountOfProperties(olsApi.getOntologies, props.parameter); });
-
-  const {
-    data: totalIndividuals,
-    isLoading: isLoadingIndividuals
-  } = useQuery([api, "getIndividuals", parameter], () => { return getTotalAmountOfIndividuals(olsApi.getOntologies, props.parameter); });
 
   return (
     <>
       <EuiCard
         title="Data Content"
-        description={dataUpdatedAtOntologies ? `Updated ${new Date(dataUpdatedAtOntologies).toLocaleString()}` : ''}
+        description={dataUpdatedAt ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}` : ""}
         layout="horizontal"
       >
         <EuiText {...rest}>
-          <ul>
-            <li>{isLoadingOntologies ? <EuiLoadingSpinner size="s" /> : (totalOntologies ? totalOntologies.toLocaleString() : NOT_AVAILABLE)} ontologies and terminologies</li>
-            <li>{isLoadingTerms ? <EuiLoadingSpinner size="s" /> : (totalTerms ? totalTerms.toLocaleString() : NOT_AVAILABLE)} terms</li>
-            <li>{isLoadingProperties ? <EuiLoadingSpinner size="s" /> : (totalProperties ? totalProperties.toLocaleString() : NOT_AVAILABLE)} properties</li>
-            <li>{isLoadingIndividuals ? <EuiLoadingSpinner size="s" /> : (totalIndividuals ? totalIndividuals.toLocaleString() : NOT_AVAILABLE)} individuals</li>
-            {/* <li>Version {NOT_AVAILABLE}</li> */} {/* TODO how to get API version? */}
-          </ul>
+          {(isError) && <EuiText>No data content available</EuiText>}
+          {isLoading
+            ? <EuiLoadingSpinner size="s" />
+            :
+            <ul>
+              {(ontologiesData?.getTotalOntologies()
+                ? <li>{ontologiesData?.getTotalOntologies().toLocaleString()} ontologies and terminologies</li>
+                : <li style={{ fontStyle: "italic" }}>ontology number not available</li>)}
+              {(ontologiesData?.getNumClasses()
+                ? <li>{ontologiesData?.getNumClasses().toLocaleString()} terms</li>
+                : <li style={{ fontStyle: "italic" }}>term number not available</li>)}
+              {(ontologiesData?.getNumProperties()
+                ? <li>{ontologiesData?.getNumProperties().toLocaleString()} properties</li>
+                : <li style={{ fontStyle: "italic" }}>property number not available</li>)}
+              {(ontologiesData?.getNumIndividuals()
+                ? <li>{ontologiesData?.getNumIndividuals().toLocaleString()} individuals</li>
+                : <li style={{ fontStyle: "italic" }}>individual number not available</li>)}
+              {/* <li>Version {NOT_AVAILABLE}</li> */} {/* TODO how to get API version? */}
+            </ul>
+          }
         </EuiText>
       </EuiCard>
     </>
@@ -154,6 +70,7 @@ function WrappedDataContentWidget(props: DataContentWidgetProps) {
           <DataContentWidget
             api={props.api}
             parameter={props.parameter}
+            useLegacy={props.useLegacy}
           />
         </QueryClientProvider>
       </EuiProvider>

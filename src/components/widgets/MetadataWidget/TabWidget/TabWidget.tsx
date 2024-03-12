@@ -1,67 +1,53 @@
 import React from "react";
-import {
-  EuiFlexItem, EuiProvider,
-  EuiTabbedContent,
-  EuiTabbedContentTab,
-} from "@elastic/eui";
-import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
-import { CrossRefTabWidget } from "./CrossRefWidget";
-import { HierarchyWidget } from "./HierarchyWidget";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AutocompleteWidget} from "../../AutocompleteWidget";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {OlsApi} from "../../../../api/OlsApi";
+import {TabWidgetProps} from "../../../../utils/types";
+import { Entity, Thing } from "../../../../model/interfaces";
+import { TabPresentation } from "./TabPresentation";
+import { getErrorMessageToDisplay } from "../../../../utils/helper";
+import { isEntity } from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 
-export interface TabWidgetProps {
-  iri: string;
-  api: string;
-  ontologyId: string;
-  entityType:
-      | "ontology"
-      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-      | "individual"
-      | "property"
-      | string;
-  parameter?: string;
-}
-
 function TabWidget(props: TabWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, ...rest } = props;
-  const tabs: Array<EuiTabbedContentTab> = [
-    {
-      content: <AlternativeNameTabWidget
-          api={api}
-          iri={iri}
-          ontologyId={ontologyId}
-          entityType={entityType}
-      />,
-      id: "tab1",
-      name: "Alternative Names",
-    },
-    {
-      content: (
-        <HierarchyWidget api={api} iri={iri} ontologyId={ontologyId} />
-      ),
-      id: "tab2",
-      name: "Hierarchy",
-    },
-    {
-      content: <CrossRefTabWidget
-          api={api}
-          iri={iri}
-          ontologyId={ontologyId}
-          entityType={entityType}
-      />,
-      id: "tab3",
-      name: "Cross references",
-    },
-  ];
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, ...rest } = props;
+  const olsApi = new OlsApi(api);
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+    }
+  );
+
+  function render(data: Entity) {
+    return (
+      <TabPresentation
+        data={data}
+        iri={iri}
+        api={api}
+        useLegacy={useLegacy}
+        entityType={data.getTypePlural()}
+      />
+    );
+  }
 
   return (
-    <div>
-      <EuiFlexItem>
-        <EuiTabbedContent size="s" tabs={tabs} />
-      </EuiFlexItem>
-    </div>
+    <>
+      {isLoading && <EuiLoadingSpinner />}
+      {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
+      {isSuccess && data &&
+        <>
+          {isEntity(data) ? render(data) : null}
+        </>
+      }
+    </>
   );
 }
 

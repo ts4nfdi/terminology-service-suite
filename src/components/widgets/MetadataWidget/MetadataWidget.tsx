@@ -1,62 +1,99 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiProvider} from "@elastic/eui";
-import { BreadcrumbWidget } from "./BreadcrumbWidget";
+import {EuiFlexGroup, EuiFlexItem, EuiIconTip, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
-import { TitleWidget } from "./TitleWidget";
-import { DescriptionWidget } from "./DescriptionWidget";
-import { TabWidget } from "./TabWidget";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AutocompleteWidget} from "../AutocompleteWidget";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {OlsApi} from "../../../api/OlsApi";
+import {MetadataWidgetProps} from "../../../utils/types";
+import { Entity, Thing } from "../../../model/interfaces";
+import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
+import { TabPresentation } from "./TabWidget/TabPresentation";
+import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
+import { TitlePresentation } from "./TitleWidget/TitlePresentation";
+import { getErrorMessageToDisplay } from "../../../utils/helper";
+import { isEntity } from "../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 
-export interface MetadataWidgetProps {
-  iri: string;
-  ontologyId: string;
-  api: string;
-  entityType:
-    | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-    | "individual"
-    | "property"
-    | string;
-  parameter?: string
-}
-
 function MetadataWidget(props: MetadataWidgetProps) {
-    const { iri, api, ontologyId, entityType, parameter } = props;
-  return (
-    <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
-      <EuiFlexItem grow={false}>
-        <span>
-          <BreadcrumbWidget api={api} iri={iri} entityType={entityType} ontologyId={ontologyId} parameter={parameter}/>
-        </span>
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <EuiFlexGroup direction="column">
+  const { iri, api, ontologyId, entityType, parameter, useLegacy } = props;
+  const olsApi = new OlsApi(api);
+
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useQuery<Thing>(
+    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+    }
+  );
+
+  function render(data: Entity) {
+    return (
+      <>
+        <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
+          <EuiFlexItem grow={false}>
+                <span>
+                  <BreadcrumbPresentation
+                    isDefiningOntology={data.getIsDefiningOntology()}
+                    ontologyName={data.getOntologyId()}
+                    shortForm={data.getShortForm()}
+                  />
+                </span>
+          </EuiFlexItem>
           <EuiFlexItem>
-            <EuiFlexGroup>
+            <EuiFlexGroup direction="column">
+              <EuiFlexItem>
+                <EuiFlexGroup>
+                  <EuiFlexItem grow={false}>
+                    <IriWidget
+                      iri={iri}
+                      parameter={parameter}
+                    />
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <IriWidget iri={iri} parameter={parameter}/>
+                <TitlePresentation
+                  title={data.getLabel()}
+                />
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
-
-          <EuiFlexItem grow={false}>
-            <TitleWidget iri={iri} api={api} ontologyId={ontologyId} entityType={entityType} parameter={parameter} />
+          <EuiFlexItem>
+            <DescriptionPresentation
+              description={data.getDescription()}
+            />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <div style={{ maxHeight: "500px", overflow: "auto" }}>
+              <TabPresentation
+                data={data}
+                iri={iri}
+                entityType={props.entityType}
+                api={api}
+                ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
+                useLegacy={useLegacy}
+              />
+            </div>
           </EuiFlexItem>
         </EuiFlexGroup>
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <DescriptionWidget iri={iri} api={api} ontologyId={ontologyId} entityType={entityType} parameter={parameter}/>
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <TabWidget
-          iri={iri}
-          ontologyId={ontologyId}
-          api={api}
-          parameter={parameter}
-         entityType={entityType}/>
-      </EuiFlexItem>
-    </EuiFlexGroup>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {isLoading && <EuiLoadingSpinner />}
+      {isError && <EuiText>{getErrorMessageToDisplay(error, "metadata")}</EuiText>}
+      {isSuccess && data &&
+        <>
+          {isEntity(data) ? render(data) : null}
+        </>
+      }
+    </>
   );
 }
 
@@ -75,6 +112,7 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     api={props.api}
                     entityType={props.entityType}
                     parameter={props.parameter}
+                    useLegacy={props.useLegacy}
                 />
             </QueryClientProvider>
         </EuiProvider>

@@ -1,88 +1,55 @@
-import React, { useEffect, useState } from "react";
-import {EuiBadge, EuiFlexItem, EuiProvider} from "@elastic/eui";
+import React from "react";
+import {EuiBadge, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
+import { getErrorMessageToDisplay } from "../../../../utils/helper";
+import {BreadcrumbWidgetProps} from "../../../../utils/types";
+import { isEntity } from "../../../../model/ModelTypeCheck";
+import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {AutocompleteWidget} from "../../AutocompleteWidget";
 import ReactDOM from "react-dom";
 
-export interface BreadcrumbWidgetProps {
-  iri?: string;
-  ontologyId?: string;
-  api: string;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
-  entityType:
-      | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-      | "individual"
-      | "property"
-      | string;
-  colorFirst?:
-    | "primary"
-    | "accent"
-    | "success"
-    | "warning"
-    | "danger"
-    | "ghost"
-    | "text"
-    | "subdued"
-    | string;
-  colorSecond?: string;
-  parameter?: string
-}
-
-const NO_SHORTFORM = "No short form available.";
-
-async function getShortForm(olsApi: OlsApi, entityType: string, ontologyId?: string, iri?: string, parameter?: string): Promise<string> {
-  if (entityType == "term"){
-    const response = await olsApi.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter)
-        .catch((error) => console.log(error));
-    if (response?._embedded?.terms[0].short_form != null && response._embedded.terms[0].short_form != null) {
-      return response._embedded.terms[0].short_form.toUpperCase();
-    } else {
-      return NO_SHORTFORM;
-    }
-  }
-  if (entityType == "property"){
-    const response = await olsApi.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter)
-        .catch((error) => console.log(error));
-    if (response?._embedded?.properties[0].short_form != null && response._embedded.properties[0].short_form != null) {
-      return response._embedded.properties[0].short_form;
-    } else {
-      return NO_SHORTFORM;
-    }
-  }
-  if (entityType == "individual"){
-    const response = await olsApi.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter)
-        .catch((error) => console.log(error));
-    if (response?._embedded?.individuals[0].short_form != null && response._embedded.individuals[0].short_form != null) {
-      return response._embedded.individuals[0].short_form;
-    } else {
-      return NO_SHORTFORM;
-    }
-  }
-  //unacceptable object type
-  return NO_SHORTFORM;
-}
-
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter } = props;
-  const fixedEntityType = entityType == "class" ? "term" : entityType
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy} = props;
   const olsApi = new OlsApi(api);
 
   const {
-    data: shortForm,
+    data,
     isLoading,
-  } = useQuery([api, "short_form", fixedEntityType, ontologyId, iri, parameter], () => { return getShortForm(olsApi, fixedEntityType, ontologyId, iri, parameter); });
+    isSuccess,
+    isError,
+    error
+  } = useQuery(
+    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    async () => {
+      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+    }
+  );
 
   return (
-    <EuiFlexItem>
-      <span>
-        <EuiBadge color={colorFirst || "primary"}>{ontologyId?.toUpperCase()}</EuiBadge>
-        {" > "}
-        <EuiBadge color={colorSecond || "success"}>{shortForm}</EuiBadge>
-      </span>
-    </EuiFlexItem>
+    <>
+      {isLoading &&
+          <span>
+                <EuiBadge color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+            {" > "}
+            <EuiBadge color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+          </span>
+      }
+      {isSuccess && data && isEntity(data) &&
+        <BreadcrumbPresentation
+          isDefiningOntology={data.getIsDefiningOntology()}
+          ontologyName={data.getOntologyId()}
+          shortForm={data.getShortForm()}
+          ontologyId={ontologyId}
+        />
+      }
+      {isError &&
+          <span>
+                <EuiBadge color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
+            {" > "}
+            <EuiBadge color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
+            </span>
+      }
+      </>
   );
 }
 
@@ -103,6 +70,7 @@ function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
               colorFirst={props.colorFirst}
               colorSecond={props.colorSecond}
               parameter={props.parameter}
+              useLegacy={props.useLegacy}
           />
         </QueryClientProvider>
       </EuiProvider>
