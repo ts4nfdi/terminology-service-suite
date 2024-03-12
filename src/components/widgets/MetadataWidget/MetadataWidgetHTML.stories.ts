@@ -57,7 +57,7 @@ window['SemLookPWidgets'].createMetadata(
                 type: "radio",
             },
             options: [
-                "https://www.ebi.ac.uk/ols/api/",
+                "https://www.ebi.ac.uk/ols4/api/",
                 "https://semanticlookup.zbmed.de/ols/api/",
                 "https://semanticlookup.zbmed.de/api/",
             ],

@@ -56,7 +56,7 @@ window['SemLookPWidgets'].createCrossRefTab(
                 type: "radio",
             },
             options: [
-                "https://www.ebi.ac.uk/ols/api/",
+                "https://www.ebi.ac.uk/ols4/api/",
                 "https://semanticlookup.zbmed.de/ols/api/",
                 "https://semanticlookup.zbmed.de/api/",
             ],
@@ -117,7 +117,7 @@ type Story = StoryObj<CrossRefTabWidgetProps>;
 export const CrossRefTabWidget1: Story = {
     args: {
         iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-        api: "https://www.ebi.ac.uk/ols/api/",
+        api: "https://www.ebi.ac.uk/ols4/api/",
         entityType: "term",
         ontologyId: "rxno",
         parameter: "collection=nfdi4health",

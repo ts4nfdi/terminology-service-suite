@@ -57,7 +57,7 @@ window['SemLookPWidgets'].createEntityInfo(
                 type: "radio",
             },
             options: [
-                "https://www.ebi.ac.uk/ols/api/",
+                "https://www.ebi.ac.uk/ols4/api/",
                 "https://semanticlookup.zbmed.de/ols/api/",
                 "https://semanticlookup.zbmed.de/api/",
             ],
@@ -126,16 +126,6 @@ export default meta;
 type Story = StoryObj<EntityInfoWidgetProps>;
 
 // More on writing stories with args: https://storybook.js.org/docs/html/writing-stories/args
-export const OntologyInfoWidget: Story = {
-    args: {
-        api: "https://semanticlookup.zbmed.de/api/",
-        entityType: "ontology",
-        ontologyId: "ncit",
-        hasTitle: true,
-        parameter: "collection=nfdi4health"
-    },
-};
-
 export const TermInfoWidget: Story = {
     args: {
         api: "https://semanticlookup.zbmed.de/api/",
