@@ -39,7 +39,6 @@ export const NFDI4HealthDataContentWidget = Template.bind({});
 NFDI4HealthDataContentWidget.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   parameter: "collection=nfdi4health",
-  useLegacy: true
 };
 
 export const SafetyDataContentWidget = Template.bind({});

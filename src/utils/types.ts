@@ -148,7 +148,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
     singleSelection: boolean;
 };
 
-export type DataContentWidgetProps = ApiObj & ParameterObj & UseLegacyObj;
+export type DataContentWidgetProps = ApiObj & ParameterObj;
 
 export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
