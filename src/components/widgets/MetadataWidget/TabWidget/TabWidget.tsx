@@ -3,10 +3,10 @@ import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../../api/OlsApi";
 import {TabWidgetProps} from "../../../../utils/types";
-import { Entity, Thing } from "../../../../model/interfaces";
+import { Entity } from "../../../../model/interfaces";
 import { TabPresentation } from "./TabPresentation";
 import { getErrorMessageToDisplay } from "../../../../utils/helper";
-import { isEntity } from "../../../../model/ModelTypeCheck";
+import {EntityTypeName, isEntity} from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 
 function TabWidget(props: TabWidgetProps) {
@@ -19,7 +19,7 @@ function TabWidget(props: TabWidgetProps) {
     isSuccess,
     isError,
     error
-  } = useQuery<Thing>(
+  } = useQuery<Entity>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
@@ -33,7 +33,7 @@ function TabWidget(props: TabWidgetProps) {
         iri={iri}
         api={api}
         useLegacy={useLegacy}
-        entityType={data.getTypePlural()}
+        entityType={data.getType() as EntityTypeName}
       />
     );
   }
