@@ -351,6 +351,7 @@ function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
+                    showBadges={props.showBadges}
                 />
             </QueryClientProvider>
         </EuiProvider>

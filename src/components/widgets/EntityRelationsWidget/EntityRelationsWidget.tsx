@@ -1,14 +1,16 @@
 import React, {ReactElement} from "react";
 import { OlsApi } from "../../../api/OlsApi";
-import { useQuery } from "react-query";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import {Class, Individual, Property, Thing} from "../../../model/interfaces";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getSectionListJSX} from "../../../model/StructureRendering";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
-import {EntityRelationsWidgetProps} from "../../../utils/types";
+import {EntityInfoWidgetProps, EntityRelationsWidgetProps} from "../../../utils/types";
+import ReactDOM from "react-dom";
+import {EntityInfoWidget} from "../EntityInfoWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -417,4 +419,27 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     );
 }
 
-export { EntityRelationsWidget };
+function createEntityRelations(props: EntityRelationsWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedEntitiyRelationsWidget(props), container, callback);
+}
+
+function WrappedEntitiyRelationsWidget(props: EntityRelationsWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <EntityRelationsWidget
+                    api={props.api}
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    hasTitle={props.hasTitle}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                    showBadges={props.showBadges}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { createEntityRelations, EntityRelationsWidget };

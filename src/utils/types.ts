@@ -5,7 +5,6 @@ import {Action} from "@elastic/eui/src/components/basic_table/action_types";
 import {EuiSuggestProps} from "@elastic/eui/src/components";
 import {EuiCardProps} from "@elastic/eui";
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
-import { Entity, Ontology } from "../model/interfaces";
 
 type ParameterObj = {
     /**

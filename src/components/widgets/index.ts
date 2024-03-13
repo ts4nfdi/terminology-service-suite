@@ -15,11 +15,13 @@ import { createOntologyInfo } from "./OntologyInfoWidget/OntologyInfoWidget";
 import { createResources } from "./ResourcesWidget/ResourcesWidget";
 import { createSearchBar } from "./SearchBarWidget/SearchBarWidget";
 import { createSearchResultsList } from "./SearchResultsListWidget/SearchResultsListWidget";
+import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidget";
 
 (window as any)['SemLookPWidgets'] = {
     createAutocomplete,
     createDataContent,
     createEntityInfo,
+    createEntityRelations,
     createJsonApi,
     createBreadcrumb,
     createDescription,
@@ -40,6 +42,7 @@ export {
     createAutocomplete,
     createDataContent,
     createEntityInfo,
+    createEntityRelations,
     createJsonApi,
     createBreadcrumb,
     createDescription,
