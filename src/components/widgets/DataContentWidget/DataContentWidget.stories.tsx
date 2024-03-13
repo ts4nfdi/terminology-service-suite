@@ -1,6 +1,5 @@
-import React from "react";
 import {DataContentWidget} from "./DataContentWidget";
-import {DataContentWidgetProps} from "../../../utils/types";
+import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./DataContentWidgetStories";
 
 export default {
   title: "DataContentWidget",
@@ -8,53 +7,12 @@ export default {
   parameters: {
     layout: "centered",
   },
-  argTypes: {
-    api: {
-      control: {
-        type: "radio",
-      },
-      options: [
-        "https://www.ebi.ac.uk/ols4/api/",
-        "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-      ],
-    },
-    parameter: {
-      type: { required: false }
-    },
-  },
-  args: {
-    parameter: "collection=nfdi4health",
-  }
+  argTypes: DataContentWidgetStoryArgTypes,
+  args: DataContentWidgetStoryArgs
 };
 
-const Template = (args: DataContentWidgetProps) => (
-  <DataContentWidget {...args} />
-);
-
-export const NFDI4HealthDataContentWidget = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-NFDI4HealthDataContentWidget.args = {
-  api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "collection=nfdi4health",
-};
-
-export const SafetyDataContentWidget = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-SafetyDataContentWidget.args = {
-  api: "https://semanticlookup.zbmed.de/api/",
-  parameter: "collection=safety",
-};
-
-export const ErrorDataContentWidget = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-ErrorDataContentWidget.args = {
-  api: "ht3ps://semanticlookup.zbmed.de/api/",
-  parameter: "collection=safety",
-};
+export {
+  NFDI4HealthDataContentWidget,
+  SafetyDataContentWidget,
+  ErrorDataContentWidget
+} from "root/src/components/widgets/DataContentWidget/DataContentWidgetStories"
