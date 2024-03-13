@@ -37,7 +37,7 @@ export const AutocompleteWidgetStoryArgs = {
     singleSelection: true,
     placeholder: "Search for a Concept",
     preselected: [],
-    selectionChangedEvent: () => {}
+    selectionChangedEvent: () => {return;}
   },
 };
 
