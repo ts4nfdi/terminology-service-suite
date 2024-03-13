@@ -130,63 +130,65 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             props.preselected
         ],
         async () => {
-            let preselectedValues : EuiComboBoxOptionOption<any>[] = [];
+            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
             let uniqueValues = [...new Set(props.preselected)]
                 .filter((option) => {
                     return (props.allowCustomTerms && option.label) || option.iri;
                 });
 
-            if(props.singleSelection) uniqueValues = [uniqueValues[0]];
+            if(uniqueValues.length > 0) {
+                if (props.singleSelection) uniqueValues = [uniqueValues[0]];
 
-            for(let option of uniqueValues) {
-                if (option.iri && option.iri.startsWith("http")) {
-                    await olsApi.select(
-                        {query: option.iri},
-                        undefined,
-                        undefined,
-                        parameter,
-                    ).then((response) => {
-                        if (response.response && response.response.docs) {
-                            response.response.docs.map((selection: any) => {
-                                if (option.iri === selection.iri) {
-                                    preselectedValues.push({
-                                        // label to display within the combobox either raw value or generated one
-                                        // #renderOption() is used to display during selection.
-                                        label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                        // key to distinguish the options (especially those with same label)
-                                        key: selection.iri,
-                                        value: {
-                                            iri: selection.iri,
-                                            label: selection.label,
-                                            ontology_name: selection.ontology_name,
-                                            type: selection.type,
-                                            short_form: selection.short_form,
-                                            description: selection.description?.join()
-                                        },
-                                    });
-                                }
-                            })
-                        }
-                    });
-                } else if (option.label && props.allowCustomTerms) {
-                    preselectedValues.push({
-                        label: option.label,
-                        key: option.label,
-                        value: {
-                            iri: "",
-                            label: "",
-                            ontology_name: "",
-                            type: "",
-                            short_form: "",
-                            description: ""
-                        }
-                    });
+                for (let option of uniqueValues) {
+                    if (option.iri && option.iri.startsWith("http")) {
+                        await olsApi.select(
+                            {query: option.iri},
+                            undefined,
+                            undefined,
+                            parameter,
+                        ).then((response) => {
+                            if (response.response && response.response.docs) {
+                                response.response.docs.map((selection: any) => {
+                                    if (option.iri === selection.iri) {
+                                        preselectedValues.push({
+                                            // label to display within the combobox either raw value or generated one
+                                            // #renderOption() is used to display during selection.
+                                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                            // key to distinguish the options (especially those with same label)
+                                            key: selection.iri,
+                                            value: {
+                                                iri: selection.iri,
+                                                label: selection.label,
+                                                ontology_name: selection.ontology_name,
+                                                type: selection.type,
+                                                short_form: selection.short_form,
+                                                description: selection.description?.join()
+                                            },
+                                        });
+                                    }
+                                })
+                            }
+                        });
+                    } else if (option.label && props.allowCustomTerms) {
+                        preselectedValues.push({
+                            label: option.label,
+                            key: option.label,
+                            value: {
+                                iri: "",
+                                label: "",
+                                ontology_name: "",
+                                type: "",
+                                short_form: "",
+                                description: ""
+                            }
+                        });
+                    }
                 }
-            }
 
-            setOptions(preselectedValues);
-            setSelectedOptions(preselectedValues);
+                setOptions(preselectedValues);
+                setSelectedOptions(preselectedValues);
+            }
         }
     )
 
@@ -340,7 +342,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           api={props.api}
           parameter={props.parameter}
           selectionChangedEvent={props.selectionChangedEvent}
-          selectedOptions={props.selectedOptions}
+          preselected={props.preselected}
           singleSelection={props.singleSelection}
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
