@@ -1,40 +1,13 @@
-import React from "react";
 import { SearchBarWidget } from "./SearchBarWidget";
-import {SearchBarWidgetProps} from "../../../utils/types";
+import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"
 
 export default {
   title: "SearchBarWidget",
   component: SearchBarWidget,
-  argTypes: {
-    api: {
-      control: {
-        type: "radio",
-      },
-      options: [
-        "https://www.ebi.ac.uk/ols4/api/",
-        "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-      ],
-    },
-    query: {},
-    onSearchValueChange: {
-      action: "onSearchValueChange"
-    },
-    parameter: {}
-  },
-  args: {
-    parameter: "collection=nfdi4health",
-  },
+  argTypes: SearchBarWidgetStoryArgTypes,
+  args: SearchBarWidgetStoryArgs,
 };
 
-const Template = (args: SearchBarWidgetProps) => (
-    <SearchBarWidget {...args} />
-);
-
-export const SearchBarWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-SearchBarWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
-  query: "diab",
-};
+export {
+    SearchBarWidget1
+} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"

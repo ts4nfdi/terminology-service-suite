@@ -1,7 +1,5 @@
-import React from "react";
 import { JsonApiWidget } from "./JsonApiWidget";
-import {JsonApiWidgetProps} from "../../../utils/types";
-import { EuiPanel } from "@elastic/eui";
+import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
 
 export default {
   title: "JsonApiWidget",
@@ -9,36 +7,10 @@ export default {
   parameters: {
     layout: "centered",
   },
-  argTypes: {
-    apiQuery: {},
-    buttonText: {},
-    buttonSize: {
-      table: {
-        type: { summary: `s | m` },
-      },
-      control: {
-        type: "radio",
-      },
-      options: [
-        "s",
-        "m",
-      ],
-    },
-  },
+  argTypes: JsonApiWidgetStoryArgTypes,
+  args: JsonApiWidgetStoryArgs
 };
 
-const Template = (args: JsonApiWidgetProps) => (
-  <EuiPanel>
-    <JsonApiWidget {...args} />
-  </EuiPanel>
-);
-
-export const JsonApiWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-JsonApiWidget1.args = {
-  apiQuery: "https://semanticlookup.zbmed.de/ols/api/ontologies/atc",
-  buttonText: "show JSON",
-  buttonSize: "m",
-};
+export {
+  JsonApiWidget1
+} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories"

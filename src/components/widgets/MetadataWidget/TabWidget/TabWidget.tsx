@@ -66,6 +66,7 @@ function WrappedTabWidget(props: TabWidgetProps) {
               ontologyId={props.ontologyId}
               entityType={props.entityType}
               parameter={props.parameter}
+              useLegacy={props.useLegacy}
           />
         </QueryClientProvider>
       </EuiProvider>

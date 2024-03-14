@@ -9,6 +9,7 @@ import { createTab } from "./MetadataWidget/TabWidget/TabWidget";
 import { createAlternativeNameTab } from "./MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
 import { createCrossRefTab } from "./MetadataWidget/TabWidget/CrossRefWidget/CrossRefTabWidget";
 import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
+import { createHierarchyDeprecated } from "./MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecated";
 import { createTitle} from "./MetadataWidget/TitleWidget/TitleWidget";
 import { createMetadata } from "./MetadataWidget/MetadataWidget";
 import { createOntologyInfo } from "./OntologyInfoWidget/OntologyInfoWidget";
@@ -30,6 +31,7 @@ import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidg
     createAlternativeNameTab,
     createCrossRefTab,
     createHierarchy,
+    createHierarchyDeprecated,
     createTitle,
     createOntologyInfo,
     createResources,
@@ -51,6 +53,7 @@ export {
     createAlternativeNameTab,
     createCrossRefTab,
     createHierarchy,
+    createHierarchyDeprecated,
     createTitle,
     createOntologyInfo,
     createResources,

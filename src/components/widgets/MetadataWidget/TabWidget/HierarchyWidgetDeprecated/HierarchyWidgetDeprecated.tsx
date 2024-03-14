@@ -1,9 +1,10 @@
-import { EuiPanel, EuiTreeView } from "@elastic/eui";
+import {EuiPanel, EuiProvider, EuiTreeView} from "@elastic/eui";
 import { Node } from "@elastic/eui/src/components/tree_view/tree_view";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { fetch_data, get_url_prefix } from "../../../../../api/hierarchy_widget_deprecated";
 import { OlsApi } from "../../../../../api/OlsApi";
+import ReactDOM from "react-dom";
 /**
  * Response from OLS
  */
@@ -135,4 +136,24 @@ const HierarchyWidgetDeprecated = (props: HierarchyWidgetDeprecatedProps) => {
     </EuiPanel>
   );
 };
-export { HierarchyWidgetDeprecated };
+
+function createHierarchyDeprecated(props: HierarchyWidgetDeprecatedProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedHierarchyWidgetDeprecated(props), container, callback);
+}
+
+function WrappedHierarchyWidgetDeprecated(props: HierarchyWidgetDeprecatedProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <HierarchyWidgetDeprecated
+              ontologyId={props.ontologyId}
+              api={props.api}
+              iri={props.iri}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { createHierarchyDeprecated, HierarchyWidgetDeprecated };

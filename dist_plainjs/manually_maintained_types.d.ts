@@ -160,6 +160,11 @@ declare global {
       api: string;
     }
     )=>void,
+    createHierarchyDeprecated:(props:{
+      iri?: string;
+      ontologyId?: string;
+      api: string;
+    })=>void,
     createTitle:(props:{
       iri?: string;
       ontologyId?: string;
