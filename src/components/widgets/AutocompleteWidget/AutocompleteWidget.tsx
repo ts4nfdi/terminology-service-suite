@@ -11,7 +11,7 @@ import {AutocompleteWidgetProps} from "../../../utils/types";
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, hasShortSelectedLabel, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -132,7 +132,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             if(props.singleSelection) uniqueValues = [uniqueValues[0]];
 
             for(let option of uniqueValues) {
-                if (option.iri && option.iri.startsWith("http")) {
+                if (option && option.iri && option.iri.startsWith("http")) {
                     await olsApi.select(
                         {query: option.iri},
                         undefined,
@@ -161,7 +161,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             })
                         }
                     });
-                } else if (option.label && props.allowCustomTerms) {
+                } else if (option && option.label && props.allowCustomTerms) {
                     preselectedValues.push({
                         label: option.label,
                         key: option.label,
