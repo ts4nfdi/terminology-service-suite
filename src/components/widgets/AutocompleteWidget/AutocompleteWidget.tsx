@@ -19,7 +19,7 @@ import {AutocompleteWidgetProps} from "../../../utils/types";
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, hasShortSelectedLabel, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, preselected, placeholder, singleSelection, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -45,7 +45,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   // @ts-ignore
   const renderOption = (option, searchValue) => {
     const { label, value } = option;
-    if (props.allowCustomTerms && value.iri == "") {// if we have a custom term, just show the label
+    if (allowCustomTerms && value.iri == "") {// if we have a custom term, just show the label
       return label;
     } else { // otherwise can we can use the semantic information to show some context information like ontology name
       let color = "";
@@ -127,18 +127,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     } = useQuery(
         [
             "onMount", // no dependencies - does only need to be executed once when mounting the component
-            props.preselected
+            preselected
         ],
         async () => {
             let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
-            let uniqueValues = [...new Set(props.preselected)]
+            let uniqueValues = [...new Set(preselected)]
                 .filter((option) => {
-                    return (props.allowCustomTerms && option.label) || option.iri;
+                    return (allowCustomTerms && option.label) || option.iri;
                 });
 
             if(uniqueValues.length > 0) {
-                if (props.singleSelection) uniqueValues = [uniqueValues[0]];
+                if (singleSelection) uniqueValues = [uniqueValues[0]];
 
                 for (let option of uniqueValues) {
                     if (option.iri && option.iri.startsWith("http")) {
@@ -170,7 +170,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                 })
                             }
                         });
-                    } else if (option.label && props.allowCustomTerms) {
+                    } else if (option.label && allowCustomTerms) {
                         preselectedValues.push({
                             label: option.label,
                             key: option.label,
@@ -239,10 +239,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
-    props.selectionChangedEvent(
+    selectionChangedEvent(
       selectedOptions.map((x) => {
         // return the value object with the raw values from OLS to a client
-        if (props.allowCustomTerms && x.value.iri == "") {
+        if (allowCustomTerms && x.value.iri == "") {
           return {
             iri: "",
             label: x.label,
@@ -314,16 +314,16 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             {...rest} // items above can be overriden by a client
             async={true}
             isLoading={isLoadingTerms || isLoadingOnMount}
-            singleSelection={props.singleSelection ? { asPlainText: true } : false}
+            singleSelection={singleSelection ? { asPlainText: true } : false}
             placeholder={
-                props.placeholder ? props.placeholder : "Search for a Concept"
+                placeholder ? placeholder : "Search for a Concept"
             }
             options={options}
             selectedOptions={selectedOptions}
             onSearchChange={setSearchValue}
             onChange={onChangeHandler}
             renderOption={renderOption}
-            onCreateOption={props.allowCustomTerms ? onCreateOptionHandler : undefined}
+            onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
             rowHeight={50}
         />
     );
