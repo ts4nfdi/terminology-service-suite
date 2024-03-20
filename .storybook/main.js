@@ -11,7 +11,10 @@ module.exports = {
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    autodocs: true,
+  },
+  typescript: {
+    reactDocgen: 'react-docgen'
   },
   refs: {
     react: {
@@ -26,17 +29,3 @@ module.exports = {
     }
   },
 };
-
-/*
-refs: {
-    react: {
-      title: "REACT",
-      // this has to be the port on which storybook:react runs
-      url: "http://localhost:6006",
-    },
-    html: {
-      title: "HTML",
-      // this has to be the port on which storybook:html runs
-      url: "http://localhost:6007",
-    }
-  }, */

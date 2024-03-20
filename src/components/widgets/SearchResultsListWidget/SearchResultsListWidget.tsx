@@ -1,6 +1,5 @@
 import {
     EuiButtonEmpty,
-    EuiCardProps,
     EuiFlexGroup,
     EuiFlexItem,
     EuiFormRow,
@@ -19,21 +18,9 @@ import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
-import {AutocompleteWidget} from "../AutocompleteWidget";
+import {SearchResultsListWidgetProps} from "../../../utils/types";
+import { AutocompleteWidget } from "../AutocompleteWidget";
 import ReactDOM from "react-dom";
-
-
-export type SearchResultsListWidgetProps = {
-  api: string;
-  query: string;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
-  parameter?: string;
-  initialItemsPerPage?: number;
-  itemsPerPageOptions?: number[];
-  targetLink?: string;
-} & Partial<Omit<EuiCardProps, "layout">>;
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -79,7 +66,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 return accumulator;
             }, []));
         } else {
-            const newOptions = [...currentOptions];
+            const newOptions: EuiSelectableOption[] = [];
+            for(let i = 0; i < currentOptions.length; i++) {
+                newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
+            }
+
             optionCounts.forEach((currentValue: string, currentIndex: number, array: any[]) => {
                 if (currentIndex % 2 === 0) {
                     const option = newOptions.find((option: EuiSelectableOption) => option.key == currentValue);
@@ -100,7 +91,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
     const {
         data: searchResults,
-        isLoading: resultsAreLoading
+        isLoading,
+        isSuccess,
+        isError,
+        error,
     } = useQuery(
         [
             "searchResults",
@@ -110,11 +104,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             showObsoleteTerms,
             activePage,
             itemsPerPage,
-            filterByTypeOptions.filter(filterSelectedOptions),
-            filterByOntologyOptions.filter(filterSelectedOptions),
+            filterByTypeOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
+            filterByOntologyOptions.filter(filterSelectedOptions).map((option: EuiSelectableOption) => option.key),
             parameter
         ],
-        async () => {
+        async ({signal}) => {
             return olsApi.search(
                 {
                     query: searchValue,
@@ -129,29 +123,34 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     size: itemsPerPage.toString(),
                 },
                 undefined,
-                props.parameter
+                props.parameter,
+                signal
             ).then((response) => {
-                if (response.response && response.response.docs != null && response.response.numFound != null) {
-                    setTotalItems(response.response.numFound);
-                    setPageCount(Math.ceil(response.response.numFound / itemsPerPage));
-
-                    if (response.facet_counts && response.facet_counts.facet_fields) {
-                        if (response.facet_counts.facet_fields.type) {
+                if (response["response"] && response["response"]["docs"] != null && response["response"]["numFound"] != null) {
+                    if (response["facet_counts"] && response["facet_counts"]["facet_fields"]) {
+                        if (response["facet_counts"]["facet_fields"]["type"]) {
                             updateFilterOptions(
                                 filterByTypeOptions,
-                                response.facet_counts.facet_fields.type,
+                                response["facet_counts"]["facet_fields"]["type"],
                                 setFilterByTypeOptions,
                                 (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
                             );
                         }
-                        if (response.facet_counts.facet_fields.ontology_name) {
+                        if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
                             updateFilterOptions(
                                 filterByOntologyOptions,
-                                response.facet_counts.facet_fields.ontology_name,
+                                response["facet_counts"]["facet_fields"]["ontology_name"],
                                 setFilterByOntologyOptions,
                                 (currentValue: string) => currentValue.toUpperCase()
                             );
                         }
+                    }
+
+                    setTotalItems(response["response"]["numFound"]);
+                    const newPageCount = Math.ceil(response["response"]["numFound"] / itemsPerPage)
+                    setPageCount(newPageCount);
+                    if(activePage >= newPageCount) {
+                        setActivePage(0);
                     }
 
                     return response.response.docs;
@@ -160,7 +159,9 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 }
             });
         },
-        { keepPreviousData: true } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
+        {
+            keepPreviousData: true
+        } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
     );
 
     function onChangeItemsPerPage(newItemsPerPage: number) {
@@ -186,17 +187,27 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         clearFilter(filterByOntologyOptions, setFilterByOntologyOptions);
     }
 
-    if (resultsAreLoading) {
-        return <EuiLoadingSpinner size="xl"/>;
+    function transform_to_searchValue(selectedOption: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string
+    }[]) {
+        setSearchValue(selectedOption[0] ? selectedOption[0].label : "")
     }
+
 
     return (
         <>
-            <SearchBarWidget
+            <AutocompleteWidget
                 api={api}
-                query={searchValue}
-                onSearchValueChange={setSearchValue}
-                parameter={parameter}
+                selectionChangedEvent={(selectedOption) => {
+                    transform_to_searchValue(selectedOption);
+                }}
+                allowCustomTerms={true}
+                singleSelection={true}
+                hasShortSelectedLabel={true}
+                placeholder={"Search"}
             />
 
             <EuiSpacer size="s"/>
@@ -204,31 +215,73 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             <EuiFlexGroup>
                 <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
                     <EuiPanel>
-                        <EuiFormRow label="Filter by type">
-                            <EuiSelectable
-                                options={filterByTypeOptions}
-                                onChange={setFilterByTypeOptions}
-                                listProps={{ bordered: true }}
-                            >
-                                {(list) => list}
-                            </EuiSelectable>
-                        </EuiFormRow>
+                        {isSuccess &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiSelectable
+                                    options={filterByTypeOptions}
+                                    onChange={setFilterByTypeOptions}
+                                    listProps={{ bordered: true }}
+                                >
+                                    {(list) => list}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
+                        {isLoading &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiLoadingSpinner size="s" />
+                            </EuiFormRow>
+                        }
+                        {isError &&
+                            <EuiFormRow label="Filter by type">
+                                <EuiSelectable
+                                    options={[]}
+                                    onChange={setFilterByTypeOptions}
+                                    listProps={{ bordered: true }}
+                                >
+                                    {(list) => list}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
 
-                        <EuiFormRow label="Filter by ontology">
-                            <EuiSelectable
-                                options={filterByOntologyOptions}
-                                onChange={setFilterByOntologyOptions}
-                                listProps={{ bordered: true }}
-                                searchable
-                            >
-                                {(list, search) => (
-                                    <>
-                                        {search}
-                                        {list}
-                                    </>
-                                )}
-                            </EuiSelectable>
-                        </EuiFormRow>
+                        {isSuccess &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiSelectable
+                                    options={filterByOntologyOptions}
+                                    onChange={setFilterByOntologyOptions}
+                                    listProps={{ bordered: true }}
+                                    searchable
+                                >
+                                    {(list, search) => (
+                                        <>
+                                            {search}
+                                            {list}
+                                        </>
+                                    )}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
+                        {isLoading &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiLoadingSpinner size="s" />
+                            </EuiFormRow>
+                        }
+                        {isError &&
+                            <EuiFormRow label="Filter by ontology">
+                                <EuiSelectable
+                                    options={[]}
+                                    onChange={setFilterByOntologyOptions}
+                                    listProps={{ bordered: true }}
+                                    searchable
+                                >
+                                    {(list, search) => (
+                                        <>
+                                            {search}
+                                            {list}
+                                        </>
+                                    )}
+                                </EuiSelectable>
+                            </EuiFormRow>
+                        }
 
                         <EuiButtonEmpty
                             onClick={clearAllFilters}

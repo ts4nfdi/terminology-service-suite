@@ -1,18 +1,6 @@
-import type { StoryObj, Meta } from '@storybook/html';
 import 'semlookp-widgets';
-
-interface TabWidgetProps {
-    iri: string;
-    api: string;
-    ontologyId: string;
-    entityType:
-        | "ontology"
-        | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
-        | "individual"
-        | "property"
-        | string;
-    parameter?: string;
-}
+import {TabWidgetProps} from "../../../../utils/types";
+import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 
 let counter = 0;
 
@@ -21,13 +9,13 @@ function getIncNum() {
 }
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
-const meta = {
+export default {
     title: 'TabWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
     },
-    render: (args) => {
+    render: (args: TabWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!
         // return `<div>${label}</div>`;
         const num = getIncNum();
@@ -43,83 +31,22 @@ window['SemLookPWidgets'].createTab(
         ontologyId:"${args.ontologyId}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
+        useLegacy:${args.useLegacy}
     },
     document.querySelector('#tab_widget_container_${num}')
 )
 </script>
         `
     },
-    argTypes: {
-        api: {
-            description: "Instance of the OLS API to call.",
-            control: {
-                type: "radio",
-            },
-            options: [
-                "https://www.ebi.ac.uk/ols/api/",
-                "https://semanticlookup.zbmed.de/ols/api/",
-                "https://semanticlookup.zbmed.de/api/",
-            ],
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        ontologyId: {
-            description: "Ontology ID from where the term information should be taken.",
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        iri: {
-            description: "Iri of the term you want to fetch the tab information for.",
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        parameter: {
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        entityType: {
-            description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
-            control: {
-                type: "radio",
-            },
-            options: [
-                "term",
-                "class",
-                "property",
-                "individual",
-                "INVALID STRING"
-            ],
-            table: {
-                type: {
-                    summary: "union",
-                },
-            }
-        },
-    },
-} satisfies Meta<TabWidgetProps>;
+    argTypes: TabWidgetStoryArgTypes,
+    args: TabWidgetStoryArgs
+}
 
-export default meta;
-type Story = StoryObj<TabWidgetProps>;
-
-// More on writing stories with args: https://storybook.js.org/docs/html/writing-stories/args
-export const TabWidget1: Story = {
-    args: {
-        api: "https://semanticlookup.zbmed.de/api/",
-        ontologyId: "ncit",
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        entityType: "term",
-        parameter: "collection=nfdi4health",
-    },
-};
+export {
+    Default,
+    TabWidgetOLS3,
+    TabWidgetOLS4V1,
+    TabWidgetOLS4V2,
+    SelectingDefiningOntology,
+    DefiningOntologyUnavailable
+} from "./TabWidgetStories"

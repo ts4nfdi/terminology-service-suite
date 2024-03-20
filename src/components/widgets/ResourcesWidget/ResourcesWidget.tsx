@@ -1,53 +1,12 @@
 import React, { useState } from "react";
-import {
-  EuiLoadingSpinner,
-  EuiBasicTable,
-  EuiButtonIcon,
-  EuiLink,
-  CriteriaWithPagination, EuiProvider,
-} from "@elastic/eui";
+import {EuiBasicTable, EuiButtonIcon, EuiLink, CriteriaWithPagination, EuiProvider} from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
-import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import {AutocompleteWidget} from "../AutocompleteWidget";
+import { getErrorMessageToDisplay } from "../../../utils/helper";
+import {OlsResource, ResourcesWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-
-export interface ResourcesWidgetProps {
-  api: string;
-  initialEntriesPerPage?: number;
-  pageSizeOptions?: number[];
-  initialSortField?: string;
-  initialSortDir?: "asc" | "desc";
-  /**
-   * Pass actions to each item in the table.
-   */
-  targetLink?: string;
-  actions?: Array<Action<OlsResource>>;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
-  parameter?: string;
-}
-
-export interface OlsResource {
-  ontologyId: string;
-  loaded: string;
-  numberOfTerms: number;
-  numberOfProperties: number;
-  numberOfIndividuals: number;
-  config: {
-    title: string;
-    description: string;
-    preferredPrefix: string;
-    allowDownload: boolean;
-    fileLocation: string;
-    version?: string;
-    [otherFields: string]: unknown;
-  };
-  [otherFields: string]: unknown;
-}
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -182,7 +141,13 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
-  const { data: ontologies } = useQuery(
+  const {
+    data: ontologies,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     [
       api,
       "ontologiesMetadata",
@@ -208,13 +173,13 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         )
         .then((response) => {
           if (
-            response.page.totalElements != null &&
-            response._embedded &&
-            response._embedded.ontologies
+            response["page"]["totalElements"] != null &&
+            response["_embedded"] &&
+            response["_embedded"]["ontologies"]
           ) {
             // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-            setTotalOntologies(response.page.totalElements);
-            return response._embedded.ontologies;
+            setTotalOntologies(response["page"]["totalElements"]);
+            return response["_embedded"]["ontologies"];
           } else {
             throw new Error("Unexpected API response");
           }
@@ -222,19 +187,40 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   );
 
-  if (ontologies) {
-    return (
-      <EuiBasicTable
-        columns={columns}
-        items={ontologies}
-        onChange={onTableChange}
-        pagination={pagination}
-        sorting={sorting}
-      />
-    );
-  }
+  return (
+      <>
+        {isSuccess &&
+            <EuiBasicTable
+                columns={columns}
+                items={ontologies}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+            />
+        }
+        {isLoading &&
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                loading
+            />
 
-  return <EuiLoadingSpinner size="xl" />;
+        }
+        {isError &&
+            <EuiBasicTable
+                columns={columns}
+                items={[]}
+                onChange={onTableChange}
+                pagination={pagination}
+                sorting={sorting}
+                error={getErrorMessageToDisplay(error, "resources")}
+            />
+        }
+      </>
+  )
 }
 
 function createResources(props: ResourcesWidgetProps, container: any, callback?: ()=>void) {

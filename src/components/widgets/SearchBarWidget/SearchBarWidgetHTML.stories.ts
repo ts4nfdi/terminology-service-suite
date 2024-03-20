@@ -1,15 +1,6 @@
-import type { StoryObj, Meta } from '@storybook/html';
 import 'semlookp-widgets';
-
-interface SearchBarWidgetProps {
-    api: string;
-    query: string;
-    /**
-     * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-     */
-    onSearchValueChange: (suggestion: string) => void;
-    parameter?: string
-}
+import {SearchBarWidgetProps} from "../../../utils/types";
+import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "./SearchBarWidgetStories"
 
 let counter = 0;
 
@@ -17,14 +8,13 @@ function getIncNum() {
     return counter++;
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
-const meta = {
+export default {
     title: 'SearchBarWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
     },
-    render: (args) => {
+    render: (args: SearchBarWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!
         // return `<div>${label}</div>`;
         const num = getIncNum();
@@ -45,59 +35,11 @@ window['SemLookPWidgets'].createSearchBar(
 </script>
         `
     },
-    argTypes: {
-        api: {
-            description: "Instance of the OLS API to call.",
-            control: {
-                type: "radio",
-            },
-            options: [
-                "https://www.ebi.ac.uk/ols/api/",
-                "https://semanticlookup.zbmed.de/ols/api/",
-                "https://semanticlookup.zbmed.de/api/",
-            ],
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        query: {
-            description: "The search term to receive suggestions for.",
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        },
-        onSearchValueChange: {
-            description: "Function to be called when the search value in the search bar changes.",
-            action: "onSearchValueChange",
-            table: {
-                type: {
-                    summary: "signature",
-                },
-            }
-        },
-        parameter: {
-            table: {
-                type: {
-                    summary: "string",
-                },
-            }
-        }
-    },
-} satisfies Meta<SearchBarWidgetProps>;
+    argTypes: SearchBarWidgetStoryArgTypes,
+    args: SearchBarWidgetStoryArgs
+}
 
-export default meta;
-type Story = StoryObj<SearchBarWidgetProps>;
 
-// More on writing stories with args: https://storybook.js.org/docs/html/writing-stories/args
-export const SearchBarWidget1: Story = {
-    args: {
-        api: "https://semanticlookup.zbmed.de/api/",
-        query: "diab",
-        onSearchValueChange: ((suggestion: string) => {}),
-        parameter: "collection=nfdi4health",
-    },
-};
+export {
+    SearchBarWidget1
+} from "./SearchBarWidgetStories"

@@ -14,7 +14,7 @@ declare global {
         ontology_name?: string;
         type?: string;
       }) => void;
-      selectOption?: { label?: string; iri?: string };
+      preselected?: { label?: string; iri?: string };
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
@@ -36,6 +36,22 @@ declare global {
           | "individual"
           | "property";
       parameter?: string;
+      useLegacy?: boolean;
+      showBadges?: boolean;
+    }
+    )=>void,
+    createEntityRelations:(props:{
+      api: string;
+      iri?: string;
+      ontologyId?: string;
+      hasTitle?: boolean;
+      entityType:
+          | "ontology"
+          | "term" | "class" //equivalent: API uses 'class', rest uses 'term' -> both allowed here
+          | "individual"
+          | "property";
+      parameter?: string;
+      showBadges?: boolean;
     }
     )=>void,
     createJsonApi:(props:{
@@ -144,6 +160,11 @@ declare global {
       api: string;
     }
     )=>void,
+    createHierarchyDeprecated:(props:{
+      iri?: string;
+      ontologyId?: string;
+      api: string;
+    })=>void,
     createTitle:(props:{
       iri?: string;
       ontologyId?: string;

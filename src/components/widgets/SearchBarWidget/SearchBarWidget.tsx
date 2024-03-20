@@ -1,20 +1,9 @@
 import {EuiProvider, EuiSuggest, EuiSuggestionProps} from "@elastic/eui";
-import { EuiSuggestProps } from "@elastic/eui/src/components";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AutocompleteWidget} from "../AutocompleteWidget";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {SearchBarWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-
-export type SearchBarWidgetProps = {
-  api: string;
-  query: string;
-  /**
-   * This parameter specifies which set of ontologies should be shown for a specific frontend like 'nfdi4health'
-   */
-  onSearchValueChange: (suggestion: string) => void;
-  parameter?: string
-} & Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value">;
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
@@ -36,26 +25,34 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
     onSearchValueChange(searchValue);
   }, [searchValue]);
 
-  async function onChange(value: string) {
-    setSearchValue(value);
-    return olsApi.suggest(
-      {
-        query: value,
-      },
-      undefined,
-      undefined,
-        props.parameter,
-    ).then((response) => {
-      if (response.response && response.response.docs) {
-        setSuggestions(response.response.docs.map((suggestion: any) => (
-          {
-            label: suggestion.autosuggest,
-            type: { color: "tint1" },
-          }
-        )));
+  /**
+   * fetches suggestions when searchValue changes (setSearchValue is passed as EuiSuggest onChange)
+   */
+  useQuery(
+      [
+          "onChange",
+          searchValue
+      ],
+      async () => {
+          return olsApi.suggest(
+              {
+                query: searchValue,
+              },
+              undefined,
+              undefined,
+              props.parameter,
+          ).then((response) => {
+            if (response.response && response.response.docs) {
+              setSuggestions(response.response.docs.map((suggestion: any) => (
+                  {
+                    label: suggestion.autosuggest,
+                    type: { color: "tint1", iconType: ""},
+                  }
+              )));
+            }
+          });
       }
-    });
-  }
+  )
 
   function onItemClick(item: EuiSuggestionProps) {
     setSearchValue(item.label);
@@ -69,7 +66,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         isClearable
         {...rest}
         suggestions={suggestions}
-        onChange={onChange}
+        onChange={setSearchValue}
         onItemClick={onItemClick}
         value={searchValue}
       />

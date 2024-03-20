@@ -1,5 +1,5 @@
-import React from "react";
-import { CrossRefTabWidget, CrossRefWidgetProps } from "./CrossRefTabWidget";
+import { CrossRefTabWidget } from "./CrossRefTabWidget";
+import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 
 export default {
   title: "CrossRefTabWidget",
@@ -7,56 +7,12 @@ export default {
   parameters: {
     layout: "centered",
   },
-  argTypes: {
-    api: {
-      description: "Instance of the OLS API to call.",
-      control: {
-        type: "radio",
-      },
-      options: [
-        "https://www.ebi.ac.uk/ols/api/",
-        "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-      ],
-    },
-    iri: {
-      description:
-        "IRI of the entity you want to fetch the cross references for.",
-    },
-    ontologyId: {
-      description: "Ontology ID from where the entity metadata should be taken.",
-    },
-    entityType: {
-      description: "Sets the type of the entity whose information you want to fetch. Accepts 'term', 'class', 'property', or 'individual'.",
-      control: {
-        type: "radio",
-      },
-      options: [
-        "term",
-        "class",
-        "property",
-        "individual",
-        "INVALID STRING"
-      ],
-    },
-    parameter: {
-      type: { required: false }
-    },
-  },
-  args: {
-    parameter: "collection=nfdi4health",
-  }
+  argTypes: CrossRefWidgetStoryArgTypes,
+  args: CrossRefWidgetStoryArgs
 };
 
-const Template = (args: CrossRefWidgetProps) => <CrossRefTabWidget {...args} />;
-
-export const CrossRefTabWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-CrossRefTabWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-  api: "https://www.ebi.ac.uk/ols/api/",
-  entityType: "term",
-  ontologyId: "rxno"
-};
+export {
+    CrossRefTabWidget1,
+    SelectingDefiningOntology,
+    DefiningOntologyUnavailable
+} from "./CrossRefWidgetStories"

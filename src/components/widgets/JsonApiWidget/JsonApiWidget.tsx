@@ -1,14 +1,8 @@
 import React from "react";
 import {EuiButton, EuiProvider} from "@elastic/eui";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AutocompleteWidget} from "../AutocompleteWidget";
+import {JsonApiWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-
-export interface JsonApiWidgetProps {
-  apiQuery: string;
-  buttonText: string;
-  buttonSize?: "s" | "m";
-}
+import {QueryClient, QueryClientProvider} from "react-query";
 
 function JsonApiWidget(props: JsonApiWidgetProps) {
   const { apiQuery, buttonText, buttonSize } = props;
