@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {SearchBarWidgetProps} from "../../../utils/types";
-import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"
+import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "./SearchBarWidgetStories"
 
 let counter = 0;
 
@@ -42,4 +42,4 @@ window['SemLookPWidgets'].createSearchBar(
 
 export {
     SearchBarWidget1
-} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"
+} from "./SearchBarWidgetStories"

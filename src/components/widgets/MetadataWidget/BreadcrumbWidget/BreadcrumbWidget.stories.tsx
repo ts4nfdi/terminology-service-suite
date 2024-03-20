@@ -2,7 +2,7 @@ import {BreadcrumbWidget} from "./BreadcrumbWidget";
 import {
   BreadcrumbWidgetStoryArgs,
   BreadcrumbWidgetStoryArgTypes
-} from "root/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
+} from "./BreadcrumbWidgetStories";
 
 export default {
   title: "BreadcrumbWidget",
@@ -19,4 +19,4 @@ export {
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     ErrorBreadcrumbWidget
-} from "root/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories"
+} from "./BreadcrumbWidgetStories"

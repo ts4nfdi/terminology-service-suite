@@ -1,5 +1,5 @@
 import {ResourcesWidget} from "./ResourcesWidget";
-import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "root/src/components/widgets/ResourcesWidget/ResourcesWidgetStories"
+import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories"
 
 export default {
   title: "ResourcesWidget",
@@ -15,4 +15,4 @@ export {
     ResourcesWidget1,
     WithActions,
     WithActionsAndSafety
-} from "root/src/components/widgets/ResourcesWidget/ResourcesWidgetStories"
+} from "./ResourcesWidgetStories"

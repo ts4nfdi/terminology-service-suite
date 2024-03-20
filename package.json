@@ -88,7 +88,6 @@
   },
   "dependencies": {
     "@storybook/html-vite": "^7.2.3",
-    "semlookp-widgets": "file:dist_plainjs/",
-    "root": "file:."
+    "semlookp-widgets": "file:dist_plainjs/"
   }
 }

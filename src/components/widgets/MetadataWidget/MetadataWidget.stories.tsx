@@ -18,4 +18,4 @@ export {
     OLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/MetadataWidgetStories"
+} from "./MetadataWidgetStories"

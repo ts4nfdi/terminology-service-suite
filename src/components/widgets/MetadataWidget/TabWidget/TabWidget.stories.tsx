@@ -1,5 +1,5 @@
 import { TabWidget } from "./TabWidget";
-import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
+import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 
 export default {
   title: "TabWidget",
@@ -18,4 +18,4 @@ export {
     TabWidgetOLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories"
+} from "./TabWidgetStories"

@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {TitleWidgetProps} from "../../../../utils/types";
-import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
+import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
 
 let counter = 0;
 
@@ -20,9 +20,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="title_widget_container_${num}"></div>
-</div>
+<div id="title_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createTitle(
@@ -48,4 +46,4 @@ export {
     TitleWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
+} from "./TitleWidgetStories";

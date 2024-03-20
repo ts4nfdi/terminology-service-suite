@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
+import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
 import {HierarchyWidgetProps} from "../../../../../utils/types";
 
 let counter = 0;
@@ -41,4 +41,4 @@ window['SemLookPWidgets'].createHierarchy(
 
 export {
     HierarchyWidget1
-} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories"
+} from "./HierarchyWidgetStories"

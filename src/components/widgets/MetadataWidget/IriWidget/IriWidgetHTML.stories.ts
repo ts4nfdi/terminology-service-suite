@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
+import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
 import {IriWidgetProps} from "../../../../utils/types";
 
 let counter = 0;
@@ -20,9 +20,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="iri_widget_container_${num}"></div>
-</div>
+<div id="iri_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createIri(
@@ -43,4 +41,4 @@ window['SemLookPWidgets'].createIri(
 
 export {
     IriWidget1
-} from "root/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories"
+} from "./IriWidgetStories"

@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {TabWidgetProps} from "../../../../utils/types";
-import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
+import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 
 let counter = 0;
 
@@ -49,4 +49,4 @@ export {
     TabWidgetOLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories"
+} from "./TabWidgetStories"

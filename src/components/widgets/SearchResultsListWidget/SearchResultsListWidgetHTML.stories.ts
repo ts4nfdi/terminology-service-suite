@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "root/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories"
+import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "./SearchResultsListWidgetStories"
 import {SearchResultsListWidgetProps} from "../../../utils/types";
 
 let counter = 0;
@@ -45,4 +45,4 @@ export {
     SearchResultsListSafety,
     SearchResultsListNFDI4Health,
     ErrorSearchResultsList
-} from "root/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories"
+} from "./SearchResultsListWidgetStories"

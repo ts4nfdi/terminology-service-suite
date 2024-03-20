@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
-import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
+import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "./AlternativeNameTabWidgetStories";
 
 let counter = 0;
 
@@ -45,4 +45,4 @@ export {
     AlternativeNameTabWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories"
+} from "./AlternativeNameTabWidgetStories"

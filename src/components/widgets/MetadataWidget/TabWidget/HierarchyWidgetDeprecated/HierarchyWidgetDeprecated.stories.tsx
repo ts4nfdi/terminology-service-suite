@@ -2,7 +2,7 @@ import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
 import {
   HierarchyWidgetDeprecatedStoryArgs,
   HierarchyWidgetDeprecatedStoryArgTypes
-} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecatedStories";
+} from "./HierarchyWidgetDeprecatedStories";
 export default {
   title: "HierarchyWidgetDeprecated",
   component: HierarchyWidgetDeprecated,
@@ -15,4 +15,4 @@ export default {
 
 export {
   HierarchyWidgetDeprecated1
-} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecatedStories"
+} from "./HierarchyWidgetDeprecatedStories"

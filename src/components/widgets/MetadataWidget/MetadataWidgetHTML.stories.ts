@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {MetadataWidgetProps} from "../../../utils/types";
-import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/MetadataWidgetStories"
+import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
 
 let counter = 0;
 
@@ -20,9 +20,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="metadata_widget_container_${num}"></div>
-</div>
+<div id="metadata_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createMetadata(
@@ -50,4 +48,4 @@ export {
     OLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/MetadataWidgetStories"
+} from "./MetadataWidgetStories"

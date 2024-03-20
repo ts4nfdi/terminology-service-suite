@@ -1,5 +1,5 @@
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
-import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "root/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories"
+import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
 
 export default {
   title: "OntologyInfoWidget",
@@ -15,4 +15,4 @@ export {
     OntologyInfoWidget1,
     OntologyInfoWidget2,
     OntologyInfoWidgetOLS4API
-} from "root/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories"
+} from "./OntologyInfoWidgetStories"

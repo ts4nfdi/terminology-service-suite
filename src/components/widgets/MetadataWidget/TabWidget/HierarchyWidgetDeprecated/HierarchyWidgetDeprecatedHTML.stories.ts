@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {HierarchyWidgetDeprecatedStoryArgs, HierarchyWidgetDeprecatedStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecatedStories";
+import {HierarchyWidgetDeprecatedStoryArgs, HierarchyWidgetDeprecatedStoryArgTypes} from "./HierarchyWidgetDeprecatedStories";
 import {HierarchyWidgetDeprecatedProps} from "./HierarchyWidgetDeprecated";
 
 let counter = 0;
@@ -40,4 +40,4 @@ window['SemLookPWidgets'].createHierarchyDeprecated(
 
 export {
     HierarchyWidgetDeprecated1
-} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecatedStories"
+} from "./HierarchyWidgetDeprecatedStories"

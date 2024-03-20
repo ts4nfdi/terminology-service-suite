@@ -1,5 +1,5 @@
 import {TitleWidget} from "./TitleWidget";
-import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
+import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
 
 export default {
     title: "TitleWidget",
@@ -15,4 +15,4 @@ export {
     TitleWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
+} from "./TitleWidgetStories";

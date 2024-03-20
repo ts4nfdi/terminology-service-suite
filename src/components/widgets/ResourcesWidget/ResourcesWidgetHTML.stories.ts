@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "root/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
+import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories";
 import {ResourcesWidgetProps} from "../../../utils/types";
 
 let counter = 0;
@@ -49,4 +49,4 @@ export {
     //       Usage of react components inside args should be avoided
     // WithActions,
     // WithActionsAndSafety
-} from "root/src/components/widgets/ResourcesWidget/ResourcesWidgetStories"
+} from "./ResourcesWidgetStories"

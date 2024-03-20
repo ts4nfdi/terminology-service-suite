@@ -1,5 +1,5 @@
 import { JsonApiWidget } from "./JsonApiWidget";
-import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
+import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
 
 export default {
   title: "JsonApiWidget",
@@ -13,4 +13,4 @@ export default {
 
 export {
   JsonApiWidget1
-} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories"
+} from "./JsonApiWidgetStories"

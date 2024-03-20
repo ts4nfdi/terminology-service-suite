@@ -1,5 +1,5 @@
 import { DescriptionWidget } from "./DescriptionWidget";
-import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories";
+import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
 
 export default {
   title: "DescriptionWidget",
@@ -15,4 +15,4 @@ export {
     DescriptionWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories"
+} from "./DescriptionWidgetStories"

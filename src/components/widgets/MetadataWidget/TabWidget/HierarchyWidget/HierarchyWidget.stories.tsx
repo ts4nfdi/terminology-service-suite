@@ -1,5 +1,5 @@
 import { HierarchyWidget } from "./HierarchyWidget";
-import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
+import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
 
 export default {
   title: "HierarchyWidget",
@@ -18,4 +18,4 @@ export default {
 
 export {
     HierarchyWidget1
-} from "root/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories"
+} from "./HierarchyWidgetStories"

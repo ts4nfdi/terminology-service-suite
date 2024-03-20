@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "root/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories"
+import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
 import {OntologyInfoWidgetProps} from "../../../utils/types";
 
 let counter = 0;
@@ -20,9 +20,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="ontology_info_widget_container_${num}"></div>
-</div>
+<div id="ontology_info_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createOntologyInfo(
@@ -47,4 +45,4 @@ export {
     OntologyInfoWidget1,
     OntologyInfoWidget2,
     OntologyInfoWidgetOLS4API
-} from "root/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories"
+} from "./OntologyInfoWidgetStories"

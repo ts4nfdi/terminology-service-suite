@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
+import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 import {CrossRefWidgetProps} from "../../../../../utils/types";
 
 let counter = 0;
@@ -45,4 +45,4 @@ export {
     CrossRefTabWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories"
+} from "./CrossRefWidgetStories"

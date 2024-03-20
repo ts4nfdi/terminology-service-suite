@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {BreadcrumbWidgetProps} from "../../../../utils/types";
-import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
+import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
 
 let counter = 0;
 
@@ -47,4 +47,4 @@ export {
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     ErrorBreadcrumbWidget
-} from "root/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories"
+} from "./BreadcrumbWidgetStories"

@@ -21,4 +21,4 @@ export {
   InfoWidgetPropertyCharacteristics,
   InfoWidgetRange,
   OptionalEntityTypeLegacyAPI
-} from "root/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories"
+} from "./EntityInfoWidgetStories"

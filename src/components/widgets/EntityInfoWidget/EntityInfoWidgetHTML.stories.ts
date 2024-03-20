@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "root/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories";
+import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {EntityInfoWidgetProps} from "../../../utils/types";
 
 let counter = 0;
@@ -53,4 +53,4 @@ export {
     InfoWidgetPropertyCharacteristics,
     InfoWidgetRange,
     OptionalEntityTypeLegacyAPI
-} from "root/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories"
+} from "./EntityInfoWidgetStories"

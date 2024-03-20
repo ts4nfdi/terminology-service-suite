@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {DescriptionWidgetProps} from "../../../../utils/types";
-import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories";
+import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
 
 let counter = 0;
 
@@ -21,9 +21,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="description_widget_container_${num}"></div>
-</div>
+<div id="description_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createDescription(
@@ -50,4 +48,4 @@ export {
     DescriptionWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories"
+} from "./DescriptionWidgetStories"

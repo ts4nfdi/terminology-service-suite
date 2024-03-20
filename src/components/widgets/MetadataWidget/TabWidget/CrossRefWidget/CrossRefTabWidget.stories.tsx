@@ -1,5 +1,5 @@
 import { CrossRefTabWidget } from "./CrossRefTabWidget";
-import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
+import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 
 export default {
   title: "CrossRefTabWidget",
@@ -15,4 +15,4 @@ export {
     CrossRefTabWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories"
+} from "./CrossRefWidgetStories"

@@ -2,7 +2,7 @@ import { IriWidget } from "./IriWidget";
 import {
   IriWidgetStoryArgs,
   IriWidgetStoryArgTypes
-} from "root/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
+} from "./IriWidgetStories";
 
 export default {
   title: "IriWidget",
@@ -16,4 +16,4 @@ export default {
 
 export {
   IriWidget1
-} from "root/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories"
+} from "./IriWidgetStories"

@@ -1,5 +1,5 @@
 import { SearchBarWidget } from "./SearchBarWidget";
-import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"
+import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "./SearchBarWidgetStories"
 
 export default {
   title: "SearchBarWidget",
@@ -10,4 +10,4 @@ export default {
 
 export {
     SearchBarWidget1
-} from "root/src/components/widgets/SearchBarWidget/SearchBarWidgetStories"
+} from "./SearchBarWidgetStories"

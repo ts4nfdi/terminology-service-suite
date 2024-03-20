@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {EntityRelationsWidgetProps} from "../../../utils/types";
-import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "root/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories";
+import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
 
 let counter = 0;
 
@@ -53,4 +53,4 @@ export {
     Instances,
     Axioms,
     QualifiedCardinality
-} from "root/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories"
+} from "./EntityRelationsWidgetStories"

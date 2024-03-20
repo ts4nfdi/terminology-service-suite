@@ -1,5 +1,5 @@
 import { EntityRelationsWidget } from "./EntityRelationsWidget";
-import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "root/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories";
+import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
 
 export default {
     title: "EntityRelationsWidget",
@@ -22,4 +22,4 @@ export {
     Instances,
     Axioms,
     QualifiedCardinality
-} from "root/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories"
+} from "./EntityRelationsWidgetStories"

@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {JsonApiWidgetProps} from "../../../utils/types";
-import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
+import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
 
 let counter = 0;
 
@@ -20,9 +20,7 @@ export default {
         const num = getIncNum();
 
         return `
-<div class="euiPanel euiPanel--plain euiPanel--paddingMedium euiCard euiCard--horizontal css-1yzwxdg-euiPanel-grow-m-m-plain-hasShadow" style="margin-bottom: 20px">
-    <div id="json_api_widget_container_${num}"></div>
-</div>
+<div id="json_api_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['SemLookPWidgets'].createJsonApi(
@@ -42,4 +40,4 @@ window['SemLookPWidgets'].createJsonApi(
 
 export {
     JsonApiWidget1
-} from "root/src/components/widgets/JsonApiWidget/JsonApiWidgetStories"
+} from "./JsonApiWidgetStories"

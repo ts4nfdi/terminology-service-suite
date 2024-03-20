@@ -15,4 +15,4 @@ export {
   NFDI4HealthDataContentWidget,
   SafetyDataContentWidget,
   ErrorDataContentWidget
-} from "root/src/components/widgets/DataContentWidget/DataContentWidgetStories"
+} from "./DataContentWidgetStories"

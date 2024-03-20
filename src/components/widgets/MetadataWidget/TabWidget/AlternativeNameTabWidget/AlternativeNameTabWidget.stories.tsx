@@ -1,5 +1,5 @@
 import {AlternativeNameTabWidget} from "./AlternativeNameTabWidget";
-import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "root/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
+import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "./AlternativeNameTabWidgetStories";
 
 export default {
   title: "AlternativeNameTabWidget",
@@ -15,4 +15,4 @@ export {
     AlternativeNameTabWidget1,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
-} from "root/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories"
+} from "./AlternativeNameTabWidgetStories"

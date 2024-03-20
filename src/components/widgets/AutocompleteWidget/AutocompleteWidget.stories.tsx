@@ -1,6 +1,6 @@
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import "@elastic/eui/dist/eui_theme_light.json";
-import { AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs } from "root/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
+import { AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs } from "./AutocompleteWidgetStories";
 
 export default {
   title: "AutocompleteWidget",
@@ -20,7 +20,7 @@ export {
   WithGermanInput,
   DisplaySelectedEntityWithLongForm,
   WithDescriptionAndShortForm
-} from "root/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories"
+} from "./AutocompleteWidgetStories"
 
 
 

@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs} from "root/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
+import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../utils/types";
 
 let counter = 0;
@@ -54,4 +54,4 @@ export {
     WithGermanInput,
     DisplaySelectedEntityWithLongForm,
     WithDescriptionAndShortForm
-} from "root/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories"
+} from "./AutocompleteWidgetStories"
