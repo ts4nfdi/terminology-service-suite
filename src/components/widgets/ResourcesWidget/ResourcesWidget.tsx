@@ -223,7 +223,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   )
 }
 
-function createResources(props: ResourcesWidgetProps, container: any, callback?: ()=>void) {
+function createResources(props: ResourcesWidgetProps, container: Element, callback?: ()=>void) {
   ReactDOM.render(WrappedResourcesWidget(props), container, callback);
 }
 

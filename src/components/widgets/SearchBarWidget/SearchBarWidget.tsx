@@ -23,7 +23,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
 
   useEffect(() => {
     onSearchValueChange(searchValue);
-  }, [searchValue]);
+  }, [onSearchValueChange, searchValue]);
 
   /**
    * fetches suggestions when searchValue changes (setSearchValue is passed as EuiSuggest onChange)

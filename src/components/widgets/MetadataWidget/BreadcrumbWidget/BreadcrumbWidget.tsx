@@ -53,7 +53,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   );
 }
 
-function createBreadcrumb(props: BreadcrumbWidgetProps, container: any, callback?:()=>void) {
+function createBreadcrumb(props: BreadcrumbWidgetProps, container: Element, callback?:()=>void) {
   ReactDOM.render(WrappedBreadcrumbWidget(props), container, callback);
 }
 

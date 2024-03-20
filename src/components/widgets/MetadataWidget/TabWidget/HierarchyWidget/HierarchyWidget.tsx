@@ -33,7 +33,7 @@ const HierarchyWidget = (props: HierarchyWidgetProps) => {
   );
 };
 
-function createHierarchy(props: HierarchyWidgetProps, container: any, callback?: ()=>void) {
+function createHierarchy(props: HierarchyWidgetProps, container: Element, callback?: ()=>void) {
   ReactDOM.render(WrappedHierarchyWidget(props), container, callback);
 }
 

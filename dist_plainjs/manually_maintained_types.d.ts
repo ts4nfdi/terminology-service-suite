@@ -141,7 +141,7 @@ declare global {
       parameter?: string;
     }
     )=>void,
-    createCrossRef:(props:{
+    createCrossRefTab:(props:{
       iri: string;
       api: string;
       ontologyId?: string;

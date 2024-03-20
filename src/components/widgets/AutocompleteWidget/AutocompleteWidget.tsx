@@ -130,7 +130,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             preselected
         ],
         async () => {
-            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
+            const preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
             let uniqueValues = [...new Set(preselected)]
                 .filter((option) => {
@@ -140,7 +140,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             if(uniqueValues.length > 0) {
                 if (singleSelection) uniqueValues = [uniqueValues[0]];
 
-                for (let option of uniqueValues) {
+                for (const option of uniqueValues) {
                     if (option.iri && option.iri.startsWith("http")) {
                         await olsApi.select(
                             {query: option.iri},

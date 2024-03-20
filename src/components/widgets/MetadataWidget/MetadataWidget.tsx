@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiIconTip, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
@@ -97,7 +97,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
   );
 }
 
-function createMetadata(props: MetadataWidgetProps, container: any, callback?: ()=>void) {
+function createMetadata(props: MetadataWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedMetadataWidget(props), container, callback);
 }
 

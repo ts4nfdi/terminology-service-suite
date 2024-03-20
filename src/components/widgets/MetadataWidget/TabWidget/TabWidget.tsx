@@ -28,7 +28,7 @@ function TabWidget(props: TabWidgetProps) {
 
   function render(data: Entity) {
     return (
-      <TabPresentation
+      <TabPresentation {...rest}
         data={data}
         iri={iri}
         api={api}
@@ -51,7 +51,7 @@ function TabWidget(props: TabWidgetProps) {
   );
 }
 
-function createTab(props: TabWidgetProps, container: any, callback?: ()=>void) {
+function createTab(props: TabWidgetProps, container: Element, callback?: ()=>void) {
   ReactDOM.render(WrappedTabWidget(props), container, callback);
 }
 

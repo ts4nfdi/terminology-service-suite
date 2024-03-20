@@ -1,23 +1,6 @@
 import React from "react";
-import { EuiBadge, EuiFlexItem, EuiIconTip, EuiText } from "@elastic/eui";
-
-export interface BreadcrumbPresentationProps {
-  isDefiningOntology: boolean,
-  ontologyName: string,
-  shortForm: string,
-  ontologyId?: string
-  colorFirst?:
-    | "primary"
-    | "accent"
-    | "success"
-    | "warning"
-    | "danger"
-    | "ghost"
-    | "text"
-    | "subdued"
-    | string;
-  colorSecond?: string;
-}
+import {EuiBadge} from "@elastic/eui";
+import {BreadcrumbPresentationProps} from "../../../../utils/types";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (

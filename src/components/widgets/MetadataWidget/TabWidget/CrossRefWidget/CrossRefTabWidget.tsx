@@ -39,7 +39,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 }
 
-function createCrossRefTab(props: CrossRefWidgetProps, container: any, callback?: ()=>void) {
+function createCrossRefTab(props: CrossRefWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
 }
 

@@ -70,7 +70,6 @@ function WrappedDataContentWidget(props: DataContentWidgetProps) {
           <DataContentWidget
             api={props.api}
             parameter={props.parameter}
-            useLegacy={props.useLegacy}
           />
         </QueryClientProvider>
       </EuiProvider>

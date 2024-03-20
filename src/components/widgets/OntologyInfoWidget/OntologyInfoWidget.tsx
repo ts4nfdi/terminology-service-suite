@@ -187,7 +187,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
 
 }
 
-function createOntologyInfo(props: OntologyInfoWidgetProps, container: any, callback?: ()=>void) {
+function createOntologyInfo(props: OntologyInfoWidgetProps, container: Element, callback?: ()=>void) {
   ReactDOM.render(WrappedOntologyInfoWidget(props), container, callback);
 }
 

@@ -41,7 +41,7 @@ function TitleWidget(props: TitleWidgetProps) {
   );
 }
 
-function createTitle(props: TitleWidgetProps, container: any, callback?: ()=>void) {
+function createTitle(props: TitleWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedTitleWidget(props), container, callback);
 }
 

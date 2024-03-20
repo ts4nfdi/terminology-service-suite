@@ -5,6 +5,7 @@ import {Action} from "@elastic/eui/src/components/basic_table/action_types";
 import {EuiSuggestProps} from "@elastic/eui/src/components";
 import {EuiCardProps} from "@elastic/eui";
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
+import {Thing} from "../model/interfaces";
 
 type ParameterObj = {
     /**
@@ -170,28 +171,44 @@ export type JsonApiWidgetProps = {
     buttonSize?: "s" | "m";
 }
 
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & {
+export type ColorFirstObj = {
     /**
      * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
      */
     colorFirst?: EuiLinkColor | string;
+}
 
+export type ColorSecondObj = {
     /**
      * Color of the second badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
      */
     colorSecond?: EuiLinkColor | string;
 }
 
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & {
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj;
+
+export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
+    isDefiningOntology: boolean,
+    ontologyName: string,
+    shortForm: string,
+}
+
+export type DescTextObj = {
     /**
      * Set your own text manually that overwrites the text fetched from the API
      */
     descText?: string;
+}
 
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & {
     /**
      * Color of the text, names, hex or rgb
      */
     color?: EuiLinkColor | string;
+}
+
+export type DescriptionPresentationProps = DescTextObj & {
+    description: string,
 }
 
 export type IriWidgetProps = ForcedIriObj & ParameterObj & {
@@ -207,9 +224,21 @@ export type IriWidgetProps = ForcedIriObj & ParameterObj & {
 
 export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
 
+export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & {
+    data: Thing;
+}
+
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
+export type AlternativeNameTabWidgetPresentationProps = {
+    synonyms: any[];
+}
+
 export type CrossRefWidgetProps = TabWidgetProps;
+
+export type CrossRefPresentationProps = {
+    crossrefs: any[];
+}
 
 export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
     /**
@@ -229,16 +258,22 @@ export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEnti
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 };
 
-export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & {
+export type TitleTextObj = {
     /**
      * Set your own text manually that overwrites the text fetched from the API
      */
     titleText?: string;
+}
 
+export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & {
     /**
      * Set the default text shown if the API fails to retrieve one.
      */
     default_value?: string
+}
+
+export type TitlePresentationProps = TitleTextObj & {
+    title?: string
 }
 
 export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;

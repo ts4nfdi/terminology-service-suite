@@ -36,7 +36,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, container: any, callback?: ()=>void) {
+function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
 }
 

@@ -19,7 +19,7 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-function createIri(props: IriWidgetProps, container: any, callback?: ()=>void) {
+function createIri(props: IriWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedIriWidget(props), container, callback);
 }
 

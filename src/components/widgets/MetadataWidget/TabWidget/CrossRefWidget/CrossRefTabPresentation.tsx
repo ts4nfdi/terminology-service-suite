@@ -1,9 +1,6 @@
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiLink, EuiPanel, EuiText } from "@elastic/eui";
-
-export interface CrossRefPresentationProps {
-  crossrefs: any[];
-}
+import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from "@elastic/eui";
+import {CrossRefPresentationProps} from "../../../../../utils/types";
 
 function CrossRefTabPresentation(props: CrossRefPresentationProps) {
 

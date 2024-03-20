@@ -8,9 +8,8 @@ import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
-import {EntityInfoWidgetProps, EntityRelationsWidgetProps} from "../../../utils/types";
+import {EntityRelationsWidgetProps} from "../../../utils/types";
 import ReactDOM from "react-dom";
-import {EntityInfoWidget} from "../EntityInfoWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -419,7 +418,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     );
 }
 
-function createEntityRelations(props: EntityRelationsWidgetProps, container: any, callback?: ()=>void) {
+function createEntityRelations(props: EntityRelationsWidgetProps, container: Element, callback?: ()=>void) {
     ReactDOM.render(WrappedEntitiyRelationsWidget(props), container, callback);
 }
 

@@ -12,7 +12,7 @@ function JsonApiWidget(props: JsonApiWidgetProps) {
   );
 }
 
-function createJsonApi(props: JsonApiWidgetProps, container: any, callback?: ()=>void) {
+function createJsonApi(props: JsonApiWidgetProps, container: Element, callback?: ()=>void) {
   ReactDOM.render(WrappedJsonApiWidget(props), container, callback);
 }
 

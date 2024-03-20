@@ -31,14 +31,14 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     <>
       {isLoading && <EuiLoadingSpinner size="s" />}
       {isSuccess && data &&
-        <DescriptionPresentation description={descText || data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
+        <DescriptionPresentation description={data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
       }
       {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
     </>
   );
 }
 
-function createDescription(props: DescriptionWidgetProps, container: any, callback?:()=>void) {
+function createDescription(props: DescriptionWidgetProps, container: Element, callback?:()=>void) {
   ReactDOM.render(WrappedDescriptionWidget(props), container, callback);
 }
 
