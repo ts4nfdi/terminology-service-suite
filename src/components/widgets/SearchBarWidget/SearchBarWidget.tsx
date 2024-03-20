@@ -2,7 +2,7 @@ import {EuiProvider, EuiSuggest, EuiSuggestionProps} from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {SearchBarWidgetProps} from "../../../utils/types";
+import {SearchBarWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {

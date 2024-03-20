@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
-import {IriWidgetProps} from "../../../../utils/types";
+import {IriWidgetProps} from "../../../../app/types";
 
 let counter = 0;
 

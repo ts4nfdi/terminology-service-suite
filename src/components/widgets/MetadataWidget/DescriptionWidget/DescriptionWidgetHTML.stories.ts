@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {DescriptionWidgetProps} from "../../../../utils/types";
+import {DescriptionWidgetProps} from "../../../../app/types";
 import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
 
 let counter = 0;

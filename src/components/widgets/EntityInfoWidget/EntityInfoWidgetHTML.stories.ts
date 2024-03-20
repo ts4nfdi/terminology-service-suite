@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
-import {EntityInfoWidgetProps} from "../../../utils/types";
+import {EntityInfoWidgetProps} from "../../../app/types";
 
 let counter = 0;
 

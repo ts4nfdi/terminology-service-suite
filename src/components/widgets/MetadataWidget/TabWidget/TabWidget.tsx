@@ -2,10 +2,10 @@ import React from "react";
 import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../../api/OlsApi";
-import {TabWidgetProps} from "../../../../utils/types";
+import {TabWidgetProps} from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import { TabPresentation } from "./TabPresentation";
-import { getErrorMessageToDisplay } from "../../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../../app/util";
 import {EntityTypeName, isEntity} from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 

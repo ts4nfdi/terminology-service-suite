@@ -1,5 +1,6 @@
 import 'semlookp-widgets';
-import {MetadataWidgetProps} from "../../../utils/types";
+import 'semlookp-widgets/semlookp_widgets.css'
+import {MetadataWidgetProps} from "../../../app/types";
 import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
 
 let counter = 0;

@@ -7,7 +7,7 @@ import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/Alter
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
 import Reified from "../../../../model/Reified";
-import {TabPresentationProps} from "../../../../utils/types";
+import {TabPresentationProps} from "../../../../app/types";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {

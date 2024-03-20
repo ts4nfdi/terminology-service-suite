@@ -1,8 +1,8 @@
 import React from "react";
 import {EuiBadge, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay } from "../../../../utils/helper";
-import {BreadcrumbWidgetProps} from "../../../../utils/types";
+import { getErrorMessageToDisplay } from "../../../../app/util";
+import {BreadcrumbWidgetProps} from "../../../../app/types";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";

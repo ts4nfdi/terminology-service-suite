@@ -1,6 +1,6 @@
 import React from "react";
 import {EuiButton, EuiProvider} from "@elastic/eui";
-import {JsonApiWidgetProps} from "../../../utils/types";
+import {JsonApiWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { EuiText } from "@elastic/eui";
-import {TitlePresentationProps} from "../../../../utils/types";
+import {TitlePresentationProps} from "../../../../app/types";
 
 function TitlePresentation(props: TitlePresentationProps) {
 

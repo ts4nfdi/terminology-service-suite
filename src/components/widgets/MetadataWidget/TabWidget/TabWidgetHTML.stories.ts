@@ -1,5 +1,6 @@
 import 'semlookp-widgets';
-import {TabWidgetProps} from "../../../../utils/types";
+import "semlookp-widgets/semlookp_widgets.css"
+import {TabWidgetProps} from "../../../../app/types";
 import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 
 let counter = 0;

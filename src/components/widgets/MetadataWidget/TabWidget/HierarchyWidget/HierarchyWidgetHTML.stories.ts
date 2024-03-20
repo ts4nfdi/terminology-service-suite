@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
+import "semlookp-widgets/semlookp_widgets.css"
 import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
-import {HierarchyWidgetProps} from "../../../../../utils/types";
+import {HierarchyWidgetProps} from "../../../../../app/types";
 
 let counter = 0;
 

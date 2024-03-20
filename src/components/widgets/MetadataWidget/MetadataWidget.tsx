@@ -3,13 +3,13 @@ import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from
 import { IriWidget } from "./IriWidget";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
-import {MetadataWidgetProps} from "../../../utils/types";
+import {MetadataWidgetProps} from "../../../app/types";
 import { Entity, Thing } from "../../../model/interfaces";
 import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
 import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
-import { getErrorMessageToDisplay } from "../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../app/util";
 import { isEntity } from "../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 

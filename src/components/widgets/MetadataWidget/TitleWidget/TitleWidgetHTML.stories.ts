@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {TitleWidgetProps} from "../../../../utils/types";
+import {TitleWidgetProps} from "../../../../app/types";
 import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
 
 let counter = 0;

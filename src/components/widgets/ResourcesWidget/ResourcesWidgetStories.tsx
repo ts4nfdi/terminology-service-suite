@@ -1,4 +1,4 @@
-import {OlsResource} from "../../../utils/types";
+import {OlsResource} from "../../../app/types";
 import {EuiButton, EuiButtonIcon} from "@elastic/eui";
 import React from "react";
 

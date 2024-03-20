@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {DataContentWidgetProps} from "../../../utils/types";
+import {DataContentWidgetProps} from "../../../app/types";
 import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./DataContentWidgetStories";
 
 let counter = 0;

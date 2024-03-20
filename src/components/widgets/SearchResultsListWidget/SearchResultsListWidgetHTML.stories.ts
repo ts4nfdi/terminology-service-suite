@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "./SearchResultsListWidgetStories"
-import {SearchResultsListWidgetProps} from "../../../utils/types";
+import {SearchResultsListWidgetProps} from "../../../app/types";
 
 let counter = 0;
 

@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {SearchBarWidgetProps} from "../../../utils/types";
+import {SearchBarWidgetProps} from "../../../app/types";
 import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "./SearchBarWidgetStories"
 
 let counter = 0;

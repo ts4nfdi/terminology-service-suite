@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
-import {OntologyInfoWidgetProps} from "../../../utils/types";
+import {OntologyInfoWidgetProps} from "../../../app/types";
 
 let counter = 0;
 

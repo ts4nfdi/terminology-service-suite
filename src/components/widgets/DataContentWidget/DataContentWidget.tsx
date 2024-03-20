@@ -3,7 +3,7 @@ import {EuiCard, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import {Ontologies} from "../../../model/interfaces";
-import {DataContentWidgetProps} from "../../../utils/types";
+import {DataContentWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 
 function DataContentWidget(props: DataContentWidgetProps) {

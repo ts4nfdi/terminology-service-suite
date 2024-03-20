@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
-import {CrossRefWidgetProps} from "../../../../../utils/types";
+import {CrossRefWidgetProps} from "../../../../../app/types";
 
 let counter = 0;
 

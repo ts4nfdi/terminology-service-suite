@@ -5,8 +5,8 @@ import { OlsApi } from "../../../api/OlsApi";
 import {Ontology, Thing} from "../../../model/interfaces";
 import {capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import {getEntityLinkJSX, getReifiedJSX} from "../../../model/StructureRendering";
-import {getErrorMessageToDisplay} from "../../../utils/helper";
-import {OntologyInfoWidgetProps} from "../../../utils/types";
+import {getErrorMessageToDisplay} from "../../../app/util";
+import {OntologyInfoWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 
 const DEFAULT_HAS_TITLE = true;

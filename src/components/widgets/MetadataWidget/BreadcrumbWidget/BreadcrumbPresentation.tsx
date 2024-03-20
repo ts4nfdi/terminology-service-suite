@@ -1,6 +1,6 @@
 import React from "react";
 import {EuiBadge} from "@elastic/eui";
-import {BreadcrumbPresentationProps} from "../../../../utils/types";
+import {BreadcrumbPresentationProps} from "../../../../app/types";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (

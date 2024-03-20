@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories";
-import {ResourcesWidgetProps} from "../../../utils/types";
+import {ResourcesWidgetProps} from "../../../app/types";
 
 let counter = 0;
 

@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {EntityRelationsWidgetProps} from "../../../utils/types";
+import {EntityRelationsWidgetProps} from "../../../app/types";
 import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
 
 let counter = 0;

@@ -8,7 +8,7 @@ import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
-import {EntityRelationsWidgetProps} from "../../../utils/types";
+import {EntityRelationsWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 
 const DEFAULT_HAS_TITLE = true;

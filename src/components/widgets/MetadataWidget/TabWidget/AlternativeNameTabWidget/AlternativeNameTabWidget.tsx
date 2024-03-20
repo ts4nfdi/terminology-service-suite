@@ -2,8 +2,8 @@ import React from "react";
 import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
 import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
-import { getErrorMessageToDisplay } from "../../../../../utils/helper";
-import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
+import { getErrorMessageToDisplay } from "../../../../../app/util";
+import {AlternativeNameTabWidgetProps} from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";

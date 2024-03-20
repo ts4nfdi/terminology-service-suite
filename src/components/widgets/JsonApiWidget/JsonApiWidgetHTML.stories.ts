@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {JsonApiWidgetProps} from "../../../utils/types";
+import {JsonApiWidgetProps} from "../../../app/types";
 import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
 
 let counter = 0;

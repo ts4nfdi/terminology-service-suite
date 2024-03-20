@@ -1,6 +1,6 @@
 import 'semlookp-widgets';
 import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs} from "./AutocompleteWidgetStories";
-import {AutocompleteWidgetProps} from "../../../utils/types";
+import {AutocompleteWidgetProps} from "../../../app/types";
 
 let counter = 0;
 

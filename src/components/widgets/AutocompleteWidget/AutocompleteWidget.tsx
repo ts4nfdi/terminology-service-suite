@@ -13,7 +13,7 @@ import {
 } from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {BreadcrumbWidget} from "../MetadataWidget";
-import {AutocompleteWidgetProps} from "../../../utils/types";
+import {AutocompleteWidgetProps} from "../../../app/types";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.

@@ -4,8 +4,8 @@ import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {OlsResource, ResourcesWidgetProps} from "../../../utils/types";
+import { getErrorMessageToDisplay } from "../../../app/util";
+import {OlsResource, ResourcesWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;

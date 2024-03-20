@@ -1,6 +1,6 @@
 import React from "react";
 import {EuiFlexItem, EuiLink, EuiProvider} from "@elastic/eui";
-import {IriWidgetProps} from "../../../../utils/types";
+import {IriWidgetProps} from "../../../../app/types";
 import {isEuiLinkColor, isHexColor, isRgbColor} from "../../../../app/util";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";

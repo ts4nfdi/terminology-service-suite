@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
 import { MetadataCompact } from './MetadataCompact'
-import {SearchResultsListWidgetProps} from "../../../utils/types";
+import {SearchResultsListWidgetProps} from "../../../app/types";
 import { AutocompleteWidget } from "../AutocompleteWidget";
 import ReactDOM from "react-dom";
 
