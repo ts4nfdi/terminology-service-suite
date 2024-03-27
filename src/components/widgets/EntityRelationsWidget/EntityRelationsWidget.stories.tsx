@@ -18,7 +18,8 @@ export default {
                 "https://www.ebi.ac.uk/ols4/api/",
                 "https://semanticlookup.zbmed.de/ols/api/",
                 "https://semanticlookup.zbmed.de/api/",
-                "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/"
+                "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
+                "https://service.tib.eu/ts4tib/api/"
             ],
         },
         hasTitle: {
