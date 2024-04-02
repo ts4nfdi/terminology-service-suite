@@ -60,9 +60,18 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 ## Development
 
-### Authenticate
+### Development requirements
 
-Add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access token (classic). You need to have access to a ZB MED project for developing the widgets - please contact the development team.
+- Node v16.13.1
+- NPM v8.19.2
+
+To install the package for development, it may be necessary to move the `peerDependencies` in the `package.json` to the `devDependencies` section, if the corresponding modules are not present on your machine.
+
+IMPORTANT NOTE:  To build the package, they must be defined as peerDependencies to avoid dependency conflicts in the consumer projects.
+
+### Authenticate
+[
+]()Add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access token (classic). You need to have access to a ZB MED project for developing the widgets - please contact the development team.
 
 ```
 @zbmed:registry=https://npm.pkg.github.com
@@ -88,7 +97,7 @@ To prevent unexpected behaviour remove the `node_modules` folder and `package-lo
 
 ```npm install```
 
-```npm run build --if-present```
+```npm run build```
 
 ```npm pack```
 
