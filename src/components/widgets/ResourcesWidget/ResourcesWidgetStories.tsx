@@ -11,6 +11,7 @@ export const ResourcesWidgetStoryArgTypes = {
             "https://www.ebi.ac.uk/ols4/api/",
             "https://semanticlookup.zbmed.de/ols/api/",
             "https://semanticlookup.zbmed.de/api/",
+            "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/"
         ],
     },
     initialEntriesPerPage: {
@@ -27,12 +28,12 @@ export const ResourcesWidgetStoryArgTypes = {
     },
     initialSortDir: {
         table: {
-            type: { summary: `asc | desc` },
+            type: { summary: `ascending | descending` },
         },
         control: {
             type: "radio",
         },
-        options: ["asc", "desc"],
+        options: ["ascending", "descending"],
     },
     targetLink: {
         control: "text",
