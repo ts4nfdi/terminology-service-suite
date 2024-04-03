@@ -339,6 +339,7 @@ export class OlsApi {
    */
   public async getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Entity> {
     let response;
+    if(!iri) throw Error('No IRI provided');
 
     if(entityType) {
       response = await this.getEntityWithEntityTypeProvided(iri, entityType, ontologyId, parameter, useLegacy);
