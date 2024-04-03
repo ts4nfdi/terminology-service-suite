@@ -1,11 +1,21 @@
 import React, { useState } from "react";
-import {EuiBasicTable, EuiButtonIcon, EuiLink, CriteriaWithPagination, EuiProvider} from "@elastic/eui";
+import {
+  Comparators,
+  CriteriaWithPagination,
+  EuiBasicTable,
+  EuiButtonIcon,
+  EuiHorizontalRule,
+  EuiProvider,
+  EuiLink,
+  EuiSpacer,
+  EuiText
+} from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import { getErrorMessageToDisplay } from "../../../app/util";
-import {OlsResource, ResourcesWidgetProps} from "../../../app/types";
+import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
+import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
@@ -26,70 +36,69 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const olsApi = new OlsApi(api);
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [entriesPerPage, setEntriesPerPage] = useState(initialEntriesPerPage);
+  const [pageSize, setPageSize] = useState(initialEntriesPerPage);
   const [sortField, setSortField] = useState<string | number>(initialSortField);
   const [sortDirection, setSortDirection] = useState(initialSortDir);
-  const [totalOntologies, setTotalOntologies] = useState(0);
 
 
-  const columns: Array<EuiBasicTableColumn<OlsResource> & {css?:SerializedStyles}> = [
+  const columns: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
     {
       name: "Resource Name",
       field: "config.title",
       width: "15%",
-      sortable: true,
+      sortable: true
     },
     {
       name: "Short Name",
       field: "config.preferredPrefix",
       render: (value: string) => (
-          targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
+        targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
       ),
       width: "10%",
-      sortable: true,
+      sortable: true
     },
     {
       name: "Description",
       field: "config.description",
       width: "30%",
       css: css`
-        display: block;
-        max-height: 200px;
-        overflow: auto;
-      `,
+          display: block;
+          max-height: 200px;
+          overflow: auto;
+      `
     },
     {
       name: "Version",
       field: "config.version",
-      width: "7.5%",
+      width: "7.5%"
     },
     {
       name: "Loaded on",
       field: "loaded",
       width: "10%",
       dataType: "date" as const,
-      sortable: true,
+      sortable: true
     },
     {
       name: "Terms",
       field: "numberOfTerms",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
-      sortable: true,
+      sortable: true
     },
     {
       name: "Properties",
       field: "numberOfProperties",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
-      sortable: true,
+      sortable: true
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7.5%",
-      sortable: true,
+      sortable: true
     },
     {
       width: "5%",
@@ -106,33 +115,19 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
                 item.config.fileLocation.startsWith("file://")
               }
             />
-          ),
-        },
-      ],
-    },
+          )
+        }
+      ]
+    }
   ];
-
-  const pagination = {
-    pageIndex: pageIndex,
-    pageSize: entriesPerPage,
-    totalItemCount: totalOntologies,
-    pageSizeOptions: pageSizeOptions,
-  };
-
-  const sorting = {
-    sort: {
-      field: sortField,
-      direction: sortDirection,
-    },
-  };
 
   const onTableChange = ({
     page,
     sort,
   }: CriteriaWithPagination<OlsResource>) => {
-    const { index: pageIndex, size: entriesPerPage } = page;
+    const { index: pageIndex, size: pageSize } = page;
     setPageIndex(pageIndex);
-    setEntriesPerPage(entriesPerPage);
+    setPageSize(pageSize);
 
     if (sort) {
       const { field: sortField, direction: sortDirection } = sort;
@@ -142,85 +137,141 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   };
 
   const {
-    data: ontologies,
+    data: ontologiesData,
     isSuccess,
-    isLoading,
     isError,
-    error,
-  } = useQuery(
-    [
-      api,
-      "ontologiesMetadata",
-      entriesPerPage,
-      pageIndex,
-      sortField,
-      sortDirection,
-      parameter,
-    ],
+    isLoading
+  } = useQuery<Ontologies>(
+    ["ontologiesData", api, parameter],
     async () => {
-      return olsApi
-        .getOntologies(
-          {
-            size: entriesPerPage.toString(),
-            page: pageIndex.toString(),
-          },
-          {
-            sortField: sortField,
-            sortDir: sortDirection,
-          },
-          undefined,
-            props.parameter
-        )
-        .then((response) => {
-          if (
-            response["page"]["totalElements"] != null &&
-            response["_embedded"] &&
-            response["_embedded"]["ontologies"]
-          ) {
-            // TODO Refactor (code duplication, possibly reuse getTotalElements from DataContentWidget?)
-            setTotalOntologies(response["page"]["totalElements"]);
-            return response["_embedded"]["ontologies"];
-          } else {
-            throw new Error("Unexpected API response");
-          }
-        });
+      return olsApi.getOntologiesData(
+        props.parameter,
+      );
     }
   );
 
-  return (
-      <>
-        {isSuccess &&
-            <EuiBasicTable
-                columns={columns}
-                items={ontologies}
-                onChange={onTableChange}
-                pagination={pagination}
-                sorting={sorting}
-            />
-        }
-        {isLoading &&
-            <EuiBasicTable
-                columns={columns}
-                items={[]}
-                onChange={onTableChange}
-                pagination={pagination}
-                sorting={sorting}
-                loading
-            />
 
-        }
-        {isError &&
-            <EuiBasicTable
-                columns={columns}
-                items={[]}
-                onChange={onTableChange}
-                pagination={pagination}
-                sorting={sorting}
-                error={getErrorMessageToDisplay(error, "resources")}
-            />
-        }
+  const ontos = ontologiesData?.properties.map(ontology => ({
+    ...ontology.properties
+  })) || [];
+
+  const findOntologies = (
+    ontologies: any[],
+    pageIndex: number,
+    pageSize: number,
+    sortField: any,
+    sortDirection: "asc" | "desc"
+  ) => {
+    let items;
+
+    if (sortField) {
+      items = ontologies
+        .slice(0)
+        .sort(
+          Comparators.property(sortField, Comparators.default(sortDirection))
+        );
+    } else {
+      items = ontologies;
+    }
+
+    let pageOfItems;
+
+    if (!pageIndex && !pageSize) {
+      pageOfItems = items;
+    } else {
+      const startIndex = pageIndex * pageSize;
+      pageOfItems = items.slice(
+        startIndex,
+        Math.min(startIndex + pageSize, ontologies.length)
+      );
+    }
+
+    return {
+      pageOfItems,
+      totalItemCount: ontologies.length
+    };
+  };
+
+  const { pageOfItems, totalItemCount } = findOntologies(
+    ontos,
+    pageIndex,
+    pageSize,
+    sortField,
+    sortDirection
+  );
+
+  const pagination = {
+    pageIndex,
+    pageSize,
+    totalItemCount,
+    pageSizeOptions
+  };
+
+  const resultsCount =
+    pageSize === 0 ? (
+      <strong>All</strong>
+    ) : (
+      <>
+        <strong>
+          {pageSize * pageIndex + 1}-{pageSize * pageIndex + pageSize}
+        </strong>{" "}
+        of {totalItemCount}
       </>
-  )
+    );
+
+
+  const sorting = {
+    sort: {
+      field: sortField,
+      direction: sortDirection
+    }
+  };
+
+
+  return (
+    <>
+      {isSuccess &&
+        <>
+          <EuiText size="xs">
+            Showing {resultsCount} <strong>Ontologies</strong>
+          </EuiText>
+          <EuiSpacer size="s" />
+          <EuiHorizontalRule margin="none" style={{ height: 2 }} />
+
+          <EuiBasicTable
+            columns={columns}
+            items={pageOfItems}
+            onChange={onTableChange}
+            pagination={pagination}
+            sorting={sorting}
+          />
+        </>
+      }
+      {isLoading &&
+        <EuiBasicTable
+          columns={columns}
+          items={pageOfItems}
+          onChange={onTableChange}
+          pagination={pagination}
+          sorting={sorting}
+          loading
+        />
+
+      }
+      {isError &&
+        <EuiBasicTable
+          columns={columns}
+          items={pageOfItems}
+          onChange={onTableChange}
+          pagination={pagination}
+          sorting={sorting}
+          /*
+                          error={getErrorMessageToDisplay(error, "resources")}
+          */
+        />
+      }
+    </>
+  );
 }
 
 function createResources(props: ResourcesWidgetProps, container: Element, callback?: ()=>void) {

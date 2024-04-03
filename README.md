@@ -60,6 +60,24 @@ As documentation we provide a so-called [Storybook](https://nfdi4health.github.i
 
 ## Development
 
+### Development requirements
+
+- Node v16.13.1
+- NPM v8.19.2
+
+To install the package for development, it may be necessary to move the `peerDependencies` in the `package.json` to the `devDependencies` section, if the corresponding modules are not present on your machine.
+
+IMPORTANT NOTE:  To build the package, they must be defined as peerDependencies to avoid dependency conflicts in the consumer projects.
+
+### Authenticate
+[
+]()Add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access token (classic). You need to have access to a ZB MED project for developing the widgets - please contact the development team.
+
+```
+@zbmed:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=TOKEN
+```
+
 ### Run Storybook
 
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the development server, install the dependencies with `npm install` and start Storybook with this command `npm run storybook:react`. The interactive documentation is available via `http://localhost:6006`. For more information, please visit https://storybook.js.org/docs/react/get-started/install/
@@ -114,7 +132,7 @@ To prevent unexpected behaviour remove the `node_modules` folder and `package-lo
 
 ```npm install```
 
-```npm run build --if-present```
+```npm run build```
 
 ```npm pack```
 

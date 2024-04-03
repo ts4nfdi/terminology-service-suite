@@ -141,7 +141,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 if (singleSelection) uniqueValues = [uniqueValues[0]];
 
                 for (const option of uniqueValues) {
-                    if (option.iri && option.iri.startsWith("http")) {
+                    if (option && option.iri && option.iri.startsWith("http")) {
                         await olsApi.select(
                             {query: option.iri},
                             undefined,
@@ -172,7 +172,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                 if(singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
                             }
                         });
-                    } else if (option.label && allowCustomTerms) {
+                    } else if (option && option.label && allowCustomTerms) {
                         preselectedValues.push({
                             label: option.label,
                             key: option.label,
