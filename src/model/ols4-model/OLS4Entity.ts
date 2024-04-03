@@ -88,7 +88,7 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getShortForm(): string {
-    return this.properties["curie"] || this.properties["short_form"];
+    return this.properties["curie"] || this.properties["shortForm"];
   }
 
   getDepictedBy(): Reified<string>[] {
