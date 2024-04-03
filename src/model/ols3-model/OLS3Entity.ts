@@ -99,7 +99,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
   }
 
   getShortForm(): string {
-    return this.properties["obo_id"] || this.properties["shortForm"];
+    return this.properties["obo_id"] || this.properties["short_form"];
   }
 
   // TODO: are the following 3 needed?
