@@ -39,3 +39,20 @@ export const SearchBarWidget1 = Template.bind({});
 SearchBarWidget1.args = {  api: "https://semanticlookup.zbmed.de/api/",
   query: "diab",
 };
+
+
+export const TibNFDI4CHEM = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TibNFDI4CHEM.args = {
+  api: "https://service.tib.eu/ts4tib/api/",
+  parameter: "collection=NFDI4CHEM",
+};
+
+export const TibDataPlant = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TibDataPlant.args = {
+  api: "https://service.tib.eu/ts4tib/api/",
+  parameter: "collection=DataPLANT",
+};
