@@ -130,7 +130,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             preselected
         ],
         async () => {
-            const preselectedValues: EuiComboBoxOptionOption<any>[] = [];
+            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
             let uniqueValues = [...new Set(preselected)]
                 .filter((option) => {
@@ -168,6 +168,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                         });
                                     }
                                 })
+
+                                if(singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
                             }
                         });
                     } else if (option.label && allowCustomTerms) {
