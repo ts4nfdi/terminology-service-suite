@@ -48,7 +48,7 @@ jobs:
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
   documentation:
-    if: github.ref == 'refs/heads/"feat/plainJS-sb-integration"'
+    if: github.ref == 'refs/heads/feat/plainJS-sb-integration'
     needs: build
     runs-on: ubuntu-latest
     permissions:
