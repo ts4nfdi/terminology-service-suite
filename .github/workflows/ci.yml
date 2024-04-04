@@ -48,7 +48,7 @@ jobs:
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
   documentation:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/plainJS-sb-integration'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -65,7 +65,27 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@zbmed'
           token: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Install and Build
+      - name: Install and Build React Storybook
+        run: |
+          npm install
+          npm run build-storybook-react -- -o react
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Upload react artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'react'
+      - name: Install and Build HTML Storybook
+        run: |
+          npm install
+          npm run build-storybook-html -- -o html
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Upload html artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'html'
+      - name: Install and Build Composed Storybook
         run: |
           npm install
           npm run build-storybook -- -o public
@@ -84,6 +104,8 @@ jobs:
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
       - name: Deploy as Latest to GitHub Pages
         run: |
+          npx gh-pages-multi deploy -s react --no-history -t react/latest
+          npx gh-pages-multi deploy -s html --no-history -t html/latest
           npx gh-pages-multi deploy -s public --no-history
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -91,11 +113,12 @@ jobs:
         env:
           SRVERSION: ${{ needs.build.outputs.srversion }}
         run: echo "SRVERSION is $SRVERSION"
-      - name: Deploy to GitHub Pages
+      - name: Deploy Version to GitHub Pages
         if: env.SRVERSION != ''
         env:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
+          npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
           npx gh-pages-multi deploy -s public --no-history -t "$SRVERSION"
-          
