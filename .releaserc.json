@@ -1,5 +1,5 @@
 {
-  "branches": ["plainJS-sb-integration"],
+  "branches": ["feat/plainJS-sb-integration"],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
