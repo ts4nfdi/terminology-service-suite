@@ -15,6 +15,7 @@ export default {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
+        "https://service.tib.eu/ts4tib/api/"
       ],
     },
     selectionChangedEvent: {
@@ -115,6 +116,22 @@ export const withMultipleValues = Template.bind({});
 withMultipleValues.args = {
   preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }, { iri: "http://purl.bioontology.org/ontology/MESH/D003920" }],
   singleSelection: false,
+};
+
+export const TibNFDI4CHEM = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TibNFDI4CHEM.args = {
+  api: "https://service.tib.eu/ts4tib/api/",
+  parameter: "collection=NFDI4CHEM",
+};
+
+export const TibDataPlant = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TibDataPlant.args = {
+  api: "https://service.tib.eu/ts4tib/api/",
+  parameter: "collection=DataPLANT",
 };
 
 
