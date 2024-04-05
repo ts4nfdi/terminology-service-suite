@@ -65,21 +65,26 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@zbmed'
           token: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Install and Build React and HTML Storybooks
+      - name: Install and Build HTML Storybook
+        run: |
+          npm install
+          npm run build-storybook-html -- -o html
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Upload html artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'html'
+      - name: Install and Build React Storybook
         run: |
           npm install
           npm run build-storybook-react -- -o react
-          npm run build-storybook-html -- -o html
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Upload react artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: 'react'
-      - name: Upload html artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: 'html'
       - name: Install and Build Composed Storybook
         run: |
           npm install
