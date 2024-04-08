@@ -211,7 +211,7 @@ export type DescriptionPresentationProps = DescTextObj & {
     description: string,
 }
 
-export type IriWidgetProps = ForcedIriObj & ParameterObj & {
+export type IriWidgetProps = ForcedIriObj & {
     /**
      * Set your own text manually, which will show as a clickable link instead of the IRI.
      */
