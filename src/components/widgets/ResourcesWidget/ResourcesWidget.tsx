@@ -26,7 +26,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
-    targetLink,
+    onNavigateToOntology,
     parameter
   } = props;
   const olsApi = new OlsApi(api);
@@ -35,7 +35,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [pageSize, setPageSize] = useState(10);
   const [sortField, setSortField] = useState<string | number>(initialSortField);
   const [sortDirection, setSortDirection] = useState(initialSortDir);
-
 
   const columns: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
     {
@@ -48,7 +47,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       name: "Short Name",
       field: "config.preferredPrefix",
       render: (value: string) => (
-        targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
+        onNavigateToOntology ? (
+          <EuiLink onClick={() => onNavigateToOntology(value)}>{value}</EuiLink>
+        ) : (
+          value
+        )
       ),
       width: "10%",
       sortable: true

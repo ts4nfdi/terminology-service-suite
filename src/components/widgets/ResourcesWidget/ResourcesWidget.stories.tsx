@@ -70,8 +70,10 @@ ResourcesWidget1.args = {
   pageSizeOptions: [10, 25, 50, 100],
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const,
-  targetLink: "https://semanticlookup.zbmed.de/dev/",
-  parameter: "collection=nfdi4health"
+  parameter: "collection=nfdi4health",
+  onNavigateToOntology: (value: string) => (
+    console.log(`Navigating to ${value}`)
+ ),
 };
 export const WithActions = Template.bind({});
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -122,6 +124,8 @@ WithActionsAndSafety.args = {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   ...WithActions.args,
-  targetLink: "https://semanticlookup.zbmed.de/safety/",
   parameter: "collection=safety",
+  onNavigateToOntology: (value: string) => (
+    console.log(`Navigating to ${value}`)
+ ),
 };

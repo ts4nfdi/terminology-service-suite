@@ -272,6 +272,12 @@ export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
      * Pass actions to each item in the table.
      */
     actions?: Array<Action<OlsResource>>;
+
+    /**
+     * This function is called every time an ontology short name is clicked
+     * @param value ontology short name
+     */
+    onNavigateToOntology?: (value: string) => any;
 }
 
 export type OlsResource = ForcedOntologyIdObj & {
