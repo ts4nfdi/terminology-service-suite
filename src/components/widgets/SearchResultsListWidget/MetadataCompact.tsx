@@ -8,19 +8,27 @@ function MetadataCompact(props: MetadataCompactProps) {
     const {
         api,
         result,
-        targetLink,
+        onNavigateToEntity,
         ...rest
     } = props;
+
+    // Wrapper function to match the expected type signature for the EuiCard's onClick handler
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        const ontologyId = result.ontology_name;
+        const entityType = switchEntityType(result.type);
+        const iri = result.iri;
+
+        if (onNavigateToEntity) {
+            onNavigateToEntity(ontologyId, entityType, iri);
+        }
+    };
+
 
     return (
         <EuiCard
             textAlign="left"
             {...rest}
-            href={targetLink ?
-                (result.type != "ontology" ?
-                    targetLink + "ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri
-                    : targetLink + "ontologies/" + result.ontology_name)
-                : undefined}
+            onClick={handleClick}
             title={
                 <EuiFlexGroup>
                     <EuiFlexItem grow={false}>

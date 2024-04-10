@@ -303,7 +303,7 @@ export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChan
     onSearchValueChange: (suggestion: string) => void;
 };
 
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & ParameterObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
      */
@@ -318,6 +318,13 @@ export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">>
      * Possible values for number of items displayed per page.
      */
     itemsPerPageOptions?: number[];
+
+    /**
+     * This function is called every time a search result is clicked.
+     * @param entityType obtains the entityType of the clicked entity links' entity
+     * @param iri obtains the iri of the clicked entity links' entity
+     */
+    onNavigateToEntity?: (ontologyId: string, entityType: string, iri: string) => any;
 };
 
 export type SearchResultProps = {
@@ -332,6 +339,13 @@ export type SearchResultProps = {
     type: ThingTypeName;
 }
 
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & ParameterObj & {
     result: SearchResultProps;
+
+    /**
+     * This function is called every time a search result is clicked.
+     * @param entityType obtains the entityType of the clicked entity links' entity
+     * @param iri obtains the iri of the clicked entity links' entity
+     */
+    onNavigateToEntity?: (ontologyId: string, entityType: string, iri: string) => any;
 };

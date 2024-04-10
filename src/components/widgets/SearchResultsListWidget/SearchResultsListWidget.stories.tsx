@@ -44,7 +44,6 @@ export const SearchResultsListSafety = Template.bind({});
 SearchResultsListSafety.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
-  targetLink: "",
   parameter: "collection=safety",
 };
 
@@ -55,8 +54,20 @@ export const SearchResultsListNFDI4Health = Template.bind({});
 SearchResultsListNFDI4Health.args = {
   api: "https://semanticlookup.zbmed.de/api/",
   query: "d*",
-  targetLink: "",
   parameter: "collection=nfdi4health",
+};
+
+export const WithOnNavigateFunction = Template.bind({});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+WithOnNavigateFunction.args = {
+  api: "https://semanticlookup.zbmed.de/api/",
+  query: "diabetes",
+  parameter: "collection=nfdi4health",
+  onNavigateToEntity: (ontologyId: string, entityType: string, iri: string) => {
+    console.log(`Navigating to ontologyId: ${ontologyId}, entityType: ${entityType}, iri: ${iri}`);
+ },
 };
 
 export const ErrorSearchResultsList = Template.bind({});
@@ -66,6 +77,5 @@ export const ErrorSearchResultsList = Template.bind({});
 ErrorSearchResultsList.args = {
   api: "ht3ps://semanticlookup.zbmed.de/api/",
   query: "d*",
-  targetLink: "",
   parameter: "collection=nfdi4health",
 };

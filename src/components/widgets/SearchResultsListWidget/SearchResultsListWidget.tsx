@@ -31,7 +31,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         parameter,
         initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
-        targetLink,
+        onNavigateToEntity,
         ...rest
     } = props;
     const olsApi = new OlsApi(api);
@@ -328,7 +328,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
                         {searchResults && searchResults.map((result: any) => (
                             <React.Fragment key={result.id}>
-                                <MetadataCompact api={api} result={result} targetLink={targetLink}/>
+                                <MetadataCompact api={api} result={result} onNavigateToEntity={onNavigateToEntity}/>
                                 <EuiSpacer/>
                             </React.Fragment>
                         ))}
