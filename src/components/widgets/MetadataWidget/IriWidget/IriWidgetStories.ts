@@ -22,11 +22,9 @@ export const IriWidgetStoryArgTypes = {
     iri: {
         description: "Object IRI that you want to link.",
     },
-    parameter: {},
 }
 
 export const IriWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
     color: "",
     iriText: "",
     iri: ""

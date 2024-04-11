@@ -27,8 +27,7 @@ window['SemLookPWidgets'].createIri(
     {
         iri:"${args.iri}",
         iriText:"${args.iriText}",
-        color:"${args.color}",
-        parameter:"${args.parameter}",
+        color:"${args.color}"
     },
     document.querySelector('#iri_widget_container_${num}')
 )

@@ -32,7 +32,6 @@ function WrappedIriWidget(props: IriWidgetProps) {
                     iri={props.iri}
                     iriText={props.iriText}
                     color={props.color}
-                    parameter={props.parameter}
                 />
             </QueryClientProvider>
         </EuiProvider>
