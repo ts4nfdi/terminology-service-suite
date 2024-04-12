@@ -28,6 +28,18 @@ export const AutocompleteWidgetStoryArgTypes = {
   }
 }
 
+export const AutocompleteWidgetStoryArgsReact = {
+  args: {
+    api: "https://semanticlookup.zbmed.de/ols/api/",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    hasShortSelectedLabel: true,
+    allowCustomTerms: false,
+    singleSelection: true,
+    placeholder: "Search for a Concept",
+    preselected: [],
+  },
+};
+
 export const AutocompleteWidgetStoryArgs = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
