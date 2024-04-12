@@ -32,7 +32,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
   function render(data: Entity) {
     return (
       <>
-        <EuiFlexGroup direction="column" style={{ maxWidth: 600 }}>
+        <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false}>
                 <span>
                   <BreadcrumbPresentation
@@ -46,7 +46,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
             <EuiFlexGroup direction="column">
               <EuiFlexItem>
                 <EuiFlexGroup>
-                  <EuiFlexItem grow={false}>
+                  <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
                     <IriWidget
                       iri={iri}
                       parameter={parameter}
@@ -54,20 +54,19 @@ function MetadataWidget(props: MetadataWidgetProps) {
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>
-              <EuiFlexItem grow={false}>
+              <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
                 <TitlePresentation
                   title={data.getLabel()}
                 />
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
-          <EuiFlexItem>
+          <EuiFlexItem style={{ maxWidth: 600 }}>
             <DescriptionPresentation
               description={data.getDescription()}
             />
           </EuiFlexItem>
           <EuiFlexItem>
-            <div style={{ maxHeight: "500px", overflow: "auto" }}>
               <TabPresentation
                 data={data}
                 iri={iri}
@@ -76,7 +75,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 ontologyId={props.ontologyId ? props.ontologyId : data.getOntologyId()}
                 useLegacy={useLegacy}
               />
-            </div>
           </EuiFlexItem>
         </EuiFlexGroup>
       </>
