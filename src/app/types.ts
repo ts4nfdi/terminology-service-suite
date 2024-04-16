@@ -352,6 +352,11 @@ export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">>
      * Possible values for number of items displayed per page.
      */
     itemsPerPageOptions?: number[];
+
+    /**
+     * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
+     */
+    preselected?: { label?: string; iri?: string }[];
 };
 
 export type SearchResultProps = {

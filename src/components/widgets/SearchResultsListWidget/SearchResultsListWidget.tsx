@@ -32,6 +32,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
         targetLink,
+        preselected,
         ...rest
     } = props;
     const olsApi = new OlsApi(api);
@@ -207,6 +208,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 singleSelection={true}
                 hasShortSelectedLabel={true}
                 placeholder={"Search"}
+                preselected={preselected}
             />
 
             <EuiSpacer size="s"/>
