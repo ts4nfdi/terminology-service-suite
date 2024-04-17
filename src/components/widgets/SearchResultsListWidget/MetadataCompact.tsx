@@ -18,7 +18,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             {...rest}
             href={targetLink ?
                 (result.type != "ontology" ?
-                    targetLink + "ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + result.iri
+                    targetLink + "ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + encodeURIComponent(encodeURIComponent(result.iri))
                     : targetLink + "ontologies/" + result.ontology_name)
                 : undefined}
             title={
