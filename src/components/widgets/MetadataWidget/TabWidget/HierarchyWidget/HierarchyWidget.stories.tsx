@@ -63,3 +63,16 @@ HierarchyWidget1.args = {
   ontologyId: "efo",
   entityType: "class"
 };
+
+export const HierarchyWidgetLarge = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+HierarchyWidgetLarge.storyName = "Hierarchy Widget Large Hierarchy"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+HierarchyWidgetLarge.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  ontologyId: "ncbitaxon",
+  iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
+  entityType: "term",
+};

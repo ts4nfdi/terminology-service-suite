@@ -117,6 +117,21 @@ OLS4V2.args = {
   parameter: ""
 };
 
+export const OLS4V2LargeHierarchy = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OLS4V2LargeHierarchy.storyName = "OLS4 V2 Large Hierarchy"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+OLS4V2LargeHierarchy.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  ontologyId: "ncbitaxon",
+  iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
+  entityType: "term",
+  useLegacy: false,
+  parameter: "",
+};
+
 export const SelectingDefiningOntology = Template.bind({});
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
