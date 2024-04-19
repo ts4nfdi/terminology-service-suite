@@ -47,6 +47,30 @@ jobs:
         run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
+      - name: Run npm build:plainJS
+        run: npm run build:plainJS
+      - name: Copy dist_plainjs to new directory
+        if: env.SRVERSION != ''
+        run: |
+          mkdir -p "$SRVERSION"
+          cp -r dist_plainjs/* "$SRVERSION"/
+      - name: Checkout target branch
+        if: env.SRVERSION != ''
+        uses: actions/checkout@v3
+        with:
+          ref: 'js-modules'
+      - name: Add build files to target branch
+        if: env.SRVERSION != ''
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add "$SRVERSION"/
+          git commit -m "Add build files $SRVERSION"
+      - name: Push build files to target branch
+        if: env.SRVERSION != ''
+        run: git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   documentation:
     if: github.ref == 'refs/heads/feat/plainJS-sb-integration'
     needs: build
