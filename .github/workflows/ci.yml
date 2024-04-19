@@ -63,7 +63,7 @@ jobs:
           git commit -m "Add build files $SRVERSION"
       - name: Push build files
         if: env.SRVERSION != ''
-        run: git push origin js-modules:js-modules
+        run: git push origin HEAD:js-modules
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   documentation:
