@@ -59,11 +59,11 @@
     "@types/react-dom": "17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "@zbmed/esbuild-dynamic-import": "^2.0.1",
     "@zbmed/gh-pages-multi": "^0.7.5",
     "@zbmed/ols-treeview": "^4.1.7",
     "axios": "^1.1.2",
     "cross-env": "^7.0.3",
-    "custom-esbuild-dynamic-import": "file:local_modules/dyn-import-plugin",
     "dotenv-cli": "^7.2.1",
     "esbuild": "^0.18.11",
     "eslint": "^8.21.0",
@@ -91,7 +91,6 @@
     "react-query": "^3.39.2"
   },
   "dependencies": {
-    "@storybook/html-vite": "^7.2.3",
-    "semlookp-widgets": "file:dist_plainjs/"
+    "@storybook/html-vite": "^7.2.3"
   }
 }
