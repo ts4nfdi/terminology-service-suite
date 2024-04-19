@@ -45,6 +45,7 @@ export const SearchResultsListNFDI4Health = {
         query: "d*",
         targetLink: "",
         parameter: "collection=nfdi4health",
+        preselected: [{ label: "diabetes" }],
     }
 };
 
