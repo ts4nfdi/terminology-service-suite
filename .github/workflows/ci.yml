@@ -64,8 +64,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@zbmed'
-      - name: Run npm clean install
-        run: npm ci
+      - name: Run npm install
+        run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Run npm build:plainJS
