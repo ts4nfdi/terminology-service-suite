@@ -47,27 +47,6 @@ jobs:
         run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
-  build-plainJS:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
-    steps:
-      - name: Checkout target branch
-        if: env.SRVERSION != ''
-        uses: actions/checkout@v3
-        with:
-          ref: 'js-modules'
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: 'https://npm.pkg.github.com/'
-          scope: '@zbmed'
-      - name: Run npm install
-        run: npm install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Run npm build:plainJS
         run: npm run build:plainJS
       - name: Copy dist_plainjs to version directory
@@ -82,19 +61,23 @@ jobs:
       - name: Configure Git to Use PAT for Authentication
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
-      - name: Add build files
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "$SRVERSION"
+      - name: Copy as Latest to js-modules branch
         if: env.SRVERSION != ''
         run: |
-          git add "$SRVERSION"/
-          git pull
-          git commit -m "Add build files $SRVERSION"
+          npx gh-pages-multi deploy -s "$SRVERSION" -b js-modules --no-history -t latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push build files
+      - name: Copy Version to js-modules branch
         if: env.SRVERSION != ''
-        run: git push
         env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx gh-pages-multi deploy -s "$SRVERSION" -b js-modules --no-history -t "$SRVERSION"
   documentation:
     if: github.ref == 'refs/heads/feat/plainJS-sb-integration'
     needs: build
