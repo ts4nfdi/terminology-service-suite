@@ -89,6 +89,12 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@zbmed'
           token: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Run npm clean install
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+      - name: Run npm build:plainJS
+        run: npm run build:plainJS
       - name: Install and Build HTML Storybook
         run: |
           npm install
