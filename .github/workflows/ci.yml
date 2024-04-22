@@ -59,7 +59,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: $SRVERSION
+          path: ${{ env.SRVERSION }}
       - name: Copy as Latest to js-modules branch
         if: env.SRVERSION != ''
         run: |
