@@ -60,13 +60,13 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: dist_plainjs
-      - name: Copy as Latest to js-modules branch
+      - name: Copy as Latest to gh-pages
         if: env.SRVERSION != ''
         run: |
           npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Copy Version to js-modules branch
+      - name: Copy Version to gh-pages
         if: env.SRVERSION != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
