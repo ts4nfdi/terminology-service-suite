@@ -47,6 +47,28 @@ jobs:
         run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
+  build-plainJS:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+    steps:
+      - name: Checkout target branch
+        if: env.SRVERSION != ''
+        uses: actions/checkout@v3
+        with:
+          ref: 'js-modules'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@zbmed'
+      - name: Run npm clean install
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
       - name: Run npm build:plainJS
         run: npm run build:plainJS
       - name: Copy dist_plainjs to version directory
@@ -65,12 +87,13 @@ jobs:
         if: env.SRVERSION != ''
         run: |
           git add "$SRVERSION"/
+          git pull
           git commit -m "Add build files $SRVERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push build files
         if: env.SRVERSION != ''
-        run: git push origin HEAD:js-modules
+        run: git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   documentation:
