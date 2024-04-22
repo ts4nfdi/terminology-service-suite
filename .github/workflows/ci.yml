@@ -63,7 +63,7 @@ jobs:
       - name: Copy as Latest to js-modules branch
         if: env.SRVERSION != ''
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs -b js-modules --no-history -t latest
+          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy Version to js-modules branch
@@ -71,7 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs -b js-modules --no-history -t "$SRVERSION"
+          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
   documentation:
     if: github.ref == 'refs/heads/feat/plainJS-sb-integration'
     needs: build
