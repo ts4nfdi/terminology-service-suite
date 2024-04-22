@@ -69,7 +69,6 @@ jobs:
       - name: Copy Version to js-modules branch
         if: env.SRVERSION != ''
         env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s dist_plainjs -b js-modules --no-history -t "$SRVERSION"
