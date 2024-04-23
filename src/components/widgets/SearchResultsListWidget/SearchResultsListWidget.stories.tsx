@@ -11,5 +11,7 @@ export default {
 export {
     SearchResultsListSafety,
     SearchResultsListNFDI4Health,
-    ErrorSearchResultsList
+    ErrorSearchResultsList,
+    TibNFDI4CHEM,
+    TibDataPlant
 } from "./SearchResultsListWidgetStories"

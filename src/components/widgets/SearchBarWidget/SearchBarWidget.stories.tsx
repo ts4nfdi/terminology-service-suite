@@ -9,5 +9,7 @@ export default {
 };
 
 export {
-    SearchBarWidget1
+    SearchBarWidget1,
+    TibNFDI4CHEM,
+    TibDataPlant
 } from "./SearchBarWidgetStories"

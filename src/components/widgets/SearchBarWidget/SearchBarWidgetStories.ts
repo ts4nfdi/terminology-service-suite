@@ -7,6 +7,7 @@ export const SearchBarWidgetStoryArgTypes = {
             "https://www.ebi.ac.uk/ols4/api/",
             "https://semanticlookup.zbmed.de/ols/api/",
             "https://semanticlookup.zbmed.de/api/",
+            "https://service.tib.eu/ts4tib/api/"
         ],
     },
     query: {},
@@ -25,5 +26,19 @@ export const SearchBarWidget1 = {
     args: {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "diab",
+    }
+};
+
+export const TibNFDI4CHEM = {
+    args: {
+        api: "https://service.tib.eu/ts4tib/api/",
+        parameter: "collection=NFDI4CHEM",
+    }
+};
+
+export const TibDataPlant = {
+    args: {
+        api: "https://service.tib.eu/ts4tib/api/",
+        parameter: "collection=DataPLANT",
     }
 };

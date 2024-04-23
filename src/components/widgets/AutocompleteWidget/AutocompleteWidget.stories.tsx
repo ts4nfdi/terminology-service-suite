@@ -22,7 +22,9 @@ export {
   AllowAddingCustomTerms,
   WithGermanInput,
   DisplaySelectedEntityWithLongForm,
-  WithDescriptionAndShortForm
+  WithDescriptionAndShortForm,
+  TibNFDI4CHEM,
+  TibDataPlant
 } from "./AutocompleteWidgetStories"
 
 
