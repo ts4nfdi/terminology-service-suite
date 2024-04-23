@@ -63,7 +63,7 @@ jobs:
       - name: Copy as Latest to gh-pages
         if: env.SRVERSION != ''
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t gh-pages/latest
+          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy Version to gh-pages
@@ -71,7 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t gh-pages/"$SRVERSION"
+          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
   documentation:
     if: github.ref == 'refs/heads/main'
     needs: build
