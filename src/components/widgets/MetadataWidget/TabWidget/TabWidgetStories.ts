@@ -103,3 +103,13 @@ export const DefiningOntologyUnavailable = {
         parameter: ""
     }
 };
+
+export const TabWidgetLarge = {
+    args: {
+        api: "https://www.ebi.ac.uk/ols4/api/",
+        ontologyId: "ncbitaxon",
+        iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
+        useLegacy: false,
+        parameter: ""
+    }
+};
