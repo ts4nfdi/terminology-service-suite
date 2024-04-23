@@ -38,6 +38,9 @@ the `devDependencies` section, if the corresponding modules are not present on y
 IMPORTANT NOTE:  To build the package, they must be defined as peerDependencies to avoid dependency conflicts in the
 consumer projects.
 
+You will need access to a sub-widget repository to run the HierarchyWidget (and the entire project) in development mode.
+Please contact the SemLookP or TS4NFDI teams. We are working on avoiding this hurdle in the future.
+
 ### Authenticate
 
 Add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access
@@ -72,40 +75,14 @@ the React Storybook has to be running at `http://localhost:6006` and the HTML St
 ### Build widgets for non-React projects
 
 `npm run build:plainJS` (WIP) builds the widgets for non-React projects. It uses esbuild and the output can be found
-in `dist_plainjs/`. This process uses an adapted version of the community
-plugin [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import). The required adaptations can be
-found in PRs [#9](https://github.com/RTVision/esbuild-dynamic-import/pull/9)
-and [#10](https://github.com/RTVision/esbuild-dynamic-import/pull/10). The adapted version needs to be built and placed
-in `local_modules/dyn-import-plugin/`.
-
-To use the widgets in a plain javascript environment, embed the output file in a script tag in the head of an `html`
-file and include a link to a stylesheet for Elastic UI:
-
-```html
-
-<script type="text/javascript" src="path/to/semlookp_widgets.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/@elastic/eui@62.2.4/dist/eui_theme_light.css">
-```
-
-A DataContentWidget, for example, is then created as follows:
-
-```html
-
-<div id="datacontentwidget"></div>
-
-<script>
-  let container = document.getElementById('datacontentwidget');
-  window['SemLookPWidgets'].createDataContent(
-    { api: "https://semanticlookup.zbmed.de/api/", }, container);
-</script>
-```
+in `dist_plainjs/`. This process uses a forked and adapted version of the community
+plugin [esbuild-dynamic-import](https://github.com/zbmed/esbuild-dynamic-import).
 
 For further information on the usage of the HTML widgets, please visit the interactive documentation in
 the [HTML Storybook](#run-storybook).
 
-If the environment features `npm`, a local module can be created from the output file. To do this, place the adapted
-version of [esbuild-dynamic-import](https://github.com/RTVision/esbuild-dynamic-import)
-in `local_modules/dyn-import-plugin/` and all the files generated inside `dist_plainjs/`
+If the environment features `npm`, a local module can be created from the output file. To do this, place all the files
+generated inside `dist_plainjs/`
 in `local_modules/semlookp-widgets/` in your project. Now
 add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
 
@@ -135,7 +112,8 @@ before using
 ```npm pack```
 
 A `.tgz` folder will be created with the bundled module.
-Add `"@nfdi4health/semlookp-widgets": "file:../path/to/nfdi4health-semlookp-widgets-1.17.4.tgz",` to your package.json
+Add `"@nfdi4health/semlookp-widgets": "file:../path/to/nfdi4health-semlookp-widgets-1.17.4.tgz",` (adapt path and file
+name) to your package.json
 of the consumer project and do `npm install`.
 
 #### Link the widgets locally for testing
