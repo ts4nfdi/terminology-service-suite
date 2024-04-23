@@ -19,3 +19,18 @@ export {
     SelectingDefiningOntology,
     DefiningOntologyUnavailable
 } from "./TabWidgetStories"
+
+export const TabWidgetLarge = Template.bind({});
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TabWidgetLarge.storyName = "Metadata Widget Large Hierarchy"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+TabWidgetLarge.args = {
+  api: "https://www.ebi.ac.uk/ols4/api/",
+  ontologyId: "ncbitaxon",
+  iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
+  useLegacy: false,
+  parameter: ""
+};
+

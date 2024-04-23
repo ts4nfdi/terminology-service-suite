@@ -13,7 +13,6 @@ function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
     return (
       <>
-        <EuiFlexItem>
           <EuiTabbedContent size="s" tabs={
             [
               {
@@ -26,6 +25,7 @@ function TabPresentation(props: TabPresentationProps) {
               {
                 content: (
                   <>
+                    <div style={{ overflow: "auto"}}>
                     {props.useLegacy == undefined || props.useLegacy
                       ? <HierarchyWidgetDeprecated
                         ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
@@ -40,6 +40,7 @@ function TabPresentation(props: TabPresentationProps) {
                         entityType={props.entityType}
                       />
                     }
+                    </div>
                   </>
                 ),
                 id: "tab2",
@@ -55,7 +56,6 @@ function TabPresentation(props: TabPresentationProps) {
               }
             ]
           } />
-        </EuiFlexItem>
       </>
     );
   }
