@@ -136,7 +136,7 @@ jobs:
         run: |
           npx gh-pages-multi deploy -s react --no-history -t react/latest
           npx gh-pages-multi deploy -s html --no-history -t html/latest
-          npx gh-pages-multi deploy -s public --no-history comp/latest
+          npx gh-pages-multi deploy -s public --no-history public/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Use SRVERSION
@@ -151,4 +151,4 @@ jobs:
         run: |
           npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
           npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
-          npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
+          npx gh-pages-multi deploy -s public --no-history -t public/"$SRVERSION"
