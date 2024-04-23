@@ -1,16 +1,17 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiIconTip, EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
-import {useQuery} from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
-import {MetadataWidgetProps} from "../../../utils/types";
+import {MetadataWidgetProps} from "../../../app/types";
 import { Entity, Thing } from "../../../model/interfaces";
 import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
 import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
-import { getErrorMessageToDisplay } from "../../../utils/helper";
+import { getErrorMessageToDisplay } from "../../../app/util";
 import { isEntity } from "../../../model/ModelTypeCheck";
+import ReactDOM from "react-dom";
 
 function MetadataWidget(props: MetadataWidgetProps) {
   const { iri, api, ontologyId, entityType, parameter, useLegacy } = props;
@@ -93,4 +94,27 @@ function MetadataWidget(props: MetadataWidgetProps) {
     </>
   );
 }
-export { MetadataWidget };
+
+function createMetadata(props: MetadataWidgetProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedMetadataWidget(props), container, callback);
+}
+
+function WrappedMetadataWidget(props: MetadataWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <MetadataWidget
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    api={props.api}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                    useLegacy={props.useLegacy}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { MetadataWidget, createMetadata };

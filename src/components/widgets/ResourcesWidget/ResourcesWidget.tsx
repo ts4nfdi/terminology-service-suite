@@ -5,17 +5,20 @@ import {
   EuiBasicTable,
   EuiButtonIcon,
   EuiHorizontalRule,
+  EuiProvider,
   EuiLink,
   EuiSpacer,
   EuiText
 } from "@elastic/eui";
-import { useQuery } from "react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
-import { OlsResource, ResourcesWidgetProps } from "../../../utils/types";
+import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
 import { Ontologies } from "../../../model/interfaces";
+import ReactDOM from "react-dom";
 
+const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 const DEFAULT_INITIAL_SORT_FIELD = "config.preferredPrefix";
 const DEFAULT_INITIAL_SORT_DIR = "asc" as const;
@@ -23,16 +26,17 @@ const DEFAULT_INITIAL_SORT_DIR = "asc" as const;
 function ResourcesWidget(props: ResourcesWidgetProps) {
   const {
     api,
+    initialEntriesPerPage = DEFAULT_INITIAL_ENTRIES_PER_PAGE,
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     targetLink,
-    parameter
+    parameter,
   } = props;
   const olsApi = new OlsApi(api);
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(initialEntriesPerPage);
   const [sortField, setSortField] = useState<string | number>(initialSortField);
   const [sortDirection, setSortDirection] = useState(initialSortDir);
 
@@ -118,9 +122,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   ];
 
   const onTableChange = ({
-                           page,
-                           sort
-                         }: CriteriaWithPagination<OlsResource>) => {
+    page,
+    sort,
+  }: CriteriaWithPagination<OlsResource>) => {
     const { index: pageIndex, size: pageSize } = page;
     setPageIndex(pageIndex);
     setPageSize(pageSize);
@@ -270,4 +274,28 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   );
 }
 
-export { ResourcesWidget };
+function createResources(props: ResourcesWidgetProps, container: Element, callback?: ()=>void) {
+  ReactDOM.render(WrappedResourcesWidget(props), container, callback);
+}
+
+function WrappedResourcesWidget(props: ResourcesWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <ResourcesWidget
+              api={props.api}
+              initialEntriesPerPage={props.initialEntriesPerPage}
+              pageSizeOptions={props.pageSizeOptions}
+              initialSortField={props.initialSortField}
+              initialSortDir={props.initialSortDir}
+              targetLink={props.targetLink}
+              actions={props.actions}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { ResourcesWidget, createResources };

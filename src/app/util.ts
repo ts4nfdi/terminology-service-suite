@@ -46,7 +46,7 @@ export function getFrontEndApi(api: string) : string {
 }
 
 /**
- * Returns "/ontologies/{ontologyId}/{entities}?iri={termIri}", which can be concatenated with frontendApi to get full link
+ * Returns "/ontologies/{ontologyId}/{entityType}?iri={termIri}", which can be concatenated with frontendApi to get full link
  * @param ontologyId the entities' ontologyId
  * @param termIri the entities' iri
  * @param entityTypeArray the entities' type array (from api JSON linkedEntities)
@@ -55,11 +55,11 @@ export function getTermInOntologySuffix(ontologyId: string, termIri: string, ent
     return "/ontologies/" + ontologyId + "/" + pluralizeType(entityTypeArray) + "?iri=" + termIri;
 }
 
-export function pluralizeType(typeArray: string[]) : "classes" | "properties" | "individuals" | undefined {
-    for(const type of typeArray) {
+export function pluralizeType(typeArray: string[] | string, useLegacy?: boolean) : "terms" | "classes" | "properties" | "individuals" | undefined {
+    for(const type of asArray(typeArray)) {
         switch (type){
             case "class": case "term": // allow both
-                return "classes"
+                return getUseLegacy(useLegacy) ? "terms" : "classes";
             case "property":
                 return "properties"
             case "individual":
@@ -86,4 +86,12 @@ export function isRgbColor(str: string) : boolean {
 
 export function isEuiLinkColor(str: string) : str is EuiLinkColor {
     return ["primary", "subdued", "success", "accent", "danger", "warning", "text", "ghost"].includes(str);
+}
+
+export function getErrorMessageToDisplay(error: any, messagePlaceholder = "information"): string {
+    const error_msg : string = error.message;
+    if(error_msg === ("Response contains 0 elements")) {
+        return "No elements found";
+    }
+    else return `No ${messagePlaceholder} available`;
 }

@@ -7,7 +7,6 @@ export interface Entity extends Thing {
     getEquivalents(): Reified<any>[];
     isCanonical(): boolean;
     isDeprecated(): boolean;
-    getCrossReferences(): any[];
     getDeprecationVersion(): string;
     getDeprecationReason(): Reified<any>[];
     getDeprecationReplacement(): string;
@@ -28,6 +27,6 @@ export interface Entity extends Thing {
     getNumDescendants(): number;
     getHierarchicalParentReificationAxioms(parentIri: string): any;
     getIsDefiningOntology(): boolean;
-    getCrossReferences(): Reified<any>[];
+    getCrossReferences(): any[];
     getTypePlural(): "entities" | "classes" | "properties" | "individuals";
 }

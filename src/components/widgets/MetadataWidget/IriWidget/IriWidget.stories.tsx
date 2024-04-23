@@ -1,7 +1,8 @@
-import React from "react";
 import { IriWidget } from "./IriWidget";
-import { IriWidgetProps } from "../../../../utils/types";
-import { EuiPanel } from "@elastic/eui";
+import {
+  IriWidgetStoryArgs,
+  IriWidgetStoryArgTypes
+} from "./IriWidgetStories";
 
 export default {
   title: "IriWidget",
@@ -9,50 +10,10 @@ export default {
   parameters: {
     layout: "centered",
   },
-  argTypes: {
-    color: {
-      table: {
-        type: { summary: `EuiLinkColor | string` },
-      },
-      control: {
-        type: "radio",
-      },
-      options: [
-        "primary",
-        "subdued",
-        "success",
-        "accent",
-        "danger",
-        "warning",
-        "ghost",
-        "#00FFFF",
-        "rgb(255,0,255)",
-      ],
-    },
-    iriText: {},
-    iri: {
-      description: "Object IRI that you want to link.",
-    },
-    parameter: {
-      defaultValue: "collection=nfdi4health",
-      type: { required: false }
-    },
-  },
-  args: {
-    parameter: "collection=nfdi4health",
-  }
+  argTypes: IriWidgetStoryArgTypes,
+  args: IriWidgetStoryArgs
 };
 
-const Template = (args: IriWidgetProps) => (
-  <EuiPanel>
-    <IriWidget {...args} />
-  </EuiPanel>
-);
-
-export const IriWidget1 = Template.bind({});
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-IriWidget1.args = {
-  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-};
+export {
+  IriWidget1
+} from "./IriWidgetStories"

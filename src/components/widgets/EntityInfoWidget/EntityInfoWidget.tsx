@@ -1,13 +1,13 @@
 import React, {ReactElement} from "react";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
 import {OlsApi} from "../../../api/OlsApi";
-import {useQuery} from 'react-query'
-import { getErrorMessageToDisplay } from "../../../utils/helper";
-import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString} from "../../../app/util";
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
+import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString, getErrorMessageToDisplay} from "../../../app/util";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getTooltip} from "../../../model/StructureRendering";
 import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
 import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
-import {EntityInfoWidgetProps} from "../../../utils/types";
+import {EntityInfoWidgetProps} from "../../../app/types";
+import ReactDOM from "react-dom";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -333,4 +333,28 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     );
 }
 
-export { EntityInfoWidget };
+function createEntityInfo(props: EntityInfoWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedEntitiyInfoWidget(props), container, callback);
+}
+
+function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <EntityInfoWidget
+                    api={props.api}
+                    iri={props.iri}
+                    ontologyId={props.ontologyId}
+                    hasTitle={props.hasTitle}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                    useLegacy={props.useLegacy}
+                    showBadges={props.showBadges}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { EntityInfoWidget, createEntityInfo };

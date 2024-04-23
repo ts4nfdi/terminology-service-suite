@@ -1,13 +1,14 @@
 import React from "react";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from "../../../../../api/OlsApi";
-import { useQuery } from "react-query";
-import { getErrorMessageToDisplay } from "../../../../../utils/helper";
-import { CrossRefWidgetProps } from "../../../../../utils/types";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import { getErrorMessageToDisplay } from "../../../../../app/util";
+import { CrossRefWidgetProps } from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 import Reified from "../../../../../model/Reified";
+import ReactDOM from "react-dom";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
@@ -38,4 +39,26 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 }
 
-export { CrossRefTabWidget };
+function createCrossRefTab(props: CrossRefWidgetProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
+}
+
+function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <CrossRefTabWidget
+                    iri={props.iri}
+                    api={props.api}
+                    ontologyId={props.ontologyId}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                    useLegacy={props.useLegacy}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { CrossRefTabWidget, createCrossRefTab };

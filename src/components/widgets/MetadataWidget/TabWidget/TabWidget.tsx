@@ -1,12 +1,13 @@
 import React from "react";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
-import {useQuery} from "react-query";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../../api/OlsApi";
-import {TabWidgetProps} from "../../../../utils/types";
-import { Entity, Thing } from "../../../../model/interfaces";
+import {TabWidgetProps} from "../../../../app/types";
+import { Entity } from "../../../../model/interfaces";
 import { TabPresentation } from "./TabPresentation";
-import { getErrorMessageToDisplay } from "../../../../utils/helper";
-import { isEntity } from "../../../../model/ModelTypeCheck";
+import { getErrorMessageToDisplay } from "../../../../app/util";
+import {EntityTypeName, isEntity} from "../../../../model/ModelTypeCheck";
+import ReactDOM from "react-dom";
 
 function TabWidget(props: TabWidgetProps) {
   const { iri, api, ontologyId, entityType, parameter, useLegacy, ...rest } = props;
@@ -18,7 +19,7 @@ function TabWidget(props: TabWidgetProps) {
     isSuccess,
     isError,
     error
-  } = useQuery<Thing>(
+  } = useQuery<Entity>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
@@ -27,12 +28,12 @@ function TabWidget(props: TabWidgetProps) {
 
   function render(data: Entity) {
     return (
-      <TabPresentation
+      <TabPresentation {...rest}
         data={data}
         iri={iri}
         api={api}
         useLegacy={useLegacy}
-        entityType={data.getTypePlural()}
+        entityType={data.getType() as EntityTypeName}
       />
     );
   }
@@ -50,4 +51,26 @@ function TabWidget(props: TabWidgetProps) {
   );
 }
 
-export { TabWidget };
+function createTab(props: TabWidgetProps, container: Element, callback?: ()=>void) {
+  ReactDOM.render(WrappedTabWidget(props), container, callback);
+}
+
+function WrappedTabWidget(props: TabWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <TabWidget
+              iri={props.iri}
+              api={props.api}
+              ontologyId={props.ontologyId}
+              entityType={props.entityType}
+              parameter={props.parameter}
+              useLegacy={props.useLegacy}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { TabWidget, createTab };

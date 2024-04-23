@@ -1,12 +1,13 @@
 import React from "react";
-import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../../api/OlsApi'
-import { useQuery } from 'react-query'
-import { getErrorMessageToDisplay } from "../../../../../utils/helper";
-import {AlternativeNameTabWidgetProps} from "../../../../../utils/types";
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
+import { getErrorMessageToDisplay } from "../../../../../app/util";
+import {AlternativeNameTabWidgetProps} from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
+import ReactDOM from "react-dom";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
@@ -35,4 +36,25 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-export { AlternativeNameTabWidget };
+function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
+}
+
+function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <AlternativeNameTabWidget
+                    iri={props.iri}
+                    api={props.api}
+                    ontologyId={props.ontologyId}
+                    entityType={props.entityType}
+                    parameter={props.parameter}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { AlternativeNameTabWidget, createAlternativeNameTab };

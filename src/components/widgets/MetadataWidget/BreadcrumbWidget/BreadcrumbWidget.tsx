@@ -1,11 +1,12 @@
 import React from "react";
-import {EuiBadge, EuiLoadingSpinner} from "@elastic/eui";
+import {EuiBadge, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
-import {useQuery} from "react-query";
-import { getErrorMessageToDisplay } from "../../../../utils/helper";
-import {BreadcrumbWidgetProps} from "../../../../utils/types";
+import { getErrorMessageToDisplay } from "../../../../app/util";
+import {BreadcrumbWidgetProps} from "../../../../app/types";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import ReactDOM from "react-dom";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy} = props;
@@ -51,4 +52,29 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       </>
   );
 }
-export { BreadcrumbWidget };
+
+function createBreadcrumb(props: BreadcrumbWidgetProps, container: Element, callback?:()=>void) {
+  ReactDOM.render(WrappedBreadcrumbWidget(props), container, callback);
+}
+
+function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <BreadcrumbWidget
+              api={props.api}
+              entityType={props.entityType}
+              iri={props.iri}
+              ontologyId={props.ontologyId}
+              colorFirst={props.colorFirst}
+              colorSecond={props.colorSecond}
+              parameter={props.parameter}
+              useLegacy={props.useLegacy}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { BreadcrumbWidget, createBreadcrumb };

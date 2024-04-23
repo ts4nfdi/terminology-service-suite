@@ -1,11 +1,12 @@
 import React from "react";
-import { useQuery } from "react-query";
-import {EuiLoadingSpinner, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay } from "../../../../utils/helper";
-import {DescriptionWidgetProps} from "../../../../utils/types";
+import { getErrorMessageToDisplay } from "../../../../app/util";
+import {DescriptionWidgetProps} from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
+import ReactDOM from "react-dom";
 
 const NO_DESCRIPTION = "No description available.";
 
@@ -30,11 +31,35 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     <>
       {isLoading && <EuiLoadingSpinner size="s" />}
       {isSuccess && data &&
-        <DescriptionPresentation description={descText || data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
+        <DescriptionPresentation description={data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
       }
       {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
     </>
   );
 }
 
-export { DescriptionWidget };
+function createDescription(props: DescriptionWidgetProps, container: Element, callback?:()=>void) {
+  ReactDOM.render(WrappedDescriptionWidget(props), container, callback);
+}
+
+function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <DescriptionWidget
+              api={props.api}
+              ontologyId={props.ontologyId}
+              iri={props.iri}
+              descText={props.descText}
+              thingType={props.thingType}
+              parameter={props.parameter}
+              color={props.color}
+              useLegacy={props.useLegacy}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { DescriptionWidget, createDescription };

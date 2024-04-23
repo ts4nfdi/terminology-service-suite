@@ -1,10 +1,6 @@
 import React from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from "@elastic/eui";
-
-export interface AlternativeNameTabWidgetPresentationProps {
-  synonyms: any[];
-}
-
+import {AlternativeNameTabWidgetPresentationProps} from "../../../../../app/types";
 
 function AlternativeNameTabPresentation(props: AlternativeNameTabWidgetPresentationProps) {
 

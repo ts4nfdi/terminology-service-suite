@@ -1,6 +1,6 @@
 import {Thing} from "./interfaces";
 import React, {ReactElement} from "react";
-import {EuiBadge, EuiIconTip} from "@elastic/eui";
+import {EuiBadge, EuiIconTip, EuiIcon} from "@elastic/eui";
 import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
@@ -115,36 +115,39 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                     <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
                     {
                         showBadges ?
-                            <>
-                                &nbsp;
-                                {otherDefinedBy.map((elem: any) => {
-                                    return (
-                                        <a key={randomString()} href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
-                                    );
-                                })}
-                            </> :
-                            <></>
+                        <>
+                            &nbsp;
+                            {otherDefinedBy.map((elem: any) => {
+                                return (
+                                    <a key={randomString()} href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                );
+                            })}
+                        </> :
+                        <></>
                     }
                 </>
             )
         }
         else {
-            // show <label><ICON> linking to disambiguation page
-            // TODO: link correct urls, show disambiguation page?
+            // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
             return (
                 <>
                     <a href={iri}>{label}</a>
                     {
                         showBadges ?
-                            <>
-                                &nbsp;
-                                {otherDefinedBy.map((elem: any) => {
-                                    return (
-                                        <a key={randomString()} href={iri}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
-                                    );
-                                })}
-                            </> :
-                            <></>
+                        <>
+                            &nbsp;
+                            <a key={randomString()} href={frontendApi + `/search?q=${encodeURIComponent(label)}&exactMatch=true`}>
+                                <EuiBadge color={"success"}>
+                                    <EuiIcon type={"search"} size={"s"}/>
+                                    &nbsp;
+                                    {otherDefinedBy.length}
+                                    &nbsp;
+                                    {"ontologies"}
+                                </EuiBadge>
+                            </a>
+                        </> :
+                        <></>
                     }
                 </>
             );
@@ -161,11 +164,28 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
         }
         else {
             if(parseInt(linkedEntity["numAppearsIn"]) > 0) {
-                // show <label><ICON> linking to disambiguation page
-                // TODO: link correct urls, show disambiguation page?
+                // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
                 return (
                     <>
                         <a href={iri}>{label}</a>
+                        {
+                            showBadges ?
+                                <>
+                                    &nbsp;
+                                    <a key={randomString()} href={frontendApi + `/search?q=${encodeURIComponent(label)}&exactMatch=true`}>
+                                        <EuiBadge color={"success"}>
+                                            <EuiIcon type={"search"} size={"s"}/>
+                                            &nbsp;
+                                            {linkedEntity["numAppearsIn"]}
+                                            &nbsp;
+                                            {parseInt(linkedEntity["numAppearsIn"]) > 1
+                                                ? "ontologies"
+                                                : "ontology"}
+                                        </EuiBadge>
+                                    </a>
+                                </> :
+                                <></>
+                        }
                     </>
                 )
             }

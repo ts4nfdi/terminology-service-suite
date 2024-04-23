@@ -1,9 +1,10 @@
 import React from "react";
-import { EuiCard, EuiLoadingSpinner, EuiText } from "@elastic/eui";
-import { useQuery } from "react-query";
+import {EuiCard, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import {Ontologies} from "../../../model/interfaces";
-import {DataContentWidgetProps} from "../../../utils/types";
+import {DataContentWidgetProps} from "../../../app/types";
+import ReactDOM from "react-dom";
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
@@ -57,4 +58,22 @@ function DataContentWidget(props: DataContentWidgetProps) {
   );
 }
 
-export { DataContentWidget };
+function createDataContent(props: DataContentWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedDataContentWidget(props), container, callback);
+}
+
+function WrappedDataContentWidget(props: DataContentWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <DataContentWidget
+            api={props.api}
+            parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { DataContentWidget, createDataContent };

@@ -1,8 +1,8 @@
 import { EuiCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import React from "react";
 import { BreadcrumbWidget, DescriptionWidget, IriWidget } from "../MetadataWidget";
-import { switchEntityType } from '../../../utils/ApiUtils'
-import {MetadataCompactProps} from "../../../utils/types";
+import {MetadataCompactProps} from "../../../app/types";
+import {pluralizeType} from "../../../app/util";
 
 function MetadataCompact(props: MetadataCompactProps) {
     const {
@@ -18,7 +18,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             {...rest}
             href={targetLink ?
                 (result.type != "ontology" ?
-                    targetLink + "ontologies/" + result.ontology_name + "/" + switchEntityType(result.type) + "?iri=" + encodeURIComponent(encodeURIComponent(result.iri))
+                    targetLink + "ontologies/" + result.ontology_name + "/" + pluralizeType(result.type, true) + "?iri=" + result.iri
                     : targetLink + "ontologies/" + result.ontology_name)
                 : undefined}
             title={

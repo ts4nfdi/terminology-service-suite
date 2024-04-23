@@ -1,21 +1,13 @@
 import React from "react";
 import { EuiFlexItem, EuiTabbedContent } from "@elastic/eui";
 import { HierarchyWidget } from "./HierarchyWidget";
-import { Entity, Thing } from "../../../../model/interfaces";
-import { EntityTypeName, isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
+import { Entity } from "../../../../model/interfaces";
+import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
 import Reified from "../../../../model/Reified";
-
-export interface TabPresentationProps {
-  data: Thing;
-  iri: string;
-  api: string;
-  ontologyId?: string;
-  useLegacy?: boolean;
-  entityType?: EntityTypeName;
-}
+import {TabPresentationProps} from "../../../../app/types";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {

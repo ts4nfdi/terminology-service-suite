@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 
 import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
-import {EuiComboBox, euiPaletteColorBlindBehindText, euiPaletteColorBlind, EuiHighlight, EuiHealth} from "@elastic/eui";
-import {useQuery} from "react-query";
+import {
+    EuiComboBox,
+    euiPaletteColorBlindBehindText,
+    euiPaletteColorBlind,
+    EuiHighlight,
+    EuiHealth,
+    EuiProvider
+} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {BreadcrumbWidget} from "../MetadataWidget";
-import {AutocompleteWidgetProps} from "../../../utils/types";
+import {AutocompleteWidgetProps} from "../../../app/types";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, preselected, placeholder, singleSelection, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -37,7 +45,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   // @ts-ignore
   const renderOption = (option, searchValue) => {
     const { label, value } = option;
-    if (props.allowCustomTerms && value.iri == "") {// if we have a custom term, just show the label
+    if (allowCustomTerms && value.iri == "") {// if we have a custom term, just show the label
       return label;
     } else { // otherwise can we can use the semantic information to show some context information like ontology name
       let color = "";
@@ -119,66 +127,70 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     } = useQuery(
         [
             "onMount", // no dependencies - does only need to be executed once when mounting the component
-            props.preselected
+            preselected
         ],
         async () => {
-            let preselectedValues : EuiComboBoxOptionOption<any>[] = [];
+            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
-            let uniqueValues = [...new Set(props.preselected)]
+            let uniqueValues = [...new Set(preselected)]
                 .filter((option) => {
-                    return (props.allowCustomTerms && option.label) || option.iri;
+                    return (allowCustomTerms && option.label) || option.iri;
                 });
 
-            if(props.singleSelection) uniqueValues = [uniqueValues[0]];
+            if(uniqueValues.length > 0) {
+                if (singleSelection) uniqueValues = [uniqueValues[0]];
 
-            for(let option of uniqueValues) {
-                if (option && option.iri && option.iri.startsWith("http")) {
-                    await olsApi.select(
-                        {query: option.iri},
-                        undefined,
-                        undefined,
-                        parameter,
-                    ).then((response) => {
-                        if (response.response && response.response.docs) {
-                            response.response.docs.map((selection: any) => {
-                                if (option.iri === selection.iri) {
-                                    preselectedValues.push({
-                                        // label to display within the combobox either raw value or generated one
-                                        // #renderOption() is used to display during selection.
-                                        label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
-                                        // key to distinguish the options (especially those with same label)
-                                        key: selection.iri,
-                                        value: {
-                                            iri: selection.iri,
-                                            label: selection.label,
-                                            ontology_name: selection.ontology_name,
-                                            type: selection.type,
-                                            short_form: selection.short_form,
-                                            description: selection.description?.join()
-                                        },
-                                    });
-                                }
-                            })
-                        }
-                    });
-                } else if (option && option.label && props.allowCustomTerms) {
-                    preselectedValues.push({
-                        label: option.label,
-                        key: option.label,
-                        value: {
-                            iri: "",
-                            label: "",
-                            ontology_name: "",
-                            type: "",
-                            short_form: "",
-                            description: ""
-                        }
-                    });
+                for (const option of uniqueValues) {
+                    if (option && option.iri && option.iri.startsWith("http")) {
+                        await olsApi.select(
+                            {query: option.iri},
+                            undefined,
+                            undefined,
+                            parameter,
+                        ).then((response) => {
+                            if (response.response && response.response.docs) {
+                                response.response.docs.map((selection: any) => {
+                                    if (option.iri === selection.iri) {
+                                        preselectedValues.push({
+                                            // label to display within the combobox either raw value or generated one
+                                            // #renderOption() is used to display during selection.
+                                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                            // key to distinguish the options (especially those with same label)
+                                            key: selection.iri,
+                                            value: {
+                                                iri: selection.iri,
+                                                label: selection.label,
+                                                ontology_name: selection.ontology_name,
+                                                type: selection.type,
+                                                short_form: selection.short_form,
+                                                description: selection.description?.join()
+                                            },
+                                        });
+                                    }
+                                })
+
+                                if(singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
+                            }
+                        });
+                    } else if (option && option.label && allowCustomTerms) {
+                        preselectedValues.push({
+                            label: option.label,
+                            key: option.label,
+                            value: {
+                                iri: "",
+                                label: "",
+                                ontology_name: "",
+                                type: "",
+                                short_form: "",
+                                description: ""
+                            }
+                        });
+                    }
                 }
-            }
 
-            setOptions(preselectedValues);
-            setSelectedOptions(preselectedValues);
+                setOptions(preselectedValues);
+                setSelectedOptions(preselectedValues);
+            }
         }
     )
 
@@ -229,10 +241,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
-    props.selectionChangedEvent(
+    selectionChangedEvent(
       selectedOptions.map((x) => {
         // return the value object with the raw values from OLS to a client
-        if (props.allowCustomTerms && x.value.iri == "") {
+        if (allowCustomTerms && x.value.iri == "") {
           return {
             iri: "",
             label: x.label,
@@ -293,7 +305,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     };
 
     setOptions([...options, newOption]);
-    setSelectedOptions([...selectedOptions, newOption]);
+    setSelectedOptions(singleSelection ? [newOption] : [...selectedOptions, newOption]);
   }
 
     return (
@@ -304,19 +316,43 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             {...rest} // items above can be overriden by a client
             async={true}
             isLoading={isLoadingTerms || isLoadingOnMount}
-            singleSelection={props.singleSelection ? { asPlainText: true } : false}
+            singleSelection={singleSelection ? { asPlainText: true } : false}
             placeholder={
-                props.placeholder ? props.placeholder : "Search for a Concept"
+                placeholder ? placeholder : "Search for a Concept"
             }
             options={options}
             selectedOptions={selectedOptions}
             onSearchChange={setSearchValue}
             onChange={onChangeHandler}
             renderOption={renderOption}
-            onCreateOption={props.allowCustomTerms ? onCreateOptionHandler : undefined}
+            onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
             rowHeight={50}
         />
     );
 }
 
-export { AutocompleteWidget };
+function createAutocomplete(props: AutocompleteWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
+}
+
+function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <AutocompleteWidget
+          api={props.api}
+          parameter={props.parameter}
+          selectionChangedEvent={props.selectionChangedEvent}
+          preselected={props.preselected}
+          singleSelection={props.singleSelection}
+          placeholder={props.placeholder}
+          hasShortSelectedLabel={props.hasShortSelectedLabel}
+          allowCustomTerms={props.allowCustomTerms}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  )
+}
+
+export { AutocompleteWidget, createAutocomplete };

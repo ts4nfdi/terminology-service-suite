@@ -1,23 +1,46 @@
 module.exports = {
-  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-
+  stories: ["./*.stories.mdx"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "storybook-addon-react-docgen"
+    "@storybook/addon-docgen"
   ],
-
   framework: {
-    name: "@storybook/react-webpack5",
-    options: {}
+    name: "@storybook/html-vite",
+    options: {},
   },
-
+  docs: {
+    autodocs: true,
+  },
   typescript: {
     reactDocgen: 'react-docgen'
   },
-
-  docs: {
-    autodocs: true
-  }
+  refs: (config, { configType }) => {
+    const envConfigType = process.env.CONFIG_TYPE || configType;
+    if (envConfigType === 'DEVELOPMENT') {
+      return {
+        react: {
+          title: 'REACT',
+          // this has to be the port on which storybook:react runs
+          url: 'http://localhost:6006',
+        },
+        html: {
+          title: 'HTML',
+          // this has to be the port on which storybook:html runs
+          url: 'http://localhost:6007',
+        },
+      };
+    }
+    return {
+      react: {
+        title: 'REACT',
+        url: 'https://nfdi4health.github.io/semlookp-widgets/react/latest',
+      },
+      html: {
+        title: 'HTML',
+        url: 'https://nfdi4health.github.io/semlookp-widgets/html/latest',
+      },
+    };
+  },
 };

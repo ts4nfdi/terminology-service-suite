@@ -1,12 +1,13 @@
 import React, {ReactElement} from "react";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
-import {useQuery} from "react-query";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import {Ontology, Thing} from "../../../model/interfaces";
 import {capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import {getEntityLinkJSX, getReifiedJSX} from "../../../model/StructureRendering";
-import {getErrorMessageToDisplay} from "../../../utils/helper";
-import {OntologyInfoWidgetProps} from "../../../utils/types";
+import {getErrorMessageToDisplay} from "../../../app/util";
+import {OntologyInfoWidgetProps} from "../../../app/types";
+import ReactDOM from "react-dom";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -185,4 +186,27 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   );
 
 }
-export { OntologyInfoWidget };
+
+function createOntologyInfo(props: OntologyInfoWidgetProps, container: Element, callback?: ()=>void) {
+  ReactDOM.render(WrappedOntologyInfoWidget(props), container, callback);
+}
+
+function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <OntologyInfoWidget
+              ontologyId={props.ontologyId}
+              api={props.api}
+              parameter={props.parameter}
+              useLegacy={props.useLegacy}
+              showBadges={props.showBadges}
+              hasTitle={props.hasTitle}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { OntologyInfoWidget, createOntologyInfo };

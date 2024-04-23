@@ -1,8 +1,9 @@
-import { EuiSuggest, EuiSuggestionProps } from "@elastic/eui";
+import {EuiProvider, EuiSuggest, EuiSuggestionProps} from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
-import {useQuery} from "react-query";
-import {SearchBarWidgetProps} from "../../../utils/types";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {SearchBarWidgetProps} from "../../../app/types";
+import ReactDOM from "react-dom";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
@@ -22,7 +23,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
 
   useEffect(() => {
     onSearchValueChange(searchValue);
-  }, [searchValue]);
+  }, [onSearchValueChange, searchValue]);
 
   /**
    * fetches suggestions when searchValue changes (setSearchValue is passed as EuiSuggest onChange)
@@ -73,4 +74,24 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   );
 }
 
-export { SearchBarWidget };
+function createSearchBar(props: SearchBarWidgetProps, container: any, callback?: ()=>void) {
+  ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
+}
+
+function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light">
+        <QueryClientProvider client={queryClient}>
+          <SearchBarWidget
+              api={props.api}
+              query={props.query}
+              onSearchValueChange={props.onSearchValueChange}
+              parameter={props.parameter}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  )
+}
+
+export { SearchBarWidget, createSearchBar };

@@ -5,7 +5,7 @@ import {
     EuiFormRow,
     EuiHorizontalRule,
     EuiLoadingSpinner,
-    EuiPanel,
+    EuiPanel, EuiProvider,
     EuiSelectable,
     EuiSelectableOption,
     EuiSpacer,
@@ -14,12 +14,12 @@ import {
     EuiText,
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
-import { useQuery } from 'react-query';
+import {QueryClient, QueryClientProvider, useQuery} from 'react-query';
 import { OlsApi } from "../../../api/OlsApi";
-import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from './MetadataCompact'
-import {SearchResultsListWidgetProps} from "../../../utils/types";
+import {SearchResultsListWidgetProps} from "../../../app/types";
 import { AutocompleteWidget } from "../AutocompleteWidget";
+import ReactDOM from "react-dom";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -32,6 +32,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         initialItemsPerPage = DEFAULT_INITIAL_ITEMS_PER_PAGE,
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
         targetLink,
+        preselected,
         ...rest
     } = props;
     const olsApi = new OlsApi(api);
@@ -207,6 +208,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 singleSelection={true}
                 hasShortSelectedLabel={true}
                 placeholder={"Search"}
+                preselected={preselected}
             />
 
             <EuiSpacer size="s"/>
@@ -339,4 +341,26 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     );
 }
 
-export { SearchResultsListWidget };
+function createSearchResultsList(props: SearchResultsListWidgetProps, container: any, callback?: ()=>void) {
+    ReactDOM.render(WrappedSearchResultsListWidget(props), container, callback);
+}
+
+function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <SearchResultsListWidget
+                    api={props.api}
+                    query={props.query}
+                    parameter={props.parameter}
+                    initialItemsPerPage={props.initialItemsPerPage}
+                    itemsPerPageOptions={props.itemsPerPageOptions}
+                    targetLink={props.targetLink}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { SearchResultsListWidget, createSearchResultsList };
