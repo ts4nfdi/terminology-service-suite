@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import DynamicImport from 'custom-esbuild-dynamic-import';
+import DynamicImport from '@zbmed/esbuild-dynamic-import';
 
 let define = {}
 for (const k in process.env) { define[`process.env.${k}`] = JSON.stringify(process.env[k]) }

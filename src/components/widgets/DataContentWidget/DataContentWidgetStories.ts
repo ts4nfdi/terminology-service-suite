@@ -7,6 +7,7 @@ export const DataContentWidgetStoryArgTypes = {
             "https://www.ebi.ac.uk/ols4/api/",
             "https://semanticlookup.zbmed.de/ols/api/",
             "https://semanticlookup.zbmed.de/api/",
+            "https://service.tib.eu/ts4tib/api/"
         ],
     },
     parameter: {

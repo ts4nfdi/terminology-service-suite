@@ -1,6 +1,6 @@
 {
   "name": "@nfdi4health/semlookp-widgets",
-  "version": "1.22.3",
+  "version": "1.22.17",
   "description": "This project includes a widget component library derived from the semantic lookup service SemLookP. The Terminology Service is a repository for biomedical resources that aims to provide a single point of access to the latest ontology and terminology versions. User interface (UI) functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, thus simplifying the development of user interfaces and the visualization of semantic information. The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are based on the Ontology Lookup Service (OLS), software developed by EBI.",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
@@ -59,11 +59,11 @@
     "@types/react-dom": "17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
-    "@zbmed/gh-pages-multi": "^0.7.5",
+    "@zbmed/esbuild-dynamic-import": "^2.0.1",
+    "@zbmed/gh-pages-multi": "^0.7.7",
     "@zbmed/ols-treeview": "^4.1.7",
     "axios": "^1.1.2",
     "cross-env": "^7.0.3",
-    "custom-esbuild-dynamic-import": "file:local_modules/dyn-import-plugin",
     "dotenv-cli": "^7.2.1",
     "esbuild": "^0.18.11",
     "eslint": "^8.21.0",
@@ -86,8 +86,8 @@
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "react-query": "^3.39.2"
   },
   "dependencies": {

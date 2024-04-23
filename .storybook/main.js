@@ -25,7 +25,7 @@ module.exports = {
           // this has to be the port on which storybook:react runs
           url: 'http://localhost:6006',
         },
-        angular: {
+        html: {
           title: 'HTML',
           // this has to be the port on which storybook:html runs
           url: 'http://localhost:6007',
@@ -37,7 +37,7 @@ module.exports = {
         title: 'REACT',
         url: 'https://nfdi4health.github.io/semlookp-widgets/react/latest',
       },
-      angular: {
+      html: {
         title: 'HTML',
         url: 'https://nfdi4health.github.io/semlookp-widgets/html/latest',
       },

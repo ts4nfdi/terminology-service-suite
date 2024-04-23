@@ -39,6 +39,7 @@ type ApiObj = {
      * - **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
      * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
      * - **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)
+     * - **TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
      */
     api: string;
 };
@@ -352,6 +353,11 @@ export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">>
      * Possible values for number of items displayed per page.
      */
     itemsPerPageOptions?: number[];
+
+    /**
+     * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
+     */
+    preselected?: { label?: string; iri?: string }[];
 };
 
 export type SearchResultProps = {

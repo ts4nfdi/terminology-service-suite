@@ -7,6 +7,7 @@ export const SearchResultsListWidgetStoryArgTypes = {
             "https://www.ebi.ac.uk/ols4/api/",
             "https://semanticlookup.zbmed.de/ols/api/",
             "https://semanticlookup.zbmed.de/api/",
+            "https://service.tib.eu/ts4tib/api/"
         ],
     },
     query: {},
@@ -45,6 +46,7 @@ export const SearchResultsListNFDI4Health = {
         query: "d*",
         targetLink: "",
         parameter: "collection=nfdi4health",
+        preselected: [{ label: "diabetes" }],
     }
 };
 
@@ -54,5 +56,23 @@ export const ErrorSearchResultsList = {
         query: "d*",
         targetLink: "",
         parameter: "collection=nfdi4health",
+    }
+};
+
+export const TibNFDI4CHEM = {
+    args: {
+        api: "https://service.tib.eu/ts4tib/api/",
+        parameter: "collection=NFDI4CHEM",
+        query: "assay",
+        targetLink: "",
+    }
+};
+
+export const TibDataPlant = {
+    args: {
+        api: "https://service.tib.eu/ts4tib/api/",
+        parameter: "collection=DataPLANT",
+        query: "agriculture",
+        targetLink: "",
     }
 };

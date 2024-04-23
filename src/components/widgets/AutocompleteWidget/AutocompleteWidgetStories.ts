@@ -8,6 +8,7 @@ export const AutocompleteWidgetStoryArgTypes = {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
+        "https://service.tib.eu/ts4tib/api/"
       ],
     },
     selectionChangedEvent: {
@@ -114,5 +115,19 @@ export const WithMultipleValues = {
   args: {
     preselected: [{ iri: "http://purl.bioontology.org/ontology/MESH/D000086382" }, { iri: "http://purl.bioontology.org/ontology/MESH/D003920" }],
     singleSelection: false,
+  }
+};
+
+export const TibNFDI4CHEM = {
+  args: {
+    api: "https://service.tib.eu/ts4tib/api/",
+  parameter: "collection=NFDI4CHEM",
+  }
+};
+
+export const TibDataPlant = {
+  args: {
+    api: "https://service.tib.eu/ts4tib/api/",
+    parameter: "collection=DataPLANT",
   }
 };

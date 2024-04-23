@@ -276,20 +276,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     );
   }, [selectedOptions]);
 
-    /**
-     * If relevant widget properties change, the selected options shall be cleared
-     */
-    useEffect(() => {
-        setSelectedOptions([]);
-    }, [
-        api,
-        parameter,
-        hasShortSelectedLabel,
-        allowCustomTerms,
-        singleSelection,
-        preselected
-    ]);
-
   function generateDisplayLabel(item: any) {
     return (
       item.label +
