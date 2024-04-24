@@ -35,7 +35,9 @@ jobs:
         id: semantic_release
         run: |
           output=$(npx semantic-release)
-          echo "release_output=$output" >> $GITHUB_OUTPUT
+          echo "$output" | base64 > output.txt
+          cat output.txt
+          echo "release_output=(cat output.txt)" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
