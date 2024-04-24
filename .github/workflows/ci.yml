@@ -31,22 +31,27 @@ jobs:
         run: npm run build --if-present
         env:
           NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Run semantic release
-        run: npx semantic-release
+      - name: Run semantic release and capture output
+        id: semantic_release
+        run: |
+          npx semantic-release >> $GITHUB_OUTPUT
+          echo ${{ steps.semantic_release.outputs }}
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Capture version number
-        run: echo "SRVERSION=$(npx semantic-release --dry-run | grep -oP 'Found git tag v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+        run: |
+          if echo ${{ steps.semantic_release.outputs }} | grep -q 'Published release'; then
+            echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Capture semantic-release
         run: |
-          output=$(npx semantic-release --dry-run)
-          if echo "$output" | grep -q 'Published release'; then
+          if echo ${{ steps.semantic_release.outputs }} | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
         env:
@@ -57,11 +62,11 @@ jobs:
         id: setoutput
         run: |
           echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
-          echo "srrelease=SRRELEASE" >> "$GITHUB_OUTPUT"
+          echo "srrelease=$SRRELEASE" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
       - name: Debug SRRELEASE
-        run: echo "SRRELEASE is SRRELEASE"
+        run: echo "SRRELEASE is $SRRELEASE"
       - name: Run npm build:plainJS
         run: npm run build:plainJS
       - name: Set Git Author Identity
