@@ -44,9 +44,7 @@ jobs:
           SCOPE: '@nfdi4health'
       - name: Capture version number
         run: |
-          if echo ${{ steps.semantic_release.outputs.release_output }} | grep -q 'Published release'; then
-            echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs.release_output }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
-          fi
+          echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs.release_output }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
