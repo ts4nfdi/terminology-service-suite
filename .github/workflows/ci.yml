@@ -35,7 +35,7 @@ jobs:
         id: semantic_release
         run: |
           output=$(npx semantic-release)
-          echo "::set-output name=release_output::$output"
+          echo "release_output=$output" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
