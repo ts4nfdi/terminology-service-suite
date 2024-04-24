@@ -60,7 +60,7 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "@zbmed/esbuild-dynamic-import": "^2.0.1",
-    "@zbmed/gh-pages-multi": "^0.7.8",
+    "@zbmed/gh-pages-multi": "^0.7.9",
     "@zbmed/ols-treeview": "^4.1.7",
     "axios": "^1.1.2",
     "cross-env": "^7.0.3",
