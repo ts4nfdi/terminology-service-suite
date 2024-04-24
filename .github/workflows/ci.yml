@@ -34,16 +34,16 @@ jobs:
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
-          npx semantic-release >> $GITHUB_OUTPUT
-          echo ${{ steps.semantic_release.outputs }}
+          output=$(npx semantic-release)
+          echo "::set-output name=release_output::$output"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
       - name: Capture version number
         run: |
-          if echo ${{ steps.semantic_release.outputs }} | grep -q 'Published release'; then
-            echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          if echo ${{ steps.semantic_release.outputs.release_output }} | grep -q 'Published release'; then
+            echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs.release_output }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
@@ -51,7 +51,7 @@ jobs:
           SCOPE: '@nfdi4health'
       - name: Capture semantic-release
         run: |
-          if echo ${{ steps.semantic_release.outputs }} | grep -q 'Published release'; then
+          if echo ${{ steps.semantic_release.outputs.release_output }} | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
         env:
