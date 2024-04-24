@@ -10,6 +10,7 @@ jobs:
         node-version: [ 16.x ]
     outputs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
+      srrelease: ${{ steps.setoutput.outputs.srrelease }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,38 +43,55 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@nfdi4health'
+      - name: Capture semantic-release
+        run: |
+          output=$(npx semantic-release --dry-run)
+          if echo "$output" | grep -q 'Published release'; then
+            echo "SRRELEASE=release" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          SCOPE: '@nfdi4health'
       - name: Set output
         id: setoutput
-        run: echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
+          echo "srrelease=SRRELEASE" >> "$GITHUB_OUTPUT"
       - name: Debug SRVERSION
         run: echo "SRVERSION is $SRVERSION"
+      - name: Debug SRRELEASE
+        run: echo "SRRELEASE is SRRELEASE"
       - name: Run npm build:plainJS
         run: npm run build:plainJS
       - name: Set Git Author Identity
+        if: env.SRRELEASE == 'release'
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
       - name: Configure Git to Use PAT for Authentication
+        if: env.SRRELEASE == 'release'
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
       - name: Upload artifact
+        if: env.SRRELEASE == 'release'
         uses: actions/upload-pages-artifact@v1
         with:
           path: dist_plainjs
       - name: Copy as Latest to gh-pages
-        if: env.SRVERSION != ''
+        if: env.SRRELEASE == 'release'
         run: |
           npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Copy Version to gh-pages
-        if: env.SRVERSION != ''
+        if: env.SRRELEASE == 'release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
   documentation:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
     needs: build
     runs-on: ubuntu-latest
     permissions:

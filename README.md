@@ -1,10 +1,8 @@
 # SemLookP Widgets
 
-[Latest documentation (Storybook)](https://nfdi4health.github.io/semlookp-widgets/latest/)
-
-[Documentation of all versions](https://nfdi4health.github.io/semlookp-widgets/)
-
-If you are missing a version of the documentation, please open an issue.
+Documentation: [Latest](https://nfdi4health.github.io/semlookp-widgets/latest/), [All Versions](https://nfdi4health.github.io/semlookp-widgets/)<br>
+React package: [Latest](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets), [All Versions](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets/versions)<br>
+JavaScript modules: [Latest](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules)<br>
 
 ## About The Project
 
