@@ -175,3 +175,4 @@ jobs:
           npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
           npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
           npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
+
