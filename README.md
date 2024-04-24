@@ -1,6 +1,6 @@
 # SemLookP Widgets
 
-Documentation: [Latest](https://nfdi4health.github.io/semlookp-widgets/latest/), [All Versions](https://nfdi4health.github.io/semlookp-widgets/)<br>
+Documentation: [Latest](https://nfdi4health.github.io/semlookp-widgets/comp/latest/), [All Versions](https://nfdi4health.github.io/semlookp-widgets/)<br>
 React package: [Latest](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets), [All Versions](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets/versions)<br>
 JavaScript modules: [Latest](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules)<br>
 
@@ -28,7 +28,9 @@ package.
 
 - Node v16.13.1
 - NPM v8.19.2
-- ElasticUI <88.0.0
+- ElasticUI <88.0.0 
+
+If your React consumer project uses ElasticUI v> 88.0.0., it might get a conflict in dependencies.   
 
 To install the package for development, it may be necessary to move the `peerDependencies` in the `package.json` to
 the `devDependencies` section, if the corresponding modules are not present on your machine.
