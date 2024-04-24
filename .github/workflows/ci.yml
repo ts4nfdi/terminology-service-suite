@@ -35,8 +35,8 @@ jobs:
         id: semantic_release
         run: |
           output=$(npx semantic-release)
-          echo "$output" | base64 > output.txt
-          echo "release_output=$(cat output.txt)" >> $GITHUB_OUTPUT
+          sanitized_output=$(echo "$output" | tr '\n' ' ')
+          echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
@@ -44,9 +44,8 @@ jobs:
           SCOPE: '@nfdi4health'
       - name: Capture version number
         run: |
-          release_output=$(echo "${{ steps.semantic_release.outputs.release_output }}" | base64 --decode)
-          if echo $release_output | grep -q 'Published release'; then
-            echo "SRVERSION=$(echo $release_output | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          if echo ${{ steps.semantic_release.outputs.release_output }} | grep -q 'Published release'; then
+            echo "SRVERSION=$(echo ${{ steps.semantic_release.outputs.release_output }} | grep -oP 'Published release v\K\d+\.\d+\.\d+')" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
@@ -54,8 +53,7 @@ jobs:
           SCOPE: '@nfdi4health'
       - name: Capture semantic-release
         run: |
-          release_output=$(echo "${{ steps.semantic_release.outputs.release_output }}" | base64 --decode)
-          if echo $release_output | grep -q 'Published release'; then
+          if echo ${{ steps.semantic_release.outputs.release_output }} | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
         env:
