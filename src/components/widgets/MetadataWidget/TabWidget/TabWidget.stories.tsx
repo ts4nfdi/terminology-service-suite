@@ -21,10 +21,4 @@ export {
     TabWidgetLarge
 } from "./TabWidgetStories"
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-TabWidgetLarge.storyName = "Metadata Widget Large Hierarchy"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-
 
