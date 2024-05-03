@@ -1,7 +1,12 @@
-name: CI
+name: Continuous Integration
 
-on: [push, pull_request]
-
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
