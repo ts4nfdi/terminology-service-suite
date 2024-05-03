@@ -155,6 +155,10 @@ jobs:
       - name: Configure Git to Use PAT for Authentication
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+      - name: Use SRVERSION
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
       - name: Deploy as Latest to GitHub Pages
         if: env.SRVERSION != ''
         run: |
@@ -163,10 +167,6 @@ jobs:
           npx gh-pages-multi deploy -s public --no-history -t comp/latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Use SRVERSION
-        env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
-        run: echo "SRVERSION is $SRVERSION"
       - name: Deploy Version to GitHub Pages
         if: env.SRVERSION != ''
         env:
