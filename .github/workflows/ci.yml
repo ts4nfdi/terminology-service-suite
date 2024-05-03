@@ -161,12 +161,13 @@ jobs:
         run: echo "SRVERSION is $SRVERSION"
       - name: Deploy as Latest to GitHub Pages
         if: env.SRVERSION != ''
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s react --no-history -t react/latest
           npx gh-pages-multi deploy -s html --no-history -t html/latest
           npx gh-pages-multi deploy -s public --no-history -t comp/latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy Version to GitHub Pages
         if: env.SRVERSION != ''
         env:
