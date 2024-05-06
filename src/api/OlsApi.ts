@@ -1,14 +1,12 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {getUseLegacy} from "../app/util";
+import {getEntityInOntologySuffix, getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
-import {Ontology, Ontologies, Entity, Thing} from "../model/interfaces";
-import {OLS3Ontologies} from "../model/ols3-model";
+import {Ontology, Ontologies, Entity, Thing, Individual} from "../model/interfaces";
+import {OLS3Ontologies, OLS3Ontology} from "../model/ols3-model";
 import {
-  EntityTypeName,
-  entityTypeNames,
-  isEntityTypeName,
-  isOntologyTypeName,
-  ontologyTypeNames, ThingTypeName, thingTypeNames
+  classTypeNames, entityTypeNames, ontologyTypeNames, thingTypeNames,
+  EntityTypeName, ThingTypeName,
+  isClassTypeName, isEntityTypeName, isIndividualTypeName, isOntologyTypeName
 } from "../model/ModelTypeCheck";
 
 interface PaginationParams {
@@ -150,7 +148,8 @@ export class OlsApi {
     return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams,  ...this.buildOtherParams(parameters) };
   }
 
-  public check_for_errors(response: any): any {
+  // TODO: Is this the behavior we want (especially throwing error for empty response)?
+  private check_for_errors(response: any): any {
     // resource not found/illegal argument exception in semanticlookup
     if(response["error"]) {
       throw Error(response["status"] + " " + response["error"] + " - " + response["message"] + " - " + response["exception"] + " at " + response["path"]);
@@ -162,7 +161,7 @@ export class OlsApi {
     return response;
   }
 
-  public async makeCall(url: string, config: AxiosRequestConfig<any> | undefined, useLegacy: boolean) {
+  private async makeCall(url: string, config: AxiosRequestConfig<any> | undefined, useLegacy: boolean) {
     const apiVersionPrefix = getUseLegacy(useLegacy) ? "" : "v2/";
     const response = (await this.axiosInstance.get(apiVersionPrefix + url, config)).data;
     return this.check_for_errors(response);
@@ -178,7 +177,7 @@ export class OlsApi {
    */
   public async getOntologiesData(parameter?: string): Promise<Ontologies> {
     let response;
-    let ontologiesData: Ontology[] = [];
+    let ontologiesData: OLS3Ontology[] = [];
 
     let pageNum = 0;
     const pageSize = 500;
@@ -393,17 +392,6 @@ export class OlsApi {
     }
   }
 
-  /**
-   * Is used to fetch a classes instances from the api.
-   * Always requires the respective object IRI in contentParams to be set
-   * If ontologyId is undefined in contentParams, the object will be queried from all ontologies, containing a list of results
-   * If an ontologyId is provided in contentParams, the returned list will only contain the object from that specific ontology
-   */
-  public getClassInstances: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    const queryPrefix = contentParams?.ontologyId ? "ontologies/"+contentParams?.ontologyId+"/" : ""
-    return this.makeCall(queryPrefix+"classes/"+contentParams?.termIri+"/instances", { params: { parameter: this.buildOtherParams(parameter)} }, false);
-  }
-
   private async getEntityWithEntityTypeProvided(iri: string, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
     switch (entityType) {
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
@@ -451,5 +439,47 @@ export class OlsApi {
 
     if(response !== undefined) return response;
     else throw Error("Iri " + iri + " could not be resolved.");
+  }
+
+  public async getAncestors(iri: string, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities = false) : Promise<Entity[]> {
+    let ancestors: any;
+    if(isClassTypeName(entityType)) {
+      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/hierarchicalAncestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+    }
+    else {
+      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/ancestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+    }
+
+    return ancestors["elements"].map((obj: any) =>
+      createModelObject({elements: [obj]}) as Entity
+    );
+  }
+
+  // TODO: Do we want the same behavior as EMBL EBI (e.g. not getting instances for classes if entityType != "individual")?
+  public async getChildren(iri: string, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities = false) : Promise<Entity[]> {
+    let children: any;
+    if(isClassTypeName(entityType)) {
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/hierarchicalChildren`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+    }
+    else if(isIndividualTypeName(entityType)) {
+      // entityType does NOT indicate which type the entity of the provided iri has, but which type of hierarchy is desired
+      // -> "class" has to be provided for individual hierarchy as well, as individuals are always children of classes
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/instances`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+    }
+    else {
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/children`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+    }
+
+    return children["elements"].map((obj: any) =>
+      createModelObject({elements: [obj]}) as Entity
+    );
+  }
+
+  public async getClassInstances(iri: string, ontologyId: string) : Promise<Individual[]> {
+    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/instances`, {params: {size: "1000"}}, false);
+
+    return instances["elements"].map((obj: any) =>
+      createModelObject({elements: [obj]}) as Individual
+    );
   }
 }
