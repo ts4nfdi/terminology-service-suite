@@ -1,7 +1,7 @@
 import {Thing} from "./interfaces";
 import React, {ReactElement} from "react";
 import {EuiBadge, EuiIconTip, EuiIcon} from "@elastic/eui";
-import {asArray, getFrontEndApi, getTermInOntologySuffix, randomString} from "../app/util";
+import {asArray, getFrontEndApi, getEntityInOntologySuffix, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 
@@ -78,12 +78,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
                             </> :
                             <></>
                     }
@@ -94,12 +94,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> linking to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{label}</a>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a href={frontendApi + getTermInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
                             </> :
                             <></>
                     }
@@ -112,14 +112,14 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
             return (
                 <>
-                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
                     {
                         showBadges ?
                         <>
                             &nbsp;
                             {otherDefinedBy.map((elem: any) => {
                                 return (
-                                    <a key={randomString()} href={frontendApi + getTermInOntologySuffix(elem, iri, linkedEntityType)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                    <a key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
                                 );
                             })}
                         </> :
@@ -158,7 +158,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> where <label> links to the term in this ontology
             return (
                 <>
-                    <a href={frontendApi + getTermInOntologySuffix(localOntology, iri, linkedEntityType)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
                 </>
             )
         }
