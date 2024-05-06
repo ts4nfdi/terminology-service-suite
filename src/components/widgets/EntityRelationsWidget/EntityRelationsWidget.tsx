@@ -6,7 +6,6 @@ import {Class, Individual, Property, Thing} from "../../../model/interfaces";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getSectionListJSX} from "../../../model/StructureRendering";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
-import {createModelObject} from "../../../model/ModelObjectCreator";
 import {asArray, capitalize, getEntityTypeName, randomString} from "../../../app/util";
 import {EntityRelationsWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
@@ -303,24 +302,6 @@ function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: Ent
     }
 }
 
-/**
- * Fetches a classes instances from the JSON api.
- * @param term
- * @param api   a reference to the api
- * @param props the classes' properties
- */
-async function fetchInstances(term: Class, api: OlsApi, props: EntityRelationsWidgetProps)  {
-    const doubleEncodedTermIri = encodeURIComponent(encodeURIComponent(term.getIri()));
-    const response = await api.getClassInstances(undefined, undefined, {ontologyId: props.ontologyId || term.getOntologyId(), termIri: doubleEncodedTermIri}, props.parameter)
-        .catch((error) => console.log(error));
-    if (response["elements"] !== undefined) {
-        return asArray(response["elements"]).map((instance) => createModelObject({elements: [instance]}));
-    }
-    else {
-        throw Error("Error fetching instances of '" + props.iri + "'");
-    }
-}
-
 function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     const { api, iri, ontologyId, hasTitle = DEFAULT_HAS_TITLE, showBadges, entityType, parameter, ...rest } = props;
 
@@ -353,19 +334,19 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
      * Used to fetch a classes instances to be shown in class instances section
      */
     const {
-        data: instancesJson,
+        data: instances,
         isLoading: isLoadingInstances,
         isSuccess: isSuccessInstances,
     } = useQuery({
         queryKey: [
-            "instancesJson",
+            "instances",
             entity
         ],
         queryFn: async () => {
-            return (entity && isClass(entity) && entity.hasDirectChildren()) ? fetchInstances(entity, olsApi, props) : [];
+            return (entity && isClass(entity) && entity.hasDirectChildren()) ? olsApi.getClassInstances(entity.getIri(), entity.getOntologyId()) : [];
         },
-        enabled: !!entity},
-    );
+        enabled: !!entity
+    });
 
     return (
         <>
@@ -375,7 +356,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
-                {(isSuccessEntityRelation && isSuccessInstances) && entity !== undefined && instancesJson !== undefined &&
+                {(isSuccessEntityRelation && isSuccessInstances) && entity !== undefined && instances !== undefined &&
                     <EuiText {...rest}>
                         {isIndividual(entity) &&
                             <>
@@ -408,7 +389,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
 
                         {isClass(entity) &&
                             <>
-                                {getClassInstancesSectionJSX(entity, instancesJson, props)}
+                                {getClassInstancesSectionJSX(entity, instances, props)}
                             </>
                         }
                     </EuiText>
@@ -419,10 +400,10 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
 }
 
 function createEntityRelations(props: EntityRelationsWidgetProps, container: Element, callback?: ()=>void) {
-    ReactDOM.render(WrappedEntitiyRelationsWidget(props), container, callback);
+    ReactDOM.render(WrappedEntityRelationsWidget(props), container, callback);
 }
 
-function WrappedEntitiyRelationsWidget(props: EntityRelationsWidgetProps) {
+function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps) {
     const queryClient = new QueryClient();
     return (
         <EuiProvider colorMode="light">
