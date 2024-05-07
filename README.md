@@ -1,8 +1,8 @@
 # SemLookP Widgets
 
-Documentation: [Latest](https://nfdi4health.github.io/semlookp-widgets/comp/latest/), [All Versions](https://nfdi4health.github.io/semlookp-widgets/)<br>
-React package: [Latest](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets), [All Versions](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets/versions)<br>
-JavaScript modules: [Latest](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules)<br>
+Documentation: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
+React package: [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)<br>
+JavaScript modules: [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)<br>
 
 ## About The Project
 
@@ -10,7 +10,7 @@ The SemLookP Widgets project, derived from the [SemLookP](https://semanticlookup
 GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to
 ease the integration of terminology service functions into third-party applications.
 
-In [this Storybook](https://nfdi4health.github.io/semlookp-widgets/), you will find an interactive documentation of the
+In [this Storybook](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), you will find an interactive documentation of the
 widget component library.
 
 The widgets are built using React and TypeScript and can be used in both React and plain HTML applications. The
@@ -19,7 +19,7 @@ click "Show code" in the Storybook is different.
 
 ## Using this package and further documentation
 
-Click [here](https://nfdi4health.github.io/semlookp-widgets/latest/) for detailed instructions on how to use the
+Click [here](https://ts4nfdi.github.io/terminology-service-suite/latest/) for detailed instructions on how to use the
 package.
 
 ## Development
@@ -83,8 +83,8 @@ the [HTML Storybook](#run-storybook).
 
 If the environment features `npm`, a local module can be created from the output file. To do this, place all the files
 generated inside `dist_plainjs/`
-in `local_modules/semlookp-widgets/` in your project. Now
-add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
+in `local_modules/terminology-service-suite/` in your project. Now
+add `"terminology-service-suite": "file:local_modules/terminology-service-suite"` as a dependency in `package.json` and run `npm install`.
 
 ### Commit Message Formatting
 
@@ -112,7 +112,7 @@ before using
 ```npm pack```
 
 A `.tgz` folder will be created with the bundled module.
-Add `"@nfdi4health/semlookp-widgets": "file:../path/to/nfdi4health-semlookp-widgets-1.17.4.tgz",` (adapt path and file
+Add `"@ts4nfdi/terminology-service-suite": "file:../path/to/ts4nfdi-terminology-service-suite-1.17.4.tgz",` (adapt path and file
 name) to your package.json
 of the consumer project and do `npm install`.
 
