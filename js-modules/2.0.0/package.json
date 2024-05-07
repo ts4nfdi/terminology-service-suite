@@ -1,0 +1,6 @@
+{
+  "name": "semlookp-widgets",
+  "version": "1.0.0",
+  "main": "semlookp_widgets.min.js",
+  "types": "manually_maintained_types.d.ts"
+}
