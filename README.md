@@ -138,4 +138,4 @@ This project is hosted and developed by Terminology Services for NFDI (TS4NFDI).
 consortium](https://base4nfdi.de/).
 
 The project is derived from the Semantic Lookup Platform SemLookP which was developed in part by the [NFDI4Health
-Consortium](www.nfdi4health.de) and the [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).
+Consortium](https://www.nfdi4health.de) and the [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).
