@@ -226,6 +226,11 @@ export type IriWidgetProps = ForcedIriObj & {
      * Indicates that the target is exteranl and needs an icon.
      */
     externalIcon?: string;
+
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
 }
 
 export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;

@@ -30,14 +30,20 @@ export const IriWidgetStoryArgTypes = {
             type: "radio",
         },
         options: ["true", "false"],
+        defaultValue: "true",
         description: "Whether the link should have an external icon in the end or not. Default is true when not given."
     },
+    urlPrefix: {
+        type: { summary: `string` },
+        description: "Prefix to be added to the IRI before linking. Iri gets encoded before adding the prefix.",
+    }
 }
 
 export const IriWidgetStoryArgs = {
     color: "",
     iriText: "",
-    iri: ""
+    iri: "",
+    urlPrefix: "",
 }
 
 export const IriWidget1 = {

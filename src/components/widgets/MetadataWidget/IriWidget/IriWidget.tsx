@@ -6,13 +6,16 @@ import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 
 function IriWidget(props: IriWidgetProps) {
-  const { iri, iriText, color, externalIcon } = props;
+  const { iri, iriText, color, externalIcon, urlPrefix } = props;
+
+  const urlPrefixExist = typeof(urlPrefix) !== "undefined" && urlPrefix !== "" ? true : false;
+  const iriUrl = urlPrefixExist ? urlPrefix + encodeURIComponent(iri) : iri;
 
   return (
     <EuiFlexItem grow={false}>
       <div>
         <EuiLink 
-          href={iri} 
+          href={iriUrl} 
           target="_blank" 
           style={{color: color && (isHexColor(color) || isRgbColor(color)) ? color : ""}} 
           color={color && isEuiLinkColor(color) ? color : undefined}
