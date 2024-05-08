@@ -15,5 +15,5 @@ export default {
 };
 
 export {
-  IriWidget1
+  IriWidget1, withCopyButton, withoutExternalIcon, withUrlPrefix
 } from "./IriWidgetStories"

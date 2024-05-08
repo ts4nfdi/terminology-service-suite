@@ -65,3 +65,27 @@ export const IriWidget1 = {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     }
 };
+
+
+export const withoutExternalIcon = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        externalIcon: "false",
+    }
+};
+
+
+export const withCopyButton = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        copyButton: "true",
+    }
+};
+
+
+export const withUrlPrefix = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/OBI_0000070",
+        urlPrefix: "https://terminology.nfdi4chem.de/ts/ontologies/vibso/terms?iri=",
+    }
+};
