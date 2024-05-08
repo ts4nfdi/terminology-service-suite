@@ -221,6 +221,11 @@ export type IriWidgetProps = ForcedIriObj & {
      * Color of the text, names, hex or rgb
      */
     color?: EuiLinkColor | string;
+
+    /**
+     * Indicates that the target is exteranl and needs an icon.
+     */
+    externalIcon?: string;
 }
 
 export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;

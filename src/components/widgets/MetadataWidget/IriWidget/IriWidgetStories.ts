@@ -22,6 +22,16 @@ export const IriWidgetStoryArgTypes = {
     iri: {
         description: "Object IRI that you want to link.",
     },
+    externalIcon: {
+        table: {
+            type: { summary: `boolean` },
+        },
+        control: {
+            type: "radio",
+        },
+        options: ["true", "false"],
+        description: "Whether the link should have an external icon in the end or not. Default is true when not given."
+    },
 }
 
 export const IriWidgetStoryArgs = {
