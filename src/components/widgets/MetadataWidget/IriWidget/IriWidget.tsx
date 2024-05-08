@@ -1,15 +1,37 @@
-import React from "react";
-import {EuiFlexItem, EuiLink, EuiProvider} from "@elastic/eui";
+import React, {useState} from "react";
+import {EuiFlexItem, EuiLink, EuiProvider, EuiButtonIcon} from "@elastic/eui";
 import {IriWidgetProps} from "../../../../app/types";
 import {isEuiLinkColor, isHexColor, isRgbColor} from "../../../../app/util";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 
 function IriWidget(props: IriWidgetProps) {
-  const { iri, iriText, color, externalIcon, urlPrefix } = props;
+  const { iri, iriText, color, externalIcon, urlPrefix, copyButton } = props;
+
+  const [copied, setCopied] = useState(false);
 
   const urlPrefixExist = typeof(urlPrefix) !== "undefined" && urlPrefix !== "" ? true : false;
   const iriUrl = urlPrefixExist ? urlPrefix + encodeURIComponent(iri) : iri;
+
+  const CopyLinkButton = () => {
+    if (!copied) {
+      return [
+        <EuiButtonIcon 
+            display="base"
+            iconType="copy"                       
+            key={"copy-btn"}
+            style={{marginLeft: "5px"}} 
+            onClick={() => {                  
+                navigator.clipboard.writeText(iriUrl);
+                setCopied(true);
+                setTimeout(() => {setCopied(false);}, 2000);                
+            }}
+            >            
+        </EuiButtonIcon>
+      ];
+    }
+    return [<EuiButtonIcon style={{marginLeft: "5px"}}  display="base" iconType="check" key={"copy-btn"}></EuiButtonIcon>];    
+  };
 
   return (
     <EuiFlexItem grow={false}>
@@ -21,8 +43,9 @@ function IriWidget(props: IriWidgetProps) {
           color={color && isEuiLinkColor(color) ? color : undefined}
           external={externalIcon === "false" ? false : true}
           >
-          {iriText ? iriText : iri}
+          {iriText ? iriText : iri}          
         </EuiLink>
+        {copyButton === "true" && <CopyLinkButton />}
       </div>
     </EuiFlexItem>
   );

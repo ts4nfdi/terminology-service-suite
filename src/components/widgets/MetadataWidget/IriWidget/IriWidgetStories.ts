@@ -36,7 +36,19 @@ export const IriWidgetStoryArgTypes = {
     urlPrefix: {
         type: { summary: `string` },
         description: "Prefix to be added to the IRI before linking. Iri gets encoded before adding the prefix.",
-    }
+    },
+    copyButton: {
+        table: {
+            type: { summary: `boolean` },
+        },
+        control: {
+            type: "radio",
+        },
+        options: ["true", "false"],
+        defaultValue: "false",
+        description: "Whether to show a copy button next to the link or not. Default is false when not given."
+    
+    },
 }
 
 export const IriWidgetStoryArgs = {
@@ -44,6 +56,8 @@ export const IriWidgetStoryArgs = {
     iriText: "",
     iri: "",
     urlPrefix: "",
+    copyButton: "false",
+    externalIcon: "true",
 }
 
 export const IriWidget1 = {
