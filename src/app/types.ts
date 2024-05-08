@@ -223,7 +223,7 @@ export type IriWidgetProps = ForcedIriObj & {
     color?: EuiLinkColor | string;
 
     /**
-     * Indicates that the target is exteranl and needs an icon.
+     * Indicates that the target is external and needs an icon.
      */
     externalIcon?: string;
 
