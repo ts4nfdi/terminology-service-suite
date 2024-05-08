@@ -49,6 +49,7 @@ team.
 
 ```
 @zbmed:registry=https://npm.pkg.github.com
+@ts4nfdi:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=TOKEN
 ```
 
