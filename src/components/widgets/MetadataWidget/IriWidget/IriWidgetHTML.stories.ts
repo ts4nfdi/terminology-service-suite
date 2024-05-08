@@ -14,7 +14,7 @@ export default {
     parameters: {
         layout: "centered",
     },
-    render: (args: IriWidgetProps) => {
+    render: (args: IriWidgetProps) => {        
         // You can either use a function to create DOM elements or use a plain html string!
         // return `<div>${label}</div>`;
         const num = getIncNum();
@@ -27,7 +27,10 @@ window['SemLookPWidgets'].createIri(
     {
         iri:"${args.iri}",
         iriText:"${args.iriText}",
-        color:"${args.color}"
+        color:"${args.color}",
+        externalIcon:"${args.externalIcon}",
+        urlPrefix:"${args.urlPrefix}",
+        copyButton:"${args.copyButton}"
     },
     document.querySelector('#iri_widget_container_${num}')
 )
@@ -39,5 +42,5 @@ window['SemLookPWidgets'].createIri(
 }
 
 export {
-    IriWidget1
+    IriWidget1, withCopyButton, withoutExternalIcon, withUrlPrefix
 } from "./IriWidgetStories"

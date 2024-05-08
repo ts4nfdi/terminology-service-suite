@@ -5,7 +5,7 @@ import {isEuiLinkColor, isHexColor, isRgbColor} from "../../../../app/util";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 
-function IriWidget(props: IriWidgetProps) {
+function IriWidget(props: IriWidgetProps) {       
   const { iri, iriText, color, externalIcon, urlPrefix, copyButton } = props;
 
   const [copied, setCopied] = useState(false);
@@ -15,7 +15,7 @@ function IriWidget(props: IriWidgetProps) {
 
   const CopyLinkButton = () => {
     if (!copied) {
-      return [
+      return (
         <EuiButtonIcon 
             display="base"
             iconType="copy"                       
@@ -28,9 +28,9 @@ function IriWidget(props: IriWidgetProps) {
             }}
             >            
         </EuiButtonIcon>
-      ];
+      );
     }
-    return [<EuiButtonIcon style={{marginLeft: "5px"}}  display="base" iconType="check" key={"copy-btn"}></EuiButtonIcon>];    
+    return (<EuiButtonIcon style={{marginLeft: "5px"}}  display="base" iconType="check" key={"copy-btn"}></EuiButtonIcon>);    
   };
 
   return (
@@ -51,12 +51,12 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-function createIri(props: IriWidgetProps, container: Element, callback?: ()=>void) {
+function createIri(props: IriWidgetProps, container: Element, callback?: ()=>void) {       
     ReactDOM.render(WrappedIriWidget(props), container, callback);
 }
 
 function WrappedIriWidget(props: IriWidgetProps) {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient();    
     return (
         <EuiProvider colorMode="light">
             <QueryClientProvider client={queryClient}>
@@ -64,6 +64,9 @@ function WrappedIriWidget(props: IriWidgetProps) {
                     iri={props.iri}
                     iriText={props.iriText}
                     color={props.color}
+                    externalIcon={props.externalIcon}
+                    urlPrefix={props.urlPrefix}
+                    copyButton={props.copyButton}
                 />
             </QueryClientProvider>
         </EuiProvider>
