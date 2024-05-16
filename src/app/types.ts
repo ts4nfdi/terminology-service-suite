@@ -221,6 +221,21 @@ export type IriWidgetProps = ForcedIriObj & {
      * Color of the text, names, hex or rgb
      */
     color?: EuiLinkColor | string;
+
+    /**
+     * Indicates that the target is external and needs an icon.
+     */
+    externalIcon?: boolean;
+
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
+
+    /**
+     * If true, a copy button is shown next to the link.
+    */
+    copyButton?: boolean;
 }
 
 export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;

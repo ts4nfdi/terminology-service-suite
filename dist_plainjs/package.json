@@ -1,6 +1,6 @@
 {
-  "name": "semlookp-widgets",
+  "name": "terminology-service-suite",
   "version": "1.0.0",
-  "main": "semlookp_widgets.min.js",
+  "main": "terminology-service-suite.min.js",
   "types": "manually_maintained_types.d.ts"
 }
