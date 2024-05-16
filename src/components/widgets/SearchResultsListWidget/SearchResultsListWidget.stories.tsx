@@ -9,9 +9,11 @@ export default {
 };
 
 export {
-    SearchResultsListSafety,
-    SearchResultsListNFDI4Health,
+    CollectionSafety,
+    CollectionNFDI4HealthOLS3,
+    CollectionNFDI4HealthOLS4,
     ErrorSearchResultsList,
     TibNFDI4CHEM,
-    TibDataPlant
+    TibDataPlant,
+    EBIOLS4
 } from "./SearchResultsListWidgetStories"

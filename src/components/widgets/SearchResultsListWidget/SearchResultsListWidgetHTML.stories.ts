@@ -42,7 +42,9 @@ window['SemLookPWidgets'].createSearchResultsList(
 }
 
 export {
-    SearchResultsListSafety,
-    SearchResultsListNFDI4Health,
-    ErrorSearchResultsList
+    CollectionSafety,
+    CollectionNFDI4HealthOLS3,
+    ErrorSearchResultsList,
+    CollectionNFDI4HealthOLS4,
+    EBIOLS4
 } from "./SearchResultsListWidgetStories"

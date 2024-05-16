@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {getUseLegacy} from "../app/util";
+import { asArray, getUseLegacy } from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
 import {Ontology, Ontologies, Entity, Thing} from "../model/interfaces";
 import {OLS3Ontologies} from "../model/ols3-model";
@@ -39,6 +39,7 @@ interface SearchQueryParams {
   types?: string;
   ontology?: string;
   groupByIri?: boolean;
+  facetFields?: string;
 }
 
 interface SelectQueryParams {
@@ -93,26 +94,63 @@ export class OlsApi {
     return params;
   }
 
-  private buildParamsForSearch(queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string) {
+  private buildParamsForSearch(queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, useLegacy=true) {
+
     const params: any = {
-      q: queryParams.query,
-      exact: queryParams.exactMatch,
-      obsoletes: queryParams.showObsoleteTerms,
+
     };
 
-    if (queryParams.groupByIri) {
+    if (useLegacy){
+
+      params.exact = queryParams.exactMatch,
+      params.obsoletes = queryParams.showObsoleteTerms,
+      params.q = queryParams.query
+
+      if (queryParams.groupByIri) {
       params.groupField = queryParams.groupByIri;
+      }
+
+      if (queryParams.types) {
+        params.type = queryParams.types;
+      }
+
+      if (queryParams.ontology) {
+        params.ontology = queryParams.ontology;
+      }
+    } else {
+      params.search = queryParams.query
+
+      // @todo not in ols4 v2 API?
+      // if (queryParams.groupByIri) {
+      // params.groupField = queryParams.groupByIri;
+      // }
+
+      if (queryParams.types) {
+        params.type = queryParams.types;
+      }
+
+      if (queryParams.ontology) {
+        params.ontologyId = queryParams.ontology;
+      }
+
+      if (queryParams.exactMatch) {
+        params.exactMatch = queryParams.exactMatch;
+      }
+
+      if (queryParams.showObsoleteTerms) {
+        params.includeObsoleteEntities = queryParams.showObsoleteTerms;
+      }
+
+      if (paginationParams.size) {
+        params.size = paginationParams.size;
+      }
+
+      if (paginationParams.page) {
+        params.page = paginationParams.page;
+      }
     }
 
-    if (queryParams.types) {
-      params.type = queryParams.types;
-    }
-
-    if (queryParams.ontology) {
-      params.ontology = queryParams.ontology;
-    }
-
-    return { ...params, ...this.buildPaginationParams(paginationParams), ...contentParams, ...this.buildOtherParams(parameter) };
+    return { ...params, ...contentParams, ...this.buildOtherParams(parameter) };
   }
 
   /**
@@ -296,6 +334,16 @@ export class OlsApi {
 
   public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
     return this.makeCall("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter), signal: abortSignal }, true);
+  }
+
+  public ols4Search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal, useLegacy?: boolean): Promise<any> => {
+    const params = {
+      ...this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter, useLegacy),
+    };
+
+    const apiVersionPrefix = getUseLegacy(useLegacy) ? "" : "v2/";
+    const response = (await this.axiosInstance.get(apiVersionPrefix + "entities?" + "facetFields=ontologyId+type", { params: params, signal: abortSignal })).data;
+    return this.check_for_errors(response);
   }
 
   public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {

@@ -58,6 +58,13 @@ type OptionalThingTypeObj = {
     thingType?: ThingTypeName;
 };
 
+type ForcedThingTypeObj = {
+    /**
+     * Sets the type of the thing whose information you want to fetch.
+     */
+    thingType: ThingTypeName;
+};
+
 type OptionalEntityTypeObj = {
     /**
      * Sets the type of the entity whose information you want to fetch.
@@ -338,7 +345,7 @@ export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChan
     onSearchValueChange: (suggestion: string) => void;
 };
 
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
      */
@@ -372,6 +379,8 @@ export type SearchResultProps = {
     type: ThingTypeName;
 }
 
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
-    result: SearchResultProps;
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & TargetLinkObj & ParameterObj & ForcedIriObj & ForcedThingTypeObj & ForcedOntologyIdObj & {
+    label: string,
+    short_form: string,
+    description: string
 };

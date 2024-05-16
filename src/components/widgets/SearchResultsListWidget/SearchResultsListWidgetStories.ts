@@ -7,7 +7,8 @@ export const SearchResultsListWidgetStoryArgTypes = {
             "https://www.ebi.ac.uk/ols4/api/",
             "https://semanticlookup.zbmed.de/ols/api/",
             "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            "https://service.tib.eu/ts4tib/api/",
+            "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
         ],
     },
     query: {},
@@ -31,7 +32,7 @@ export const SearchResultsListWidgetStoryArgs = {
 }
 
 
-export const SearchResultsListSafety = {
+export const CollectionSafety = {
     args: {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
@@ -40,11 +41,11 @@ export const SearchResultsListSafety = {
     }
 };
 
-export const SearchResultsListNFDI4Health = {
+export const CollectionNFDI4HealthOLS3 = {
     args: {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
-        targetLink: "",
+        targetLink: "/",
         parameter: "collection=nfdi4health",
         preselected: [{ label: "diabetes" }],
     }
@@ -74,5 +75,25 @@ export const TibDataPlant = {
         parameter: "collection=DataPLANT",
         query: "agriculture",
         targetLink: "",
+    }
+};
+
+export const CollectionNFDI4HealthOLS4 = {
+    args: {
+        api: "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api",
+        parameter: "",
+        query: "diabetes",
+        targetLink: "/",
+        useLegacy: false
+    }
+};
+
+export const EBIOLS4 = {
+    args: {
+        api: "https://www.ebi.ac.uk/ols4/api/",
+        parameter: "",
+        query: "diabetes",
+        targetLink: "/",
+        useLegacy: false
     }
 };
