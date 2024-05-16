@@ -22,30 +22,18 @@ export const IriWidgetStoryArgTypes = {
     iri: {
         description: "Object IRI that you want to link.",
     },
-    externalIcon: {
-        table: {
-            type: { summary: `boolean` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: ["true", "false"],
-        defaultValue: "true",
+    externalIcon: {                
+        options: [true, false],
+        defaultValue: true,
         description: "Whether the link should have an external icon in the end or not. Default is true when not given."
     },
     urlPrefix: {
         type: { summary: `string` },
         description: "Prefix to be added to the IRI before linking. Iri gets encoded before adding the prefix.",
     },
-    copyButton: {
-        table: {
-            type: { summary: `boolean` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: ["true", "false"],
-        defaultValue: "false",
+    copyButton: {             
+        options: [true, false],
+        defaultValue: false,
         description: "Whether to show a copy button next to the link or not. Default is false when not given."
     
     },
@@ -56,8 +44,8 @@ export const IriWidgetStoryArgs = {
     iriText: "",
     iri: "",
     urlPrefix: "",
-    copyButton: "false",
-    externalIcon: "true",
+    copyButton: false,
+    externalIcon: true,
 }
 
 export const IriWidget1 = {
@@ -70,7 +58,7 @@ export const IriWidget1 = {
 export const withoutExternalIcon = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        externalIcon: "false",
+        externalIcon: false,
     }
 };
 
@@ -78,7 +66,7 @@ export const withoutExternalIcon = {
 export const withCopyButton = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        copyButton: "true",
+        copyButton: true,
     }
 };
 

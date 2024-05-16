@@ -28,9 +28,9 @@ window['SemLookPWidgets'].createIri(
         iri:"${args.iri}",
         iriText:"${args.iriText}",
         color:"${args.color}",
-        externalIcon:"${args.externalIcon}",
+        externalIcon: ${args.externalIcon},
         urlPrefix:"${args.urlPrefix}",
-        copyButton:"${args.copyButton}"
+        copyButton: ${args.copyButton}
     },
     document.querySelector('#iri_widget_container_${num}')
 )
