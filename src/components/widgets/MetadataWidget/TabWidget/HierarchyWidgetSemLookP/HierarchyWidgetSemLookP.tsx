@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {EuiLoadingSpinner, EuiText, EuiIcon, EuiPanel} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiText, EuiIcon, EuiPanel, EuiTextColor} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
 import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
 import {Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
@@ -45,7 +45,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
                                 <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"}/>
                             </button>
                     }
-                    <span> {node.entity.getLabel() || node.entity.getIri()} </span>
+                    <EuiTextColor color={node.entity.getIri() == hierarchy?.mainEntityIri ? "slateblue" : "default"}> {node.entity.getLabel() || node.entity.getIri()} </EuiTextColor>
                     {node.numDescendants > 0 && <span style={{color: "gray"}}>({node.numDescendants})</span>}
                 </EuiText>
                 {node.expanded && <ul>
