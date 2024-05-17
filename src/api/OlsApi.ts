@@ -8,6 +8,7 @@ import {
   EntityTypeName, ThingTypeName,
   isClassTypeName, isEntityTypeName, isIndividualTypeName, isOntologyTypeName
 } from "../model/ModelTypeCheck";
+import {Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 
 interface PaginationParams {
   size?: string;
@@ -481,5 +482,51 @@ export class OlsApi {
     return instances["elements"].map((obj: any) =>
       createModelObject({elements: [obj]}) as Individual
     );
+  }
+
+  public async buildHierarchy(mainEntity: Entity, includeObsoleteEntities: boolean) /*: Promise<Hierarchy>*/ {
+    // used to filter from getParents()-array
+    function isTop(iri: string) : boolean {
+      return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
+    }
+
+    let entities: Entity[] = [];
+    if(mainEntity)
+      entities = [mainEntity, ...await this.getAncestors(mainEntity.getIri(), mainEntity.getType(), mainEntity.getOntologyId(), includeObsoleteEntities)]
+    else { /* //TODO: implement and add OlsApi::getRootEntities() */ }
+
+    const rootEntities: Entity[] = [];
+    const parentChildRelations: Map<string, Entity[]> = new Map<string, Entity[]>();
+
+    for(const entity of entities) parentChildRelations.set(entity.getIri(), []); // initialize with empty array
+    for(const entity of entities) {
+      const parents = entity.getParents().map((reified) => reified.value).filter((parentIri: string) => !isTop(parentIri)); // TODO: Do we also need relation name (axioms of Reified)?
+
+      if (parents.length == 0) rootEntities.push(entity);
+      else {
+        for (const parentIri of parents) {
+          if (parentChildRelations.has(parentIri)) {
+            parentChildRelations.get(parentIri)?.push(entity);
+          }
+        }
+      }
+    }
+
+    function createTreeNode(currEntity: Entity): TreeNode {
+      const node = new TreeNode(currEntity);
+      const children = parentChildRelations.get(currEntity.getIri())?.sort((a, b) => (a.getLabel() || a.getIri()).localeCompare(b.getLabel() || b.getIri())) || [];
+
+      for(const child of children) {
+        node.addChild(createTreeNode(child))
+      }
+
+      if(node.children.length > 0) node.expanded = true;
+
+      return node;
+    }
+
+    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entity.getLabel() || a.entity.getIri()).localeCompare(b.entity.getLabel() || b.entity.getIri()));
+
+    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), mainEntity.getIri());
   }
 }

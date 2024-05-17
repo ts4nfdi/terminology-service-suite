@@ -1,5 +1,6 @@
 import Reified from "../Reified";
 import LinkedEntities from "../LinkedEntities";
+import {ThingTypeName} from "../ModelTypeCheck";
 
 export interface Thing {
     properties: any;
@@ -7,7 +8,7 @@ export interface Thing {
     getLabel(): string | undefined;
     getId(): string;
     getIri(): string;
-    getType(): "ontology" | "class" | "property" | "individual";
+    getType(): ThingTypeName;
     getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "entities";
     getRdfTypes(): string[];
     getName(): string;

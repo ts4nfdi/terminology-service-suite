@@ -1,5 +1,6 @@
 import { Thing } from "./";
 import Reified from "../Reified";
+import {EntityTypeName} from "../ModelTypeCheck";
 
 export interface Entity extends Thing {
     getParents(): Reified<any>[];
@@ -28,5 +29,6 @@ export interface Entity extends Thing {
     getHierarchicalParentReificationAxioms(parentIri: string): any;
     getIsDefiningOntology(): boolean;
     getCrossReferences(): any[];
+    getType(): EntityTypeName;
     getTypePlural(): "entities" | "classes" | "properties" | "individuals";
 }
