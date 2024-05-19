@@ -1,38 +1,83 @@
-import React, {useEffect, useState} from "react";
-import {EuiLoadingSpinner, EuiText, EuiIcon, EuiPanel, EuiTextColor} from "@elastic/eui";
+import React, {useCallback, useReducer} from "react";
+import {EuiLoadingSpinner, EuiText, EuiIcon, EuiTextColor, EuiProvider, EuiCard, EuiBadge} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
 import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
 import {Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import ReactDOM from "react-dom";
+import {Entity} from "../../../../../model/interfaces";
 
 export type HierarchyWidgetSemLookPProps = {
     iri: string;
-    entityType: EntityTypeName;
-    ontologyId: string;
+    entityType?: EntityTypeName;
+    ontologyId?: string;
+    onNavigateToEntity: (entity: Entity) => void;
+    onNavigateToOntology: (ontologyId: string, entity: Entity) => void;
+}
+
+function TreeLink(props: {entity: Entity, onNavigateToEntity: (entity: Entity) => void, onNavigateToOntology: (ontologyId: string, entity: Entity) => void, highlight: boolean}) {
+    let definedBy: string[] = props.entity.getDefinedBy();
+    if(definedBy.includes(props.entity.getOntologyId())) definedBy = [];
+
+    return (
+        <>
+            <button
+                onClick={() => {props.onNavigateToEntity(props.entity)}}
+            >
+                <EuiTextColor color={props.highlight ? "slateblue" : "default"}> {props.entity.getLabel() || props.entity.getIri()} </EuiTextColor>
+            </button>
+            {definedBy.length > 0 &&
+                <>
+                    &nbsp;
+                    {definedBy.map((definingOntology) => {
+                        return (
+                            <button
+                                key={`${props.entity.getIri()}:${definingOntology}`}
+                                onClick={() => {props.onNavigateToOntology(definingOntology, props.entity)}}
+                            >
+                                <EuiBadge color={"success"}>{definingOntology.toUpperCase()}</EuiBadge>
+                            </button>
+                        )
+                    })}
+                </>
+            }
+        </>
+    );
 }
 
 function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
-    // TODO: Refactor state variables and hooks. Status quo of manually updating hierarchyStr is unacceptable!
+    const {
+        iri,
+        ontologyId,
+        entityType,
+        onNavigateToEntity,
+        onNavigateToOntology,
+    } = props;
+
+    // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
+    const [, forceUpdate] = useReducer(x => x + 1 % Number.MAX_SAFE_INTEGER, 0);
+
     const api = new OlsApi("https://www.ebi.ac.uk/ols4/api/");
-    const [hierarchy, setHierarchy] = useState<Hierarchy | undefined>(undefined);
-    const [hierarchyStr, setHierarchyStr] = useState<string>("");
+    const {
+        data: hierarchy,
+        isSuccess: isSuccessHierarchy,
+    } = useQuery(
+      [iri, entityType, ontologyId],
+      async function getNewHierarchy() {
+          return await api.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => api.buildHierarchy(entity, false));
+      }
+    );
 
-    useEffect(() => {
-        async function getNewHierarchy() {
-            const response = await api.getEntityObject(props.iri, props.entityType, props.ontologyId, "", false).then((entity) => api.buildHierarchy(entity, false));
-            setHierarchy(response);
-            setHierarchyStr(JSON.stringify(hierarchy));
-        }
+    const toggleNode = useCallback((node: TreeNode) => {
+        if(!(hierarchy instanceof Hierarchy)) throw Error("Hierarchy object was undefined while trying to expand a tree node. This should never happen.");
 
-        setHierarchy(undefined);
-        getNewHierarchy().then();
-    }, [props]);
+        // toggle expansion state and force component to rerender afterward
+        node.expanded = !node.expanded;
+        forceUpdate();
 
-    async function toggleNode(node: TreeNode) {
-        if(hierarchy != undefined) {
-            await hierarchy.toggleNode(node);
-            setHierarchyStr(JSON.stringify(hierarchy));
-        }
-    }
+        // fetch needed information and rerender again
+        if(node.expanded) hierarchy.expandNode(node).then(() => forceUpdate())
+    },[hierarchy])
 
     function renderTreeNode(node: TreeNode) {
         return (
@@ -45,27 +90,53 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
                                 <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"}/>
                             </button>
                     }
-                    <EuiTextColor color={node.entity.getIri() == hierarchy?.mainEntityIri ? "slateblue" : "default"}> {node.entity.getLabel() || node.entity.getIri()} </EuiTextColor>
-                    {node.numDescendants > 0 && <span style={{color: "gray"}}>({node.numDescendants})</span>}
+                    &nbsp;
+                    <TreeLink entity={node.entity} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entity.getIri() == hierarchy?.mainEntityIri}/>
+                    &nbsp;
+                    {node.numDescendants > 0 && <span style={{color: "gray"}}>({node.numDescendants.toLocaleString()})</span>}
                 </EuiText>
-                {node.expanded && <ul>
-                    {node.children.map((child) => renderTreeNode(child))}
-                </ul>}
+                {node.expanded &&
+                    <ul style={{whiteSpace: "nowrap", marginBlockEnd: "0", marginInlineStart: "1.5rem"}}>
+                        {node.children.length > 0 ?
+                            node.children.map((child) => renderTreeNode(child)) :
+                            <EuiLoadingSpinner/>
+                        }
+                    </ul>
+                }
             </>
         );
     }
 
     return (
-        <EuiPanel grow={false}>
-            <div>
-                {(hierarchy != undefined) ? <EuiText>
-                    <ul>
-                        {hierarchy.roots.map((rootNode) => renderTreeNode(rootNode))}
-                    </ul>
-                </EuiText> : <EuiLoadingSpinner/>}
-            </div>
-        </EuiPanel>
+        <EuiCard title={""} layout={"horizontal"}>
+            {(isSuccessHierarchy && hierarchy != undefined) ?
+                <EuiText>
+                    {hierarchy.roots.map((rootNode) => renderTreeNode(rootNode))}
+                </EuiText>
+                : <EuiLoadingSpinner/>}
+        </EuiCard>
     );
 }
 
-export {HierarchyWidgetSemLookP};
+function createHierarchySemLookP(props: HierarchyWidgetSemLookPProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedHierarchyWidgetSemLookP(props), container, callback);
+}
+
+function WrappedHierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <HierarchyWidgetSemLookP
+                    iri={props.iri}
+                    entityType={props.entityType}
+                    ontologyId={props.ontologyId}
+                    onNavigateToEntity={props.onNavigateToEntity}
+                    onNavigateToOntology={props.onNavigateToOntology}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export {HierarchyWidgetSemLookP, createHierarchySemLookP};

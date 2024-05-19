@@ -37,11 +37,6 @@ export class Hierarchy {
         this.mainEntityIri = mainEntityIri;
     }
 
-    async toggleNode(nodeToToggle: TreeNode) {
-        if(nodeToToggle.expanded) nodeToToggle.expanded = false;
-        else await this.expandNode(nodeToToggle).then();
-    }
-
     async expandNode(nodeToExpand: TreeNode) {
         if(nodeToExpand.numDescendants <= 0) throw Error(`Node containing iri="${nodeToExpand.entity.getIri()}" could not be expanded: Entity has no descendants.`)
 

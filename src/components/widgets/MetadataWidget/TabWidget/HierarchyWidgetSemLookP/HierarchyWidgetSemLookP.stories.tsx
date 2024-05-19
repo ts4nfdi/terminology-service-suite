@@ -1,4 +1,5 @@
 import {HierarchyWidgetSemLookP} from "./HierarchyWidgetSemLookP";
+import {Entity} from "../../../../../model/interfaces";
 
 export default {
     title: "HierarchyWidgetSemLookP",
@@ -24,6 +25,8 @@ export const HierarchyWidgetSemLookP1 = {
     args: {
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         entityType: "class",
-        ontologyId: "efo"
+        ontologyId: "efo",
+        onNavigateToEntity: (entity: Entity) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.getLabel()}" (iri="${entity.getIri()}").`)},
+        onNavigateToOntology: (pOntologyId: string, entity: Entity) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.getLabel()}" (iri="${entity.getIri()}") and ontologyId "${pOntologyId}".`)}
     }
 };
