@@ -24,6 +24,16 @@ import ReactDOM from "react-dom";
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
+/**
+ * The SearchResultsListWidget is a component designed to facilitate the display
+ * and navigation of search results within a user-friendly interface.
+ * Features: dynamic filtering, pagination, interactive controls and metadata display
+ *
+ * For compatibility with the OLS3 system, the widget offers legacy mode.
+ * For OLS4 searches, the useLegacy parameter needs to be set to false.
+ * For OLS4 searches, we're using the experimental API V2. This API may still change.
+ */
+
 function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   const {
     api,

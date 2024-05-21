@@ -22,6 +22,9 @@ export const SearchResultsListWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
+    useLegacy: {
+        type: { required: false }
+    }
 }
 
 export const SearchResultsListWidgetStoryArgs = {
