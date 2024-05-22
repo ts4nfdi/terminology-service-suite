@@ -7,20 +7,20 @@ import { Meta } from '@storybook/addon-docs';
 
 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
     <div style={{ flex: '1 1 500px', marginRight: '40px'  }}>
-        <p style={{fontSize:18}}>The SemLookP Widgets project, derived from the [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to ease the integration of terminology service functions into third-party applications.</p>
+        <p style={{fontSize:18}}>The Terminology Service Suite project, derived from the [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to ease the integration of terminology service functions into third-party applications.</p>
         <p style={{fontSize:18}}>In this Storybook, you will find an interactive documentation of the widget component library.</p>
         <p style={{fontSize:18}}>The widgets are built using React and TypeScript and can be used in both React and plain HTML applications. The functionality and arguments are the same for the React and plain HTML versions. Only the code snippet you get when you click "Show code" in the Storybook is different.</p>
-        <p style={{fontSize:18}}>Click <a href="https://nfdi4health.github.io/semlookp-widgets/" target="_blank" rel="noopener noreferrer">here</a> for documentation on the different versions.</p>
-        <p style={{fontSize:18}}><strong>The widgets are currently under active development. Please forgive any errors that occur and report issues via [GitHub Issue](https://github.com/nfdi4health/semlookp-widgets/issues)</strong>.</p>
+        <p style={{fontSize:18}}>Click <a href="https://ts4nfdi.github.io/terminology-service-suite/" target="_blank" rel="noopener noreferrer">here</a> for documentation on the different versions.</p>
+        <p style={{fontSize:18}}><strong>The widgets are currently under active development. Please forgive any errors that occur and report issues via [GitHub Issue](https://github.com/ts4nfdi/terminology-service-suite/issues)</strong>.</p>
     </div>
     <div style={{ flex: '1 1 350px', marginRight: '20px' }}>
-        <img src="https://raw.githubusercontent.com/nfdi4health/semlookp-widgets/main/img/TS4NFDI_Logo.svg" width="500" />
+        <img src="https://raw.githubusercontent.com/ts4nfdi/terminology-service-suite/main/img/TS4NFDI_Logo.svg" width="500" />
     </div>
 </div>
 
-<p style={{ fontSize: 18 }}><b>Documentation:</b> [All Versions](https://nfdi4health.github.io/semlookp-widgets/)</p>
-<p style={{ fontSize: 18 }}><b>React package:</b> [Latest](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets), [All Versions](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets/versions)</p>
-<p style={{ fontSize: 18 }}><b>JavaScript modules:</b> [Latest](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules)</p>
+<p style={{ fontSize: 18 }}><b>Documentation:</b> [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)</p>
+<p style={{ fontSize: 18 }}><b>React package:</b> [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)</p>
+<p style={{ fontSize: 18 }}><b>JavaScript modules:</b> [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)</p>
 
 ## Content
 
@@ -50,11 +50,11 @@ import { Meta } from '@storybook/addon-docs';
 ## How to use the widgets
 
 <p style={{fontSize:18}}>To use the widgets, you need to install and implement them in your consumer project.</p>
-<p style={{fontSize:18}}>For development, please see the [GitHub README](https://github.com/nfdi4health/semlookp-widgets).</p>
+<p style={{fontSize:18}}>For development, please see the [GitHub README](https://github.com/ts4nfdi/terminology-service-suite).</p>
 
 ### Installation
 
-<p style={{fontSize:18}}>This package is published as source code and compiled as a [npm package](https://github.com/nfdi4health/semlookp-widgets/releases) on [GitHub.com](https://github.com/nfdi4health/semlookp-widgets/). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).</p>
+<p style={{fontSize:18}}>This package is published as source code and compiled as a [npm package](https://github.com/ts4nfdi/terminology-service-suite/releases) on [GitHub.com](https://github.com/ts4nfdi/terminology-service-suite). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).</p>
 
 
 <ol>
@@ -62,14 +62,14 @@ import { Meta } from '@storybook/addon-docs';
     <li style={{fontSize:18}}>Create a local `~/.npmrc` file add the following two lines to it. Replace `TOKEN` with your personal access token</li>
 ```bash
 //npm.pkg.github.com/:_authToken=TOKEN
-@nfdi4health:registry=https://npm.pkg.github.com
+@ts4nfdi:registry=https://npm.pkg.github.com
 ```
 <br></br>
     <li style={{fontSize:18}}>Install the package (For dependency issues, try installing with the --legacy-peer-deps flag):</li>
 ```bash
-npm install @nfdi4health/semlookp-widgets
+npm install @ts4nfdi/terminology-service-suite
 ```
-<p style={{fontSize:18}}>For a list of available versions, see the [release page](https://github.com/nfdi4health/semlookp-widgets/releases) or the [GitHub NPM registry](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets)</p>
+<p style={{fontSize:18}}>For a list of available versions, see the [release page](https://github.com/ts4nfdi/terminology-service-suite/releases) or the [GitHub NPM registry](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite)</p>
 <br></br>
     <li style={{fontSize:18}}>Install peer dependencies (For dependency issues, try installing with the --legacy-peer-deps flag):</li>
 ```bash
@@ -82,7 +82,7 @@ npm install @elastic/eui@62.1.0 @emotion/react@11.11.3 react@17.0.2 react-dom@17
 
 #### Implementation in a React app
 
-<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/nfdi4health/semlookp-widgets-demo).</p>
+<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/ts4nfdi/react-widgets-demo-project).</p>
 
 <ol>
     <li style={{fontSize:18}}>In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters.</li>
@@ -115,13 +115,13 @@ import "@elastic/eui/dist/eui_theme_light.css";
     <li style={{fontSize:18}}>To use the widgets in an HTML file, you can either download the modules or use links and embed them in the appropriate tags in the head of the file. You can also include a link to an Elastic UI stylesheet.</li>
         <ul>
             <br></br>
-            <li style={{fontSize:18}}>The plainJS module and CSS files can be found [here](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules). Download and place in your project (see [Demo project](https://github.com/ts4nfdi/JS-Widgets-Demo-Project/tree/main/js)).</li>
+            <li style={{fontSize:18}}>The plainJS module and CSS files can be found [here](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/). Download and place in your project (see [Demo project](https://github.com/ts4nfdi/JS-Widgets-Demo-Project/tree/main/js)).</li>
             <br></br>
             ```html
             <head>
                 <link rel="stylesheet" href="https://unpkg.com/@elastic/eui@62.2.4/dist/eui_theme_light.css">
-                <link rel="stylesheet" href="./css/semlookp_widgets.css/">
-                <script type="text/javascript" src="./js/semlookp_widgets.js"></script>
+                <link rel="stylesheet" href="./css/terminology-service-suite.css/">
+                <script type="text/javascript" src="./js/terminology-service-suite.js"></script>
             </head>
             ```
             <br></br>
@@ -130,8 +130,8 @@ import "@elastic/eui/dist/eui_theme_light.css";
             ```html
             <head>
                 <link rel="stylesheet" href="https://unpkg.com/@elastic/eui@62.2.4/dist/eui_theme_light.css">
-                <link rel="stylesheet" href="https://nfdi4health.github.io/semlookp-widgets/js-modules/1.22.17/semlookp_widgets.min.css">
-                <script type="text/javascript" src="https://nfdi4health.github.io/semlookp-widgets/js-modules/1.22.17/semlookp_widgets.min.js"></script>
+                <link rel="stylesheet" href="https://ts4nfdi.github.io/terminology-service-suite/js-modules/2.0.1/terminology-service-suite.min.css">
+                <script type="text/javascript" src="https://ts4nfdi.github.io/terminology-service-suite/js-modules/2.0.1/terminology-service-suite.min.js"></script>
             </head>
             ```
             <br></br>
