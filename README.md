@@ -82,9 +82,10 @@ plugin [esbuild-dynamic-import](https://github.com/zbmed/esbuild-dynamic-import)
 For further information on the usage of the HTML widgets, please visit the interactive documentation in
 the [HTML Storybook](#run-storybook).
 
+#### Testing the JavaScript package in a consumer project locally 
 If the environment features `npm`, a local module can be created from the output file. To do this, place all the files
 generated inside `dist_plainjs/`
-in `local_modules/terminology-service-suite/` in your project. Now
+in `local_modules/terminology-service-suite/` in your consumer project. Now
 add `"terminology-service-suite": "file:local_modules/terminology-service-suite"` as a dependency in `package.json` and run `npm install`.
 
 ### Commit Message Formatting
