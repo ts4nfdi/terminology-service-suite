@@ -53,14 +53,14 @@ export function getFrontEndApi(api: string) : string {
 }
 
 /**
- * Returns "ontologies/{ontologyId}/{entityType}?iri={iri}", which can be concatenated with frontendApi to get full link
+ * Returns "ontologies/{ontologyId}/{entityType}/{iri}", which can be concatenated with frontendApi to get full link
  * @param ontologyId the entities' ontologyId
  * @param iri the entities' iri
  * @param entityTypeArray the entities' type array (from api JSON linkedEntities)
  * @param useLegacy
  */
-export function getEntityInOntologySuffix(ontologyId: string, iri: string, entityTypeArray: string[] | string, useLegacy?: boolean) : string {
-    return `ontologies/${ontologyId}/${pluralizeType(asArray(entityTypeArray), useLegacy)}/${encodeURIComponent(encodeURIComponent(iri))}`;
+export function getEntityInOntologySuffix(ontologyId: string, entityTypeArray: string[] | string, iri?: string, useLegacy?: boolean) : string {
+    return `ontologies/${ontologyId}/${pluralizeType(asArray(entityTypeArray), useLegacy)}` + (iri != undefined ? `/${encodeURIComponent(encodeURIComponent(iri))}` : "");
 }
 
 export function pluralizeType(typeArray: string[] | string, useLegacy?: boolean) : "terms" | "classes" | "properties" | "individuals" | "ontologies" {

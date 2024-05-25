@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {getEntityInOntologySuffix, getUseLegacy} from "../app/util";
+import {asArray, getEntityInOntologySuffix, getUseLegacy} from "../app/util";
 import {createModelObject} from "../model/ModelObjectCreator";
 import {Ontology, Ontologies, Entity, Thing, Individual} from "../model/interfaces";
 import {OLS3Ontologies, OLS3Ontology} from "../model/ols3-model";
@@ -445,10 +445,10 @@ export class OlsApi {
   public async getAncestors(iri: string, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities = false) : Promise<Entity[]> {
     let ancestors: any;
     if(isClassTypeName(entityType)) {
-      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/hierarchicalAncestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, false)}/hierarchicalAncestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
     }
     else {
-      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/ancestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+      ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, false)}/ancestors`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
     }
 
     return ancestors["elements"].map((obj: any) =>
@@ -460,15 +460,15 @@ export class OlsApi {
   public async getChildren(iri: string, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities = false) : Promise<Entity[]> {
     let children: any;
     if(isClassTypeName(entityType)) {
-      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/hierarchicalChildren`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/hierarchicalChildren`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
     }
     else if(isIndividualTypeName(entityType)) {
       // entityType does NOT indicate which type the entity of the provided iri has, but which type of hierarchy is desired
       // -> "class" has to be provided for individual hierarchy as well, as individuals are always children of classes
-      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/instances`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/instances`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
     }
     else {
-      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, entityType, false)}/children`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
+      children = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, false)}/children`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities}}, false);
     }
 
     return children["elements"].map((obj: any) =>
@@ -476,15 +476,39 @@ export class OlsApi {
     );
   }
 
+  public async getRootEntities(entityType: EntityTypeName, ontologyId: string, preferredRoots = false, includeObsoleteEntities = false) : Promise<Entity[]> {
+    if(isIndividualTypeName(entityType)){
+        // TODO: Implement behaviour for individuals
+        return [];
+    }
+    else {
+        const roots = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, undefined, false)}`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities, hasDirectParent: "false", isPreferredRoot: preferredRoots ? "true" : undefined}}, false);
+
+        return roots["elements"].map((obj: any) =>
+          createModelObject({elements: [obj]}) as Entity
+        );
+    }
+  }
+
   public async getClassInstances(iri: string, ontologyId: string) : Promise<Individual[]> {
-    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, iri, classTypeNames[0], false)}/instances`, {params: {size: "1000"}}, false);
+    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/instances`, {params: {size: "1000"}}, false);
 
     return instances["elements"].map((obj: any) =>
       createModelObject({elements: [obj]}) as Individual
     );
   }
 
-  public async buildHierarchy(mainEntity: Entity, includeObsoleteEntities: boolean) /*: Promise<Hierarchy>*/ {
+  public async buildHierarchyWithIri(includeObsoleteEntities: boolean, preferredRoots: boolean, entityType?: EntityTypeName, ontologyId?: string, iri?: string) {
+    if(iri) {
+      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType(), ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity));
+    }
+    else{
+      if(entityType == undefined || ontologyId == undefined) throw Error("Either iri or ontologyId and entityType have to be provided.");
+      return await this.buildHierarchyWithEntity(entityType, ontologyId, includeObsoleteEntities, preferredRoots);
+    }
+  }
+
+  public async buildHierarchyWithEntity(entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities: boolean, preferredRoots: boolean, mainEntity?: Entity) /*: Promise<Hierarchy>*/ {
     // used to filter from getParents()-array
     function isTop(iri: string) : boolean {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
@@ -492,8 +516,13 @@ export class OlsApi {
 
     let entities: Entity[] = [];
     if(mainEntity)
-      entities = [mainEntity, ...await this.getAncestors(mainEntity.getIri(), mainEntity.getType(), mainEntity.getOntologyId(), includeObsoleteEntities)]
-    else { /* //TODO: implement and add OlsApi::getRootEntities() */ }
+      entities = [mainEntity, ...await this.getAncestors(mainEntity.getIri(), entityType || mainEntity.getType(), ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)]
+    else {
+      entities = await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities);
+    }
+
+    // filter top entities
+    entities = entities.filter((e) => !isTop(e.getIri()));
 
     const rootEntities: Entity[] = [];
     const parentChildRelations: Map<string, Entity[]> = new Map<string, Entity[]>();
@@ -513,8 +542,8 @@ export class OlsApi {
     }
 
     function createTreeNode(currEntity: Entity): TreeNode {
-      const node = new TreeNode(currEntity);
-      const children = parentChildRelations.get(currEntity.getIri())?.sort((a, b) => (a.getLabel() || a.getIri()).localeCompare(b.getLabel() || b.getIri())) || [];
+      const node = new TreeNode(currEntity, entityType);
+      const children = parentChildRelations.get(currEntity.getIri())?.sort((a, b) => (asArray(a.getLabel())[0] || a.getIri()).localeCompare(asArray(b.getLabel())[0] || b.getIri())) || [];
 
       for(const child of children) {
         node.addChild(createTreeNode(child))
@@ -525,8 +554,8 @@ export class OlsApi {
       return node;
     }
 
-    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entity.getLabel() || a.entity.getIri()).localeCompare(b.entity.getLabel() || b.entity.getIri()));
+    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (asArray(a.entity.getLabel() )[0] || a.entity.getIri()).localeCompare(asArray(b.entity.getLabel())[0] || b.entity.getIri()));
 
-    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), mainEntity.getIri());
+    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), entityType, mainEntity?.getIri());
   }
 }

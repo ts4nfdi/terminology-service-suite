@@ -1,17 +1,24 @@
 import {Entity} from "./Entity";
 import {OlsApi} from "../../api/OlsApi";
+import {EntityTypeName, isClassTypeName, isIndividualTypeName} from "../ModelTypeCheck";
 
 export class TreeNode {
     entity: Entity;
     children: TreeNode[];
     numDescendants: number;
+    expandable: boolean;
     expanded: boolean;
     // TODO: Do we need further properties? Are the types of the current ones right and non-optional?
 
-    constructor(entity: Entity) {
+    /**
+     * @param entity
+     * @param entityType The type of hierarchy (relevant for `this.expandable`)
+     */
+    constructor(entity: Entity, entityType: EntityTypeName) {
         this.entity = entity;
         this.numDescendants = entity.getNumHierarchicalDescendants();
         this.children = [];
+        this.expandable = !isClassTypeName(entityType) ? entity.hasChildren() : this.numDescendants > 0;
         this.expanded = false;
     }
 
@@ -28,17 +35,19 @@ export class Hierarchy {
     includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
     mainEntityIri?: string; // to highlight it in the hierarchy
     protected api: OlsApi; // TODO: change that later to abstract Api object
+    protected entityType: EntityTypeName;
 
-    constructor(parentChildRelations: Map<string, Entity[]>, roots: TreeNode[], includeObsoleteEntities: boolean, api: OlsApi, mainEntityIri: string) {
+    constructor(parentChildRelations: Map<string, Entity[]>, roots: TreeNode[], includeObsoleteEntities: boolean, api: OlsApi, entityType: EntityTypeName, mainEntityIri?: string) {
         this.parentChildRelations = parentChildRelations
         this.roots = roots;
         this.includeObsoleteEntities = includeObsoleteEntities;
         this.api = api;
         this.mainEntityIri = mainEntityIri;
+        this.entityType = entityType
     }
 
     async expandNode(nodeToExpand: TreeNode) {
-        if(nodeToExpand.numDescendants <= 0) throw Error(`Node containing iri="${nodeToExpand.entity.getIri()}" could not be expanded: Entity has no descendants.`)
+        if(!nodeToExpand.expandable) throw Error(`Node containing iri="${nodeToExpand.entity.getIri()}" could not be expanded: Entity is not expandable.`)
 
         if(nodeToExpand.children.length == 0) {
             const childRelations = this.parentChildRelations.get(nodeToExpand.entity.getIri()) || [];
@@ -57,7 +66,7 @@ export class Hierarchy {
             if(children == undefined) throw Error(`parentChildRelations has no entry for key "${nodeToExpand.entity.getIri()}" although this should never happen.`);
 
             for(const child of children){
-                nodeToExpand.addChild(new TreeNode(child));
+                nodeToExpand.addChild(new TreeNode(child, this.entityType));
             }
         }
 

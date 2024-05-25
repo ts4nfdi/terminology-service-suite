@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer} from "react";
+import React, {useCallback, useMemo, useReducer} from "react";
 import {EuiLoadingSpinner, EuiText, EuiIcon, EuiTextColor, EuiProvider, EuiCard, EuiBadge} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
 import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
@@ -57,14 +57,18 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
     const [, forceUpdate] = useReducer(x => x + 1 % Number.MAX_SAFE_INTEGER, 0);
 
-    const api = new OlsApi("https://www.ebi.ac.uk/ols4/api/");
+    const api = useMemo(
+        () => new OlsApi("https://www.ebi.ac.uk/ols4/api/"),
+        []
+    );
+
     const {
         data: hierarchy,
         isSuccess: isSuccessHierarchy,
     } = useQuery(
       [iri, entityType, ontologyId],
       async function getNewHierarchy() {
-          return await api.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => api.buildHierarchy(entity, false));
+          return await api.buildHierarchyWithIri(false, false, entityType, ontologyId, iri) // TODO: make includeObsoleteEntities and preferredRoots widget props
       }
     );
 
@@ -84,7 +88,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
             <>
                 <EuiText>
                     {
-                        node.numDescendants <= 0 ?
+                        !node.expandable ?
                             <EuiIcon type={"empty"}/> :
                             <button onClick={() => {toggleNode(node)}}>
                                 <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"}/>

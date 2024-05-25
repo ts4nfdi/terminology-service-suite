@@ -21,11 +21,21 @@ export default {
     DefiningOntologyUnavailable
 } from "./TitleWidgetStories";*/
 
-export const HierarchyWidgetSemLookP1 = {
+export const ClassHierarchy = {
     args: {
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         entityType: "class",
         ontologyId: "efo",
+        onNavigateToEntity: (entity: Entity) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.getLabel()}" (iri="${entity.getIri()}").`)},
+        onNavigateToOntology: (pOntologyId: string, entity: Entity) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.getLabel()}" (iri="${entity.getIri()}") and ontologyId "${pOntologyId}".`)}
+    }
+};
+
+export const IndividualHierarchy = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/IAO_0000120",
+        entityType: "individual",
+        ontologyId: "bco",
         onNavigateToEntity: (entity: Entity) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.getLabel()}" (iri="${entity.getIri()}").`)},
         onNavigateToOntology: (pOntologyId: string, entity: Entity) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.getLabel()}" (iri="${entity.getIri()}") and ontologyId "${pOntologyId}".`)}
     }

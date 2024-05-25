@@ -78,12 +78,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
                             </> :
                             <></>
                     }
@@ -94,12 +94,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> linking to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{label}</a>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
+                                <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<EuiBadge color={"success"}>{otherDefinedBy[0].toUpperCase()}</EuiBadge>}</a>
                             </> :
                             <></>
                     }
@@ -112,14 +112,14 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
                     {
                         showBadges ?
                         <>
                             &nbsp;
                             {otherDefinedBy.map((elem: any) => {
                                 return (
-                                    <a key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, iri, linkedEntityType, false)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
+                                    <a key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, linkedEntityType, iri, false)}>{<EuiBadge color={"success"}>{elem.toUpperCase()}</EuiBadge>}</a>
                                 );
                             })}
                         </> :
@@ -158,7 +158,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> where <label> links to the term in this ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, iri, linkedEntityType, false)}>{label}</a>
+                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
                 </>
             )
         }
