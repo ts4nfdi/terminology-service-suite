@@ -16,6 +16,8 @@ export function createModelObject(response: any) {
             entityType = "ontology";
         }
         else {
+            if(response["_embedded"][0] === undefined) throw Error("Empty response.");
+
             if(response["_embedded"]["terms"] !== undefined) entityType = "term";
             else if(response["_embedded"]["properties"] !== undefined) entityType = "property";
             else if(response["_embedded"]["individuals"] !== undefined) entityType = "individual";
