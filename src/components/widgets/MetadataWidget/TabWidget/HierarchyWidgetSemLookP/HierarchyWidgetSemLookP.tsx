@@ -79,8 +79,10 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         node.expanded = !node.expanded;
         forceUpdate();
 
-        // fetch needed information and rerender again
-        if(node.expanded) hierarchy.expandNode(node).then(() => forceUpdate())
+        // fetch needed information and rerender again if needed
+        if(node.expanded) hierarchy.fetchInformationForExpansion(node).then((hasUpdated) => {
+            if(hasUpdated) forceUpdate();
+        })
     },[hierarchy])
 
     function renderTreeNode(node: TreeNode) {

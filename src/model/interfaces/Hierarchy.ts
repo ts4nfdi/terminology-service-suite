@@ -1,6 +1,6 @@
 import {Entity} from "./Entity";
 import {OlsApi} from "../../api/OlsApi";
-import {EntityTypeName, isClassTypeName, isIndividualTypeName} from "../ModelTypeCheck";
+import {EntityTypeName, isClassTypeName} from "../ModelTypeCheck";
 
 export class TreeNode {
     entity: Entity;
@@ -46,7 +46,11 @@ export class Hierarchy {
         this.entityType = entityType
     }
 
-    async expandNode(nodeToExpand: TreeNode) {
+    /**
+     * Checks if all the information needed for expansion of `nodeToExpand` is available (i.e. there are already children loaded) and fetches it if not.
+     * @return boolean `true` if information had to be fetched, `false` otherwise
+     */
+    async fetchInformationForExpansion(nodeToExpand: TreeNode) {
         if(!nodeToExpand.expandable) throw Error(`Node containing iri="${nodeToExpand.entity.getIri()}" could not be expanded: Entity is not expandable.`)
 
         if(nodeToExpand.children.length == 0) {
@@ -68,9 +72,9 @@ export class Hierarchy {
             for(const child of children){
                 nodeToExpand.addChild(new TreeNode(child, this.entityType));
             }
-        }
 
-        // set parent to be expanded
-        nodeToExpand.expanded = true;
+            return true;
+        }
+        else return false;
     }
 }
