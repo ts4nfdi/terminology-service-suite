@@ -55,6 +55,8 @@ team.
 
 ### Run Storybook
 
+#### Manually
+
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the
 development server, install the dependencies with `npm install` and start Storybook with this
 command `npm run storybook:react`. The interactive documentation is available via `http://localhost:6006`. For more
@@ -68,6 +70,32 @@ via `http://localhost:6007`.
 
 The React and HTML components can be combined in one Storybook using `npm run storybook`. Notice that, for this to work,
 the React Storybook has to be running at `http://localhost:6006` and the HTML Storybook at `http://localhost:6007`.
+
+
+#### Docker
+Before running the storybook via docker, make sure that you provide the needed authentication file `~/.npmrc`. 
+
+First, build (name is arbitrary)
+
+     docker build --tag 'storybook' .
+
+Then, run
+
+    $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        storybook
+
+**Hint**: if you want to run the docker for development, you can use the docker bind mount to link the scripts inside the container to your local ones to check the changes immediately without re-building. Look at: https://docs.docker.com/storage/bind-mounts/#start-a-container-with-a-bind-mount
+
+     $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        --mount type=bind,source=$(pwd)/src,target=/usr/storybook/src \
+        storybook
+
+**Note** that the bind only works for the React version. For the HTML version, you need to re-build the storybook.
+
 
 ### Build widgets for React projects
 
