@@ -10,6 +10,7 @@ RUN npm install
 
 EXPOSE 6006
 EXPOSE 6007
+EXPOSE 6008
 
 RUN chmod +x docker_entry.sh
 

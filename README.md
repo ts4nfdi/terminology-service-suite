@@ -81,9 +81,18 @@ First, build (name is arbitrary)
 
 Then, run
 
-    docker run -p 6006:6006 -p 6007:6007 --name story storybook
+    $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        storybook
 
 **Hint**: if you want to run the docker for development, you can use the docker bind mount to link the scripts inside the container to your local ones to check the changes immediately without re-building. Look at: https://docs.docker.com/storage/bind-mounts/#start-a-container-with-a-bind-mount
+
+     $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        --mount type=bind,source=$(pwd)/src,target=/usr/storybook/src \
+        storybook
 
 **Note** that the bind only works for the React version. For the HTML version, you need to re-build the storybook.
 
