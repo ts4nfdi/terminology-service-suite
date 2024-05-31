@@ -2,29 +2,32 @@ import React, {useCallback, useMemo, useReducer} from "react";
 import {EuiLoadingSpinner, EuiText, EuiIcon, EuiTextColor, EuiProvider, EuiCard, EuiBadge} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
 import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
-import {Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
-import {Entity} from "../../../../../model/interfaces";
+import {SkosApi} from "../../../../../api/SkosApi";
+import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 
 export type HierarchyWidgetSemLookPProps = {
     iri: string;
     entityType?: EntityTypeName;
     ontologyId?: string;
-    onNavigateToEntity: (entity: Entity) => void;
-    onNavigateToOntology: (ontologyId: string, entity: Entity) => void;
+    onNavigateToEntity: (entity: EntityDataForHierarchy) => void;
+    onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void;
+    backend_type?: string,
+    apiUrl: string
 }
 
-function TreeLink(props: {entity: Entity, onNavigateToEntity: (entity: Entity) => void, onNavigateToOntology: (ontologyId: string, entity: Entity) => void, highlight: boolean}) {
-    let definedBy: string[] = props.entity.getDefinedBy();
-    if(definedBy.includes(props.entity.getOntologyId())) definedBy = [];
+function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity: (entity: EntityDataForHierarchy) => void, onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
+    let definedBy: string[] = props.entityData.definedBy || [];
+    if(definedBy.includes(props.ontologyId)) definedBy = [];
 
     return (
         <>
             <button
-                onClick={() => {props.onNavigateToEntity(props.entity)}}
+                onClick={() => {props.onNavigateToEntity(props.entityData)}}
             >
-                <EuiTextColor color={props.highlight ? "slateblue" : "default"}> {props.entity.getLabel() || props.entity.getIri()} </EuiTextColor>
+                <EuiTextColor color={props.highlight ? "slateblue" : "default"}> {props.entityData.label || props.entityData.iri} </EuiTextColor>
             </button>
             {definedBy.length > 0 &&
                 <>
@@ -32,8 +35,8 @@ function TreeLink(props: {entity: Entity, onNavigateToEntity: (entity: Entity) =
                     {definedBy.map((definingOntology) => {
                         return (
                             <button
-                                key={`${props.entity.getIri()}:${definingOntology}`}
-                                onClick={() => {props.onNavigateToOntology(definingOntology, props.entity)}}
+                                key={`${props.entityData.iri}:${definingOntology}`}
+                                onClick={() => {props.onNavigateToOntology(definingOntology, props.entityData)}}
                             >
                                 <EuiBadge color={"success"}>{definingOntology.toUpperCase()}</EuiBadge>
                             </button>
@@ -47,19 +50,30 @@ function TreeLink(props: {entity: Entity, onNavigateToEntity: (entity: Entity) =
 
 function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     const {
+        apiUrl,
         iri,
         ontologyId,
         entityType,
         onNavigateToEntity,
         onNavigateToOntology,
+        backend_type = "ols",
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
     const [, forceUpdate] = useReducer(x => x + 1 % Number.MAX_SAFE_INTEGER, 0);
 
-    const api = useMemo(
-        () => new OlsApi("https://www.ebi.ac.uk/ols4/api/"),
-        []
+    const api : HierarchyBuilder = useMemo(
+        () => {
+            switch (backend_type) {
+                case "ols":
+                    return new OlsApi(apiUrl);
+                case "skosmos":
+                    return new SkosApi(apiUrl);
+                default:
+                    return new OlsApi(apiUrl);
+            }
+        },
+        [apiUrl, backend_type]
     );
 
     const {
@@ -85,26 +99,26 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         })
     },[hierarchy])
 
-    function renderTreeNode(node: TreeNode) {
+    function renderTreeNode(hierarchy: Hierarchy, node: TreeNode) {
         return (
             <>
                 <EuiText>
                     {
-                        !node.expandable ?
+                        !node.entityData.hasChildren ?
                             <EuiIcon type={"empty"}/> :
                             <button onClick={() => {toggleNode(node)}}>
                                 <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"}/>
                             </button>
                     }
                     &nbsp;
-                    <TreeLink entity={node.entity} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entity.getIri() == hierarchy?.mainEntityIri}/>
+                    <TreeLink entityData={node.entityData} ontologyId={hierarchy.ontologyId} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entityData.iri == hierarchy?.mainEntityIri}/>
                     &nbsp;
-                    {node.numDescendants > 0 && <span style={{color: "gray"}}>({node.numDescendants.toLocaleString()})</span>}
+                    {node.entityData.numDescendants != undefined && node.entityData.numDescendants > 0 && <span style={{color: "gray"}}>({node.entityData.numDescendants.toLocaleString()})</span>}
                 </EuiText>
                 {node.expanded &&
                     <ul style={{whiteSpace: "nowrap", marginBlockEnd: "0", marginInlineStart: "1.5rem"}}>
-                        {node.children.length > 0 ?
-                            node.children.map((child) => renderTreeNode(child)) :
+                        {node.loadedChildren.length > 0 ?
+                            node.loadedChildren.map((child) => renderTreeNode(hierarchy, child)) :
                             <EuiLoadingSpinner/>
                         }
                     </ul>
@@ -117,7 +131,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         <EuiCard title={""} layout={"horizontal"}>
             {(isSuccessHierarchy && hierarchy != undefined) ?
                 <EuiText>
-                    {hierarchy.roots.map((rootNode) => renderTreeNode(rootNode))}
+                    {hierarchy.roots.map((rootNode) => renderTreeNode(hierarchy, rootNode))}
                 </EuiText>
                 : <EuiLoadingSpinner/>}
         </EuiCard>
@@ -134,6 +148,8 @@ function WrappedHierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         <EuiProvider colorMode="light">
             <QueryClientProvider client={queryClient}>
                 <HierarchyWidgetSemLookP
+                    apiUrl={props.apiUrl}
+                    backend_type={props.backend_type}
                     iri={props.iri}
                     entityType={props.entityType}
                     ontologyId={props.ontologyId}

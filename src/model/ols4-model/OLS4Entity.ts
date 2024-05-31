@@ -4,6 +4,7 @@ import {OLS4Thing} from "./OLS4Thing";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
+import {isEntityTypeName} from "../ModelTypeCheck";
 
 export abstract class OLS4Entity extends OLS4Thing implements Entity{
   abstract getParents(): Reified<any>[];
@@ -184,8 +185,8 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getNumDescendants(): number {
-    return this.properties["numDescendants"]
-      ? parseInt(this.properties["numDescendants"])
+    return this.properties["numDirectDescendants"]
+      ? parseInt(this.properties["numDirectDescendants"])
       : 0;
   }
 
@@ -201,7 +202,14 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
     }
   }
 
-    getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
+  getType(): "class" | "property" | "individual" {
+    const type = super.getType();
+    if(!isEntityTypeName(type)) throw Error(`Type array does not include entityType of entity.`);
+
+    return type;
+  }
+
+  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
       const type = this.getType();
 
     switch (type) {

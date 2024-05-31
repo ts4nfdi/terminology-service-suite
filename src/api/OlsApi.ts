@@ -8,7 +8,8 @@ import {
   EntityTypeName, ThingTypeName,
   isClassTypeName, isEntityTypeName, isIndividualTypeName, isOntologyTypeName
 } from "../model/ModelTypeCheck";
-import {Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import Reified from "../model/Reified";
 
 interface PaginationParams {
   size?: string;
@@ -508,54 +509,75 @@ export class OlsApi {
     }
   }
 
-  public async buildHierarchyWithEntity(entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities: boolean, preferredRoots: boolean, mainEntity?: Entity) /*: Promise<Hierarchy>*/ {
+  public toEntityDataForHierarchy(entity: Entity) : EntityDataForHierarchy {
+    return {
+      iri: entity.getIri(),
+      label: asArray(entity.getLabel())[0],
+      definedBy: entity.getDefinedBy(),
+      hasChildren: entity.hasChildren(),
+      numDescendants: entity.getNumHierarchicalDescendants() || entity.getNumDescendants(),
+      parents: entity.getParents().map((reified: Reified<string>) => reified.value) // TODO: Do we also need relation name (axioms of Reified)?
+    };
+  }
+
+  public async buildHierarchyWithEntity(entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities: boolean, preferredRoots: boolean, mainEntity?: Entity) : Promise<Hierarchy> {
     // used to filter from getParents()-array
     function isTop(iri: string) : boolean {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
     }
 
-    let entities: Entity[] = [];
+    let entities: EntityDataForHierarchy[] = [];
     if(mainEntity)
-      entities = [mainEntity, ...await this.getAncestors(mainEntity.getIri(), entityType || mainEntity.getType(), ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)]
+      entities = [this.toEntityDataForHierarchy(mainEntity), ...(await this.getAncestors(mainEntity.getIri(), entityType || mainEntity.getType(), ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity))]
     else {
-      entities = await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities);
+      entities = (await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity));
     }
 
     // filter top entities
-    entities = entities.filter((e) => !isTop(e.getIri()));
+    entities = entities.filter((e) => !isTop(e.iri));
 
-    const rootEntities: Entity[] = [];
-    const parentChildRelations: Map<string, Entity[]> = new Map<string, Entity[]>();
+    const rootEntities: EntityDataForHierarchy[] = [];
+    const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
 
-    for(const entity of entities) parentChildRelations.set(entity.getIri(), []); // initialize with empty array
-    for(const entity of entities) {
-      const parents = entity.getParents().map((reified) => reified.value).filter((parentIri: string) => !isTop(parentIri)); // TODO: Do we also need relation name (axioms of Reified)?
+    for(const entityData of entities) parentChildRelations.set(entityData.iri, []); // initialize with empty array
+    for(const entityData of entities) {
+      const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
 
-      if (parents.length == 0) rootEntities.push(entity);
+      if (parents.length == 0) rootEntities.push(entityData);
       else {
         for (const parentIri of parents) {
           if (parentChildRelations.has(parentIri)) {
-            parentChildRelations.get(parentIri)?.push(entity);
+            parentChildRelations.get(parentIri)?.push(entityData);
           }
         }
       }
     }
 
-    function createTreeNode(currEntity: Entity): TreeNode {
-      const node = new TreeNode(currEntity, entityType);
-      const children = parentChildRelations.get(currEntity.getIri())?.sort((a, b) => (asArray(a.getLabel())[0] || a.getIri()).localeCompare(asArray(b.getLabel())[0] || b.getIri())) || [];
+    function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
+      const node = new TreeNode(entityData, entityType);
+      const children = parentChildRelations.get(entityData.iri)?.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)) || [];
 
       for(const child of children) {
         node.addChild(createTreeNode(child))
       }
 
-      if(node.children.length > 0) node.expanded = true;
+      if(node.loadedChildren.length > 0) node.expanded = true;
 
       return node;
     }
 
-    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (asArray(a.entity.getLabel() )[0] || a.entity.getIri()).localeCompare(asArray(b.entity.getLabel())[0] || b.entity.getIri()));
+    for (const node of entities) console.log(JSON.stringify(node));
 
-    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), entityType, mainEntity?.getIri());
+    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+
+    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), entityType, ontologyId, mainEntity?.getIri());
+  }
+
+  public async loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]> {
+    return (await this.getChildren(nodeToExpand.entityData.iri, entityType, ontologyId, includeObsoleteEntities))
+        .map((entity) => this.toEntityDataForHierarchy(entity))
+        .sort(
+            (a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)
+        );
   }
 }
