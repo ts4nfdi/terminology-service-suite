@@ -100,7 +100,7 @@ export class SkosApi implements HierarchyBuilder{
             for(const child of children) {
                 // TODO: Do we want to hide siblings on initial render even if they are already available?
                 //       + makes the hierarchy better to grasp
-                //       - if siblings are desired to be shown, this is rather inconvenient
+                //       - if siblings are desired to be shown, this is rather inconvenient (maybe introduce widget parameter "showSiblingsOnInitialRender"?)
                 if(onInitialPath.has(child.iri)) node.addChild(createTreeNode(child))
             }
 
@@ -115,7 +115,24 @@ export class SkosApi implements HierarchyBuilder{
     }
 
     public async loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]> {
-        return []
+        type NarrowerObj = {
+            uri: string,
+            prefLabel: string,
+            hasChildren: boolean
+            // notation?: any
+        }
+
+        const narrower: NarrowerObj[] = (await this.makeCall(`/${ontologyId}/children`, {params: {uri: nodeToExpand.entityData.iri, lang: "en", format: "application/json"}}))["narrower"];
+
+        return narrower.map((obj) => {
+            const childData: EntityDataForHierarchy = {
+                iri: obj.uri,
+                label: obj.prefLabel,
+                hasChildren: obj.hasChildren,
+                parents: [nodeToExpand.entityData.iri],
+            };
+            return childData;
+        });
     }
 
 }

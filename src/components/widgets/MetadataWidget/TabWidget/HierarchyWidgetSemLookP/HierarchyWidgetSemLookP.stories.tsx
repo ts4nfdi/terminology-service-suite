@@ -97,7 +97,7 @@ export const SkosHierarchy = {
     args: {
         apiUrl: "https://api.finto.fi/rest/v1",
         backend_type: "skosmos",
-        iri: "http://www.yso.fi/onto/yso/p19378",
+        iri: "http://www.yso.fi/onto/yso/p864",
         ontologyId: "yso",
         onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
         onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
