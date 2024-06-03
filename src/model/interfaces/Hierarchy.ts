@@ -14,6 +14,7 @@ export class TreeNode {
     entityData: EntityDataForHierarchy;
     loadedChildren: TreeNode[];
     expanded: boolean;
+    manuallyExpanded: boolean;
 
     /**
      * @param entityData
@@ -22,8 +23,8 @@ export class TreeNode {
     constructor(entityData: EntityDataForHierarchy, entityType: EntityTypeName) {
         this.entityData = entityData;
         this.loadedChildren = [];
-        // this.expandable = !isClassTypeName(entityType) ? entity.hasChildren() : this.numDescendants > 0;
         this.expanded = false;
+        this.manuallyExpanded = false;
     }
 
     addChild(child: TreeNode) {
@@ -59,10 +60,11 @@ export class Hierarchy {
     async fetchInformationForExpansion(nodeToExpand: TreeNode) {
         if(!nodeToExpand.entityData.hasChildren) throw Error(`Node containing iri="${nodeToExpand.entityData.iri}" could not be expanded: Entity is not expandable.`)
 
-        if(nodeToExpand.loadedChildren.length == 0) {
+        if(!nodeToExpand.manuallyExpanded) {
             const childRelations = this.parentChildRelations.get(nodeToExpand.entityData.iri) || [];
-            // search for children in parentChildRelations, if nodeToExpand has an entry there, the information needed is already provided, otherwise, it has to be queried
-            if(childRelations.length == 0) {
+
+            // If there are already more children inside parentChildRelations, all information is already available. Otherwise, query the missing information
+            if(childRelations.length <= nodeToExpand.loadedChildren.length) {
                 // dynamically load children from api
                 const children: EntityDataForHierarchy[] = await this.api.loadHierarchyChildren(nodeToExpand, this.entityType, this.ontologyId, this.includeObsoleteEntities);
 
@@ -74,9 +76,11 @@ export class Hierarchy {
             if(children == undefined) throw Error(`parentChildRelations has no entry for key "${nodeToExpand.entityData.iri}" although this should never happen.`);
 
             for(const child of children){
-                nodeToExpand.addChild(new TreeNode(child, this.entityType));
+                if(nodeToExpand.loadedChildren.filter((loadedChild) => loadedChild.entityData.iri == child.iri).length == 0)
+                    nodeToExpand.addChild(new TreeNode(child, this.entityType));
             }
 
+            nodeToExpand.manuallyExpanded = true;
             return true;
         }
         else return false;
