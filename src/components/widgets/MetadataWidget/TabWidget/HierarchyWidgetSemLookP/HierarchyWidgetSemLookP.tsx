@@ -15,7 +15,9 @@ export type HierarchyWidgetSemLookPProps = {
     onNavigateToEntity: (entity: EntityDataForHierarchy) => void;
     onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void;
     backend_type?: string,
-    apiUrl: string
+    apiUrl: string,
+    includeObsoleteEntities?: boolean,
+    preferredRoots?: boolean
 }
 
 function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity: (entity: EntityDataForHierarchy) => void, onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
@@ -57,6 +59,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         onNavigateToEntity,
         onNavigateToOntology,
         backend_type = "ols",
+        includeObsoleteEntities = false,
+        preferredRoots = false,
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -82,7 +86,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     } = useQuery(
       [iri, entityType, ontologyId],
       async function getNewHierarchy() {
-          return await api.buildHierarchyWithIri(false, false, entityType, ontologyId, iri) // TODO: make includeObsoleteEntities and preferredRoots widget props
+          // TODO: Introduce props object (+ new type for it) for buildHierarchyWithIri etc.
+          return await api.buildHierarchyWithIri(includeObsoleteEntities, preferredRoots, entityType, ontologyId, iri);
       }
     );
 
