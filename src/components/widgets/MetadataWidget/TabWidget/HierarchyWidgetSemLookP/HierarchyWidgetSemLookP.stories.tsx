@@ -11,7 +11,11 @@ export default {
 
     },
     args: {
-
+        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
+        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)},
+        entityType: "",
+        includeObsoleteEntities: false,
+        preferredRoots: false
     }
 };
 
@@ -28,8 +32,6 @@ export const ClassHierarchy = {
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         entityType: "class",
         ontologyId: "efo",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -40,8 +42,6 @@ export const IndividualHierarchy = {
         iri: "http://purl.obolibrary.org/obo/IAO_0000120",
         entityType: "individual",
         ontologyId: "bco",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -52,8 +52,6 @@ export const ClassRoots = {
         iri: "",
         entityType: "class",
         ontologyId: "bco",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -64,8 +62,6 @@ export const PropertyRoots = {
         iri: "",
         entityType: "property",
         ontologyId: "bco",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -76,8 +72,6 @@ export const IndividualRoots = {
         iri: "",
         entityType: "individual",
         ontologyId: "bco",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -88,8 +82,6 @@ export const LargeHierarchy = {
         iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
         entityType: "class",
         ontologyId: "uberon",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
 
@@ -99,7 +91,5 @@ export const SkosHierarchy = {
         backend_type: "skosmos",
         iri: "http://www.yso.fi/onto/yso/p864",
         ontologyId: "yso",
-        onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)}
     }
 };
