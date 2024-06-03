@@ -3,6 +3,74 @@ import {HierarchyBuilder} from "./HierarchyBuilder";
 import {EntityTypeName} from "../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 
+type TopConcept = {
+    uri: string,
+    label?: string,
+    topConceptOf?: string,
+    hasChildren: boolean,
+    notation?: string
+}
+
+type LabelAndUriAndChildren = {
+    uri: string,
+    label: string,
+    hasChildren: boolean,
+    notation?: string
+}
+
+type HierarchyResult = {
+    uri: string,
+    prefLabel: string;
+    top?: string,
+    broader?: string[],
+    narrower?: LabelAndUriAndChildren[]
+};
+
+type PrefAndUriAndChildren = {
+    uri: string,
+    prefLabel: string,
+    hasChildren: boolean
+    notation?: string
+}
+
+abstract class SkosEntityDataForHierarchyBuilder {
+    static fromTopConcept(obj: TopConcept) : EntityDataForHierarchy {
+        return  {
+            iri: obj.uri,
+            label: obj.label,
+            hasChildren: obj.hasChildren,
+            parents: []
+        };
+    }
+
+    static fromHierarchyResult(obj: HierarchyResult) : EntityDataForHierarchy {
+        return {
+            iri: obj.uri,
+            label: obj.prefLabel,
+            hasChildren: obj.narrower != undefined && obj.narrower.length > 0,
+            parents: obj.broader || []
+        }
+    }
+
+    static fromPrefAndUriAndChildren(obj: PrefAndUriAndChildren, parents?: string[]) : EntityDataForHierarchy {
+        return {
+            iri: obj.uri,
+            label: obj.prefLabel,
+            hasChildren: obj.hasChildren,
+            parents: parents || []
+        };
+    }
+
+    static fromLabelAndUriAndChildren(obj: LabelAndUriAndChildren, parents?: string[]) : EntityDataForHierarchy {
+        return {
+            iri: obj.uri,
+            label: obj.label,
+            hasChildren: obj.hasChildren,
+            parents: parents || []
+        }
+    }
+}
+
 export class SkosApi implements HierarchyBuilder{
     private axiosInstance: AxiosInstance;
 
@@ -17,8 +85,7 @@ export class SkosApi implements HierarchyBuilder{
     }
 
     private async makeCall(url: string, config: AxiosRequestConfig<any> | undefined) {
-        const response = (await this.axiosInstance.get(url, config)).data;
-        return response;
+        return (await this.axiosInstance.get(url, config)).data;
     }
 
     public async buildHierarchyWithIri(includeObsoleteEntities: boolean, preferredRoots: boolean, entityType?: EntityTypeName, ontologyId?: string, iri?: string): Promise<Hierarchy> {
@@ -29,32 +96,14 @@ export class SkosApi implements HierarchyBuilder{
         const onInitialPath: Set<string> = new Set<string>();
 
         if(iri) {
-            type ResponseNode = {
-                uri: string,
-                prefLabel: string;
-                top?: string,
-                broader?: string[],
-                narrower?: {
-                    uri: string,
-                    label: string,
-                    hasChildren: boolean,
-                    // notation?: any
-                }[]
-            };
-
-            const broaderTransitive: ResponseNode[] = await this.makeCall(`/${ontologyId}/hierarchy`, {params: {uri: iri, lang: "en", format: "application/json"}})
+            const broaderTransitive: HierarchyResult[] = await this.makeCall(`/${ontologyId}/hierarchy`, {params: {uri: iri, lang: "en", format: "application/json"}})
                 .then((obj) => Object.keys(obj["broaderTransitive"]).map((key) => obj["broaderTransitive"][key]))
 
             // stores all entities appearing in broaderTransitive
             const entities: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>()
 
             for(const node of broaderTransitive) {
-                const nodeData: EntityDataForHierarchy = {
-                    iri: node.uri,
-                    label: node.prefLabel,
-                    hasChildren: node.narrower != undefined && node.narrower.length > 0,
-                    parents: node.broader || []
-                }
+                const nodeData: EntityDataForHierarchy = SkosEntityDataForHierarchyBuilder.fromHierarchyResult(node);
 
                 entities.set(nodeData.iri, nodeData);
                 if(node.top) rootEntities.push(nodeData);
@@ -68,12 +117,7 @@ export class SkosApi implements HierarchyBuilder{
                     for(const childNode of node.narrower) {
                         let childNodeData = entities.get(childNode.uri);
                         if(childNodeData == undefined) {
-                            childNodeData = {
-                                iri: childNode.uri,
-                                label: childNode.label,
-                                hasChildren: childNode.hasChildren,
-                                parents: [node.uri]
-                            }
+                            childNodeData = SkosEntityDataForHierarchyBuilder.fromLabelAndUriAndChildren(childNode, [node.uri]);
 
                             entities.set(childNodeData.iri, childNodeData);
                         }
@@ -86,11 +130,14 @@ export class SkosApi implements HierarchyBuilder{
                     parentChildRelations.set(node.uri, children);
                 }
             }
-
-            // for(const key of parentChildRelations.keys()) console.log(key, entities.get(key)?.label, "\n", JSON.stringify(parentChildRelations.get(key)?.map((e) => e.label)), "\n\n")
         }
         else {
-            // TODO: Query /vocid/topConcepts (see https://finto.fi/yso/en/?clang=en for example)
+            const topconcepts: TopConcept[] = await this.makeCall(`/${ontologyId}/topConcepts`, {params: {lang: "en", format: "application/json"}})
+                .then((obj) => obj["topconcepts"])
+
+            for(const concept of topconcepts) {
+                rootEntities.push(SkosEntityDataForHierarchyBuilder.fromTopConcept(concept));
+            }
         }
 
         function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
@@ -115,24 +162,9 @@ export class SkosApi implements HierarchyBuilder{
     }
 
     public async loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]> {
-        type NarrowerObj = {
-            uri: string,
-            prefLabel: string,
-            hasChildren: boolean
-            // notation?: any
-        }
+        const narrower: PrefAndUriAndChildren[] = (await this.makeCall(`/${ontologyId}/children`, {params: {uri: nodeToExpand.entityData.iri, lang: "en", format: "application/json"}}))["narrower"];
 
-        const narrower: NarrowerObj[] = (await this.makeCall(`/${ontologyId}/children`, {params: {uri: nodeToExpand.entityData.iri, lang: "en", format: "application/json"}}))["narrower"];
-
-        return narrower.map((obj) => {
-            const childData: EntityDataForHierarchy = {
-                iri: obj.uri,
-                label: obj.prefLabel,
-                hasChildren: obj.hasChildren,
-                parents: [nodeToExpand.entityData.iri],
-            };
-            return childData;
-        });
+        return narrower.map((obj) => SkosEntityDataForHierarchyBuilder.fromPrefAndUriAndChildren(obj, [nodeToExpand.entityData.iri]));
     }
 
 }

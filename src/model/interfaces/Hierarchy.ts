@@ -1,7 +1,6 @@
 import {EntityTypeName} from "../ModelTypeCheck";
 import {HierarchyBuilder} from "../../api/HierarchyBuilder";
 
-// TODO: new type to use instead of Entity for Hierarchy?
 export type EntityDataForHierarchy = {
     iri: string;
     label?: string;
@@ -15,7 +14,6 @@ export class TreeNode {
     entityData: EntityDataForHierarchy;
     loadedChildren: TreeNode[];
     expanded: boolean;
-    // TODO: Do we need further properties? Are the types of the current ones right and non-optional?
 
     /**
      * @param entityData
