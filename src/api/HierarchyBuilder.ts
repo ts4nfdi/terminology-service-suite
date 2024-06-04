@@ -2,6 +2,17 @@ import {EntityTypeName} from "../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 
 export interface HierarchyBuilder {
-    buildHierarchyWithIri(includeObsoleteEntities: boolean, preferredRoots: boolean, entityType?: EntityTypeName, ontologyId?: string, iri?: string) : Promise<Hierarchy>;
-    loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]>
+    buildHierarchyWithIri(props: {
+        iri?: string,
+        ontologyId?: string,
+        entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
+        preferredRoots?: boolean,
+        includeObsoleteEntities?: boolean
+    }) : Promise<Hierarchy>;
+    loadHierarchyChildren(props: {
+        nodeToExpand: TreeNode,
+        entityType?: EntityTypeName,
+        ontologyId: string,
+        includeObsoleteEntities?: boolean
+    }): Promise<EntityDataForHierarchy[]>
 }

@@ -12,22 +12,22 @@ export type HierarchyWidgetSemLookPProps = {
     iri: string;
     entityType?: EntityTypeName;
     ontologyId?: string;
-    onNavigateToEntity: (entity: EntityDataForHierarchy) => void;
-    onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void;
+    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void;
+    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void;
     backend_type?: string,
     apiUrl: string,
     includeObsoleteEntities?: boolean,
     preferredRoots?: boolean
 }
 
-function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity: (entity: EntityDataForHierarchy) => void, onNavigateToOntology: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
+function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
     if(definedBy.includes(props.ontologyId)) definedBy = [];
 
     return (
         <>
             <button
-                onClick={() => {props.onNavigateToEntity(props.entityData)}}
+                onClick={() => {if(props.onNavigateToEntity) props.onNavigateToEntity(props.entityData)}}
             >
                 <EuiTextColor color={props.highlight ? "slateblue" : "default"}> {props.entityData.label || props.entityData.iri} </EuiTextColor>
             </button>
@@ -38,7 +38,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string
                         return (
                             <button
                                 key={`${props.entityData.iri}:${definingOntology}`}
-                                onClick={() => {props.onNavigateToOntology(definingOntology, props.entityData)}}
+                                onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityData)}}
                             >
                                 <EuiBadge color={"success"}>{definingOntology.toUpperCase()}</EuiBadge>
                             </button>
@@ -53,12 +53,13 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string
 function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     const {
         apiUrl,
+        backend_type = "ols",
+        onNavigateToEntity,
+        onNavigateToOntology,
+
         iri,
         ontologyId,
         entityType,
-        onNavigateToEntity,
-        onNavigateToOntology,
-        backend_type = "ols",
         includeObsoleteEntities = false,
         preferredRoots = false,
     } = props;
@@ -86,8 +87,13 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     } = useQuery(
       [iri, entityType, ontologyId],
       async function getNewHierarchy() {
-          // TODO: Introduce props object (+ new type for it) for buildHierarchyWithIri etc.
-          return await api.buildHierarchyWithIri(includeObsoleteEntities, preferredRoots, entityType, ontologyId, iri);
+          return await api.buildHierarchyWithIri({
+              ontologyId: ontologyId,
+              iri: iri,
+              entityType: entityType,
+              preferredRoots: preferredRoots,
+              includeObsoleteEntities: includeObsoleteEntities
+          });
       }
     );
 

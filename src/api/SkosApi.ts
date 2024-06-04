@@ -88,7 +88,18 @@ export class SkosApi implements HierarchyBuilder{
         return (await this.axiosInstance.get(url, config)).data;
     }
 
-    public async buildHierarchyWithIri(includeObsoleteEntities: boolean, preferredRoots: boolean, entityType?: EntityTypeName, ontologyId?: string, iri?: string): Promise<Hierarchy> {
+    public async buildHierarchyWithIri(props: {
+        iri?: string,
+        ontologyId?: string,
+        entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
+        preferredRoots?: boolean,
+        includeObsoleteEntities?: boolean
+    }) : Promise<Hierarchy> {
+        const {
+            iri,
+            ontologyId,
+        } = props;
+
         if(!ontologyId) throw Error("ontologyId has to be specified for Skosmos API.");
 
         const rootEntities: EntityDataForHierarchy[] = []
@@ -158,10 +169,26 @@ export class SkosApi implements HierarchyBuilder{
 
         const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
-        return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new SkosApi(this.axiosInstance.getUri()), "class" /* redundant here */, ontologyId, iri);
+        return new Hierarchy({
+            parentChildRelations: parentChildRelations,
+            roots: rootNodes,
+            api: new SkosApi(this.axiosInstance.getUri()),
+            ontologyId: ontologyId,
+            mainEntityIri: iri
+        });
     }
 
-    public async loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]> {
+    public async loadHierarchyChildren(props: {
+        nodeToExpand: TreeNode,
+        entityType?: EntityTypeName,
+        ontologyId: string,
+        includeObsoleteEntities?: boolean
+    }): Promise<EntityDataForHierarchy[]> {
+        const {
+            nodeToExpand,
+            ontologyId
+        } = props;
+
         const narrower: PrefAndUriAndChildren[] = (await this.makeCall(`/${ontologyId}/children`, {params: {uri: nodeToExpand.entityData.iri, lang: "en", format: "application/json"}}))["narrower"];
 
         return narrower.map((obj) => SkosEntityDataForHierarchyBuilder.fromPrefAndUriAndChildren(obj, [nodeToExpand.entityData.iri]));

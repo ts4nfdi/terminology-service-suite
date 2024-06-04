@@ -20,7 +20,7 @@ export class TreeNode {
      * @param entityData
      * @param entityType The type of hierarchy (relevant for `this.expandable`)
      */
-    constructor(entityData: EntityDataForHierarchy, entityType: EntityTypeName) {
+    constructor(entityData: EntityDataForHierarchy, entityType?: EntityTypeName) {
         this.entityData = entityData;
         this.loadedChildren = [];
         this.expanded = false;
@@ -37,16 +37,36 @@ const DEFAULT_INCLUDE_OBSOLETE_ENTITIES: boolean = false as const;
 export class Hierarchy {
     parentChildRelations: Map<string, EntityDataForHierarchy[]>;
     roots: TreeNode[]; // stores the tree hierarchy
-    includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
-    mainEntityIri?: string; // to highlight it in the hierarchy
     protected api: HierarchyBuilder;
-    protected entityType: EntityTypeName;
     ontologyId: string;
 
-    constructor(parentChildRelations: Map<string, EntityDataForHierarchy[]>, roots: TreeNode[], includeObsoleteEntities: boolean, api: HierarchyBuilder, entityType: EntityTypeName, ontologyId: string, mainEntityIri?: string) {
+    includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
+    protected entityType?: EntityTypeName;
+
+    mainEntityIri?: string; // to highlight it in the hierarchy
+
+    constructor(props: {
+        parentChildRelations: Map<string, EntityDataForHierarchy[]>,
+        roots: TreeNode[],
+        api: HierarchyBuilder,
+        ontologyId: string,
+        includeObsoleteEntities?: boolean,
+        entityType?: EntityTypeName,
+        mainEntityIri?: string
+    }) {
+        const {
+            parentChildRelations,
+            roots,
+            includeObsoleteEntities,
+            api,
+            mainEntityIri,
+            entityType,
+            ontologyId
+        } = props;
+
         this.parentChildRelations = parentChildRelations
         this.roots = roots;
-        this.includeObsoleteEntities = includeObsoleteEntities;
+        if(includeObsoleteEntities != undefined) this.includeObsoleteEntities = includeObsoleteEntities;
         this.api = api;
         this.mainEntityIri = mainEntityIri;
         this.entityType = entityType;
@@ -66,7 +86,12 @@ export class Hierarchy {
             // If there are already more children inside parentChildRelations, all information is already available. Otherwise, query the missing information
             if(childRelations.length <= nodeToExpand.loadedChildren.length) {
                 // dynamically load children from api
-                const children: EntityDataForHierarchy[] = await this.api.loadHierarchyChildren(nodeToExpand, this.entityType, this.ontologyId, this.includeObsoleteEntities);
+                const children: EntityDataForHierarchy[] = await this.api.loadHierarchyChildren({
+                    nodeToExpand: nodeToExpand,
+                    entityType: this.entityType,
+                    ontologyId: this.ontologyId,
+                    includeObsoleteEntities: this.includeObsoleteEntities
+                });
 
                 // add children to parentChildRelations for iri of nodeToExpand
                 this.parentChildRelations.set(nodeToExpand.entityData.iri, children);

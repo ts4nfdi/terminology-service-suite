@@ -16,8 +16,6 @@ export function createModelObject(response: any) {
             entityType = "ontology";
         }
         else {
-            if(response["_embedded"][0] === undefined) throw Error("Empty response.");
-
             if(response["_embedded"]["terms"] !== undefined) entityType = "term";
             else if(response["_embedded"]["properties"] !== undefined) entityType = "property";
             else if(response["_embedded"]["individuals"] !== undefined) entityType = "individual";
@@ -72,5 +70,6 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
 function getPreferredOntologyJSON(entityArrayResponse: any[], useLegacy: boolean) {
     const definingOntologyArr = asArray(entityArrayResponse).filter((entity) => useLegacy ? entity["is_defining_ontology"] : entity["isDefiningOntology"]);
     if(definingOntologyArr.length > 0) return definingOntologyArr[0];
-    else return entityArrayResponse[0];
+    else if(entityArrayResponse.length > 0) return entityArrayResponse[0];
+    else throw Error("Empty response.");
 }

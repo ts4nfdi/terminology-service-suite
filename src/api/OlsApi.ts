@@ -499,7 +499,21 @@ export class OlsApi {
     );
   }
 
-  public async buildHierarchyWithIri(includeObsoleteEntities: boolean, preferredRoots: boolean, entityType?: EntityTypeName, ontologyId?: string, iri?: string) {
+  public async buildHierarchyWithIri(props: {
+    iri?: string,
+    ontologyId?: string,
+    entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
+    preferredRoots?: boolean,
+    includeObsoleteEntities?: boolean
+  }) : Promise<Hierarchy> {
+    const {
+        iri,
+        ontologyId,
+        entityType,
+        preferredRoots= false,
+        includeObsoleteEntities= false
+    } = props;
+
     if(iri) {
       return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType(), ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity));
     }
@@ -566,14 +580,34 @@ export class OlsApi {
       return node;
     }
 
-    for (const node of entities) console.log(JSON.stringify(node));
-
     const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
-    return new Hierarchy(parentChildRelations, rootNodes, includeObsoleteEntities, new OlsApi(this.axiosInstance.getUri()), entityType, ontologyId, mainEntity?.getIri());
+    return new Hierarchy({
+      parentChildRelations: parentChildRelations,
+      roots: rootNodes,
+      api: new OlsApi(this.axiosInstance.getUri()),
+      ontologyId: ontologyId,
+      includeObsoleteEntities: includeObsoleteEntities,
+      entityType: entityType,
+      mainEntityIri: mainEntity?.getIri()
+    })
   }
 
-  public async loadHierarchyChildren(nodeToExpand: TreeNode, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities?: boolean): Promise<EntityDataForHierarchy[]> {
+  public async loadHierarchyChildren(props: {
+    nodeToExpand: TreeNode,
+    entityType?: EntityTypeName,
+    ontologyId: string,
+    includeObsoleteEntities?: boolean
+  }): Promise<EntityDataForHierarchy[]> {
+    const {
+        nodeToExpand,
+        entityType,
+        ontologyId,
+        includeObsoleteEntities
+    } = props;
+
+    if(entityType == undefined) throw Error("EntityType has to be provided to load children in ols.");
+
     return (await this.getChildren(nodeToExpand.entityData.iri, entityType, ontologyId, includeObsoleteEntities))
         .map((entity) => this.toEntityDataForHierarchy(entity))
         .sort(
