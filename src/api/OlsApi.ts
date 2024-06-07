@@ -504,22 +504,24 @@ export class OlsApi {
     ontologyId?: string,
     entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
     preferredRoots?: boolean,
-    includeObsoleteEntities?: boolean
+    includeObsoleteEntities?: boolean,
+    keepExpansionStates?: boolean
   }) : Promise<Hierarchy> {
     const {
         iri,
         ontologyId,
         entityType,
         preferredRoots= false,
-        includeObsoleteEntities= false
+        includeObsoleteEntities= false,
+        keepExpansionStates = true
     } = props;
 
     if(iri) {
-      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType() as EntityTypeName, ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity));
+      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType() as EntityTypeName, ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity, keepExpansionStates));
     }
     else{
       if(entityType == undefined || ontologyId == undefined) throw Error("Either iri or ontologyId and entityType have to be provided.");
-      return await this.buildHierarchyWithEntity(entityType, ontologyId, includeObsoleteEntities, preferredRoots);
+      return await this.buildHierarchyWithEntity(entityType, ontologyId, includeObsoleteEntities, preferredRoots, undefined, keepExpansionStates);
     }
   }
 
@@ -534,7 +536,7 @@ export class OlsApi {
     };
   }
 
-  public async buildHierarchyWithEntity(entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities: boolean, preferredRoots: boolean, mainEntity?: Entity) : Promise<Hierarchy> {
+  public async buildHierarchyWithEntity(entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities: boolean, preferredRoots: boolean, mainEntity?: Entity, keepExpansionStates?: boolean) : Promise<Hierarchy> {
     // used to filter from getParents()-array
     function isTop(iri: string) : boolean {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
@@ -552,6 +554,7 @@ export class OlsApi {
 
     const rootEntities: EntityDataForHierarchy[] = [];
     const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
+    const allChildrenPresent: Set<string> = new Set<string>();
 
     for(const entityData of entities) parentChildRelations.set(entityData.iri, []); // initialize with empty array
     for(const entityData of entities) {
@@ -567,9 +570,11 @@ export class OlsApi {
       }
     }
 
+    for(const rel of parentChildRelations.values()) rel.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri));
+
     function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
       const node = new TreeNode(entityData);
-      const children = parentChildRelations.get(entityData.iri)?.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)) || [];
+      const children = parentChildRelations.get(entityData.iri) || [];
 
       for(const child of children) {
         node.addChild(createTreeNode(child))
@@ -584,12 +589,14 @@ export class OlsApi {
 
     return new Hierarchy({
       parentChildRelations: parentChildRelations,
+      allChildrenPresent: allChildrenPresent,
       roots: rootNodes,
       api: new OlsApi(this.axiosInstance.getUri()),
       ontologyId: ontologyId,
       includeObsoleteEntities: includeObsoleteEntities,
       entityType: entityType,
-      mainEntityIri: mainEntity?.getIri()
+      mainEntityIri: mainEntity?.getIri(),
+      keepExpansionStates: keepExpansionStates
     })
   }
 
@@ -610,8 +617,5 @@ export class OlsApi {
 
     return (await this.getChildren(nodeToExpand.entityData.iri, entityType, ontologyId, includeObsoleteEntities))
         .map((entity) => this.toEntityDataForHierarchy(entity))
-        .sort(
-            (a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)
-        );
   }
 }

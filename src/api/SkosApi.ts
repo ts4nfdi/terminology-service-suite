@@ -93,7 +93,8 @@ export class SkosApi implements HierarchyBuilder{
         ontologyId?: string,
         entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
         preferredRoots?: boolean,
-        includeObsoleteEntities?: boolean
+        includeObsoleteEntities?: boolean,
+        keepExpansionStates?: boolean
     }) : Promise<Hierarchy> {
         const {
             iri,
@@ -104,6 +105,7 @@ export class SkosApi implements HierarchyBuilder{
 
         const rootEntities: EntityDataForHierarchy[] = []
         const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
+        const allChildrenPresent: Set<string> = new Set<string>();
         const onInitialPath: Set<string> = new Set<string>();
 
         if(iri) {
@@ -138,7 +140,10 @@ export class SkosApi implements HierarchyBuilder{
                         children.push(childNodeData);
                     }
 
+                    children.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri));
+
                     parentChildRelations.set(node.uri, children);
+                    allChildrenPresent.add(node.uri); // in skos, all children are loaded if any are
                 }
             }
         }
@@ -153,7 +158,7 @@ export class SkosApi implements HierarchyBuilder{
 
         function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
             const node = new TreeNode(entityData);
-            const children = parentChildRelations.get(entityData.iri)?.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)) || [];
+            const children = parentChildRelations.get(entityData.iri) || [];
 
             for(const child of children) {
                 // TODO: Do we want to hide siblings on initial render even if they are already available?
@@ -171,10 +176,12 @@ export class SkosApi implements HierarchyBuilder{
 
         return new Hierarchy({
             parentChildRelations: parentChildRelations,
+            allChildrenPresent: allChildrenPresent,
             roots: rootNodes,
             api: new SkosApi(this.axiosInstance.getUri()),
             ontologyId: ontologyId,
-            mainEntityIri: iri
+            mainEntityIri: iri,
+            keepExpansionStates: props.keepExpansionStates
         });
     }
 

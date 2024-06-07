@@ -14,7 +14,7 @@ export class TreeNode {
     entityData: EntityDataForHierarchy;
     loadedChildren: TreeNode[];
     expanded: boolean;
-    manuallyExpanded: boolean;
+    loading: boolean;
 
     /**
      * @param entityData
@@ -23,7 +23,7 @@ export class TreeNode {
         this.entityData = entityData;
         this.loadedChildren = [];
         this.expanded = false;
-        this.manuallyExpanded = false;
+        this.loading = false;
     }
 
     addChild(child: TreeNode) {
@@ -32,44 +32,108 @@ export class TreeNode {
 }
 
 const DEFAULT_INCLUDE_OBSOLETE_ENTITIES: boolean = false as const;
+const DEFAULT_KEEP_EXPANSION_STATE: boolean = true as const;
 
 export class Hierarchy {
     parentChildRelations: Map<string, EntityDataForHierarchy[]>;
+    allChildrenPresent: Set<string>;
     roots: TreeNode[]; // stores the tree hierarchy
     protected api: HierarchyBuilder;
     ontologyId: string;
 
     includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
     protected entityType?: EntityTypeName;
+    keepExpansionStates: boolean = DEFAULT_KEEP_EXPANSION_STATE;
 
     mainEntityIri?: string; // to highlight it in the hierarchy
 
     constructor(props: {
         parentChildRelations: Map<string, EntityDataForHierarchy[]>,
+        allChildrenPresent: Set<string>,
         roots: TreeNode[],
         api: HierarchyBuilder,
         ontologyId: string,
         includeObsoleteEntities?: boolean,
         entityType?: EntityTypeName,
-        mainEntityIri?: string
+        mainEntityIri?: string,
+        keepExpansionStates?: boolean
     }) {
         const {
             parentChildRelations,
+            allChildrenPresent,
             roots,
             includeObsoleteEntities,
+            keepExpansionStates,
             api,
             mainEntityIri,
             entityType,
             ontologyId
         } = props;
 
-        this.parentChildRelations = parentChildRelations
+        this.parentChildRelations = parentChildRelations;
+        this.allChildrenPresent = allChildrenPresent;
         this.roots = roots;
         if(includeObsoleteEntities != undefined) this.includeObsoleteEntities = includeObsoleteEntities;
+        if(keepExpansionStates != undefined) this.keepExpansionStates = keepExpansionStates;
         this.api = api;
         this.mainEntityIri = mainEntityIri;
         this.entityType = entityType;
         this.ontologyId = ontologyId;
+    }
+
+    /**
+     * Merges the entries of `this.parentChildRelations(nodeToExpand.entityData.iri)` into `nodeToExpand.loadedChildren`. Here,
+     * only not already present children are added to keep the expansion state of the already loaded children.
+     * `nodeToExpand.loadedChildren` is sorted alphabetically by displayed labels afterward.
+     *
+     * ASSUMPTIONS:
+     * 1. `this.parentChildRelations.get(nodeToExpand)` is sorted alphabetically by displayed labels
+     *
+     * @param nodeToExpand the node inside the hierarchy (`this.roots`) to merge the children into
+     */
+    private mergeChildrenIntoLoadedChildren(nodeToExpand: TreeNode) {
+        const children = this.parentChildRelations.get(nodeToExpand.entityData.iri);
+        if(children == undefined) throw Error(`parentChildRelations has no entry for key "${nodeToExpand.entityData.iri}" although this should never happen.`);
+
+        let iLoadedChildren = 0;
+        const numLoadedChildren = nodeToExpand.loadedChildren.length; // initial length
+        let iChildren = 0;
+
+        while(iChildren < children.length && iLoadedChildren < numLoadedChildren) {
+            if(nodeToExpand.loadedChildren[iLoadedChildren].entityData.iri == children[iChildren].iri) {
+                iLoadedChildren++;
+            }
+            else {
+                nodeToExpand.addChild(new TreeNode(children[iChildren]));
+            }
+            iChildren++;
+        }
+        while(iChildren < children.length) {
+            nodeToExpand.addChild(new TreeNode(children[iChildren]));
+            iChildren++;
+        }
+
+        // sort already loaded children in correctly
+        for(let iLoadedChildren = numLoadedChildren - 1; iLoadedChildren >= 0; iLoadedChildren--) {
+            for(let currIdx = iLoadedChildren + 1; currIdx < nodeToExpand.loadedChildren.length; currIdx++) {
+                const currNode = nodeToExpand.loadedChildren[currIdx];
+                const prevNode = nodeToExpand.loadedChildren[currIdx - 1];
+
+                if((currNode.entityData.label || currNode.entityData.iri).localeCompare(prevNode.entityData.label || prevNode.entityData.iri) < 0) {
+                    nodeToExpand.loadedChildren[currIdx] = prevNode;
+                    nodeToExpand.loadedChildren[currIdx - 1] = currNode;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    closeNode(nodeToClose: TreeNode) {
+        if(!this.keepExpansionStates) {
+            nodeToClose.loadedChildren = [];
+        }
     }
 
     /**
@@ -79,32 +143,27 @@ export class Hierarchy {
     async fetchInformationForExpansion(nodeToExpand: TreeNode) {
         if(!nodeToExpand.entityData.hasChildren) throw Error(`Node containing iri="${nodeToExpand.entityData.iri}" could not be expanded: Entity is not expandable.`)
 
-        if(!nodeToExpand.manuallyExpanded) {
-            const childRelations = this.parentChildRelations.get(nodeToExpand.entityData.iri) || [];
-
-            // If there are already more children inside parentChildRelations, all information is already available. Otherwise, query the missing information
-            if(childRelations.length <= nodeToExpand.loadedChildren.length) {
+        const allChildrenPresent = this.allChildrenPresent.has(nodeToExpand.entityData.iri);
+        const nodeParentChildRelations = this.parentChildRelations.get(nodeToExpand.entityData.iri) || [];
+        if(!allChildrenPresent || nodeToExpand.loadedChildren.length <= nodeParentChildRelations.length) {
+            if(!allChildrenPresent) {
                 // dynamically load children from api
-                const children: EntityDataForHierarchy[] = await this.api.loadHierarchyChildren({
+                const children: EntityDataForHierarchy[] = (await this.api.loadHierarchyChildren({
                     nodeToExpand: nodeToExpand,
                     entityType: this.entityType,
                     ontologyId: this.ontologyId,
                     includeObsoleteEntities: this.includeObsoleteEntities
-                });
+                })).sort(
+                    (a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)
+                );
 
                 // add children to parentChildRelations for iri of nodeToExpand
                 this.parentChildRelations.set(nodeToExpand.entityData.iri, children);
             }
 
-            const children = this.parentChildRelations.get(nodeToExpand.entityData.iri);
-            if(children == undefined) throw Error(`parentChildRelations has no entry for key "${nodeToExpand.entityData.iri}" although this should never happen.`);
+            this.mergeChildrenIntoLoadedChildren(nodeToExpand);
 
-            for(const child of children){
-                if(nodeToExpand.loadedChildren.filter((loadedChild) => loadedChild.entityData.iri == child.iri).length == 0)
-                    nodeToExpand.addChild(new TreeNode(child));
-            }
-
-            nodeToExpand.manuallyExpanded = true;
+            this.allChildrenPresent.add(nodeToExpand.entityData.iri);
             return true;
         }
         else return false;

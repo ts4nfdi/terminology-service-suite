@@ -17,7 +17,8 @@ export type HierarchyWidgetSemLookPProps = {
     backend_type?: string,
     apiUrl: string,
     includeObsoleteEntities?: boolean,
-    preferredRoots?: boolean
+    preferredRoots?: boolean,
+    keepExpansionStates?: boolean
 }
 
 function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
@@ -62,6 +63,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         entityType,
         includeObsoleteEntities = false,
         preferredRoots = false,
+        keepExpansionStates = true
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -92,7 +94,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
               iri: iri,
               entityType: entityType,
               preferredRoots: preferredRoots,
-              includeObsoleteEntities: includeObsoleteEntities
+              includeObsoleteEntities: includeObsoleteEntities,
+              keepExpansionStates: keepExpansionStates
           });
       }
     );
@@ -102,12 +105,21 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
 
         // toggle expansion state and force component to rerender afterward
         node.expanded = !node.expanded;
-        forceUpdate();
 
         // fetch needed information and rerender again if needed
-        if(node.expanded) hierarchy.fetchInformationForExpansion(node).then((hasUpdated) => {
-            if(hasUpdated) forceUpdate();
-        })
+        if(node.expanded){
+            node.loading = true;
+            forceUpdate();
+
+            hierarchy.fetchInformationForExpansion(node).then(() => {
+                node.loading = false;
+                forceUpdate();
+            })
+        }
+        else {
+            forceUpdate();
+            hierarchy.closeNode(node);
+        }
     },[hierarchy])
 
     function renderTreeNode(hierarchy: Hierarchy, node: TreeNode) {
@@ -128,9 +140,9 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
                 </EuiText>
                 {node.expanded &&
                     <ul style={{whiteSpace: "nowrap", marginBlockEnd: "0", marginInlineStart: "1.5rem"}}>
-                        {node.loadedChildren.length > 0 ?
-                            node.loadedChildren.map((child) => renderTreeNode(hierarchy, child)) :
-                            <EuiLoadingSpinner/>
+                        {node.loading ?
+                            <EuiLoadingSpinner/> :
+                            node.loadedChildren.map((child) => renderTreeNode(hierarchy, child))
                         }
                     </ul>
                 }
