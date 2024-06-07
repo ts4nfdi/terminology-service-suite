@@ -18,9 +18,8 @@ export class TreeNode {
 
     /**
      * @param entityData
-     * @param entityType The type of hierarchy (relevant for `this.expandable`)
      */
-    constructor(entityData: EntityDataForHierarchy, entityType?: EntityTypeName) {
+    constructor(entityData: EntityDataForHierarchy) {
         this.entityData = entityData;
         this.loadedChildren = [];
         this.expanded = false;
@@ -102,7 +101,7 @@ export class Hierarchy {
 
             for(const child of children){
                 if(nodeToExpand.loadedChildren.filter((loadedChild) => loadedChild.entityData.iri == child.iri).length == 0)
-                    nodeToExpand.addChild(new TreeNode(child, this.entityType));
+                    nodeToExpand.addChild(new TreeNode(child));
             }
 
             nodeToExpand.manuallyExpanded = true;

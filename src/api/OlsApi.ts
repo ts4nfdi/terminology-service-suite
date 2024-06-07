@@ -515,7 +515,7 @@ export class OlsApi {
     } = props;
 
     if(iri) {
-      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType(), ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity));
+      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity(entityType || entity.getType() as EntityTypeName, ontologyId || entity.getOntologyId(), includeObsoleteEntities, preferredRoots, entity));
     }
     else{
       if(entityType == undefined || ontologyId == undefined) throw Error("Either iri or ontologyId and entityType have to be provided.");
@@ -540,7 +540,7 @@ export class OlsApi {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
     }
 
-    let entities: EntityDataForHierarchy[] = [];
+    let entities: EntityDataForHierarchy[];
     if(mainEntity)
       entities = [this.toEntityDataForHierarchy(mainEntity), ...(await this.getAncestors(mainEntity.getIri(), entityType || mainEntity.getType(), ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity))]
     else {
@@ -568,7 +568,7 @@ export class OlsApi {
     }
 
     function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
-      const node = new TreeNode(entityData, entityType);
+      const node = new TreeNode(entityData);
       const children = parentChildRelations.get(entityData.iri)?.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)) || [];
 
       for(const child of children) {

@@ -84,7 +84,7 @@ export class SkosApi implements HierarchyBuilder{
         });
     }
 
-    private async makeCall(url: string, config: AxiosRequestConfig<any> | undefined) {
+    private async makeCall(url: string, config: AxiosRequestConfig<never> | undefined) {
         return (await this.axiosInstance.get(url, config)).data;
     }
 
@@ -100,7 +100,7 @@ export class SkosApi implements HierarchyBuilder{
             ontologyId,
         } = props;
 
-        if(!ontologyId) throw Error("ontologyId has to be specified for Skosmos API.");
+        if(!ontologyId) throw Error("ontologyId has to be specified for SKOS API.");
 
         const rootEntities: EntityDataForHierarchy[] = []
         const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
@@ -152,7 +152,7 @@ export class SkosApi implements HierarchyBuilder{
         }
 
         function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
-            const node = new TreeNode(entityData, "class"); // entityType is redundant here
+            const node = new TreeNode(entityData);
             const children = parentChildRelations.get(entityData.iri)?.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)) || [];
 
             for(const child of children) {

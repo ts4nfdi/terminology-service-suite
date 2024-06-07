@@ -4,15 +4,12 @@ import {OLS3Entity} from "./OLS3Entity";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
+import {PropertyTypeName} from "../ModelTypeCheck";
 
 export class OLS3Property extends OLS3Entity implements Property{
 
-  getType(): "ontology" | "class" | "property" | "individual" {
+  getType(): PropertyTypeName {
     return "property";
-  }
-
-  getTypePlural(): "classes" | "properties" | "individuals" {
-    return "properties";
   }
 
   getParents(): Reified<any>[] {
@@ -30,7 +27,6 @@ export class OLS3Property extends OLS3Entity implements Property{
       this.properties["http://www.w3.org/2002/07/owl#equivalentProperty"]
     );
   }
-
 
   getDisjointWith() {
 	return asArray(this.properties['http://www.w3.org/2002/07/owl#propertyDisjointWith'])
@@ -53,5 +49,4 @@ export class OLS3Property extends OLS3Entity implements Property{
 		this.properties["http://www.w3.org/2002/07/owl#propertyChainAxiom"]
 	)
   }
-
 }

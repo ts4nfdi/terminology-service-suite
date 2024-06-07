@@ -4,7 +4,6 @@ import {OLS4Thing} from "./OLS4Thing";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
-import {isEntityTypeName} from "../ModelTypeCheck";
 
 export abstract class OLS4Entity extends OLS4Thing implements Entity{
   abstract getParents(): Reified<any>[];
@@ -199,28 +198,6 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
       if (p.value === parentIri) {
         return p.getMetadata();
       }
-    }
-  }
-
-  getType(): "class" | "property" | "individual" {
-    const type = super.getType();
-    if(!isEntityTypeName(type)) throw Error(`Type array does not include entityType of entity.`);
-
-    return type;
-  }
-
-  getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
-      const type = this.getType();
-
-    switch (type) {
-      case "class":
-        return "classes";
-      case "property":
-        return "properties";
-      case "individual":
-        return "individuals";
-      default:
-        throw new Error("unknown type");
     }
   }
 }
