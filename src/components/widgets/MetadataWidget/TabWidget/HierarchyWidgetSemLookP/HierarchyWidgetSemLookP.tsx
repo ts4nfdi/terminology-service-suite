@@ -72,7 +72,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
             switch (backend_type) {
                 case "ols":
                     return new OlsApi(apiUrl);
-                case "skosmos":
+                case "skos":
                     return new SkosApi(apiUrl);
                 default:
                     return new OlsApi(apiUrl);
