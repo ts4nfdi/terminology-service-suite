@@ -32,7 +32,7 @@ export const AutocompleteWidgetStoryArgTypes = {
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form,synonym",
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
     singleSelection: true,
@@ -44,7 +44,7 @@ export const AutocompleteWidgetStoryArgsReact = {
 export const AutocompleteWidgetStoryArgs = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form,synonym",
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
     singleSelection: true,
@@ -89,7 +89,7 @@ export const WithGermanInput = {
 export const WithDescriptionAndShortForm = {
   args: {
     api: "https://semanticlookup.zbmed.de/api/",
-    parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
+    parameter: "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   }
 };
 
