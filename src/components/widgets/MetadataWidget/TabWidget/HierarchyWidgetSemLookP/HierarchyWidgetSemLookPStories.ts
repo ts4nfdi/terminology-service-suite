@@ -18,13 +18,25 @@ export const IndividualHierarchy = {
     }
 };
 
-export const ClassRoots = {
+export const PreferredRoots = {
     args: {
         apiUrl: "https://www.ebi.ac.uk/ols4/api",
         backend_type: "ols",
         iri: "",
         entityType: "class",
-        ontologyId: "bco",
+        ontologyId: "uberon",
+        preferredRoots: true
+    }
+};
+
+export const IncludeObsoleteEntities = {
+    args: {
+        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        backend_type: "ols",
+        iri: "",
+        entityType: "class",
+        ontologyId: "uberon",
+        includeObsoleteEntities: true
     }
 };
 

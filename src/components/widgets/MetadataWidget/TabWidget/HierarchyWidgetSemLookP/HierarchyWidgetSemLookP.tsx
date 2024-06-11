@@ -9,17 +9,24 @@ import {SkosApi} from "../../../../../api/SkosApi";
 import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 
 export type HierarchyWidgetSemLookPProps = {
-    iri: string;
-    entityType?: EntityTypeName;
-    ontologyId?: string;
-    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void;
-    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void;
-    backend_type?: string,
-    apiUrl: string,
-    includeObsoleteEntities?: boolean,
-    preferredRoots?: boolean,
+    iri: string
+    entityType?: EntityTypeName
+    ontologyId?: string
+    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
+    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
+    backend_type?: string
+    apiUrl: string
+    includeObsoleteEntities?: boolean
+    preferredRoots?: boolean
     keepExpansionStates?: boolean
+    showSiblingsOnInit?: boolean
 }
+
+const DEFAULT_BACKEND_TYPE = "ols" as const;
+const DEFAULT_INCLUDE_OBSOLETE_ENTITIES = false as const;
+const DEFAULT_PREFERRED_ROOTS = false as const;
+const DEFAULT_KEEP_EXPANSION_STATES = true as const;
+const DEFAULT_SHOW_SIBLINGS_ON_INIT = false as const;
 
 function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
@@ -54,16 +61,17 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string
 function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     const {
         apiUrl,
-        backend_type = "ols",
+        backend_type = DEFAULT_BACKEND_TYPE,
         onNavigateToEntity,
         onNavigateToOntology,
 
         iri,
         ontologyId,
         entityType,
-        includeObsoleteEntities = false,
-        preferredRoots = false,
-        keepExpansionStates = true
+        includeObsoleteEntities = DEFAULT_INCLUDE_OBSOLETE_ENTITIES,
+        preferredRoots = DEFAULT_PREFERRED_ROOTS,
+        keepExpansionStates = DEFAULT_KEEP_EXPANSION_STATES,
+        showSiblingsOnInit = DEFAULT_SHOW_SIBLINGS_ON_INIT
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -87,7 +95,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         data: hierarchy,
         isSuccess: isSuccessHierarchy,
     } = useQuery(
-      [iri, entityType, ontologyId],
+      [iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit],
       async function getNewHierarchy() {
           return await api.buildHierarchyWithIri({
               ontologyId: ontologyId,
@@ -95,7 +103,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
               entityType: entityType,
               preferredRoots: preferredRoots,
               includeObsoleteEntities: includeObsoleteEntities,
-              keepExpansionStates: keepExpansionStates
+              keepExpansionStates: keepExpansionStates,
+              showSiblingsOnInit: showSiblingsOnInit,
           });
       }
     );

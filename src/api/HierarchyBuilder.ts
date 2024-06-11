@@ -8,7 +8,8 @@ export interface HierarchyBuilder {
         entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
         preferredRoots?: boolean,
         includeObsoleteEntities?: boolean,
-        keepExpansionStates?: boolean
+        keepExpansionStates?: boolean,
+        showSiblingsOnInit?: boolean,
     }) : Promise<Hierarchy>;
     loadHierarchyChildren(props: {
         nodeToExpand: TreeNode,

@@ -16,14 +16,16 @@ export default {
         entityType: "",
         includeObsoleteEntities: false,
         preferredRoots: false,
-        keepExpansionStates: true
+        keepExpansionStates: true,
+        showSiblingsOnInit: false
     }
 };
 
 export {
     ClassHierarchy,
     IndividualHierarchy,
-    ClassRoots,
+    PreferredRoots,
+    IncludeObsoleteEntities,
     PropertyRoots,
     IndividualRoots,
     LargeHierarchy,

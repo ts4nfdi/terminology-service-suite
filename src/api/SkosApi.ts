@@ -94,11 +94,13 @@ export class SkosApi implements HierarchyBuilder{
         entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
         preferredRoots?: boolean,
         includeObsoleteEntities?: boolean,
-        keepExpansionStates?: boolean
+        keepExpansionStates?: boolean,
+        showSiblingsOnInit?: boolean,
     }) : Promise<Hierarchy> {
         const {
             iri,
             ontologyId,
+            showSiblingsOnInit = false,
         } = props;
 
         if(!ontologyId) throw Error("ontologyId has to be specified for SKOS API.");
@@ -106,7 +108,7 @@ export class SkosApi implements HierarchyBuilder{
         const rootEntities: EntityDataForHierarchy[] = []
         const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
         const allChildrenPresent: Set<string> = new Set<string>();
-        const onInitialPath: Set<string> = new Set<string>();
+        const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
         if(iri) {
             const broaderTransitive: HierarchyResult[] = await this.makeCall(`/${ontologyId}/hierarchy`, {params: {uri: iri, lang: "en", format: "application/json"}})
@@ -121,7 +123,7 @@ export class SkosApi implements HierarchyBuilder{
                 entities.set(nodeData.iri, nodeData);
                 if(node.top) rootEntities.push(nodeData);
 
-                onInitialPath.add(nodeData.iri);
+                if(!showSiblingsOnInit) onInitialPath.add(nodeData.iri);
             }
             for(const node of broaderTransitive) {
                 if(node.narrower != undefined) {
@@ -160,11 +162,15 @@ export class SkosApi implements HierarchyBuilder{
             const node = new TreeNode(entityData);
             const children = parentChildRelations.get(entityData.iri) || [];
 
-            for(const child of children) {
-                // TODO: Do we want to hide siblings on initial render even if they are already available?
-                //       + makes the hierarchy better to grasp
-                //       - if siblings are desired to be shown, this is rather inconvenient (maybe introduce widget parameter "showSiblingsOnInitialRender"?)
-                if(onInitialPath.has(child.iri)) node.addChild(createTreeNode(child))
+            if(!showSiblingsOnInit) {
+                for(const child of children) {
+                    if(onInitialPath.has(child.iri)) node.addChild(createTreeNode(child));
+                }
+            }
+            else {
+                for(const child of children) {
+                    node.addChild(createTreeNode(child));
+                }
             }
 
             if(node.loadedChildren.length > 0) node.expanded = true;
