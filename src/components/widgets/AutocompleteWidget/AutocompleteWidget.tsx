@@ -351,7 +351,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 
   /**
-   * fetches new suggest options when searchValue changes
+   * suggest: fetches new suggest options when searchValue changes
    */
   const {
     isLoading: isLoadingTermsSuggest
@@ -439,6 +439,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     selectionChangedEvent(
       selectedOptions.map((x) => {
         // return the value object with the raw values from OLS to a client
+        console.log("X", x)
         if (allowCustomTerms && x.value.iri == "") {
           return {
             iri: "",
@@ -448,6 +449,16 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             short_form: x.value.short_form,
             description: x.value.description,
             synonym: x.value.synonym
+          };
+        } else if (x.value.type == "") {
+          return {
+            iri: "",
+            label: x.value.label,
+            ontology_name: "",
+            type: "",
+            short_form: "",
+            description: "",
+            synonym: "",
           };
         } else if (x.value.iri == "") {
           return {

@@ -148,7 +148,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      */
     singleSelection: boolean;
     /**
-     * If true, suggest options are shown.
+     * If true, suggest options are shown. If true, preselected option not available.
      */
     suggest?: boolean;
 };
