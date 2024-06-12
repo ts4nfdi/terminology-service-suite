@@ -25,6 +25,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     },
     singleSelection: {
       required: false,
+    },
+    suggest: {
+      required: false,
     }
   }
 }
@@ -38,6 +41,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     singleSelection: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    suggest: false
   },
 };
 
@@ -50,7 +54,8 @@ export const AutocompleteWidgetStoryArgs = {
     singleSelection: true,
     placeholder: "Search for a Concept",
     preselected: [],
-    selectionChangedEvent: () => {return;}
+    selectionChangedEvent: () => {return;},
+    suggest: false
   },
 };
 
@@ -130,4 +135,10 @@ export const TibDataPlant = {
     api: "https://service.tib.eu/ts4tib/api/",
     parameter: "classification=DataPLANT&schema=collection",
   }
+};
+
+export const WithSuggest = {
+  args: {
+    suggest: true
+  },
 };

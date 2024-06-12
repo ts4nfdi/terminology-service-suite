@@ -24,7 +24,8 @@ export {
   DisplaySelectedEntityWithLongForm,
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
+  WithSuggest
 } from "./AutocompleteWidgetStories"
 
 

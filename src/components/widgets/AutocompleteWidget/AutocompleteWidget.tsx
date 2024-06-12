@@ -14,6 +14,7 @@ import {
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { BreadcrumbWidget } from "../MetadataWidget";
 import { AutocompleteWidgetProps } from "../../../app/types";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -28,6 +29,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     preselected,
     placeholder,
     singleSelection,
+    suggest,
     ...rest
   } = props;
 
@@ -42,14 +44,25 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const [searchValue, setSearchValue] = useState<string>("");
 
   /**
-   * The set of available options.s
+   * The set of available suggest options.
+   */
+  const [suggestOptions, setSuggestOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
+  /**
+   * The set of all available autocomplete options.
    */
   const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
+  /**
+   * The set of all available options.
+   */
+  const [allOptions, setAllOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
   /**
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -129,27 +142,91 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       );
     };
 
-    const renderEntityWithoutDescription = () => {
+    return value.type === "ontology" ? renderOntology() : renderEntityWithDescription()
+  };
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const renderOptionIfSuggest = (option, searchValue) => {
+    const { value } = option;
+
+    const dotColorIndex = visColorsBehindText.indexOf(
+      value.type === "class" ? visColorsBehindText[5] :
+      value.type === "individual" ? visColorsBehindText[3] :
+        value.type === "property" ? visColorsBehindText[1] :
+          value.type === "ontology" ? visColorsBehindText[2] :
+          "");
+    const dotColor = visColors[dotColorIndex];
+
+    if (allowCustomTerms && value.iri == "") {// if we have a custom term, just show the label
+      return value.label;
+    }
+
+    let hoverText = "";
+    if (value.description != undefined) {
+      if (value.type === "ontology") {
+        hoverText = "Type: " + value.type +
+          "\n\nLabel: " + value.label +
+          "\n\nPrefix: " + value.ontology_name +
+          "\n\nDescription: " + value.description +
+          "\n\nSynonyms: " + (value.synonym ? value.synonym : "-");
+      } else {
+        hoverText = "Type: " + value.type +
+          "\n\nLabel: " + value.label +
+          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form +
+          "\n\nDescription: " + value.description +
+          "\n\nSynonyms: " + (value.synonym ? value.synonym : "-");
+      }
+    } else {
+      if (value.type === "ontology") {
+        hoverText = "Type: " + value.type +
+          "\n\nLabel: " + value.label +
+          "\n\nPrefix: " + value.ontology_name +
+          "\n\nSynonyms: " + (value.synonym ? value.synonym : "-");
+      } else {
+        hoverText = "type: " + value.type +
+          "\n\nLabel: " + value.label +
+          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form +
+          "\n\nSynonyms: " + (value.synonym ? value.synonym : "-")
+      }
+    }
+
+    const renderOntology = () => {
       return (
         <EuiHealth
           title={hoverText}
           color={dotColor}>
-                      <span>
-                        <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name}
-                                          iri={value.iri} colorFirst={"primary"} colorSecond={"success"}
-                                          parameter={value.parameter} />
-                      </span>
+            <span>
+                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                <br />
+              {value.description}
+            </span>
         </EuiHealth>
       );
     };
 
-    return value.description !== undefined ? (
-      value.type === "ontology" ? renderOntology() : renderEntityWithDescription()
-    ) : (
-      value.type === "ontology" ? renderOntology() : renderEntityWithDescription()
-    );
+    const renderEntityWithDescription = (typevalue: string) => {
+      return (
+        <span style={{ height: 200 + "px" }}>
+          <EuiHealth
+            title={typevalue != "" ? hoverText : ""}
+            color={dotColor}>
+              <span>
+                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                { typevalue != "" && <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name}
+                                  iri={value.iri} colorFirst={"primary"} colorSecond={"success"}
+                                  parameter={value.parameter} />}
+                  <br />
+                {value.description ? value.description.substring(0, 40) + "..." : ""}
+              </span>
+          </EuiHealth>
+      </span>
+      );
+    };
+
+    return  value.type === "ontology" ? renderOntology() : renderEntityWithDescription(value.type)
+
   };
 
   /**
@@ -273,6 +350,87 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
   );
 
+  /**
+   * fetches new suggest options when searchValue changes
+   */
+  const {
+    isLoading: isLoadingTermsSuggest
+  } = useQuery(
+    [
+      "onSuggestChange",
+      searchValue
+    ],
+    async () => {
+      if (searchValue.length > 0) {
+        return olsApi.suggest(
+          { query: searchValue },
+          undefined,
+          undefined,
+          parameter
+        ).then((response) => {
+          if (response.response && response.response.docs) {
+            setSuggestOptions(response.response.docs.map((selection: any) => (
+              {
+                // label to display within the combobox
+                // #renderOption() is used to display during selection.
+                label: selection.autosuggest,
+                // key to distinguish the options (especially those with same label)
+                key: uuidv4(),
+                // values to pass to clients
+                value: {
+                  label: selection.autosuggest,
+                }
+              })
+            ));
+          }
+        });
+      }
+    }
+  );
+
+  useEffect(() => {
+    if(suggest && options && suggestOptions){
+      const suggestGroup = {
+        label: 'Search',
+        options: suggestOptions.map(suggestOption => ({
+          label: suggestOption.label,
+          key: suggestOption.key,
+          value: {
+            iri: "",
+            label: suggestOption.label,
+            ontology_name: "",
+            type: "",
+            short_form: "",
+            description: "",
+            synonym: "",
+          }
+
+      }))}
+      const autocompleteGroup = {
+        label: 'Jump to',
+        options: options.map(option => ({
+          label: hasShortSelectedLabel ? option.label : generateDisplayLabel(option),
+          // key to distinguish the options (especially those with same label)
+          key: option.value.iri,
+          // values to pass to clients
+          value: {
+            iri: option.value.iri,
+            label: option.label,
+            ontology_name: option.value.ontology_name,
+            type: option.value.type,
+            short_form: option.value.short_form,
+            description: option.value.description,
+            synonym: option.value.synonym
+          }
+        }))}
+
+      setAllOptions( [
+        suggestGroup,
+        autocompleteGroup
+      ])
+    }
+
+  }, [searchValue])
 
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -361,11 +519,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       placeholder={
         placeholder ? placeholder : "Search for a Concept"
       }
-      options={options}
+      options={suggest ? allOptions : options}
       selectedOptions={selectedOptions}
       onSearchChange={setSearchValue}
       onChange={onChangeHandler}
-      renderOption={renderOption}
+      renderOption={suggest ? renderOptionIfSuggest : renderOption}
       onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
       rowHeight={50}
     />
@@ -390,6 +548,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
+          suggest={props.suggest}
         />
       </QueryClientProvider>
     </EuiProvider>

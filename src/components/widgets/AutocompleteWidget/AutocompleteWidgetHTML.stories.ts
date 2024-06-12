@@ -33,6 +33,7 @@ window['SemLookPWidgets'].createAutocomplete(
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
+        suggest:${args.suggest}
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -53,5 +54,6 @@ export {
     AllowAddingCustomTerms,
     WithGermanInput,
     DisplaySelectedEntityWithLongForm,
-    WithDescriptionAndShortForm
+    WithDescriptionAndShortForm,
+    WithSuggest
 } from "./AutocompleteWidgetStories"
