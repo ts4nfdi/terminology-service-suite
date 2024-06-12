@@ -209,6 +209,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 hasShortSelectedLabel={true}
                 placeholder={"Search"}
                 preselected={preselected}
+                suggest={true}
             />
 
             <EuiSpacer size="s"/>
