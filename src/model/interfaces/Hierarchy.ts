@@ -44,6 +44,7 @@ export class Hierarchy {
     includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
     protected entityType?: EntityTypeName;
     keepExpansionStates: boolean = DEFAULT_KEEP_EXPANSION_STATE;
+    protected useLegacy?: boolean;
 
     mainEntityIri?: string; // to highlight it in the hierarchy
 
@@ -56,7 +57,8 @@ export class Hierarchy {
         includeObsoleteEntities?: boolean,
         entityType?: EntityTypeName,
         mainEntityIri?: string,
-        keepExpansionStates?: boolean
+        keepExpansionStates?: boolean,
+        useLegacy?: boolean,
     }) {
         const {
             parentChildRelations,
@@ -67,7 +69,8 @@ export class Hierarchy {
             api,
             mainEntityIri,
             entityType,
-            ontologyId
+            ontologyId,
+            useLegacy,
         } = props;
 
         this.parentChildRelations = parentChildRelations;
@@ -79,6 +82,7 @@ export class Hierarchy {
         this.mainEntityIri = mainEntityIri;
         this.entityType = entityType;
         this.ontologyId = ontologyId;
+        if(useLegacy != undefined) this.useLegacy = useLegacy;
     }
 
     /**
@@ -152,7 +156,8 @@ export class Hierarchy {
                     nodeToExpand: nodeToExpand,
                     entityType: this.entityType,
                     ontologyId: this.ontologyId,
-                    includeObsoleteEntities: this.includeObsoleteEntities
+                    includeObsoleteEntities: this.includeObsoleteEntities,
+                    useLegacy: this.useLegacy,
                 })).sort(
                     (a, b) => (a.label || a.iri).localeCompare(b.label || b.iri)
                 );

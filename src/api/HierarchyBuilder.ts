@@ -10,11 +10,13 @@ export interface HierarchyBuilder {
         includeObsoleteEntities?: boolean,
         keepExpansionStates?: boolean,
         showSiblingsOnInit?: boolean,
+        useLegacy?: boolean,
     }) : Promise<Hierarchy>;
     loadHierarchyChildren(props: {
         nodeToExpand: TreeNode,
         entityType?: EntityTypeName,
         ontologyId: string,
-        includeObsoleteEntities?: boolean
+        includeObsoleteEntities?: boolean,
+        useLegacy?: boolean,
     }): Promise<EntityDataForHierarchy[]>
 }

@@ -20,6 +20,7 @@ export type HierarchyWidgetSemLookPProps = {
     preferredRoots?: boolean
     keepExpansionStates?: boolean
     showSiblingsOnInit?: boolean
+    useLegacy?: boolean
 }
 
 const DEFAULT_BACKEND_TYPE = "ols" as const;
@@ -27,6 +28,7 @@ const DEFAULT_INCLUDE_OBSOLETE_ENTITIES = false as const;
 const DEFAULT_PREFERRED_ROOTS = false as const;
 const DEFAULT_KEEP_EXPANSION_STATES = true as const;
 const DEFAULT_SHOW_SIBLINGS_ON_INIT = false as const;
+const DEFAULT_USE_LEGACY = false as const;
 
 function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
@@ -71,7 +73,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         includeObsoleteEntities = DEFAULT_INCLUDE_OBSOLETE_ENTITIES,
         preferredRoots = DEFAULT_PREFERRED_ROOTS,
         keepExpansionStates = DEFAULT_KEEP_EXPANSION_STATES,
-        showSiblingsOnInit = DEFAULT_SHOW_SIBLINGS_ON_INIT
+        showSiblingsOnInit = DEFAULT_SHOW_SIBLINGS_ON_INIT,
+        useLegacy = DEFAULT_USE_LEGACY,
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -95,7 +98,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         data: hierarchy,
         isSuccess: isSuccessHierarchy,
     } = useQuery(
-      [iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit],
+      [iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit, useLegacy],
       async function getNewHierarchy() {
           return await api.buildHierarchyWithIri({
               ontologyId: ontologyId,
@@ -105,6 +108,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
               includeObsoleteEntities: includeObsoleteEntities,
               keepExpansionStates: keepExpansionStates,
               showSiblingsOnInit: showSiblingsOnInit,
+              useLegacy: useLegacy,
           });
       }
     );

@@ -457,6 +457,26 @@ export class OlsApi {
     );
   }
 
+  public async getJSTree(iri: string, entityType: EntityTypeName, ontologyId: string) : Promise<{
+    id: string
+    parent: string
+    iri: string
+    text: string
+    state: {
+      opened: boolean
+    }
+    children: boolean
+    a_attr: {
+      iri: string
+      ontology_name: string
+      title: string
+      class: string
+    }
+    ontology_name: string
+  }[]> {
+    return await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`, {params: {size: "1000"}}, true);
+  }
+
   // TODO: Do we want the same behavior as EMBL EBI (e.g. not getting instances for classes if entityType != "individual")?
   public async getChildren(iri: string, entityType: EntityTypeName, ontologyId: string, includeObsoleteEntities = false) : Promise<Entity[]> {
     let children: any;
@@ -507,6 +527,7 @@ export class OlsApi {
     includeObsoleteEntities?: boolean,
     keepExpansionStates?: boolean,
     showSiblingsOnInit?: boolean,
+    useLegacy?: boolean,
   }) : Promise<Hierarchy> {
     const {
         iri,
@@ -516,17 +537,19 @@ export class OlsApi {
         includeObsoleteEntities= false,
         keepExpansionStates = true,
         showSiblingsOnInit = false,
+        useLegacy = false,
     } = props;
 
     if(iri) {
-      return await this.getEntityObject(iri, entityType, ontologyId, "", false).then((entity) => this.buildHierarchyWithEntity({
+      return await this.getEntityObject(iri, entityType, ontologyId, "", useLegacy).then((entity) => this.buildHierarchyWithEntity({
         entityType: entityType || entity.getType() as EntityTypeName,
         ontologyId: ontologyId || entity.getOntologyId(),
         includeObsoleteEntities: includeObsoleteEntities,
         preferredRoots: preferredRoots,
         mainEntity: entity,
         keepExpansionStates: keepExpansionStates,
-        showSiblingsOnInit: showSiblingsOnInit
+        showSiblingsOnInit: showSiblingsOnInit,
+        useLegacy: useLegacy,
       }));
     }
     else{
@@ -537,7 +560,8 @@ export class OlsApi {
         includeObsoleteEntities: includeObsoleteEntities,
         preferredRoots: preferredRoots,
         keepExpansionStates: keepExpansionStates,
-        showSiblingsOnInit: showSiblingsOnInit
+        showSiblingsOnInit: showSiblingsOnInit,
+        useLegacy: useLegacy,
       });
     }
   }
@@ -561,6 +585,7 @@ export class OlsApi {
     includeObsoleteEntities?: boolean,
     keepExpansionStates?: boolean,
     showSiblingsOnInit?: boolean,
+    useLegacy?: boolean,
   }) : Promise<Hierarchy> {
     const {
       mainEntity,
@@ -569,7 +594,8 @@ export class OlsApi {
       preferredRoots,
       includeObsoleteEntities,
       showSiblingsOnInit,
-      keepExpansionStates
+      keepExpansionStates,
+      useLegacy
     } = props;
 
     const rootEntities: EntityDataForHierarchy[] = [];
@@ -581,60 +607,69 @@ export class OlsApi {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
     }
 
-    let entities: EntityDataForHierarchy[];
-    if(mainEntity){
-      entities = [this.toEntityDataForHierarchy(mainEntity), ...(await this.getAncestors(mainEntity.getIri(), entityType, ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity))]
+    if(useLegacy) {
+      // TODO: implement behaviour for ols3 hierarchy
+      if(mainEntity) {
+        const jstree = await this.getJSTree(mainEntity.getIri(), entityType, ontologyId);
+      }
+
     }
     else {
-      entities = (await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity));
-      rootEntities.push(...entities);
-    }
+      let entities: EntityDataForHierarchy[];
+      if(mainEntity){
+        entities = [this.toEntityDataForHierarchy(mainEntity), ...(await this.getAncestors(mainEntity.getIri(), entityType, ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity))]
+      }
+      else {
+        entities = (await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities)).map((entity) => this.toEntityDataForHierarchy(entity));
+        rootEntities.push(...entities);
+      }
 
-    // filter top entities
-    entities = entities.filter((e) => !isTop(e.iri));
+      // filter top entities
+      entities = entities.filter((e) => !isTop(e.iri));
 
-    if(!mainEntity || !showSiblingsOnInit) {
-      for(const entityData of entities) parentChildRelations.set(entityData.iri, []); // initialize with empty array
-      for(const entityData of entities) {
-        const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
+      if(!mainEntity || !showSiblingsOnInit) {
+        for(const entityData of entities) parentChildRelations.set(entityData.iri, []); // initialize with empty array
+        for(const entityData of entities) {
+          const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
 
-        for (const parentIri of parents) {
-          if (parentChildRelations.has(parentIri)) {
-            parentChildRelations.get(parentIri)?.push(entityData);
+          for (const parentIri of parents) {
+            if (parentChildRelations.has(parentIri)) {
+              parentChildRelations.get(parentIri)?.push(entityData);
+            }
           }
         }
       }
-    }
-    else {
-      const realEntityType = (entityType || mainEntity.getType());
-      const entityTypeForQuery = realEntityType == "individual" ? "class" : realEntityType; // TODO: only relevant for entityType == "individual" (maybe we don't even need this as behaviour for individual hierarchies is not yet determined)
+      else {
+        const realEntityType = (entityType || mainEntity.getType());
+        const entityTypeForQuery = realEntityType == "individual" ? "class" : realEntityType; // TODO: only relevant for entityType == "individual" (maybe we don't even need this as behaviour for individual hierarchies is not yet determined)
 
-      const promises: Promise<void>[] = [];
-      for(const entityData of entities) {
-        promises.push(new Promise((resolve) =>
-          this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities).then((children) => children.map((child) => this.toEntityDataForHierarchy(child))).then((children) => {
-            parentChildRelations.set(entityData.iri, children);
-          }).then(resolve)
-        ))
-      }
+        const promises: Promise<void>[] = [];
+        for(const entityData of entities) {
+          promises.push(new Promise((resolve) =>
+              this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities).then((children) => children.map((child) => this.toEntityDataForHierarchy(child))).then((children) => {
+                parentChildRelations.set(entityData.iri, children);
+              }).then(resolve)
+          ))
+        }
 
-      await Promise.allSettled(promises);
+        await Promise.allSettled(promises);
 
-      // TODO: only relevant for entityType == "individual" (maybe we don't even need this as behaviour for individual hierarchies is not yet determined)
-      if(realEntityType == "individual") {
-        for(const parentReified of mainEntity.getParents()) {
-          const children = (await this.getChildren(parentReified.value, realEntityType, ontologyId, includeObsoleteEntities))
-              .map((child) => this.toEntityDataForHierarchy(child))
+        // TODO: only relevant for entityType == "individual" (maybe we don't even need this as behaviour for individual hierarchies is not yet determined)
+        if(realEntityType == "individual") {
+          for(const parentReified of mainEntity.getParents()) {
+            const children = (await this.getChildren(parentReified.value, realEntityType, ontologyId, includeObsoleteEntities))
+                .map((child) => this.toEntityDataForHierarchy(child))
 
-          parentChildRelations.set(parentReified.value, children);
+            parentChildRelations.set(parentReified.value, children);
+          }
         }
       }
-    }
 
-    if(mainEntity) { // manually search for root elements
-      for(const entityData of entities) {
-        const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
-        if (parents.length == 0) rootEntities.push(entityData);
+      if(mainEntity) { // manually search for root elements
+        for(const entityData of entities) {
+          const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
+          if (parents.length == 0) rootEntities.push(entityData);
+        }
       }
     }
 
@@ -664,7 +699,8 @@ export class OlsApi {
       includeObsoleteEntities: includeObsoleteEntities,
       entityType: entityType,
       mainEntityIri: mainEntity?.getIri(),
-      keepExpansionStates: keepExpansionStates
+      keepExpansionStates: keepExpansionStates,
+      useLegacy: useLegacy,
     })
   }
 

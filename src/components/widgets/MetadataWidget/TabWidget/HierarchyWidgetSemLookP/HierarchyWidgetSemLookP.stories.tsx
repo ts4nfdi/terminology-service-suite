@@ -17,7 +17,8 @@ export default {
         includeObsoleteEntities: false,
         preferredRoots: false,
         keepExpansionStates: true,
-        showSiblingsOnInit: false
+        showSiblingsOnInit: false,
+        useLegacy: false,
     }
 };
 
