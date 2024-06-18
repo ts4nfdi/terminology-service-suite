@@ -78,3 +78,14 @@ export const SkosHierarchy = {
         ontologyId: "yso",
     }
 };
+
+export const OntoportalHierarchy = {
+    args: {
+        apiUrl: "https://data.biodivportal.gfbio.org",
+        backend_type: "ontoportal",
+        iri: "http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",
+        ontologyId: "IOC",
+        entityType: "class",
+        apikey: ""
+    }
+}

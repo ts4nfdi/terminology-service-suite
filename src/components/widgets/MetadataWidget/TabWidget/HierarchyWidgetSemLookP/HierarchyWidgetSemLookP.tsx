@@ -7,6 +7,7 @@ import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
 import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
+import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 
 export type HierarchyWidgetSemLookPProps = {
     iri: string
@@ -21,9 +22,9 @@ export type HierarchyWidgetSemLookPProps = {
     keepExpansionStates?: boolean
     showSiblingsOnInit?: boolean
     useLegacy?: boolean
+    apikey?: string
 }
 
-const DEFAULT_BACKEND_TYPE = "ols" as const;
 const DEFAULT_INCLUDE_OBSOLETE_ENTITIES = false as const;
 const DEFAULT_PREFERRED_ROOTS = false as const;
 const DEFAULT_KEEP_EXPANSION_STATES = true as const;
@@ -63,7 +64,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string
 function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     const {
         apiUrl,
-        backend_type = DEFAULT_BACKEND_TYPE,
+        backend_type,
         onNavigateToEntity,
         onNavigateToOntology,
 
@@ -75,6 +76,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
         keepExpansionStates = DEFAULT_KEEP_EXPANSION_STATES,
         showSiblingsOnInit = DEFAULT_SHOW_SIBLINGS_ON_INIT,
         useLegacy = DEFAULT_USE_LEGACY,
+        apikey,
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -87,11 +89,13 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
                     return new OlsApi(apiUrl);
                 case "skos":
                     return new SkosApi(apiUrl);
+                case "ontoportal":
+                    return new OntoPortalApi(apiUrl, apikey || "");
                 default:
                     return new OlsApi(apiUrl);
             }
         },
-        [apiUrl, backend_type]
+        [apiUrl, backend_type, apikey]
     );
 
     const {

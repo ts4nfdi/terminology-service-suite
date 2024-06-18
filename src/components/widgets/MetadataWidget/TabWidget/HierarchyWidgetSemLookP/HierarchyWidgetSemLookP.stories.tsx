@@ -30,5 +30,6 @@ export {
     PropertyRoots,
     IndividualRoots,
     LargeHierarchy,
-    SkosHierarchy
+    SkosHierarchy,
+    OntoportalHierarchy
 } from "./HierarchyWidgetSemLookPStories";
