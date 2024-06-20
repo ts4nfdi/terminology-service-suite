@@ -39,7 +39,7 @@ export const SearchResultsListSafety = {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
         targetLink: "",
-        parameter: "collection=safety",
+        parameter: "collection=safety&fieldList=description,label,iri,ontology_name,type,short_form",
     }
 };
 
@@ -48,7 +48,7 @@ export const SearchResultsListNFDI4Health = {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
         targetLink: "",
-        parameter: "collection=nfdi4health",
+        parameter: "collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
         preselected: [{ label: "diabetes" }],
         useLegacy: true
     }
@@ -66,7 +66,7 @@ export const ErrorSearchResultsList = {
 export const TibNFDI4CHEM = {
     args: {
         api: "https://service.tib.eu/ts4tib/api/",
-        parameter: "classification=NFDI4CHEM&schema=collection",
+        parameter: "classification=NFDI4CHEM&schema=collection&fieldList=description,label,iri,ontology_name,type,short_form",
         query: "assay",
         targetLink: "",
     }
@@ -75,7 +75,7 @@ export const TibNFDI4CHEM = {
 export const TibDataPlant = {
     args: {
         api: "https://service.tib.eu/ts4tib/api/",
-        parameter: "classification=DataPLANT&schema=collection",
+        parameter: "classification=DataPLANT&schema=collection&fieldList=description,label,iri,ontology_name,type,short_form",
         query: "agriculture",
         targetLink: "",
     }

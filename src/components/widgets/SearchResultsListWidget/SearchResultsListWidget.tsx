@@ -220,6 +220,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 singleSelection={true}
                 hasShortSelectedLabel={true}
                 placeholder={"Search"}
+                parameter={parameter}
                 preselected={preselected}
             />
 
