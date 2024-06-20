@@ -31,6 +31,7 @@ window['SemLookPWidgets'].createSearchResultsList(
         initialItemsPerPage:${args.initialItemsPerPage},
         itemsPerPageOptions:[${args.itemsPerPageOptions}],
         targetLink:"${args.targetLink}",
+        useLegacy:"${args.useLegacy}",
     },
     document.querySelector('#search_results_list_widget_container_${num}')
 )
@@ -44,5 +45,8 @@ window['SemLookPWidgets'].createSearchResultsList(
 export {
     SearchResultsListSafety,
     SearchResultsListNFDI4Health,
-    ErrorSearchResultsList
+    ErrorSearchResultsList,
+    TibNFDI4CHEM,
+    TibDataPlant,
+    SearchResultsListOls4
 } from "./SearchResultsListWidgetStories"

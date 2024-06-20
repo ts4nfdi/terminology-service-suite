@@ -21,6 +21,9 @@ export const SearchResultsListWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
+    useLegacy: {
+        type: { required: false }
+    }
 }
 
 export const SearchResultsListWidgetStoryArgs = {
@@ -47,6 +50,7 @@ export const SearchResultsListNFDI4Health = {
         targetLink: "",
         parameter: "collection=nfdi4health",
         preselected: [{ label: "diabetes" }],
+        useLegacy: true
     }
 };
 
@@ -74,5 +78,15 @@ export const TibDataPlant = {
         parameter: "classification=DataPLANT&schema=collection",
         query: "agriculture",
         targetLink: "",
+    }
+};
+
+export const SearchResultsListOls4 = {
+    args: {
+        api: "https://www.ebi.ac.uk/ols4/api/",
+        query: "*",
+        targetLink: "/",
+        parameter: "",
+        useLegacy: false
     }
 };

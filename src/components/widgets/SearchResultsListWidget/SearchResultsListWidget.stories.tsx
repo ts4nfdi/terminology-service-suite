@@ -13,5 +13,6 @@ export {
     SearchResultsListNFDI4Health,
     ErrorSearchResultsList,
     TibNFDI4CHEM,
-    TibDataPlant
+    TibDataPlant,
+    SearchResultsListOls4
 } from "./SearchResultsListWidgetStories"

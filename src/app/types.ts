@@ -353,7 +353,7 @@ export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChan
     onSearchValueChange: (suggestion: string) => void;
 };
 
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj &{
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
      */
