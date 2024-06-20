@@ -189,7 +189,6 @@ export type ColorSecondObj = {
 export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj;
 
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
-    isDefiningOntology: boolean,
     ontologyName: string,
     shortForm: string,
 }
