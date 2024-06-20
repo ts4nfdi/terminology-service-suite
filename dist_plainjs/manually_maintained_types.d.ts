@@ -224,6 +224,7 @@ declare global {
       initialItemsPerPage?: number;
       itemsPerPageOptions?: number[];
       targetLink?: string;
+      useLegacy?: boolean;
     } & Partial<Omit<EuiCardProps, "layout">>
     )=>void
   }
