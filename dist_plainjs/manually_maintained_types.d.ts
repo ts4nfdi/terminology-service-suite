@@ -112,7 +112,10 @@ declare global {
           | "ghost"
           | "text"
           | "subdued";
-      parameter?: string
+      parameter?: string;
+      externalIcon?: boolean;
+      urlPrefix?: string;
+      copyButton?: boolean;
     }
     )=>void,
     createTab:(props:{
