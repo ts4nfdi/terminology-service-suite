@@ -10,6 +10,7 @@ import {
 } from "../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
+import {BuildHierarchyProps, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 
 interface PaginationParams {
   size?: string;
@@ -519,16 +520,7 @@ export class OlsApi {
     );
   }
 
-  public async buildHierarchyWithIri(props: {
-    iri?: string,
-    ontologyId?: string,
-    entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
-    preferredRoots?: boolean,
-    includeObsoleteEntities?: boolean,
-    keepExpansionStates?: boolean,
-    showSiblingsOnInit?: boolean,
-    useLegacy?: boolean,
-  }) : Promise<Hierarchy> {
+  public async buildHierarchyWithIri(props: BuildHierarchyProps & HierarchyIriProp) : Promise<Hierarchy> {
     const {
         iri,
         ontologyId,
@@ -581,12 +573,8 @@ export class OlsApi {
     mainEntity?: Entity,
     ontologyId: string,
     entityType: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
-    preferredRoots?: boolean,
-    includeObsoleteEntities?: boolean,
-    keepExpansionStates?: boolean,
-    showSiblingsOnInit?: boolean,
-    useLegacy?: boolean,
-  }) : Promise<Hierarchy> {
+  } & BuildHierarchyProps) : Promise<Hierarchy> {
+
     const {
       mainEntity,
       ontologyId,
@@ -704,12 +692,7 @@ export class OlsApi {
     })
   }
 
-  public async loadHierarchyChildren(props: {
-    nodeToExpand: TreeNode,
-    entityType?: EntityTypeName,
-    ontologyId: string,
-    includeObsoleteEntities?: boolean
-  }): Promise<EntityDataForHierarchy[]> {
+  public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
     const {
         nodeToExpand,
         entityType,
@@ -717,7 +700,7 @@ export class OlsApi {
         includeObsoleteEntities
     } = props;
 
-    if(entityType == undefined) throw Error("EntityType has to be provided to load children in ols.");
+    if(entityType == undefined) throw Error("EntityType has to be provided to load children in OLS.");
 
     return (await this.getChildren(nodeToExpand.entityData.iri, entityType, ontologyId, includeObsoleteEntities))
         .map((entity) => this.toEntityDataForHierarchy(entity))

@@ -1,6 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {HierarchyBuilder} from "./HierarchyBuilder";
-import {EntityTypeName} from "../model/ModelTypeCheck";
+import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 
 type TopConcept = {
@@ -88,19 +87,11 @@ export class SkosApi implements HierarchyBuilder{
         return (await this.axiosInstance.get(url, config)).data;
     }
 
-    public async buildHierarchyWithIri(props: {
-        iri?: string,
-        ontologyId?: string,
-        entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
-        preferredRoots?: boolean,
-        includeObsoleteEntities?: boolean,
-        keepExpansionStates?: boolean,
-        showSiblingsOnInit?: boolean,
-    }) : Promise<Hierarchy> {
+    public async buildHierarchyWithIri(props: BuildHierarchyProps & HierarchyIriProp) : Promise<Hierarchy> {
         const {
             iri,
             ontologyId,
-            showSiblingsOnInit = false,
+            showSiblingsOnInit,
         } = props;
 
         if(!ontologyId) throw Error("ontologyId has to be specified for SKOS API.");
@@ -191,12 +182,7 @@ export class SkosApi implements HierarchyBuilder{
         });
     }
 
-    public async loadHierarchyChildren(props: {
-        nodeToExpand: TreeNode,
-        entityType?: EntityTypeName,
-        ontologyId: string,
-        includeObsoleteEntities?: boolean
-    }): Promise<EntityDataForHierarchy[]> {
+    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
         const {
             nodeToExpand,
             ontologyId

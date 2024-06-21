@@ -1,35 +1,29 @@
 import React, {useCallback, useMemo, useReducer} from "react";
 import {EuiLoadingSpinner, EuiText, EuiIcon, EuiTextColor, EuiProvider, EuiCard, EuiBadge} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
-import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
-import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
+import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 
 export type HierarchyWidgetSemLookPProps = {
-    iri: string
-    entityType?: EntityTypeName
-    ontologyId?: string
+    apiUrl: string
+    apikey?: string
+    backend_type?: string
+} & BuildHierarchyProps & HierarchyIriProp & {
     onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
     onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
-    backend_type?: string
-    apiUrl: string
-    includeObsoleteEntities?: boolean
-    preferredRoots?: boolean
-    keepExpansionStates?: boolean
-    showSiblingsOnInit?: boolean
-    useLegacy?: boolean
-    apikey?: string
-}
+};
 
-const DEFAULT_INCLUDE_OBSOLETE_ENTITIES = false as const;
-const DEFAULT_PREFERRED_ROOTS = false as const;
-const DEFAULT_KEEP_EXPANSION_STATES = true as const;
-const DEFAULT_SHOW_SIBLINGS_ON_INIT = false as const;
-const DEFAULT_USE_LEGACY = false as const;
+export const HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES = {
+    INCLUDE_OBSOLETE_ENTITIES: false,
+    PREFERRED_ROOTS: false,
+    KEEP_EXPANSION_STATES: false,
+    SHOW_SIBLINGS_ON_INIT: false,
+    USE_LEGACY: false
+} as const;
 
 function TreeLink(props: {entityData: EntityDataForHierarchy, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
@@ -65,18 +59,18 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     const {
         apiUrl,
         backend_type,
+        apikey,
         onNavigateToEntity,
         onNavigateToOntology,
 
         iri,
         ontologyId,
         entityType,
-        includeObsoleteEntities = DEFAULT_INCLUDE_OBSOLETE_ENTITIES,
-        preferredRoots = DEFAULT_PREFERRED_ROOTS,
-        keepExpansionStates = DEFAULT_KEEP_EXPANSION_STATES,
-        showSiblingsOnInit = DEFAULT_SHOW_SIBLINGS_ON_INIT,
-        useLegacy = DEFAULT_USE_LEGACY,
-        apikey,
+        includeObsoleteEntities = HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
+        preferredRoots = HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES.PREFERRED_ROOTS,
+        keepExpansionStates = HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
+        showSiblingsOnInit = HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
+        useLegacy = HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES.USE_LEGACY,
     } = props;
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
@@ -87,7 +81,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
             switch (backend_type) {
                 case "ols":
                     return new OlsApi(apiUrl);
-                case "skos":
+                case "skosmos":
                     return new SkosApi(apiUrl);
                 case "ontoportal":
                     return new OntoPortalApi(apiUrl, apikey || "");

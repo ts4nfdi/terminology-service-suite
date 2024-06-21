@@ -1,6 +1,5 @@
-import {HierarchyBuilder} from "./HierarchyBuilder";
+import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {EntityTypeName} from "../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
 import {pluralizeType} from "../app/util";
 
@@ -57,20 +56,12 @@ export class OntoPortalApi implements HierarchyBuilder{
         return (await this.axiosInstance.get(url, config)).data;
     }
 
-    public async buildHierarchyWithIri(props: {
-        iri?: string,
-        ontologyId?: string,
-        entityType?: EntityTypeName, // is needed in ols for queries ancestors / hierarchicalAncestors / children / hierarchicalChildren
-        preferredRoots?: boolean,
-        includeObsoleteEntities?: boolean,
-        keepExpansionStates?: boolean,
-        showSiblingsOnInit?: boolean,
-    }) : Promise<Hierarchy> {
+    public async buildHierarchyWithIri(props: BuildHierarchyProps & HierarchyIriProp) : Promise<Hierarchy> {
         const {
             iri,
             ontologyId,
             entityType,
-            showSiblingsOnInit = false,
+            showSiblingsOnInit,
         } = props;
 
         if(!ontologyId) throw Error("ontologyId has to be specified for OntoPortal API.");
@@ -152,12 +143,7 @@ export class OntoPortalApi implements HierarchyBuilder{
         });
     }
 
-    public async loadHierarchyChildren(props: {
-        nodeToExpand: TreeNode,
-        entityType?: EntityTypeName,
-        ontologyId: string,
-        includeObsoleteEntities?: boolean
-    }): Promise<EntityDataForHierarchy[]> {
+    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
         const {
             nodeToExpand,
             ontologyId,

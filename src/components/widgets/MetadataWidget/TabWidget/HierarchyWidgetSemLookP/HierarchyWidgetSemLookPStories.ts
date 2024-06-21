@@ -73,7 +73,7 @@ export const LargeHierarchy = {
 export const SkosHierarchy = {
     args: {
         apiUrl: "https://api.finto.fi/rest/v1",
-        backend_type: "skos",
+        backend_type: "skosmos",
         iri: "http://www.yso.fi/onto/yso/p864",
         ontologyId: "yso",
     }
