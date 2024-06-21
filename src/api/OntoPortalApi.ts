@@ -82,7 +82,7 @@ export class OntoPortalApi implements HierarchyBuilder{
         const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
         function buildRelations(currNode: HierarchyNode) {
-            if(currNode.children.length > 0) {
+            if(currNode.hasChildren && currNode.children.length > 0) {
                 const childrenData = currNode.children.map((child) => HierarchyNodeToEntityDataForHierarchy(child)).sort((a,b) => (a.label || a.iri).localeCompare(b.label || b.iri));
                 parentChildRelations.set(currNode["@id"], childrenData);
 
@@ -96,7 +96,8 @@ export class OntoPortalApi implements HierarchyBuilder{
         }
 
         if(iri) {
-            const api_tree: HierarchyNode[] = await this.makeCall(`/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(entityType, false)}/${encodeURIComponent(iri)}/tree`);
+            // TODO: property which is child of multiple properties only is returned in one parent in /tree query (-> do it right manually?) (e.g.: http://sweetontology.net/relaTime/hasNHTime -> has more than one parent, but is only shown in one parent in /tree)
+            const api_tree: HierarchyNode[] = await this.makeCall(`/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(entityType, false)}/${encodeURIComponent(iri)}/tree`, {params: {include: "@id,prefLabel,hasChildren,children"}});
 
             for(const rootNode of api_tree) {
                 rootEntities.push(HierarchyNodeToEntityDataForHierarchy(rootNode));
