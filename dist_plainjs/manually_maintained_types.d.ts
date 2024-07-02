@@ -18,6 +18,7 @@ declare global {
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
+      compactStyle?: boolean;
     }
     )=>void,
     createDataContent:(props:{

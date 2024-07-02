@@ -30,6 +30,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     preselected,
     placeholder,
     singleSelection,
+    compactStyle,
     ...rest
   } = props;
 
@@ -117,8 +118,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name}
                                     iri={value.iri} colorFirst={"primary"} colorSecond={"success"}
                                     parameter={value.parameter} />
-                    <br />
-                  {value.description ? value.description.substring(0, 40) + "..." : ""}
+                  {!compactStyle && value.description ?
+                    <>
+                      <br />
+                      {value.description.substring(0, 40) + "..."}
+                    </> : ""}
                 </span>
             </EuiHealth>
         </span>
@@ -335,7 +339,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       onChange={onChangeHandler}
       renderOption={renderOption}
       onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
-      rowHeight={50}
+      rowHeight={compactStyle ? 30 : 50}
     />
   );
 }
@@ -358,6 +362,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
+          compactStyle={props.compactStyle}
         />
       </QueryClientProvider>
     </EuiProvider>

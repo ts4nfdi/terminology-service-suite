@@ -147,6 +147,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      * If true, only one concept can be selected at once.
      */
     singleSelection: boolean;
+    /**
+     * Display options in a compact format without descriptions.
+     */
+    compactStyle?: boolean;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
