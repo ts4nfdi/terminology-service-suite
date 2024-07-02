@@ -1,97 +1,149 @@
-import {EuiProvider, EuiSuggest, EuiSuggestionProps} from "@elastic/eui";
+import { EuiComboBox, EuiProvider, EuiSuggest, EuiSuggestionProps } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
-import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {SearchBarWidgetProps} from "../../../app/types";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { SearchBarWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
     api,
     query,
     onSearchValueChange,
+    selectionChangedEvent,
     ...rest
   } = props;
   const olsApi = new OlsApi(api);
 
-  const [searchValue, setSearchValue] = useState(query);
-  const [suggestions, setSuggestions] = useState<Array<EuiSuggestionProps>>([]);
+  /**
+   * suggestions
+   */
+  const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>();
 
-  useEffect(() => {
-    setSearchValue(query);
-  }, [query]);
+  /**
+   * selected suggestion (on click)
+   */
+  const [selectedOptions, setSelected] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
+  /**
+   * current search value
+   */
+  const [searchValue, setSearchValue] = useState<string>(query);
 
   useEffect(() => {
     onSearchValueChange(searchValue);
   }, [onSearchValueChange, searchValue]);
 
-  /**
-   * fetches suggestions when searchValue changes (setSearchValue is passed as EuiSuggest onChange)
-   */
-  useQuery(
-      [
-          "onChange",
-          searchValue
-      ],
-      async () => {
-          return olsApi.suggest(
-              {
-                query: searchValue,
-              },
-              undefined,
-              undefined,
-              props.parameter,
-          ).then((response) => {
-            if (response.response && response.response.docs) {
-              setSuggestions(response.response.docs.map((suggestion: any) => (
-                  {
-                    label: suggestion.autosuggest,
-                    type: { color: "tint1", iconType: ""},
-                  }
-              )));
-            }
-          });
-      }
-  )
+  const onChange = (selectedOption: Array<EuiComboBoxOptionOption<any>>) => {
+    setSelected(selectedOption);
+  };
 
-  function onItemClick(item: EuiSuggestionProps) {
-    setSearchValue(item.label);
-  }
+  const onCreateOption = (searchValue: string) => {
+    const normalizedSearchValue = searchValue.trim().toLowerCase();
+
+    if (!normalizedSearchValue) {
+      return;
+    }
+
+    const newOption: Array<EuiComboBoxOptionOption<any>> = [{
+      label: searchValue
+    }];
+
+    setSelected(newOption);
+  };
+
+
+  /**
+   * fetches suggestions when searchValue changes
+   */
+  const {
+    isLoading
+  } = useQuery(
+    [
+      "suggestions",
+      searchValue
+    ],
+    async () => {
+      if (!searchValue.trim()) {
+        return; // Exit early if searchValue is empty
+      }
+      return olsApi.suggest(
+        {
+          query: searchValue
+        },
+        undefined,
+        undefined,
+        props.parameter
+      ).then((response) => {
+        if (response.response && response.response.docs) {
+          setOptions(response.response.docs.map((suggestion: any) => (
+            {
+              label: suggestion.autosuggest,
+              type: { color: "tint1", iconType: "" }
+            }
+          )));
+        }
+      });
+    }
+  );
+
+  /**
+   * Once the selected option changes, pass the event by invoking the passed function.
+   */
+  useEffect(() => {
+    selectionChangedEvent(
+      selectedOptions.map((selectedOption) => {
+        return {
+          label: selectedOption.label
+        };
+      })
+    );
+  }, [selectedOptions]);
 
   return (
     <>
-      <EuiSuggest
-        aria-label="Search for Concept"
-        placeholder="Search for Concept"
+      <EuiComboBox
+        id={"suggest"}
         isClearable
-        {...rest}
-        suggestions={suggestions}
-        onChange={setSearchValue}
-        onItemClick={onItemClick}
-        value={searchValue}
+        aria-label="searchBar"
+        fullWidth={true}
+        async={true}
+        placeholder={"Search"}
+        autoFocus
+        singleSelection={true}
+        isLoading={isLoading}
+        options={options}
+        selectedOptions={selectedOptions}
+        onChange={onChange}
+        onCreateOption={onCreateOption}
+        onSearchChange={(item) => {
+          setSearchValue(item);
+        }}
       />
     </>
   );
 }
 
-function createSearchBar(props: SearchBarWidgetProps, container: any, callback?: ()=>void) {
+function createSearchBar(props: SearchBarWidgetProps, container: any, callback?: () => void) {
   ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
 }
 
 function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
-        <QueryClientProvider client={queryClient}>
-          <SearchBarWidget
-              api={props.api}
-              query={props.query}
-              onSearchValueChange={props.onSearchValueChange}
-              parameter={props.parameter}
-          />
-        </QueryClientProvider>
-      </EuiProvider>
-  )
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <SearchBarWidget
+          api={props.api}
+          query={props.query}
+          onSearchValueChange={props.onSearchValueChange}
+          selectionChangedEvent={props.selectionChangedEvent}
+          parameter={props.parameter}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { SearchBarWidget, createSearchBar };
