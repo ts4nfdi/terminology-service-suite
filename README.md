@@ -122,6 +122,17 @@ This project uses [Semantic Release](https://semantic-release.gitbook.io/semanti
 analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your
 commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
 
+In short:
+| Release type  | Commit message |
+| ------------- | ------------- |
+| Fix release  | fix(autocomplete): fix something   |
+| Feature relese  | feat(autocomplet): add suggest function  |
+| Breaking change  | BREAKING CHANGE: parameter removed  |
+
+**HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
+
+**HINT 2**: Don't use Emoji in commit messages (e.g. :bug:), because it breaks semantic versioning!
+
 ### Test the package locally
 
 When developing a new version of widgets, it might be helpful to include the current locally developed version in
