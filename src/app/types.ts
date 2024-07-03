@@ -148,9 +148,9 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      */
     singleSelection: boolean;
     /**
-     * Display options in a compact format without descriptions.
+     * Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.
      */
-    compactStyle?: boolean;
+    singleSuggestionRow?: boolean;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;

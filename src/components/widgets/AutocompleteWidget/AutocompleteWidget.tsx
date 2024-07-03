@@ -30,7 +30,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     preselected,
     placeholder,
     singleSelection,
-    compactStyle,
+    singleSuggestionRow,
     ...rest
   } = props;
 
@@ -121,7 +121,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     colorFirst={"primary"}
                     colorSecond={"success"}
                   />
-                  {!compactStyle && value.description ?
+                  {!singleSuggestionRow && value.description ?
                     <>
                       <br />
                       {value.description.substring(0, 40) + "..."}
@@ -342,7 +342,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       onChange={onChangeHandler}
       renderOption={renderOption}
       onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
-      rowHeight={compactStyle ? 30 : 50}
+      rowHeight={singleSuggestionRow ? 30 : 50}
     />
   );
 }
@@ -365,7 +365,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
-          compactStyle={props.compactStyle}
+          singleSuggestionRow={props.singleSuggestionRow}
         />
       </QueryClientProvider>
     </EuiProvider>
