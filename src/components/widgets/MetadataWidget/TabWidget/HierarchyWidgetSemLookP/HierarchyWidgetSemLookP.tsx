@@ -151,8 +151,8 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
 
     function renderTreeNode(hierarchy: Hierarchy, node: TreeNode, drawLine?: boolean) {
         return (
-            <span /*style={{borderLeft: node.expanded ? "2px dotted grey" : undefined}}*/>
-                <EuiText>
+            <span>
+                <EuiText style={{whiteSpace: "nowrap"}}>
                     {
                         !node.entityData.hasChildren ?
                             <EuiIcon type={"empty"}/> :
