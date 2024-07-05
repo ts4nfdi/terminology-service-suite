@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useReducer} from "react";
-import {EuiLoadingSpinner, EuiText, EuiIcon, EuiTextColor, EuiProvider, EuiCard, EuiBadge} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiText, EuiIcon, EuiProvider, EuiCard} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
 import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
