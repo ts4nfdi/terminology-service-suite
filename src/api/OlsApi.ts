@@ -8,7 +8,7 @@ import {
   EntityTypeName, ThingTypeName,
   isClassTypeName, isEntityTypeName, isIndividualTypeName, isOntologyTypeName
 } from "../model/ModelTypeCheck";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import {BuildHierarchyProps, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 
@@ -594,7 +594,7 @@ export class OlsApi {
       iri: jsTreeNode.iri,
       label: jsTreeNode.text,
       hasChildren: jsTreeNode.children || jsTreeNode.state.opened,
-      parents: jsTreeNode.parent ? [jsTreeNode.parent] : []
+      parents: []
     };
   }
 
@@ -605,7 +605,7 @@ export class OlsApi {
       definedBy: entity.getDefinedBy(),
       hasChildren: entity.hasChildren(),
       numDescendants: entity.getNumHierarchicalDescendants() || entity.getNumDescendants(),
-      parents: entity.getParents().map((reified: Reified<string>) => reified.value) // TODO: Do we also need relation name (axioms of Reified)?
+      parents: entity.getParents()
     };
   }
 
@@ -626,15 +626,14 @@ export class OlsApi {
       useLegacy
     } = props;
 
-    const rootEntities: EntityDataForHierarchy[] = [];
-    const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
-    const allChildrenPresent: Set<string> = new Set<string>();
-
     // used to filter from getParents()-array
     function isTop(iri: string) : boolean {
       return iri === "http://www.w3.org/2002/07/owl#Thing" || iri === "http://www.w3.org/2002/07/owl#TopObjectProperty";
     }
 
+    const rootEntities: string[] = [];
+
+    /* LOAD ancestors */
     let entities: EntityDataForHierarchy[];
     if(mainEntity) {
       if(useLegacy) {
@@ -666,45 +665,57 @@ export class OlsApi {
 
             entities.push(this.jsTreeNodeToEntityDataForHierarchy(jsTreeNode));
             const par = parents.get(jsTreeNode.iri);
-            if(par != undefined) entities[entities.length - 1].parents = [...par.values()] || [];
+            if(par != undefined) entities[entities.length - 1].parents = Reified.fromJson(Array.from(par.values())) || [];
           }
         }
       }
       else {
-        entities = [this.entityToEntityDataForHierarchy(mainEntity), ...(await this.getAncestors(mainEntity.getIri(), entityType, ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities)).map((entity) => this.entityToEntityDataForHierarchy(entity))]
+        const ancestors = await this.getAncestors(mainEntity.getIri(), entityType, ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities);
+        entities = [this.entityToEntityDataForHierarchy(mainEntity), ...ancestors.map((entity) => this.entityToEntityDataForHierarchy(entity))]
       }
     }
     else {
       entities = (await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities, useLegacy)).map((entity) => this.entityToEntityDataForHierarchy(entity));
-      rootEntities.push(...entities);
+      rootEntities.push(...entities.map((e) => e.iri));
     }
 
     // filter top entities
     entities = entities.filter((e) => !isTop(e.iri));
 
-    if(!mainEntity || !showSiblingsOnInit) {
-      for(const entityData of entities) parentChildRelations.set(entityData.iri, []); // initialize with empty array
-      for(const entityData of entities) {
-        const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
+    /* BUILD parentChildRelations */
+    const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
 
-        for (const parentIri of parents) {
-          if (parentChildRelations.has(parentIri)) {
-            parentChildRelations.get(parentIri)?.push(entityData);
-          }
-        }
-      }
+    const allChildrenPresent: Set<string> = new Set<string>();
+    const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+
+    // initialize parentChildRelations & entitiesData
+    for(const entityData of entities) {
+      parentChildRelations.set(entityData.iri, []); // initialize with empty array
+      entitiesData.set(entityData.iri, entityData);
     }
-    else {
+
+    if(mainEntity && showSiblingsOnInit) {
+      // additionally load siblings from api
       const realEntityType = (entityType || mainEntity.getType());
       const entityTypeForQuery = realEntityType == "individual" ? "class" : realEntityType; // TODO: only relevant for entityType == "individual" (maybe we don't even need this as behaviour for individual hierarchies is not yet determined)
 
       const promises: Promise<void>[] = [];
       for(const entityData of entities) {
-        promises.push(new Promise((resolve) =>
-            this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities, useLegacy).then((children) => children.map((child) => this.entityToEntityDataForHierarchy(child))).then((children) => {
-              parentChildRelations.set(entityData.iri, children);
-            }).then(resolve)
-        ))
+        if(entityData.iri != mainEntity.getIri()) {
+          promises.push(new Promise((resolve) =>
+              this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities, useLegacy).then((children) => children.map((child) => this.entityToEntityDataForHierarchy(child))).then((children) => {
+                const parChildRel: ParentChildRelation[] = [];
+                for(const child of children){
+                  entitiesData.set(child.iri, child);
+                  const parRelation = child.parents.filter((par) => par.value == entityData.iri); // should have exactly one element
+                  parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                }
+
+                parentChildRelations.set(entityData.iri, parChildRel);
+                allChildrenPresent.add(entityData.iri);
+              }).then(resolve)
+          ))
+        }
       }
 
       await Promise.allSettled(promises);
@@ -715,26 +726,61 @@ export class OlsApi {
           const children = (await this.getChildren(parentReified.value, realEntityType, ontologyId, includeObsoleteEntities))
               .map((child) => this.entityToEntityDataForHierarchy(child))
 
-          parentChildRelations.set(parentReified.value, children);
+          const parChildRel: ParentChildRelation[] = [];
+          for(const child of children){
+            parChildRel.push({childIri: child.iri, childRelationToParent: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"});
+          }
+          parentChildRelations.set(parentReified.value, parChildRel);
+        }
+      }
+    }
+    else {
+      for(const entityData of entities) {
+        const parents = entityData.parents.filter((parentReified: Reified<string>) => !isTop(parentReified.value));
+        if(entityData.iri == mainEntity?.getIri() && isIndividualTypeName(entityType || mainEntity.getType())) {
+          for(const parentReified of parents) {
+            if (parentChildRelations.has(parentReified.value)) {
+              parentChildRelations.get(parentReified.value)?.push({childIri: entityData.iri, childRelationToParent: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"});
+            }
+          }
+        }
+        else {
+          for (const parentReified of parents) {
+            if (parentChildRelations.has(parentReified.value)) {
+              parentChildRelations.get(parentReified.value)?.push({childIri: entityData.iri, childRelationToParent: parentReified.getMetadata() ? parentReified.getMetadata()["childRelationToParent"] : undefined});
+            }
+          }
         }
       }
     }
 
-    if(mainEntity) { // manually search for root elements
-      for(const entityData of entities) {
-        const parents = entityData.parents.filter((parentIri: string) => !isTop(parentIri));
-        if (parents.length == 0) rootEntities.push(entityData);
+    /* BUILD rootEntities manually */
+    if(mainEntity) {
+      if(preferredRoots) {
+        const preferredRootEntities = (await this.getOntologyObject(ontologyId, undefined, useLegacy)).getPreferredRoots();
+        for(const e of preferredRootEntities) {
+          if(entitiesData.has(e)) rootEntities.push(e);
+        }
       }
+      else {
+        for(const entityData of entities) {
+          const parents = entityData.parents.filter((parentReified: Reified<string>) => !isTop(parentReified.value));
+          if (parents.length == 0) rootEntities.push(entityData.iri);
+        }
+      }
+
     }
 
-    for(const rel of parentChildRelations.values()) rel.sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri));
+    for(const rel of parentChildRelations.values()) rel.sort((a, b) => (entitiesData.get(a.childIri)?.label || a.childIri).localeCompare(entitiesData.get(b.childIri)?.label || b.childIri));
 
-    function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
+    function createTreeNode(entityData: EntityDataForHierarchy, childRelationToParent?: string): TreeNode {
       const node = new TreeNode(entityData);
+      node.childRelationToParent = childRelationToParent;
       const children = parentChildRelations.get(entityData.iri) || [];
 
       for(const child of children) {
-        node.addChild(createTreeNode(child))
+        const childData = entitiesData.get(child.childIri);
+        if(childData != undefined) node.addChild(createTreeNode(childData, child.childRelationToParent));
       }
 
       if(node.loadedChildren.length > 0) node.expanded = true;
@@ -742,10 +788,12 @@ export class OlsApi {
       return node;
     }
 
-    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
     return new Hierarchy({
       parentChildRelations: parentChildRelations,
+      entitiesData: entitiesData,
       allChildrenPresent: allChildrenPresent,
       roots: rootNodes,
       api: new OlsApi(this.axiosInstance.getUri()),

@@ -1,5 +1,11 @@
 import {EntityTypeName} from "../ModelTypeCheck";
 import {HierarchyBuilder} from "../../api/HierarchyBuilder";
+import Reified from "../Reified";
+
+export type ParentChildRelation = {
+    childIri: string,
+    childRelationToParent?: string
+}
 
 export type EntityDataForHierarchy = {
     iri: string;
@@ -7,23 +13,26 @@ export type EntityDataForHierarchy = {
     definedBy?: string[];
     hasChildren: boolean;
     numDescendants?: number;
-    parents: string[];
+    parents: Reified<string>[];
 }
 
 export class TreeNode {
     entityData: EntityDataForHierarchy;
+    childRelationToParent?: string;
     loadedChildren: TreeNode[];
     expanded: boolean;
     loading: boolean;
 
     /**
      * @param entityData
+     * @param childRelationToParent
      */
-    constructor(entityData: EntityDataForHierarchy) {
+    constructor(entityData: EntityDataForHierarchy, childRelationToParent?: string) {
         this.entityData = entityData;
         this.loadedChildren = [];
         this.expanded = false;
         this.loading = false;
+        this.childRelationToParent = childRelationToParent;
     }
 
     addChild(child: TreeNode) {
@@ -35,7 +44,8 @@ const DEFAULT_INCLUDE_OBSOLETE_ENTITIES: boolean = false as const;
 const DEFAULT_KEEP_EXPANSION_STATE: boolean = true as const;
 
 export class Hierarchy {
-    parentChildRelations: Map<string, EntityDataForHierarchy[]>;
+    parentChildRelations: Map<string, ParentChildRelation[]>;
+    entitiesData: Map<string, EntityDataForHierarchy>;
     allChildrenPresent: Set<string>;
     roots: TreeNode[]; // stores the tree hierarchy
     protected api: HierarchyBuilder;
@@ -49,7 +59,8 @@ export class Hierarchy {
     mainEntityIri?: string; // to highlight it in the hierarchy
 
     constructor(props: {
-        parentChildRelations: Map<string, EntityDataForHierarchy[]>,
+        parentChildRelations: Map<string, ParentChildRelation[]>,
+        entitiesData: Map<string, EntityDataForHierarchy>,
         allChildrenPresent: Set<string>,
         roots: TreeNode[],
         api: HierarchyBuilder,
@@ -62,6 +73,7 @@ export class Hierarchy {
     }) {
         const {
             parentChildRelations,
+            entitiesData,
             allChildrenPresent,
             roots,
             includeObsoleteEntities,
@@ -74,6 +86,7 @@ export class Hierarchy {
         } = props;
 
         this.parentChildRelations = parentChildRelations;
+        this.entitiesData = entitiesData;
         this.allChildrenPresent = allChildrenPresent;
         this.roots = roots;
         if(includeObsoleteEntities != undefined) this.includeObsoleteEntities = includeObsoleteEntities;
@@ -104,16 +117,18 @@ export class Hierarchy {
         let iChildren = 0;
 
         while(iChildren < children.length && iLoadedChildren < numLoadedChildren) {
-            if(nodeToExpand.loadedChildren[iLoadedChildren].entityData.iri == children[iChildren].iri) {
+            if(nodeToExpand.loadedChildren[iLoadedChildren].entityData.iri == children[iChildren].childIri) {
                 iLoadedChildren++;
             }
             else {
-                nodeToExpand.addChild(new TreeNode(children[iChildren]));
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                nodeToExpand.addChild(new TreeNode(this.entitiesData.get(children[iChildren].childIri)!, children[iChildren].childRelationToParent));
             }
             iChildren++;
         }
         while(iChildren < children.length) {
-            nodeToExpand.addChild(new TreeNode(children[iChildren]));
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            nodeToExpand.addChild(new TreeNode(this.entitiesData.get(children[iChildren].childIri)!, children[iChildren].childRelationToParent));
             iChildren++;
         }
 
@@ -163,7 +178,13 @@ export class Hierarchy {
                 );
 
                 // add children to parentChildRelations for iri of nodeToExpand
-                this.parentChildRelations.set(nodeToExpand.entityData.iri, children);
+                const parChildRel: ParentChildRelation[] = [];
+                for(const child of children){
+                    this.entitiesData.set(child.iri, child);
+                    const parRelation = child.parents.filter((par) => par.value == nodeToExpand.entityData.iri); // should have exactly one element
+                    parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                }
+                this.parentChildRelations.set(nodeToExpand.entityData.iri, parChildRel);
             }
 
             this.mergeChildrenIntoLoadedChildren(nodeToExpand);

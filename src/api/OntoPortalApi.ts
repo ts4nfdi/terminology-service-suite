@@ -1,6 +1,6 @@
 import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import {pluralizeType} from "../app/util";
 
 type HierarchyNode = {
@@ -67,15 +67,16 @@ export class OntoPortalApi implements HierarchyBuilder{
         if(!ontologyId) throw Error("ontologyId has to be specified for OntoPortal API.");
         if(!entityType) throw Error("entityType has to be specified for OntoPortal API.");
 
-        const rootEntities: EntityDataForHierarchy[] = [];
-        const parentChildRelations: Map<string, EntityDataForHierarchy[]> = new Map<string, EntityDataForHierarchy[]>();
+        const rootEntities: string[] = [];
+        const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+        const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
         const allChildrenPresent: Set<string> = new Set<string>();
         const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
         function buildRelations(currNode: HierarchyNode) {
+            entitiesData.set(currNode["@id"], HierarchyNodeToEntityDataForHierarchy(currNode))
             if(currNode.hasChildren && currNode.children.length > 0) {
-                const childrenData = currNode.children.map((child) => HierarchyNodeToEntityDataForHierarchy(child)).sort((a,b) => (a.label || a.iri).localeCompare(b.label || b.iri));
-                parentChildRelations.set(currNode["@id"], childrenData);
+                parentChildRelations.set(currNode["@id"], currNode.children.map((c) => {return {childIri: c["@id"]}}));
 
                 allChildrenPresent.add(currNode["@id"]);
                 onInitialPath.add(currNode["@id"]);
@@ -91,7 +92,7 @@ export class OntoPortalApi implements HierarchyBuilder{
             const api_tree: HierarchyNode[] = await this.makeCall(`/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(entityType, false)}/${encodeURIComponent(iri)}/tree`, {params: {include: "@id,prefLabel,hasChildren,children"}});
 
             for(const rootNode of api_tree) {
-                rootEntities.push(HierarchyNodeToEntityDataForHierarchy(rootNode));
+                rootEntities.push(rootNode["@id"]);
                 onInitialPath.add(rootNode["@id"]);
                 buildRelations(rootNode);
             }
@@ -104,7 +105,7 @@ export class OntoPortalApi implements HierarchyBuilder{
             );
 
             for(const rootNode of roots) {
-                rootEntities.push(HierarchyNodeToEntityDataForHierarchy(rootNode));
+                rootEntities.push(rootNode["@id"]);
                 onInitialPath.add(rootNode["@id"]);
             }
         }
@@ -115,12 +116,14 @@ export class OntoPortalApi implements HierarchyBuilder{
 
             if(!showSiblingsOnInit) {
                 for(const child of children) {
-                    if(onInitialPath.has(child.iri)) node.addChild(createTreeNode(child));
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    if(onInitialPath.has(child.childIri)) node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
                 }
             }
             else {
                 for(const child of children) {
-                    node.addChild(createTreeNode(child));
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
                 }
             }
 
@@ -129,10 +132,12 @@ export class OntoPortalApi implements HierarchyBuilder{
             return node;
         }
 
-        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(rootEntity)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
         return new Hierarchy({
             parentChildRelations: parentChildRelations,
+            entitiesData: entitiesData,
             allChildrenPresent: allChildrenPresent,
             roots: rootNodes,
             api: new OntoPortalApi(this.axiosInstance.getUri(), this.apikey),
