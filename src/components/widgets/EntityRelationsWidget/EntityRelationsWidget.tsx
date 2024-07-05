@@ -353,6 +353,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             <EuiCard
                 title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntityRelation && entity) ? capitalize(entity.getType()) : "") + " Relations" : ""}
                 layout="horizontal"
+                style={{whiteSpace: "nowrap"}}
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}

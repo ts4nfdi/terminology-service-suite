@@ -295,6 +295,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             <EuiCard
                 title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  + " Information" : ""}
                 layout="horizontal"
+                style={{whiteSpace: "nowrap"}}
             >
 
                 {isLoadingEntity && <EuiLoadingSpinner size={'s'}/>}
