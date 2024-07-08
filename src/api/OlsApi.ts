@@ -682,16 +682,16 @@ export class OlsApi {
     if(useLegacy) {
       // TODO: JSTree sometimes returns smaller trees than would be possible via querying hierarchical ancestors and all children of those (e.g. http://purl.obolibrary.org/obo/UBERON_2001747 -> strange and not really useful hierarchy because many entities are both sibling and children of other entities (is it wrong to take hierarchicalParent instead of directParent in entityToEntityDataToHierarchy? EMBL-EBI does it like that as well))
       //       Question: Should we prefer complete hierarchies (query /hierarchicalAncestors + /children for each) or slim queries (query /jstree)?
-      const jstree = await this.getJSTree(mainEntity.getIri(), entityType, ontologyId);
+      const jsTree = await this.getJSTree(mainEntity.getIri(), entityType, ontologyId);
       const idToIri : Map<string,string> = new Map<string,string>();
       const parents : Map<string,Set<string>> = new Map<string, Set<string>>();
 
-      for(const jsTreeNode of jstree) {
+      for(const jsTreeNode of jsTree) {
         idToIri.set(jsTreeNode.id, jsTreeNode.iri);
         parents.set(jsTreeNode.iri, new Set<string>());
       }
 
-      for(const jsTreeNode of jstree) {
+      for(const jsTreeNode of jsTree) {
         const parArr = parents.get(jsTreeNode.iri);
         const parIri = idToIri.get(jsTreeNode.parent);
         if(parArr != undefined && parIri != undefined) {
@@ -702,7 +702,7 @@ export class OlsApi {
       entities = [];
       const inArr = new Set<string>();
 
-      for(const jsTreeNode of jstree) {
+      for(const jsTreeNode of jsTree) {
         if(!inArr.has(jsTreeNode.iri)) {
           inArr.add(jsTreeNode.iri);
 

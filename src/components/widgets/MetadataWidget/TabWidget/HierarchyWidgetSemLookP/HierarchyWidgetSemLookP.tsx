@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
 import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
-import "../../../../../style/hierarchysemlookp.css";
+import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
 
 export type HierarchyWidgetSemLookPProps = {
@@ -33,7 +33,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
 
     return (
         <>
-            <span style={props.highlight ? {backgroundColor: "lightblue", padding: "3px", paddingTop: "4px", paddingBottom: "1px", borderRadius: "6px"} : {}}>
+            <span className={props.highlight ? "highlight" : undefined}>
                 {props.childRelationToParent == "http://purl.obolibrary.org/obo/BFO_0000050" &&
                     <>
                         <span className="surroundCircle">&nbsp;P&nbsp;</span>
@@ -61,7 +61,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
                                 key={`${props.entityData.iri}:${definingOntology}`}
                                 onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityData)}}
                             >
-                                <span style={{fontSize: "13px", backgroundColor: "#6dccb1", padding: "5px", paddingTop: "5px", paddingBottom: "2px", borderRadius: "6px"}}>{definingOntology.toUpperCase()}</span>
+                                <span className="defining-ontology-badge">{definingOntology.toUpperCase()}</span>
                             </button>
                         )
                     })}
@@ -152,7 +152,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     function renderTreeNode(hierarchy: Hierarchy, node: TreeNode, drawLine?: boolean) {
         return (
             <span>
-                <EuiText style={{whiteSpace: "nowrap"}}>
+                <EuiText>
                     {
                         !node.entityData.hasChildren ?
                             <EuiIcon type={"empty"}/> :
@@ -166,7 +166,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
                     {node.entityData.numDescendants != undefined && node.entityData.numDescendants > 0 && <span style={{color: "gray"}}>({node.entityData.numDescendants.toLocaleString()})</span>}
                 </EuiText>
                 {node.expanded &&
-                    <ul style={{whiteSpace: "nowrap", marginBlockEnd: "0", marginInlineStart: "0.5rem"}}>
+                    <ul style={{marginBlockEnd: "0", marginInlineStart: "0.5rem"}}>
                         {node.loading ?
                             <EuiLoadingSpinner/> :
                             node.loadedChildren.map((child, idx) => {
@@ -184,7 +184,7 @@ function HierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
     return (
         <EuiCard title={""} layout={"horizontal"}>
             {(isSuccessHierarchy && hierarchy != undefined) ?
-                <EuiText>
+                <EuiText style={{whiteSpace: "nowrap"}}> {/* // TODO: Does not get displayed correctly on storybook main page */}
                     {hierarchy.roots.map((rootNode, idx) => renderTreeNode(hierarchy, rootNode, idx < hierarchy.roots.length - 1))}
                 </EuiText>
                 : <EuiLoadingSpinner/>}

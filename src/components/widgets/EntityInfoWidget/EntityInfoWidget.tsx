@@ -295,7 +295,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             <EuiCard
                 title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntity && entity) ? capitalize(entity.getType()) : "")  + " Information" : ""}
                 layout="horizontal"
-                style={{whiteSpace: "nowrap"}}
+                style={{whiteSpace: "nowrap"}} // TODO: Does not get displayed correctly on storybook main page
             >
 
                 {isLoadingEntity && <EuiLoadingSpinner size={'s'}/>}

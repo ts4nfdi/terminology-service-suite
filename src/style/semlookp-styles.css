@@ -1,0 +1,41 @@
+.breadcrumb {
+    padding: 4px 4px 1px;
+    border-radius: 6px;
+}
+
+.surroundCircle {
+    border-radius: 50%;
+    height: 17px;
+    width: 17px;
+    display: inline-block;
+
+    background: #8228cc;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+    font-weight: bold;
+}
+
+.defining-ontology-badge {
+    font-size: 13px;
+    background-color: #6dccb1;
+    padding: 3px 3px 0;
+    border-radius: 6px;
+    border: 2px solid #6dccb1;
+    color: black;
+}
+
+.defining-ontology-badge:hover {
+    background-color: white;
+}
+
+.no-decoration {
+    text-decoration: none;
+    color: black;
+}
+
+.highlight {
+    background-color: lightblue;
+    padding: 4px 3px 1px;
+    border-radius: 6px;
+}
