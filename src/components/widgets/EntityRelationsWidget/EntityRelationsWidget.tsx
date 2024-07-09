@@ -353,7 +353,6 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             <EuiCard
                 title={hasTitle ? (entityType ? capitalize(getEntityTypeName(entityType)) : (isSuccessEntityRelation && entity) ? capitalize(entity.getType()) : "") + " Relations" : ""}
                 layout="horizontal"
-                style={{whiteSpace: "nowrap"}} // TODO: Does not get displayed correctly on storybook main page
             >
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
