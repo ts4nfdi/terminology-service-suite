@@ -10,7 +10,7 @@ import {
 } from "../model/ModelTypeCheck";
 import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
-import {BuildHierarchyProps, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
+import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string) : boolean {
@@ -81,7 +81,7 @@ type JSTreeNode = {
 
 const DEFAULT_SEARCH_RESULTS_PER_PAGE = 10;
 
-export class OlsApi {
+export class OlsApi implements HierarchyBuilder{
   private axiosInstance: AxiosInstance;
 
   constructor(api: string) {

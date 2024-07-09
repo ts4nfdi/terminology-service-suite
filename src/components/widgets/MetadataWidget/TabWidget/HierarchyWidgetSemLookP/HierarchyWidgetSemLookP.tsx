@@ -5,19 +5,11 @@ import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
-import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp} from "../../../../../api/HierarchyBuilder";
+import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
-
-export type HierarchyWidgetSemLookPProps = {
-    apiUrl: string
-    apikey?: string
-    backend_type?: string
-} & BuildHierarchyProps & HierarchyIriProp & {
-    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
-    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
-};
+import {HierarchyWidgetSemLookPProps} from "../../../../../app/types";
 
 export const HIERARCHY_WIDGET_SEMLOOKP_DEFAULT_VALUES = {
     INCLUDE_OBSOLETE_ENTITIES: false,
@@ -203,10 +195,16 @@ function WrappedHierarchyWidgetSemLookP(props: HierarchyWidgetSemLookPProps) {
             <QueryClientProvider client={queryClient}>
                 <HierarchyWidgetSemLookP
                     apiUrl={props.apiUrl}
+                    apikey={props.apikey}
                     backend_type={props.backend_type}
                     iri={props.iri}
                     entityType={props.entityType}
                     ontologyId={props.ontologyId}
+                    includeObsoleteEntities={props.includeObsoleteEntities}
+                    useLegacy={props.useLegacy}
+                    preferredRoots={props.preferredRoots}
+                    keepExpansionStates={props.keepExpansionStates}
+                    showSiblingsOnInit={props.showSiblingsOnInit}
                     onNavigateToEntity={props.onNavigateToEntity}
                     onNavigateToOntology={props.onNavigateToOntology}
                 />

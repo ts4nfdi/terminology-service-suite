@@ -6,6 +6,8 @@ import {EuiSuggestProps} from "@elastic/eui/src/components";
 import {EuiCardProps} from "@elastic/eui";
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
 import {Thing} from "../model/interfaces";
+import {BuildHierarchyProps, HierarchyIriProp} from "../api/HierarchyBuilder";
+import {EntityDataForHierarchy} from "../model/interfaces/Hierarchy";
 
 type ParameterObj = {
     /**
@@ -271,6 +273,15 @@ export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEnti
      * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
+};
+
+export type HierarchyWidgetSemLookPProps = {
+    apiUrl: string
+    apikey?: string
+    backend_type?: string
+} & BuildHierarchyProps & HierarchyIriProp & {
+    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
+    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
 };
 
 export type TitleTextObj = {

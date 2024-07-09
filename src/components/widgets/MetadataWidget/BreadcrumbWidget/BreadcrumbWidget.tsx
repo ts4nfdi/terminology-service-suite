@@ -36,7 +36,6 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       }
       {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
-          isDefiningOntology={data.getIsDefiningOntology()}
           ontologyName={data.getOntologyId()}
           shortForm={data.getShortForm()}
           ontologyId={ontologyId}
