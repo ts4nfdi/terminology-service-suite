@@ -112,7 +112,10 @@ declare global {
           | "ghost"
           | "text"
           | "subdued";
-      parameter?: string
+      parameter?: string;
+      externalIcon?: boolean;
+      urlPrefix?: string;
+      copyButton?: boolean;
     }
     )=>void,
     createTab:(props:{
@@ -221,6 +224,7 @@ declare global {
       initialItemsPerPage?: number;
       itemsPerPageOptions?: number[];
       targetLink?: string;
+      useLegacy?: boolean;
     } & Partial<Omit<EuiCardProps, "layout">>
     )=>void
   }

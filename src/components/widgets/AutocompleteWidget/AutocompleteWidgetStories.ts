@@ -121,13 +121,13 @@ export const WithMultipleValues = {
 export const TibNFDI4CHEM = {
   args: {
     api: "https://service.tib.eu/ts4tib/api/",
-  parameter: "collection=NFDI4CHEM",
+  parameter: "classification=NFDI4CHEM&schema=collection",
   }
 };
 
 export const TibDataPlant = {
   args: {
     api: "https://service.tib.eu/ts4tib/api/",
-    parameter: "collection=DataPLANT",
+    parameter: "classification=DataPLANT&schema=collection",
   }
 };

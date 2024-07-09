@@ -12,8 +12,9 @@ import {
     EuiProvider
 } from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {BreadcrumbWidget} from "../MetadataWidget";
 import {AutocompleteWidgetProps} from "../../../app/types";
+import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
+
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -79,9 +80,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             <span>
                                 <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name}
-                                                iri={value.iri} colorFirst={"primary"} colorSecond={"success"}
-                                                parameter={value.parameter} />
+                              <BreadcrumbPresentation
+                                                  ontologyName={value.ontology_name}
+                                                  shortForm={value.short_form}
+                                                  colorFirst={"primary"}
+                                                  colorSecond={"success"}
+                              />
                                 <br />
                               {value.description.substring(0, 40) + "..."}
                             </span>
@@ -108,9 +112,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                         <span>
                           <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <BreadcrumbWidget api={api} entityType={value.type} ontologyId={value.ontology_name}
-                                            iri={value.iri} colorFirst={"primary"} colorSecond={"success"}
-                                            parameter={value.parameter} />
+                          <BreadcrumbPresentation
+                                                  ontologyName={value.ontology_name}
+                                                  shortForm={value.short_form}
+                                                  colorFirst={"primary"}
+                                                  colorSecond={"success"}
+                              />
                         </span>
           </EuiHealth>
         );

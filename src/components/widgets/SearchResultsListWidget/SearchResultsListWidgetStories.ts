@@ -21,6 +21,9 @@ export const SearchResultsListWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
+    useLegacy: {
+        type: { required: false }
+    }
 }
 
 export const SearchResultsListWidgetStoryArgs = {
@@ -36,7 +39,7 @@ export const SearchResultsListSafety = {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
         targetLink: "",
-        parameter: "collection=safety",
+        parameter: "collection=safety&fieldList=description,label,iri,ontology_name,type,short_form",
     }
 };
 
@@ -45,8 +48,9 @@ export const SearchResultsListNFDI4Health = {
         api: "https://semanticlookup.zbmed.de/api/",
         query: "d*",
         targetLink: "",
-        parameter: "collection=nfdi4health",
+        parameter: "collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
         preselected: [{ label: "diabetes" }],
+        useLegacy: true
     }
 };
 
@@ -62,7 +66,7 @@ export const ErrorSearchResultsList = {
 export const TibNFDI4CHEM = {
     args: {
         api: "https://service.tib.eu/ts4tib/api/",
-        parameter: "collection=NFDI4CHEM",
+        parameter: "classification=NFDI4CHEM&schema=collection&fieldList=description,label,iri,ontology_name,type,short_form",
         query: "assay",
         targetLink: "",
     }
@@ -71,8 +75,18 @@ export const TibNFDI4CHEM = {
 export const TibDataPlant = {
     args: {
         api: "https://service.tib.eu/ts4tib/api/",
-        parameter: "collection=DataPLANT",
+        parameter: "classification=DataPLANT&schema=collection&fieldList=description,label,iri,ontology_name,type,short_form",
         query: "agriculture",
         targetLink: "",
+    }
+};
+
+export const SearchResultsListOls4 = {
+    args: {
+        api: "https://www.ebi.ac.uk/ols4/api/",
+        query: "*",
+        targetLink: "/",
+        parameter: "",
+        useLegacy: false
     }
 };

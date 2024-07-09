@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import 'semlookp-widgets/semlookp_widgets.css'
+import 'semlookp-widgets/terminology-service-suite.css'
 import {MetadataWidgetProps} from "../../../app/types";
 import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
 

@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import "semlookp-widgets/semlookp_widgets.css"
+import "semlookp-widgets/terminology-service-suite.css"
 import {TabWidgetProps} from "../../../../app/types";
 import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 
@@ -49,5 +49,6 @@ export {
     TabWidgetOLS4V1,
     TabWidgetOLS4V2,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    TabWidgetLarge
 } from "./TabWidgetStories"

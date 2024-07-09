@@ -50,9 +50,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     },
     {
       name: "Short Name",
-      field: "config.preferredPrefix",
+      field: "ontologyId",
       render: (value: string) => (
-        targetLink ? <EuiLink href={targetLink + "ontologies/" + value.toLowerCase() + "/"}>{value}</EuiLink> : value
+        targetLink ? <EuiLink href={targetLink + "ontologies/" + value + "/"}>{value}</EuiLink> : value
       ),
       width: "10%",
       sortable: true
@@ -154,7 +154,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const ontos = ontologiesData?.properties.map(ontology => ({
     ...ontology.properties
   })) || [];
-
+console.log(ontos)
   const findOntologies = (
     ontologies: any[],
     pageIndex: number,

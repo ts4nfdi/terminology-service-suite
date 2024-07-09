@@ -1,8 +1,8 @@
 # SemLookP Widgets
 
-Documentation: [Latest](https://nfdi4health.github.io/semlookp-widgets/comp/latest/), [All Versions](https://nfdi4health.github.io/semlookp-widgets/)<br>
-React package: [Latest](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets), [All Versions](https://github.com/nfdi4health/semlookp-widgets/pkgs/npm/semlookp-widgets/versions)<br>
-JavaScript modules: [Latest](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/nfdi4health/semlookp-widgets/tree/gh-pages/js-modules)<br>
+Documentation: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
+React package: [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)<br>
+JavaScript modules: [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)<br>
 
 ## About The Project
 
@@ -10,7 +10,7 @@ The SemLookP Widgets project, derived from the [SemLookP](https://semanticlookup
 GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to
 ease the integration of terminology service functions into third-party applications.
 
-In [this Storybook](https://nfdi4health.github.io/semlookp-widgets/), you will find an interactive documentation of the
+In [this Storybook](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), you will find an interactive documentation of the
 widget component library.
 
 The widgets are built using React and TypeScript and can be used in both React and plain HTML applications. The
@@ -19,7 +19,7 @@ click "Show code" in the Storybook is different.
 
 ## Using this package and further documentation
 
-Click [here](https://nfdi4health.github.io/semlookp-widgets/latest/) for detailed instructions on how to use the
+Click [here](https://ts4nfdi.github.io/terminology-service-suite/latest/) for detailed instructions on how to use the
 package.
 
 ## Development
@@ -49,10 +49,13 @@ team.
 
 ```
 @zbmed:registry=https://npm.pkg.github.com
+@ts4nfdi:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=TOKEN
 ```
 
 ### Run Storybook
+
+#### Manually
 
 This project uses [Storybook](https://storybook.js.org/) to develop independent React components. To start the
 development server, install the dependencies with `npm install` and start Storybook with this
@@ -68,6 +71,32 @@ via `http://localhost:6007`.
 The React and HTML components can be combined in one Storybook using `npm run storybook`. Notice that, for this to work,
 the React Storybook has to be running at `http://localhost:6006` and the HTML Storybook at `http://localhost:6007`.
 
+
+#### Docker
+Before running the storybook via docker, make sure that you provide the needed authentication file `~/.npmrc`. 
+
+First, build (name is arbitrary)
+
+     docker build --tag 'storybook' .
+
+Then, run
+
+    $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        storybook
+
+**Hint**: if you want to run the docker for development, you can use the docker bind mount to link the scripts inside the container to your local ones to check the changes immediately without re-building. Look at: https://docs.docker.com/storage/bind-mounts/#start-a-container-with-a-bind-mount
+
+     $ docker run \
+        -p 6006:6006 -p 6007:6007 -p 6008:6008 \
+        --name story \    
+        --mount type=bind,source=$(pwd)/src,target=/usr/storybook/src \
+        storybook
+
+**Note** that the bind only works for the React version. For the HTML version, you need to re-build the storybook.
+
+
 ### Build widgets for React projects
 
 `npm run build` builds the standard React widgets. It uses rollup and the output can be found in `dist/esm/`.
@@ -81,16 +110,28 @@ plugin [esbuild-dynamic-import](https://github.com/zbmed/esbuild-dynamic-import)
 For further information on the usage of the HTML widgets, please visit the interactive documentation in
 the [HTML Storybook](#run-storybook).
 
+#### Testing the JavaScript package in a consumer project locally 
 If the environment features `npm`, a local module can be created from the output file. To do this, place all the files
 generated inside `dist_plainjs/`
-in `local_modules/semlookp-widgets/` in your project. Now
-add `"semlookp-widgets": "file:local_modules/semlookp-widgets"` as a dependency in `package.json` and run `npm install`.
+in `local_modules/terminology-service-suite/` in your consumer project. Now
+add `"terminology-service-suite": "file:local_modules/terminology-service-suite"` as a dependency in `package.json` and run `npm install`.
 
 ### Commit Message Formatting
 
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline
 analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your
 commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
+
+In short:
+| Release type  | Commit message |
+| ------------- | ------------- |
+| Fix release  | fix(autocomplete): fix something   |
+| Feature relese  | feat(autocomplet): add suggest function  |
+| Breaking change  | BREAKING CHANGE: parameter removed  |
+
+**HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
+
+**HINT 2**: Don't use Emoji in commit messages (e.g. :bug:), because it breaks semantic versioning!
 
 ### Test the package locally
 
@@ -112,7 +153,7 @@ before using
 ```npm pack```
 
 A `.tgz` folder will be created with the bundled module.
-Add `"@nfdi4health/semlookp-widgets": "file:../path/to/nfdi4health-semlookp-widgets-1.17.4.tgz",` (adapt path and file
+Add `"@ts4nfdi/terminology-service-suite": "file:../path/to/ts4nfdi-terminology-service-suite-1.17.4.tgz",` (adapt path and file
 name) to your package.json
 of the consumer project and do `npm install`.
 
@@ -133,8 +174,11 @@ Start the application: ```npm start```
 
 ## Funding
 
-This project is hosted and developed by Terminology Services for NFDI (TS4NFDI). It is part of the [Base4NFDI
-consortium](https://base4nfdi.de/).
+This project is developed by the Terminology Services for NFDI (TS4NFDI) project (as part of the [Base4NFDI
+consortium](https://base4nfdi.de/)), and the [NFDI4Health Consortium](https://www.nfdi4health.de).
 
-The project is derived from the Semantic Lookup Platform SemLookP which was developed in part by the [NFDI4Health
-Consortium](www.nfdi4health.de) and the [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).
+The NFDI4Health Consortium gratefully acknowledges the financial support of the Deutsche Forschungsgemeinschaft 
+(DFG, German Research Foundation) – project number 442326535.
+
+The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part 
+by [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).

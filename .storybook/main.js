@@ -35,11 +35,11 @@ module.exports = {
     return {
       react: {
         title: 'REACT',
-        url: 'https://nfdi4health.github.io/semlookp-widgets/react/latest',
+        url: 'https://ts4nfdi.github.io/terminology-service-suite/react/latest',
       },
       html: {
         title: 'HTML',
-        url: 'https://nfdi4health.github.io/semlookp-widgets/html/latest',
+        url: 'https://ts4nfdi.github.io/terminology-service-suite/html/latest',
       },
     };
   },

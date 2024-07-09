@@ -33,6 +33,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
         targetLink,
         preselected,
+        useLegacy = true,
         ...rest
     } = props;
     const olsApi = new OlsApi(api);
@@ -130,20 +131,31 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     if (response["facet_counts"] && response["facet_counts"]["facet_fields"]) {
                         if (response["facet_counts"]["facet_fields"]["type"]) {
                             updateFilterOptions(
-                                filterByTypeOptions,
-                                response["facet_counts"]["facet_fields"]["type"],
-                                setFilterByTypeOptions,
-                                (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
+                              filterByTypeOptions,
+                              response["facet_counts"]["facet_fields"]["type"],
+                              setFilterByTypeOptions,
+                              (currentValue: string) => `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
                             );
                         }
-                        if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
-                            updateFilterOptions(
-                                filterByOntologyOptions,
-                                response["facet_counts"]["facet_fields"]["ontology_name"],
-                                setFilterByOntologyOptions,
-                                (currentValue: string) => currentValue.toUpperCase()
-                            );
-                        }
+                        if (useLegacy) {
+                            if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
+                                updateFilterOptions(
+                                  filterByOntologyOptions,
+                                  response["facet_counts"]["facet_fields"]["ontology_name"],
+                                  setFilterByOntologyOptions,
+                                  (currentValue: string) => currentValue.toUpperCase()
+                                );
+                            }
+                        } else {
+                                if (response["facet_counts"]["facet_fields"]["ontologyId"]) {
+                                    updateFilterOptions(
+                                      filterByOntologyOptions,
+                                      response["facet_counts"]["facet_fields"]["ontologyId"],
+                                      setFilterByOntologyOptions,
+                                      (currentValue: string) => currentValue.toUpperCase()
+                                    );
+                                }
+                            }
                     }
 
                     setTotalItems(response["response"]["numFound"]);
@@ -208,6 +220,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                 singleSelection={true}
                 hasShortSelectedLabel={true}
                 placeholder={"Search"}
+                parameter={parameter}
                 preselected={preselected}
             />
 
