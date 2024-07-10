@@ -10,7 +10,6 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   const {
     api,
     query,
-    onSearchValueChange,
     selectionChangedEvent,
     ...rest
   } = props;
@@ -30,10 +29,6 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
    * current search value
    */
   const [searchValue, setSearchValue] = useState<string>(query);
-
-  useEffect(() => {
-    onSearchValueChange(searchValue);
-  }, [onSearchValueChange, searchValue]);
 
   const onChange = (selectedOption: Array<EuiComboBoxOptionOption<any>>) => {
     setSelected(selectedOption);
@@ -137,7 +132,6 @@ function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
         <SearchBarWidget
           api={props.api}
           query={props.query}
-          onSearchValueChange={props.onSearchValueChange}
           selectionChangedEvent={props.selectionChangedEvent}
           parameter={props.parameter}
         />

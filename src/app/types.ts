@@ -346,12 +346,6 @@ export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChan
     query: string;
 
     /**
-     * Function to be called when the search value in the search bar changes.
-     * @param suggestion
-     */
-    onSearchValueChange: (suggestion: string) => void;
-
-    /**
      * A method that is called once the set of selection changes
      * @param selectedOptions  The selected items
      */
