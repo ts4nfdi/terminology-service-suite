@@ -346,10 +346,15 @@ export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChan
     query: string;
 
     /**
-     * Function to be called when the search value in the search bar changes.
-     * @param suggestion
+     * A method that is called once the set of selection changes
+     * @param selectedOptions  The selected items
      */
-    onSearchValueChange: (suggestion: string) => void;
+    selectionChangedEvent: (selectedOptions: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string;
+    }[]) => void;
 };
 
 export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj &{

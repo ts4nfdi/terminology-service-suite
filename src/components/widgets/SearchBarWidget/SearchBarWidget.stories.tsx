@@ -1,15 +1,15 @@
 import { SearchBarWidget } from "./SearchBarWidget";
-import {SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes} from "./SearchBarWidgetStories"
+import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
 
 export default {
   title: "SearchBarWidget",
   component: SearchBarWidget,
   argTypes: SearchBarWidgetStoryArgTypes,
-  args: SearchBarWidgetStoryArgs,
+  args: SearchBarWidgetStoryArgs
 };
 
 export {
-    SearchBarWidget1,
-    TibNFDI4CHEM,
-    TibDataPlant
-} from "./SearchBarWidgetStories"
+  SearchBarWidgetDefault,
+  TibNFDI4CHEM,
+  TibDataPlant
+} from "./SearchBarWidgetStories";

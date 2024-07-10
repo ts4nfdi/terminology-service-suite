@@ -213,8 +213,13 @@ declare global {
     createSearchBar:(props:{
       api: string;
       query: string;
-      onSearchValueChange: (suggestion: string) => void;
-      parameter?: string
+      parameter?: string;
+      selectionChangedEvent: (selectedOption: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string;
+      }) => void;
     } & Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value">
     )=>void,
     createSearchResultsList:(props:{
