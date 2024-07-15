@@ -231,7 +231,14 @@ declare global {
       targetLink?: string;
       useLegacy?: boolean;
     } & Partial<Omit<EuiCardProps, "layout">>
-    )=>void
+    )=>void,
+    createDepiction:(props:{
+      iri: string;
+      ontologyId: string;
+      api: string;      
+      useLegacy: boolean;      
+    }
+    )=>void,
   }
 }
 

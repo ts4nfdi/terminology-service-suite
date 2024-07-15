@@ -394,3 +394,5 @@ export type SearchResultProps = {
 export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
     result: SearchResultProps;
 };
+
+export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;

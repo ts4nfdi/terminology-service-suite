@@ -111,4 +111,11 @@ export abstract class OLS4Thing implements Thing {
   getLinkedEntities(): LinkedEntities {
     return new LinkedEntities(this.properties["linkedEntities"] || {});
   }
+
+  getDepictionUrl(): string {
+    if (this.properties["http://xmlns.com/foaf/0.1/depiction"]) {
+      return this.properties["http://xmlns.com/foaf/0.1/depiction"];
+    }
+    return "";
+  }
 }

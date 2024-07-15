@@ -17,6 +17,7 @@ import { createResources } from "./ResourcesWidget/ResourcesWidget";
 import { createSearchBar } from "./SearchBarWidget/SearchBarWidget";
 import { createSearchResultsList } from "./SearchResultsListWidget/SearchResultsListWidget";
 import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidget";
+import { createDepiction } from "./TermDepictionWidget/TermDepictionWidget";
 
 (window as any)['SemLookPWidgets'] = {
     createAutocomplete,
@@ -37,7 +38,8 @@ import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidg
     createResources,
     createSearchBar,
     createSearchResultsList,
-    createMetadata
+    createMetadata,
+    createDepiction
 }
 
 export {
@@ -59,7 +61,8 @@ export {
     createResources,
     createSearchBar,
     createSearchResultsList,
-    createMetadata
+    createMetadata,
+    createDepiction
 }
 
 export * from "./MetadataWidget";
@@ -71,4 +74,5 @@ export * from "./OntologyInfoWidget";
 export * from "./SearchBarWidget";
 export * from "./SearchResultsListWidget";
 export * from "./EntityInfoWidget";
-export * from "./EntityRelationsWidget"
+export * from "./EntityRelationsWidget";
+export * from "./TermDepictionWidget";

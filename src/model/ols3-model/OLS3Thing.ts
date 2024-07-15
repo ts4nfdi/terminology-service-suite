@@ -80,4 +80,11 @@ export abstract class OLS3Thing implements Thing {
   getLinkedEntities(): LinkedEntities {
     return new LinkedEntities(this.properties["linkedEntities"] || {});
   }
+
+  getDepictionUrl(): string {
+    if (this.properties["annotation"] && this.properties["annotation"]["depiction"]) {
+      return this.properties["annotation"]["depiction"][0];
+    }
+    return "";
+  }
 }
