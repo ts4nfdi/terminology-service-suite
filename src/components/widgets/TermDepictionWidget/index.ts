@@ -1,1 +1,1 @@
-import TermDepictionWidget from "./TermDepictionWidget";
+export {TermDepictionWidget} from "./TermDepictionWidget";
