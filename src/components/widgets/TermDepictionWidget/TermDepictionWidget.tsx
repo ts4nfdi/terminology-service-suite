@@ -29,7 +29,7 @@ const TermDepictionWidget: React.FC<TermDepictionWidgetProps> = (props) => {
     return (
         <>
         {isLoading && <EuiLoadingSpinner size="s" />}
-        {isSuccess && data &&
+        {isSuccess && data && data.getDepictionUrl() &&
               <>              
               <EuiImage
                 size="m"
