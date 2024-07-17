@@ -1,4 +1,4 @@
-import TermDepictionWidget from "./TermDepictionWidget";
+import {TermDepictionWidget} from "./TermDepictionWidget";
 import {     
     TermDepictionWidgetStoryArgs, 
     TermDepictionWidgetStoryArgTypes

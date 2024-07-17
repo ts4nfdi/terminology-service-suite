@@ -8,7 +8,7 @@ import {EuiLoadingSpinner, EuiProvider, EuiText, EuiImage} from "@elastic/eui";
 import { getErrorMessageToDisplay } from "../../../app/util";
 
 
-const TermDepictionWidget: React.FC<TermDepictionWidgetProps> = (props) => {
+function TermDepictionWidget(props:TermDepictionWidgetProps){
     const {api, iri, ontologyId, useLegacy} = props;
     const olsApi = new OlsApi(api);
 
@@ -67,5 +67,4 @@ function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
   )
 }
 
-export default TermDepictionWidget;
-export {createDepiction};
+export {createDepiction, TermDepictionWidget};

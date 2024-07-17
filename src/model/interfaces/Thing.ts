@@ -19,4 +19,5 @@ export interface Thing {
     getAnnotationTitleById(id: string): string;
     getAnnotationById(id: string):Reified<any>[];
     getLinkedEntities(): LinkedEntities;
+    getDepictionUrl(): string;
 }
