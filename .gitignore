@@ -140,5 +140,6 @@ fabric.properties
 /.idea/jsLinters/eslint.xml
 /.idea/modules.xml
 /.npmrc
+/.nvmrc
 /dist/
 /.idea/
