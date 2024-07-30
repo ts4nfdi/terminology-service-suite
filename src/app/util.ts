@@ -1,4 +1,11 @@
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
+import {
+    isClassTypeName,
+    isIndividualTypeName,
+    isOntologyTypeName,
+    isPropertyTypeName,
+    isThingTypeName
+} from "../model/ModelTypeCheck";
 
 export function asArray<T>(obj: T | T[]): T[] {
     if (Array.isArray(obj)) {
@@ -42,31 +49,30 @@ export function deUnderscore(str: string) : string {
  * @param api
  */
 export function getFrontEndApi(api: string) : string {
-    return api.replace("/api/", "").replace("/api", "");
+    return api.replace(/\/api\/?$/, "/");
 }
 
 /**
- * Returns "/ontologies/{ontologyId}/{entityType}?iri={termIri}", which can be concatenated with frontendApi to get full link
+ * Returns "ontologies/{ontologyId}/{entityType}/{iri}", which can be concatenated with frontendApi to get full link
  * @param ontologyId the entities' ontologyId
- * @param termIri the entities' iri
+ * @param iri the entities' iri
  * @param entityTypeArray the entities' type array (from api JSON linkedEntities)
+ * @param useLegacy
  */
-export function getTermInOntologySuffix(ontologyId: string, termIri: string, entityTypeArray: string[]) : string {
-    return "/ontologies/" + ontologyId + "/" + pluralizeType(entityTypeArray) + "?iri=" + termIri;
+export function getEntityInOntologySuffix(ontologyId: string, entityTypeArray: string[] | string, iri?: string, useLegacy?: boolean) : string {
+    return `ontologies/${ontologyId}/${pluralizeType(asArray(entityTypeArray), useLegacy)}` + (iri != undefined ? `/${encodeURIComponent(encodeURIComponent(iri))}` : "");
 }
 
-export function pluralizeType(typeArray: string[] | string, useLegacy?: boolean) : "terms" | "classes" | "properties" | "individuals" | undefined {
+export function pluralizeType(typeArray: string[] | string, useLegacy?: boolean) : "terms" | "classes" | "properties" | "individuals" | "ontologies" {
     for(const type of asArray(typeArray)) {
-        switch (type){
-            case "class": case "term": // allow both
-                return getUseLegacy(useLegacy) ? "terms" : "classes";
-            case "property":
-                return "properties"
-            case "individual":
-                return "individuals"
+        if(isThingTypeName(type)) {
+            if(isClassTypeName(type)) return getUseLegacy(useLegacy) ? "terms" : "classes";
+            if(isPropertyTypeName(type)) return "properties";
+            if(isIndividualTypeName(type)) return "individuals";
+            if(isOntologyTypeName(type)) return "ontologies"
         }
     }
-    return undefined;
+    throw new Error("No thingType found to pluralize in provided typeArray.");
 }
 
 /**

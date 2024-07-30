@@ -184,8 +184,8 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getNumDescendants(): number {
-    return this.properties["numDescendants"]
-      ? parseInt(this.properties["numDescendants"])
+    return this.properties["numDirectDescendants"]
+      ? parseInt(this.properties["numDirectDescendants"])
       : 0;
   }
 
@@ -198,21 +198,6 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
       if (p.value === parentIri) {
         return p.getMetadata();
       }
-    }
-  }
-
-    getTypePlural(): "classes" | "properties" | "individuals" | "entities" {
-      const type = this.getType();
-
-    switch (type) {
-      case "class":
-        return "classes";
-      case "property":
-        return "properties";
-      case "individual":
-        return "individuals";
-      default:
-        throw new Error("unknown type");
     }
   }
 }

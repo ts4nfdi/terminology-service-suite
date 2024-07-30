@@ -4,10 +4,11 @@ import {OLS3Entity} from "./OLS3Entity";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
+import {ClassTypeName} from "../ModelTypeCheck";
 
 export class OLS3Class extends OLS3Entity implements Class {
 
-  getType(): "ontology" | "class" | "property" | "individual" {
+  getType(): ClassTypeName {
     return "class"
   }
 

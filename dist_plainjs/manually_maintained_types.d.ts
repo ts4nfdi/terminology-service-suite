@@ -182,6 +182,28 @@ declare global {
       parameter?: string
     }
     )=>void,
+    createHierarchySemLookP:(props:{
+      apiUrl: string
+      apikey?: string
+      backend_type?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      ontologyId?: string
+      includeObsoleteEntities?: boolean
+      useLegacy?: boolean
+      preferredRoots?: boolean
+      keepExpansionStates?: boolean
+      showSiblingsOnInit?: boolean
+      iri?: string
+      onNavigateToEntity?: (entity: {
+        iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
+      }) => void
+      onNavigateToOntology?: (ontologyId: string, entity: {
+        iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
+      }) => void
+    })=>void,
     createMetadata:(props:{
       iri: string;
       ontologyId: string;

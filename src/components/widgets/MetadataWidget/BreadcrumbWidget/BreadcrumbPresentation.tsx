@@ -6,11 +6,11 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (
     <>
         <span>
-          <EuiBadge color={props.colorFirst || "primary"}>
+          <EuiBadge className="breadcrumb" color={props.colorFirst || "primary"}>
             {props.ontologyName ? props.ontologyName.toUpperCase() : "No ontology name available"}
           </EuiBadge>
           {" > "}
-          <EuiBadge color={props.colorSecond || "success"}>
+          <EuiBadge className="breadcrumb" color={props.colorSecond || "success"}>
             {props.shortForm ? props.shortForm.toUpperCase() : "No short form available"}
           </EuiBadge>
         </span>

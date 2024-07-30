@@ -4,6 +4,7 @@ import {OLS3Thing} from "./OLS3Thing";
 import Reified from "../Reified";
 
 import {asArray, deUnderscore} from "../../app/util";
+import {EntityTypeName} from "../ModelTypeCheck";
 
 export abstract class OLS3Entity extends OLS3Thing implements Entity{
   abstract getParents(): Reified<any>[];
@@ -163,18 +164,5 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     }
   }
 
-  getTypePlural(): "classes" | "properties" | "individuals" {
-    const type = this.getType();
-
-    switch (type) {
-      case "class":
-        return "classes";
-      case "property":
-        return "properties";
-      case "individual":
-        return "individuals";
-      default:
-        throw new Error("unknown type");
-    }
-  }
+  abstract getType(): EntityTypeName;
 }
