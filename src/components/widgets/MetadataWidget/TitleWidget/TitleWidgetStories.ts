@@ -38,7 +38,7 @@ export const TitleWidgetStoryArgTypes = {
         description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
     },
     titleText: {},
-    default_value: {
+    defaultValue: {
         control: 'text',
     },
     parameter: {
@@ -54,10 +54,39 @@ export const TitleWidgetStoryArgs = {
     titleText: ""
 }
 
-export const TitleWidget1 = {
+export const TitleWidgetDefault = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: "https://semanticlookup.zbmed.de/ols/api/",
+        ontologyId: "ncit",
+        thingType: "term",
+    }
+};
+
+export const TitleWidgetWithTitleText = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: "https://semanticlookup.zbmed.de/ols/api/",
+        ontologyId: "ncit",
+        thingType: "term",
+        titleText: "title text"
+    }
+};
+
+export const IncorrectIriWithDefaultValue = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: "https://semanticlookup.zbmed.de/ols/api/",
+        ontologyId: "ncit",
+        thingType: "term",
+        defaultValue: "default value"
+    }
+};
+
+export const IncorrectIriWithoutDefaultValue = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: "https://semanticlookup.zbmed.de/ols/api/",
         ontologyId: "ncit",
         thingType: "term",
     }
@@ -80,3 +109,4 @@ export const DefiningOntologyUnavailable = {
         parameter: ""
     }
 };
+

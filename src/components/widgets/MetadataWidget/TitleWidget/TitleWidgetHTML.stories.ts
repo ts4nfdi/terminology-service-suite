@@ -31,7 +31,8 @@ window['SemLookPWidgets'].createTitle(
         titleText:"${args.titleText}",
         thingType:"${args.thingType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy},
+        useLegacy:"${args.useLegacy}",
+        defaultVaule:"${args.defaultValue}",
     },
     document.querySelector('#title_widget_container_${num}')
 )
@@ -43,7 +44,10 @@ window['SemLookPWidgets'].createTitle(
 }
 
 export {
-    TitleWidget1,
+    TitleWidgetDefault,
+    TitleWidgetWithTitleText,
+    IncorrectIriWithDefaultValue,
+    IncorrectIriWithoutDefaultValue,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
 } from "./TitleWidgetStories";

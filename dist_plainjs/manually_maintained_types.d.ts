@@ -179,7 +179,8 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string;
+      defaultValue?: string;
     }
     )=>void,
     createMetadata:(props:{
