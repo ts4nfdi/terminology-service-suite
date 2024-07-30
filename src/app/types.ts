@@ -276,8 +276,17 @@ export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEnti
 };
 
 export type HierarchyWidgetSemLookPProps = {
+    /**
+     * The API URL for the API call.
+     */
     apiUrl: string
+    /**
+     * An API key is required to access the OntoPortal API.
+     */
     apikey?: string
+    /**
+     * The backend key from which to request {ols, ontoportal, skosmos}
+     */
     backend_type?: string
 } & BuildHierarchyProps & HierarchyIriProp & {
     onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
