@@ -2,6 +2,8 @@ import {Thing} from "../interfaces";
 
 import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
+import {ThingTypeName} from "../ModelTypeCheck";
+import {pluralizeType} from "../../app/util";
 
 export abstract class OLS3Thing implements Thing {
   properties: any;
@@ -24,10 +26,11 @@ export abstract class OLS3Thing implements Thing {
   }
 
   // standard responses don't have "type" key -> implement statically in subtypes
-  abstract getType(): "ontology" | "class" | "property" | "individual";
+  abstract getType(): ThingTypeName;
 
-  // standard responses don't have "type" key -> implement statically in subtypes
-  abstract getTypePlural(): "ontologies" | "classes" | "properties" | "individuals";
+  getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals" {
+    return pluralizeType(this.getType());
+  }
 
   // not available in standard responses
   getRdfTypes(): string[] {

@@ -4,6 +4,7 @@ import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
+import {ThingTypeName} from "../ModelTypeCheck";
 
 export abstract class OLS4Thing implements Thing {
   properties: any;
@@ -25,7 +26,7 @@ export abstract class OLS4Thing implements Thing {
     return this.properties["iri"];
   }
 
-  getType(): "ontology" | "class" | "property" | "individual" {
+  getType(): ThingTypeName {
     const types = this.properties["type"] as string[];
 
     for (const type of types) {
@@ -39,7 +40,7 @@ export abstract class OLS4Thing implements Thing {
     throw new Error("unknown type");
   }
 
-  getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "entities" {
+  getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "terms" {
     const type = this.getType();
 
     switch (type) {

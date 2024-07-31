@@ -11,4 +11,9 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "jsx-a11y"],
   root: true,
+  settings: {
+    react: {
+      version: "detect"
+    }
+  }
 };

@@ -29,14 +29,13 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     <>
       {isLoading &&
           <span>
-                <EuiBadge color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+                <EuiBadge className="breadcrumb" color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
             {" > "}
-            <EuiBadge color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+            <EuiBadge className="breadcrumb" color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
           </span>
       }
       {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
-          isDefiningOntology={data.getIsDefiningOntology()}
           ontologyName={data.getOntologyId()}
           shortForm={data.getShortForm()}
           ontologyId={ontologyId}
@@ -44,9 +43,9 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       }
       {isError &&
           <span>
-                <EuiBadge color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
+                <EuiBadge className="breadcrumb" color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
             {" > "}
-            <EuiBadge color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
+            <EuiBadge className="breadcrumb" color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
             </span>
       }
       </>

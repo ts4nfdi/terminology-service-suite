@@ -4,15 +4,12 @@ import {OLS3Entity} from "./OLS3Entity";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
+import {IndividualTypeName} from "../ModelTypeCheck";
 
 export class OLS3Individual extends OLS3Entity implements Individual{
 
-  getType(): "ontology" | "class" | "property" | "individual" {
+  getType(): IndividualTypeName {
     return "individual";
-  }
-
-  getTypePlural(): "classes" | "properties" | "individuals" {
-    return "individuals";
   }
 
   getParents() {

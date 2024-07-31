@@ -1,9 +1,9 @@
 import { Thing, Entity, Class, Property, Individual, Ontology } from "./interfaces";
 
 // READONLY arrays containing the strings defining a Model Object Type
-const classTypeNames = ["class" , "term"] as const;
-const propertyTypeNames = ["property"] as const;
-const individualTypeNames = ["individual"] as const;
+export const classTypeNames = ["class" , "term"] as const;
+export const propertyTypeNames = ["property"] as const;
+export const individualTypeNames = ["individual"] as const;
 export const ontologyTypeNames = ["ontology"] as const;
 export const entityTypeNames = [...classTypeNames, ...individualTypeNames, ...propertyTypeNames] as const;
 export const thingTypeNames = [...entityTypeNames, ...ontologyTypeNames] as const;
