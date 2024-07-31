@@ -1,6 +1,6 @@
 import React from "react";
 import { EuiFlexItem, EuiTabbedContent } from "@elastic/eui";
-import { HierarchyWidget } from "./HierarchyWidget";
+import { HierarchyWidgetOLS } from "./HierarchyWidget";
 import { Entity } from "../../../../model/interfaces";
 import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
@@ -33,7 +33,7 @@ function TabPresentation(props: TabPresentationProps) {
                         iri={props.iri}
 
                       />
-                      : <HierarchyWidget
+                      : <HierarchyWidgetOLS
                         api={props.api}
                         iri={props.iri}
                         ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}

@@ -157,7 +157,7 @@ declare global {
       parameter?: string;
     }
     )=>void,
-    createHierarchy:(props:{
+    createHierarchyOLS:(props:{
       iri?: string;
       ontologyId: string;
       api: string;
@@ -182,7 +182,7 @@ declare global {
       parameter?: string
     }
     )=>void,
-    createHierarchySemLookP:(props:{
+    createHierarchy:(props:{
       apiUrl: string
       apikey?: string
       backend_type?: string

@@ -8,9 +8,9 @@ import { createIri } from "./MetadataWidget/IriWidget/IriWidget";
 import { createTab } from "./MetadataWidget/TabWidget/TabWidget";
 import { createAlternativeNameTab } from "./MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
 import { createCrossRefTab } from "./MetadataWidget/TabWidget/CrossRefWidget/CrossRefTabWidget";
-import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
+import { createHierarchyOLS } from "./MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetOLS";
 import { createHierarchyDeprecated } from "./MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecated";
-import { createHierarchySemLookP } from "./MetadataWidget/TabWidget/HierarchyWidgetSemLookP/HierarchyWidgetSemLookP";
+import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
 import { createTitle} from "./MetadataWidget/TitleWidget/TitleWidget";
 import { createMetadata } from "./MetadataWidget/MetadataWidget";
 import { createOntologyInfo } from "./OntologyInfoWidget/OntologyInfoWidget";
@@ -39,7 +39,7 @@ import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidg
     createSearchBar,
     createSearchResultsList,
     createMetadata,
-    createHierarchySemLookP
+    createHierarchyOLS
 }
 
 export {
@@ -54,7 +54,7 @@ export {
     createTab,
     createAlternativeNameTab,
     createCrossRefTab,
-    createHierarchy,
+    createHierarchyOLS,
     createHierarchyDeprecated,
     createTitle,
     createOntologyInfo,
@@ -62,7 +62,7 @@ export {
     createSearchBar,
     createSearchResultsList,
     createMetadata,
-    createHierarchySemLookP
+    createHierarchy
 }
 
 export * from "./MetadataWidget";
