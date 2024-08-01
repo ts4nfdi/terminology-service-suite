@@ -1,0 +1,1 @@
+export {TermDepictionWidget} from "./TermDepictionWidget"
