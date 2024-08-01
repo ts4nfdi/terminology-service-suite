@@ -1,1 +1,1 @@
-export { HierarchyWidget } from "./HierarchyWidget";
+export { HierarchyWidgetOLS } from "./HierarchyWidgetOLS";

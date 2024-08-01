@@ -257,7 +257,7 @@ export type CrossRefPresentationProps = {
     crossrefs: any[];
 }
 
-export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
+export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
     /**
      * This function is called every time an entity link is clicked
      * @param ontologyId obtains the ontologyId of the current ontology
@@ -275,13 +275,13 @@ export type HierarchyWidgetProps = ApiObj & OptionalOntologyIdObj & OptionalEnti
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 };
 
-export type HierarchyWidgetSemLookPProps = {
+export type HierarchyWidgetProps = {
     /**
      * The API URL for the API call.
      */
     apiUrl: string
     /**
-     * An API key is required to access the OntoPortal API.
+     * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
      */
     apikey?: string
     /**

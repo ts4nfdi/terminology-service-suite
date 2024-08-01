@@ -1,1 +1,1 @@
-export { HierarchyWidgetSemLookP } from "./HierarchyWidgetSemLookP";
+export { HierarchyWidget } from "./HierarchyWidget";

@@ -38,7 +38,7 @@ the `devDependencies` section, if the corresponding modules are not present on y
 IMPORTANT NOTE:  To build the package, they must be defined as peerDependencies to avoid dependency conflicts in the
 consumer projects.
 
-You will need access to a sub-widget repository to run the HierarchyWidget (and the entire project) in development mode.
+You will need access to a sub-widget repository to run the HierarchyWidgetOLS (and the entire project) in development mode.
 Please contact the SemLookP or TS4NFDI teams. We are working on avoiding this hurdle in the future.
 
 ### Authenticate
