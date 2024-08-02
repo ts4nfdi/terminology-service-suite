@@ -14,6 +14,7 @@ export default {
 
 export {
   WithDefaults,
+  WithDefaultsCompact,
   WithValue,
   WithCustomValue,
   WithInvalidValue,

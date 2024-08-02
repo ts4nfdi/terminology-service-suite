@@ -25,6 +25,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     },
     singleSelection: {
       required: false,
+    },
+    singleSuggestionRow: {
+      required: false,
     }
   }
 }
@@ -56,6 +59,12 @@ export const AutocompleteWidgetStoryArgs = {
 
 export const WithDefaults = {
   args: {},
+};
+
+export const WithDefaultsCompact = {
+  args: {
+    singleSuggestionRow: true
+  },
 };
 
 export const WithValue = {

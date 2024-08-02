@@ -33,6 +33,7 @@ window['SemLookPWidgets'].createAutocomplete(
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
+        singleSuggestionRow:${args.singleSuggestionRow},
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -45,6 +46,7 @@ window['SemLookPWidgets'].createAutocomplete(
 
 export {
     WithDefaults,
+    WithDefaultsCompact,
     WithValue,
     WithCustomValue,
     WithInvalidValue,
