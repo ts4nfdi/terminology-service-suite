@@ -7,7 +7,7 @@ export interface SelectResult {
   getIri(): string;
   getType(): ThingTypeName;
   getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals";
-  getDescription(): [];
+  getDescription(): string;
   getOntologyId(): string;
   getShortForm(): string;
 }

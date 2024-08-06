@@ -14,6 +14,7 @@ export default {
 
 export {
   WithDefaults,
+  WithDefaultsTS4NFDIGateway,
   WithValue,
   WithCustomValue,
   WithInvalidValue,

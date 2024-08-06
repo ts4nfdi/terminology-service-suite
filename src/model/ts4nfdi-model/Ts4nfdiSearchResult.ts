@@ -1,7 +1,7 @@
 import { SelectResult } from "../interfaces/SelectResult";
 import { ThingTypeName } from "../ModelTypeCheck";
 
-export class OLSSelectResult implements SelectResult {
+export class Ts4nfdiSearchResult implements SelectResult {
   properties: any;
 
   constructor(properties: any) {
@@ -29,7 +29,7 @@ export class OLSSelectResult implements SelectResult {
   }
 
   getOntologyId(): string {
-    return this.properties["ontology_name"];
+    return this.properties["ontology"];
   }
 
   getType(): ThingTypeName {

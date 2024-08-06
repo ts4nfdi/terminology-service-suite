@@ -20,7 +20,7 @@ import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/Bread
  * A React component to provide Autosuggestion based on SemLookP.
  */
 function AutocompleteWidget(props: AutocompleteWidgetProps) {
-    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, preselected, placeholder, singleSelection, ...rest } = props;
+    const { api, parameter, hasShortSelectedLabel, allowCustomTerms, selectionChangedEvent, preselected, placeholder, singleSelection, ts4nfdiGateway = false, ...rest } = props;
 
     const olsApi = new OlsApi(api);
 
@@ -156,6 +156,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             undefined,
                             undefined,
                             parameter,
+                            ts4nfdiGateway
                         ).then((response) => {
                             if (response) {
                                 response.properties.map((selection: any) => {
@@ -172,7 +173,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                                 ontology_name: selection.getOntologyId(),
                                                 type: selection.getType(),
                                                 short_form: selection.getShortForm(),
-                                                description: selection.getDescription()?.join()
+                                                description: selection.getDescription()
                                             },
                                         });
                                     }
@@ -219,7 +220,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           { query: searchValue },
           undefined,
           undefined,
-          parameter
+          parameter,
+          ts4nfdiGateway
         ).then((response) => {
           if (response) {
             setOptions(response.properties.map((selection: any) => (
@@ -236,7 +238,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   ontology_name: selection.getOntologyId(),
                   type: selection.getType(),
                   short_form: selection.getShortForm(),
-                  description: selection.getDescription()?.join()
+                  description: selection.getDescription()
                 }
               })
             ));
@@ -358,6 +360,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
+          ts4nfdiGateway={props.ts4nfdiGateway}
         />
       </QueryClientProvider>
     </EuiProvider>

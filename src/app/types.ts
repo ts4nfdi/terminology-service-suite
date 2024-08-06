@@ -42,6 +42,7 @@ type ApiObj = {
      * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
      * - **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)
      * - **TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
+     * - **TS4NFDI Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/]
      */
     api: string;
 };
@@ -149,6 +150,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      * If true, only one concept can be selected at once.
      */
     singleSelection: boolean;
+    /**
+     * Use the TS4NFDI Gateway API
+     */
+    ts4nfdiGateway?: boolean;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
