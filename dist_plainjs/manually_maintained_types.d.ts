@@ -18,6 +18,7 @@ declare global {
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
+      ts4nfdiGateway: boolean;
     }
     )=>void,
     createDataContent:(props:{

@@ -33,6 +33,7 @@ window['SemLookPWidgets'].createAutocomplete(
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
+        ts4nfdiGateway:${args.ts4nfdiGateway},
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -45,6 +46,7 @@ window['SemLookPWidgets'].createAutocomplete(
 
 export {
     WithDefaults,
+    WithDefaultsTS4NFDIGateway,
     WithValue,
     WithCustomValue,
     WithInvalidValue,
