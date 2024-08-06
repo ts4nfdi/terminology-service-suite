@@ -127,13 +127,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   };
 
     /**
-     * on mount: fetches term for selectOption and sets it's label or sets a given label if no iri is provided or the given iri cannot be resolved only if allowCustomTerms is true
+     * on mount: fetches term for preselected
+     * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
+     * only if allowCustomTerms is true
      */
     const {
         isLoading: isLoadingOnMount
     } = useQuery(
         [
-            "onMount", // no dependencies - does only need to be executed once when mounting the component
+            "onMount",
             preselected
         ],
         async () => {
@@ -149,28 +151,28 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
                 for (const option of uniqueValues) {
                     if (option && option.iri && option.iri.startsWith("http")) {
-                        await olsApi.select(
+                      await olsApi.getSelectData(
                             {query: option.iri},
                             undefined,
                             undefined,
                             parameter,
                         ).then((response) => {
-                            if (response.response && response.response.docs) {
-                                response.response.docs.map((selection: any) => {
-                                    if (option.iri === selection.iri) {
+                            if (response) {
+                                response.properties.map((selection: any) => {
+                                    if (option.iri === selection.getIri()) {
                                         preselectedValues.push({
                                             // label to display within the combobox either raw value or generated one
                                             // #renderOption() is used to display during selection.
-                                            label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                                            label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
                                             // key to distinguish the options (especially those with same label)
-                                            key: selection.iri,
+                                            key: selection.getIri(),
                                             value: {
-                                                iri: selection.iri,
-                                                label: selection.label,
-                                                ontology_name: selection.ontology_name,
-                                                type: selection.type,
-                                                short_form: selection.short_form,
-                                                description: selection.description?.join()
+                                                iri: selection.getIri(),
+                                                label: selection.getLabel(),
+                                                ontology_name: selection.getOntologyId(),
+                                                type: selection.getType(),
+                                                short_form: selection.getShortForm(),
+                                                description: selection.getDescription()?.join()
                                             },
                                         });
                                     }
@@ -213,28 +215,28 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ],
     async () => {
       if (searchValue.length > 0) {
-        return olsApi.select(
+        return olsApi.getSelectData(
           { query: searchValue },
           undefined,
           undefined,
           parameter
         ).then((response) => {
-          if (response.response && response.response.docs) {
-            setOptions(response.response.docs.map((selection: any) => (
+          if (response) {
+            setOptions(response.properties.map((selection: any) => (
               {
                 // label to display within the combobox either raw value or generated one
                 // #renderOption() is used to display during selection.
-                label: hasShortSelectedLabel ? selection.label : generateDisplayLabel(selection),
+                label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
                 // key to distinguish the options (especially those with same label)
-                key: selection.iri,
+                key: selection.getIri(),
                 // values to pass to clients
                 value: {
-                  iri: selection.iri,
-                  label: selection.label,
-                  ontology_name: selection.ontology_name,
-                  type: selection.type,
-                  short_form: selection.short_form,
-                  description: selection.description?.join()
+                  iri: selection.getIri(),
+                  label: selection.getLabel(),
+                  ontology_name: selection.getOntologyId(),
+                  type: selection.getType(),
+                  short_form: selection.getShortForm(),
+                  description: selection.getDescription()?.join()
                 }
               })
             ));

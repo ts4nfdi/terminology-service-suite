@@ -11,6 +11,9 @@ import {
 import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
+import { OLSSelect } from "../model/ols-model/OLSSelect";
+import { Select } from "../model/interfaces/Select";
+import { OLSSelectResult } from "../model/ols-model/OLSSelectResult";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string) : boolean {
@@ -326,6 +329,42 @@ export class OlsApi implements HierarchyBuilder{
   public select = async(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
     return this.makeCall("select", {params: this.buildParamsForSelect(queryParams, paginationParams, contentParams, parameter) }, true);
   }
+
+  /**
+   * Fetch select data.
+   * @param queryParams
+   * @param paginationParams
+   * @param contentParams
+   * @param parameter
+   */
+  public async getSelectData(queryParams: SelectQueryParams, paginationParams: PaginationParams | undefined, contentParams: ContentParams | undefined, parameter?: string): Promise<Select> {
+    let response;
+    let selectData: OLSSelectResult[] = [];
+    let resultNum = 0;
+
+    do {
+      response = await this.select(
+        queryParams,
+        paginationParams,
+        contentParams,
+        parameter
+      );
+      if (!response || !response["response"]["docs"]) {
+        throw new Error("Select data not found"); //TODO consistent error handling
+      } else {
+
+        selectData = selectData.concat(response["response"]["docs"].map((data: any) => {
+          return new OLSSelectResult(data);
+        }));
+      }
+
+      resultNum += 1;
+    } while(resultNum < response["numFound"]);
+
+    return new OLSSelect(selectData);
+  }
+
+
 
   public suggest = async(queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<any> => {
     return this.makeCall("suggest", { params: this.buildParamsForSuggest(queryParams, paginationParams, contentParams, parameter) }, true);
