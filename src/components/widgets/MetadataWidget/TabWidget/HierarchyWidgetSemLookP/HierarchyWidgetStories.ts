@@ -1,5 +1,6 @@
 import {EntityDataForHierarchy} from "../../../../../model/interfaces/Hierarchy";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidget";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 
 export const HierarchyWidgetStoryArgTypes = {
     apiUrl: {},
@@ -11,35 +12,117 @@ export const HierarchyWidgetStoryArgTypes = {
             "ols",
             "skosmos",
             "ontoportal"
-        ]
+        ],
+        table: {
+            defaultValue: {
+                summary: "ols"
+            }
+        }
     },
-    apikey: {},
+    apikey: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
     onNavigateToEntity: {
         control: {
             disabled: true
+        },
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
         }
     },
     onNavigateToOntology: {
         control: {
             disabled: true
+        },
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
         }
     },
-    iri: {},
-    ontologyId: {},
-    entityType: {},
-    includeObsoleteEntities: {},
-    preferredRoots: {},
-    keepExpansionStates: {},
-    showSiblingsOnInit: {},
-    useLegacy: {}
+    iri: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
+    ontologyId: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
+    entityType: {
+        table: {
+            type: { summary: `${entityTypeNames.join(" | ")}` },
+            defaultValue: {
+                summary: undefined
+            }
+        },
+        control: {
+            type: "radio",
+        },
+        options: [
+            "ontology",
+            "term",
+            "class",
+            "property",
+            "individual",
+            undefined,
+            "INVALID STRING"
+        ],
+    },
+    includeObsoleteEntities: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES
+            }
+        }
+    },
+    preferredRoots: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS
+            }
+        }
+    },
+    keepExpansionStates: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES
+            }
+        }
+    },
+    showSiblingsOnInit: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT
+            }
+        }
+    },
+    useLegacy: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY
+            }
+        }
+    }
 }
 
 export const HierarchyWidgetStoryArgs = {
     apiUrl: {},
     backendType: {},
     apikey: {},
-    onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)},
+    onNavigateToEntity: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
+        onNavigateToOntology: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
     iri: "",
     ontologyId: "",
     entityType: "",

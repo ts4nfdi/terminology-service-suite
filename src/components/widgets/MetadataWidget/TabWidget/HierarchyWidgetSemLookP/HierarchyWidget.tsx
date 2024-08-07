@@ -10,6 +10,7 @@ import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
 import {HierarchyWidgetProps} from "../../../../../app/types";
+import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
     INCLUDE_OBSOLETE_ENTITIES: false,
@@ -19,7 +20,8 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
     USE_LEGACY: false
 } as const;
 
-function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToParent?: string, ontologyId: string, onNavigateToEntity?: (entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
+// TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
+function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToParent?: string, ontologyId: string, entityType?: string, onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
     if(definedBy.includes(props.ontologyId)) definedBy = [];
 
@@ -39,7 +41,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
                     </>
                 }
                 <button
-                    onClick={() => {if(props.onNavigateToEntity) props.onNavigateToEntity(props.entityData)}}
+                    onClick={() => {if(props.onNavigateToEntity) props.onNavigateToEntity(props.ontologyId, props.entityType || "", props.entityData)}}
                 >
                     <span> {props.entityData.label || props.entityData.iri} </span>
                 </button>
@@ -51,7 +53,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
                         return (
                             <button
                                 key={`${props.entityData.iri}:${definingOntology}`}
-                                onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityData)}}
+                                onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityType || "", props.entityData)}}
                             >
                                 <span className="defining-ontology-badge">{definingOntology.toUpperCase()}</span>
                             </button>
@@ -122,6 +124,9 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     const toggleNode = useCallback((node: TreeNode) => {
         if(!(hierarchy instanceof Hierarchy)) throw Error("Hierarchy object was undefined while trying to expand a tree node. This should never happen.");
 
+        // TODO: individual hierarchies are frozen for now (before undoing, correct child loading has to be implemented for individual hierarchies)
+        if(hierarchy.entityType && isIndividualTypeName(hierarchy.entityType)) return;
+
         // toggle expansion state and force component to rerender afterward
         node.expanded = !node.expanded;
 
@@ -153,7 +158,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                             </button>
                     }
                     &nbsp;
-                    <TreeLink entityData={node.entityData} childRelationToParent={node.childRelationToParent} ontologyId={hierarchy.ontologyId} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entityData.iri == hierarchy?.mainEntityIri}/>
+                    <TreeLink entityData={node.entityData} childRelationToParent={node.childRelationToParent} ontologyId={hierarchy.ontologyId} entityType={hierarchy.entityType} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entityData.iri == hierarchy?.mainEntityIri}/>
                     &nbsp;
                     {node.entityData.numDescendants != undefined && node.entityData.numDescendants > 0 && <span style={{color: "gray"}}>({node.entityData.numDescendants.toLocaleString()})</span>}
                 </EuiText>
