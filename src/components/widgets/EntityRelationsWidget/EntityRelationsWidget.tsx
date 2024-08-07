@@ -2,7 +2,7 @@ import React, {ReactElement} from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
-import {Class, Individual, Property, Thing} from "../../../model/interfaces";
+import {Class, Entity, Individual, Property, Thing} from "../../../model/interfaces";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getSectionListJSX} from "../../../model/StructureRendering";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
@@ -16,9 +16,9 @@ const DEFAULT_HAS_TITLE = true;
  * Builds and returns the type section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
+function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const types = individual.getRdfTypes().filter((elem: string) => elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" && !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#"));
 
     if(individual.getRdfTypes().length > 0) {
@@ -27,90 +27,82 @@ function getIndividualTypesSectionJSX(individual: Individual, props: EntityRelat
             {getSectionListJSX(individual, individual.getLinkedEntities(), types, props.api, props.showBadges)}
         </EuiFlexItem>);
     }
-    else return <></>;
 }
 
 /**
  * Builds and returns the same as section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getIndividualSameAsSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
+function getIndividualSameAsSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const sameAs = individual.getSameAs();
 
-    return (
-        <>
-            {sameAs.length > 0 &&
-                <EuiFlexItem>
-                    <b>Same As</b>
-                    {getSectionListJSX(individual, individual.getLinkedEntities(), sameAs, props.api, props.showBadges)}
-                </EuiFlexItem>
-            }
-        </>);
+    if(sameAs.length > 0){
+        return (
+            <EuiFlexItem>
+                <b>Same As</b>
+                {getSectionListJSX(individual, individual.getLinkedEntities(), sameAs, props.api, props.showBadges)}
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the different from section JSX element.
  * @param individual
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getIndividualDifferentFromSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement {
+function getIndividualDifferentFromSectionJSX(individual: Individual, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const differentFrom = individual.getDifferentFrom();
 
-    return (
-        <>
-            {differentFrom.length > 0 &&
-                <EuiFlexItem>
-                    <b>Different from</b>
-                    {getSectionListJSX(individual, individual.getLinkedEntities(), differentFrom, props.api, props.showBadges)}
-                </EuiFlexItem>
-            }
-        </>
-    );
+    if(differentFrom.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Different from</b>
+                {getSectionListJSX(individual, individual.getLinkedEntities(), differentFrom, props.api, props.showBadges)}
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the disjoint with section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getDisjointWithSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
+function getDisjointWithSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const disjointWith = entity.getDisjointWith();
 
-    return (
-        <>
-            {disjointWith.length > 0 &&
-                <EuiFlexItem>
-                    <b>Disjoint with</b>
-                    {getSectionListJSX(entity, entity.getLinkedEntities(), disjointWith, props.api, props.showBadges)}
-                </EuiFlexItem>
-            }
-        </>
-    );
+    if(disjointWith.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Disjoint with</b>
+                {getSectionListJSX(entity, entity.getLinkedEntities(), disjointWith, props.api, props.showBadges)}
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the inverse of section JSX element.
  * @param property
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getPropertyInverseOfSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement {
+function getPropertyInverseOfSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const inverseOfs = property.getInverseOf();
 
-    return (
-        <>
-            {inverseOfs.length > 0 &&
-                <EuiFlexItem>
-                    <b>Inverse of</b>
-                    {getSectionListJSX(property, property.getLinkedEntities(), inverseOfs, props.api, props.showBadges)}
-                </EuiFlexItem>
-            }
-        </>
-    );
+    if(inverseOfs.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Inverse of</b>
+                {getSectionListJSX(property, property.getLinkedEntities(), inverseOfs, props.api, props.showBadges)}
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
@@ -139,137 +131,130 @@ function getPropertyChainJSX(propertyChain: any[], property: Property, props: En
  * Builds and returns the property chains section JSX element.
  * @param property
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement {
+function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const propertyChains = property.getPropertyChains().map((reified : Reified<any>) => reified.value);
 
     const hasMultipleChains = propertyChains.filter((elem: any) => Array.isArray(elem)).length > 0;
 
-    return (
-        <>
-            {propertyChains.length > 0 &&
-                <EuiFlexItem>
-                    <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
-                    {!hasMultipleChains ?
-                        (
-                            <p>{getPropertyChainJSX(propertyChains, property, props)}</p>
-                        ) :
-                        <ul>
-                            {
-                                propertyChains.map((item: any) => {
-                                    return (<li key={randomString()}>{getPropertyChainJSX(item, property, props)}</li>);
-                                })
-                            }
-                        </ul>
-                    }
-                </EuiFlexItem>
-            }
-        </>
-    );
+    if(propertyChains.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
+                {!hasMultipleChains ?
+                    (
+                        <p>{getPropertyChainJSX(propertyChains, property, props)}</p>
+                    ) :
+                    <ul>
+                        {
+                            propertyChains.map((item: any) => {
+                                return (<li key={randomString()}>{getPropertyChainJSX(item, property, props)}</li>);
+                            })
+                        }
+                    </ul>
+                }
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the equivalent to section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getEntityEquivalentToSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
+function getEntityEquivalentToSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const equivalents = entity.getEquivalents();
 
-    return (
-        <>
-            {equivalents.length > 0 &&
-                <EuiFlexItem>
-                    <b>Equivalent to</b>
-                    {equivalents.length === 1 ?
-                        (
-                            <p>{getReifiedJSX(entity, equivalents[0], props.api, props.showBadges)}</p>
-                        ) :
-                        <ul>
-                            {
-                                equivalents.map((item: any) => {
-                                    return (<li key={randomString()} >{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
-                                })
-                            }
-                        </ul>
-                    }
-                </EuiFlexItem>
-            }
-        </>
-    );
+    if(equivalents.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Equivalent to</b>
+                {equivalents.length === 1 ?
+                    (
+                        <p>{getReifiedJSX(entity, equivalents[0], props.api, props.showBadges)}</p>
+                    ) :
+                    <ul>
+                        {
+                            equivalents.map((item: any) => {
+                                return (<li key={randomString()} >{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
+                            })
+                        }
+                    </ul>
+                }
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the subentity of section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getSubEntityOfSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
+function getSubEntityOfSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const superEntities = entity.getSuperEntities();
-    return (
-        <>
-            {superEntities.length > 0 &&
-                <EuiFlexItem>
-                    <b>Sub{entity.getType()} of</b>
-                    {superEntities.length === 1 ?
-                        (
-                            <p>{getReifiedJSX(entity, superEntities[0], props.api, props.showBadges)}</p>
-                        ) :
-                        <ul>
-                            {
-                                superEntities.map((item: any) => {
-                                    return (<li key={randomString()}>{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
-                                })
-                            }
-                        </ul>
-                    }
-                </EuiFlexItem>
-            }
-        </>
-    );
+
+    if(superEntities.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Sub{entity.getType()} of</b>
+                {superEntities.length === 1 ?
+                    (
+                        <p>{getReifiedJSX(entity, superEntities[0], props.api, props.showBadges)}</p>
+                    ) :
+                    <ul>
+                        {
+                            superEntities.map((item: any) => {
+                                return (<li key={randomString()}>{getReifiedJSX(entity, item, props.api, props.showBadges)}</li>);
+                            })
+                        }
+                    </ul>
+                }
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
  * Builds and returns the related from section JSX element.
  * @param entity
  * @param props the entities' properties
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement {
+function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityRelationsWidgetProps): ReactElement | undefined {
     const relatedFroms = entity.getRelatedFrom();
     const predicates: string[] = Array.from(new Set(relatedFroms.map((elem: any) => {return elem.value["property"]})));
 
-    return (
-        <>
-            {relatedFroms.length > 0 &&
-                <EuiFlexItem>
-                    <b>Related from</b>
-                    {predicates.map((p) => {
-                        const label = entity.getLinkedEntities().getLabelForIri(p);
-                        return (
-                            <div key={p.toString() + randomString()}>
-                                <div>
-                                    <a style={{color: "black"}} href={p}><i>{label || p}</i></a>
-                                </div>
-                                <ul style={{marginBottom: 0}}>
-                                    {relatedFroms.filter((elem: any) => {return elem.value["property"] === p})
-                                        .map((elem) => {
-                                            return(
-                                                <li key={randomString()}>{getClassExpressionJSX(entity, entity.getLinkedEntities(), elem.value["value"], props.api, props.showBadges)}</li>
-                                            )
-                                        })}
-                                </ul>
-                                <p></p> {/* Works as empty space left to next section */}
+    if(relatedFroms.length > 0) {
+        return (
+            <EuiFlexItem>
+                <b>Related from</b>
+                {predicates.map((p) => {
+                    const label = entity.getLinkedEntities().getLabelForIri(p);
+                    return (
+                        <div key={p.toString() + randomString()}>
+                            <div>
+                                <a style={{color: "black"}} href={p}><i>{label || p}</i></a>
                             </div>
-                        );})
-                    }
-                </EuiFlexItem>
-            }
-        </>
-    );
+                            <ul style={{marginBottom: 0}}>
+                                {relatedFroms.filter((elem: any) => {return elem.value["property"] === p})
+                                    .map((elem) => {
+                                        return(
+                                            <li key={randomString()}>{getClassExpressionJSX(entity, entity.getLinkedEntities(), elem.value["value"], props.api, props.showBadges)}</li>
+                                        )
+                                    })}
+                            </ul>
+                            <p></p> {/* Works as empty space left to next section */}
+                        </div>
+                    );})
+                }
+            </EuiFlexItem>
+        );
+    }
 }
 
 /**
@@ -277,28 +262,27 @@ function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityR
  * @param term
  * @param instances an array of the classes' instances
  * @param props
- * @returns {ReactElement} the sections' JSX element
+ * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
-function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: EntityRelationsWidgetProps): ReactElement {
+function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: EntityRelationsWidgetProps): ReactElement | undefined {
     if(instances.length > 0) {
-        return (<EuiFlexItem>
-            {
-                <b>Instances</b>
-            }
-            <ul>
+        return (
+            <EuiFlexItem>
                 {
-                    instances.map((instance) => {
-                        return (<li key={randomString()} >
-
-                            {getEntityLinkJSX(term, term.getLinkedEntities(), instance.getIri(), props.api, props.showBadges)}
-                        </li>);
-                    })
+                    <b>Instances</b>
                 }
-            </ul>
-        </EuiFlexItem>);
-    }
-    else {
-        return <></>;
+                <ul>
+                    {
+                        instances.map((instance) => {
+                            return (<li key={randomString()} >
+
+                                {getEntityLinkJSX(term, term.getLinkedEntities(), instance.getIri(), props.api, props.showBadges)}
+                            </li>);
+                        })
+                    }
+                </ul>
+            </EuiFlexItem>
+        );
     }
 }
 
@@ -348,6 +332,61 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
         enabled: !!entity
     });
 
+    function renderSections(entity: Entity, instances: Individual[]) : ReactElement {
+        const sectionList : ReactElement[] = [];
+
+        if(isIndividual(entity)) {
+            const individualTypesSection = getIndividualTypesSectionJSX(entity, props);
+            if(individualTypesSection != undefined) sectionList.push(individualTypesSection);
+
+            const individualSameAsSection = getIndividualSameAsSectionJSX(entity, props);
+            if(individualSameAsSection != undefined) sectionList.push(individualSameAsSection);
+
+            const individualDifferentFromSection = getIndividualDifferentFromSectionJSX(entity, props);
+            if(individualDifferentFromSection != undefined) sectionList.push(individualDifferentFromSection);
+        }
+        if(isProperty(entity) || isClass(entity)) {
+            const disjointWithSection = getDisjointWithSectionJSX(entity, props);
+            if(disjointWithSection != undefined) sectionList.push(disjointWithSection);
+        }
+        if(isProperty(entity)) {
+            const propertyInverseOfSection = getPropertyInverseOfSectionJSX(entity, props);
+            if(propertyInverseOfSection != undefined) sectionList.push(propertyInverseOfSection);
+
+            const propertyChainSection = getPropertyChainSectionJSX(entity, props);
+            if(propertyChainSection != undefined) sectionList.push(propertyChainSection);
+        }
+        if(isProperty(entity) || isClass(entity)) {
+            const entityEquivalentToSection = getEntityEquivalentToSectionJSX(entity, props);
+            if(entityEquivalentToSection != undefined) sectionList.push(entityEquivalentToSection);
+
+            const subEntityOfSection = getSubEntityOfSectionJSX(entity, props);
+            if(subEntityOfSection != undefined) sectionList.push(subEntityOfSection);
+
+            const entityRelatedFromSection = getEntityRelatedFromSectionJSX(entity, props);
+            if(entityRelatedFromSection != undefined) sectionList.push(entityRelatedFromSection);
+        }
+        if(isClass(entity)) {
+            const classInstancesSection = getClassInstancesSectionJSX(entity, instances, props);
+            if(classInstancesSection != undefined) sectionList.push(classInstancesSection);
+        }
+
+        if(sectionList.length > 0) {
+            return (
+                <EuiText {...rest}>
+                    {sectionList}
+                </EuiText>
+            );
+        }
+        else {
+            return(
+                <EuiText {...rest}>
+                    No relations available.
+                </EuiText>
+            );
+        }
+    }
+
     return (
         <>
             <EuiCard
@@ -357,42 +396,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
                 {(isLoadingEntityRelation || isLoadingInstances) && <EuiLoadingSpinner size={'s'}/>}
                 {isErrorEntityRelation && <EuiText>Requested resource not available</EuiText>}
                 {(isSuccessEntityRelation && isSuccessInstances) && entity !== undefined && instances !== undefined &&
-                    <EuiText {...rest}>
-                        {isIndividual(entity) &&
-                            <>
-                                {getIndividualTypesSectionJSX(entity, props)}
-                                {getIndividualSameAsSectionJSX(entity, props)}
-                                {getIndividualDifferentFromSectionJSX(entity, props)}
-                            </>
-                        }
-
-                        {(isProperty(entity) || isClass(entity)) &&
-                            <>
-                                {getDisjointWithSectionJSX(entity, props)}
-                            </>
-                        }
-
-                        {isProperty(entity) &&
-                            <>
-                                {getPropertyInverseOfSectionJSX(entity, props)}
-                                {getPropertyChainSectionJSX(entity, props)}
-                            </>
-                        }
-
-                        {(isProperty(entity) || isClass(entity)) &&
-                            <>
-                                {getEntityEquivalentToSectionJSX(entity, props)}
-                                {getSubEntityOfSectionJSX(entity, props)}
-                                {getEntityRelatedFromSectionJSX(entity, props)}
-                            </>
-                        }
-
-                        {isClass(entity) &&
-                            <>
-                                {getClassInstancesSectionJSX(entity, instances, props)}
-                            </>
-                        }
-                    </EuiText>
+                    renderSections(entity, instances)
                 }
             </EuiCard>
         </>
