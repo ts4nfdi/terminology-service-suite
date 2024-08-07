@@ -30,9 +30,9 @@ function HierarchyNodeToEntityDataForHierarchy(hierarchyNode: HierarchyNode) : E
 
 export class OntoPortalApi implements HierarchyBuilder{
     private axiosInstance: AxiosInstance;
-    private apikey: string;
+    private apiKey: string;
 
-    constructor(api: string, apikey: string) {
+    constructor(api: string, apiKey: string) {
         this.axiosInstance = axios.create({
             baseURL: api,
             headers: {
@@ -40,12 +40,12 @@ export class OntoPortalApi implements HierarchyBuilder{
                 // Content_Type: "application/json", // leads to preflight error
             },
         });
-        this.apikey = apikey;
+        this.apiKey = apiKey;
         this.axiosInstance.interceptors.request.use((config) => {
             config.params = config.params || {};
 
             // default params
-            config.params["apikey"] = this.apikey;
+            config.params["apikey"] = this.apiKey;
             config.params["format"] = "json";
 
             return config;
@@ -140,7 +140,7 @@ export class OntoPortalApi implements HierarchyBuilder{
             entitiesData: entitiesData,
             allChildrenPresent: allChildrenPresent,
             roots: rootNodes,
-            api: new OntoPortalApi(this.axiosInstance.getUri(), this.apikey),
+            api: new OntoPortalApi(this.axiosInstance.getUri(), this.apiKey),
             ontologyId: ontologyId,
             mainEntityIri: iri,
             keepExpansionStates: props.keepExpansionStates,
