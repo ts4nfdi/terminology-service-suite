@@ -66,7 +66,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
 function HierarchyWidget(props: HierarchyWidgetProps) {
     const {
         apiUrl,
-        backend_type,
+        backendType,
         apikey,
         onNavigateToEntity,
         onNavigateToOntology,
@@ -86,7 +86,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
 
     const api : HierarchyBuilder = useMemo(
         () => {
-            switch (backend_type) {
+            switch (backendType) {
                 case "ols":
                     return new OlsApi(apiUrl);
                 case "skosmos":
@@ -97,7 +97,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                     return new OlsApi(apiUrl);
             }
         },
-        [apiUrl, backend_type, apikey]
+        [apiUrl, backendType, apikey]
     );
 
     const {
@@ -196,7 +196,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
                 <HierarchyWidget
                     apiUrl={props.apiUrl}
                     apikey={props.apikey}
-                    backend_type={props.backend_type}
+                    backendType={props.backendType}
                     iri={props.iri}
                     entityType={props.entityType}
                     ontologyId={props.ontologyId}

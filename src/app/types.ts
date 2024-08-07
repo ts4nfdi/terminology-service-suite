@@ -287,7 +287,7 @@ export type HierarchyWidgetProps = {
     /**
      * The backend key from which to request {ols, ontoportal, skosmos}
      */
-    backend_type?: string
+    backendType?: string
 } & BuildHierarchyProps & HierarchyIriProp & {
     onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
     onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void

@@ -28,7 +28,7 @@ window['SemLookPWidgets'].createHierarchy(
     {
         apiUrl:"${args.apiUrl}",
         apikey:"${args.apikey}",
-        backend_type:"${args.backend_type}",
+        backendType:"${args.backendType}",
         iri:"${args.iri}",
         entityType:"${args.entityType}",
         ontologyId:"${args.ontologyId}",
