@@ -1,4 +1,5 @@
 import {thingTypeNames} from "../../../../model/ModelTypeCheck";
+import "../../../../style/titleStyles.css"
 
 export const TitleWidgetStoryArgTypes = {
     api: {
@@ -13,10 +14,9 @@ export const TitleWidgetStoryArgTypes = {
         ],
     },
     ontologyId: {
-        description: "Ontology ID from where the object title/label should be taken.",
+        type: {required: false},
     },
     thingType: {
-        description: "Sets the type of the object whose title/label you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
         table: {
             type: { summary: `${thingTypeNames.join(" | ")}` },
         },
@@ -35,26 +35,38 @@ export const TitleWidgetStoryArgTypes = {
         ],
     },
     iri: {
-        description: "Object IRI whose label you want to fetch. For ontologies this is ignored, since the 'ontologyId' arg is sufficient.",
+        type: {required: false},
     },
     titleText: {},
-    default_value: {
+    defaultValue: {
+        type: {required: false},
         control: 'text',
     },
     parameter: {
         type: {required: false},
     },
+    className: {
+        type: {required: false},
+    },
+    useLegacy: {
+        type: {required: false},
+        defaultValue: {summary: true}
+    }
 }
 
 export const TitleWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
+    api: "",
     useLegacy: true,
+    iri: "",
     ontologyId: "",
     thingType: "",
-    titleText: ""
+    titleText: "",
+    defaultValue: "",
+    className: "",
+    parameter: "collection=nfdi4health",
 }
 
-export const TitleWidget1 = {
+export const TitleWidgetDefault = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
         api: "https://semanticlookup.zbmed.de/api/",
@@ -78,5 +90,15 @@ export const DefiningOntologyUnavailable = {
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         thingType: "term",
         parameter: ""
+    }
+};
+
+export const TitleWidgetWithStyles = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        api: "https://semanticlookup.zbmed.de/api/",
+        ontologyId: "ncit",
+        thingType: "term",
+        className: 'title-styles',
     }
 };

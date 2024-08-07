@@ -179,7 +179,10 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string;
+      className?: string;
+      useLegacy?: boolean;
+      defaultValue?: string;
     }
     )=>void,
     createHierarchy:(props:{

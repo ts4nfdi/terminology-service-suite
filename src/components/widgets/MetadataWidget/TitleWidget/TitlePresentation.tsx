@@ -5,7 +5,7 @@ import {TitlePresentationProps} from "../../../../app/types";
 function TitlePresentation(props: TitlePresentationProps) {
 
   return (
-    <EuiText>{props.titleText || props.title}</EuiText>
+    <EuiText className={props.className}>{props.titleText || props.title}</EuiText>
   );
 }
 
