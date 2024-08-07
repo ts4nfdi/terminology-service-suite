@@ -27,7 +27,7 @@ export default {
 window['SemLookPWidgets'].createHierarchy(
     {
         apiUrl:"${args.apiUrl}",
-        apikey:"${args.apikey}",
+        apiKey:"${args.apiKey}",
         backendType:"${args.backendType}",
         iri:"${args.iri}",
         entityType:"${args.entityType}",

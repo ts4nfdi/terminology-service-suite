@@ -284,7 +284,7 @@ export type HierarchyWidgetProps = {
      * **Only required for OntoPortal hierarchies**
      * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
      */
-    apikey?: string
+    apiKey?: string
     /**
      * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
      */

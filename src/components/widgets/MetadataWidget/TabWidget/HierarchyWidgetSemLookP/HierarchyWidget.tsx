@@ -69,7 +69,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     const {
         apiUrl,
         backendType,
-        apikey,
+        apiKey,
         onNavigateToEntity,
         onNavigateToOntology,
 
@@ -94,12 +94,12 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 case "skosmos":
                     return new SkosApi(apiUrl);
                 case "ontoportal":
-                    return new OntoPortalApi(apiUrl, apikey || "");
+                    return new OntoPortalApi(apiUrl, apiKey || "");
                 default:
                     return new OlsApi(apiUrl);
             }
         },
-        [apiUrl, backendType, apikey]
+        [apiUrl, backendType, apiKey]
     );
 
     const {
@@ -200,7 +200,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
             <QueryClientProvider client={queryClient}>
                 <HierarchyWidget
                     apiUrl={props.apiUrl}
-                    apikey={props.apikey}
+                    apiKey={props.apiKey}
                     backendType={props.backendType}
                     iri={props.iri}
                     entityType={props.entityType}

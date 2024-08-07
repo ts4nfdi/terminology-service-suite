@@ -19,7 +19,7 @@ export const HierarchyWidgetStoryArgTypes = {
             }
         }
     },
-    apikey: {
+    apiKey: {
         table: {
             defaultValue: {
                 summary: undefined
@@ -120,7 +120,7 @@ export const HierarchyWidgetStoryArgTypes = {
 export const HierarchyWidgetStoryArgs = {
     apiUrl: {},
     backendType: {},
-    apikey: {},
+    apiKey: {},
     onNavigateToEntity: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
         onNavigateToOntology: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
     iri: "",
@@ -221,6 +221,6 @@ export const OntoportalHierarchy = {
         iri: "http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",
         ontologyId: "IOC",
         entityType: "class",
-        apikey: ""
+        apiKey: ""
     }
 }

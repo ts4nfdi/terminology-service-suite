@@ -184,7 +184,7 @@ declare global {
     )=>void,
     createHierarchy:(props:{
       apiUrl: string
-      apikey?: string
+      apiKey?: string
       backendType?: string
       entityType?:
           | "term" | "class"
