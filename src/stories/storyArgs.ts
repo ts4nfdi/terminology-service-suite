@@ -1,5 +1,8 @@
+import { entityTypeNames } from "../model/ModelTypeCheck";
+
 export const apiArgType = {
   api: {
+    required: true,
     control: {
       type: "radio"
     },
@@ -129,5 +132,72 @@ export const singleSelectionArgType = {
     description: "If true, only one concept can be selected at once.",
     defaultValue: { summary: false },
     type: { summary: "boolean" }
+  }
+};
+export const hasTitleArgType = {
+  hasTitle: {
+    required: false,
+    description: "Show title.",
+    table: {
+      defaultValue: { summary: true }
+    },
+    type: { summary: "boolean" }
+  }
+};
+export const ontologyIdArgType = {
+  ontologyId: {
+    required: false,
+    description: "Select a specific ontology by ID.",
+    table: {
+      defaultValue: { summary: undefined }
+    },
+    type: { summary: "string" }
+  }
+};
+export const entityTypeArgType = {
+  entityType: {
+    required: false,
+    description: "Sets the type of the entity whose information you want to fetch.",
+    control: {
+      type: "radio"
+    },
+    table: {
+      type: { summary: `${entityTypeNames.join(" | ")}` }
+    },
+    options: [
+      "term",
+      "class",
+      "property",
+      "individual",
+      "INVALID STRING",
+      ""
+    ]
+  }
+};
+export const showBadgesArgType = {
+  showBadges: {
+    required: false,
+    description: "If true, entity badges linking to their defining ontologies are shown.",
+    table: {
+      defaultValue: { summary: true }
+    },
+    type: { summary: "boolean" }
+  }
+};
+export const useLegacyArgType = {
+  useLegacy: {
+    required: false,
+    description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
+    table: {
+      defaultValue: { summary: true }
+    },
+    type: { summary: "boolean" }
+  }
+};
+export const iriArgType = {
+  iri: {
+    required: true,
+    description: "Entity IRI whose information you want to fetch.",
+    type: { summary: "string" }
   }
 };
