@@ -121,7 +121,6 @@ type TargetLinkObj = {
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
-     * @param selectedOptions  The selected items
      */
     selectionChangedEvent: (selectedOptions: {
         label: string;
@@ -144,11 +143,11 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
     /**
      * If true, custom terms that are not found in any ontology can be added.
      */
-    allowCustomTerms: boolean;
+    allowCustomTerms?: boolean;
     /**
      * If true, only one concept can be selected at once.
      */
-    singleSelection: boolean;
+    singleSelection?: boolean;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
