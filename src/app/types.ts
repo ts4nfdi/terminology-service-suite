@@ -274,16 +274,39 @@ export type HierarchyWidgetProps = {
      */
     apiUrl: string
     /**
+     * **Only required for OntoPortal hierarchies**
      * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
      */
-    apikey?: string
+    apiKey?: string
     /**
-     * The backend key from which to request {ols, ontoportal, skosmos}
+     * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
      */
-    backend_type?: string
+    backendType?: string
 } & BuildHierarchyProps & HierarchyIriProp & {
-    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
-    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
+    /**
+     * This function is called every time the name of an entity inside the hierarchy is clicked
+     * @param ontologyId obtains the ontologyId of the current ontology
+     * @param entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
+    /**
+     * This function is called every time an ontology badge next to an entity's name inside the hierarchy is clicked
+     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
+     * @param entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
 };
 
 export type TitleTextObj = {
