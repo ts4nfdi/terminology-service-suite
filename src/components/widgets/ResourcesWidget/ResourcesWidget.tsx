@@ -55,7 +55,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           <img width={"100%"} style={{objectFit: "contain"}} src={logoUrl.startsWith("/images") ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl : logoUrl} alt={"-logo-"}/> :
           <></>
       ),
-      width: "5%",
+      width: "7%",
       sortable: false
     },
     {
@@ -86,7 +86,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Version",
       field: "config.version",
-      width: "7.5%"
+      width: "7%"
     },
     {
       name: "Loaded on",
@@ -117,7 +117,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       sortable: true
     },
     {
-      width: "4.5%",
+      width: "2%",
       actions: [
         ...(props.actions || []),
         {
