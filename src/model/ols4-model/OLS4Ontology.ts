@@ -41,8 +41,8 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getNumIndividuals(): number {
     return parseInt(this.properties["numberOfIndividuals"]);
   }
-  getLogoURL(): string {
-    return this.properties["depicted_by"] || undefined;
+  getLogoURL(): string | undefined {
+    return this.properties["depicted_by"];
   }
   getOntologyPurl(): string {
     return this.properties["ontology_purl"];
@@ -109,6 +109,10 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getPreferredRoots(): string[] {
     return asArray(this.properties["hasPreferredRoot"]);
   }
+  getPreferredPrefix(): string {
+    return this.properties["preferredPrefix"];
+  }
+
   getLanguages(): string[] {
     return asArray(this.properties["language"]);
   }

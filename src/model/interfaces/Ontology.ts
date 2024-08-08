@@ -20,6 +20,7 @@ export interface Ontology extends Thing {
     getVersionFromIri(): string;
     getLoaded(): string;
     getPreferredRoots(): string[];
+    getPreferredPrefix(): string;
     getLanguages(): string[];
     getImportsFrom(): string[];
     getExportsTo(): string[];

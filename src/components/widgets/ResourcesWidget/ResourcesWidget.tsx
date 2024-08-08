@@ -17,11 +17,14 @@ import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/bas
 import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
 import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
+import {OLS4Ontology} from "../../../model/ols4-model";
+import {OBO_FOUNDRY_REPO_URL_RAW} from "../../../app/util";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 const DEFAULT_INITIAL_SORT_FIELD = "config.preferredPrefix";
 const DEFAULT_INITIAL_SORT_DIR = "asc" as const;
+const DEFAULT_USE_LEGACY = true as const;
 
 function ResourcesWidget(props: ResourcesWidgetProps) {
   const {
@@ -32,6 +35,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     targetLink,
     parameter,
+    useLegacy= DEFAULT_USE_LEGACY
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -42,6 +46,18 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
 
   const columns: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
+    {
+      name: "Logo",
+      field: "config.logo",
+      // TODO: improve position of logo (maybe inside another cell, but this makes sorting more complicated)
+      render: (logoUrl: string) => (
+          logoUrl ?
+          <img width={"100%"} style={{objectFit: "contain"}} src={logoUrl.startsWith("/images") ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl : logoUrl} alt={"-logo-"}/> :
+          <></>
+      ),
+      width: "5%",
+      sortable: false
+    },
     {
       name: "Resource Name",
       field: "config.title",
@@ -75,7 +91,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Loaded on",
       field: "loaded",
-      width: "10%",
+      width: "8%",
       dataType: "date" as const,
       sortable: true
     },
@@ -83,25 +99,25 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       name: "Terms",
       field: "numberOfTerms",
       render: (value: number) => <>{value.toLocaleString()}</>,
-      width: "7.5%",
+      width: "7%",
       sortable: true
     },
     {
       name: "Properties",
       field: "numberOfProperties",
       render: (value: number) => <>{value.toLocaleString()}</>,
-      width: "7.5%",
+      width: "7%",
       sortable: true
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
       render: (value: number) => <>{value.toLocaleString()}</>,
-      width: "7.5%",
+      width: "7%",
       sortable: true
     },
     {
-      width: "5%",
+      width: "4.5%",
       actions: [
         ...(props.actions || []),
         {
@@ -111,7 +127,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
               iconType="download"
               aria-label="Download"
               isDisabled={
-                !item.config.allowDownload ||
+                !item.config.allowDownload || !item.config.fileLocation ||
                 item.config.fileLocation.startsWith("file://")
               }
             />
@@ -142,19 +158,40 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     isError,
     isLoading
   } = useQuery<Ontologies>(
-    ["ontologiesData", api, parameter],
+    ["ontologiesData", api, parameter, useLegacy],
     async () => {
       return olsApi.getOntologiesData(
         props.parameter,
+        useLegacy
       );
     }
   );
 
+  function v2toOlsResource(ontology: OLS4Ontology): OlsResource {
+    return {
+      ontologyId: ontology.getOntologyId(),
+      loaded: ontology.getLoaded(),
+      numberOfTerms: ontology.getNumClasses(),
+      numberOfProperties: ontology.getNumProperties(),
+      numberOfIndividuals: ontology.getNumIndividuals(),
+      config: {
+        logo: ontology.getLogoURL(),
+        title: ontology.getName().trim(),
+        description: ontology.getDescription(),
+        preferredPrefix: ontology.getPreferredPrefix(),
+        allowDownload: false, // in legacy (OLS), all ontologies have allowDownload = false
+        fileLocation: ontology.getIri(),
+        version: ontology.getVersion()
+      }
+    }
+  }
 
-  const ontos = ontologiesData?.properties.map(ontology => ({
-    ...ontology.properties
-  })) || [];
-console.log(ontos)
+  const ontos = useLegacy ?
+      ontologiesData?.properties.map(ontology => ({
+        ...ontology.properties
+      })) || [] :
+      ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
+  console.log(ontos)
   const findOntologies = (
     ontologies: any[],
     pageIndex: number,

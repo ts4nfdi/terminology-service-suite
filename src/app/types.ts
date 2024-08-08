@@ -263,6 +263,7 @@ export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalE
      * @param ontologyId obtains the ontologyId of the current ontology
      * @param entityType obtains the entityType of the clicked entity links' entity
      * @param iri obtains the iri of the clicked entity links' entity
+     * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToEntity?:  (ontologyId: string, entityType: string, iri: string) => void;
 
@@ -338,7 +339,7 @@ export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntol
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
-export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
+export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj & {
     /**
      * Initial number of entries displayed per page.
      */
@@ -371,6 +372,7 @@ export type OlsResource = ForcedOntologyIdObj & {
     numberOfProperties: number;
     numberOfIndividuals: number;
     config: {
+        logo?: string;
         title: string;
         description: string;
         preferredPrefix: string;
