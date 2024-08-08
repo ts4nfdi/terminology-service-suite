@@ -1,21 +1,15 @@
-export const TermDepictionWidgetStoryArgTypes = {    
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
-        ],
-    },    
-    iri: {
-        description: "The term IRI to be depicted.",
-    },
-    ontologyId: {
-        description: "Ontology ID that the term belongs to.",
-    },     
+import {
+    apiArgType,
+    iriArgType,
+    ontologyIdReqArgType,
+    useLegacyArgType
+} from "../../../stories/storyArgs";
+
+export const TermDepictionWidgetStoryArgTypes = {
+    ...apiArgType,
+    ...iriArgType,
+    ...ontologyIdReqArgType,
+    ...useLegacyArgType
 }
 
 export const TermDepictionWidgetStoryArgs = {    

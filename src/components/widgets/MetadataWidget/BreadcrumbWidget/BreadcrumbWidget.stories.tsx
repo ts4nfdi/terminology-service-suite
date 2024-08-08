@@ -15,7 +15,7 @@ export default {
 };
 
 export {
-    BreadcrumbWidget1,
+    BreadcrumbWidgetExample,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     ErrorBreadcrumbWidget

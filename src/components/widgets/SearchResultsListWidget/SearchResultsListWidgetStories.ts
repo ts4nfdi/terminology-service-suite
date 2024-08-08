@@ -1,35 +1,31 @@
+import {
+    apiArgType,
+    initialItemsPerPageArgType,
+    itemsPerPageOptionsArgType, parameterArgType,
+    preselectedArgType,
+    queryArgType, targetLinkArgType, useLegacyArgType
+} from "../../../stories/storyArgs";
+
 export const SearchResultsListWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
-        ],
-    },
-    query: {},
-    initialItemsPerPage: {
-        control: "number",
-    },
-    itemsPerPageOptions: {
-        control: "array",
-    },
-    targetLink: {},
-    parameter: {
-        type: { required: false }
-    },
-    useLegacy: {
-        type: { required: false }
-    }
+    ...apiArgType,
+    ...queryArgType,
+    ...preselectedArgType,
+    ...initialItemsPerPageArgType,
+    ...itemsPerPageOptionsArgType,
+    ...targetLinkArgType,
+    ...useLegacyArgType,
+    ...parameterArgType
 }
 
 export const SearchResultsListWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
+    api: "",
+    useLegacy: true,
+    query: "",
     initialItemsPerPage: 10,
-    itemsPerPageOptions: [10, 25, 50, 100]
+    itemsPerPageOptions: [10, 25, 50, 100],
+    preselected: [],
+    targetLink: "",
+    parameter: "collection=nfdi4health",
 
 }
 

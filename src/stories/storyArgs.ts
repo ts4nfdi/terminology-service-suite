@@ -1,4 +1,4 @@
-import { entityTypeNames } from "../model/ModelTypeCheck";
+import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
 export const apiArgType = {
   api: {
@@ -10,6 +10,7 @@ export const apiArgType = {
       "https://www.ebi.ac.uk/ols4/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/api/",
+      "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
       "https://service.tib.eu/ts4tib/api/"
     ],
     description:
@@ -17,12 +18,68 @@ export const apiArgType = {
     type: { summary: "string" }
   }
 };
-
+export const useLegacyArgType = {
+  useLegacy: {
+    required: false,
+    description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
+    table: {
+      defaultValue: { summary: true }
+    },
+    type: { summary: "boolean" }
+  }
+};
+export const iriArgType = {
+  iri: {
+    required: true,
+    description: "Entity IRI whose information you want to fetch.",
+    type: { summary: "string" }
+  }
+};
+export const ontologyIdArgType = {
+  ontologyId: {
+    required: false,
+    description: "Select a specific ontology by ID.",
+    table: {
+      defaultValue: { summary: undefined }
+    },
+    type: { summary: "string" }
+  }
+};
+export const ontologyIdReqArgType = {
+  ontologyId: {
+    required: true,
+    description: "Select a specific ontology by ID.",
+    table: {
+      defaultValue: { summary: undefined }
+    },
+    type: { summary: "string" }
+  }
+};
+export const entityTypeArgType = {
+  entityType: {
+    required: false,
+    description: "Sets the type of the entity whose information you want to fetch.",
+    control: {
+      type: "radio"
+    },
+    table: {
+      type: { summary: `${entityTypeNames.join(" | ")}` }
+    },
+    options: [
+      "term",
+      "class",
+      "property",
+      "individual",
+      "INVALID STRING",
+      ""
+    ]
+  }
+};
 export const selectionChangedEventArgType = {
   selectionChangedEvent: {
     required: true,
     action: "selectionChangedEvent",
-    description: "A method that is called once the set of selection changes",
+    description: "A method that is called once the set of selection changes.",
     type: {
       summary: "(selectedOptions: {" +
         "        label: string;" +
@@ -30,7 +87,8 @@ export const selectionChangedEventArgType = {
         "        ontology_name?: string;" +
         "        type?: string;" +
         "    }[]) => void;"
-    }
+    },
+    control: "text"
   }
 };
 export const placeholderArgType = {
@@ -43,13 +101,15 @@ export const placeholderArgType = {
 export const preselectedArgType = {
   preselected: {
     required: false,
-    description: "Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.",
+    description: "Pass pre-selected values.",
     type: { summary: "{ label?: string; iri?: string }[]" }
   }
 };
 export const parameterArgType = {
   parameter: {
     required: false,
+    type: { summary: "string" },
+    defaultValue: { summary: undefined },
     description:
       `Additional parameters to pass to the API.<br><br>
       This parameters can be used to filter the search results. Each parameter can be combined via the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign <i><b>,</b></i>. The following keys could be used:<br><br>
@@ -106,8 +166,7 @@ export const parameterArgType = {
             <td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td>
           </tr>
         </tbody>
-      </table>`,
-    type: { summary: "string" }
+      </table>`
   }
 };
 export const hasShortSelectedLabelArgType = {
@@ -144,60 +203,291 @@ export const hasTitleArgType = {
     type: { summary: "boolean" }
   }
 };
-export const ontologyIdArgType = {
-  ontologyId: {
+export const showBadgesArgType = {
+  showBadges: {
     required: false,
-    description: "Select a specific ontology by ID.",
+    description: "If true, badges linking to defining ontologies are shown.",
     table: {
-      defaultValue: { summary: undefined }
+      defaultValue: { summary: true }
     },
+    type: { summary: "boolean" }
+  }
+};
+export const apiQueryArgType = {
+  apiQuery: {
+    required: true,
+    description: "The API query whose response JSON should be displayed on click.",
     type: { summary: "string" }
   }
 };
-export const entityTypeArgType = {
-  entityType: {
+export const buttonTextArgType = {
+  buttonText: {
+    required: true,
+    description: "The text displayed on the button.",
+    type: { summary: "string" }
+  }
+};
+export const buttonSizeArgType = {
+  buttonSize: {
     required: false,
-    description: "Sets the type of the entity whose information you want to fetch.",
+    description: "Size of the button.",
+    defaultValue: { summary: "m" },
+    table: {
+      type: { summary: `s | m` }
+    },
     control: {
       type: "radio"
     },
+    options: [
+      "s",
+      "m"
+    ]
+  }
+};
+export const initialEntriesPerPageArgType = {
+  initialEntriesPerPage: {
+    required: false,
+    description: "Initial number of entries displayed per page.",
+    type: { summary: "number" },
+    defaultValue: { summary: 10 },
+    control: "number"
+  }
+};
+export const pageSizeOptionsArgType = {
+  pageSizeOptions: {
+    required: false,
+    description: "Possible values for number of entries displayed per page.",
+    type: { summary: "number[]" },
+    defaultValue: { summary: [10, 25, 50, 100] },
+    control: "array"
+  }
+};
+export const initialSortFieldArgType = {
+  initialSortField: {
+    required: false,
+    description: "Column the table is sorted by initially.",
+    type: { summary: "string" },
+    defaultValue: { summary: "config.preferredPrefix" },
+    control: {
+      type: "radio"
+    },
+    options: ["config.title", "config.preferredPrefix", "config.loaded"]
+  }
+};
+export const initialSortDirArgType = {
+  initialSortDir: {
+    required: false,
+    description: "Initial sorting direction.",
+    type: { summary: "string" },
+    defaultValue: { summary: "asc" },
     table: {
-      type: { summary: `${entityTypeNames.join(" | ")}` }
+      type: { summary: `asc | desc` }
+    },
+    control: {
+      type: "radio"
+    },
+    options: ["ascending", "descending"]
+  }
+};
+export const targetLinkArgType = {
+  targetLink: {
+    required: false,
+    description: "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want a hyperlink to the terminology overview of your terminology service. Leave it blank if your application isn't a terminology service.",
+    type: { summary: "string" },
+    control: "text"
+  }
+};
+export const actionsArgType = {
+  actions: {
+    required: false,
+    description: "Pass actions to each item in the table.",
+    type: { summary: "Array<Action<OlsResource>>" }
+  }
+};
+export const queryArgType = {
+  query: {
+    required: true,
+    description: "The search query.",
+    type: { summary: "string" }
+  }
+};
+export const initialItemsPerPageArgType = {
+  initialItemsPerPage: {
+    required: false,
+    description: "Initial number of items displayed per page.",
+    type: { summary: "number" },
+    defaultValue: { summary: 10 },
+    control: "number"
+  }
+};
+export const itemsPerPageOptionsArgType = {
+  itemsPerPageOptions: {
+    required: false,
+    description: "Possible values for number of items displayed per page.",
+    type: { summary: "number[]" },
+    defaultValue: { summary: [10, 25, 50, 100] },
+    control: "array"
+  }
+};
+export const colorFirstArgType = {
+  colorFirst: {
+    required: false,
+    description: "Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value",
+    table: {
+      type: { summary: `EuiLinkColor | string` }
+    },
+    control: {
+      type: "radio"
     },
     options: [
+      "primary",
+      "accent",
+      "success",
+      "warning",
+      "danger",
+      "ghost",
+      "text",
+      "subdued",
+      "#00FFFF"
+    ]
+  }
+};
+export const colorSecondArgType = {
+  colorSecond: {
+    required: false,
+    description: "Color of the second badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value",
+    table: {
+      type: { summary: `EuiLinkColor | string` }
+    },
+    control: {
+      type: "radio"
+    },
+    options: [
+      "primary",
+      "accent",
+      "success",
+      "warning",
+      "danger",
+      "ghost",
+      "text",
+      "subdued",
+      "#00FFFF"
+    ]
+  }
+};
+export const colorArgType = {
+  color: {
+    required: false,
+    description: "Color of the text, names, hex or rgb",
+    table: {
+      type: { summary: `EuiLinkColor | string` }
+    },
+    control: {
+      type: "radio"
+    },
+    options: [
+      "default",
+      "subdued",
+      "success",
+      "accent",
+      "danger",
+      "warning",
+      "ghost",
+      "#00FFFF",
+      "rgb(255,0,255)"
+    ]
+  }
+};
+export const descTextArgType = {
+  descText: {
+    required: false,
+    description: "Set your own text manually that overwrites the text fetched from the API.",
+    type: { summary: "string" }
+  }
+};
+export const thingTypeArgType = {
+  thingType: {
+    description: "Sets the type of the object whose description you want to fetch. Accepts 'ontology', 'term', 'class', 'property', or 'individual'.",
+    table: {
+      type: { summary: `${thingTypeNames.join(" | ")}` }
+    },
+    control: {
+      type: "radio"
+    },
+    options: [
+      "ontology",
       "term",
       "class",
       "property",
       "individual",
-      "INVALID STRING",
-      ""
+      "",
+      "INVALID STRING"
     ]
   }
 };
-export const showBadgesArgType = {
-  showBadges: {
+export const iriTextArgType = {
+  iriText: {
     required: false,
-    description: "If true, entity badges linking to their defining ontologies are shown.",
-    table: {
-      defaultValue: { summary: true }
-    },
-    type: { summary: "boolean" }
-  }
-};
-export const useLegacyArgType = {
-  useLegacy: {
-    required: false,
-    description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
-    table: {
-      defaultValue: { summary: true }
-    },
-    type: { summary: "boolean" }
-  }
-};
-export const iriArgType = {
-  iri: {
-    required: true,
-    description: "Entity IRI whose information you want to fetch.",
+    description: "Set your own text manually, which will show as a clickable link instead of the IRI.",
     type: { summary: "string" }
   }
 };
+export const externalIconArgType = {
+  externalIcon: {
+    required: false,
+    options: [true, false],
+    defaultValue: true,
+    description: "Indicates that the target is external and needs an icon.",
+    type: { summary: "boolean" }
+  }
+};
+export const urlPrefixArgType = {
+  urlPrefix: {
+    required: false,
+    type: { summary: `string` },
+    description: "The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix."
+  }
+};
+export const copyButtonArgType = {
+  copyButton: {
+    required: false,
+    options: [true, false],
+    defaultValue: false,
+    type: { summary: `boolean` },
+    description: "If true, a copy button is shown next to the link."
+  }
+};
+export const titleTextArgType = {
+  titleText: {
+    required: false,
+    description: "Set your own text manually that overwrites the text fetched from the API.",
+    type: { summary: `string` }
+  }
+};
+export const defaultValueArgType = {
+  defaultValue: {
+    required: false,
+    description: "Set the default text shown if the API fails to retrieve one.",
+    control: "text",
+    type: { summary: `string` }
+  }
+};
+export const onNavigateToEntityArgType = {
+  onNavigateToEntity: {
+    required: false,
+    type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
+    action: "onNavigateToEntityArgType",
+    description: "This function is called every time an entity link is clicked.",
+    control: "text"
+  }
+};
+export const onNavigateToOntologyArgType = {
+  onNavigateToOntology: {
+    required: false,
+    type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
+    action: "onNavigateToOntologyArgType",
+    description: "This function is called every time a badge linking to an entity in its defining ontology is clicked.",
+    control: "text"
+  }
+};
+export const ArgType = {};

@@ -12,5 +12,5 @@ export default {
 };
 
 export {
-  JsonApiWidget1
+  JsonApiWidgetDefault
 } from "./JsonApiWidgetStories"
