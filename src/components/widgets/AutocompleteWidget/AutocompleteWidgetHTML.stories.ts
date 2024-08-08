@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs} from "./AutocompleteWidgetStories";
+import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
 
 let counter = 0;
@@ -40,7 +40,7 @@ window['SemLookPWidgets'].createAutocomplete(
         `
     },
     ...AutocompleteWidgetStoryArgTypes,
-    ...AutocompleteWidgetStoryArgs,
+    ...AutocompleteWidgetStoryArgsHTML,
 }
 
 export {

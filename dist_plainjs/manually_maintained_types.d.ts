@@ -17,7 +17,8 @@ declare global {
       preselected?: { label?: string; iri?: string };
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
-      allowCustomTerms: boolean;
+      allowCustomTerms?: boolean;
+      singleSelection?: boolean;
     }
     )=>void,
     createDataContent:(props:{

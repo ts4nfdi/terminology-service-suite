@@ -1,56 +1,48 @@
+import {
+  allowCustomTermsArgType,
+  apiArgType, hasShortSelectedLabelArgType, parameterArgType,
+  placeholderArgType,
+  preselectedArgType,
+  selectionChangedEventArgType, singleSelectionArgType
+} from "../../../stories/storyArgs";
+import { action } from "@storybook/addon-actions";
+
 export const AutocompleteWidgetStoryArgTypes = {
   argTypes: {
-    api: {
-      control: {
-        type: "radio",
-      },
-      options: [
-        "https://www.ebi.ac.uk/ols4/api/",
-        "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-        "https://service.tib.eu/ts4tib/api/"
-      ],
-    },
-    selectionChangedEvent: {
-      action: "selectionChangedEvent",
-    },
-    placeholder: {},
-    preselected: {},
-    parameter: {},
-    hasShortSelectedLabel: {
-     required: false,
-    },
-    allowCustomTerms: {
-      required: false,
-    },
-    singleSelection: {
-      required: false,
-    }
+    ...apiArgType,
+    ...selectionChangedEventArgType,
+    ...placeholderArgType,
+    ...preselectedArgType,
+    ...parameterArgType,
+    ...hasShortSelectedLabelArgType,
+    ...allowCustomTermsArgType,
+    ...singleSelectionArgType,
   }
 }
 
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-    hasShortSelectedLabel: true,
-    allowCustomTerms: false,
     singleSelection: true,
+    allowCustomTerms: false,
+    selectionChangedEvent: action('selectionChangedEvent'),
+    hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
-export const AutocompleteWidgetStoryArgs = {
+export const AutocompleteWidgetStoryArgsHTML = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-    hasShortSelectedLabel: true,
-    allowCustomTerms: false,
     singleSelection: true,
+    allowCustomTerms: false,
+    selectionChangedEvent: () => {return;},
+    hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
-    selectionChangedEvent: () => {return;}
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 

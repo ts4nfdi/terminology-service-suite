@@ -1,11 +1,15 @@
 import { SearchBarWidget } from "./SearchBarWidget";
-import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
+import {
+  SearchBarWidgetStoryArgs,
+  SearchBarWidgetStoryArgsReact,
+  SearchBarWidgetStoryArgTypes
+} from "./SearchBarWidgetStories";
 
 export default {
   title: "SearchBarWidget",
   component: SearchBarWidget,
   argTypes: SearchBarWidgetStoryArgTypes,
-  args: SearchBarWidgetStoryArgs
+  args: SearchBarWidgetStoryArgsReact
 };
 
 export {
