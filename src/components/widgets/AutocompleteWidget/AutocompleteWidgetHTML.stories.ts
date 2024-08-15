@@ -46,7 +46,9 @@ window['SemLookPWidgets'].createAutocomplete(
 
 export {
     WithDefaults,
-    WithDefaultsTS4NFDIGateway,
+    UseAPIGatewayWithOLS,
+    UseAPIGatewayWithOntoPortal,
+    UseAPIGatewayWithSkosmos,
     WithValue,
     WithCustomValue,
     WithInvalidValue,
