@@ -17,6 +17,7 @@ export {
   UseAPIGatewayWithOLS,
   UseAPIGatewayWithOntoPortal,
   UseAPIGatewayWithSkosmos,
+  WithDefaultsCompact,
   WithValue,
   WithCustomValue,
   WithInvalidValue,

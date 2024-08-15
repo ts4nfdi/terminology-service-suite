@@ -19,6 +19,7 @@ declare global {
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
       ts4nfdiGateway: boolean;
+      singleSuggestionRow?: boolean;
     }
     )=>void,
     createDataContent:(props:{
@@ -185,8 +186,8 @@ declare global {
     )=>void,
     createHierarchy:(props:{
       apiUrl: string
-      apikey?: string
-      backend_type?: string
+      apiKey?: string
+      backendType?: string
       entityType?:
           | "term" | "class"
           | "individual"
@@ -198,10 +199,10 @@ declare global {
       keepExpansionStates?: boolean
       showSiblingsOnInit?: boolean
       iri?: string
-      onNavigateToEntity?: (entity: {
+      onNavigateToEntity?: (ontologyId: string, entityType: string, entity: {
         iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
       }) => void
-      onNavigateToOntology?: (ontologyId: string, entity: {
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: {
         iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
       }) => void
     })=>void,
@@ -258,8 +259,8 @@ declare global {
     createDepiction:(props:{
       iri: string;
       ontologyId: string;
-      api: string;      
-      useLegacy: boolean;      
+      api: string;
+      useLegacy: boolean;
     }
     )=>void,
   }

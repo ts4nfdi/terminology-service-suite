@@ -34,6 +34,7 @@ window['SemLookPWidgets'].createAutocomplete(
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
         ts4nfdiGateway:${args.ts4nfdiGateway},
+        singleSuggestionRow:${args.singleSuggestionRow},
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -49,6 +50,7 @@ export {
     UseAPIGatewayWithOLS,
     UseAPIGatewayWithOntoPortal,
     UseAPIGatewayWithSkosmos,
+    WithDefaultsCompact,
     WithValue,
     WithCustomValue,
     WithInvalidValue,

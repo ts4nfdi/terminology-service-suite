@@ -29,6 +29,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     },
     ts4nfdiGateway: {
       required: false,
+    },
+    singleSuggestionRow: {
+      required: false,
     }
   }
 }
@@ -86,6 +89,12 @@ export const UseAPIGatewayWithSkosmos = {
     parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
   },
 }
+
+export const WithDefaultsCompact = {
+  args: {
+    singleSuggestionRow: true
+  },
+};
 
 export const WithValue = {
   args: {

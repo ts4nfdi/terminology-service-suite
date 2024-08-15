@@ -52,7 +52,7 @@ export class Hierarchy {
     ontologyId: string;
 
     includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
-    protected entityType?: EntityTypeName;
+    entityType?: EntityTypeName;
     keepExpansionStates: boolean = DEFAULT_KEEP_EXPANSION_STATE;
     protected useLegacy?: boolean;
 
