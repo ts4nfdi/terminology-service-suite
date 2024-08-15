@@ -18,6 +18,7 @@ declare global {
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
+      ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
     }
     )=>void,
@@ -258,8 +259,8 @@ declare global {
     createDepiction:(props:{
       iri: string;
       ontologyId: string;
-      api: string;      
-      useLegacy: boolean;      
+      api: string;
+      useLegacy: boolean;
     }
     )=>void,
   }

@@ -8,7 +8,8 @@ export const AutocompleteWidgetStoryArgTypes = {
         "https://www.ebi.ac.uk/ols4/api/",
         "https://semanticlookup.zbmed.de/ols/api/",
         "https://semanticlookup.zbmed.de/api/",
-        "https://service.tib.eu/ts4tib/api/"
+        "https://service.tib.eu/ts4tib/api/",
+        "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/"
       ],
     },
     selectionChangedEvent: {
@@ -26,6 +27,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     singleSelection: {
       required: false,
     },
+    ts4nfdiGateway: {
+      required: false,
+    },
     singleSuggestionRow: {
       required: false,
     }
@@ -35,31 +39,56 @@ export const AutocompleteWidgetStoryArgTypes = {
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    ts4nfdiGateway: false,
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
     singleSelection: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
 export const AutocompleteWidgetStoryArgs = {
   args: {
     api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    ts4nfdiGateway: false,
     hasShortSelectedLabel: true,
     allowCustomTerms: false,
     singleSelection: true,
     placeholder: "Search for a Concept",
     preselected: [],
-    selectionChangedEvent: () => {return;}
+    selectionChangedEvent: () => {return;},
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
 export const WithDefaults = {
   args: {},
 };
+
+export const UseAPIGatewayWithOLS = {
+  args: {
+    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    ts4nfdiGateway: true,
+    parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+export const UseAPIGatewayWithOntoPortal = {
+  args: {
+    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    ts4nfdiGateway: true,
+    parameter: "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+
+export const UseAPIGatewayWithSkosmos = {
+  args: {
+    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    ts4nfdiGateway: true,
+    parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
 
 export const WithDefaultsCompact = {
   args: {
