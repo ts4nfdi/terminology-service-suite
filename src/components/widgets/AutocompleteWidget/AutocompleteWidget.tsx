@@ -14,8 +14,6 @@ import {
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
-import { BreadcrumbWidget } from "../MetadataWidget";
-
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -136,7 +134,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   };
 
   /**
-   * on mount: fetches term for selectOption and sets it's label or sets a given label if no iri is provided or the given iri cannot be resolved only if allowCustomTerms is true
+   * on mount: fetches term for selectOption and sets it is label or sets a given label if no iri is provided or the given iri cannot be resolved only if allowCustomTerms is true
    */
   const {
     isLoading: isLoadingOnMount
@@ -329,7 +327,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       isClearable
       aria-label="searchBar"
       fullWidth={true}
-      {...rest} // items above can be overriden by a client
+      {...rest} // items above can be overridden by a client
       async={true}
       isLoading={isLoadingTerms || isLoadingOnMount}
       singleSelection={singleSelection ? { asPlainText: true } : false}
