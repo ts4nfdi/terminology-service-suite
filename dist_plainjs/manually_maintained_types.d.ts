@@ -18,6 +18,7 @@ declare global {
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
       allowCustomTerms: boolean;
+      singleSuggestionRow?: boolean;
     }
     )=>void,
     createDataContent:(props:{
