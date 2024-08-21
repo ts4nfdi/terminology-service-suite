@@ -57,5 +57,9 @@ export class OLSSelectResult implements SelectResult {
     return this.properties["short_form"];
   }
 
+  getApiSource(): string {
+    return "";
+  }
+
 
 }

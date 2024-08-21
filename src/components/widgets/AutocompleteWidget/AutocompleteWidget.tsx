@@ -66,29 +66,16 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return label;
     }
 
-    let hoverText = "";
+    let prefix = value.type === "ontology" 
+      ? value.ontology_name 
+      : value.ontology_name + " > " + value.short_form;
+
+    let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\nPrefix: ${prefix}`;
     if (value.description != undefined) {
-      if (value.type === "ontology") {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix: " + value.ontology_name +
-          "\n\nDescription: " + value.description;
-      } else {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form +
-          "\n\nDescription: " + value.description;
-      }
-    } else {
-      if (value.type === "ontology") {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix: " + value.ontology_name;
-      } else {
-        hoverText = "type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form;
-      }
+      hoverText += `\n\nDescription: ${value.description}`;
+    }
+    if (value.source && value.source !== ""){
+      hoverText += "\n\nSource: " + value.source;
     }
 
     const renderOntology = () => {
@@ -120,11 +107,25 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     colorFirst={"primary"}
                     colorSecond={"success"}
                   />
-                  {!singleSuggestionRow && value.description ?
-                    <>
+                  {value.source && value.source !== "" &&
+                    <span 
+                      className="euiBadge"
+                      style={{
+                        backgroundColor: "black", 
+                        color: "white", 
+                        display: "inline-block",
+                        marginLeft: "10px"                                  
+                      }}
+                    >                                                                                     
+                    {"Source: " + value.source}      
+                    </span>
+                  } 
+                  {!singleSuggestionRow && value.description &&                    
+                      <>
                       <br />
                       {value.description.substring(0, 40) + "..."}
-                    </> : ""}
+                      </>
+                  }                  
                 </span>
             </EuiHealth>
         </span>
@@ -181,7 +182,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                                 ontology_name: selection.getOntologyId(),
                                                 type: selection.getType(),
                                                 short_form: selection.getShortForm(),
-                                                description: selection.getDescription()
+                                                description: selection.getDescription(),
+                                                source: selection.getApiSource()
                                             },
                                         });
                                     }
@@ -200,7 +202,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 ontology_name: "",
                 type: "",
                 short_form: "",
-                description: ""
+                description: "",
+                source: ""
               }
             });
           }
@@ -246,7 +249,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   ontology_name: selection.getOntologyId(),
                   type: selection.getType(),
                   short_form: selection.getShortForm(),
-                  description: selection.getDescription()
+                  description: selection.getDescription(),
+                  source: selection.getApiSource()
                 }
               })
             ));
@@ -270,7 +274,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: "",
             type: "",
             short_form: x.value.short_form,
-            description: x.value.description
+            description: x.value.description,
+            source: x.value.source
           };
         } else if (x.value.iri == "") {
           return {
@@ -279,7 +284,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: "",
             type: "",
             short_form: "",
-            description: ""
+            description: "",
+            source: ""
           };
         } else {
           return {
@@ -288,7 +294,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: x.value.ontology_name,
             type: x.value.type,
             short_form: x.value.short_form,
-            description: x.value.description
+            description: x.value.description,
+            source: x.value.source
           };
         }
       })
@@ -319,7 +326,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         ontology_name: "",
         type: "",
         short_form: "",
-        description: ""
+        description: "",
+        source: ""
       }
     };
 

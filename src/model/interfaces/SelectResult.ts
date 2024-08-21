@@ -10,4 +10,5 @@ export interface SelectResult {
   getDescription(): string;
   getOntologyId(): string;
   getShortForm(): string;
+  getApiSource(): string;
 }
