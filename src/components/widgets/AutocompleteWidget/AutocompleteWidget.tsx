@@ -30,6 +30,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     singleSelection,
     singleSuggestionRow,
     ts4nfdiGateway = false,
+    showApiSource = true,
     ...rest
   } = props;
 
@@ -74,7 +75,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (value.description != undefined) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
-    if (value.source && value.source !== ""){
+    if (showApiSource && value.source && value.source !== ""){
       hoverText += "\n\nSource: " + value.source;
     }
 
@@ -107,7 +108,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     colorFirst={"primary"}
                     colorSecond={"success"}
                   />
-                  {value.source && value.source !== "" &&
+                  {showApiSource && value.source && value.source !== "" &&
                     <span 
                       className="euiBadge"
                       style={{
@@ -378,6 +379,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           allowCustomTerms={props.allowCustomTerms}
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
+          showApiSource={props.showApiSource}
         />
       </QueryClientProvider>
     </EuiProvider>
