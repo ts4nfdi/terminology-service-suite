@@ -20,6 +20,7 @@ declare global {
       allowCustomTerms: boolean;
       ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
+      showApiSource?: boolean;
     }
     )=>void,
     createDataContent:(props:{
