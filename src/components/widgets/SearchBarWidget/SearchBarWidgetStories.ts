@@ -1,13 +1,15 @@
+import * as globals from '../../../app/globals';
+
 export const SearchBarWidgetStoryArgTypes = {
   api: {
     control: {
       type: "radio"
     },
     options: [
-      "https://www.ebi.ac.uk/ols4/api/",
-      "https://semanticlookup.zbmed.de/ols/api/",
-      "https://semanticlookup.zbmed.de/api/",
-      "https://service.tib.eu/ts4tib/api/"
+        globals.EBI_API_ENDPOINT,
+        globals.ZBMED_OLS_API_ENDPOINT,
+        globals.ZBMED_API_ENDPOINT,
+        globals.TIB_API_ENDPOINT
     ]
   },
   query: {},
@@ -29,21 +31,21 @@ export const SearchBarWidgetStoryArgs = {
 
 export const SearchBarWidgetDefault = {
   args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
+    api: globals.EBI_API_ENDPOINT,
     query: "*"
   }
 };
 
 export const TibNFDI4CHEM = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection"
   }
 };
 
 export const TibDataPlant = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection"
   }
 };

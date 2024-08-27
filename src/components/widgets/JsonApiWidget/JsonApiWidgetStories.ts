@@ -1,3 +1,5 @@
+import * as globals from '../../../app/globals';
+
 export const JsonApiWidgetStoryArgTypes = {
     apiQuery: {},
     buttonText: {},
@@ -21,7 +23,7 @@ export const JsonApiWidgetStoryArgs = {
 
 export const JsonApiWidget1 = {
     args: {
-        apiQuery: "https://semanticlookup.zbmed.de/ols/api/ontologies/atc",
+        apiQuery: globals.ZBMED_OLS_API_ENDPOINT + "ontologies/atc",
         buttonText: "show JSON",
         buttonSize: "m",
     }

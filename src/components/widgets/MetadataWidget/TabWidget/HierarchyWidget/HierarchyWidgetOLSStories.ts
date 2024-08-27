@@ -1,4 +1,5 @@
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import * as globals from '../../../../../app/globals';
 
 export const HierarchyWidgetOLSStoryArgTypes =  {
     api: {
@@ -6,11 +7,11 @@ export const HierarchyWidgetOLSStoryArgTypes =  {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT,
+            globals.ZBMED_K8S_ENDPOINT
         ],
     },
     ontologyId: {
@@ -44,7 +45,7 @@ export const HierarchyWidgetOLSStoryArgs = {
 export const HierarchyWidgetOLS1 = {
     args: {
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "efo",
         entityType: "class"
     }

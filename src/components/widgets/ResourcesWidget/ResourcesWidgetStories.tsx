@@ -1,6 +1,7 @@
 import {OlsResource} from "../../../app/types";
 import {EuiButton, EuiButtonIcon} from "@elastic/eui";
 import React from "react";
+import * as globals from '../../../app/globals';
 
 export const ResourcesWidgetStoryArgTypes = {
     api: {
@@ -8,11 +9,11 @@ export const ResourcesWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT,
+            globals.ZBMED_K8S_ENDPOINT
         ],
     },
     initialEntriesPerPage: {
@@ -53,7 +54,7 @@ export const ResourcesWidgetStoryArgs = {
 
 export const ResourcesWidget1 = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         initialEntriesPerPage: 10,
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",

@@ -1,4 +1,5 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
+import * as globals from '../../../app/globals';
 
 export const EntityInfoWidgetStoryArgTypes = {
     api: {
@@ -6,10 +7,10 @@ export const EntityInfoWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT,
         ],
     },
     hasTitle: {
@@ -62,7 +63,7 @@ export const EntityInfoWidgetStoryArgTypes = {
 }
 
 export const EntityInfoWidgetStoryArgs = {
-    api: "https://semanticlookup.zbmed.de/api/",
+    api: globals.ZBMED_API_ENDPOINT,
     hasTitle: true,
     showBadges: true,
     useLegacy: true,
@@ -99,7 +100,7 @@ export const IndividualInfoWidget = {
 
 export const InfoWidgetBadges = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         entityType: "class",
         iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
@@ -109,14 +110,14 @@ export const InfoWidgetBadges = {
 
 export const OptionalEntityTypeLegacyAPI = {
     args: {
-        api: "https://semanticlookup.zbmed.de/ols/api/",
+        api: globals.ZBMED_OLS_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
     }
 };
 
 export const InfoWidgetDomain = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/NCIT_R89",
     }
@@ -124,7 +125,7 @@ export const InfoWidgetDomain = {
 
 export const InfoWidgetRange = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/RO_0002029",
     }
@@ -132,7 +133,7 @@ export const InfoWidgetRange = {
 
 export const InfoWidgetPropertyAssertion = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
     }
@@ -140,7 +141,7 @@ export const InfoWidgetPropertyAssertion = {
 
 export const InfoWidgetPropertyCharacteristics = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
     }

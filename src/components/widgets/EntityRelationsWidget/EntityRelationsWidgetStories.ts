@@ -1,4 +1,5 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
+import * as globals from '../../../app/globals';
 
 export const EntityRelationsWidgetStoryArgTypes = {
     api: {
@@ -6,11 +7,11 @@ export const EntityRelationsWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT,
+            globals.ZBMED_K8S_ENDPOINT,            
         ],
     },
     hasTitle: {
@@ -50,7 +51,7 @@ export const EntityRelationsWidgetStoryArgs = {
 
 export const SubEntityOf = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "agro",
         iri: "http://purl.obolibrary.org/obo/AGRO_00000002",
@@ -59,7 +60,7 @@ export const SubEntityOf = {
 
 export const AllValuesFrom = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "go",
         iri: "http://purl.obolibrary.org/obo/BFO_0000004",
@@ -68,7 +69,7 @@ export const AllValuesFrom = {
 
 export const DifferentFrom = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "individual",
         ontologyId: "bco",
         iri: "http://purl.obolibrary.org/obo/IAO_0000120",
@@ -77,7 +78,7 @@ export const DifferentFrom = {
 
 export const EquivalentTo = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "go",
         iri: "http://purl.obolibrary.org/obo/GO_0048021",
@@ -86,7 +87,7 @@ export const EquivalentTo = {
 
 export const SingleValue = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "bfo",
         iri: "http://purl.obolibrary.org/obo/BFO_0000001",
@@ -95,7 +96,7 @@ export const SingleValue = {
 
 export const InverseOf = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "property",
         ontologyId: "ro",
         iri: "http://purl.obolibrary.org/obo/RO_0000057",
@@ -104,7 +105,7 @@ export const InverseOf = {
 
 export const PropertyChain = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "property",
         ontologyId: "ro",
         iri: "http://purl.obolibrary.org/obo/RO_0002170",
@@ -113,7 +114,7 @@ export const PropertyChain = {
 
 export const Instances = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "iao",
         iri: "http://purl.obolibrary.org/obo/IAO_0000078",
@@ -122,7 +123,7 @@ export const Instances = {
 
 export const Axioms = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "aism",
         iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
@@ -131,7 +132,7 @@ export const Axioms = {
 
 export const QualifiedCardinality = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "foodon",
         iri: "http://purl.obolibrary.org/obo/FOODON_00003382",

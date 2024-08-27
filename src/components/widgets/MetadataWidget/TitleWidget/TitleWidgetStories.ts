@@ -1,4 +1,5 @@
 import {thingTypeNames} from "../../../../model/ModelTypeCheck";
+import * as globals from '../../../../app/globals';
 
 export const TitleWidgetStoryArgTypes = {
     api: {
@@ -6,10 +7,10 @@ export const TitleWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },
     ontologyId: {
@@ -57,7 +58,7 @@ export const TitleWidgetStoryArgs = {
 export const TitleWidget1 = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "ncit",
         thingType: "term",
     }
@@ -65,7 +66,7 @@ export const TitleWidget1 = {
 
 export const SelectingDefiningOntology = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/IAO_0000631",
         thingType: "term",
         parameter: ""
@@ -74,7 +75,7 @@ export const SelectingDefiningOntology = {
 
 export const DefiningOntologyUnavailable = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         thingType: "term",
         parameter: ""

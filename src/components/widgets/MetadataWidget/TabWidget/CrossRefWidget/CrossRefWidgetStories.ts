@@ -1,4 +1,5 @@
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import * as globals from '../../../../../app/globals';
 
 export const CrossRefWidgetStoryArgTypes = {
     api: {
@@ -6,10 +7,10 @@ export const CrossRefWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },
     iri: {
@@ -53,7 +54,7 @@ export const CrossRefWidgetStoryArgs = {
 export const CrossRefTabWidget1 = {
     args: {
         iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "rxno",
         parameter: ""
@@ -62,7 +63,7 @@ export const CrossRefTabWidget1 = {
 
 export const SelectingDefiningOntology = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/IAO_0000631",
         entityType: "term",
         parameter: ""
@@ -71,7 +72,7 @@ export const SelectingDefiningOntology = {
 
 export const DefiningOntologyUnavailable = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         entityType: "term",
         parameter: ""

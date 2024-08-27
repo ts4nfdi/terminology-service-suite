@@ -1,13 +1,15 @@
+import * as globals from '../../../app/globals';
+
 export const TermDepictionWidgetStoryArgTypes = {    
     api: {
         control: {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },    
     iri: {
@@ -19,7 +21,7 @@ export const TermDepictionWidgetStoryArgTypes = {
 }
 
 export const TermDepictionWidgetStoryArgs = {    
-    api: "https://www.ebi.ac.uk/ols4/api/",
+    api: globals.EBI_API_ENDPOINT,
     iri: "",
     ontologyId: "",
     useLegacy: false,    
@@ -27,7 +29,7 @@ export const TermDepictionWidgetStoryArgs = {
 
 export const TermDepictionWidgetExample = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
         ontologyId: "uberon",
         useLegacy: false,

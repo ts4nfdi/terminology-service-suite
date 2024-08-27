@@ -1,13 +1,15 @@
+import * as globals from '../../../app/globals';
+
 export const DataContentWidgetStoryArgTypes = {
     api: {
         control: {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },
     parameter: {
@@ -21,21 +23,21 @@ export const DataContentWidgetStoryArgs = {
 
 export const NFDI4HealthDataContentWidget = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         parameter: "collection=nfdi4health",
     }
 };
 
 export const SafetyDataContentWidget = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         parameter: "collection=safety",
     }
 };
 
 export const ErrorDataContentWidget = {
     args: {
-        api: "ht3ps://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         parameter: "collection=safety",
     }
 };
