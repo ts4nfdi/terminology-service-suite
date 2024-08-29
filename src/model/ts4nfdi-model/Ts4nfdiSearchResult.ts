@@ -58,7 +58,7 @@ export class Ts4nfdiSearchResult implements SelectResult {
   }
 
   getApiSource(): string {
-    return this.properties["source"];
+    return this.properties["backend_type"].toUpperCase();
   }
 
 }

@@ -9,7 +9,8 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiProvider
+  EuiProvider,
+  EuiBadge
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
@@ -67,11 +68,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return label;
     }
 
-    let prefix = value.type === "ontology" 
-      ? value.ontology_name 
-      : value.ontology_name + " > " + value.short_form;
+    let prefix = (value.type === "ontology")
+      ? "Prefix: " + value.ontology_name 
+      : "Prefix > Short form: " + value.ontology_name + " > " + value.short_form;
 
-    let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\nPrefix: ${prefix}`;
+    let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
     if (value.description != undefined) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
@@ -109,17 +110,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     colorSecond={"success"}
                   />
                   {showApiSource && value.source && value.source !== "" &&
-                    <span 
-                      className="euiBadge"
-                      style={{
-                        backgroundColor: "black", 
-                        color: "white", 
-                        display: "inline-block",
-                        marginLeft: "10px"                                  
-                      }}
-                    >                                                                                     
-                    {"Source: " + value.source}      
-                    </span>
+                    <EuiBadge className="breadcrumb" color={"black"} style={{marginLeft: 10}}>
+                      {value.source}   
+                    </EuiBadge>
                   } 
                   {!singleSuggestionRow && value.description &&                    
                       <>
