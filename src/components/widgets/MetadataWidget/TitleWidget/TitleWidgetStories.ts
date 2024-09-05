@@ -1,14 +1,14 @@
-import {thingTypeNames} from "../../../../model/ModelTypeCheck";
 import * as globals from '../../../../app/globals';
 import {
-  apiArgType,
+  apiArgType, classNameArgType,
   defaultValueArgType,
   iriArgType,
   ontologyIdArgType,
   parameterArgType,
   thingTypeArgType,
-  titleTextArgType
+  titleTextArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
+import "../../../../style/titleStyles.css"
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,
@@ -17,20 +17,24 @@ export const TitleWidgetStoryArgTypes = {
   ...iriArgType,
   ...parameterArgType,
   ...titleTextArgType,
-  ...defaultValueArgType
+  ...defaultValueArgType,
+  ...useLegacyArgType,
+  ...classNameArgType,
 };
 
 export const TitleWidgetStoryArgs = {
   api: "",
   useLegacy: true,
+  iri: "",
   ontologyId: "",
   thingType: "",
   titleText: "",
   defaultValue: "",
+  className: "",
   parameter: "collection=nfdi4health"
 };
 
-export const TitleWidget1 = {
+export const TitleWidgetDefault = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     api: globals.ZBMED_API_ENDPOINT,
@@ -55,4 +59,14 @@ export const DefiningOntologyUnavailable = {
     thingType: "term",
     parameter: ""
   }
+};
+
+export const TitleWidgetWithStyles = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        thingType: "term",
+        className: 'title-styles',
+    }
 };

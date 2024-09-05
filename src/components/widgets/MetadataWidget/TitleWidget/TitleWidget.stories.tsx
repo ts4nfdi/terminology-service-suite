@@ -12,7 +12,8 @@ export default {
 };
 
 export {
-    TitleWidget1,
+    TitleWidgetDefault,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    TitleWidgetWithStyles
 } from "./TitleWidgetStories";

@@ -503,6 +503,14 @@ export const defaultValueArgType = {
     type: { summary: `string` }
   }
 };
+export const classNameArgType = {
+  defaultValue: {
+    required: false,
+    description: "CSS class for styling.",
+    control: "text",
+    type: { summary: `string` }
+  }
+};
 export const onNavigateToEntityArgType = {
   onNavigateToEntity: {
     required: false,
