@@ -9,6 +9,7 @@ import {
   showBadgesArgType,
   useLegacyArgType
 } from "../../../stories/storyArgs";
+import * as globals from '../../../app/globals';
 
 export const EntityInfoWidgetStoryArgTypes = {
   ...apiArgType,
@@ -22,7 +23,7 @@ export const EntityInfoWidgetStoryArgTypes = {
 };
 
 export const EntityInfoWidgetStoryArgs = {
-  api: "https://semanticlookup.zbmed.de/api/",
+  api: globals.ZBMED_API_ENDPOINT,
   iri: "",
   useLegacy: true,
   ontologyId: "",
@@ -59,51 +60,51 @@ export const IndividualInfoWidget = {
 };
 
 export const InfoWidgetBadges = {
-  args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
-    useLegacy: false,
-    entityType: "class",
-    iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
-    ontologyId: "uberon"
-  }
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        entityType: "class",
+        iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
+        ontologyId: "uberon"
+    }
 };
 
 export const OptionalEntityTypeLegacyAPI = {
-  args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
-    iri: "http://purl.obolibrary.org/obo/NCIT_C88403"
-  }
+    args: {
+        api: globals.ZBMED_OLS_API_ENDPOINT,
+        iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
+    }
 };
 
 export const InfoWidgetDomain = {
-  args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
-    useLegacy: false,
-    iri: "http://purl.obolibrary.org/obo/NCIT_R89"
-  }
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/NCIT_R89",
+    }
 };
 
 export const InfoWidgetRange = {
-  args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
-    useLegacy: false,
-    iri: "http://purl.obolibrary.org/obo/RO_0002029"
-  }
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/RO_0002029",
+    }
 };
 
 export const InfoWidgetPropertyAssertion = {
-  args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
-    useLegacy: false,
-    iri: "http://purl.obolibrary.org/obo/ENVO_01001569"
-  }
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+    }
 };
 
 export const InfoWidgetPropertyCharacteristics = {
-  args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
-    useLegacy: false,
-    iri: "http://purl.obolibrary.org/obo/MICRO_0001603"
-  }
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
+    }
 };
 

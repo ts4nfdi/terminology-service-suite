@@ -1,3 +1,5 @@
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import * as globals from '../../../../../app/globals';
 import {
   apiArgType,
   entityTypeArgType,
@@ -28,7 +30,7 @@ export const HierarchyWidgetOLSStoryArgs = {
 export const HierarchyWidgetOLS1 = {
   args: {
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-    api: "https://www.ebi.ac.uk/ols4/api/",
+    api: globals.EBI_API_ENDPOINT,
     ontologyId: "efo",
     entityType: "class"
   }

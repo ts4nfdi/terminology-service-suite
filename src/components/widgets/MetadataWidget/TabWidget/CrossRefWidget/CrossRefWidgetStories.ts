@@ -6,6 +6,7 @@ import {
     ontologyIdArgType,
     parameterArgType, useLegacyArgType
 } from "../../../../../stories/storyArgs";
+import * as globals from '../../../../../app/globals';
 
 export const CrossRefWidgetStoryArgTypes = {
     ...apiArgType,
@@ -28,7 +29,7 @@ export const CrossRefWidgetStoryArgs = {
 export const CrossRefTabWidget1 = {
     args: {
         iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         entityType: "term",
         ontologyId: "rxno",
         parameter: ""
@@ -37,7 +38,7 @@ export const CrossRefTabWidget1 = {
 
 export const SelectingDefiningOntology = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/IAO_0000631",
         entityType: "term",
         parameter: ""
@@ -46,7 +47,7 @@ export const SelectingDefiningOntology = {
 
 export const DefiningOntologyUnavailable = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         entityType: "term",
         parameter: ""

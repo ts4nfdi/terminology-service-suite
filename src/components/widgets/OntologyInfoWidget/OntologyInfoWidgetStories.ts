@@ -1,3 +1,5 @@
+import * as globals from '../../../app/globals';
+
 import {
     apiArgType,
     hasTitleArgType,
@@ -26,21 +28,21 @@ export const OntologyInfoWidgetStoryArgs = {
 
 export const OntologyInfoWidget1 = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "atc",
     }
 };
 
 export const OntologyInfoWidget2 = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "ncit"
     }
 };
 
 export const OntologyInfoWidgetOLS4API = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         ontologyId: "mp" // "uberon" is also good for demonstration
     }

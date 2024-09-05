@@ -1,3 +1,5 @@
+import * as globals from '../../../../../app/globals';
+
 import { apiArgType, iriArgType, ontologyIdArgType, parameterArgType } from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetDeprecatedStoryArgTypes =  {
@@ -17,7 +19,7 @@ export const HierarchyWidgetDeprecatedStoryArgs = {
 export const HierarchyWidgetDeprecated1 = {
     args: {
         iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "mesh",
         parameter: "nfdi4health",
     }

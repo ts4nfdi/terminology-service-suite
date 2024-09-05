@@ -1,3 +1,5 @@
+import * as globals from '../../../app/globals';
+
 import { action } from "@storybook/addon-actions";
 import {
   allowCustomTermsArgType,
@@ -24,7 +26,7 @@ export const AutocompleteWidgetStoryArgTypes = {
 
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
+    api: globals.ZBMED_OLS_API_ENDPOINT,
     ts4nfdiGateway: false,
     singleSelection: true,
     allowCustomTerms: false,
@@ -38,7 +40,7 @@ export const AutocompleteWidgetStoryArgsReact = {
 
 export const AutocompleteWidgetStoryArgsHTML = {
   args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
+    api: globals.ZBMED_OLS_API_ENDPOINT,
     ts4nfdiGateway: false,
     singleSelection: true,
     allowCustomTerms: false,
@@ -56,14 +58,14 @@ export const WithDefaults = {
 
 export const UseAPIGatewayWithOLS = {
   args: {
-    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
   },
 }
 export const UseAPIGatewayWithOntoPortal = {
   args: {
-    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form"
   },
@@ -71,7 +73,7 @@ export const UseAPIGatewayWithOntoPortal = {
 
 export const UseAPIGatewayWithSkosmos = {
   args: {
-    api: "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
   },
@@ -106,14 +108,14 @@ export const WithInvalidValue = {
 
 export const WithGermanInput = {
   args: {
-    api: "https://semanticlookup.zbmed.de/api/",
+    api: globals.ZBMED_API_ENDPOINT,
     parameter: "collection=nfdi4health&lang=de&type=class",
   }
 };
 
 export const WithDescriptionAndShortForm = {
   args: {
-    api: "https://semanticlookup.zbmed.de/api/",
+    api: globals.ZBMED_API_ENDPOINT,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   }
 };
@@ -145,14 +147,14 @@ export const WithMultipleValues = {
 
 export const TibNFDI4CHEM = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
   parameter: "classification=NFDI4CHEM&schema=collection",
   }
 };
 
 export const TibDataPlant = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
   }
 };

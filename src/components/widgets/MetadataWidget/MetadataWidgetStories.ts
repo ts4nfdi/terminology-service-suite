@@ -1,4 +1,5 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
+import * as globals from '../../../app/globals';
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -6,10 +7,10 @@ export const MetadataWidgetStoryArgTypes = {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },
     ontologyId: {
@@ -49,7 +50,7 @@ export const MetadataWidgetStoryArgs = {
 export const MetadataWidget1 = {
     storyName: "Metadata Widget",
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
@@ -60,7 +61,7 @@ export const MetadataWidget1 = {
 export const OLS3 = {
     storyName: "OLS3",
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
@@ -71,7 +72,7 @@ export const OLS3 = {
 export const OLS4V1 = {
     storyName: "OLS4 V1",
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
@@ -82,7 +83,7 @@ export const OLS4V1 = {
 export const OLS4V2 = {
     storyName: "OLS4 V2",
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
@@ -93,7 +94,7 @@ export const OLS4V2 = {
 
 export const SelectingDefiningOntology = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/IAO_0000631",
         entityType: "term",
         parameter: ""
@@ -102,7 +103,7 @@ export const SelectingDefiningOntology = {
 
 export const DefiningOntologyUnavailable = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         entityType: "term",
         parameter: ""

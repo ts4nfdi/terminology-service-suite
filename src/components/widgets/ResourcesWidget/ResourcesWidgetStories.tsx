@@ -1,6 +1,7 @@
 import {OlsResource} from "../../../app/types";
 import {EuiButton, EuiButtonIcon} from "@elastic/eui";
 import React from "react";
+import * as globals from '../../../app/globals';
 import {
     actionsArgType,
     apiArgType,
@@ -34,7 +35,7 @@ export const ResourcesWidgetStoryArgs = {
 
 export const ResourcesWidget1 = {
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         initialEntriesPerPage: 10,
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",

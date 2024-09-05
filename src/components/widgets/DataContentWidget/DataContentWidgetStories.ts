@@ -1,3 +1,5 @@
+import * as globals from '../../../app/globals';
+
 import { apiArgType, parameterArgType } from "../../../stories/storyArgs";
 
 export const DataContentWidgetStoryArgTypes = {
@@ -11,22 +13,22 @@ export const DataContentWidgetStoryArgs = {
 };
 
 export const NFDI4HealthDataContentWidget = {
-  args: {
-    api: "https://semanticlookup.zbmed.de/api/",
-    parameter: "collection=nfdi4health"
-  }
+    args: {
+        api: globals.ZBMED_API_ENDPOINT,
+        parameter: "collection=nfdi4health",
+    }
 };
 
 export const SafetyDataContentWidget = {
-  args: {
-    api: "https://semanticlookup.zbmed.de/api/",
-    parameter: "collection=safety"
-  }
+    args: {
+        api: globals.ZBMED_API_ENDPOINT,
+        parameter: "collection=safety",
+    }
 };
 
 export const ErrorDataContentWidget = {
-  args: {
-    api: "ht3ps://semanticlookup.zbmed.de/api/",
-    parameter: "collection=safety"
-  }
+    args: {
+        api: globals.ZBMED_API_ENDPOINT,
+        parameter: "collection=safety",
+    }
 };
