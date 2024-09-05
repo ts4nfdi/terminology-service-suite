@@ -1,32 +1,19 @@
 import * as globals from '../../../../../app/globals';
 
+import { apiArgType, iriArgType, ontologyIdArgType, parameterArgType } from "../../../../../stories/storyArgs";
+
 export const HierarchyWidgetDeprecatedStoryArgTypes =  {
-    api: {
-        description: "Instance of the OLS API to call.",
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
-        ],
-    },
-    ontologyId: {
-        description: "Ontology ID from where the term hierarchy should be taken.",
-    },
-    iri: {
-        description: "Iri of the term you want to fetch the term hierarchy for.",
-    },
-    parameter: {
-        collection: "nfdi4health"
-    }
+    ...apiArgType,
+    ...ontologyIdArgType,
+    ...iriArgType,
+    ...parameterArgType
 }
 
 export const HierarchyWidgetDeprecatedStoryArgs = {
+    api: "",
     iri: "",
-    ontologyId: ""
+    ontologyId: "",
+    parameter: "",
 }
 
 export const HierarchyWidgetDeprecated1 = {

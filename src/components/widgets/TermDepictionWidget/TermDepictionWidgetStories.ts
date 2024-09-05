@@ -1,23 +1,16 @@
 import * as globals from '../../../app/globals';
+import {
+    apiArgType,
+    iriArgType,
+    ontologyIdReqArgType,
+    useLegacyArgType
+} from "../../../stories/storyArgs";
 
-export const TermDepictionWidgetStoryArgTypes = {    
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
-        ],
-    },    
-    iri: {
-        description: "The term IRI to be depicted.",
-    },
-    ontologyId: {
-        description: "Ontology ID that the term belongs to.",
-    },     
+export const TermDepictionWidgetStoryArgTypes = {
+    ...apiArgType,
+    ...iriArgType,
+    ...ontologyIdReqArgType,
+    ...useLegacyArgType
 }
 
 export const TermDepictionWidgetStoryArgs = {    

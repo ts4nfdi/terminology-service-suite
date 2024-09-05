@@ -1,32 +1,27 @@
 import * as globals from '../../../app/globals';
 
+import { apiArgType, parameterArgType, queryArgType, selectionChangedEventArgType } from "../../../stories/storyArgs";
+import { action } from "@storybook/addon-actions";
+
 export const SearchBarWidgetStoryArgTypes = {
-  api: {
-    control: {
-      type: "radio"
-    },
-    options: [
-        globals.EBI_API_ENDPOINT,
-        globals.ZBMED_OLS_API_ENDPOINT,
-        globals.ZBMED_API_ENDPOINT,
-        globals.TIB_API_ENDPOINT
-    ]
-  },
-  query: {},
-  onSearchValueChange: {
-    action: "onSearchValueChange"
-  },
-  selectionChangedEvent: {
-      action: "selectionChangedEvent",
-    },
-  parameter: {}
+  ...apiArgType,
+  ...selectionChangedEventArgType,
+  ...parameterArgType,
+  ...queryArgType
+};
+
+export const SearchBarWidgetStoryArgsReact = {
+  api: "",
+  query: "",
+  selectionChangedEvent: action('selectionChangedEvent'),
+  parameter: "collection=nfdi4health",
 };
 
 export const SearchBarWidgetStoryArgs = {
+  api: "",
+  query: "",
+  selectionChangedEvent: () => {return;},
   parameter: "collection=nfdi4health",
-  onSearchValueChange: () => {
-    return;
-  }
 };
 
 export const SearchBarWidgetDefault = {

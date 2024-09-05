@@ -2,53 +2,34 @@ import {OlsResource} from "../../../app/types";
 import {EuiButton, EuiButtonIcon} from "@elastic/eui";
 import React from "react";
 import * as globals from '../../../app/globals';
+import {
+    actionsArgType,
+    apiArgType,
+    initialEntriesPerPageArgType, initialSortDirArgType,
+    initialSortFieldArgType,
+    pageSizeOptionsArgType, parameterArgType, targetLinkArgType
+} from "../../../stories/storyArgs";
 
 export const ResourcesWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT,
-            globals.ZBMED_K8S_ENDPOINT
-        ],
-    },
-    initialEntriesPerPage: {
-        control: "number",
-    },
-    pageSizeOptions: {
-        control: "array",
-    },
-    initialSortField: {
-        control: {
-            type: "radio",
-        },
-        options: ["config.title", "config.preferredPrefix", "config.loaded"],
-    },
-    initialSortDir: {
-        table: {
-            type: { summary: `ascending | descending` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: ["ascending", "descending"],
-    },
-    targetLink: {
-        control: "text",
-    },
-    actions: {},
-    parameter: {
-        type: { required: false }
-    },
+    ...apiArgType,
+    ...initialEntriesPerPageArgType,
+    ...pageSizeOptionsArgType,
+    ...initialSortFieldArgType,
+    ...initialSortDirArgType,
+    ...targetLinkArgType,
+    ...actionsArgType,
+    ...parameterArgType,
 }
 
 export const ResourcesWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
-    actions: []
+    api: "",
+    initialEntriesPerPage: 10,
+    pageSizeOptions: [10, 25, 50, 100],
+    initialSortField: "config.preferredPrefix",
+    initialSortDir: "asc",
+    targetLink: "",
+    actions: [],
+    parameter: "collection=nfdi4health"
 }
 
 

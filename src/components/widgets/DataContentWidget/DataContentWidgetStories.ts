@@ -1,25 +1,16 @@
 import * as globals from '../../../app/globals';
 
+import { apiArgType, parameterArgType } from "../../../stories/storyArgs";
+
 export const DataContentWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
-        ],
-    },
-    parameter: {
-        type: { required: false }
-    },
-}
+  ...apiArgType,
+  ...parameterArgType
+};
 
 export const DataContentWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
-}
+  api: "",
+  parameter: ""
+};
 
 export const NFDI4HealthDataContentWidget = {
     args: {

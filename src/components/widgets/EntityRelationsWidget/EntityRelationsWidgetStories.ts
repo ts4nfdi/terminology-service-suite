@@ -1,52 +1,31 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
+import {
+    apiArgType,
+    entityTypeArgType,
+    hasTitleArgType,
+    iriArgType, ontologyIdArgType,
+    parameterArgType, showBadgesArgType
+} from "../../../stories/storyArgs";
 
 export const EntityRelationsWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT,
-            globals.ZBMED_K8S_ENDPOINT,            
-        ],
-    },
-    hasTitle: {
-        type: { required: false },
-    },
-    entityType: {
-        table: {
-            type: { summary: `${entityTypeNames.join(" | ")}` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: [
-            "ontology",
-            "term",
-            "class",
-            "property",
-            "individual",
-            undefined,
-            "INVALID STRING"
-        ],
-    },
-    iri: {},
-    parameter: {
-        type: { required: false }
-    },
-    ontologyId: {
-        type: { required: false }
-    },
-    showBadges: {}
+    ...apiArgType,
+    ...hasTitleArgType,
+    ...entityTypeArgType,
+    ...iriArgType,
+    ...parameterArgType,
+    ...ontologyIdArgType,
+    ...showBadgesArgType
 }
 
 export const EntityRelationsWidgetStoryArgs = {
+    api: "https://semanticlookup.zbmed.de/api/",
+    iri: "",
+    ontologyId: "",
+    entityType: "",
     hasTitle: true,
     showBadges: true,
+    parameter: "",
 }
 
 export const SubEntityOf = {

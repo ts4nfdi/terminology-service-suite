@@ -43,7 +43,7 @@ Please contact the SemLookP or TS4NFDI teams. We are working on avoiding this hu
 
 ### Authenticate
 
-Add the following two lines to your local npm configuraiton `~/.npmrc`. Replace `TOKEN` with your personal access
+Add the following two lines to your local npm configuration `~/.npmrc`. Replace `TOKEN` with your personal access
 token (classic). You need to have access to a ZB MED project for developing the widgets - please contact the development
 team.
 
@@ -115,6 +115,48 @@ If the environment features `npm`, a local module can be created from the output
 generated inside `dist_plainjs/`
 in `local_modules/terminology-service-suite/` in your consumer project. Now
 add `"terminology-service-suite": "file:local_modules/terminology-service-suite"` as a dependency in `package.json` and run `npm install`.
+
+### Developing with Storybook
+
+Structure of the project (Code and stories are in the respective widgets directories):
+
+`Widget.tsx` The widget code.   
+`WidgetStories.ts` The configuration file for the stories.  
+`WidgetStoriesHTML.ts` The HTML widget stories.  
+`Widget.stories.tsx` The React widget stories.  
+`index.ts` Exports the widget. When creating a new widget, it needs to be exported in all parent index files.
+
+The story arguments for all widgets are defined in the `src/stories/storyArgs.ts`. 
+JSDocs comments in the `src/app/types.ts` are overwritten by these arguments. 
+We need this file because HTML stories can't directly access JSDocs comments.
+
+#### Defining new widget property
+When defining a new property for a widget, it needs to be added 
+- in the widget tsx code as prop, in the Wrapper function at the end of the tsx code file
+- in `src/app/types.ts`
+- in `dist_plainjs/manually_maintained_types.d.ts`
+- in `WidgetStories.ts` 
+
+If the property is a function, the React and HTML Storybook args must be separated (see example below),
+because actions are handled differently.
+```javascript
+export const SearchBarWidgetStoryArgsReact = {
+  api: "",
+  query: "",
+  selectionChangedEvent: action('selectionChangedEvent'),
+  parameter: "collection=nfdi4health",
+};
+
+export const SearchBarWidgetStoryArgs = {
+  api: "",
+  query: "",
+  selectionChangedEvent: () => {return;},
+  parameter: "collection=nfdi4health",
+};
+```
+
+Hint: For correct execution of the HTML Storybook, build files are needed. 
+Do a `npm run build:plainJS` before testing the HTML Storybook.
 
 ### Commit Message Formatting
 

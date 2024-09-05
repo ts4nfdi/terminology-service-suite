@@ -1,54 +1,29 @@
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import {
+    apiArgType,
+    entityTypeArgType,
+    iriArgType,
+    ontologyIdArgType,
+    parameterArgType, useLegacyArgType
+} from "../../../../../stories/storyArgs";
 import * as globals from '../../../../../app/globals';
 
 export const CrossRefWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
-        ],
-    },
-    iri: {
-        description: "IRI of the entity you want to fetch the cross references for.",
-    },
-    ontologyId: {},
-    entityType: {
-        table: {
-            type: { summary: `${entityTypeNames.join(" | ")}` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: [
-            "term",
-            "class",
-            "property",
-            "individual",
-            "",
-            "INVALID STRING"
-        ],
-    },
-    parameter: {
-        type: { required: false }
-    },
-    useLegacy: {
-        type: { required: false },
-        control: "boolean",
-        description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
-        default: true
-    }
+    ...apiArgType,
+    ...iriArgType,
+    ...ontologyIdArgType,
+    ...entityTypeArgType,
+    ...parameterArgType,
+    ...useLegacyArgType
 }
 
 export const CrossRefWidgetStoryArgs = {
-    parameter: "collection=nfdi4health",
+    api: "",
+    iri: "",
     useLegacy: true,
     ontologyId: "",
-    entityType: ""
+    entityType: "",
+    parameter: "collection=nfdi4health",
 }
 
 export const CrossRefTabWidget1 = {

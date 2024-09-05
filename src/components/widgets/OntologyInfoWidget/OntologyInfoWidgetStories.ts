@@ -1,52 +1,29 @@
 import * as globals from '../../../app/globals';
 
+import {
+    apiArgType,
+    hasTitleArgType,
+    ontologyIdReqArgType,
+    parameterArgType,
+    showBadgesArgType, useLegacyArgType
+} from "../../../stories/storyArgs";
+
 export const OntologyInfoWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
-        ],
-    },
-    hasTitle: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    },
-    ontologyId: {
-        table: {
-            defaultValue: { summary: undefined }
-        }
-    },
-    parameter: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: undefined }
-        }
-    },
-    showBadges: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    },
-    useLegacy: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    }
+    ...apiArgType,
+    ...hasTitleArgType,
+    ...ontologyIdReqArgType,
+    ...parameterArgType,
+    ...showBadgesArgType,
+    ...useLegacyArgType
 }
 
 export const OntologyInfoWidgetStoryArgs = {
+    api: "",
+    useLegacy: true,
+    ontologyId: "",
     hasTitle: true,
     showBadges: true,
-    useLegacy: true,
+    parameter: "",
 }
 
 export const OntologyInfoWidget1 = {
