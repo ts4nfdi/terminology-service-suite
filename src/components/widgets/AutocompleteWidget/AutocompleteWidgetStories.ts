@@ -58,14 +58,14 @@ export const WithDefaults = {
 
 export const UseAPIGatewayWithOLS = {
   args: {
-    api: globals.GATEWAY_API_ENDPINT,
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
   },
 }
 export const UseAPIGatewayWithOntoPortal = {
   args: {
-    api: globals.GATEWAY_API_ENDPINT,
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form"
   },
@@ -73,7 +73,7 @@ export const UseAPIGatewayWithOntoPortal = {
 
 export const UseAPIGatewayWithSkosmos = {
   args: {
-    api: globals.GATEWAY_API_ENDPINT,
+    api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
   },
