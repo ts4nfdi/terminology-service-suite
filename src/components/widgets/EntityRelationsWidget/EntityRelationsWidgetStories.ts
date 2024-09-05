@@ -25,8 +25,6 @@ export const EntityRelationsWidgetStoryArgs = {
     hasTitle: true,
     showBadges: true,
     parameter: "",
-    hasTitle: true,
-    showBadges: true,
 }
 
 export const SubEntityOf = {

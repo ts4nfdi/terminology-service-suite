@@ -11,10 +11,18 @@ export const apiArgType = {
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/api/",
       "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
-      "https://service.tib.eu/ts4tib/api/"
+      "https://service.tib.eu/ts4tib/api/",
+      "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/"
     ],
     description:
-      "The API instance for the API call.<br> **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)<br> **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br> **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)<br> **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)<br> **TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)",
+      "The API instance for the API call.<br> " +
+      "**Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)<br> " +
+      "**Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br> " +
+      "**Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)<br> " +
+      "**OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)<br> " +
+      "**TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
+      "**TS4NFDI API Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)<br> "
+    ,
     type: { summary: "string" }
   }
 };
@@ -135,7 +143,7 @@ export const parameterArgType = {
           </tr>
           <tr>
             <td>fieldList</td>
-            <td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td>
+            <td>Specify the fields to return. Defaults are <b>iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type</b></td>
           </tr>
           <tr>
             <td>obsoletes</td>
@@ -162,8 +170,16 @@ export const parameterArgType = {
             <td>Set the results page number</td>
           </tr>
           <tr>
+            <td>lang</td>
+            <td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b></td>
+          </tr>
+          <tr>
             <td>collection</td>
-            <td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td>
+            <td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td>
+          </tr>
+          <tr>
+            <td>database</td>
+            <td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td>
           </tr>
         </tbody>
       </table>`
@@ -189,6 +205,21 @@ export const singleSelectionArgType = {
   singleSelection: {
     required: true,
     description: "If true, only one concept can be selected at once.",
+    defaultValue: { summary: false },
+    type: { summary: "boolean" }
+  }
+};
+export const singleSuggestionRow = {
+  singleSelection: {
+    required: false,
+    description: "Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.",
+    type: { summary: "boolean" }
+  }
+};
+export const ts4nfdiGateway = {
+  singleSelection: {
+    required: false,
+    description: "Use the TS4NFDI Gateway API",
     defaultValue: { summary: false },
     type: { summary: "boolean" }
   }
