@@ -1,49 +1,46 @@
+import * as globals from '../../../app/globals';
+
+import { apiArgType, parameterArgType, queryArgType, selectionChangedEventArgType } from "../../../stories/storyArgs";
+import { action } from "@storybook/addon-actions";
+
 export const SearchBarWidgetStoryArgTypes = {
-  api: {
-    control: {
-      type: "radio"
-    },
-    options: [
-      "https://www.ebi.ac.uk/ols4/api/",
-      "https://semanticlookup.zbmed.de/ols/api/",
-      "https://semanticlookup.zbmed.de/api/",
-      "https://service.tib.eu/ts4tib/api/"
-    ]
-  },
-  query: {},
-  onSearchValueChange: {
-    action: "onSearchValueChange"
-  },
-  selectionChangedEvent: {
-      action: "selectionChangedEvent",
-    },
-  parameter: {}
+  ...apiArgType,
+  ...selectionChangedEventArgType,
+  ...parameterArgType,
+  ...queryArgType
+};
+
+export const SearchBarWidgetStoryArgsReact = {
+  api: "",
+  query: "",
+  selectionChangedEvent: action('selectionChangedEvent'),
+  parameter: "collection=nfdi4health",
 };
 
 export const SearchBarWidgetStoryArgs = {
+  api: "",
+  query: "",
+  selectionChangedEvent: () => {return;},
   parameter: "collection=nfdi4health",
-  onSearchValueChange: () => {
-    return;
-  }
 };
 
 export const SearchBarWidgetDefault = {
   args: {
-    api: "https://www.ebi.ac.uk/ols4/api/",
+    api: globals.EBI_API_ENDPOINT,
     query: "*"
   }
 };
 
 export const TibNFDI4CHEM = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection"
   }
 };
 
 export const TibDataPlant = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection"
   }
 };

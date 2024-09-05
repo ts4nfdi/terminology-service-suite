@@ -1,25 +1,20 @@
-export const TermDepictionWidgetStoryArgTypes = {    
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
-        ],
-    },    
-    iri: {
-        description: "The term IRI to be depicted.",
-    },
-    ontologyId: {
-        description: "Ontology ID that the term belongs to.",
-    },     
+import * as globals from '../../../app/globals';
+import {
+    apiArgType,
+    iriArgType,
+    ontologyIdReqArgType,
+    useLegacyArgType
+} from "../../../stories/storyArgs";
+
+export const TermDepictionWidgetStoryArgTypes = {
+    ...apiArgType,
+    ...iriArgType,
+    ...ontologyIdReqArgType,
+    ...useLegacyArgType
 }
 
 export const TermDepictionWidgetStoryArgs = {    
-    api: "https://www.ebi.ac.uk/ols4/api/",
+    api: globals.EBI_API_ENDPOINT,
     iri: "",
     ontologyId: "",
     useLegacy: false,    
@@ -27,7 +22,7 @@ export const TermDepictionWidgetStoryArgs = {
 
 export const TermDepictionWidgetExample = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
         ontologyId: "uberon",
         useLegacy: false,

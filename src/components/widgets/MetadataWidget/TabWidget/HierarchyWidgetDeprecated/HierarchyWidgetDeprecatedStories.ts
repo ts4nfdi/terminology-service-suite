@@ -1,36 +1,25 @@
+import * as globals from '../../../../../app/globals';
+
+import { apiArgType, iriArgType, ontologyIdArgType, parameterArgType } from "../../../../../stories/storyArgs";
+
 export const HierarchyWidgetDeprecatedStoryArgTypes =  {
-    api: {
-        description: "Instance of the OLS API to call.",
-        control: {
-            type: "radio",
-        },
-        options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
-        ],
-    },
-    ontologyId: {
-        description: "Ontology ID from where the term hierarchy should be taken.",
-    },
-    iri: {
-        description: "Iri of the term you want to fetch the term hierarchy for.",
-    },
-    parameter: {
-        collection: "nfdi4health"
-    }
+    ...apiArgType,
+    ...ontologyIdArgType,
+    ...iriArgType,
+    ...parameterArgType
 }
 
 export const HierarchyWidgetDeprecatedStoryArgs = {
+    api: "",
     iri: "",
-    ontologyId: ""
+    ontologyId: "",
+    parameter: "",
 }
 
 export const HierarchyWidgetDeprecated1 = {
     args: {
         iri: "http://purl.bioontology.org/ontology/MESH/D003704",
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "mesh",
         parameter: "nfdi4health",
     }

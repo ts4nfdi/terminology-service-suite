@@ -27,7 +27,6 @@ window['SemLookPWidgets'].createSearchBar(
     {
       api:"${args.api}",
       query:"${args.query}",
-      onSearchValueChange:${args.onSearchValueChange.toString().replace(/(\r\n|\n|\r)/gm, "")},
       selectionChangedEvent:${args.selectionChangedEvent.toString().replace(/(\r\n|\n|\r)/gm, "")},
       parameter:"${args.parameter}",
     },

@@ -17,7 +17,8 @@ declare global {
       preselected?: { label?: string; iri?: string };
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
-      allowCustomTerms: boolean;
+      allowCustomTerms?: boolean;
+      singleSelection?: boolean;
       ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
       showApiSource?: boolean;
@@ -182,7 +183,10 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string;
+      className?: string;
+      useLegacy?: boolean;
+      defaultValue?: string;
     }
     )=>void,
     createHierarchy:(props:{
