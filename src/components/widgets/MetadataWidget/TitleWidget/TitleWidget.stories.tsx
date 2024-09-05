@@ -13,6 +13,9 @@ export default {
 
 export {
     TitleWidgetDefault,
+    TitleWidgetWithTitleText,
+    IncorrectIriWithDefaultValue,
+    IncorrectIriWithoutDefaultValue,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     TitleWidgetWithStyles
