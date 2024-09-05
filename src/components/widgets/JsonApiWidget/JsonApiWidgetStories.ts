@@ -1,25 +1,18 @@
+import { apiQueryArgType, buttonSizeArgType, buttonTextArgType } from "../../../stories/storyArgs";
+
 export const JsonApiWidgetStoryArgTypes = {
-    apiQuery: {},
-    buttonText: {},
-    buttonSize: {
-        table: {
-            type: { summary: `s | m` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: [
-            "s",
-            "m",
-        ],
-    },
+    ...apiQueryArgType,
+    ...buttonSizeArgType,
+    ...buttonTextArgType
 }
 
 export const JsonApiWidgetStoryArgs = {
-
+    apiQuery: "",
+    buttonText: "",
+    buttonSize: ""
 }
 
-export const JsonApiWidget1 = {
+export const JsonApiWidgetDefault = {
     args: {
         apiQuery: "https://semanticlookup.zbmed.de/ols/api/ontologies/atc",
         buttonText: "show JSON",

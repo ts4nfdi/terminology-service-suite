@@ -1,30 +1,25 @@
+import { apiArgType, parameterArgType, queryArgType, selectionChangedEventArgType } from "../../../stories/storyArgs";
+import { action } from "@storybook/addon-actions";
+
 export const SearchBarWidgetStoryArgTypes = {
-  api: {
-    control: {
-      type: "radio"
-    },
-    options: [
-      "https://www.ebi.ac.uk/ols4/api/",
-      "https://semanticlookup.zbmed.de/ols/api/",
-      "https://semanticlookup.zbmed.de/api/",
-      "https://service.tib.eu/ts4tib/api/"
-    ]
-  },
-  query: {},
-  onSearchValueChange: {
-    action: "onSearchValueChange"
-  },
-  selectionChangedEvent: {
-      action: "selectionChangedEvent",
-    },
-  parameter: {}
+  ...apiArgType,
+  ...selectionChangedEventArgType,
+  ...parameterArgType,
+  ...queryArgType
+};
+
+export const SearchBarWidgetStoryArgsReact = {
+  api: "",
+  query: "",
+  selectionChangedEvent: action('selectionChangedEvent'),
+  parameter: "collection=nfdi4health",
 };
 
 export const SearchBarWidgetStoryArgs = {
+  api: "",
+  query: "",
+  selectionChangedEvent: () => {return;},
   parameter: "collection=nfdi4health",
-  onSearchValueChange: () => {
-    return;
-  }
 };
 
 export const SearchBarWidgetDefault = {

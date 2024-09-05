@@ -124,7 +124,6 @@ type TargetLinkObj = {
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
-     * @param selectedOptions  The selected items
      */
     selectionChangedEvent: (selectedOptions: {
         label: string;
@@ -147,11 +146,11 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
     /**
      * If true, custom terms that are not found in any ontology can be added.
      */
-    allowCustomTerms: boolean;
+    allowCustomTerms?: boolean;
     /**
      * If true, only one concept can be selected at once.
      */
-    singleSelection: boolean;
+    singleSelection?: boolean;
     /**
      * Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.
      */
@@ -271,17 +270,11 @@ export type CrossRefPresentationProps = {
 export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
     /**
      * This function is called every time an entity link is clicked
-     * @param ontologyId obtains the ontologyId of the current ontology
-     * @param entityType obtains the entityType of the clicked entity links' entity
-     * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToEntity?:  (ontologyId: string, entityType: string, iri: string) => void;
 
     /**
      * This function is called every time a badge linking to an entity in its defining ontology is clicked
-     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
-     * @param entityType obtains the entityType of the clicked entity links' entity
-     * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 };
