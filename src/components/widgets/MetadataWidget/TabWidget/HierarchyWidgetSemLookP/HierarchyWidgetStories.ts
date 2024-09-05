@@ -1,9 +1,11 @@
 import {EntityDataForHierarchy} from "../../../../../model/interfaces/Hierarchy";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidget";
+import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import * as globals from '../../../../../app/globals';
 
 export const HierarchyWidgetStoryArgTypes = {
     apiUrl: {},
-    backend_type: {
+    backendType: {
         control: {
             type: "radio"
         },
@@ -11,35 +13,117 @@ export const HierarchyWidgetStoryArgTypes = {
             "ols",
             "skosmos",
             "ontoportal"
-        ]
+        ],
+        table: {
+            defaultValue: {
+                summary: "ols"
+            }
+        }
     },
-    apikey: {},
+    apiKey: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
     onNavigateToEntity: {
         control: {
             disabled: true
+        },
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
         }
     },
     onNavigateToOntology: {
         control: {
             disabled: true
+        },
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
         }
     },
-    iri: {},
-    ontologyId: {},
-    entityType: {},
-    includeObsoleteEntities: {},
-    preferredRoots: {},
-    keepExpansionStates: {},
-    showSiblingsOnInit: {},
-    useLegacy: {}
+    iri: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
+    ontologyId: {
+        table: {
+            defaultValue: {
+                summary: undefined
+            }
+        }
+    },
+    entityType: {
+        table: {
+            type: { summary: `${entityTypeNames.join(" | ")}` },
+            defaultValue: {
+                summary: undefined
+            }
+        },
+        control: {
+            type: "radio",
+        },
+        options: [
+            "ontology",
+            "term",
+            "class",
+            "property",
+            "individual",
+            undefined,
+            "INVALID STRING"
+        ],
+    },
+    includeObsoleteEntities: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES
+            }
+        }
+    },
+    preferredRoots: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS
+            }
+        }
+    },
+    keepExpansionStates: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES
+            }
+        }
+    },
+    showSiblingsOnInit: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT
+            }
+        }
+    },
+    useLegacy: {
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY
+            }
+        }
+    }
 }
 
 export const HierarchyWidgetStoryArgs = {
     apiUrl: {},
-    backend_type: {},
-    apikey: {},
-    onNavigateToEntity: (entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for entity "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (pOntologyId: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for entity "${entity.label}" (iri="${entity.iri}") and ontologyId "${pOntologyId}".`)},
+    backendType: {},
+    apiKey: {},
+    onNavigateToEntity: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
+        onNavigateToOntology: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
     iri: "",
     ontologyId: "",
     entityType: "",
@@ -52,8 +136,8 @@ export const HierarchyWidgetStoryArgs = {
 
 export const ClassHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         entityType: "class",
         ontologyId: "efo",
@@ -62,8 +146,8 @@ export const ClassHierarchy = {
 
 export const IndividualHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "http://purl.obolibrary.org/obo/IAO_0000120",
         entityType: "individual",
         ontologyId: "bco",
@@ -72,8 +156,8 @@ export const IndividualHierarchy = {
 
 export const PreferredRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "",
         entityType: "class",
         ontologyId: "uberon",
@@ -83,8 +167,8 @@ export const PreferredRoots = {
 
 export const IncludeObsoleteEntities = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "",
         entityType: "class",
         ontologyId: "uberon",
@@ -94,8 +178,8 @@ export const IncludeObsoleteEntities = {
 
 export const PropertyRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "",
         entityType: "property",
         ontologyId: "bco",
@@ -104,8 +188,8 @@ export const PropertyRoots = {
 
 export const IndividualRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "",
         entityType: "individual",
         ontologyId: "bco",
@@ -114,8 +198,8 @@ export const IndividualRoots = {
 
 export const LargeHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
-        backend_type: "ols",
+        apiUrl: globals.EBI_API_ENDPOINT,
+        backendType: "ols",
         iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
         entityType: "class",
         ontologyId: "uberon",
@@ -124,8 +208,8 @@ export const LargeHierarchy = {
 
 export const SkosHierarchy = {
     args: {
-        apiUrl: "https://api.finto.fi/rest/v1",
-        backend_type: "skosmos",
+        apiUrl: globals.FINTO_V1_API_ENDPOINT,
+        backendType: "skosmos",
         iri: "http://www.yso.fi/onto/yso/p864",
         ontologyId: "yso",
     }
@@ -134,10 +218,10 @@ export const SkosHierarchy = {
 export const OntoportalHierarchy = {
     args: {
         apiUrl: "https://data.biodivportal.gfbio.org",
-        backend_type: "ontoportal",
+        backendType: "ontoportal",
         iri: "http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",
         ontologyId: "IOC",
         entityType: "class",
-        apikey: ""
+        apiKey: ""
     }
 }

@@ -4,23 +4,29 @@ import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/H
 export type HierarchyQueryProps = {
     /**
      * Mandatory: OntoPortal
+     *
      * Optional: OLS
+     *
      * Unused: Skosmos
      */
     entityType?: EntityTypeName
     /**
      * Mandatory: OntoPortal, Skosmos
+     *
      * Optional: OLS (however, it is still strongly recommended to provide)
      */
     ontologyId?: string
     /**
-     * Only affecting OLS hierarchies
+     * **Only affecting OLS hierarchies**
+     * Toggle whether to include entities marked as obsolete by the API.
      */
     includeObsoleteEntities?: boolean
+
     /**
-     * Specify API version when using OLS
+     * **Only affecting OLS hierarchies**
+     * Toggle between OLS3 (legacy) and OLS4 API versions.
      */
-    useLegacy?: boolean
+    useLegacy?: boolean;
 }
 
 export type HierarchyIriProp = {
@@ -33,7 +39,9 @@ export type HierarchyIriProp = {
 
 export type BuildHierarchyProps = HierarchyQueryProps & {
     /**
-     * Only affecting OLS hierarchies
+     * **Only affecting OLS hierarchies**
+     * When displaying an ontology's root hierarchy (i.e. no iri provided), all entities without parent entities are displayed by default.
+     * If `preferredRoots==true`, only the entities specifically marked as preferred root entity by the API are shown.
      */
     preferredRoots?: boolean
     /**

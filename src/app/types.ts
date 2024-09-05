@@ -21,14 +21,16 @@ type ParameterObj = {
      *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
      *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
      *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</td></tr>
+     *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are <b>{iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</b></td></tr>
      *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
      *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
      *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
      *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
      *  <tr><td>rows</td><td>Set results per page</td></tr>
      *  <tr><td>start</td><td>Set the results page number</td></tr>
-     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. collection=nfdi4health</td></tr>
+     *  <tr><td>lang</td><td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b>.</td></tr>
+     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td></tr>
+     *  <tr><td>database</td><td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td></tr>
      * </table>
      */
     parameter?: string;
@@ -42,6 +44,7 @@ type ApiObj = {
      * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
      * - **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)
      * - **TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
+     * - **TS4NFDI Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)
      */
     api: string;
 };
@@ -121,7 +124,6 @@ type TargetLinkObj = {
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
-     * @param selectedOptions  The selected items
      */
     selectionChangedEvent: (selectedOptions: {
         label: string;
@@ -144,11 +146,19 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
     /**
      * If true, custom terms that are not found in any ontology can be added.
      */
-    allowCustomTerms: boolean;
+    allowCustomTerms?: boolean;
     /**
      * If true, only one concept can be selected at once.
      */
-    singleSelection: boolean;
+    singleSelection?: boolean;
+    /**
+     * Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.
+     */
+    singleSuggestionRow?: boolean;
+    /**
+     * Use the TS4NFDI Gateway API
+     */
+    ts4nfdiGateway?: boolean;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
@@ -260,17 +270,11 @@ export type CrossRefPresentationProps = {
 export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
     /**
      * This function is called every time an entity link is clicked
-     * @param ontologyId obtains the ontologyId of the current ontology
-     * @param entityType obtains the entityType of the clicked entity links' entity
-     * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToEntity?:  (ontologyId: string, entityType: string, iri: string) => void;
 
     /**
      * This function is called every time a badge linking to an entity in its defining ontology is clicked
-     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
-     * @param entityType obtains the entityType of the clicked entity links' entity
-     * @param iri obtains the iri of the clicked entity links' entity
      */
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 };
@@ -281,16 +285,39 @@ export type HierarchyWidgetProps = {
      */
     apiUrl: string
     /**
+     * **Only required for OntoPortal hierarchies**
      * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
      */
-    apikey?: string
+    apiKey?: string
     /**
-     * The backend key from which to request {ols, ontoportal, skosmos}
+     * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
      */
-    backend_type?: string
+    backendType?: string
 } & BuildHierarchyProps & HierarchyIriProp & {
-    onNavigateToEntity?: (entity: EntityDataForHierarchy) => void
-    onNavigateToOntology?: (ontologyId: string, entity: EntityDataForHierarchy) => void
+    /**
+     * This function is called every time the name of an entity inside the hierarchy is clicked
+     * @param ontologyId obtains the ontologyId of the current ontology
+     * @param entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
+    /**
+     * This function is called every time an ontology badge next to an entity's name inside the hierarchy is clicked
+     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
+     * @param entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
 };
 
 export type TitleTextObj = {

@@ -39,5 +39,5 @@ window['SemLookPWidgets'].createJsonApi(
 }
 
 export {
-    JsonApiWidget1
+    JsonApiWidgetDefault
 } from "./JsonApiWidgetStories"
