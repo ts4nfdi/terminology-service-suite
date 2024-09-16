@@ -57,8 +57,11 @@ export class Ts4nfdiSearchResult implements SelectResult {
     return this.properties["short_form"];
   }
 
-  getApiSource(): string {
-    return this.properties["backend_type"].toUpperCase();
+  getApiSourceName(): string {
+    return this.properties["source_name"];
   }
 
+  getApiSourceEndpoint(): string {
+    return this.properties["source"];
+  }
 }

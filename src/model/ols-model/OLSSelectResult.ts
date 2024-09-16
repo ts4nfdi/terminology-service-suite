@@ -57,9 +57,11 @@ export class OLSSelectResult implements SelectResult {
     return this.properties["short_form"];
   }
 
-  getApiSource(): string {
+  getApiSourceName(): string {
     return "";
   }
 
-
+  getApiSourceEndpoint(): string {
+    return ""
+  }
 }

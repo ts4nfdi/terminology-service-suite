@@ -76,8 +76,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (value.description != undefined) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
-    if (showApiSource && value.source && value.source !== ""){
-      hoverText += "\n\nSource: " + value.source;
+    if (showApiSource && value.source_url && value.source_url !== ""){
+      hoverText += "\n\nSource: " + value.source_url;
     }
 
     const renderOntology = () => {
@@ -177,7 +177,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                                 type: selection.getType(),
                                                 short_form: selection.getShortForm(),
                                                 description: selection.getDescription(),
-                                                source: selection.getApiSource()
+                                                source: selection.getApiSourceName(),
+                                                source_url: selection.getApiSourceEndpoint()
                                             },
                                         });
                                     }
@@ -197,7 +198,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 type: "",
                 short_form: "",
                 description: "",
-                source: ""
+                source: "",
+                source_url: ""
               }
             });
           }
@@ -244,7 +246,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   type: selection.getType(),
                   short_form: selection.getShortForm(),
                   description: selection.getDescription(),
-                  source: selection.getApiSource()
+                  source: selection.getApiSourceName(),
+                  source_url: selection.getApiSourceEndpoint()
                 }
               })
             ));
