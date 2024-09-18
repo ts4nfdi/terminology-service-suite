@@ -148,7 +148,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
 
     function renderTreeNode(hierarchy: Hierarchy, node: TreeNode, drawLine?: boolean) {
         return (
-            <span>
+            <span key={randomString()}>
                 <EuiText>
                     {
                         !node.entityData.hasChildren ?
