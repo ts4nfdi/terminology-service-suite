@@ -172,7 +172,8 @@ export const IncludeObsoleteEntities = {
         iri: "",
         entityType: "class",
         ontologyId: "uberon",
-        includeObsoleteEntities: true
+        includeObsoleteEntities: true,
+        useLegacy: true
     }
 };
 
@@ -183,6 +184,7 @@ export const PropertyRoots = {
         iri: "",
         entityType: "property",
         ontologyId: "bco",
+        useLegacy: true
     }
 };
 
@@ -214,6 +216,15 @@ export const SkosHierarchy = {
         ontologyId: "yso",
     }
 };
+
+export const SagePubHierarchy = {
+    args: {
+        apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/",
+        backendType: "skosmos",
+        iri: "https://concepts.sagepub.com/social-science/concept/economic_forecasting",
+        ontologyId: "social-science"
+    }
+}
 
 export const OntoportalHierarchy = {
     args: {
