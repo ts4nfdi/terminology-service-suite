@@ -875,27 +875,38 @@ export class OlsApi implements HierarchyBuilder{
     }
     /* --- */
 
-    function createTreeNode(entityData: EntityDataForHierarchy, childRelationToParent?: string): TreeNode {
+    function createTreeNode(entityData: EntityDataForHierarchy, cycleCheck: Set<string>, childRelationToParent?: string): TreeNode {
+      cycleCheck.add(entityData.iri); // add current entity to cycle check set
+
       const node = new TreeNode(entityData);
       node.childRelationToParent = childRelationToParent;
       const children = parentChildRelations.get(entityData.iri) || [];
 
       for(const child of children) {
+        if(cycleCheck.has(child.childIri)) {
+          // cyclic tree, skip cycle
+          console.error(`Cyclic tree at entity "${child.childIri}".`);
+          continue;
+        }
+
         const childData = entitiesData.get(child.childIri);
-        if(childData != undefined) node.addChild(createTreeNode(childData, child.childRelationToParent));
+        if(childData != undefined) node.addChild(createTreeNode(childData, cycleCheck, child.childRelationToParent));
       }
 
       if(node.loadedChildren.length > 0) node.expanded = true;
 
+      cycleCheck.delete(entityData.iri);
       return node;
     }
+
+    const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
 
     return new Hierarchy({
       parentChildRelations: parentChildRelations,
       entitiesData: entitiesData,
       allChildrenPresent: allChildrenPresent,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      roots: rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri)),
+      roots: rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri)),
       api: new OlsApi(this.axiosInstance.getUri()),
       ontologyId: ontologyId,
       includeObsoleteEntities: includeObsoleteEntities,
