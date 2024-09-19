@@ -255,6 +255,22 @@ export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj
     data: Thing;
 }
 
+export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & {
+    /**
+     * This function is called every time a badge linking to the entity in another ontology is clicked
+     */
+    onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
+};
+
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & {
+    ontolist: any[];
+
+    /**
+     * This function is called every time a badge linking to the entity in another ontology is clicked
+     */
+    onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
+}
+
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {

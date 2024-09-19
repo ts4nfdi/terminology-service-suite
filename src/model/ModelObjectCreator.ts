@@ -8,7 +8,7 @@ export function createModelObject(response: any) {
     let useLegacy : boolean;
     if(response["_embedded"] !== undefined || response["numberOfTerms"] !== undefined) useLegacy = true;
     else if(response["elements"] !== undefined || response["numberOfClasses"] !== undefined) useLegacy = false;
-    else throw Error("Response structure does not correlate to any of the featured response structures: \n ${response.toString()}");
+    else throw Error(`Response structure does not correlate to any of the featured response structures: \n ${JSON.stringify(response)}`);
 
     let entityType : ThingTypeName | undefined = undefined;
     if(useLegacy) {

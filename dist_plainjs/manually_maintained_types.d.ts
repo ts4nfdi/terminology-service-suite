@@ -188,6 +188,18 @@ declare global {
       defaultValue?: string;
     }
     )=>void,
+    createEntityOntoList:(props:{
+      api: string
+      iri: string
+      ontologyId?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      parameter?: string
+      useLegacy?: string
+      onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void
+    })=>void;
     createHierarchy:(props:{
       apiUrl: string
       apiKey?: string
