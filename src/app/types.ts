@@ -271,6 +271,9 @@ export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriO
     onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 }
 
+export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
+export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
+
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {

@@ -27,10 +27,10 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
           props.ontolist.length > MAX_ONTOLOGIES_ON_DISPLAY && !appearsInExpanded?
               <>
                   {props.ontolist.slice(0, MAX_ONTOLOGIES_ON_DISPLAY).map((ontology: string) => (
-                      <>
+                      <span key={randomString()}>
                           {renderOntoBadge(ontology)}
                           &nbsp;
-                      </>
+                      </span>
                   ))}
                   <button className="expand-onto-list" onClick={() => setAppearsInExpanded(true)}>
                       + {props.ontolist.length - MAX_ONTOLOGIES_ON_DISPLAY}
@@ -38,14 +38,14 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
               </> :
 
               props.ontolist.map((ontology: string) => (
-                  <>
+                  <span key={randomString()}>
                       {renderOntoBadge(ontology)}
                       &nbsp;
-                  </>
+                  </span>
               ))
       );
     }
-    return <EuiText>No alternative names exist.</EuiText>;
+    return <EuiText>: No other appearances exist.</EuiText>;
   }
 
   return (
@@ -53,8 +53,7 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
       <EuiFlexGroup style={{ padding: 10 }} direction="column">
         <span>
           <EuiText style={{fontWeight: "normal"}}>
-            Also appears in
-            &nbsp;
+            Also appears in&nbsp;
             {renderOntoBadges()}
           </EuiText>
         </span>
