@@ -517,7 +517,7 @@ export const onNavigateToEntityArgType = {
     type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
     action: "onNavigateToEntityArgType",
     description: "This function is called every time an entity link is clicked.",
-    control: "text"
+    control: {disabled: true}
   }
 };
 export const onNavigateToOntologyArgType = {
@@ -526,7 +526,7 @@ export const onNavigateToOntologyArgType = {
     type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
     action: "onNavigateToOntologyArgType",
     description: "This function is called every time a badge linking to an entity in another ontology is clicked.",
-    control: "text"
+    control: {disabled: true}
   }
 };
 

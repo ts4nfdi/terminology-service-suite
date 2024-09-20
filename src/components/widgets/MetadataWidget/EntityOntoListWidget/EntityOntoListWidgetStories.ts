@@ -54,3 +54,11 @@ export const legacyApi = {
     }
 };
 
+export const exceedsMaxDisplay = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/HP_0000819",
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "hp"
+    }
+}
+

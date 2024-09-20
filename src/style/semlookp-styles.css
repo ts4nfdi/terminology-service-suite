@@ -16,7 +16,7 @@
     font-weight: bold;
 }
 
-.defining-ontology-badge {
+.ontology-badge {
     font-size: 13px;
     background-color: #6dccb1;
     padding: 3px 3px 0;
@@ -25,8 +25,17 @@
     color: black;
 }
 
-.defining-ontology-badge:hover {
+.ontology-badge:hover {
     background-color: white;
+}
+
+.expand-onto-list {
+    color: #00827c;
+    font-style: italic;
+}
+
+.expand-onto-list:hover {
+    text-decoration-line: underline;
 }
 
 .no-decoration {

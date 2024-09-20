@@ -17,5 +17,6 @@ export default {
 export {
     v2ApiEFO,
     v2ApiONS,
-    legacyApi
+    legacyApi,
+    exceedsMaxDisplay
 } from "./EntityOntoListWidgetStories"

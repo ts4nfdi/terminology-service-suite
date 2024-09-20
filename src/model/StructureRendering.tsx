@@ -84,7 +84,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
+                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
                             </> :
                             <></>
                     }
@@ -100,7 +100,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
+                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
                             </> :
                             <></>
                     }
@@ -120,7 +120,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                             &nbsp;
                             {otherDefinedBy.map((elem: any) => {
                                 return (
-                                    <a className="no-decoration" key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{elem.toUpperCase()}</span>}</a>
+                                    <a className="no-decoration" key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, linkedEntityType, iri, false)}>{<span className="ontology-badge">{elem.toUpperCase()}</span>}</a>
                                 );
                             })}
                         </> :
@@ -139,7 +139,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         <>
                             &nbsp;
                             <a className="no-decoration" key={randomString()} href={frontendApi + `search?q=${encodeURIComponent(label)}&exactMatch=true`}>
-                                <span className="defining-ontology-badge">
+                                <span className="ontology-badge">
                                     <EuiIcon type={"search"} size={"s"}/>
                                     &nbsp;
                                     {otherDefinedBy.length}
@@ -174,7 +174,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                 <>
                                     &nbsp;
                                     <a className="no-decoration" key={randomString()} href={frontendApi + `search?q=${encodeURIComponent(label)}&exactMatch=true`}>
-                                        <span className="defining-ontology-badge">
+                                        <span className="ontology-badge">
                                             <EuiIcon type={"search"} size={"s"}/>
                                             &nbsp;
                                             {linkedEntity["numAppearsIn"]}

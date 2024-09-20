@@ -55,7 +55,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
                                 key={`${props.entityData.iri}:${definingOntology}`}
                                 onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityType || "", props.entityData)}}
                             >
-                                <span className="defining-ontology-badge">{definingOntology.toUpperCase()}</span>
+                                <span className="ontology-badge">{definingOntology.toUpperCase()}</span>
                             </button>
                         )
                     })}

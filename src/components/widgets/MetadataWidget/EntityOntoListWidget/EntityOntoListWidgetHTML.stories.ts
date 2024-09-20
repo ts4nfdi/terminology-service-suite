@@ -4,6 +4,7 @@ import {
     EntityOntoListWidgetStoryArgTypes
 } from "./EntityOntoListWidgetStories";
 import {EntityOntoListWidgetProps} from "../../../../app/types";
+import "../../../../style/semlookp-styles.css";
 
 let counter = 0;
 
@@ -48,5 +49,6 @@ window['SemLookPWidgets'].createEntityOntoList(
 export {
     v2ApiEFO,
     v2ApiONS,
-    legacyApi
+    legacyApi,
+    exceedsMaxDisplay
 } from "./EntityOntoListWidgetStories"
