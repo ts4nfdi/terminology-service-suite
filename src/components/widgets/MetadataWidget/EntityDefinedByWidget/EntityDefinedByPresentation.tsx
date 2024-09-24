@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { EuiFlexGroup, EuiPanel, EuiText } from "@elastic/eui";
+import { EuiText } from "@elastic/eui";
 import {EntityOntoListPresentationProps} from "../../../../app/types";
 import {randomString} from "../../../../app/util";
 
@@ -21,7 +21,6 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
   }
 
   function renderOntoBadges() {
-    if (props.ontolist && props.ontolist.length > 0) {
       return (
           props.ontolist.length > MAX_ONTOLOGIES_ON_DISPLAY && !appearsInExpanded?
               <>
@@ -43,21 +42,18 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
                   </span>
               ))
       );
-    }
-    return <>: No definition exists.</>;
   }
 
   return (
-    <EuiPanel>
-      <EuiFlexGroup style={{ padding: 10 }} direction="column">
-        <span>
-          <EuiText style={{fontWeight: "normal"}}>
-            Defined by&nbsp;
-            {renderOntoBadges()}
-          </EuiText>
-        </span>
-      </EuiFlexGroup>
-    </EuiPanel>
+    <>
+        {props.ontolist && props.ontolist.length > 0 && (
+            <EuiText style={{fontWeight: "normal"}}>
+                Defined by&nbsp;
+                {renderOntoBadges()}
+            </EuiText>
+        )}
+    </>
+
   );
 }
 

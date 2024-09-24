@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { EuiFlexGroup, EuiPanel, EuiText } from "@elastic/eui";
+import { EuiText } from "@elastic/eui";
 import {EntityOntoListPresentationProps} from "../../../../app/types";
 import {randomString} from "../../../../app/util";
 
@@ -20,45 +20,39 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
       );
   }
 
-  function renderOntoBadges() {
-    if (props.ontolist && props.ontolist.length > 0) {
-
-      return (
-          props.ontolist.length > MAX_ONTOLOGIES_ON_DISPLAY && !appearsInExpanded?
-              <>
-                  {props.ontolist.slice(0, MAX_ONTOLOGIES_ON_DISPLAY).map((ontology: string) => (
-                      <span key={randomString()}>
+    function renderOntoBadges() {
+        return (
+            props.ontolist.length > MAX_ONTOLOGIES_ON_DISPLAY && !appearsInExpanded?
+                <>
+                    {props.ontolist.slice(0, MAX_ONTOLOGIES_ON_DISPLAY).map((ontology: string) => (
+                        <span key={randomString()}>
                           {renderOntoBadge(ontology)}
-                          &nbsp;
+                            &nbsp;
                       </span>
-                  ))}
-                  <button className="expand-onto-list" onClick={() => setAppearsInExpanded(true)}>
-                      + {props.ontolist.length - MAX_ONTOLOGIES_ON_DISPLAY}
-                  </button>
-              </> :
+                    ))}
+                    <button className="expand-onto-list" onClick={() => setAppearsInExpanded(true)}>
+                        + {props.ontolist.length - MAX_ONTOLOGIES_ON_DISPLAY}
+                    </button>
+                </> :
 
-              props.ontolist.map((ontology: string) => (
-                  <span key={randomString()}>
+                props.ontolist.map((ontology: string) => (
+                    <span key={randomString()}>
                       {renderOntoBadge(ontology)}
-                      &nbsp;
+                        &nbsp;
                   </span>
-              ))
-      );
+                ))
+        );
     }
-    return <EuiText>: No other appearances exist.</EuiText>;
-  }
 
   return (
-    <EuiPanel>
-      <EuiFlexGroup style={{ padding: 10 }} direction="column">
-        <span>
-          <EuiText style={{fontWeight: "normal"}}>
-            Also appears in&nbsp;
-            {renderOntoBadges()}
-          </EuiText>
-        </span>
-      </EuiFlexGroup>
-    </EuiPanel>
+    <>
+        {props.ontolist && props.ontolist.length > 0 && (
+            <EuiText style={{fontWeight: "normal"}}>
+                Also appears in&nbsp;
+                {renderOntoBadges()}
+            </EuiText>
+        )}
+    </>
   );
 }
 

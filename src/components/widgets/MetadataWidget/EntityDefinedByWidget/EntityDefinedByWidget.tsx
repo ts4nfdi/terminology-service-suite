@@ -30,7 +30,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
         }
         else {
             const entity = await olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
-            ontolist = entity.getDefinedBy();
+            ontolist = entity.getDefinedBy().filter((ontology) => ontology != entity.getOntologyId());
         }
         ontolist = ontolist.sort();
         return ontolist;
