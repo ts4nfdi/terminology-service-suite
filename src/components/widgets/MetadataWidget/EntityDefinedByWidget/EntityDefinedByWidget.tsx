@@ -63,6 +63,7 @@ function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
+                    onNavigateToOntology={props.onNavigateToOntology}
                 />
             </QueryClientProvider>
         </EuiProvider>

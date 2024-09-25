@@ -61,6 +61,7 @@ function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
+                    onNavigateToOntology={props.onNavigateToOntology}
                 />
             </QueryClientProvider>
         </EuiProvider>

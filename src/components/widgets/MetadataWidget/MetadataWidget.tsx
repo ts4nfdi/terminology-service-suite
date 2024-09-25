@@ -145,6 +145,7 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
+                    onNavigateToOntology={props.onNavigateToOntology}
                 />
             </QueryClientProvider>
         </EuiProvider>
