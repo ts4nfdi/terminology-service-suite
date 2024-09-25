@@ -30,6 +30,7 @@ export function createModelObject(response: any) {
 
             let types : string[] = response["elements"][0]["type"];
             types = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
+            types = types.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
             types = [...new Set<string>(types)]; // remove duplicates
 
             if(types.length === 1) entityType = types[0] as ThingTypeName;
