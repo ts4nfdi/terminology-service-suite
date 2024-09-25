@@ -1,4 +1,4 @@
-import {EntityDataForHierarchy} from "../../../../../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy} from "../../../../../app/types";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidget";
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 import * as globals from '../../../../../app/globals';

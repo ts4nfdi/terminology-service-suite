@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useReducer} from "react";
 import {EuiLoadingSpinner, EuiText, EuiIcon, EuiProvider, EuiCard} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
+import {Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
@@ -9,7 +9,7 @@ import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
-import {HierarchyWidgetProps} from "../../../../../app/types";
+import {HierarchyWidgetProps, EntityDataForHierarchy} from "../../../../../app/types";
 import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
