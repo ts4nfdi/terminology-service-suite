@@ -7,7 +7,7 @@ import {EuiCardProps} from "@elastic/eui";
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
 import {Thing} from "../model/interfaces";
 import {BuildHierarchyProps, HierarchyIriProp} from "../api/HierarchyBuilder";
-import {EntityDataForHierarchy} from "../model/interfaces/Hierarchy";
+import Reified from "../model/Reified";
 
 type ParameterObj = {
     /**
@@ -255,20 +255,10 @@ export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj
     data: Thing;
 }
 
-export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & {
-    /**
-     * This function is called every time a badge linking to the entity in another ontology is clicked
-     */
-    onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
-};
+export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & OnNavigateToOntology;
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & {
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
     ontolist: any[];
-
-    /**
-     * This function is called every time a badge linking to the entity in another ontology is clicked
-     */
-    onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
 }
 
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
@@ -284,6 +274,41 @@ export type CrossRefWidgetProps = TabWidgetProps;
 
 export type CrossRefPresentationProps = {
     crossrefs: any[];
+}
+
+export type EntityData = {
+    iri: string;
+    label?: string;
+    entityType: string;
+}
+
+export type EntityDataForHierarchy = EntityData & {
+    definedBy?: string[];
+    hasChildren: boolean;
+    numDescendants?: number;
+    parents: Reified<string>[];
+}
+
+export type OnNavigateToEntity = {
+    /**
+     * This function is called every time an entity link is clicked
+     * @param ontologyId obtains the ontologyId of the current ontology
+     * @param entity.entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     */
+    onNavigateToEntity?:  (ontologyId: string, entity: EntityData) => void;
+}
+
+export type OnNavigateToOntology = {
+    /**
+     * This function is called every time an entity link is clicked
+     * @param ontologyId obtains the ontologyId of the clicked badge
+     * @param entity.entityType obtains the entityType of the clicked badge
+     * @param entity.iri obtains the iri of the clicked badge (can be empty)
+     * @param entity.label obtains the label of the clicked badge
+     */
+    onNavigateToOntology?:  (ontologyId: string, entity: EntityData) => void;
 }
 
 export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
@@ -365,7 +390,7 @@ export type TitlePresentationProps = TitleTextObj & {
     className?: string;
 }
 
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
+export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 

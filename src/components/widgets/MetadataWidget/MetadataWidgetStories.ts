@@ -1,5 +1,7 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
+import {onNavigateToOntologyArgType} from "../../../stories/storyArgs";
+import {EntityData} from "../../../app/types";
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -38,13 +40,17 @@ export const MetadataWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
+    ...onNavigateToOntologyArgType
 }
 
 export const MetadataWidgetStoryArgs = {
+    api: "",
     parameter: "collection=nfdi4health",
     useLegacy: true,
     ontologyId: "",
-    entityType: ""
+    entityType: "",
+    iri: "",
+    onNavigateToOntology: (ontologyId: string, entity: EntityData) => {console.log(`Trigerred onNavigateToOntology() for ontologyId "${ontologyId}" and iri "${entity.iri}".`)},
 }
 
 export const MetadataWidget1 = {

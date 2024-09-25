@@ -24,7 +24,7 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -98,8 +98,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
 
-            <EntityOntoListPresentation iri={props.iri} ontolist={data.ontoList} />
-            <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} />
+            <EntityOntoListPresentation iri={props.iri} ontolist={data.ontoList} onNavigateToOntology={onNavigateToOntology} />
+            <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} onNavigateToOntology={onNavigateToOntology} />
 
           <EuiFlexItem>
               <TabPresentation
