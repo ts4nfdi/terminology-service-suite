@@ -2,6 +2,7 @@ import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyCh
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import {pluralizeType} from "../app/util";
+import {useLegacyArgType} from "../stories/storyArgs";
 
 type HierarchyNode = {
     prefLabel: string
@@ -110,30 +111,46 @@ export class OntoPortalApi implements HierarchyBuilder{
             }
         }
 
-        function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
+        function createTreeNode(entityData: EntityDataForHierarchy, cycleCheck: Set<string>): TreeNode {
+            cycleCheck.add(entityData.iri); // add current entity to cycle check set
+
             const node = new TreeNode(entityData);
             const children = parentChildRelations.get(entityData.iri) || [];
 
             if(!showSiblingsOnInit) {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    if(onInitialPath.has(child.childIri)) node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
+                    if(onInitialPath.has(child.childIri)) node.addChild(createTreeNode(entitiesData.get(child.childIri)!, cycleCheck));
                 }
             }
             else {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
+                    node.addChild(createTreeNode(entitiesData.get(child.childIri)!, cycleCheck));
                 }
             }
 
             if(node.loadedChildren.length > 0) node.expanded = true;
 
+            cycleCheck.delete(entityData.iri);
             return node;
         }
 
+        const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
         return new Hierarchy({
             parentChildRelations: parentChildRelations,
