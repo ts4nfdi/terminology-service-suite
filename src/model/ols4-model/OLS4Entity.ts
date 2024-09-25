@@ -11,12 +11,12 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   abstract getEquivalents(): Reified<any>[];
 
   isCanonical(): boolean {
-    return this.properties["isDefiningOntology"] === true;
+    return this.properties["isDefiningOntology"]
   }
 
   isDeprecated(): boolean {
     return (
-      this.properties["http://www.w3.org/2002/07/owl#deprecated"] === "true"
+      this.properties["http://www.w3.org/2002/07/owl#deprecated"]
     );
   }
 
@@ -48,11 +48,11 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   hasDirectChildren(): boolean {
-    return this.properties["hasDirectChildren"] === "true";
+    return this.properties["hasDirectChildren"];
   }
 
   hasHierarchicalChildren(): boolean {
-    return this.properties["hasHierarchicalChildren"] === "true";
+    return this.properties["hasHierarchicalChildren"];
   }
 
   hasChildren(): boolean {
