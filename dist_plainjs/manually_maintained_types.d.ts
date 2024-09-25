@@ -86,7 +86,8 @@ declare global {
           | "subdued"
           | string;
       colorSecond?: string;
-      parameter?: string
+      parameter?: string;
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     }
     )=>void,
     createDescription:(props:{

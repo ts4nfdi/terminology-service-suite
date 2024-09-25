@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
+import "../../../../style/semlookp-styles.css";
 
 let counter = 0;
 
@@ -32,6 +33,7 @@ window['SemLookPWidgets'].createBreadcrumb(
         colorFirst:"${args.colorFirst}",
         colorSecond:"${args.colorSecond}",
         parameter:"${args.parameter}",
+        onNavigateToOntology:${args.onNavigateToOntology}
     },
     document.querySelector('#breadcrumb_widget_container_${num}')
 )
@@ -43,7 +45,6 @@ window['SemLookPWidgets'].createBreadcrumb(
 }
 
 export {
-    BreadcrumbWidgetExample,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     ErrorBreadcrumbWidget

@@ -198,12 +198,12 @@ export type ColorSecondObj = {
     colorSecond?: EuiLinkColor | string;
 }
 
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj;
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
 
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
     ontologyName: string,
     shortForm: string,
-}
+} & OnNavigateToOntology;
 
 export type DescTextObj = {
     /**
