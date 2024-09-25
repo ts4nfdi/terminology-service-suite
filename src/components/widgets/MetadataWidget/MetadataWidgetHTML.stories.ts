@@ -48,5 +48,6 @@ export {
     OLS4V1,
     OLS4V2,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    DefinedByAlsoAppearsInWidgets
 } from "./MetadataWidgetStories"

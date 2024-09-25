@@ -109,3 +109,11 @@ export const DefiningOntologyUnavailable = {
         parameter: ""
     }
 };
+
+export const DefinedByAlsoAppearsInWidgets = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        iri: "http://purl.obolibrary.org/obo/HP_0000819",
+        ontologyId: "efo"
+    }
+}

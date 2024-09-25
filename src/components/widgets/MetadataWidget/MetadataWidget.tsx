@@ -12,7 +12,7 @@ import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { isEntity } from "../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
-import {createModelObject} from "../../../model/ModelObjectCreator";
+import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelObjectCreator";
 import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListPresentation";
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/semlookp-styles.css"
@@ -39,7 +39,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
         let entity: Entity, ontoList: string[], definedBy: string[];
         if(useLegacy) {
             const embedded = (await olsApi.getEntityResponse(iri, entityType, undefined, parameter, useLegacy))["_embedded"];
-            entity = createModelObject({"_embedded": embedded}) as Entity;
+            entity = createModelObject({ "_embedded": { [Object.keys(embedded)[0]]: getPreferredOntologyJSON(embedded[Object.keys(embedded)[0]], useLegacy, ontologyId) }}) as Entity;
             ontoList = embedded[Object.keys(embedded)[0]]
                 .map((entityInOntology : any) => entityInOntology["ontology_name"]);
             definedBy = embedded[Object.keys(embedded)[0]]
