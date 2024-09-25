@@ -4,7 +4,7 @@ import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
-import {ThingTypeName} from "../ModelTypeCheck";
+import { isThingTypeName, ThingTypeName } from "../ModelTypeCheck";
 
 export abstract class OLS4Thing implements Thing {
   properties: any;
@@ -31,7 +31,7 @@ export abstract class OLS4Thing implements Thing {
 
     for (const type of types) {
       if (
-        ["ontology", "class", "property", "individual"].indexOf(type) !== -1
+        isThingTypeName(type)
       ) {
         return type as any;
       }
@@ -52,6 +52,12 @@ export abstract class OLS4Thing implements Thing {
         return "properties";
       case "individual":
         return "individuals";
+      case "annotationProperty":
+        return "properties";
+      case "dataProperty":
+        return "properties";
+      case "objectProperty":
+        return "properties";
       default:
         throw new Error("unknown type");
     }

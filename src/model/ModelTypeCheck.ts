@@ -2,7 +2,7 @@ import { Thing, Entity, Class, Property, Individual, Ontology } from "./interfac
 
 // READONLY arrays containing the strings defining a Model Object Type
 export const classTypeNames = ["class" , "term"] as const;
-export const propertyTypeNames = ["property"] as const;
+export const propertyTypeNames = ["property", "annotationProperty", "dataProperty", "objectProperty"] as const;
 export const individualTypeNames = ["individual"] as const;
 export const ontologyTypeNames = ["ontology"] as const;
 export const entityTypeNames = [...classTypeNames, ...individualTypeNames, ...propertyTypeNames] as const;

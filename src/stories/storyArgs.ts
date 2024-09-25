@@ -12,7 +12,8 @@ export const apiArgType = {
       "https://semanticlookup.zbmed.de/api/",
       "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
       "https://service.tib.eu/ts4tib/api/",
-      "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/"
+      "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+      "http://ols4-test.qa.km.k8s.zbmed.de/ols4/api/"
     ],
     description:
       "The API instance for the API call.<br> " +
