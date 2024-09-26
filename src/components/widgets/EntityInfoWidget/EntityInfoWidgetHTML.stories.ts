@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {EntityInfoWidgetProps} from "../../../app/types";
+import "../../../style/semlookp-styles.css";
 
 let counter = 0;
 
