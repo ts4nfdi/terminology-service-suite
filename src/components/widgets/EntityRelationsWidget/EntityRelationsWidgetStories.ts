@@ -11,6 +11,7 @@ import {
     parameterArgType,
     showBadgesArgType
 } from "../../../stories/storyArgs";
+import {pluralizeType} from "../../../app/util";
 
 export const EntityRelationsWidgetStoryArgTypes = {
     ...apiArgType,
@@ -125,5 +126,20 @@ export const QualifiedCardinality = {
         entityType: "term",
         ontologyId: "foodon",
         iri: "http://purl.obolibrary.org/obo/FOODON_00003382",
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        entityType: "individual",
+        ontologyId: "bco",
+        iri: "http://purl.obolibrary.org/obo/IAO_0000120",
+        onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
+            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        },
+        onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
+            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        }
     }
 };

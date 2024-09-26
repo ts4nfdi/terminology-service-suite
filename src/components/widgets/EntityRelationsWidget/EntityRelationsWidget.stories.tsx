@@ -21,5 +21,6 @@ export {
     PropertyChain,
     Instances,
     Axioms,
-    QualifiedCardinality
+    QualifiedCardinality,
+    NavigateToEBIPage
 } from "./EntityRelationsWidgetStories"

@@ -20,5 +20,6 @@ export {
   InfoWidgetPropertyAssertion,
   InfoWidgetPropertyCharacteristics,
   InfoWidgetRange,
-  OptionalEntityTypeLegacyAPI
+  OptionalEntityTypeLegacyAPI,
+  NavigateToEBIPage
 } from "./EntityInfoWidgetStories"

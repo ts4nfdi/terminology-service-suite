@@ -9,6 +9,7 @@ import {
     useLegacyArgType
 } from "../../../stories/storyArgs";
 import * as globals from '../../../app/globals';
+import {pluralizeType} from "../../../app/util";
 
 export const EntityInfoWidgetStoryArgTypes = {
   ...apiArgType,
@@ -110,6 +111,23 @@ export const InfoWidgetPropertyCharacteristics = {
         api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+        onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
+            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        },
+        onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
+            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        },
+        onNavigateToDisambiguate: (entityType: string, entity: { iri: string, label?: string }) => {
+            window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity.label}&exactMatch=true&lang=en`, "_top");
+        },
     }
 };
 
