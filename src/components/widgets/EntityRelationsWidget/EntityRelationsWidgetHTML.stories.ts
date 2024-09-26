@@ -31,7 +31,10 @@ window['SemLookPWidgets'].createEntityRelations(
         iri:"${args.iri}",
         hasTitle:${args.hasTitle},
         showBadges:${args.showBadges},
-        parameter:"${args.parameter}"
+        parameter:"${args.parameter}",
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )

@@ -32,7 +32,10 @@ window['SemLookPWidgets'].createEntityInfo(
         hasTitle:${args.hasTitle},
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#entity_info_widget_container_${num}')
 )

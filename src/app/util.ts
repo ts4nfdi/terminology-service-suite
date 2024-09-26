@@ -4,7 +4,7 @@ import {
     isIndividualTypeName,
     isOntologyTypeName,
     isPropertyTypeName,
-    isThingTypeName
+    isThingTypeName, ThingTypeName
 } from "../model/ModelTypeCheck";
 
 export function asArray<T>(obj: T | T[]): T[] {
@@ -100,4 +100,14 @@ export function getErrorMessageToDisplay(error: any, messagePlaceholder = "infor
         return "No elements found";
     }
     else return `No ${messagePlaceholder} available`;
+}
+
+export function inferTypeFromTypeArray(types: string[]) {
+    let res = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
+    res = res.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
+    res = [...new Set<string>(res)]; // remove duplicates
+
+    if(res.length === 1) return types[0] as ThingTypeName;
+    else if(res.length === 0) throw Error("Entity type could not be correctly inferred: No suitable type found in array.");
+    else throw Error(`Entity type could not be correctly inferred: Multiple types found in array, no definite choice possible - ${JSON.stringify(res)}`);
 }

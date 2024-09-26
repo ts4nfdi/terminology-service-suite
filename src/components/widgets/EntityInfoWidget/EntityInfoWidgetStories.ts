@@ -1,13 +1,12 @@
-import { entityTypeNames } from "../../../model/ModelTypeCheck";
 import {
-  apiArgType,
-  entityTypeArgType,
-  hasTitleArgType,
-  iriArgType,
-  ontologyIdArgType,
-  parameterArgType,
-  showBadgesArgType,
-  useLegacyArgType
+    apiArgType,
+    entityTypeArgType,
+    hasTitleArgType,
+    iriArgType, onNavigateToDisambiguateArgType, onNavigateToEntityArgType, onNavigateToOntologyArgType,
+    ontologyIdArgType,
+    parameterArgType,
+    showBadgesArgType,
+    useLegacyArgType
 } from "../../../stories/storyArgs";
 import * as globals from '../../../app/globals';
 
@@ -19,7 +18,10 @@ export const EntityInfoWidgetStoryArgTypes = {
   ...parameterArgType,
   ...showBadgesArgType,
   ...useLegacyArgType,
-  ...iriArgType
+  ...iriArgType,
+  ...onNavigateToEntityArgType,
+  ...onNavigateToOntologyArgType,
+  ...onNavigateToDisambiguateArgType
 };
 
 export const EntityInfoWidgetStoryArgs = {
@@ -30,7 +32,10 @@ export const EntityInfoWidgetStoryArgs = {
   entityType: "",
   hasTitle: true,
   showBadges: true,
-  parameter: ""
+  parameter: "",
+  onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
+  onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
+  onNavigateToDisambiguate: (entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToDisambiguate() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
 };
 
 

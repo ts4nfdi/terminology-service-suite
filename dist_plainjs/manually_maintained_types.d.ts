@@ -41,6 +41,9 @@ declare global {
       parameter?: string;
       useLegacy?: boolean;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createEntityRelations:(props:{
@@ -55,6 +58,9 @@ declare global {
           | "property";
       parameter?: string;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createJsonApi:(props:{

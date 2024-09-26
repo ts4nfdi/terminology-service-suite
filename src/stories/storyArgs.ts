@@ -511,13 +511,15 @@ export const classNameArgType = {
     type: { summary: `string` }
   }
 };
+
+/*TODO: refactor these to be consistent with all widget's onNavigate functions*/
 export const onNavigateToEntityArgType = {
   onNavigateToEntity: {
     required: false,
     type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
     action: "onNavigateToEntityArgType",
     description: "This function is called every time an entity link is clicked.",
-    control: "text"
+    control: {disabled: true}
   }
 };
 export const onNavigateToOntologyArgType = {
@@ -526,7 +528,17 @@ export const onNavigateToOntologyArgType = {
     type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
     action: "onNavigateToOntologyArgType",
     description: "This function is called every time a badge linking to an entity in its defining ontology is clicked.",
-    control: "text"
+    control: {disabled: true}
   }
 };
+export const onNavigateToDisambiguateArgType = {
+  onNavigateToEntity: {
+    required: false,
+    type: { summary: `(entityType: string, iri: string) => void` },
+    action: "onNavigateToDisambiguateArgType",
+    description: "This function is called every time a disambiguation badge is clicked.",
+    control: {disabled: true}
+  }
+};
+
 export const ArgType = {};
