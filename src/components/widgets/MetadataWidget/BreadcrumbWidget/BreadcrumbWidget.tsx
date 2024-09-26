@@ -20,7 +20,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     isError,
     error
   } = useQuery(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }

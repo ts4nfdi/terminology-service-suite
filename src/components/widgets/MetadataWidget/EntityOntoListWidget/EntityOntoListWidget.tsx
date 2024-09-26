@@ -19,7 +19,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
     isError,
     error
   } = useQuery<string[]>(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["entityOntoList", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
         let ontolist : string[];
         if(useLegacy) {

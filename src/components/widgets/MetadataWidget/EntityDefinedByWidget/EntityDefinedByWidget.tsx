@@ -19,7 +19,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
     isError,
     error
   } = useQuery<string[]>(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["entityDefinedBy", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
         let ontolist : string[];
         if(useLegacy) {

@@ -98,8 +98,10 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
 
-            <EntityOntoListPresentation iri={props.iri} ontolist={data.ontoList} onNavigateToOntology={onNavigateToOntology} />
-            <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} onNavigateToOntology={onNavigateToOntology} />
+          <div style={{margin: "0 12px 0", maxWidth: 600 }}>
+              <EntityOntoListPresentation iri={props.iri} ontolist={data.ontoList} onNavigateToOntology={onNavigateToOntology} />
+              <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} onNavigateToOntology={onNavigateToOntology} />
+          </div>
 
           <EuiFlexItem>
               <TabPresentation

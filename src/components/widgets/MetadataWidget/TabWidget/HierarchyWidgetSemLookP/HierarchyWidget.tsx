@@ -106,7 +106,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         data: hierarchy,
         isSuccess: isSuccessHierarchy,
     } = useQuery(
-      [iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit, useLegacy],
+      ["hierarchySemLookP", iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit, useLegacy],
       async function getNewHierarchy() {
           return await api.buildHierarchyWithIri({
               ontologyId: ontologyId,

@@ -47,7 +47,7 @@ window['SemLookPWidgets'].createEntityDefinedBy(
 }
 
 export {
-    v2ApiEFO,
     v2ApiONS,
+    emptyInDefiningOntology,
     legacyApi
 } from "./EntityDefinedByWidgetStories"

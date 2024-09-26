@@ -15,7 +15,7 @@ export default {
 };
 
 export {
-    v2ApiEFO,
     v2ApiONS,
+    emptyInDefiningOntology,
     legacyApi
 } from "./EntityDefinedByWidgetStories"

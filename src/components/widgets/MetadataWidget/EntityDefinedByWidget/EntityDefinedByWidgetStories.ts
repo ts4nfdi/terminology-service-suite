@@ -28,7 +28,7 @@ export const EntityDefinedByWidgetStoryArgs = {
     onNavigateToOntology: (ontologyId: string, entity: EntityData) => {console.log(`Trigerred onNavigateToOntology() for ontologyId "${ontologyId}".`)},
 }
 
-export const v2ApiEFO = {
+export const emptyInDefiningOntology = {
     args: {
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         api: globals.EBI_API_ENDPOINT,
