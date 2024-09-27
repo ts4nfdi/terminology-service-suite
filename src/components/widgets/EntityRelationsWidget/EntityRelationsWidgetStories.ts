@@ -11,7 +11,6 @@ import {
     parameterArgType,
     showBadgesArgType
 } from "../../../stories/storyArgs";
-import {pluralizeType} from "../../../app/util";
 
 export const EntityRelationsWidgetStoryArgTypes = {
     ...apiArgType,
@@ -34,9 +33,9 @@ export const EntityRelationsWidgetStoryArgs = {
     hasTitle: true,
     showBadges: true,
     parameter: "",
-    onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
-    onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
-    onNavigateToDisambiguate: (entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToDisambiguate() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
+    onNavigateToDisambiguate: "Console message",
 }
 
 export const SubEntityOf = {
@@ -135,11 +134,8 @@ export const NavigateToEBIPage = {
         entityType: "individual",
         ontologyId: "bco",
         iri: "http://purl.obolibrary.org/obo/IAO_0000120",
-        onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
-        },
-        onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
-        }
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page"
     }
 };

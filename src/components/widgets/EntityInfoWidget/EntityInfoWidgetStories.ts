@@ -9,7 +9,6 @@ import {
     useLegacyArgType
 } from "../../../stories/storyArgs";
 import * as globals from '../../../app/globals';
-import {pluralizeType} from "../../../app/util";
 
 export const EntityInfoWidgetStoryArgTypes = {
   ...apiArgType,
@@ -34,9 +33,9 @@ export const EntityInfoWidgetStoryArgs = {
   hasTitle: true,
   showBadges: true,
   parameter: "",
-  onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
-  onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
-  onNavigateToDisambiguate: (entityType: string, entity: { iri: string, label?: string }) => {console.log(`Triggered onNavigateToDisambiguate() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
+  onNavigateToEntity: "Console message",
+  onNavigateToOntology: "Console message",
+  onNavigateToDisambiguate: "Console message"
 };
 
 
@@ -119,15 +118,9 @@ export const NavigateToEBIPage = {
         api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
-        onNavigateToEntity: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
-        },
-        onNavigateToOntology: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-            window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
-        },
-        onNavigateToDisambiguate: (entityType: string, entity: { iri: string, label?: string }) => {
-            window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity.label}&exactMatch=true&lang=en`, "_top");
-        },
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page",
     }
 };
 
