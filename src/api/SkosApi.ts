@@ -151,30 +151,48 @@ export class SkosApi implements HierarchyBuilder{
             }
         }
 
-        function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
+        function createTreeNode(entityData: EntityDataForHierarchy, cycleCheck: Set<string>): TreeNode {
+            cycleCheck.add(entityData.iri); // add current entity to cycle check set
+
             const node = new TreeNode(entityData);
             const children = parentChildRelations.get(entityData.iri) || [];
 
             if(!showSiblingsOnInit) {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     const childData = entitiesData.get(child.childIri);
-                    if(childData != undefined && onInitialPath.has(child.childIri)) node.addChild(createTreeNode(childData));
+                    if(childData != undefined && onInitialPath.has(child.childIri)){
+                        node.addChild(createTreeNode(childData, cycleCheck));
+                    }
                 }
             }
             else {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     const childData = entitiesData.get(child.childIri);
-                    if(childData != undefined) node.addChild(createTreeNode(childData));
+                    if(childData != undefined) node.addChild(createTreeNode(childData, cycleCheck));
                 }
             }
 
             if(node.loadedChildren.length > 0) node.expanded = true;
 
+            cycleCheck.delete(entityData.iri);
             return node;
         }
 
+        const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
         return new Hierarchy({
             parentChildRelations: parentChildRelations,

@@ -43,7 +43,6 @@ window['SemLookPWidgets'].createBreadcrumb(
 }
 
 export {
-    BreadcrumbWidgetExample,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     ErrorBreadcrumbWidget

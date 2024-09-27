@@ -20,5 +20,6 @@ export {
     IndividualRoots,
     LargeHierarchy,
     SkosHierarchy,
+    SagePubHierarchy,
     OntoportalHierarchy
 } from "./HierarchyWidgetStories";
