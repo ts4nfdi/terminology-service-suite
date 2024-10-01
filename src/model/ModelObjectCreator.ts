@@ -1,7 +1,7 @@
 import {OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual} from "./ols3-model";
 import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual} from "./ols4-model";
 import {Thing} from "./interfaces";
-import {ThingTypeName, isThingTypeName} from "./ModelTypeCheck";
+import {ThingTypeName} from "./ModelTypeCheck";
 import {asArray, inferTypeFromTypeArray} from "../app/util";
 
 export function createModelObject(response: any) {

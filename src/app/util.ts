@@ -108,7 +108,7 @@ export function inferTypeFromTypeArray(types: string[]) {
     res = res.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
     res = [...new Set<string>(res)]; // remove duplicates
 
-    if(res.length === 1) return types[0] as ThingTypeName;
+    if(res.length === 1) return res[0] as ThingTypeName;
     else if(res.length === 0) throw Error("Entity type could not be correctly inferred: No suitable type found in array.");
     else throw Error(`Entity type could not be correctly inferred: Multiple types found in array, no definite choice possible - ${JSON.stringify(res)}`);
 }
