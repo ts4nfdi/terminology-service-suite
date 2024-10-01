@@ -6,7 +6,6 @@ import {
     ontologyIdArgType,
     parameterArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
-import {EntityData} from "../../../../app/types";
 
 export const EntityOntoListWidgetStoryArgTypes = {
     ...apiArgType,
@@ -25,7 +24,7 @@ export const EntityOntoListWidgetStoryArgs = {
     ontologyId: "",
     entityType: "",
     parameter: "",
-    onNavigateToOntology: (ontologyId: string, entity: EntityData) => {console.log(`Trigerred onNavigateToOntology() for ontologyId "${ontologyId}".`)},
+    onNavigateToOntology: "Console message",
 }
 
 export const v2ApiEFO = {

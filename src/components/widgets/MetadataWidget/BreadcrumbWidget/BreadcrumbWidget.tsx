@@ -3,7 +3,7 @@ import {EuiBadge, EuiIcon, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import {BreadcrumbWidgetProps} from "../../../../app/types";
-import { isEntity } from "../../../../model/ModelTypeCheck";
+import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
@@ -22,7 +22,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   } = useQuery(
     ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+      return await olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 
@@ -30,7 +30,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     <>
       {isLoading &&
           <span>
-            <button onClick={() => {if(props.onNavigateToOntology && props.ontologyId) props.onNavigateToOntology(props.ontologyId || "", { entityType: "", iri: "" /* no entity data provided on ontology badge */})}}>
+            <button onClick={() => {if(props.onNavigateToOntology && props.ontologyId) props.onNavigateToOntology(props.ontologyId || "", undefined, undefined)}}>
                 <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
             </button>
              &nbsp;<EuiIcon type="arrowRight"/>&nbsp;

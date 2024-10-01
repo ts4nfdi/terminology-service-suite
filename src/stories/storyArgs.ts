@@ -515,7 +515,7 @@ export const classNameArgType = {
 };
 
 /*TODO: refactor these to be consistent with all widget's onNavigate functions*/
-/*TODO: store onNavigate function implementations in functions somewhere*/
+/*TODO: pluralizeType is obviously not found, exchange with local definition of pluralization fitting the ebi routes*/
 export const onNavigateToEntityArgType = {
   onNavigateToEntity: {
     required: false,
@@ -525,11 +525,16 @@ export const onNavigateToEntityArgType = {
     control: {type: "radio"},
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
-      "Console message": (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-        console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)
+      "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log(`Triggered onNavigateToEntity()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""}.`);
       },
-      "Navigate to EBI page": (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+      "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        if(entity && entity.iri && entityType) {
+          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        }
+        else {
+          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, "_top");
+        }
       },
     }
   }
@@ -543,12 +548,17 @@ export const onNavigateToOntologyArgType = {
     control: {type: "radio"},
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
-      "Console message": (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-        console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)
+      "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log(`Triggered onNavigateToOntology()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""} for ontologyId "${ontologyId}".`);
       },
-      "Navigate to EBI page": (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {
-        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
-      }
+      "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        if(entity && entity.iri && entityType) {
+          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+        }
+        else {
+          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, "_top");
+        }
+      },
     }
   }
 };
@@ -561,11 +571,11 @@ export const onNavigateToDisambiguateArgType = {
     control: {type: "radio"},
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
-      "Console message": (entityType: string, entity: { iri: string, label?: string }) => {
-        console.log(`Triggered onNavigateToDisambiguate() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)
+      "Console message": (entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log(`Triggered onNavigateToDisambiguate()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""}.`);
       },
-      "Navigate to EBI page": (entityType: string, entity: { iri: string, label?: string }) => {
-        window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity.label}&exactMatch=true&lang=en`, "_top");
+      "Navigate to EBI page": (entityType?: string, entity?: { iri: string, label?: string }) => {
+        window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
       }
     }
   }

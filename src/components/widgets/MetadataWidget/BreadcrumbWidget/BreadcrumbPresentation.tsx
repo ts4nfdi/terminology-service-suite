@@ -6,7 +6,7 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (
     <>
         <span>
-            <button onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(props.ontologyId || "", { entityType: "", iri: "" /* no entity data provided on ontology badge */})}}>
+            <button onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(props.ontologyId || "", undefined, undefined)}}>
                 <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={props.colorFirst || "primary"}>
                     {props.ontologyName ? props.ontologyName.toUpperCase() : "No ontology name available"}
                 </EuiBadge>

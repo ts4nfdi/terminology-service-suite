@@ -2,45 +2,52 @@ import React from "react";
 import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import { OlsApi } from '../../../../api/OlsApi'
 import {QueryClient, QueryClientProvider, useQuery} from 'react-query'
-import { getErrorMessageToDisplay } from "../../../../app/util";
+import {getErrorMessageToDisplay, singularizeType} from "../../../../app/util";
 import {EntityDefinedByWidgetProps} from "../../../../app/types";
 import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/semlookp-styles.css";
+import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);
 
   const {
-    data : ontoList,
+    data,
     isLoading,
     isSuccess,
     isError,
     error
-  } = useQuery<string[]>(
+  } = useQuery<{ontoList: string[], entityType: EntityTypeName, label: string}>(
     ["entityDefinedBy", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
         let ontolist : string[];
+        let realEntityType : EntityTypeName;
+        let label : string;
         if(useLegacy) {
             const embedded = (await olsApi.getEntityResponse(iri, entityType, undefined, parameter, useLegacy))["_embedded"];
             ontolist = embedded[Object.keys(embedded)[0]]
                 .filter((entityInOntology : any) => entityInOntology["is_defining_ontology"])
                 .map((entityInOntology : any) => entityInOntology["ontology_name"]);
+            realEntityType = entityType || singularizeType(Object.keys(embedded)[0]) as EntityTypeName;
+            label = embedded[Object.keys(embedded)[0]][0]["label"];
         }
         else {
             const entity = await olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
             ontolist = entity.getDefinedBy().filter((ontology) => ontology != entity.getOntologyId());
+            realEntityType = entityType || entity.getType() as EntityTypeName;
+            label = entity.getLabel() || "";
         }
         ontolist = ontolist.sort();
-        return ontolist;
+        return {ontoList: ontolist, entityType: realEntityType, label: label};
     }
   );
 
   return (
     <>
-      {isSuccess && ontoList &&
-        <EntityDefinedByPresentation ontolist={ontoList} entityType={entityType} iri={iri} onNavigateToOntology={props.onNavigateToOntology} />}
+      {isSuccess && data &&
+        <EntityDefinedByPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} />}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>}
     </>

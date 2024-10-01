@@ -10,7 +10,7 @@ import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 import { getErrorMessageToDisplay } from "../../../app/util";
-import { isEntity } from "../../../model/ModelTypeCheck";
+import {EntityTypeName, isEntity} from "../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelObjectCreator";
 import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListPresentation";
@@ -69,6 +69,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
           <EuiFlexItem grow={false}>
                 <span>
                   <BreadcrumbPresentation
+                    onNavigateToOntology={props.onNavigateToOntology}
+                    ontologyId={ontologyId || data.entity.getOntologyId()}
                     ontologyName={data.entity.getOntologyId()}
                     shortForm={data.entity.getShortForm()}
                   />
@@ -99,8 +101,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </EuiFlexItem>
 
           <div style={{margin: "0 12px 0", maxWidth: 600 }}>
-              <EntityOntoListPresentation iri={props.iri} ontolist={data.ontoList} onNavigateToOntology={onNavigateToOntology} />
-              <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} onNavigateToOntology={onNavigateToOntology} />
+              <EntityOntoListPresentation iri={props.iri} label={data.entity.getLabel() || ""} ontolist={data.ontoList} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
+              <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} label={data.entity.getLabel() || ""} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
           </div>
 
           <EuiFlexItem>

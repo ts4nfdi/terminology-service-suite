@@ -50,7 +50,7 @@ export const MetadataWidgetStoryArgs = {
     ontologyId: "",
     entityType: "",
     iri: "",
-    onNavigateToOntology: (ontologyId: string, entity: EntityData) => {console.log(`Trigerred onNavigateToOntology() for ontologyId "${ontologyId}" and iri "${entity.iri}".`)},
+    onNavigateToOntology: "Console message",
 }
 
 export const MetadataWidget1 = {

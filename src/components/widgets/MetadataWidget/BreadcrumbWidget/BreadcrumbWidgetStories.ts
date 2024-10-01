@@ -6,7 +6,6 @@ import {
     ontologyIdArgType,
     parameterArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
-import {EntityData} from "../../../../app/types";
 
 export const BreadcrumbWidgetStoryArgTypes = {
   ...apiArgType,
@@ -29,7 +28,7 @@ export const BreadcrumbWidgetStoryArgs = {
   colorFirst: "",
   colorSecond: "",
   parameter: "collection=nfdi4health",
-  onNavigateToOntology: (ontologyId: string, entity: EntityData) => {console.log(`Trigerred onNavigateToOntology() for ontologyId "${ontologyId}".`)},
+  onNavigateToOntology: "Console message"
 };
 
 export const BreadcrumbWidget1 = {

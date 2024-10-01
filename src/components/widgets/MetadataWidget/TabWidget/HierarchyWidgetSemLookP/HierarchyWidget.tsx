@@ -9,7 +9,7 @@ import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
-import {HierarchyWidgetProps, EntityDataForHierarchy} from "../../../../../app/types";
+import {HierarchyWidgetProps, EntityData} from "../../../../../app/types";
 import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
@@ -21,7 +21,7 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
 } as const;
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
-function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToParent?: string, ontologyId: string, entityType?: string, onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
+function TreeLink(props: {entityData: EntityData, childRelationToParent?: string, ontologyId: string, entityType?: string, onNavigateToEntity?: (ontologyId: string, entityType?: string, entity?: EntityData) => void, onNavigateToOntology?: (ontologyId: string, entityType?: string, entity?: EntityData) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
     if(definedBy.includes(props.ontologyId)) definedBy = [];
 

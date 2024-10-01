@@ -13,7 +13,7 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
       return (
           <button
               key={randomString()}
-              onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(ontology, { entityType: props.entityType || "", iri: props.iri })}}
+              onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(ontology, props.entityType || "", { iri: props.iri, label: props.label })}}
           >
               <span className="ontology-badge">{ontology.toUpperCase()}</span>
           </button>
