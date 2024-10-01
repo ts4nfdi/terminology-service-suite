@@ -46,6 +46,9 @@ window['SemLookPWidgets'].createTitle(
 
 export {
     TitleWidgetDefault,
+    TitleWidgetWithTitleText,
+    IncorrectIriWithDefaultValue,
+    IncorrectIriWithoutDefaultValue,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     TitleWidgetWithStyles
