@@ -4,8 +4,9 @@ import {
     isIndividualTypeName,
     isOntologyTypeName,
     isPropertyTypeName,
-    isThingTypeName
+    isThingTypeName, ThingTypeName
 } from "../model/ModelTypeCheck";
+import {StoryContext} from "@storybook/react";
 
 export function asArray<T>(obj: T | T[]): T[] {
     if (Array.isArray(obj)) {
@@ -100,4 +101,58 @@ export function getErrorMessageToDisplay(error: any, messagePlaceholder = "infor
         return "No elements found";
     }
     else return `No ${messagePlaceholder} available`;
+}
+
+export function inferTypeFromTypeArray(types: string[]) {
+    let res = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
+    res = res.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
+    res = [...new Set<string>(res)]; // remove duplicates
+
+    if(res.length === 1) return res[0] as ThingTypeName;
+    else if(res.length === 0) throw Error("Entity type could not be correctly inferred: No suitable type found in array.");
+    else throw Error(`Entity type could not be correctly inferred: Multiple types found in array, no definite choice possible - ${JSON.stringify(res)}`);
+}
+
+export function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext) {
+    switch (storyContext.args["onNavigateToEntity"]) {
+        case "Console message":
+            code = code.replace(
+                "onNavigateToEntity={() => {}}",
+                "onNavigateToEntity={\n    (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {\n      console.log(`Triggered onNavigateToEntity() for ${entityType || \"entity\"} \"${entity.label}\" (iri=\"${entity.iri}\").`);\n    }\n  }"
+            );
+            break;
+        case "Navigate to EBI page":
+            code = code.replace(
+                "onNavigateToEntity={() => {}}",
+                "onNavigateToEntity={\n    (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {\n      window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, \"_top\");\n    }\n  }"
+            );
+    }
+    switch (storyContext.args["onNavigateToOntology"]) {
+        case "Console message":
+            code = code.replace(
+                "onNavigateToOntology={() => {}}",
+                "onNavigateToOntology={\n    (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {\n      console.log(`Triggered onNavigateToOntology() for ${entityType || \"entity\"} \"${entity.label}\" (iri=\"${entity.iri}\") and ontologyId \"${ontologyId}\".`);\n    }\n  }"
+            );
+            break;
+        case "Navigate to EBI page":
+            code = code.replace(
+                "onNavigateToOntology={() => {}}",
+                "onNavigateToOntology={\n    (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => {\n      window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, \"_top\");\n    }\n  }"
+            );
+    }
+    switch (storyContext.args["onNavigateToDisambiguate"]) {
+        case "Console message":
+            code = code.replace(
+                "onNavigateToDisambiguate={() => {}}",
+                "onNavigateToDisambiguate={\n    (entityType: string, entity: { iri: string, label?: string }) => {\n       console.log(`Triggered onNavigateToDisambiguate() for ${entityType || \"entity\"} \"${entity.label}\" (iri=\"${entity.iri}\").`);\n    }\n  }"
+            );
+            break;
+        case "Navigate to EBI page":
+            code = code.replace(
+                "onNavigateToDisambiguate={() => {}}",
+                "onNavigateToDisambiguate={\n    (entityType: string, entity: { iri: string, label?: string }) => {\n       window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity.label}&exactMatch=true&lang=en`, \"_top\");\n    }\n  }"
+            )
+    }
+
+    return code;
 }

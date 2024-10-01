@@ -1,13 +1,12 @@
-import { entityTypeNames } from "../../../model/ModelTypeCheck";
 import {
-  apiArgType,
-  entityTypeArgType,
-  hasTitleArgType,
-  iriArgType,
-  ontologyIdArgType,
-  parameterArgType,
-  showBadgesArgType,
-  useLegacyArgType
+    apiArgType,
+    entityTypeArgType,
+    hasTitleArgType,
+    iriArgType, onNavigateToDisambiguateArgType, onNavigateToEntityArgType, onNavigateToOntologyArgType,
+    ontologyIdArgType,
+    parameterArgType,
+    showBadgesArgType,
+    useLegacyArgType
 } from "../../../stories/storyArgs";
 import * as globals from '../../../app/globals';
 
@@ -19,7 +18,10 @@ export const EntityInfoWidgetStoryArgTypes = {
   ...parameterArgType,
   ...showBadgesArgType,
   ...useLegacyArgType,
-  ...iriArgType
+  ...iriArgType,
+  ...onNavigateToEntityArgType,
+  ...onNavigateToOntologyArgType,
+  ...onNavigateToDisambiguateArgType
 };
 
 export const EntityInfoWidgetStoryArgs = {
@@ -30,7 +32,10 @@ export const EntityInfoWidgetStoryArgs = {
   entityType: "",
   hasTitle: true,
   showBadges: true,
-  parameter: ""
+  parameter: "",
+  onNavigateToEntity: "Console message",
+  onNavigateToOntology: "Console message",
+  onNavigateToDisambiguate: "Console message"
 };
 
 
@@ -105,6 +110,17 @@ export const InfoWidgetPropertyCharacteristics = {
         api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page",
     }
 };
 

@@ -163,9 +163,15 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
 
-export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
+export type OnNavigatesForEntityInfoRelation = { /*TODO: merge this later with OnNavigateToEntity, OnNavigateToOntology types used by other widgets*/
+    onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+    onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+    onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
+}
 
-export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj;
+export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & OnNavigatesForEntityInfoRelation;
+
+export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & OnNavigatesForEntityInfoRelation;
 
 export type JsonApiWidgetProps = {
     /**
@@ -388,6 +394,10 @@ export type TitlePresentationProps = TitleTextObj & {
      * CSS class for styling
      */
     className?: string;
+    /**
+     * Set the default text shown if the API fails to retrieve one.
+     */
+    defaultValue?: string
 }
 
 export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;

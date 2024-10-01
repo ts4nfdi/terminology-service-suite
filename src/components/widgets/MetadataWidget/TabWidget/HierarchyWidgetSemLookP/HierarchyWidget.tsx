@@ -30,13 +30,13 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
             <span className={props.highlight ? "highlight" : undefined}>
                 {props.childRelationToParent == "http://purl.obolibrary.org/obo/BFO_0000050" &&
                     <>
-                        <span className="surroundCircle">&nbsp;P&nbsp;</span>
+                        <span style={{marginInlineStart: "1.5px", marginTop: "2.5px"}} className="surroundCircle">&nbsp;P&nbsp;</span>
                         &nbsp;
                     </>
                 }
                 {props.childRelationToParent == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" &&
                     <>
-                        <span className="surroundCircle">I</span>
+                        <span style={{marginInlineStart: "1.5px", marginTop: "2.5px"}} className="surroundCircle">I</span>
                         &nbsp;
                     </>
                 }
@@ -148,33 +148,42 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
 
     function renderTreeNode(hierarchy: Hierarchy, node: TreeNode, drawLine?: boolean) {
         return (
-            <span>
+            <div key={randomString()}>
                 <EuiText>
-                    {
-                        !node.entityData.hasChildren ?
-                            <EuiIcon type={"empty"}/> :
-                            <button onClick={() => {toggleNode(node)}}>
-                                <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"}/>
-                            </button>
-                    }
-                    &nbsp;
-                    <TreeLink entityData={node.entityData} childRelationToParent={node.childRelationToParent} ontologyId={hierarchy.ontologyId} entityType={hierarchy.entityType} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entityData.iri == hierarchy?.mainEntityIri}/>
-                    &nbsp;
-                    {node.entityData.numDescendants != undefined && node.entityData.numDescendants > 0 && <span style={{color: "gray"}}>({node.entityData.numDescendants.toLocaleString()})</span>}
+                    <div style={{height: "24px"}}>
+                      <div style={{position: "relative", borderLeft: "1px dotted black", borderBottom: "1px dotted black", width: "12px", height: "16px", left: "5.5px", top: "-1px"}}></div>
+                      <div style={{position: "relative", borderLeft: drawLine ? "1px dotted black":"", width: "12px", height: "9px", left: "5.5px", top: "0px"}}></div>
+                      <div style={{position: "relative", top: "-22px"}}>
+                          <span>{
+                              !node.entityData.hasChildren ?
+                                  <EuiIcon type={"empty"}/> :
+                                  <button style={{}} onClick={() => {toggleNode(node)}}>
+                                      <EuiIcon type={node.expanded ? "arrowDown" : "arrowRight"} size={"s"}/>
+                                  </button>
+                          }</span>
+
+                          &nbsp;
+                          <TreeLink entityData={node.entityData} childRelationToParent={node.childRelationToParent} ontologyId={hierarchy.ontologyId} entityType={hierarchy.entityType} onNavigateToEntity={onNavigateToEntity} onNavigateToOntology={onNavigateToOntology} highlight={node.entityData.iri == hierarchy?.mainEntityIri}/>
+                          &nbsp;
+                          {node.entityData.numDescendants != undefined && node.entityData.numDescendants > 0 && <span style={{color: "gray"}}>({node.entityData.numDescendants.toLocaleString()})</span>}
+                      </div>
+                    </div>
+
+
                 </EuiText>
                 {node.expanded &&
-                    <ul style={{marginBlockEnd: "0", marginInlineStart: "0.5rem"}}>
+                    <ul style={{marginBlockEnd: "0", marginInlineStart: "5.5px"}}>
                         {node.loading ?
-                            <EuiLoadingSpinner/> :
+                            <EuiLoadingSpinner style={{position: "relative", left: "13px", top: "5px"}}/> :
                             node.loadedChildren.map((child, idx) => {
-                                return <div key={randomString()} style={{borderLeft: drawLine ? "2px dotted grey":"", paddingLeft: "1rem"}}>
+                                return <div key={randomString()} style={{borderLeft: drawLine ? "1px dotted black":"", paddingLeft: "1rem"}}>
                                     {renderTreeNode(hierarchy, child, idx < node.loadedChildren.length - 1)}
                                 </div>
                             })
                         }
                     </ul>
                 }
-            </span>
+            </div>
         );
     }
 
