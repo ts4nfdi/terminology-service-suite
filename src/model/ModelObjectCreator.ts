@@ -1,8 +1,8 @@
 import {OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual} from "./ols3-model";
 import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual} from "./ols4-model";
 import {Thing} from "./interfaces";
-import {ThingTypeName, isThingTypeName} from "./ModelTypeCheck";
-import {asArray} from "../app/util";
+import {ThingTypeName} from "./ModelTypeCheck";
+import {asArray, inferTypeFromTypeArray} from "../app/util";
 
 export function createModelObject(response: any) {
     let useLegacy : boolean;
@@ -28,12 +28,7 @@ export function createModelObject(response: any) {
         else {
             if(response["elements"][0] === undefined) throw Error("Empty response.");
 
-            let types : string[] = response["elements"][0]["type"];
-            types = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
-            types = types.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
-            types = [...new Set<string>(types)]; // remove duplicates
-
-            if(types.length === 1) entityType = types[0] as ThingTypeName;
+            entityType = inferTypeFromTypeArray(response["elements"][0]["type"]);
         }
     }
 

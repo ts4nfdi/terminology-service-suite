@@ -612,7 +612,7 @@ export class OlsApi implements HierarchyBuilder{
   }
 
   public async getClassInstances(iri: string, ontologyId: string) : Promise<Individual[]> {
-    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/instances`, {params: {size: "1000"}}, false);
+    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/individuals`, {params: {size: "1000"}}, false);
 
     return instances["elements"].map((obj: any) =>
       createModelObject({elements: [obj]}) as Individual

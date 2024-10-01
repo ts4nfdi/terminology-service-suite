@@ -39,3 +39,11 @@
     padding: 4px 3px 1px;
     border-radius: 6px;
 }
+
+.clickable {
+    color: #0645AD;
+}
+
+.clickable:hover {
+    text-decoration: underline;
+}

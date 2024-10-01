@@ -1,10 +1,11 @@
 import {Thing} from "./interfaces";
 import React, {ReactElement} from "react";
 import {EuiIconTip, EuiIcon} from "@elastic/eui";
-import {asArray, getFrontEndApi, getEntityInOntologySuffix, randomString} from "../app/util";
+import {asArray, inferTypeFromTypeArray, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 import "../style/semlookp-styles.css";
+import {OnNavigatesForEntityInfoRelation} from "../app/types";
 
 const DEFAULT_SHOW_BADGES = true;
 
@@ -45,12 +46,14 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
  * @param parentEntity the entity object in which the linked entity exists
  * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
  * @param iri   the entities' iri
- * @param api   the api used to extract the frontend api to link to linked entity
  * @param showBadges    boolean which indicates if badges should be shown
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  * @returns ReactElement the entity link JSX
  */
-export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, api: string, showBadges : boolean = DEFAULT_SHOW_BADGES): ReactElement {
-    const frontendApi = getFrontEndApi(api);
+export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, showBadges : boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
     const label = linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
     const linkedEntity = linkedEntities.get(iri);
     const localOntology = parentEntity.getOntologyId();
@@ -62,7 +65,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
 
     if (!linkedEntity) {
         if(iri.startsWith("http")) {
-            return <a href={iri}>{label}</a>;
+            return <a className="clickable" href={iri}>{label}</a>;
         }
         else {
             // So far only known occurrence of this branch is for owl#Thing
@@ -71,7 +74,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
     }
 
     const otherDefinedBy = linkedEntity["definedBy"] ? linkedEntity["definedBy"].filter((elem: any) => {return elem !== localOntology}) : [];
-    const linkedEntityType = linkedEntity["type"]; // TODO: does type key always exist in linkedEntity relevant for relationsWidget?
+    const linkedEntityType = linkedEntity["type"] ? inferTypeFromTypeArray(linkedEntity["type"]) : parentEntity.getType();
 
     // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
     if(otherDefinedBy.length === 1) {
@@ -79,12 +82,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> where <label> links to the term in this ontology and <ontologyId> links to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
+                    <button className="clickable" onClick={() => {if(onNavigates.onNavigateToEntity) onNavigates.onNavigateToEntity(localOntology, linkedEntityType, {iri, label})}}>{label}</button>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
+                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
                             </> :
                             <></>
                     }
@@ -95,12 +98,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId> linking to the term in the defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{label}</a>
+                    <button className="clickable" onClick={() => {if(onNavigates.onNavigateToEntity) onNavigates.onNavigateToEntity(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{label}</button>
                     {
                         showBadges ?
                             <>
                                 &nbsp;
-                                <a className="no-decoration" href={frontendApi + getEntityInOntologySuffix(otherDefinedBy[0], linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</a>
+                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
                             </> :
                             <></>
                     }
@@ -113,14 +116,14 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> <ontologyId1> <ontologyId2> ... <ontologyIdN> where <label> links to the term in this ontology and <ontologyIdI> links to the term in that defining ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
+                    <button className="clickable" onClick={() => {if(onNavigates.onNavigateToEntity) onNavigates.onNavigateToEntity(localOntology, linkedEntityType, {iri, label})}}>{label}</button>
                     {
                         showBadges ?
                         <>
                             &nbsp;
                             {otherDefinedBy.map((elem: any) => {
                                 return (
-                                    <a className="no-decoration" key={randomString()} href={frontendApi + getEntityInOntologySuffix(elem, linkedEntityType, iri, false)}>{<span className="defining-ontology-badge">{elem.toUpperCase()}</span>}</a>
+                                    <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(elem, linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{elem.toUpperCase()}</span>}</button>
                                 );
                             })}
                         </> :
@@ -133,12 +136,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
             return (
                 <>
-                    <a href={iri}>{label}</a>
+                    <a className="clickable" href={iri}>{label}</a>
                     {
                         showBadges ?
                         <>
                             &nbsp;
-                            <a className="no-decoration" key={randomString()} href={frontendApi + `search?q=${encodeURIComponent(label)}&exactMatch=true`}>
+                            <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToDisambiguate) onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label})}}>
                                 <span className="defining-ontology-badge">
                                     <EuiIcon type={"search"} size={"s"}/>
                                     &nbsp;
@@ -146,7 +149,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                     &nbsp;
                                     {"ontologies"}
                                 </span>
-                            </a>
+                            </button>
                         </> :
                         <></>
                     }
@@ -159,7 +162,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
             // show <label> where <label> links to the term in this ontology
             return (
                 <>
-                    <a href={frontendApi + getEntityInOntologySuffix(localOntology, linkedEntityType, iri, false)}>{label}</a>
+                    <button className="clickable" onClick={() => {if(onNavigates.onNavigateToEntity) onNavigates.onNavigateToEntity(localOntology, linkedEntityType, {iri, label})}}>{label}</button>
                 </>
             )
         }
@@ -168,12 +171,12 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                 // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
                 return (
                     <>
-                        <a href={iri}>{label}</a>
+                        <a className="clickable" href={iri}>{label}</a>
                         {
                             showBadges ?
                                 <>
                                     &nbsp;
-                                    <a className="no-decoration" key={randomString()} href={frontendApi + `search?q=${encodeURIComponent(label)}&exactMatch=true`}>
+                                    <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToDisambiguate) onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label})}}>
                                         <span className="defining-ontology-badge">
                                             <EuiIcon type={"search"} size={"s"}/>
                                             &nbsp;
@@ -183,7 +186,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                                 ? "ontologies"
                                                 : "ontology"}
                                         </span>
-                                    </a>
+                                    </button>
                                 </> :
                                 <></>
                         }
@@ -194,7 +197,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                 // show raw iri
                 return (
                     <>
-                        <a href={iri}>{label}</a>
+                        <a className="clickable" href={linkedEntity["url"] || iri}>{label}</a>
                     </>
                 )
             }
@@ -209,22 +212,25 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
  * @param parentEntity the entity object possessing the whole response object
  * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
  * @param currentResponsePath the current sub-object of the parentEntities response object parsed as class expression
- * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
  * @param showBadges boolean which indicates if badges should be shown
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  * @returns ReactElement the class expression JSX
  */
-export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
+export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
     let result = <></>;
 
     // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
     linkedEntities = linkedEntities.mergeWith(currentResponsePath.linkedEntities);
 
     if (typeof currentResponsePath === "string") {
-        result = getEntityLinkJSX(parentEntity, linkedEntities, currentResponsePath, api, showBadges);
+        result = getEntityLinkJSX(parentEntity, linkedEntities, currentResponsePath, showBadges, onNavigates);
     }
     else if (typeof currentResponsePath === "object" && !Array.isArray(currentResponsePath) && Array.isArray(currentResponsePath["type"]) && currentResponsePath["type"].indexOf("reification") !== -1) { // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
         // current response path is reification
-        result = getReifiedJSX(parentEntity, Reified.fromJson<any>(currentResponsePath)[0], api, showBadges);
+        result = getReifiedJSX(parentEntity, Reified.fromJson<any>(currentResponsePath)[0], showBadges, onNavigates);
     }
     else { // type === "object"
         const someValuesFrom = currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
@@ -244,7 +250,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
 
         if(onDataType) {
             const elements: ReactElement[] = [
-                getClassExpressionJSX(parentEntity, linkedEntities, onDataType, api, showBadges)
+                getClassExpressionJSX(parentEntity, linkedEntities, onDataType, showBadges, onNavigates)
             ];
 
             const withRestrictions = asArray(currentResponsePath["http://www.w3.org/2002/07/owl#withRestrictions"]);
@@ -275,18 +281,18 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
         else if (someValuesFrom) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> some </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(someValuesFrom)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(someValuesFrom)[0], showBadges, onNavigates)}
                 </>
             );
         }
         else if (allValuesFrom) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> only </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(allValuesFrom)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(allValuesFrom)[0], showBadges, onNavigates)}
                 </>
             );
         }
@@ -303,7 +309,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                     );
                 }
                 elements.push(
-                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, showBadges, onNavigates)
                 );
             }
             elements.push(
@@ -328,7 +334,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                     );
                 }
                 elements.push(
-                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, showBadges, onNavigates)
                 );
             }
             elements.push(
@@ -343,45 +349,45 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
         else if (hasValue) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> value </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasValue)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasValue)[0], showBadges, onNavigates)}
                 </>
             );
         }
         else if (minCardinality) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> min </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(minCardinality)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(minCardinality)[0], showBadges, onNavigates)}
                 </>
             );
         }
         else if (maxCardinality) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> max </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(maxCardinality)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(maxCardinality)[0], showBadges, onNavigates)}
                 </>
             );
         }
         else if (cardinality) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> exactly </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(cardinality)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(cardinality)[0], showBadges, onNavigates)}
                 </>
             );
         }
         else if (hasSelf) {
             result = (
                 <>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, onProperty, showBadges, onNavigates)}
                     <i style={{color: "purple"}}> Self </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasSelf)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(hasSelf)[0], showBadges, onNavigates)}
                 </>
             );
         }
@@ -389,7 +395,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
             result = (
                 <>
                     <i>not </i>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(complementOf)[0], api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, asArray(complementOf)[0], showBadges, onNavigates)}
                 </>
             );
         }
@@ -408,7 +414,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                     );
                 }
                 elements.push(
-                    getClassExpressionJSX(parentEntity, linkedEntities, elem, api, showBadges)
+                    getClassExpressionJSX(parentEntity, linkedEntities, elem, showBadges, onNavigates)
                 );
             }
             elements.push(
@@ -427,7 +433,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
                     <span key={randomString()} className="text-neutral-default">
                       &#40;
                     </span>
-                    {getClassExpressionJSX(parentEntity, linkedEntities, inverseOf, api, showBadges)}
+                    {getClassExpressionJSX(parentEntity, linkedEntities, inverseOf, showBadges, onNavigates)}
                     <span key={randomString()} className="text-neutral-default">
                       &#41;
                     </span>
@@ -444,19 +450,22 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
  * @param parentEntity
  * @param linkedEntities
  * @param array
- * @param api
  * @param showBadges
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
+export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
     return (
         <>
             {array.length === 1 ? (
-                <p>{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), array[0], api, showBadges)}</p>
+                <p>{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), array[0], showBadges, onNavigates)}</p>
             ) :
             <ul>
                 {
                     array.map((item: any) => {
-                        return (<li key={randomString()} >{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), item, api, showBadges)}</li>);
+                        return (<li key={randomString()} >{getClassExpressionJSX(parentEntity, parentEntity.getLinkedEntities(), item, showBadges, onNavigates)}</li>);
                     })
                 }
             </ul>}
@@ -469,10 +478,13 @@ export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEnt
  * @param parentEntity the entity object possessing the whole response object
  * @param text the text to insert links into
  * @param linkedEntities the linkedEntities object (if undefined, no labels are inferred)
- * @param api the api used to extract the frontend api to link to linked entity (necessary for call to getEntityLinkJSX())
  * @param showBadges boolean which indicates if badges should be shown
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES) {
+function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation) {
     const linksToSplice: Array<{ start: number; end: number; link: ReactElement }> =
         [];
 
@@ -486,7 +498,7 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
                 linksToSplice.push({
                     start: n,
                     end: n + entityId.length,
-                    link: getEntityLinkJSX(parentEntity, linkedEntities, entityId, api, showBadges),
+                    link: getEntityLinkJSX(parentEntity, linkedEntities, entityId, showBadges, onNavigates),
                 });
 
                 n += entityId.length;
@@ -504,7 +516,7 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
             end: match.index + url.length,
             link: (
                 <span key={randomString()}>
-                    <a href={url}>{url}</a>
+                    <a className="clickable" href={url}>{url}</a>
                 </span>
             ),
         });
@@ -562,17 +574,20 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
  * Renders a given Reified
  * @param entity the entity the Reified exists in
  * @param reified the Reified
- * @param api the api used to extract the frontend api to link to linked entities
  * @param showBadges boolean which indicates if badges should be shown
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string, showBadges: boolean = DEFAULT_SHOW_BADGES): ReactElement {
+export function getReifiedJSX(entity: Thing, reified: Reified<any>, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
     function getValueJSX(value: Reified<any>): ReactElement {
         const linkedEntities = entity.getLinkedEntities();
 
         // linkedEntities not existent on entity (-> probably legacy api version)
         if(Object.keys(linkedEntities.linkedEntities).length == 0) {
             if(typeof value.value == "string") {
-                return addLinksToText(entity, value.value.toString(), undefined, api, showBadges);
+                return addLinksToText(entity, value.value.toString(), undefined, showBadges, onNavigates);
             }
             else {
                 // TODO: should not happen, prove that this is never the case
@@ -583,7 +598,7 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
             const linkedEntity = linkedEntities.get(value.value);
 
             if (linkedEntity) {
-                return getEntityLinkJSX(entity, linkedEntities, value.value, api, showBadges);
+                return getEntityLinkJSX(entity, linkedEntities, value.value, showBadges, onNavigates);
             }
             else {
                 if (typeof value.value !== "string") {
@@ -591,11 +606,11 @@ export function getReifiedJSX(entity: Thing, reified: Reified<any>, api: string,
                         return <>{JSON.stringify(value.value)}</>;
                     }
                     else {
-                        return getClassExpressionJSX(entity, linkedEntities, value.value, api, showBadges);
+                        return getClassExpressionJSX(entity, linkedEntities, value.value, showBadges, onNavigates);
                     }
                 }
                 else {
-                    return addLinksToText(entity, value.value.toString(), linkedEntities, api, showBadges);
+                    return addLinksToText(entity, value.value.toString(), linkedEntities, showBadges, onNavigates);
                 }
             }
         }
