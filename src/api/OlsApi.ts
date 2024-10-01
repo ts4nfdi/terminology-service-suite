@@ -486,20 +486,14 @@ export class OlsApi implements HierarchyBuilder{
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
         return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
 
-      case 'property':
-        return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
-      case 'annotationProperty':
-        return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
-      case 'dataProperty':
-        return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
-      case 'objectProperty':
+      case 'property': case 'annotationProperty': case 'dataProperty': case 'objectProperty':
         return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
 
       case 'individual':
         return await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
 
       default:
-        throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "property", "individual", "annotationProperty", "dataProperty", "objectProperty"}');
+        throw Error('Invalid entity type "' + entityType + `". Must be one of {${entityTypeNames.map((elem) => `"${elem}"`).join(", ")}}.`);
     }
   }
 

@@ -48,16 +48,10 @@ export abstract class OLS4Thing implements Thing {
         return "ontologies";
       case "class":
         return "classes";
-      case "property":
+      case "property": case "annotationProperty": case "dataProperty": case "objectProperty":
         return "properties";
       case "individual":
         return "individuals";
-      case "annotationProperty":
-        return "properties";
-      case "dataProperty":
-        return "properties";
-      case "objectProperty":
-        return "properties";
       default:
         throw new Error("unknown type");
     }

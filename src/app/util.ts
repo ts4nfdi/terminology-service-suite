@@ -71,7 +71,6 @@ export function pluralizeType(typeArray: string[] | string, useLegacy?: boolean)
             if(isIndividualTypeName(type)) return "individuals";
             if(isOntologyTypeName(type)) return "ontologies"
         }
-        if(type === "annotationProperty" || type === "dataProperty" || type === "objectProperty" ) return "properties";
     }
     throw new Error("No thingType found to pluralize in provided typeArray.");
 }
