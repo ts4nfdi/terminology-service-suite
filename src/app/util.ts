@@ -141,7 +141,7 @@ export function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext
         case "Navigate to EBI page":
             code = code.replace(
                 "onNavigateToEntity={() => {}}",
-                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
+                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([[\"term\",\"classes\"],[\"class\",\"classes\"],[\"individual\",\"individuals\"],[\"property\",\"properties\"],[\"dataProperty\",\"properties\"],[\"objectProperty\",\"properties\"],[\"annotationProperty\",\"properties\"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
             );
     }
     switch (storyContext.args["onNavigateToOntology"]) {
@@ -154,7 +154,7 @@ export function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext
         case "Navigate to EBI page":
             code = code.replace(
                 "onNavigateToOntology={() => {}}",
-                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
+                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([[\"term\",\"classes\"],[\"class\",\"classes\"],[\"individual\",\"individuals\"],[\"property\",\"properties\"],[\"dataProperty\",\"properties\"],[\"objectProperty\",\"properties\"],[\"annotationProperty\",\"properties\"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
             );
     }
     switch (storyContext.args["onNavigateToDisambiguate"]) {

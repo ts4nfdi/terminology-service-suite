@@ -515,7 +515,6 @@ export const classNameArgType = {
 };
 
 /*TODO: refactor these to be consistent with all widget's onNavigate functions*/
-/*TODO: pluralizeType is obviously not found, exchange with local definition of pluralization fitting the ebi routes*/
 export const onNavigateToEntityArgType = {
   onNavigateToEntity: {
     required: false,
@@ -530,7 +529,7 @@ export const onNavigateToEntityArgType = {
       },
       "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
         if(entity && entity.iri && entityType) {
-          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([["term","classes"],["class","classes"],["individual","individuals"],["property","properties"],["dataProperty","properties"],["objectProperty","properties"],["annotationProperty","properties"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
         }
         else {
           window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
@@ -553,7 +552,7 @@ export const onNavigateToOntologyArgType = {
       },
       "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
         if(entity && entity.iri && entityType) {
-          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([["term","classes"],["class","classes"],["individual","individuals"],["property","properties"],["dataProperty","properties"],["objectProperty","properties"],["annotationProperty","properties"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
         }
         else {
           window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
