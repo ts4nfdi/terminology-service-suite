@@ -1,19 +1,10 @@
 import {EntityTypeName} from "../ModelTypeCheck";
 import {HierarchyBuilder} from "../../api/HierarchyBuilder";
-import Reified from "../Reified";
+import {EntityDataForHierarchy} from "../../app/types";
 
 export type ParentChildRelation = {
     childIri: string,
     childRelationToParent?: string
-}
-
-export type EntityDataForHierarchy = {
-    iri: string;
-    label?: string;
-    definedBy?: string[];
-    hasChildren: boolean;
-    numDescendants?: number;
-    parents: Reified<string>[];
 }
 
 export class TreeNode {

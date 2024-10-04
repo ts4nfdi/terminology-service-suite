@@ -31,7 +31,8 @@ window['SemLookPWidgets'].createMetadata(
         api:"${args.api}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        onNavigateToOntology:${args.onNavigateToOntology}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )
@@ -48,5 +49,6 @@ export {
     OLS4V1,
     OLS4V2,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    DefinedByAlsoAppearsInWidgets
 } from "./MetadataWidgetStories"

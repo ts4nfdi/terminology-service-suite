@@ -21,7 +21,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     isError,
     error
   } = useQuery<Thing>(
-    ["metadata", api, parameter, thingType, iri, ontologyId, useLegacy],
+    ["description", api, parameter, thingType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getThingObject(iri, thingType, ontologyId, parameter, useLegacy);
     }

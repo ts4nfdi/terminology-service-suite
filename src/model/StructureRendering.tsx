@@ -5,7 +5,7 @@ import {asArray, inferTypeFromTypeArray, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 import "../style/semlookp-styles.css";
-import {OnNavigatesForEntityInfoRelation} from "../app/types";
+import {OnNavigates} from "../app/types";
 
 const DEFAULT_SHOW_BADGES = true;
 
@@ -53,7 +53,7 @@ export function getAxiomsInformationJSX(parentEntity: Thing, axiomsDict: any | n
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  * @returns ReactElement the entity link JSX
  */
-export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, showBadges : boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
+export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEntities, iri: string, showBadges : boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates): ReactElement {
     const label = linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
     const linkedEntity = linkedEntities.get(iri);
     const localOntology = parentEntity.getOntologyId();
@@ -87,7 +87,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         showBadges ?
                             <>
                                 &nbsp;
-                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
+                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
                             </> :
                             <></>
                     }
@@ -103,7 +103,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         showBadges ?
                             <>
                                 &nbsp;
-                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
+                                <button className="no-decoration" onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(otherDefinedBy[0], linkedEntityType, {iri, label})}}>{<span className="ontology-badge">{otherDefinedBy[0].toUpperCase()}</span>}</button>
                             </> :
                             <></>
                     }
@@ -123,7 +123,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                             &nbsp;
                             {otherDefinedBy.map((elem: any) => {
                                 return (
-                                    <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(elem, linkedEntityType, {iri, label})}}>{<span className="defining-ontology-badge">{elem.toUpperCase()}</span>}</button>
+                                    <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToOntology) onNavigates.onNavigateToOntology(elem, linkedEntityType, {iri, label})}}>{<span className="ontology-badge">{elem.toUpperCase()}</span>}</button>
                                 );
                             })}
                         </> :
@@ -142,7 +142,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                         <>
                             &nbsp;
                             <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToDisambiguate) onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label})}}>
-                                <span className="defining-ontology-badge">
+                                <span className="ontology-badge">
                                     <EuiIcon type={"search"} size={"s"}/>
                                     &nbsp;
                                     {otherDefinedBy.length}
@@ -177,7 +177,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
                                 <>
                                     &nbsp;
                                     <button className="no-decoration" key={randomString()} onClick={() => {if(onNavigates.onNavigateToDisambiguate) onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label})}}>
-                                        <span className="defining-ontology-badge">
+                                        <span className="ontology-badge">
                                             <EuiIcon type={"search"} size={"s"}/>
                                             &nbsp;
                                             {linkedEntity["numAppearsIn"]}
@@ -219,7 +219,7 @@ export function getEntityLinkJSX(parentEntity: Thing, linkedEntities: LinkedEnti
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  * @returns ReactElement the class expression JSX
  */
-export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
+export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: LinkedEntities, currentResponsePath: any, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates): ReactElement {
     let result = <></>;
 
     // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
@@ -456,7 +456,7 @@ export function getClassExpressionJSX(parentEntity: Thing, linkedEntities: Linke
  * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
+export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEntities, array: any[], showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates): ReactElement {
     return (
         <>
             {array.length === 1 ? (
@@ -484,7 +484,7 @@ export function getSectionListJSX(parentEntity: Thing, linkedEntities: LinkedEnt
  * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation) {
+function addLinksToText(parentEntity: Thing, text: string, linkedEntities: LinkedEntities | undefined, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates) {
     const linksToSplice: Array<{ start: number; end: number; link: ReactElement }> =
         [];
 
@@ -580,7 +580,7 @@ function addLinksToText(parentEntity: Thing, text: string, linkedEntities: Linke
  * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-export function getReifiedJSX(entity: Thing, reified: Reified<any>, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigatesForEntityInfoRelation): ReactElement {
+export function getReifiedJSX(entity: Thing, reified: Reified<any>, showBadges: boolean = DEFAULT_SHOW_BADGES, /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates): ReactElement {
     function getValueJSX(value: Reified<any>): ReactElement {
         const linkedEntities = entity.getLinkedEntities();
 

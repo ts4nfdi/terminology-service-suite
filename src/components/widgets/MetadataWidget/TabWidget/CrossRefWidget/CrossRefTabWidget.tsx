@@ -21,7 +21,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
     isError,
     error
   } = useQuery<Thing>(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["crossRefTab", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }

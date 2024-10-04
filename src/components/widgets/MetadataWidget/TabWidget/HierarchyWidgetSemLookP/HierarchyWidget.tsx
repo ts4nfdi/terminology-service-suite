@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useReducer} from "react";
 import {EuiLoadingSpinner, EuiText, EuiIcon, EuiProvider, EuiCard} from "@elastic/eui";
 import {OlsApi} from "../../../../../api/OlsApi";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
+import {Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
@@ -9,7 +9,7 @@ import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
 import "../../../../../style/semlookp-styles.css";
 import {randomString} from "../../../../../app/util";
-import {HierarchyWidgetProps} from "../../../../../app/types";
+import {HierarchyWidgetProps, EntityData} from "../../../../../app/types";
 import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
@@ -21,7 +21,7 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
 } as const;
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
-function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToParent?: string, ontologyId: string, entityType?: string, onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void, highlight: boolean}) {
+function TreeLink(props: {entityData: EntityData, childRelationToParent?: string, ontologyId: string, entityType?: string, onNavigateToEntity?: (ontologyId: string, entityType?: string, entity?: EntityData) => void, onNavigateToOntology?: (ontologyId: string, entityType?: string, entity?: EntityData) => void, highlight: boolean}) {
     let definedBy: string[] = props.entityData.definedBy || [];
     if(definedBy.includes(props.ontologyId)) definedBy = [];
 
@@ -55,7 +55,7 @@ function TreeLink(props: {entityData: EntityDataForHierarchy, childRelationToPar
                                 key={`${props.entityData.iri}:${definingOntology}`}
                                 onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(definingOntology, props.entityType || "", props.entityData)}}
                             >
-                                <span className="defining-ontology-badge">{definingOntology.toUpperCase()}</span>
+                                <span className="ontology-badge">{definingOntology.toUpperCase()}</span>
                             </button>
                         )
                     })}
@@ -106,7 +106,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         data: hierarchy,
         isSuccess: isSuccessHierarchy,
     } = useQuery(
-      [iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit, useLegacy],
+      ["hierarchySemLookP", iri, entityType, ontologyId, preferredRoots, includeObsoleteEntities, keepExpansionStates, showSiblingsOnInit, useLegacy],
       async function getNewHierarchy() {
           return await api.buildHierarchyWithIri({
               ontologyId: ontologyId,

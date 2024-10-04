@@ -1,5 +1,6 @@
 import {EntityTypeName} from "../model/ModelTypeCheck";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {EntityDataForHierarchy} from "../app/types"
 
 export type HierarchyQueryProps = {
     /**

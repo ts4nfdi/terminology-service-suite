@@ -20,7 +20,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
     isError,
     error
   } = useQuery<Thing>(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["alternativeNameTab", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
