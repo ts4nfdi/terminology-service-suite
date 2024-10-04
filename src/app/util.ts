@@ -129,45 +129,45 @@ export function inferTypeFromTypeArray(types: string[]) {
     else throw Error(`Entity type could not be correctly inferred: Multiple types found in array, no definite choice possible - ${JSON.stringify(res)}`);
 }
 
-/*TODO: source is displayed in a weird font (maybe some string error with replaceValues?)*/
+/* TODO: pluralizeType not available in html version, replace with local functionality */
 export function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext) {
     switch (storyContext.args["onNavigateToEntity"]) {
         case "Console message":
             code = code.replace(
                 "onNavigateToEntity={() => {}}",
-                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      console.log(`Triggered onNavigateToEntity()${entityType ? ` for ${entityType || \"entity\"}` : \"\"}${entity && entity.label ? ` \"${entity.label}\"` : \"\"}${entity && entity.iri ? ` (iri=\"${entity.iri}\")` : \"\"}.`);\n    }\n  }"
+                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      console.log('Triggered onNavigateToEntity()' + (entityType ? ` for ${entityType || \"entity\"}` : '') + ((entity && entity.label) ? ` \"${entity.label}\"` : '') + ((entity && entity.iri) ? ` (iri=\"${entity.iri}\")` : '') + '.');\n    }\n  }"
             );
             break;
         case "Navigate to EBI page":
             code = code.replace(
                 "onNavigateToEntity={() => {}}",
-                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, \"_top\");\n      }\n      else {\n        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, \"_top\");\n      }\n    }\n  }"
+                "onNavigateToEntity={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
             );
     }
     switch (storyContext.args["onNavigateToOntology"]) {
         case "Console message":
             code = code.replace(
                 "onNavigateToOntology={() => {}}",
-                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      console.log(`Triggered onNavigateToOntology()${entityType ? ` for ${entityType || \"entity\"}` : \"\"}${entity && entity.label ? ` \"${entity.label}\"` : \"\"}${entity && entity.iri ? ` (iri=\"${entity.iri}\")` : \"\"} for ontologyId \"${ontologyId}\".`);\n    }\n  }"
+                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      console.log('Triggered onNavigateToOntology()' + (entityType ? ` for ${entityType || \"entity\"}` : '') + ((entity && entity.label) ? ` \"${entity.label}\"` : '') + ((entity && entity.iri) ? ` (iri=\"${entity.iri}\")` : '') + ` for ontologyId \"${ontologyId}\".`);\n    }\n  }"
             );
             break;
         case "Navigate to EBI page":
             code = code.replace(
                 "onNavigateToOntology={() => {}}",
-                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, \"_top\");\n      }\n      else {\n        window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, \"_top\");\n      }\n    }\n  }"
+                "onNavigateToOntology={\n    (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {\n      if(entity && entity.iri && entityType) {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), \"_top\");\n      }\n      else {\n        window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, \"_top\");\n      }\n    }\n  }"
             );
     }
     switch (storyContext.args["onNavigateToDisambiguate"]) {
         case "Console message":
             code = code.replace(
                 "onNavigateToDisambiguate={() => {}}",
-                "onNavigateToDisambiguate={\n    (entityType?: string, entity?: { iri: string, label?: string }) => {\n       console.log(`Triggered onNavigateToDisambiguate()${entityType ? ` for ${entityType || \"entity\"}` : \"\"}${entity && entity.label ? ` \"${entity.label}\"` : \"\"}${entity && entity.iri ? ` (iri=\"${entity.iri}\")` : \"\"}.`);\n    }\n  }"
+                "onNavigateToDisambiguate={\n    (entityType?: string, entity?: { iri: string, label?: string }) => {\n       console.log('Triggered onNavigateToDisambiguate()' + (entityType ? ` for ${entityType || \"entity\"}` : '') + ((entity && entity.label) ? ` \"${entity.label}\"` : '') + ((entity && entity.iri) ? ` (iri=\"${entity.iri}\")` : '') + '.');\n    }\n  }"
             );
             break;
         case "Navigate to EBI page":
             code = code.replace(
                 "onNavigateToDisambiguate={() => {}}",
-                "onNavigateToDisambiguate={\n    (entityType?: string, entity?: { iri: string, label?: string }) => {\n       window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : \"\"}&exactMatch=true&lang=en`, \"_top\");\n    }\n  }"
+                "onNavigateToDisambiguate={\n    (entityType?: string, entity?: { iri: string, label?: string }) => {\n       window.open('https://www.ebi.ac.uk/ols4/search?q=' + ((entity && entity.label) ? entity.label : \"\") + '&exactMatch=true&lang=en', \"_top\");\n    }\n  }"
             )
     }
 

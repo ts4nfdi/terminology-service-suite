@@ -526,14 +526,14 @@ export const onNavigateToEntityArgType = {
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
       "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
-        console.log(`Triggered onNavigateToEntity()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""}.`);
+        console.log('Triggered onNavigateToEntity()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + '.');
       },
       "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
         if(entity && entity.iri && entityType) {
-          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
         }
         else {
-          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
         }
       },
     }
@@ -549,14 +549,14 @@ export const onNavigateToOntologyArgType = {
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
       "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
-        console.log(`Triggered onNavigateToOntology()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""} for ontologyId "${ontologyId}".`);
+        console.log('Triggered onNavigateToOntology()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + ` for ontologyId "${ontologyId}".`);
       },
       "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
         if(entity && entity.iri && entityType) {
-          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}/${pluralizeType(entityType, false)}/${encodeURIComponent(encodeURIComponent(entity.iri))}`, "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + pluralizeType(entityType, false) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
         }
         else {
-          window.open(`https://www.ebi.ac.uk/ols4/ontologies/${ontologyId}`, "_top");
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
         }
       },
     }
@@ -572,10 +572,10 @@ export const onNavigateToDisambiguateArgType = {
     options: ["Console message", "Navigate to EBI page"],
     mapping: {
       "Console message": (entityType?: string, entity?: { iri: string, label?: string }) => {
-        console.log(`Triggered onNavigateToDisambiguate()${entityType ? ` for ${entityType || "entity"}` : ""}${entity && entity.label ? ` "${entity.label}"` : ""}${entity && entity.iri ? ` (iri="${entity.iri}")` : ""}.`);
+        console.log('Triggered onNavigateToDisambiguate()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + '.');
       },
       "Navigate to EBI page": (entityType?: string, entity?: { iri: string, label?: string }) => {
-        window.open(`https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
+        window.open(`https://www.ebi.ac.uk/ols4/search?q=${(entity && entity.label) ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
       }
     }
   }
