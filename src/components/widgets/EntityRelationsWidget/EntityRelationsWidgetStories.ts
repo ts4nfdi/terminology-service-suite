@@ -1,11 +1,15 @@
-import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
 import {
     apiArgType,
     entityTypeArgType,
     hasTitleArgType,
-    iriArgType, ontologyIdArgType,
-    parameterArgType, showBadgesArgType
+    iriArgType,
+    onNavigateToDisambiguateArgType,
+    onNavigateToEntityArgType,
+    onNavigateToOntologyArgType,
+    ontologyIdArgType,
+    parameterArgType,
+    showBadgesArgType
 } from "../../../stories/storyArgs";
 
 export const EntityRelationsWidgetStoryArgTypes = {
@@ -15,7 +19,10 @@ export const EntityRelationsWidgetStoryArgTypes = {
     ...iriArgType,
     ...parameterArgType,
     ...ontologyIdArgType,
-    ...showBadgesArgType
+    ...showBadgesArgType,
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
+    ...onNavigateToDisambiguateArgType
 }
 
 export const EntityRelationsWidgetStoryArgs = {
@@ -26,6 +33,9 @@ export const EntityRelationsWidgetStoryArgs = {
     hasTitle: true,
     showBadges: true,
     parameter: "",
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
+    onNavigateToDisambiguate: "Console message",
 }
 
 export const SubEntityOf = {
@@ -115,5 +125,17 @@ export const QualifiedCardinality = {
         entityType: "term",
         ontologyId: "foodon",
         iri: "http://purl.obolibrary.org/obo/FOODON_00003382",
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        entityType: "individual",
+        ontologyId: "bco",
+        iri: "http://purl.obolibrary.org/obo/IAO_0000120",
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page"
     }
 };

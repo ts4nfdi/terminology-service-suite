@@ -1,6 +1,15 @@
+.clickable-breadcrumb {
+
+}
+
 .breadcrumb {
-    padding: 4px 4px 1px;
+    padding: 3px 3px 0;
     border-radius: 6px;
+    border: 2px solid rgba(0,0,0,0);
+}
+
+.clickable-breadcrumb:hover {
+    border: 2px solid black;
 }
 
 .surroundCircle {
@@ -16,7 +25,7 @@
     font-weight: bold;
 }
 
-.defining-ontology-badge {
+.ontology-badge {
     font-size: 13px;
     background-color: #6dccb1;
     padding: 3px 3px 0;
@@ -25,8 +34,17 @@
     color: black;
 }
 
-.defining-ontology-badge:hover {
+.ontology-badge:hover {
     background-color: white;
+}
+
+.expand-onto-list {
+    color: #00827c;
+    font-style: italic;
+}
+
+.expand-onto-list:hover {
+    text-decoration-line: underline;
 }
 
 .no-decoration {
@@ -38,4 +56,12 @@
     background-color: lightblue;
     padding: 4px 3px 1px;
     border-radius: 6px;
+}
+
+.clickable {
+    color: #0645AD;
+}
+
+.clickable:hover {
+    text-decoration: underline;
 }

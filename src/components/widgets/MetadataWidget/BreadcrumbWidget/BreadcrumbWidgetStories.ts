@@ -1,11 +1,10 @@
-import {entityTypeNames} from "../../../../model/ModelTypeCheck";
 import * as globals from '../../../../app/globals';
 import {
-  apiArgType, colorFirstArgType, colorSecondArgType,
-  entityTypeArgType,
-  iriArgType,
-  ontologyIdArgType,
-  parameterArgType, useLegacyArgType
+    apiArgType, colorFirstArgType, colorSecondArgType,
+    entityTypeArgType,
+    iriArgType, onNavigateToOntologyArgType,
+    ontologyIdArgType,
+    parameterArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
 
 export const BreadcrumbWidgetStoryArgTypes = {
@@ -16,7 +15,8 @@ export const BreadcrumbWidgetStoryArgTypes = {
   ...parameterArgType,
   ...useLegacyArgType,
   ...colorFirstArgType,
-  ...colorSecondArgType
+  ...colorSecondArgType,
+  ...onNavigateToOntologyArgType
 };
 
 export const BreadcrumbWidgetStoryArgs = {
@@ -27,7 +27,8 @@ export const BreadcrumbWidgetStoryArgs = {
   entityType: "",
   colorFirst: "",
   colorSecond: "",
-  parameter: "collection=nfdi4health"
+  parameter: "collection=nfdi4health",
+  onNavigateToOntology: "Console message"
 };
 
 export const BreadcrumbWidget1 = {

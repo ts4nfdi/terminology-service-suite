@@ -7,7 +7,7 @@ import {EuiCardProps} from "@elastic/eui";
 import {EuiLinkColor} from "@elastic/eui/src/components/link/link";
 import {Thing} from "../model/interfaces";
 import {BuildHierarchyProps, HierarchyIriProp} from "../api/HierarchyBuilder";
-import {EntityDataForHierarchy} from "../model/interfaces/Hierarchy";
+import Reified from "../model/Reified";
 
 type ParameterObj = {
     /**
@@ -167,9 +167,9 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
 
-export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
+export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & OnNavigates;
 
-export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj;
+export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & OnNavigates;
 
 export type JsonApiWidgetProps = {
     /**
@@ -202,12 +202,12 @@ export type ColorSecondObj = {
     colorSecond?: EuiLinkColor | string;
 }
 
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj;
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
 
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
     ontologyName: string,
     shortForm: string,
-}
+} & OnNavigateToOntology;
 
 export type DescTextObj = {
     /**
@@ -259,6 +259,16 @@ export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj
     data: Thing;
 }
 
+export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & OnNavigateToOntology;
+
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
+    ontolist: any[];
+    label: string;
+}
+
+export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
+export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
+
 export type AlternativeNameTabWidgetProps = TabWidgetProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {
@@ -270,6 +280,69 @@ export type CrossRefWidgetProps = TabWidgetProps;
 export type CrossRefPresentationProps = {
     crossrefs: any[];
 }
+
+// Is mainly used for Hierarchy
+export type EntityData = {
+    iri: string;
+    label?: string;
+    definedBy?: string[];
+    /**
+     * should be present for use with hierarchy
+     */
+    hasChildren?: boolean;
+    numDescendants?: number;
+    /**
+     * should be present for use with hierarchy
+     */
+    parents?: Reified<string>[];
+}
+
+export type OnNavigateToEntity = {
+    /**
+     * This function is called every time an entity link is clicked
+     * @param ontologyId obtains the ontologyId of the current ontology
+     * @param entityType obtains the entityType of the clicked entity
+     * @param entity.iri obtains the iri of the clicked entity
+     * @param entity.label obtains the label of the clicked entity
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToEntity?:  (ontologyId: string, entityType?: string, entity?: EntityData) => void;
+}
+
+export type OnNavigateToOntology = {
+    /**
+     * This function is called every time an entity link is clicked
+     * @param ontologyId obtains the ontologyId of the clicked badge
+     * @param entityType obtains the entityType of the clicked badge
+     * @param entity.iri obtains the iri of the clicked badge (can be empty)
+     * @param entity.label obtains the label of the clicked badge
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToOntology?: (ontologyId: string, entityType?: string, entity?: EntityData) => void,
+}
+
+export type OnNavigateToDisambiguate = {
+    /**
+     * This function is called every time a disambiguation badge is clicked
+     * @param entityType obtains the entityType of the clicked badge
+     * @param entity.iri obtains the iri of the clicked badge (can be empty)
+     * @param entity.label obtains the label of the clicked badge
+     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
+     */
+    onNavigateToDisambiguate?: (entityType: string, entity?: EntityData) => void
+
+}
+
+export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
 export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
     /**
@@ -297,32 +370,7 @@ export type HierarchyWidgetProps = {
      * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
      */
     backendType?: string
-} & BuildHierarchyProps & HierarchyIriProp & {
-    /**
-     * This function is called every time the name of an entity inside the hierarchy is clicked
-     * @param ontologyId obtains the ontologyId of the current ontology
-     * @param entityType obtains the entityType of the clicked entity
-     * @param entity.iri obtains the iri of the clicked entity
-     * @param entity.label obtains the label of the clicked entity
-     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
-     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
-     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
-     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
-     */
-    onNavigateToEntity?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
-    /**
-     * This function is called every time an ontology badge next to an entity's name inside the hierarchy is clicked
-     * @param ontologyId obtains the ontologyId of the defining ontology linked to by the badge
-     * @param entityType obtains the entityType of the clicked entity
-     * @param entity.iri obtains the iri of the clicked entity
-     * @param entity.label obtains the label of the clicked entity
-     * @param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
-     * @param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
-     * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
-     * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
-     */
-    onNavigateToOntology?: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => void
-};
+} & BuildHierarchyProps & HierarchyIriProp & OnNavigateToEntity & OnNavigateToOntology;
 
 export type TitleTextObj = {
     /**
@@ -348,10 +396,15 @@ export type TitlePresentationProps = TitleTextObj & {
      * CSS class for styling
      */
     className?: string;
+    /**
+     * Set the default text shown if the API fails to retrieve one.
+     */
+    defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
+export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;
 
+/*TODO: add onNavigate functions*/
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {

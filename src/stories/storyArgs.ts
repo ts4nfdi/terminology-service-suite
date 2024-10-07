@@ -1,4 +1,5 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
+import {pluralizeType} from "../app/util";
 
 export const apiArgType = {
   api: {
@@ -12,7 +13,8 @@ export const apiArgType = {
       "https://semanticlookup.zbmed.de/api/",
       "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
       "https://service.tib.eu/ts4tib/api/",
-      "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/"
+      "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
+      "http://ols4-test.qa.km.k8s.zbmed.de/ols4/api/"
     ],
     description:
       "The API instance for the API call.<br> " +
@@ -519,22 +521,70 @@ export const classNameArgType = {
     type: { summary: `string` }
   }
 };
+
+/*TODO: refactor these to be consistent with all widget's onNavigate functions*/
 export const onNavigateToEntityArgType = {
   onNavigateToEntity: {
     required: false,
-    type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
+    type: {summary: "string"},
     action: "onNavigateToEntityArgType",
     description: "This function is called every time an entity link is clicked.",
-    control: "text"
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log('Triggered onNavigateToEntity()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + '.');
+      },
+      "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        if(entity && entity.iri && entityType) {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([["term","classes"],["class","classes"],["individual","individuals"],["property","properties"],["dataProperty","properties"],["objectProperty","properties"],["annotationProperty","properties"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
+        }
+        else {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
+        }
+      },
+    }
   }
 };
 export const onNavigateToOntologyArgType = {
   onNavigateToOntology: {
     required: false,
-    type: { summary: `(ontologyId: string, entityType: string, iri: string) => void` },
+    type: { summary: `string` },
     action: "onNavigateToOntologyArgType",
     description: "This function is called every time a badge linking to an entity in its defining ontology is clicked.",
-    control: "text"
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log('Triggered onNavigateToOntology()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + ` for ontologyId "${ontologyId}".`);
+      },
+      "Navigate to EBI page": (ontologyId: string, entityType?: string, entity?: { iri: string, label?: string }) => {
+        if(entity && entity.iri && entityType) {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId + '/' + new Map([["term","classes"],["class","classes"],["individual","individuals"],["property","properties"],["dataProperty","properties"],["objectProperty","properties"],["annotationProperty","properties"]]).get(entityType) + '/' + encodeURIComponent(encodeURIComponent(entity.iri)), "_top");
+        }
+        else {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId, "_top");
+        }
+      },
+    }
+  }
+};
+export const onNavigateToDisambiguateArgType = {
+  onNavigateToDisambiguate: {
+    required: false,
+    type: { summary: `string` },
+    action: "onNavigateToDisambiguateArgType",
+    description: "This function is called every time a disambiguation badge is clicked.",
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (entityType?: string, entity?: { iri: string, label?: string }) => {
+        console.log('Triggered onNavigateToDisambiguate()' + (entityType ? ` for ${entityType || "entity"}` : '') + ((entity && entity.label) ? ` "${entity.label}"` : '') + ((entity && entity.iri) ? ` (iri="${entity.iri}")` : '') + '.');
+      },
+      "Navigate to EBI page": (entityType?: string, entity?: { iri: string, label?: string }) => {
+        window.open(`https://www.ebi.ac.uk/ols4/search?q=${(entity && entity.label) ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
+      }
+    }
   }
 };
 export const ArgType = {};

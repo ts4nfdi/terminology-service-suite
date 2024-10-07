@@ -42,6 +42,9 @@ declare global {
       parameter?: string;
       useLegacy?: boolean;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createEntityRelations:(props:{
@@ -56,6 +59,9 @@ declare global {
           | "property";
       parameter?: string;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createJsonApi:(props:{
@@ -87,7 +93,8 @@ declare global {
           | "subdued"
           | string;
       colorSecond?: string;
-      parameter?: string
+      parameter?: string;
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     }
     )=>void,
     createDescription:(props:{
@@ -189,6 +196,30 @@ declare global {
       defaultValue?: string;
     }
     )=>void,
+    createEntityOntoList:(props:{
+      api: string
+      iri: string
+      ontologyId?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      parameter?: string
+      useLegacy?: string
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+    })=>void;
+    createEntityDefinedBy:(props:{
+      api: string
+      iri: string
+      ontologyId?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      parameter?: string
+      useLegacy?: string
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+    })=>void;
     createHierarchy:(props:{
       apiUrl: string
       apiKey?: string
@@ -220,7 +251,8 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string,
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     })=>void,
     createOntologyInfo:(props:{
       ontologyId: string;

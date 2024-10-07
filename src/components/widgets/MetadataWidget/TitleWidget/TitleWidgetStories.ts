@@ -52,6 +52,35 @@ export const SelectingDefiningOntology = {
   }
 };
 
+export const TitleWidgetWithTitleText = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        thingType: "term",
+        titleText: "title text"
+    }
+};
+
+export const IncorrectIriWithDefaultValue = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        thingType: "term",
+        defaultValue: "default value"
+    }
+};
+
+export const IncorrectIriWithoutDefaultValue = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C29",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        thingType: "term",
+    }
+};
+
 export const DefiningOntologyUnavailable = {
   args: {
     api: globals.EBI_API_ENDPOINT,

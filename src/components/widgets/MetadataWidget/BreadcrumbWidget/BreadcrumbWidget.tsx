@@ -1,15 +1,16 @@
 import React from "react";
-import {EuiBadge, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
+import {EuiBadge, EuiIcon, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import {BreadcrumbWidgetProps} from "../../../../app/types";
-import { isEntity } from "../../../../model/ModelTypeCheck";
+import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
+import "../../../../style/semlookp-styles.css";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy} = props;
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology} = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -19,9 +20,9 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     isError,
     error
   } = useQuery(
-    ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
+    ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+      return await olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
     }
   );
 
@@ -29,8 +30,10 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     <>
       {isLoading &&
           <span>
-                <EuiBadge className="breadcrumb" color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
-            {" > "}
+            <button onClick={() => {if(props.onNavigateToOntology && props.ontologyId) props.onNavigateToOntology(props.ontologyId || "", undefined, undefined)}}>
+                <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+            </button>
+             &nbsp;<EuiIcon type="arrowRight"/>&nbsp;
             <EuiBadge className="breadcrumb" color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
           </span>
       }
@@ -38,15 +41,21 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
         <BreadcrumbPresentation
           ontologyName={data.getOntologyId()}
           shortForm={data.getShortForm()}
-          ontologyId={ontologyId}
+          ontologyId={ontologyId || data.getOntologyId()}
+          colorFirst={colorFirst}
+          colorSecond={colorSecond}
+          onNavigateToOntology={onNavigateToOntology}
         />
       }
       {isError &&
-          <span>
-                <EuiBadge className="breadcrumb" color={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}>{props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}</EuiBadge>
-            {" > "}
-            <EuiBadge className="breadcrumb" color={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}>{(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : getErrorMessageToDisplay(error, "short form")}</EuiBadge>
-            </span>
+          <BreadcrumbPresentation
+              ontologyName={props.ontologyId?.toUpperCase() || (data && data.getOntologyId().toUpperCase()) || getErrorMessageToDisplay(error, "ontology")}
+              shortForm={(data && data.getShortForm()) ? data.getShortForm().toUpperCase() : ""}
+              ontologyId={ontologyId || (data ? data.getOntologyId() : "")}
+              colorFirst={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}
+              colorSecond={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}
+              onNavigateToOntology={onNavigateToOntology}
+          />
       }
       </>
   );
@@ -70,6 +79,7 @@ function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
               colorSecond={props.colorSecond}
               parameter={props.parameter}
               useLegacy={props.useLegacy}
+              onNavigateToOntology={props.onNavigateToOntology}
           />
         </QueryClientProvider>
       </EuiProvider>

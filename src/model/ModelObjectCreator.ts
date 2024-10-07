@@ -1,14 +1,14 @@
 import {OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual} from "./ols3-model";
 import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual} from "./ols4-model";
 import {Thing} from "./interfaces";
-import {ThingTypeName, isThingTypeName} from "./ModelTypeCheck";
-import {asArray} from "../app/util";
+import {ThingTypeName} from "./ModelTypeCheck";
+import {asArray, inferTypeFromTypeArray} from "../app/util";
 
 export function createModelObject(response: any) {
     let useLegacy : boolean;
     if(response["_embedded"] !== undefined || response["numberOfTerms"] !== undefined) useLegacy = true;
     else if(response["elements"] !== undefined || response["numberOfClasses"] !== undefined) useLegacy = false;
-    else throw Error("Response structure does not correlate to any of the featured response structures: \n ${response.toString()}");
+    else throw Error(`Response structure does not correlate to any of the featured response structures: \n ${JSON.stringify(response)}`);
 
     let entityType : ThingTypeName | undefined = undefined;
     if(useLegacy) {
@@ -28,11 +28,7 @@ export function createModelObject(response: any) {
         else {
             if(response["elements"][0] === undefined) throw Error("Empty response.");
 
-            let types : string[] = response["elements"][0]["type"];
-            types = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
-            types = [...new Set<string>(types)]; // remove duplicates
-
-            if(types.length === 1) entityType = types[0] as ThingTypeName;
+            entityType = inferTypeFromTypeArray(response["elements"][0]["type"]);
         }
     }
 
@@ -66,8 +62,15 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
  * If ontologyId was provided in the response request, the array should only contain one element, thus the functionality is as expected as well
  * @param entityArrayResponse the sub-response of the initial query response containing just the entity array
  * @param useLegacy api version (needed because key giving information about defining ontology has different names in both versions)
+ * @param ontologyId if specified, returns the entity in this ontology if available
  */
-function getPreferredOntologyJSON(entityArrayResponse: any[], useLegacy: boolean) {
+export function getPreferredOntologyJSON(entityArrayResponse: any[], useLegacy: boolean, ontologyId?: string) {
+    if(ontologyId) {
+        const entityInOntology = asArray(entityArrayResponse).filter((entity) => (useLegacy ? entity["ontology_name"] : entity["ontologyId"]) == ontologyId);
+        if(entityInOntology.length > 0) return entityInOntology[0];
+        else console.error(`Invalid ontologyId ${ontologyId} for given entityArrayResponse.`);
+    }
+
     const definingOntologyArr = asArray(entityArrayResponse).filter((entity) => useLegacy ? entity["is_defining_ontology"] : entity["isDefiningOntology"]);
     if(definingOntologyArr.length > 0) return definingOntologyArr[0];
     else if(entityArrayResponse.length > 0) return entityArrayResponse[0];

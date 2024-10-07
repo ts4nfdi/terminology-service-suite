@@ -10,7 +10,7 @@ import {
   EuiHighlight,
   EuiHealth,
   EuiProvider,
-  EuiBadge
+  EuiIcon
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
@@ -77,13 +77,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
     if (showApiSource && value.source_url && value.source_url !== ""){
-      hoverText += "\n\nSource: " + value.source_url;
+      hoverText += "\n\nSource: " + value.source;
+      hoverText += "\n\nSource URL: " + value.source_url;
     }
 
     const renderOntology = () => {
       return (
         <EuiHealth
-          title={hoverText}
           color={dotColor}>
               <span>
                   <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
@@ -98,7 +98,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return (
         <span style={{ height: 200 + "px" }}>
             <EuiHealth
-              title={hoverText}
               color={dotColor}>
                 <span>
                     <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
@@ -108,12 +107,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     shortForm={value.short_form}
                     colorFirst={"primary"}
                     colorSecond={"success"}
-                  />
-                  {showApiSource && value.source && value.source !== "" &&
-                    <EuiBadge className="breadcrumb" color={"black"} style={{marginLeft: 10}}>
-                      {value.source}   
-                    </EuiBadge>
-                  } 
+                  />                  
+                  <EuiIcon  
+                    type={"iInCircle"} 
+                    style={{ marginLeft: 5 }}        
+                    title={hoverText}
+                  />                   
                   {!singleSuggestionRow && value.description &&                    
                       <>
                       <br />
@@ -159,6 +158,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             undefined,
                             undefined,
                             parameter,
+
                             ts4nfdiGateway
                         ).then((response) => {
                             if (response) {

@@ -1,5 +1,7 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
+import {onNavigateToOntologyArgType} from "../../../stories/storyArgs";
+import {EntityData} from "../../../app/types";
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -38,13 +40,17 @@ export const MetadataWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
+    ...onNavigateToOntologyArgType
 }
 
 export const MetadataWidgetStoryArgs = {
+    api: "",
     parameter: "collection=nfdi4health",
     useLegacy: true,
     ontologyId: "",
-    entityType: ""
+    entityType: "",
+    iri: "",
+    onNavigateToOntology: "Console message",
 }
 
 export const MetadataWidget1 = {
@@ -109,3 +115,11 @@ export const DefiningOntologyUnavailable = {
         parameter: ""
     }
 };
+
+export const DefinedByAlsoAppearsInWidgets = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        iri: "http://purl.obolibrary.org/obo/HP_0000819",
+        ontologyId: "efo"
+    }
+}

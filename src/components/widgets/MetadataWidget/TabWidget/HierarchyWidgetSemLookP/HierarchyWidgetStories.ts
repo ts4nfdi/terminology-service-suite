@@ -1,7 +1,7 @@
-import {EntityDataForHierarchy} from "../../../../../model/interfaces/Hierarchy";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidget";
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
 import * as globals from '../../../../../app/globals';
+import {onNavigateToEntityArgType, onNavigateToOntologyArgType} from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
     apiUrl: {},
@@ -27,26 +27,8 @@ export const HierarchyWidgetStoryArgTypes = {
             }
         }
     },
-    onNavigateToEntity: {
-        control: {
-            disabled: true
-        },
-        table: {
-            defaultValue: {
-                summary: undefined
-            }
-        }
-    },
-    onNavigateToOntology: {
-        control: {
-            disabled: true
-        },
-        table: {
-            defaultValue: {
-                summary: undefined
-            }
-        }
-    },
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
     iri: {
         table: {
             defaultValue: {
@@ -122,8 +104,8 @@ export const HierarchyWidgetStoryArgs = {
     apiUrl: {},
     backendType: {},
     apiKey: {},
-    onNavigateToEntity: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
     iri: "",
     ontologyId: "",
     entityType: "",

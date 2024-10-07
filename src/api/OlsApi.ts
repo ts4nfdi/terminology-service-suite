@@ -416,16 +416,14 @@ export class OlsApi implements HierarchyBuilder{
   }
 
   /**
-   * Returns an Entity object (implementing 'Class', 'Property' or 'Individual').
-   * Indirectly fetches the response JSON for the specified entityType, iri, ontologyId, parameter and API version (useLegacy).
-   *
-   * @param entityType
+   * Returns the whole entity response json with a comfortable wrapper handling entityType, ontologyId and useLegacy
    * @param iri
-   * @param ontologyId
+   * @param entityType queries specific routes if provided and infers type if not
+   * @param ontologyId queries ontology routes if provided, otherwise not
    * @param parameter
-   * @param useLegacy
+   * @param useLegacy affects how entityType is inferred if not provided
    */
-  public async getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Entity> {
+  public async getEntityResponse(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<any> {
     let response;
     if(!iri) throw Error('No IRI provided');
 
@@ -441,7 +439,21 @@ export class OlsApi implements HierarchyBuilder{
       }
     }
 
-    return createModelObject(response) as Entity;
+    return response;
+  }
+
+  /**
+   * Returns an Entity object (implementing 'Class', 'Property' or 'Individual').
+   * Indirectly fetches the response JSON for the specified entityType, iri, ontologyId, parameter and API version (useLegacy).
+   *
+   * @param entityType
+   * @param iri
+   * @param ontologyId
+   * @param parameter
+   * @param useLegacy
+   */
+  public async getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean) : Promise<Entity> {
+    return createModelObject(await this.getEntityResponse(iri, entityType, ontologyId, parameter, useLegacy)) as Entity;
   }
 
   /**
@@ -486,14 +498,14 @@ export class OlsApi implements HierarchyBuilder{
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
         return await this.getTerm(undefined, undefined, {ontologyId: ontologyId, termIri: iri}, parameter, useLegacy);
 
-      case 'property':
+      case 'property': case 'annotationProperty': case 'dataProperty': case 'objectProperty':
         return await this.getProperty(undefined, undefined, {ontologyId: ontologyId, propertyIri: iri}, parameter, useLegacy);
 
       case 'individual':
         return await this.getIndividual(undefined, undefined, {ontologyId: ontologyId, individualIri: iri}, parameter, useLegacy);
 
       default:
-        throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "property", "individual"}');
+        throw Error('Invalid entity type "' + entityType + `". Must be one of {${entityTypeNames.map((elem) => `"${elem}"`).join(", ")}}.`);
     }
   }
 
@@ -612,7 +624,7 @@ export class OlsApi implements HierarchyBuilder{
   }
 
   public async getClassInstances(iri: string, ontologyId: string) : Promise<Individual[]> {
-    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/instances`, {params: {size: "1000"}}, false);
+    const instances = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, classTypeNames[0], iri, false)}/individuals`, {params: {size: "1000"}}, false);
 
     return instances["elements"].map((obj: any) =>
       createModelObject({elements: [obj]}) as Individual
