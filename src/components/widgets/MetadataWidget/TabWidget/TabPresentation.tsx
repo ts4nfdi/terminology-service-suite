@@ -12,18 +12,23 @@ import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
-    return (
-      <>
-          <EuiTabbedContent size="s" tabs={
-            [
-              {
-                content: (
-                  <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />
-                ),
-                id: "tab1",
-                name: "Alternative Names"
-              },
-              {
+    const tabs = [];
+    tabs.push(
+      {
+        content: (
+          <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />
+        ),
+        id: "tab1",
+        name: "Alternative Names"
+      }
+    );
+
+    /**
+     * The default behaviour is to show the tabs. Therefore, undefined gets treated as truthy.
+     */
+    if (props.hierarchyTab === undefined || props.hierarchyTab){
+      tabs.push(
+          {
                 content: (
                   <>
                     <div style={{ overflow: "auto"}}>
@@ -46,31 +51,47 @@ function TabPresentation(props: TabPresentationProps) {
                 ),
                 id: "tab2",
                 name: "Hierarchy"
-              },
-              {
-                content:
-                  <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
-                    return value.value;
-                  })} />,
-                id: "tab3",
-                name: "Cross references"
-              },
-              {
-                content:
-                  <OntologyInfoWidget 
-                    ontologyId={props.ontologyId}
-                    api={props.api}
-                    parameter={""}
-                    useLegacy={props.useLegacy}
-                    showBadges={false}
-                    hasTitle={true}
-                    width={600}
-                  />,
-                  id: "tab4",
-                  name: "Ontology info"
-              }
-            ]
-          } />
+          }
+      );
+    }
+
+    if(props.crossRefTab === undefined || props.crossRefTab ){
+      tabs.push(
+          {
+              content:
+                <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
+                  return value.value;
+                })} />,
+              id: "tab3",
+              name: "Cross references"
+          }
+      );
+    }
+
+    if(props.ontoInfoTab === undefined || props.ontoInfoTab){
+      tabs.push(
+        {
+            content:
+              <OntologyInfoWidget 
+                ontologyId={props.ontologyId}
+                api={props.api}
+                parameter={""}
+                useLegacy={props.useLegacy}
+                showBadges={false}
+                hasTitle={true}
+                width={600}
+              />,
+              id: "tab4",
+              name: "Ontology info"
+        }
+      );
+    }
+    
+    
+    
+    return (
+      <>
+          <EuiTabbedContent size="s" tabs={tabs} />
       </>
     );
   }

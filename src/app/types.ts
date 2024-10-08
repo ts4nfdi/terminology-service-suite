@@ -128,6 +128,15 @@ type ContainerWidthObj = {
     width?: number
 }
 
+type TabList = {
+    /**
+     * The list of tabs for the tab presentation. User can decide which one to show and hide.
+     */
+    hierarchyTab?: boolean;
+    crossRefTab?: boolean;
+    ontoInfoTab?: boolean;
+}
+
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
@@ -205,6 +214,7 @@ export type ColorSecondObj = {
     colorSecond?: EuiLinkColor | string;
 }
 
+
 export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
 
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
@@ -258,7 +268,7 @@ export type IriWidgetProps = ForcedIriObj & {
 
 export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
 
-export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & {
+export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList &{
     data: Thing;
 }
 
@@ -405,7 +415,7 @@ export type TitlePresentationProps = TitleTextObj & {
     defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;
+export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology & TabList;
 
 /*TODO: add onNavigate functions*/
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;

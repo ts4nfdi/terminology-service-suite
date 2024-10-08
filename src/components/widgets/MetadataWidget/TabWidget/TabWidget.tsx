@@ -34,6 +34,8 @@ function TabWidget(props: TabWidgetProps) {
         api={api}
         useLegacy={useLegacy}
         entityType={data.getType() as EntityTypeName}
+        ontologyId={ontologyId ? ontologyId : data.getOntologyId()}
+        
       />
     );
   }

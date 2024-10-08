@@ -49,7 +49,7 @@ export const MetadataWidgetStoryArgs = {
     useLegacy: true,
     ontologyId: "",
     entityType: "",
-    iri: "",
+    iri: "",    
     onNavigateToOntology: "Console message",
 }
 

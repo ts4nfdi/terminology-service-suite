@@ -24,7 +24,7 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, ontoInfoTab } = props;
   const olsApi = new OlsApi(api);
   const metadataWidgetCSS = `
     .boldText{
@@ -120,6 +120,9 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 api={api}
                 ontologyId={props.ontologyId ? props.ontologyId : data.entity.getOntologyId()}
                 useLegacy={useLegacy}
+                hierarchyTab={hierarchyTab}
+                crossRefTab={crossRefTab}
+                ontoInfoTab={ontoInfoTab}
               />
           </EuiFlexItem>
         </EuiFlexGroup>
