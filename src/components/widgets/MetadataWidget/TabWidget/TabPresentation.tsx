@@ -8,6 +8,7 @@ import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentatio
 import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
 import Reified from "../../../../model/Reified";
 import {TabPresentationProps} from "../../../../app/types";
+import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
@@ -53,6 +54,20 @@ function TabPresentation(props: TabPresentationProps) {
                   })} />,
                 id: "tab3",
                 name: "Cross references"
+              },
+              {
+                content:
+                  <OntologyInfoWidget 
+                    ontologyId={props.ontologyId}
+                    api={props.api}
+                    parameter={""}
+                    useLegacy={props.useLegacy}
+                    showBadges={false}
+                    hasTitle={true}
+                    width={600}
+                  />,
+                  id: "tab4",
+                  name: "Ontology info"
               }
             ]
           } />

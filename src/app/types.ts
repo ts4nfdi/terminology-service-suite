@@ -121,6 +121,13 @@ type TargetLinkObj = {
     targetLink?: string;
 }
 
+type ContainerWidthObj = {
+    /**
+     * The container width for a target widget render function. Example: EuiCard for OntologyInfoWidget
+     */
+    width?: number
+}
+
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
@@ -401,7 +408,7 @@ export type TitlePresentationProps = TitleTextObj & {
 export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;
 
 /*TODO: add onNavigate functions*/
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
     /**
