@@ -188,7 +188,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     }
 
     return (
-        <EuiCard title={""} layout={"horizontal"}>
+        <EuiCard title={""} layout={"horizontal"} style={{ overflow: "auto" }}>
             {(isSuccessHierarchy && hierarchy != undefined) ?
                 <EuiText style={{whiteSpace: "nowrap"}}> {/* // TODO: Does not get displayed correctly on storybook main page */}
                     {hierarchy.roots.map((rootNode, idx) => renderTreeNode(hierarchy, rootNode, idx < hierarchy.roots.length - 1))}
