@@ -26,6 +26,11 @@ type MetadataInfo = {
 function MetadataWidget(props: MetadataWidgetProps) {
   const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology } = props;
   const olsApi = new OlsApi(api);
+  const metadataWidgetCSS = `
+    .boldText{
+      font-weight: bold;
+    }
+  `;
 
   const {
     data,
@@ -65,7 +70,14 @@ function MetadataWidget(props: MetadataWidgetProps) {
   function render(data: MetadataInfo) {
     return (
       <>
+        <style>{metadataWidgetCSS}</style>
         <EuiFlexGroup direction="column">
+          <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
+                <TitlePresentation
+                  title={data.entity.getLabel()}
+                  className="boldText"
+                />
+          </EuiFlexItem>
           <EuiFlexItem grow={false}>
                 <span>
                   <BreadcrumbPresentation
@@ -86,11 +98,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
                     />
                   </EuiFlexItem>
                 </EuiFlexGroup>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                <TitlePresentation
-                  title={data.entity.getLabel()}
-                />
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
