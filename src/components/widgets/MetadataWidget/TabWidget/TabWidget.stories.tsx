@@ -18,7 +18,8 @@ export {
     TabWidgetOLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
-    TabWidgetLarge
+    TabWidgetLarge,
+    HiddenTabs
 } from "./TabWidgetStories"
 
 

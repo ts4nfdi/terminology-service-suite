@@ -24,4 +24,5 @@ export {
     OLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
+    HiddenTabs
 } from "./MetadataWidgetStories"

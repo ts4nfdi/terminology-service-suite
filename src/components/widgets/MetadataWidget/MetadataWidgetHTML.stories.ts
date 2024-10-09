@@ -50,5 +50,6 @@ export {
     OLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
-    DefinedByAlsoAppearsInWidgets
+    DefinedByAlsoAppearsInWidgets,
+    HiddenTabs
 } from "./MetadataWidgetStories"

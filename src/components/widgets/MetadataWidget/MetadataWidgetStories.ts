@@ -123,3 +123,19 @@ export const DefinedByAlsoAppearsInWidgets = {
         ontologyId: "efo"
     }
 }
+
+export const HiddenTabs = {
+    storyName: "Hidden Tabs",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "ncit",
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+        entityType: "term",
+        useLegacy: false,
+        parameter: "",
+        altNamesTab: false,
+        hierarchyTab: false,
+        crossRefTab: false,
+        ontoInfoTab: false
+    }
+};

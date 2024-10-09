@@ -90,6 +90,12 @@ function TabPresentation(props: TabPresentationProps) {
     }
     
     
+    if(tabs.length === 0){
+      /**
+       * EuiTabbedContent component raises exception if no tab is provided.
+       */
+      return "";
+    }
     
     return (
       <>
