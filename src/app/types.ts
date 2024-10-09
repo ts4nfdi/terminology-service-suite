@@ -132,6 +132,7 @@ type TabList = {
     /**
      * The list of tabs for the tab presentation. User can decide which one to show and hide.
      */
+    altNamesTab?: boolean;
     hierarchyTab?: boolean;
     crossRefTab?: boolean;
     ontoInfoTab?: boolean;
@@ -266,7 +267,7 @@ export type IriWidgetProps = ForcedIriObj & {
     copyButton?: boolean;
 }
 
-export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
+export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & TabList;
 
 export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList &{
     data: Thing;

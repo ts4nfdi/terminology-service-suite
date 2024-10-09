@@ -13,19 +13,21 @@ import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
     const tabs = [];
-    tabs.push(
-      {
-        content: (
-          <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />
-        ),
-        id: "tab1",
-        name: "Alternative Names"
-      }
-    );
-
-    /**
+     /**
      * The default behaviour is to show the tabs. Therefore, undefined gets treated as truthy.
      */
+    if(props.altNamesTab === undefined || props.altNamesTab){
+      tabs.push(
+            {
+              content: (
+                <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />
+              ),
+              id: "tab1",
+              name: "Alternative Names"
+            }
+        );
+    }    
+
     if (props.hierarchyTab === undefined || props.hierarchyTab){
       tabs.push(
           {
