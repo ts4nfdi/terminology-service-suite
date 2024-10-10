@@ -19,7 +19,7 @@ click "Show code" in the Storybook is different.
 
 ## Using this package and further documentation
 
-Click [here](https://ts4nfdi.github.io/terminology-service-suite/latest/) for detailed instructions on how to use the
+Click [here](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/) for detailed instructions on how to use the
 package.
 
 ## Development
