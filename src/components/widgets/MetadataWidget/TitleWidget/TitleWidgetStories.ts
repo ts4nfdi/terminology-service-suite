@@ -99,3 +99,5 @@ export const TitleWidgetWithStyles = {
         className: 'title-styles',
     }
 };
+
+

@@ -158,6 +158,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
         <EuiCard
             title={hasTitle ? "Ontology Information" : ""}
             layout="horizontal"
+            style={props.width && {width: props.width}}
         >
 
           {isLoadingOntology && <EuiLoadingSpinner size={'s'}/>}
