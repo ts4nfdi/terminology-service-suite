@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText, EuiLink} from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
@@ -24,7 +24,7 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, ontoInfoTab, altNamesTab } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, ontoInfoTab, altNamesTab, termLink } = props;
   const olsApi = new OlsApi(api);
   const metadataWidgetCSS = `
     .boldText{
@@ -73,10 +73,19 @@ function MetadataWidget(props: MetadataWidgetProps) {
         <style>{metadataWidgetCSS}</style>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                <TitlePresentation
-                  title={data.entity.getLabel()}
-                  className="boldText"
-                />
+                {termLink ? 
+                  <EuiLink href={termLink} target="_blank" external={false}>
+                    <TitlePresentation
+                    title={data.entity.getLabel()}
+                    className="boldText"
+                    />
+                  </EuiLink>
+                  :
+                  <TitlePresentation
+                    title={data.entity.getLabel()}
+                    className="boldText"
+                  />
+                }
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
                 <span>

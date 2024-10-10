@@ -49,7 +49,8 @@ export const MetadataWidgetStoryArgs = {
     useLegacy: true,
     ontologyId: "",
     entityType: "",
-    iri: "",    
+    iri: "",
+    termLink: "",
     onNavigateToOntology: "Console message",
 }
 
@@ -139,3 +140,12 @@ export const HiddenTabs = {
         ontoInfoTab: false
     }
 };
+
+export const TermAsLink = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        iri: "http://purl.obolibrary.org/obo/HP_0000819",
+        ontologyId: "efo",
+        termLink: "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819"
+    }
+}

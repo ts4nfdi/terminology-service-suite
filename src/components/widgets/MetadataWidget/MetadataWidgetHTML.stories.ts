@@ -51,5 +51,6 @@ export {
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     DefinedByAlsoAppearsInWidgets,
-    HiddenTabs
+    HiddenTabs,
+    TermAsLink
 } from "./MetadataWidgetStories"

@@ -416,7 +416,20 @@ export type TitlePresentationProps = TitleTextObj & {
     defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology & TabList;
+export type MetadataWidgetProps = ApiObj & 
+    OptionalEntityTypeObj & 
+    OptionalOntologyIdObj & 
+    ForcedIriObj & 
+    ParameterObj & 
+    UseLegacyObj & 
+    OnNavigateToOntology & 
+    TabList & 
+    {
+        /**
+         * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+         */
+        termLink?: string;
+    };
 
 /*TODO: add onNavigate functions*/
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
