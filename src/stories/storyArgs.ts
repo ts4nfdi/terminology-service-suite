@@ -211,18 +211,26 @@ export const singleSelectionArgType = {
     type: { summary: "boolean" }
   }
 };
-export const singleSuggestionRow = {
+export const singleSuggestionRowArgType = {
   singleSelection: {
     required: false,
     description: "Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.",
     type: { summary: "boolean" }
   }
 };
-export const ts4nfdiGateway = {
+export const ts4nfdiGatewayArgType = {
   singleSelection: {
     required: false,
     description: "Use the TS4NFDI Gateway API",
     defaultValue: { summary: false },
+    type: { summary: "boolean" }
+  }
+};
+export const showApiSourceArgType = {
+  singleSelection: {
+    required: false,
+    description: "Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.",
+    defaultValue: { summary: true },
     type: { summary: "boolean" }
   }
 };

@@ -3,10 +3,15 @@ import * as globals from '../../../app/globals';
 import { action } from "@storybook/addon-actions";
 import {
   allowCustomTermsArgType,
-  apiArgType, hasShortSelectedLabelArgType, parameterArgType,
+  apiArgType,
+  hasShortSelectedLabelArgType,
+  parameterArgType,
   placeholderArgType,
   preselectedArgType,
-  selectionChangedEventArgType, singleSelectionArgType, singleSuggestionRow, ts4nfdiGateway
+  selectionChangedEventArgType, showApiSourceArgType,
+  singleSelectionArgType,
+  singleSuggestionRowArgType,
+  ts4nfdiGatewayArgType
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
@@ -19,8 +24,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     ...hasShortSelectedLabelArgType,
     ...allowCustomTermsArgType,
     ...singleSelectionArgType,
-    ...ts4nfdiGateway,
-    ...singleSuggestionRow
+    ...ts4nfdiGatewayArgType,
+    ...singleSuggestionRowArgType,
+    ...showApiSourceArgType
   }
 }
 
@@ -34,6 +40,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    showApiSource: true,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -48,6 +55,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
     hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    showApiSource: true,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -76,6 +84,15 @@ export const UseAPIGatewayWithSkosmos = {
     api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+
+export const HideApiSourceApiGateway = {
+  args: {
+    api: globals.GATEWAY_API_ENDPOINT,
+    ts4nfdiGateway: true,
+    showApiSource: false,
+    parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
   },
 }
 

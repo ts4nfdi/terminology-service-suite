@@ -21,6 +21,7 @@ declare global {
       singleSelection?: boolean;
       ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
+      showApiSource?: boolean;
     }
     )=>void,
     createDataContent:(props:{
