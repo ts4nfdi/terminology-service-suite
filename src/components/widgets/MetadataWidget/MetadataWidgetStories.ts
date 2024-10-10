@@ -51,6 +51,10 @@ export const MetadataWidgetStoryArgs = {
     entityType: "",
     iri: "",
     termLink: "",
+    altNamesTab: true,
+    hierarchyTab: true,
+    crossRefTab: true,
+    ontoInfoTab: true,
     onNavigateToOntology: "Console message",
 }
 

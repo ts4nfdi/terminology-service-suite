@@ -72,6 +72,10 @@ function WrappedTabWidget(props: TabWidgetProps) {
               entityType={props.entityType}
               parameter={props.parameter}
               useLegacy={props.useLegacy}
+              altNamesTab={props.altNamesTab}
+              hierarchyTab={props.hierarchyTab}
+              crossRefTab={props.crossRefTab}
+              ontoInfoTab={props.ontoInfoTab}
           />
         </QueryClientProvider>
       </EuiProvider>

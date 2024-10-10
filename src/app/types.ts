@@ -36,6 +36,23 @@ type ParameterObj = {
     parameter?: string;
 };
 
+type TermParameterObj = {
+    /**
+     * Additional parameters to pass to the API.
+     *
+     * Each parameter can be combined via
+     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
+     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
+     *  <table>
+     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+     *  <tr><td>lang</td><td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b>.</td></tr>
+     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td></tr>
+     *  <tr><td>database</td><td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td></tr>
+     * </table>
+     */
+    parameter?: string;
+};
+
 type ApiObj = {
     /**
      * The API instance for the API call.
@@ -267,7 +284,7 @@ export type IriWidgetProps = ForcedIriObj & {
     copyButton?: boolean;
 }
 
-export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & TabList;
+export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & TabList;
 
 export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList &{
     data: Thing;
@@ -420,7 +437,7 @@ export type MetadataWidgetProps = ApiObj &
     OptionalEntityTypeObj & 
     OptionalOntologyIdObj & 
     ForcedIriObj & 
-    ParameterObj & 
+    TermParameterObj & 
     UseLegacyObj & 
     OnNavigateToOntology & 
     TabList & 

@@ -44,6 +44,10 @@ export const TabWidgetStoryArgs = {
     entityType: "",
     parameter: "collection=nfdi4health",
     useLegacy: true,
+    altNamesTab: true,
+    hierarchyTab: true,
+    crossRefTab: true,
+    ontoInfoTab: true
 }
 
 export const Default = {

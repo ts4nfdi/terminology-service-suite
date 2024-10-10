@@ -32,7 +32,11 @@ window['SemLookPWidgets'].createTab(
         ontologyId:"${args.ontologyId}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        altNamesTab: ${args.altNamesTab},
+        hierarchyTab: ${args.hierarchyTab},
+        crossRefTab: ${args.crossRefTab},
+        ontoInfoTab: ${args.ontoInfoTab}
     },
     document.querySelector('#tab_widget_container_${num}')
 )

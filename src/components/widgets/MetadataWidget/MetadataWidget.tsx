@@ -170,6 +170,11 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
                     onNavigateToOntology={props.onNavigateToOntology}
+                    termLink={props.termLink}
+                    altNamesTab={props.altNamesTab}
+                    hierarchyTab={props.hierarchyTab}
+                    crossRefTab={props.crossRefTab}
+                    ontoInfoTab={props.ontoInfoTab}
                 />
             </QueryClientProvider>
         </EuiProvider>
