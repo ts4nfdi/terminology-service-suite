@@ -69,7 +69,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
 
     let prefix = (value.type === "ontology")
-      ? "Prefix: " + value.ontology_name 
+      ? "Prefix: " + value.ontology_name
       : "Prefix > Short form: " + value.ontology_name + " > " + value.short_form;
 
     let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
@@ -96,7 +96,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntityWithDescription = () => {
       return (
-        <span style={{ height: 200 + "px" }}>
+        <span title={hoverText} style={{ height: 200 + "px" }}>
             <EuiHealth
               color={dotColor}>
                 <span>
@@ -107,18 +107,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     shortForm={value.short_form}
                     colorFirst={"primary"}
                     colorSecond={"success"}
-                  />                  
-                  <EuiIcon  
-                    type={"iInCircle"} 
-                    style={{ marginLeft: 5 }}        
+                  />
+                  <EuiIcon
+                    type={"iInCircle"}
+                    style={{ marginLeft: 5 }}
                     title={hoverText}
-                  />                   
-                  {!singleSuggestionRow && value.description &&                    
+                  />
+                  {!singleSuggestionRow && value.description &&
                       <>
                       <br />
                       {value.description.substring(0, 40) + "..."}
                       </>
-                  }                  
+                  }
                 </span>
             </EuiHealth>
         </span>
