@@ -84,7 +84,7 @@ function TabPresentation(props: TabPresentationProps) {
                 width={600}
               />,
               id: "tab4",
-              name: "Ontology info"
+              name: `About ${props.ontologyId?.toUpperCase()}`
         }
       );
     }
