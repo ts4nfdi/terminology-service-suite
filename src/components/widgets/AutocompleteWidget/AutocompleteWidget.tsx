@@ -9,7 +9,8 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiProvider
+  EuiProvider,
+  EuiIcon
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
@@ -30,6 +31,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     singleSelection,
     singleSuggestionRow,
     ts4nfdiGateway = false,
+    showApiSource = true,
     ...rest
   } = props;
 
@@ -66,35 +68,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return label;
     }
 
-    let hoverText = "";
+    let prefix = (value.type === "ontology")
+      ? "Prefix: " + value.ontology_name
+      : "Prefix > Short form: " + value.ontology_name + " > " + value.short_form;
+
+    let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
     if (value.description != undefined) {
-      if (value.type === "ontology") {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix: " + value.ontology_name +
-          "\n\nDescription: " + value.description;
-      } else {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form +
-          "\n\nDescription: " + value.description;
-      }
-    } else {
-      if (value.type === "ontology") {
-        hoverText = "Type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix: " + value.ontology_name;
-      } else {
-        hoverText = "type: " + value.type +
-          "\n\nLabel: " + value.label +
-          "\n\nPrefix > Short form: " + value.ontology_name + " > " + value.short_form;
-      }
+      hoverText += `\n\nDescription: ${value.description}`;
+    }
+    if (showApiSource && value.source_url && value.source_url !== ""){
+      hoverText += "\n\nSource: " + value.source;
+      hoverText += "\n\nSource URL: " + value.source_url;
     }
 
     const renderOntology = () => {
       return (
         <EuiHealth
-          title={hoverText}
           color={dotColor}>
               <span>
                   <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
@@ -107,9 +96,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntityWithDescription = () => {
       return (
-        <span style={{ height: 200 + "px" }}>
+        <span title={hoverText} style={{ height: 200 + "px" }}>
             <EuiHealth
-              title={hoverText}
               color={dotColor}>
                 <span>
                     <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
@@ -120,11 +108,17 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     colorFirst={"primary"}
                     colorSecond={"success"}
                   />
-                  {!singleSuggestionRow && value.description ?
-                    <>
+                  <EuiIcon
+                    type={"iInCircle"}
+                    style={{ marginLeft: 5 }}
+                    title={hoverText}
+                  />
+                  {!singleSuggestionRow && value.description &&
+                      <>
                       <br />
                       {value.description.substring(0, 40) + "..."}
-                    </> : ""}
+                      </>
+                  }
                 </span>
             </EuiHealth>
         </span>
@@ -164,6 +158,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             undefined,
                             undefined,
                             parameter,
+
                             ts4nfdiGateway
                         ).then((response) => {
                             if (response) {
@@ -181,7 +176,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                                                 ontology_name: selection.getOntologyId(),
                                                 type: selection.getType(),
                                                 short_form: selection.getShortForm(),
-                                                description: selection.getDescription()
+                                                description: selection.getDescription(),
+                                                source: selection.getApiSourceName(),
+                                                source_url: selection.getApiSourceEndpoint()
                                             },
                                         });
                                     }
@@ -200,7 +197,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 ontology_name: "",
                 type: "",
                 short_form: "",
-                description: ""
+                description: "",
+                source: "",
+                source_url: ""
               }
             });
           }
@@ -246,7 +245,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   ontology_name: selection.getOntologyId(),
                   type: selection.getType(),
                   short_form: selection.getShortForm(),
-                  description: selection.getDescription()
+                  description: selection.getDescription(),
+                  source: selection.getApiSourceName(),
+                  source_url: selection.getApiSourceEndpoint()
                 }
               })
             ));
@@ -270,7 +271,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: "",
             type: "",
             short_form: x.value.short_form,
-            description: x.value.description
+            description: x.value.description,
+            source: x.value.source
           };
         } else if (x.value.iri == "") {
           return {
@@ -279,7 +281,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: "",
             type: "",
             short_form: "",
-            description: ""
+            description: "",
+            source: ""
           };
         } else {
           return {
@@ -288,7 +291,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             ontology_name: x.value.ontology_name,
             type: x.value.type,
             short_form: x.value.short_form,
-            description: x.value.description
+            description: x.value.description,
+            source: x.value.source
           };
         }
       })
@@ -319,7 +323,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         ontology_name: "",
         type: "",
         short_form: "",
-        description: ""
+        description: "",
+        source: ""
       }
     };
 
@@ -370,6 +375,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           allowCustomTerms={props.allowCustomTerms}
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
+          showApiSource={props.showApiSource}
         />
       </QueryClientProvider>
     </EuiProvider>
