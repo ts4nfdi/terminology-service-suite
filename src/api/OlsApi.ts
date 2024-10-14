@@ -614,7 +614,7 @@ export class OlsApi implements HierarchyBuilder{
         return [];
       }
       else {
-        const roots = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, undefined, useLegacy)}`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities, hasDirectParent: preferredRoots ? undefined : "false", isPreferredRoot: preferredRoots ? "true" : undefined}}, useLegacy);
+        const roots = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, undefined, useLegacy)}`, {params: {size: "1000", includeObsoleteEntities: includeObsoleteEntities, hasDirectParents: preferredRoots ? undefined : "false", isPreferredRoot: preferredRoots ? "true" : undefined}}, useLegacy);
 
         return roots["elements"].map((obj: any) =>
             createModelObject({elements: [obj]}) as Entity
