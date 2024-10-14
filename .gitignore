@@ -143,3 +143,5 @@ fabric.properties
 /.nvmrc
 /dist/
 /.idea/
+
+.vscode/
