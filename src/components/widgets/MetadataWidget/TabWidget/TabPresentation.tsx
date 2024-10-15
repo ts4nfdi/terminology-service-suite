@@ -1,5 +1,5 @@
 import React from "react";
-import { EuiFlexItem, EuiTabbedContent } from "@elastic/eui";
+import { EuiTabbedContent } from "@elastic/eui";
 import { HierarchyWidgetOLS } from "./HierarchyWidget";
 import { Entity } from "../../../../model/interfaces";
 import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
@@ -80,7 +80,7 @@ function TabPresentation(props: TabPresentationProps) {
                 parameter={""}
                 useLegacy={props.useLegacy}
                 showBadges={false}
-                hasTitle={true}
+                hasTitle={false}
                 width={600}
               />,
               id: "tab4",
