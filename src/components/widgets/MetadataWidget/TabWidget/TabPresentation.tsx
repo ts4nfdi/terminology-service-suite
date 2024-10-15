@@ -26,7 +26,7 @@ function TabPresentation(props: TabPresentationProps) {
               name: "Alternative Names"
             }
         );
-    }    
+    }
 
     if (props.hierarchyTab === undefined || props.hierarchyTab){
       tabs.push(
@@ -70,11 +70,11 @@ function TabPresentation(props: TabPresentationProps) {
       );
     }
 
-    if(props.ontoInfoTab === undefined || props.ontoInfoTab){
+    if(props.terminologyInfoTab === undefined || props.terminologyInfoTab){
       tabs.push(
         {
             content:
-              <OntologyInfoWidget 
+              <OntologyInfoWidget
                 ontologyId={props.ontologyId}
                 api={props.api}
                 parameter={""}
@@ -88,15 +88,15 @@ function TabPresentation(props: TabPresentationProps) {
         }
       );
     }
-    
-    
+
+
     if(tabs.length === 0){
       /**
        * EuiTabbedContent component raises exception if no tab is provided.
        */
       return "";
     }
-    
+
     return (
       <>
           <EuiTabbedContent size="s" tabs={tabs} />

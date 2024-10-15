@@ -54,7 +54,7 @@ export const MetadataWidgetStoryArgs = {
     altNamesTab: true,
     hierarchyTab: true,
     crossRefTab: true,
-    ontoInfoTab: true,
+    terminologyInfoTab: true,
     onNavigateToOntology: "Console message",
 }
 
@@ -141,7 +141,7 @@ export const HiddenTabs = {
         altNamesTab: false,
         hierarchyTab: false,
         crossRefTab: false,
-        ontoInfoTab: false
+        terminologyInfoTab: false
     }
 };
 

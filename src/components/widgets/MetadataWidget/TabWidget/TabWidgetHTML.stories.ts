@@ -36,7 +36,7 @@ window['SemLookPWidgets'].createTab(
         altNamesTab: ${args.altNamesTab},
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
-        ontoInfoTab: ${args.ontoInfoTab}
+        terminologyInfoTab: ${args.terminologyInfoTab}
     },
     document.querySelector('#tab_widget_container_${num}')
 )

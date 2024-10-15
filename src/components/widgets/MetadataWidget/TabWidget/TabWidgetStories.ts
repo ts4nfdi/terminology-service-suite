@@ -47,7 +47,7 @@ export const TabWidgetStoryArgs = {
     altNamesTab: true,
     hierarchyTab: true,
     crossRefTab: true,
-    ontoInfoTab: true
+    terminologyInfoTab: true
 }
 
 export const Default = {
@@ -131,6 +131,6 @@ export const HiddenTabs = {
         altNamesTab: true,
         hierarchyTab: false,
         crossRefTab: false,
-        ontoInfoTab: false
+        terminologyInfoTab: false
     }
 };

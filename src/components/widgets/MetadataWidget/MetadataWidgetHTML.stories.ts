@@ -37,7 +37,7 @@ window['SemLookPWidgets'].createMetadata(
         altNamesTab: ${args.altNamesTab},
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
-        ontoInfoTab: ${args.ontoInfoTab}
+        terminologyInfoTab: ${args.terminologyInfoTab}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )

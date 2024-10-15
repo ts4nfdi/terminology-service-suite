@@ -10,7 +10,7 @@ import {EntityTypeName, isEntity} from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 
 function TabWidget(props: TabWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, hierarchyTab, crossRefTab, ontoInfoTab, altNamesTab, ...rest } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, ...rest } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -37,7 +37,7 @@ function TabWidget(props: TabWidgetProps) {
         ontologyId={ontologyId ? ontologyId : data.getOntologyId()}
         hierarchyTab={hierarchyTab}
         crossRefTab={crossRefTab}
-        ontoInfoTab={ontoInfoTab}
+        terminologyInfoTab={terminologyInfoTab}
         altNamesTab={altNamesTab}
       />
     );
@@ -75,7 +75,7 @@ function WrappedTabWidget(props: TabWidgetProps) {
               altNamesTab={props.altNamesTab}
               hierarchyTab={props.hierarchyTab}
               crossRefTab={props.crossRefTab}
-              ontoInfoTab={props.ontoInfoTab}
+              terminologyInfoTab={props.terminologyInfoTab}
           />
         </QueryClientProvider>
       </EuiProvider>

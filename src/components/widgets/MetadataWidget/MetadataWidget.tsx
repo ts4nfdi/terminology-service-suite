@@ -24,7 +24,7 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, ontoInfoTab, altNamesTab, termLink } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink } = props;
   const olsApi = new OlsApi(api);
   const metadataWidgetCSS = `
     .boldText{
@@ -73,7 +73,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
         <style>{metadataWidgetCSS}</style>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                {termLink ? 
+                {termLink ?
                   <EuiLink href={termLink} target="_blank" external={false}>
                     <TitlePresentation
                     title={data.entity.getLabel()}
@@ -131,7 +131,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 useLegacy={useLegacy}
                 hierarchyTab={hierarchyTab}
                 crossRefTab={crossRefTab}
-                ontoInfoTab={ontoInfoTab}
+                terminologyInfoTab={terminologyInfoTab}
                 altNamesTab={altNamesTab}
               />
           </EuiFlexItem>
@@ -174,7 +174,7 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     altNamesTab={props.altNamesTab}
                     hierarchyTab={props.hierarchyTab}
                     crossRefTab={props.crossRefTab}
-                    ontoInfoTab={props.ontoInfoTab}
+                    terminologyInfoTab={props.terminologyInfoTab}
                 />
             </QueryClientProvider>
         </EuiProvider>

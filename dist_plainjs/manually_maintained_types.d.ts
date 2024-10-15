@@ -143,7 +143,7 @@ declare global {
       altNamesTab?: boolean;
       hierarchyTab?: boolean;
       crossRefTab?: boolean;
-      ontoInfoTab?: boolean;
+      terminologyInfoTab?: boolean;
     }
     )=>void,
     createAlternativeNameTab:(props:{
@@ -260,7 +260,7 @@ declare global {
       altNamesTab?: boolean,
       hierarchyTab?: boolean,
       crossRefTab?: boolean,
-      ontoInfoTab?: boolean,
+      terminologyInfoTab?: boolean,
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     })=>void,
     createOntologyInfo:(props:{

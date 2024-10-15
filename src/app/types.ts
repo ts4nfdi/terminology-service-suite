@@ -147,12 +147,21 @@ type ContainerWidthObj = {
 
 type TabList = {
     /**
-     * The list of tabs for the tab presentation. User can decide which one to show and hide.
+     * It is possible to show and hide the Alternative Names tab. **True** shows the tab. **False** hides the tab.
      */
     altNamesTab?: boolean;
+    /**
+     * It is possible to show and hide the Hierarchy tab. **True** shows the tab. **False** hides the tab.
+     */
     hierarchyTab?: boolean;
+    /**
+     * It is possible to show and hide the Cross-references tab. **True** shows the tab. **False** hides the tab.
+     */
     crossRefTab?: boolean;
-    ontoInfoTab?: boolean;
+    /**
+     * It is possible to show and hide the About Terminology Info tab. **True** shows the tab. **False** hides the tab.
+     */
+    terminologyInfoTab?: boolean;
 }
 
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
@@ -437,14 +446,14 @@ export type TitlePresentationProps = TitleTextObj & {
     defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj & 
-    OptionalEntityTypeObj & 
-    OptionalOntologyIdObj & 
-    ForcedIriObj & 
-    TermParameterObj & 
-    UseLegacyObj & 
-    OnNavigateToOntology & 
-    TabList & 
+export type MetadataWidgetProps = ApiObj &
+    OptionalEntityTypeObj &
+    OptionalOntologyIdObj &
+    ForcedIriObj &
+    TermParameterObj &
+    UseLegacyObj &
+    OnNavigateToOntology &
+    TabList &
     {
         /**
          * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
