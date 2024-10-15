@@ -44,6 +44,10 @@ export const TabWidgetStoryArgs = {
     entityType: "",
     parameter: "collection=nfdi4health",
     useLegacy: true,
+    altNamesTab: true,
+    hierarchyTab: true,
+    crossRefTab: true,
+    terminologyInfoTab: true
 }
 
 export const Default = {
@@ -112,5 +116,21 @@ export const TabWidgetLarge = {
         iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
         useLegacy: false,
         parameter: ""
+    }
+};
+
+export const HiddenTabs = {
+    storyName: "Hidden Tabs",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "ncit",
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+        entityType: "term",
+        useLegacy: false,
+        parameter: "",
+        altNamesTab: true,
+        hierarchyTab: false,
+        crossRefTab: false,
+        terminologyInfoTab: false
     }
 };

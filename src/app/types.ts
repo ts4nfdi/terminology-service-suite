@@ -36,6 +36,23 @@ type ParameterObj = {
     parameter?: string;
 };
 
+type TermParameterObj = {
+    /**
+     * Additional parameters to pass to the API.
+     *
+     * Each parameter can be combined via
+     * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
+     * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
+     *  <table>
+     *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+     *  <tr><td>lang</td><td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b>.</td></tr>
+     *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td></tr>
+     *  <tr><td>database</td><td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td></tr>
+     * </table>
+     */
+    parameter?: string;
+};
+
 type ApiObj = {
     /**
      * The API instance for the API call.
@@ -121,6 +138,32 @@ type TargetLinkObj = {
     targetLink?: string;
 }
 
+type ContainerWidthObj = {
+    /**
+     * The container width for a target widget render function. Example: EuiCard for OntologyInfoWidget
+     */
+    width?: number
+}
+
+type TabList = {
+    /**
+     * It is possible to show and hide the Alternative Names tab. **True** shows the tab. **False** hides the tab.
+     */
+    altNamesTab?: boolean;
+    /**
+     * It is possible to show and hide the Hierarchy tab. **True** shows the tab. **False** hides the tab.
+     */
+    hierarchyTab?: boolean;
+    /**
+     * It is possible to show and hide the Cross-references tab. **True** shows the tab. **False** hides the tab.
+     */
+    crossRefTab?: boolean;
+    /**
+     * It is possible to show and hide the About Terminology Info tab. **True** shows the tab. **False** hides the tab.
+     */
+    terminologyInfoTab?: boolean;
+}
+
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
     /**
      * A method that is called once the set of selection changes
@@ -202,6 +245,7 @@ export type ColorSecondObj = {
     colorSecond?: EuiLinkColor | string;
 }
 
+
 export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
 
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
@@ -253,9 +297,9 @@ export type IriWidgetProps = ForcedIriObj & {
     copyButton?: boolean;
 }
 
-export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj;
+export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & TabList;
 
-export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & {
+export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList &{
     data: Thing;
 }
 
@@ -402,10 +446,23 @@ export type TitlePresentationProps = TitleTextObj & {
     defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & OnNavigateToOntology;
+export type MetadataWidgetProps = ApiObj &
+    OptionalEntityTypeObj &
+    OptionalOntologyIdObj &
+    ForcedIriObj &
+    TermParameterObj &
+    UseLegacyObj &
+    OnNavigateToOntology &
+    TabList &
+    {
+        /**
+         * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+         */
+        termLink?: string;
+    };
 
 /*TODO: add onNavigate functions*/
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
     /**

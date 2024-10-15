@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import {EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText, EuiLink} from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import {OlsApi} from "../../../api/OlsApi";
@@ -24,8 +24,13 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink } = props;
   const olsApi = new OlsApi(api);
+  const metadataWidgetCSS = `
+    .boldText{
+      font-weight: bold;
+    }
+  `;
 
   const {
     data,
@@ -65,7 +70,23 @@ function MetadataWidget(props: MetadataWidgetProps) {
   function render(data: MetadataInfo) {
     return (
       <>
+        <style>{metadataWidgetCSS}</style>
         <EuiFlexGroup direction="column">
+          <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
+                {termLink ?
+                  <EuiLink href={termLink} target="_blank" external={false}>
+                    <TitlePresentation
+                    title={data.entity.getLabel()}
+                    className="boldText"
+                    />
+                  </EuiLink>
+                  :
+                  <TitlePresentation
+                    title={data.entity.getLabel()}
+                    className="boldText"
+                  />
+                }
+          </EuiFlexItem>
           <EuiFlexItem grow={false}>
                 <span>
                   <BreadcrumbPresentation
@@ -86,11 +107,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
                     />
                   </EuiFlexItem>
                 </EuiFlexGroup>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                <TitlePresentation
-                  title={data.entity.getLabel()}
-                />
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
@@ -113,6 +129,10 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 api={api}
                 ontologyId={props.ontologyId ? props.ontologyId : data.entity.getOntologyId()}
                 useLegacy={useLegacy}
+                hierarchyTab={hierarchyTab}
+                crossRefTab={crossRefTab}
+                terminologyInfoTab={terminologyInfoTab}
+                altNamesTab={altNamesTab}
               />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -150,6 +170,11 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
                     onNavigateToOntology={props.onNavigateToOntology}
+                    termLink={props.termLink}
+                    altNamesTab={props.altNamesTab}
+                    hierarchyTab={props.hierarchyTab}
+                    crossRefTab={props.crossRefTab}
+                    terminologyInfoTab={props.terminologyInfoTab}
                 />
             </QueryClientProvider>
         </EuiProvider>

@@ -140,6 +140,10 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      altNamesTab?: boolean;
+      hierarchyTab?: boolean;
+      crossRefTab?: boolean;
+      terminologyInfoTab?: boolean;
     }
     )=>void,
     createAlternativeNameTab:(props:{
@@ -252,6 +256,11 @@ declare global {
           | "property"
           | string;
       parameter?: string,
+      termLink?: string,
+      altNamesTab?: boolean,
+      hierarchyTab?: boolean,
+      crossRefTab?: boolean,
+      terminologyInfoTab?: boolean,
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     })=>void,
     createOntologyInfo:(props:{
