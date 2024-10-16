@@ -565,3 +565,5 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 };
 
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
+
+export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
