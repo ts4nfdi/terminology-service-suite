@@ -412,7 +412,8 @@ export class OlsApi implements HierarchyBuilder{
   public getTermRelations = async (contentParams: ContentParams, paginationParams?: PaginationParams, sortingParams?: SortingParams ) => {
     let baseRequest = "ontologies/"+contentParams?.ontologyId+"/terms"
     if (!contentParams.termIri) return (await this.axiosInstance.get(baseRequest+"/roots")).data; //1)
-    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/graph"
+    baseRequest = baseRequest+"/"+encodeURIComponent(encodeURIComponent(contentParams?.termIri))+"/graph";
+    return (await this.axiosInstance.get(baseRequest)).data;
   }
 
   /**
