@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
@@ -191,13 +191,26 @@ function GraphViewWidget(props:GraphViewWidgetProps){
       
     }, [graphNetwork]);
 
+
+    const hintText = `
+      - You can expand the nodes by double clicking on them.\n
+      - You can zoom out/in by scrolling on the graph. \n
+      - You can go back to the initial graph by clicking on the Reset button.
+      `;
+
       
     return(
       <>
         {isLoading && <EuiLoadingSpinner size="s" />}
         {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
-        <div style={{fontSize: 12}}>
-            <EuiButton size="s" onClick={reset}>Reset</EuiButton>                   
+        <div style={{fontSize: 12}}>            
+            <EuiButton size="s" onClick={reset}>Reset</EuiButton> 
+            <EuiIcon
+                    type={"iInCircle"}
+                    style={{ marginLeft: 5 }}
+                    size="l"
+                    title={hintText}
+            />            
         </div>            
         <div style={{width: "800px", height: "800px"}}>
           <div ref={container} className='graph-container' style={{width: "700px", height: "700px"}}/>
