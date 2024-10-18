@@ -567,3 +567,25 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
 export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
+
+export type OlsGraphNode = {
+    /**
+     * Used in the GraphView widget for rendering a graph's node
+     */
+    node:{
+      iri?: string,
+      label?: string
+    }
+}
+  
+ export type OlsGraphEdge = {
+    /**
+     * Used in the GraphView widget for rendering a graph's edge
+     */
+    edge:{
+      uri?: string,
+      label?: string,
+      source?: string,
+      target?: string
+    }
+}

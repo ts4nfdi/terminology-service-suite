@@ -7,6 +7,7 @@ import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import { EuiProvider } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
+import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 
 
 function GraphViewWidget(props:GraphViewWidgetProps){
@@ -56,21 +57,6 @@ function GraphViewWidget(props:GraphViewWidgetProps){
       }
     };
 
-    type OlsGraphNode = {
-      node:{
-        iri?: string,
-        label?: string
-      }
-    }
-    
-    type OlsGraphEdge = {
-      edge:{
-        uri?: string,
-        label?: string,
-        source?: string,
-        target?: string
-      }
-    }
     
     class GraphNode{
       id?: string;
