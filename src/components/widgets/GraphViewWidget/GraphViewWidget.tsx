@@ -4,10 +4,11 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
+import { getErrorMessageToDisplay } from "../../../app/util";
 
 
 function GraphViewWidget(props:GraphViewWidgetProps){
@@ -156,9 +157,11 @@ function GraphViewWidget(props:GraphViewWidgetProps){
       
     return(
       <>
+        {isLoading && <EuiLoadingSpinner size="s" />}
+        {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}        
         <div style={{width: "800px", height: "800px"}}>
           <div ref={container} className='graph-container' style={{width: "700px", height: "700px"}}/>
-        </div>
+        </div>        
       </>
     );
 }
