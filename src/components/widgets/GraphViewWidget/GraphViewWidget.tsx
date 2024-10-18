@@ -1,10 +1,10 @@
 import React from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
@@ -14,6 +14,8 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 function GraphViewWidget(props:GraphViewWidgetProps){
     const {api, iri, ontologyId, useLegacy} = props;
 
+    const [selectedIri, setSelectedIri] = useState(iri);    
+
     const olsApi = new OlsApi(api);
 
     const {
@@ -21,11 +23,12 @@ function GraphViewWidget(props:GraphViewWidgetProps){
         isLoading,
         isSuccess,
         isError,
-        error
+        error,
+        refetch
       } = useQuery(
-        ["termGraph", api, iri, ontologyId, useLegacy],
+        ["termGraph", api, selectedIri, ontologyId, useLegacy],
         async () => {
-          return olsApi.getTermRelations({ontologyId: ontologyId, termIri: iri});          
+          return olsApi.getTermRelations({ontologyId: ontologyId, termIri: selectedIri});          
         }
       );
 
@@ -36,6 +39,9 @@ function GraphViewWidget(props:GraphViewWidgetProps){
     const container = useRef(null);
 
     const graphNetworkConfig = {
+      /**
+       * for more options have a look at: https://visjs.github.io/vis-network/docs/network/#options
+       */
       autoResize: true,
       height: '100%',
       width: '100%',
@@ -75,6 +81,9 @@ function GraphViewWidget(props:GraphViewWidgetProps){
       };
     
       constructor({node}:OlsGraphNode){
+          /**
+           * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
+           */
           this.id = node['iri'];
           this.label= node['label'];
           this.color = {
@@ -111,6 +120,9 @@ function GraphViewWidget(props:GraphViewWidgetProps){
     
       constructor({edge}: OlsGraphEdge){
         if(edge['source'] && edge['target'] && edge['uri']){
+          /**
+           * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html
+           */
           this.id = edge['source'] + edge['target'] + "&uri=" + edge['uri'];
           this.from = edge['source'];
           this.to = edge['target'];
@@ -148,17 +160,45 @@ function GraphViewWidget(props:GraphViewWidgetProps){
       }
     }
 
+
+    function reset(){
+      nodes.current.clear();
+      edges.current.clear();       
+      setSelectedIri(iri);
+      refetch();
+    }
+
+
     useEffect(()=>{
       let graphData = {nodes: nodes.current, edges: edges.current}; 
       //@ts-ignore
       graphNetwork.current = new Network(container.current, graphData, graphNetworkConfig); 
-    }, []); 
+    }, []);
+
+
+
+    useEffect(() => {        
+      if(graphNetwork.current){     
+          //@ts-ignore                   
+          graphNetwork.current.on("doubleClick", function (params) {        
+              if (params.nodes.length > 0) {
+                  let nodeIri = params.nodes[0];
+                  setSelectedIri(nodeIri);
+                  refetch();                  
+              }
+          });                    
+      }
       
+    }, [graphNetwork]);
+
       
     return(
       <>
         {isLoading && <EuiLoadingSpinner size="s" />}
-        {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}        
+        {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
+        <div style={{fontSize: 12}}>
+            <EuiButton size="s" onClick={reset}>Reset</EuiButton>                   
+        </div>            
         <div style={{width: "800px", height: "800px"}}>
           <div ref={container} className='graph-container' style={{width: "700px", height: "700px"}}/>
         </div>        
