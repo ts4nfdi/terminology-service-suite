@@ -1,30 +1,41 @@
 import * as globals from '../../../app/globals';
 import {
-    apiArgType,
-    iriArgType,
-    ontologyIdReqArgType,
-    useLegacyArgType
+  apiArgType,
+  iriArgType,
+  ontologyIdReqArgType,
+  useLegacyArgType
 } from "../../../stories/storyArgs";
 
 export const GraphViewWidgetStoryArgTypes = {
-    ...apiArgType,
-    ...iriArgType,
-    ...ontologyIdReqArgType,
-    ...useLegacyArgType
+  ...apiArgType,
+  ...iriArgType,
+  ...ontologyIdReqArgType,
+  ...useLegacyArgType,
+  rootWalk: {
+    required: false,
+    description: "",
+    table: {
+      defaultValue: { summary: true }
+    },
+    type: { summary: "boolean" }
+  }
 }
 
-export const GraphViewWidgetStoryArgs = {    
-    api: globals.EBI_API_ENDPOINT,
-    iri: "",
-    ontologyId: "",
-    useLegacy: false,    
+
+export const GraphViewWidgetStoryArgs = {
+  api: globals.EBI_API_ENDPOINT,
+  iri: "",
+  ontologyId: "",
+  rootWalk: true,
+  useLegacy: true,
 }
 
 export const GraphViewWidgetExample = {
-    args: {
-        api: globals.TIB_API_ENDPOINT,
-        iri: "http://purl.obolibrary.org/obo/OBI_0000070",
-        ontologyId: "vibso",
-        useLegacy: true,
-    }
+  args: {
+    api: globals.TIB_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/OBI_0000070",
+    ontologyId: "vibso",
+    useLegacy: true,
+    rootWalk: true
+  }
 };
