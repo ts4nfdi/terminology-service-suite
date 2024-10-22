@@ -11,4 +11,7 @@ export default {
   args: GraphViewWidgetStoryArgs
 };
 
-export {GraphViewWidgetExample} from './GraphViewWidgetStories';
+export {
+  GraphViewWidgetExample,
+  RootWalkGraphExample
+} from './GraphViewWidgetStories';

@@ -39,3 +39,13 @@ export const GraphViewWidgetExample = {
     rootWalk: false
   }
 };
+
+export const RootWalkGraphExample = {
+  args: {
+    api: globals.TIB_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/OBI_0000070",
+    ontologyId: "vibso",
+    useLegacy: true,
+    rootWalk: true
+  }
+}

@@ -27,6 +27,7 @@ window['SemLookPWidgets'].createGraphView(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         useLegacy:${args.useLegacy},
+        rootWalk: ${args.rootWalk},
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
@@ -37,4 +38,7 @@ window['SemLookPWidgets'].createGraphView(
     args: GraphViewWidgetStoryArgs
 }
 
-export {GraphViewWidgetExample} from './GraphViewWidgetStories';
+export {
+  GraphViewWidgetExample,
+  RootWalkGraphExample
+} from './GraphViewWidgetStories';

@@ -277,6 +277,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           iri={props.iri}
           ontologyId={props.ontologyId}
           useLegacy={props.useLegacy}
+          rootWalk={props.rootWalk}
         />
       </QueryClientProvider>
     </EuiProvider>

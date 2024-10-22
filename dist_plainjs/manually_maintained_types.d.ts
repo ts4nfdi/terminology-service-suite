@@ -314,6 +314,7 @@ declare global {
       ontologyId: string;
       api: string;
       useLegacy: boolean;
+      rootWalk: boolean;
     }
     )=>void,
   }
