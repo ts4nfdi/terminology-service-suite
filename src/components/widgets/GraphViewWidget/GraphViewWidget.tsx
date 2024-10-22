@@ -34,7 +34,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     async () => {
       if (rootWalk && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return olsApi.getAncestors(selectedIri, "class", ontologyId, useLegacy);
+        return olsApi.getTermTree({ontologyId: ontologyId, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined);
       }else if(firstLoad || dbclicked){
         return olsApi.getTermRelations({ ontologyId: ontologyId, termIri: selectedIri });
       }
@@ -149,22 +149,29 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function convertToOlsGraphFormat(listOfEntities: Array<Entity>) {
+
+
+  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<any>) {
     // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
     // currently used in showing ancestors. Equivalent to is-a relation.
     let data: { nodes: any[]; edges: any[] } = { "nodes": [], "edges": [] };
-    data.nodes.push({ "iri": iri, "label": "testLabel" });
-    let childIri = iri;
-    listOfEntities.map((obj: any) => {
-      let node = { "iri": obj.properties.iri, "label": obj.properties.label };
-      let edge = { "source": childIri, "target": obj.properties.iri, "label": "is a", "uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf" };
-      data.nodes.push(node);
-      data.edges.push(edge);
-      childIri = obj.properties.iri;
+    listOfJsTreeNodes.map((treeNode: any) => {
+      if(!data.nodes.find((obj) => obj.iri === treeNode.iri)){
+        let node = { "iri": treeNode.iri, "label": treeNode.text };
+        data.nodes.push(node);
+      }
+      let parentNode = listOfJsTreeNodes.find((obj) => obj.id === treeNode.parent);
+      console.log(parentNode)
+      if (parentNode){        
+        // parent does not exists --> '#' id that indicates a node is a root.
+        let edge = { "source": treeNode.iri, "target": parentNode.iri, "label": "is a", "uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf" };
+        if(!data.edges.find((obj) => obj.source === edge.source && obj.target === edge.target)){
+          data.edges.push(edge);
+        }
+      }
     });
     return data;
   }
-
 
   if (data && (firstLoad || dbclicked)) {
     let gData = data;
