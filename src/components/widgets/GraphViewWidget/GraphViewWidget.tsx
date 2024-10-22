@@ -18,19 +18,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
-
+  
+  // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
+  const [counter, setCounter] = useState(0); 
 
   const olsApi = new OlsApi(api);
 
   const {
     data,
     isLoading,
-    isSuccess,
     isError,
     error,
-    refetch
   } = useQuery(
-    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalk, dbclicked],
+    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalk, dbclicked,counter],
     async () => {
       if (rootWalk && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
@@ -202,7 +202,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setSelectedIri(iri);
     setFirstLoad(true);
     setDbclicked(false);
-    refetch();
+    setCounter(counter+1);
   }
 
 
@@ -227,6 +227,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
 
   }, [graphNetwork]);
+
+
+  useEffect(() => {
+    // load the graph data again when the user change the mode to rootWalk and vice versa.
+    reset();
+  }, [rootWalk]);
 
 
   const hintText = `

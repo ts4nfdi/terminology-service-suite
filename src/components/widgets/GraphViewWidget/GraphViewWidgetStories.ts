@@ -15,7 +15,7 @@ export const GraphViewWidgetStoryArgTypes = {
     required: false,
     description: "",
     table: {
-      defaultValue: { summary: true }
+      defaultValue: { summary: false }
     },
     type: { summary: "boolean" }
   }
