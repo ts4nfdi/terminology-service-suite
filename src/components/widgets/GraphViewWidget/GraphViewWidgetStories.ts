@@ -26,7 +26,7 @@ export const GraphViewWidgetStoryArgs = {
   api: globals.EBI_API_ENDPOINT,
   iri: "",
   ontologyId: "",
-  rootWalk: true,
+  rootWalk: false,
   useLegacy: true,
 }
 
@@ -36,6 +36,6 @@ export const GraphViewWidgetExample = {
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",
     ontologyId: "vibso",
     useLegacy: true,
-    rootWalk: true
+    rootWalk: false
   }
 };

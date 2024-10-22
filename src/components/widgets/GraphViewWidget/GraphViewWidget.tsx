@@ -16,6 +16,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const { api, iri, ontologyId, useLegacy, rootWalk } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [dbclicked, setDbclicked] = useState(false);
+
 
   const olsApi = new OlsApi(api);
 
@@ -27,13 +30,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     error,
     refetch
   } = useQuery(
-    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalk],
+    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalk, dbclicked],
     async () => {
-      if (rootWalk) {
+      if (rootWalk && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         return olsApi.getAncestors(selectedIri, "class", ontologyId, useLegacy);
+      }else if(firstLoad || dbclicked){
+        return olsApi.getTermRelations({ ontologyId: ontologyId, termIri: selectedIri });
       }
-      return olsApi.getTermRelations({ ontologyId: ontologyId, termIri: selectedIri });
     }
   );
 
@@ -162,9 +166,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  if (data) {
+  if (data && (firstLoad || dbclicked)) {
     let gData = data;
-    if (rootWalk) {
+    if (rootWalk && firstLoad) {
       gData = convertToOlsGraphFormat(data);
     }
     for (let node of gData['nodes']) {
@@ -183,6 +187,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         edges.current.add(gEdge);
       }
     }
+    if (firstLoad) {
+      setFirstLoad(false);
+    }
+    if(dbclicked){
+      setDbclicked(false);
+    }
   }
 
 
@@ -190,6 +200,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     nodes.current.clear();
     edges.current.clear();
     setSelectedIri(iri);
+    setFirstLoad(true);
+    setDbclicked(false);
     refetch();
   }
 
@@ -209,7 +221,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setSelectedIri(nodeIri);
-          refetch();
+          setDbclicked(true);
         }
       });
     }
