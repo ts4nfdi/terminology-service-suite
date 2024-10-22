@@ -40,5 +40,6 @@ window['SemLookPWidgets'].createGraphView(
 
 export {
   GraphViewWidgetExample,
-  RootWalkGraphExample
+  RootWalkGraphExample,
+  ChebiExample
 } from './GraphViewWidgetStories';

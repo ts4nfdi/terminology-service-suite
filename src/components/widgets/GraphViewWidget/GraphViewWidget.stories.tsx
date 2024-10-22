@@ -13,5 +13,6 @@ export default {
 
 export {
   GraphViewWidgetExample,
-  RootWalkGraphExample
+  RootWalkGraphExample,
+  ChebiExample
 } from './GraphViewWidgetStories';

@@ -49,3 +49,13 @@ export const RootWalkGraphExample = {
     rootWalk: true
   }
 }
+
+export const ChebiExample = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
+    ontologyId: "chebi",
+    useLegacy: true,
+    rootWalk: false
+  }
+}
