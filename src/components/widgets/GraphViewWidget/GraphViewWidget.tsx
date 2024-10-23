@@ -4,12 +4,11 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
-import { Entity } from "../../../model/interfaces";
 
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -96,7 +95,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       this.id = node['iri'];
       this.label = node['label'];
       this.color = {
-        background: '#0E6668',
+        background: '#455469',
         highlight: {
           border: '#404040',
           background: '#404040'
@@ -251,9 +250,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   return (
     <>
-      {isLoading && <EuiLoadingSpinner size="s" />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
-      <div style={{ fontSize: 12 }}>
+      <EuiPanel style={{ fontSize: 12 }} paddingSize='s' borderRadius="none">
         <EuiButton size="s" onClick={reset}>Reset</EuiButton>
         <EuiIcon
           type={"iInCircle"}
@@ -261,10 +259,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           size="l"
           title={hintText}
         />
-      </div>
-      <div style={{ width: "800px", height: "800px" }}>
-        <div ref={container} className='graph-container' style={{ width: "700px", height: "700px" }} />
-      </div>
+      </EuiPanel>
+      
+      <EuiPanel style={{ width: 900, height: 900 }} hasShadow={false} hasBorder={true} borderRadius="none" >
+        {isLoading && <EuiLoadingSpinner size="m" />}
+        <div ref={container} className='graph-container' style={{ width: "850px", height: "850px", margin:'auto' }} />
+      </EuiPanel>
     </>
   );
 }
