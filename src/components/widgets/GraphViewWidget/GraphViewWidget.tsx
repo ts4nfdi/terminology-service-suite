@@ -9,6 +9,9 @@ import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
+import { JSTreeNode } from "../../../api/OlsApi";
+
+
 
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -151,17 +154,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
 
-  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<any>) {
+  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<JSTreeNode>) {
     // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
     // currently used in showing ancestors. Equivalent to is-a relation.
     let data: { nodes: any[]; edges: any[] } = { "nodes": [], "edges": [] };
-    listOfJsTreeNodes.map((treeNode: any) => {
+    listOfJsTreeNodes.map((treeNode: JSTreeNode) => {
       if(!data.nodes.find((obj) => obj.iri === treeNode.iri)){
         let node = { "iri": treeNode.iri, "label": treeNode.text };
         data.nodes.push(node);
       }
-      let parentNode = listOfJsTreeNodes.find((obj) => obj.id === treeNode.parent);
-      console.log(parentNode)
+      let parentNode = listOfJsTreeNodes.find((obj:JSTreeNode) => obj.id === treeNode.parent);
       if (parentNode){        
         // parent does not exists --> '#' id that indicates a node is a root.
         let edge = { "source": treeNode.iri, "target": parentNode.iri, "label": "is a", "uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf" };

@@ -13,7 +13,7 @@ export const GraphViewWidgetStoryArgTypes = {
   ...useLegacyArgType,
   rootWalk: {
     required: false,
-    description: "",
+    description: "When true, the graph will show the tree hierarchy for the target node in form of a graph.",
     table: {
       defaultValue: { summary: false }
     },

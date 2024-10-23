@@ -65,7 +65,7 @@ interface JsTreeParams {
   child?: string;
 }
 
-type JSTreeNode = {
+export type JSTreeNode = {
   id: string
   parent: string
   iri: string
