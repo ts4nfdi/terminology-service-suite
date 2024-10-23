@@ -237,12 +237,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   useEffect(() => {
-    // load the graph data again when the user change the mode to rootWalk and vice versa.
+    // load the graph data again when the user change the mode to rootWalk and vice versa OR input props changes.
     reset();
-  }, [rootWalkIsSelected]);
+  }, [rootWalkIsSelected, api, ontologyId, iri]);
   
   useEffect(() => {
-    // load the graph data again when the user change the mode to rootWalk and vice versa.
+    // when user change the storybook rootWalk value
     setRootWalkIsSelected(rootWalk ? rootWalk : false);
   }, [rootWalk]);
 
