@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel,EuiSwitch } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
@@ -17,6 +17,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
+  const [rootWalkIsSelected, setRootWalkIsSelected] = useState(rootWalk ? rootWalk : false);
   
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(0); 
@@ -29,9 +30,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     isError,
     error,
   } = useQuery(
-    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalk, dbclicked,counter],
+    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalkIsSelected, dbclicked,counter],
     async () => {
-      if (rootWalk && firstLoad) {
+      if (rootWalkIsSelected && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         return olsApi.getTermTree({ontologyId: ontologyId, termIri: iri}, {viewMode: "All", siblings: false}, undefined, undefined);
       }else if(firstLoad || dbclicked){
@@ -174,7 +175,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   if (data && (firstLoad || dbclicked)) {
     let gData = data;
-    if (rootWalk && firstLoad) {
+    if (rootWalkIsSelected && firstLoad) {
       gData = convertToOlsGraphFormat(data);
     }
     for (let node of gData['nodes']) {
@@ -238,13 +239,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     // load the graph data again when the user change the mode to rootWalk and vice versa.
     reset();
+  }, [rootWalkIsSelected]);
+  
+  useEffect(() => {
+    // load the graph data again when the user change the mode to rootWalk and vice versa.
+    setRootWalkIsSelected(rootWalk ? rootWalk : false);
   }, [rootWalk]);
 
 
   const hintText = `
       - You can expand the nodes by double clicking on them.\n
       - You can zoom out/in by scrolling on the graph. \n
-      - You can go back to the initial graph by clicking on the Reset button.
+      - You can go back to the initial graph by clicking on the Reset button. \n
+      - You can move the nodes and edges around by dragging. \n
+      - Rootwalk toggle enable the root walk mode in the graph, where you can see the path from roots to the target node. \n
       `;
 
 
@@ -259,6 +267,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           size="l"
           title={hintText}
         />
+        <div style={{display: 'inline-block', float: 'right'}}>
+        <EuiSwitch 
+          label="root walk" 
+          checked={rootWalkIsSelected} 
+          onChange={() => {setRootWalkIsSelected(!rootWalkIsSelected)}}
+          title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
+        /></div>
       </EuiPanel>
       
       <EuiPanel style={{ width: 900, height: 900 }} hasShadow={false} hasBorder={true} borderRadius="none" >
