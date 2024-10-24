@@ -269,7 +269,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             iconSide="right"
             onClick={onButtonClick}
           >
-         Guid me 
+         Guide me 
         </EuiButtonEmpty>
       );
 
