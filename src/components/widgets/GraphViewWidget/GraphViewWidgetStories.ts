@@ -56,6 +56,6 @@ export const ChebiExample = {
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
     ontologyId: "chebi",
     useLegacy: true,
-    rootWalk: false
+    rootWalk: true 
   }
 }

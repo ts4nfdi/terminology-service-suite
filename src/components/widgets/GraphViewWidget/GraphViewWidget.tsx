@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel,EuiSwitch } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel,EuiSwitch, EuiPopover, EuiButtonEmpty } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
@@ -21,6 +21,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
   const [rootWalkIsSelected, setRootWalkIsSelected] = useState(rootWalk ? rootWalk : false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(0); 
@@ -257,13 +258,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [rootWalk]);
 
 
-  const hintText = `
-      - You can expand the nodes by double clicking on them.\n
-      - You can zoom out/in by scrolling on the graph. \n
-      - You can go back to the initial graph by clicking on the Reset button. \n
-      - You can move the nodes and edges around by dragging. \n
-      - Rootwalk toggle enable the root walk mode in the graph, where you can see the path from roots to the target node. \n
-      `;
+
+  const onButtonClick = () =>
+    setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
+  const closePopover = () => setIsPopoverOpen(false);
+
+  const button = (
+        <EuiButtonEmpty
+            iconType="iInCircle"
+            iconSide="right"
+            onClick={onButtonClick}
+          >
+         Guid me 
+        </EuiButtonEmpty>
+      );
 
 
   return (
@@ -271,19 +279,27 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
       <EuiPanel style={{ fontSize: 12 }} paddingSize='s' borderRadius="none">
         <EuiButton size="s" onClick={reset}>Reset</EuiButton>
-        <EuiIcon
-          type={"iInCircle"}
-          style={{ marginLeft: 5 }}
-          size="l"
-          title={hintText}
-        />
-        <div style={{display: 'inline-block', float: 'right'}}>
-        <EuiSwitch 
-          label="root walk" 
-          checked={rootWalkIsSelected} 
-          onChange={() => {setRootWalkIsSelected(!rootWalkIsSelected)}}
-          title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
-        /></div>
+        <EuiPopover
+          button={button}
+          isOpen={isPopoverOpen}
+          closePopover={closePopover}
+          >
+          <EuiText style={{ width: 300, padding: 10 }}>
+            <li>You can expand the nodes by double clicking on them</li>
+            <li>You can zoom out/in by scrolling on the graph.</li>
+            <li>You can go back to the initial graph by clicking on the Reset button.</li>
+            <li>You can move the nodes and edges around by dragging.</li>
+            <li>Rootwalk toggle enable the root walk mode in the graph, where you can see the path from roots to the target node.</li>          
+          </EuiText>
+        </EuiPopover>
+        <div style={{display: 'inline-block', float: 'right', paddingTop: 10}}>
+          <EuiSwitch 
+            label="root walk" 
+            checked={rootWalkIsSelected} 
+            onChange={() => {setRootWalkIsSelected(!rootWalkIsSelected)}}
+            title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
+          />
+        </div>
       </EuiPanel>
       
       <EuiPanel style={{ width: 900, height: 900 }} hasShadow={false} hasBorder={true} borderRadius="none" >
