@@ -184,6 +184,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       let gNode = new GraphNode({ node: node });
       //@ts-ignore                
       if (!nodes.current.get(gNode.id)) {
+        if(gNode.id === iri && rootWalkIsSelected){
+          gNode.color.background = '#0BBBEF';
+          gNode.font.color = 'black';
+        }
         //@ts-ignore
         nodes.current.add(gNode);
       }
@@ -192,6 +196,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       let gEdge = new GraphEdge({ edge: edge });
       //@ts-ignore               
       if (!edges.current.get(gEdge.id)) {
+        if(gEdge.id?.includes(iri) && rootWalkIsSelected){
+          //@ts-ignore
+          gEdge.color.color = 'black';
+        }
         //@ts-ignore
         edges.current.add(gEdge);
       }
