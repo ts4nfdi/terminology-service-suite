@@ -21,6 +21,7 @@ import {createEntityRelations} from "./EntityRelationsWidget/EntityRelationsWidg
 import { createDepiction } from "./TermDepictionWidget/TermDepictionWidget";
 import { createEntityOntoList } from "./MetadataWidget/EntityOntoListWidget/EntityOntoListWidget";
 import { createEntityDefinedBy } from "./MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget"
+import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
 
 (window as any)['SemLookPWidgets'] = {
     createAutocomplete,
@@ -45,7 +46,8 @@ import { createEntityDefinedBy } from "./MetadataWidget/EntityDefinedByWidget/En
     createDepiction,
     createHierarchyOLS,
     createEntityOntoList,
-    createEntityDefinedBy
+    createEntityDefinedBy,
+    createGraphView,
 }
 
 export {
@@ -71,7 +73,8 @@ export {
     createDepiction,
     createHierarchy,
     createEntityOntoList,
-    createEntityDefinedBy
+    createEntityDefinedBy,
+    createGraphView,
 }
 
 export * from "./MetadataWidget";
@@ -85,3 +88,4 @@ export * from "./SearchResultsListWidget";
 export * from "./EntityInfoWidget";
 export * from "./EntityRelationsWidget";
 export * from "./TermDepictionWidget";
+export * from "./GraphViewWidget";
