@@ -5,6 +5,8 @@ import { OlsApi } from "../../../api/OlsApi";
 import {Ontologies} from "../../../model/interfaces";
 import {DataContentWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
+import { ElementSelectorWrapper } from "../../../app/styleWrapper";
+import { tssResetStyles } from "../../../style/tssResetStyles";
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
@@ -26,6 +28,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
 
   return (
     <>
+      <ElementSelectorWrapper styles={tssResetStyles}>
       <EuiCard
         title="Data Content"
         description={dataUpdatedAt ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}` : ""}
@@ -54,6 +57,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
           }
         </EuiText>
       </EuiCard>
+      </ElementSelectorWrapper>
     </>
   );
 }
@@ -65,7 +69,7 @@ function createDataContent(props: DataContentWidgetProps, container: any, callba
 function WrappedDataContentWidget(props: DataContentWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           <DataContentWidget
             api={props.api}

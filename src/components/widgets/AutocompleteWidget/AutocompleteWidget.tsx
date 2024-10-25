@@ -15,7 +15,8 @@ import {
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
-
+import { tssResetStyles } from "../../../style/tssResetStyles";
+import { ElementSelectorWrapper } from "../../../app/styleWrapper";
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */
@@ -333,6 +334,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }
 
   return (
+    <ElementSelectorWrapper styles={tssResetStyles}>
     <EuiComboBox
       isClearable
       aria-label="searchBar"
@@ -352,6 +354,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
       rowHeight={singleSuggestionRow ? 30 : 50}
     />
+    </ElementSelectorWrapper>
   );
 }
 
@@ -362,7 +365,7 @@ function createAutocomplete(props: AutocompleteWidgetProps, container: any, call
 function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <AutocompleteWidget
           api={props.api}
