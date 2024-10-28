@@ -309,6 +309,14 @@ declare global {
       useLegacy: boolean;
     }
     )=>void,
+    createGraphView:(props:{
+      iri: string;
+      ontologyId: string;
+      api: string;
+      useLegacy: boolean;
+      rootWalk: boolean;
+    }
+    )=>void,
   }
 }
 
