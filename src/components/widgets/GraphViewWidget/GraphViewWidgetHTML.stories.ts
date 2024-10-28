@@ -41,5 +41,6 @@ window['SemLookPWidgets'].createGraphView(
 export {
   GraphViewWidgetExample,
   RootWalkGraphExample,
-  ChebiExample
+  ChebiWater,
+  ChebiWaterRootWalk
 } from './GraphViewWidgetStories';

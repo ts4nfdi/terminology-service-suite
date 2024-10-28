@@ -50,7 +50,17 @@ export const RootWalkGraphExample = {
   }
 }
 
-export const ChebiExample = {
+export const ChebiWater = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
+    ontologyId: "chebi",
+    useLegacy: true,
+    rootWalk: false 
+  }
+}
+
+export const ChebiWaterRootWalk = {
   args: {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",

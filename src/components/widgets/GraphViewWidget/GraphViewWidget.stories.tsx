@@ -14,5 +14,6 @@ export default {
 export {
   GraphViewWidgetExample,
   RootWalkGraphExample,
-  ChebiExample
+  ChebiWater,
+  ChebiWaterRootWalk
 } from './GraphViewWidgetStories';
