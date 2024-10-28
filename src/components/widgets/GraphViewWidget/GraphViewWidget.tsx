@@ -130,6 +130,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     font?: {
       size?: number;
     };
+    dashes?: boolean;
 
     constructor({ edge }: OlsGraphEdge) {
       if (edge['source'] && edge['target'] && edge['uri']) {
@@ -167,7 +168,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       let parentNode = listOfJsTreeNodes.find((obj:JSTreeNode) => obj.id === treeNode.parent);
       if (parentNode){        
         // parent does not exists --> '#' id that indicates a node is a root.
-        let edge = { "source": treeNode.iri, "target": parentNode.iri, "label": "is a", "uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf" };
+        let edge = { "source": treeNode.iri, "target": parentNode.iri, "label": "subClassOf", "uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf" };
         if(!data.edges.find((obj) => obj.source === edge.source && obj.target === edge.target)){
           data.edges.push(edge);
         }
@@ -195,6 +196,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     for (let edge of gData['edges']) {
       let gEdge = new GraphEdge({ edge: edge });
+      let dashed = (edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" || rootWalkIsSelected) ? false : true;
+      gEdge.dashes = dashed;
       //@ts-ignore               
       if (!edges.current.get(gEdge.id)) {
         if(gEdge.id?.includes(iri) && rootWalkIsSelected){
