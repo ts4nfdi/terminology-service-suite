@@ -8,13 +8,14 @@ import {
   EntityTypeName, ThingTypeName,
   isClassTypeName, isEntityTypeName, isIndividualTypeName, isOntologyTypeName
 } from "../model/ModelTypeCheck";
-import { EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode } from "../model/interfaces/Hierarchy";
+import { Hierarchy, ParentChildRelation, TreeNode } from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from "./HierarchyBuilder";
 import { OLSSelect } from "../model/ols-model/OLSSelect";
 import { Select } from "../model/interfaces/Select";
 import { OLSSelectResult } from "../model/ols-model/OLSSelectResult";
 import { Ts4nfdiSearchResult } from "../model/ts4nfdi-model/Ts4nfdiSearchResult";
+import { EntityData } from "../app/types";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string): boolean {
@@ -691,7 +692,7 @@ export class OlsApi implements HierarchyBuilder {
     }
   }
 
-  public jsTreeNodeToEntityDataForHierarchy(jsTreeNode: JSTreeNode): EntityDataForHierarchy {
+  public jsTreeNodeToEntityData(jsTreeNode: JSTreeNode): EntityData {
     return {
       iri: jsTreeNode.iri,
       label: jsTreeNode.text,
@@ -700,7 +701,7 @@ export class OlsApi implements HierarchyBuilder {
     };
   }
 
-  public entityToEntityDataForHierarchy(entity: Entity): EntityDataForHierarchy {
+  public entityToEntityData(entity: Entity): EntityData {
     return {
       iri: entity.getIri(),
       label: asArray(entity.getLabel())[0],
@@ -728,13 +729,13 @@ export class OlsApi implements HierarchyBuilder {
 
     /* QUERY root entities */
     const rootEntitiesData = (await this.getRootEntities(entityType, ontologyId, preferredRoots, includeObsoleteEntities, useLegacy))
-      .map((entity) => this.entityToEntityDataForHierarchy(entity))
+      .map((entity) => this.entityToEntityData(entity))
       .filter((root) => !isTop(root.iri));
     /* --- */
 
     /* INITIALIZE entitiesData, parentChildRelations */
     const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
-    const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+    const entitiesData: Map<string, EntityData> = new Map<string, EntityData>();
     for (const entityData of rootEntitiesData) {
       parentChildRelations.set(entityData.iri, []); // initialize with empty array
       entitiesData.set(entityData.iri, entityData);
@@ -774,7 +775,7 @@ export class OlsApi implements HierarchyBuilder {
     } = props;
 
     /* LOAD ancestors */
-    let entities: EntityDataForHierarchy[] = [];
+    let entities: EntityData[] = [];
 
     if (useLegacy) {
       // TODO: JSTree sometimes returns smaller trees than would be possible via querying hierarchical ancestors and all children of those (e.g. http://purl.obolibrary.org/obo/UBERON_2001747 -> strange and not really useful hierarchy because many entities are both sibling and children of other entities (is it wrong to take hierarchicalParent instead of directParent in entityToEntityDataToHierarchy? EMBL-EBI does it like that as well))
@@ -803,7 +804,7 @@ export class OlsApi implements HierarchyBuilder {
         if (!inArr.has(jsTreeNode.iri)) {
           inArr.add(jsTreeNode.iri);
 
-          entities.push(this.jsTreeNodeToEntityDataForHierarchy(jsTreeNode));
+          entities.push(this.jsTreeNodeToEntityData(jsTreeNode));
           const par = parents.get(jsTreeNode.iri);
           if (par != undefined) entities[entities.length - 1].parents = Reified.fromJson(Array.from(par.values())) || [];
         }
@@ -811,7 +812,7 @@ export class OlsApi implements HierarchyBuilder {
     }
     else {
       const ancestors = await this.getAncestors(mainEntity.getIri(), entityType, ontologyId || mainEntity.getOntologyId(), includeObsoleteEntities);
-      entities = [this.entityToEntityDataForHierarchy(mainEntity), ...ancestors.map((entity) => this.entityToEntityDataForHierarchy(entity))]
+      entities = [this.entityToEntityData(mainEntity), ...ancestors.map((entity) => this.entityToEntityData(entity))]
     }
 
     // filter top entities
@@ -821,7 +822,7 @@ export class OlsApi implements HierarchyBuilder {
     /* BUILD parentChildRelations */
     const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
     const allChildrenPresent: Set<string> = new Set<string>();
-    const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+    const entitiesData: Map<string, EntityData> = new Map<string, EntityData>();
 
     // initialize parentChildRelations & entitiesData
     for (const entityData of entities) {
@@ -838,7 +839,7 @@ export class OlsApi implements HierarchyBuilder {
       for (const entityData of entities) {
         if (entityData.iri != mainEntity.getIri()) {
           promises.push(new Promise((resolve) =>
-            this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities, useLegacy).then((children) => children.map((child) => this.entityToEntityDataForHierarchy(child))).then((children) => {
+            this.getChildren(entityData.iri, entityTypeForQuery, ontologyId, includeObsoleteEntities, useLegacy).then((children) => children.map((child) => this.entityToEntityData(child))).then((children) => {
               const parChildRel: ParentChildRelation[] = [];
               for (const child of children) {
                 entitiesData.set(child.iri, child);
@@ -859,7 +860,7 @@ export class OlsApi implements HierarchyBuilder {
       if (realEntityType == "individual") {
         for (const parentReified of mainEntity.getParents()) {
           const children = (await this.getChildren(parentReified.value, realEntityType, ontologyId, includeObsoleteEntities))
-            .map((child) => this.entityToEntityDataForHierarchy(child))
+            .map((child) => this.entityToEntityData(child))
 
           const parChildRel: ParentChildRelation[] = [];
           for (const child of children) {
@@ -909,7 +910,7 @@ export class OlsApi implements HierarchyBuilder {
     }
     /* --- */
 
-    function createTreeNode(entityData: EntityDataForHierarchy, cycleCheck: Set<string>, childRelationToParent?: string): TreeNode {
+    function createTreeNode(entityData: EntityData, cycleCheck: Set<string>, childRelationToParent?: string): TreeNode {
       cycleCheck.add(entityData.iri); // add current entity to cycle check set
 
       const node = new TreeNode(entityData);
@@ -951,10 +952,10 @@ export class OlsApi implements HierarchyBuilder {
     })
   }
 
-  public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
+  public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityData[]> {
     if (props.entityType == undefined) throw Error("EntityType has to be provided to load children in OLS.");
 
     return (await this.getChildren(props.nodeToExpand.entityData.iri, props.entityType, props.ontologyId, props.includeObsoleteEntities, props.useLegacy))
-      .map((entity) => this.entityToEntityDataForHierarchy(entity))
+      .map((entity) => this.entityToEntityData(entity))
   }
 }
