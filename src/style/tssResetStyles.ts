@@ -25,7 +25,7 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+.tss-style h1, h2, h3, h4, h5, h6, p {
   font-family: inherit;
   font-weight: inherit;
   font-size: inherit;

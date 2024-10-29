@@ -17,6 +17,6 @@ function useElementSelectorStyles(styles) {
 export const ElementSelectorWrapper = ({ children, styles }) => {
   useElementSelectorStyles(styles);
 
-  return <>{children}</>;
+  return <div className="tss-style">{children}</div>;
 };
 
