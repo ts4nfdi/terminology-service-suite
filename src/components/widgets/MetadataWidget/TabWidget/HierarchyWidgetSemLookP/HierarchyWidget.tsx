@@ -188,6 +188,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     }
 
     return (
+        // TODO: Do we want overflow: auto? Gives weird unnecessary vertical scroll bar
         <EuiCard title={""} layout={"horizontal"} style={{ overflow: "auto" }}>
             {(isSuccessHierarchy && hierarchy != undefined) ?
                 <EuiText style={{whiteSpace: "nowrap"}}> {/* // TODO: Does not get displayed correctly on storybook main page */}
