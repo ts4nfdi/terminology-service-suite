@@ -4,6 +4,7 @@ import {
     EntityDefinedByWidgetStoryArgTypes
 } from "./EntityDefinedByWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../../app/util";
+import {EntityDefinedByDescription} from "../../../../app/widgetDescriptions";
 
 export default {
   title: "EntityDefinedByWidget",
@@ -13,6 +14,9 @@ export default {
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+          component: EntityDefinedByDescription
       }
     },
   },

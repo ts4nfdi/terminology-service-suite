@@ -1,11 +1,17 @@
 import { TabWidget } from "./TabWidget";
 import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
+import {TabDescription} from "../../../../app/widgetDescriptions";
 
 export default {
   title: "TabWidget",
   component: TabWidget,
   parameters: {
     layout: "centered",
+    docs: {
+        description: {
+            component: TabDescription
+        }
+    }
   },
   argTypes: TabWidgetStoryArgTypes,
   args: TabWidgetStoryArgs

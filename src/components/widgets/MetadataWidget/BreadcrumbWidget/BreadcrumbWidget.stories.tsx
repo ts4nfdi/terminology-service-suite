@@ -4,6 +4,7 @@ import {
   BreadcrumbWidgetStoryArgTypes
 } from "./BreadcrumbWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../../app/util";
+import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 export default {
   title: "BreadcrumbWidget",
@@ -13,6 +14,9 @@ export default {
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+        component: BreadcrumbDescription
       }
     },
   },

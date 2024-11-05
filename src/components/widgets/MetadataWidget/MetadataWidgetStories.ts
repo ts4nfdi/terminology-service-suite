@@ -1,7 +1,6 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
 import {onNavigateToOntologyArgType} from "../../../stories/storyArgs";
-import {EntityData} from "../../../app/types";
 
 export const MetadataWidgetStoryArgTypes = {
     api: {

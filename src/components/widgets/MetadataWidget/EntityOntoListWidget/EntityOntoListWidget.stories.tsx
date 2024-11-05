@@ -4,6 +4,7 @@ import {
     EntityOntoListWidgetStoryArgTypes
 } from "./EntityOntoListWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../../app/util";
+import {EntityOntoListDescription} from "../../../../app/widgetDescriptions";
 
 export default {
   title: "EntityOntoListWidget",
@@ -13,6 +14,9 @@ export default {
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+          component: EntityOntoListDescription
       }
     },
   },

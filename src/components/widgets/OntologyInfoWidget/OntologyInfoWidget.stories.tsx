@@ -1,11 +1,17 @@
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
+import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
   title: "OntologyInfoWidget",
   component: OntologyInfoWidget,
   parameters: {
     layout: "centered",
+    docs: {
+        description: {
+            component: OntologyInfoDescription
+        }
+    }
   },
   argTypes: OntologyInfoWidgetStoryArgTypes,
   args: OntologyInfoWidgetStoryArgs

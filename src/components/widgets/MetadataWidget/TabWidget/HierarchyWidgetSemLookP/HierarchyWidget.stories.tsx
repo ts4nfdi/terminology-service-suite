@@ -1,6 +1,7 @@
 import {HierarchyWidget} from "./HierarchyWidget";
 import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../../../app/util";
+import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
 
 export default {
     title: "HierarchyWidget",
@@ -10,6 +11,9 @@ export default {
         docs: {
             source: {
                 transform: manuallyEmbedOnNavigate
+            },
+            description: {
+                component: HierarchyDescription
             }
         },
     },

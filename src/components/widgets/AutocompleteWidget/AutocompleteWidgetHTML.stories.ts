@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
+import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: AutocompleteDescription
+            }
+        }
     },
     render: (args: AutocompleteWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

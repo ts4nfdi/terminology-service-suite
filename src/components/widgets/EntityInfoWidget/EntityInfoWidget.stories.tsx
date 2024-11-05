@@ -1,6 +1,7 @@
 import { EntityInfoWidget } from "./EntityInfoWidget";
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../app/util";
+import {EntityInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
   title: "EntityInfoWidget",
@@ -10,6 +11,9 @@ export default {
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+        component: EntityInfoDescription
       }
     },
   },

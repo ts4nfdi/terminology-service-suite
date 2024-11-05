@@ -1,6 +1,7 @@
 import { EntityRelationsWidget } from "./EntityRelationsWidget";
 import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../app/util";
+import {EntityRelationsDescription} from "../../../app/widgetDescriptions";
 
 export default {
     title: "EntityRelationsWidget",
@@ -10,6 +11,9 @@ export default {
         docs: {
             source: {
                 transform: manuallyEmbedOnNavigate
+            },
+            description: {
+                component: EntityRelationsDescription
             }
         }
     },
