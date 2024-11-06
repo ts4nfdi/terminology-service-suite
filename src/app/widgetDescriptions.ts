@@ -34,3 +34,10 @@ export const TitleDescription = "A component to display the title of a thing (on
 
 export const OntologyInfoDescription = "A component to display information about an ontology. The widget lists information including the ontology's iri and version iri, the date the ontology was last loaded, the ontology id and version, number of classes, and additional annotations. The widget operates on API responses in the OLS API format (legacy and non-legacy), and the non-legacy version provides more information, better structure and more possibilities for navigation. The actions executed when clicking on an entity link, badge or search button can be adapted to the needs of the specific use case via the functions onNavigateToEntity, onNavigateToOntology and onNavigateToDisambiguate which can be optionally provided as widget parameters." as const;
 
+export const ResourcesDescription = "A component to list resources (e.g. ontologies) from a given terminology or collection. Paging and sorting can be configured via widget parameters, and hyperlink URLs and possible actions for each resource in the last column of the table can be individually defined. The widget operates on API responses in the OLS legacy API format." as const;
+
+export const SearchBarDescription = "A component to provide suggestions based on a query string within a given terminology or collection. The change of the currently selected terms can be linked with a self defined action." as const;
+
+export const SearchResultsListDescription = "A component to provide search results based on the search data provided in the search bar and filtering options. The search results are queried from the suggest endpoint of an OLS API (legacy or non-legacy) backend, with the non-legacy version providing more detailed information. Paging, preselected values and individual hyperlink URLs can be passed to the component." as const;
+
+export const TermDepictionDescription = "A component to show the depiction referenced by the depiction URL of a class. The component operates on API responses in the OLS API format (legacy and non-legacy)." as const;
