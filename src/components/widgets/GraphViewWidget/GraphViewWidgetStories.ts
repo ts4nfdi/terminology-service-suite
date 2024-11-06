@@ -2,15 +2,13 @@ import * as globals from '../../../app/globals';
 import {
   apiArgType,
   iriArgType,
-  ontologyIdReqArgType,
-  useLegacyArgType
+  ontologyIdReqArgType
 } from "../../../stories/storyArgs";
 
 export const GraphViewWidgetStoryArgTypes = {
   ...apiArgType,
   ...iriArgType,
   ...ontologyIdReqArgType,
-  ...useLegacyArgType,
   rootWalk: {
     required: false,
     description: "When true, the graph will show the tree hierarchy for the target node in form of a graph.",
@@ -27,7 +25,6 @@ export const GraphViewWidgetStoryArgs = {
   iri: "",
   ontologyId: "",
   rootWalk: false,
-  useLegacy: true,
 }
 
 export const GraphViewWidgetExample = {
@@ -35,7 +32,6 @@ export const GraphViewWidgetExample = {
     api: globals.TIB_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",
     ontologyId: "vibso",
-    useLegacy: true,
     rootWalk: false
   }
 };
@@ -45,7 +41,6 @@ export const RootWalkGraphExample = {
     api: globals.TIB_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",
     ontologyId: "vibso",
-    useLegacy: true,
     rootWalk: true
   }
 }
@@ -55,7 +50,6 @@ export const ChebiWater = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
     ontologyId: "chebi",
-    useLegacy: true,
     rootWalk: false 
   }
 }
@@ -65,7 +59,6 @@ export const ChebiWaterRootWalk = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
     ontologyId: "chebi",
-    useLegacy: true,
     rootWalk: true 
   }
 }

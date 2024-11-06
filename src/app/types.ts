@@ -568,7 +568,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
-export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj & 
+export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
 { 
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.
