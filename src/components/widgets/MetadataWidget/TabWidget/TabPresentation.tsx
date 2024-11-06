@@ -75,7 +75,7 @@ function TabPresentation(props: TabPresentationProps) {
         {
             content:
               <OntologyInfoWidget
-                ontologyId={props.ontologyId}
+                ontologyId={props.ontologyId || data.getOntologyId()}
                 api={props.api}
                 parameter={""}
                 useLegacy={props.useLegacy}

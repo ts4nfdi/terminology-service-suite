@@ -297,13 +297,15 @@ export type IriWidgetProps = ForcedIriObj & {
   copyButton?: boolean;
 }
 
-export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & TabList;
+export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
 
-export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList & {
+export type TabWidgetProps = TabSubwidgetsProps & TabList;
+
+export type TabPresentationProps = TabWidgetProps & {
   data: Thing;
 }
 
-export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
 
 export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
   ontolist: any[];
@@ -313,13 +315,13 @@ export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriO
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
 export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
-export type AlternativeNameTabWidgetProps = TabWidgetProps;
+export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {
   synonyms: any[];
 }
 
-export type CrossRefWidgetProps = TabWidgetProps;
+export type CrossRefWidgetProps = TabSubwidgetsProps;
 
 export type CrossRefPresentationProps = {
   crossrefs: any[];
