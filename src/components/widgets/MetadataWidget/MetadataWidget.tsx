@@ -56,8 +56,9 @@ function MetadataWidget(props: MetadataWidgetProps) {
             ontoList = entity.getAppearsIn();
             definedBy = entity.getDefinedBy();
         }
-        ontoList = ontoList.filter((onto : string) => onto != entity.getOntologyId()).sort();
+
         definedBy = definedBy.filter((onto: string) => onto != entity.getOntologyId()).sort();
+        ontoList = ontoList.filter((onto : string) => onto != entity.getOntologyId() && !definedBy.includes(onto)).sort();
 
         return {
             entity: entity,
