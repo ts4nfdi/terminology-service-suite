@@ -39,6 +39,12 @@ function TabWidget(props: TabWidgetProps) {
         crossRefTab={crossRefTab}
         terminologyInfoTab={terminologyInfoTab}
         altNamesTab={altNamesTab}
+        onNavigateToEntity={props.onNavigateToEntity}
+        onNavigateToOntology={props.onNavigateToOntology}
+        onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+        hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+        hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+        hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
       />
     );
   }
@@ -76,6 +82,12 @@ function WrappedTabWidget(props: TabWidgetProps) {
               hierarchyTab={props.hierarchyTab}
               crossRefTab={props.crossRefTab}
               terminologyInfoTab={props.terminologyInfoTab}
+              onNavigateToEntity={props.onNavigateToEntity}
+              onNavigateToOntology={props.onNavigateToOntology}
+              onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+              hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+              hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+              hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
           />
         </QueryClientProvider>
       </EuiProvider>
