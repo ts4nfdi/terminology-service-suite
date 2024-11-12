@@ -14,7 +14,7 @@ export abstract class OLS4Thing implements Thing {
   }
 
   getLabel(): string | undefined {
-    return this.properties["label"];
+    return Reified.fromJson<string>(this.properties["label"])[0].value;
   }
 
   // TODO: Is curie / obo_id meant?
