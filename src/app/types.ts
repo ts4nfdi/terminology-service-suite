@@ -448,8 +448,7 @@ export type MetadataWidgetProps =
     termLink?: string;
 };
 
-/*TODO: add onNavigate functions*/
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
   /**

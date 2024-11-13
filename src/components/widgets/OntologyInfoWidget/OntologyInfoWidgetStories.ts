@@ -2,7 +2,7 @@ import * as globals from '../../../app/globals';
 
 import {
     apiArgType,
-    hasTitleArgType,
+    hasTitleArgType, onNavigateToDisambiguateArgType, onNavigateToEntityArgType, onNavigateToOntologyArgType,
     ontologyIdReqArgType,
     parameterArgType,
     showBadgesArgType, useLegacyArgType
@@ -14,7 +14,10 @@ export const OntologyInfoWidgetStoryArgTypes = {
     ...ontologyIdReqArgType,
     ...parameterArgType,
     ...showBadgesArgType,
-    ...useLegacyArgType
+    ...useLegacyArgType,
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
+    ...onNavigateToDisambiguateArgType
 }
 
 export const OntologyInfoWidgetStoryArgs = {
@@ -24,6 +27,9 @@ export const OntologyInfoWidgetStoryArgs = {
     hasTitle: true,
     showBadges: true,
     parameter: "",
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
+    onNavigateToDisambiguate: "Console message"
 }
 
 export const OntologyInfoWidget1 = {
@@ -45,5 +51,16 @@ export const OntologyInfoWidgetOLS4API = {
         api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         ontologyId: "mp" // "uberon" is also good for demonstration
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        ontologyId: "afo",
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page",
     }
 };
