@@ -292,9 +292,11 @@ export type IriWidgetProps = ForcedIriObj & {
   urlPrefix?: string;
 
   /**
-   * If true, a copy button is shown next to the link.
+   * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+   * left/right means showing the button on the left or right side of the iri.
   */
-  copyButton?: boolean;
+
+  copyButton?: 'right' | 'left' | 'none'
 }
 
 export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;

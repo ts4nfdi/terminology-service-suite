@@ -20,7 +20,6 @@ export const IriWidgetStoryArgs = {
     color: "",
     iriText: "",
     urlPrefix: "",
-    copyButton: false,
     externalIcon: true,
 }
 
@@ -42,7 +41,7 @@ export const withoutExternalIcon = {
 export const withCopyButton = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        copyButton: true,
+        copyButton: 'left',
     }
 };
 

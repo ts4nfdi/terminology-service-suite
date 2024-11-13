@@ -18,7 +18,7 @@ function IriWidget(props: IriWidgetProps) {
           display="base"
           iconType="copy"                       
           key={"copy-btn"}
-          style={{marginLeft: "5px", color: color && (isHexColor(color) || isRgbColor(color)) ? color : ""}} 
+          style={{marginLeft: "5px", marginRight: "5px", color: color && (isHexColor(color) || isRgbColor(color)) ? color : ""}} 
           color={color && isEuiLinkColor(color) ? color : undefined}
           onClick={() => {                  
             navigator.clipboard.writeText(iriUrl);
@@ -44,6 +44,7 @@ function IriWidget(props: IriWidgetProps) {
   return (
     <EuiFlexItem grow={false}>
       <div>
+        {copyButton === 'right' && <CopyLinkButton />}
         <EuiLink 
           href={iriUrl} 
           target="_blank" 
@@ -53,7 +54,7 @@ function IriWidget(props: IriWidgetProps) {
           >
           {iriText ? iriText : iri}          
         </EuiLink>
-        {copyButton && <CopyLinkButton />}
+        {copyButton === 'left' && <CopyLinkButton />}
       </div>
     </EuiFlexItem>
   );
