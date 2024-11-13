@@ -494,6 +494,9 @@ export const copyButtonArgType = {
     required: false,
     options: ['left', 'right', 'none'],
     defaultValue: false,
+    control: {
+      type: "radio"
+    },
     description: "Position the copy button on the right or left side of the iri. Leave it none for hiding it."
   }
 };

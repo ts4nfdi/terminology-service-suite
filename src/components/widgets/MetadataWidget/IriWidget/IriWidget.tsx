@@ -44,7 +44,7 @@ function IriWidget(props: IriWidgetProps) {
   return (
     <EuiFlexItem grow={false}>
       <div>
-        {copyButton === 'right' && <CopyLinkButton />}
+        {copyButton === 'left' && <CopyLinkButton />}
         <EuiLink 
           href={iriUrl} 
           target="_blank" 
@@ -54,7 +54,7 @@ function IriWidget(props: IriWidgetProps) {
           >
           {iriText ? iriText : iri}          
         </EuiLink>
-        {copyButton === 'left' && <CopyLinkButton />}
+        {copyButton === 'right' && <CopyLinkButton />}
       </div>
     </EuiFlexItem>
   );

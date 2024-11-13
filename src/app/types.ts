@@ -296,7 +296,7 @@ export type IriWidgetProps = ForcedIriObj & {
    * left/right means showing the button on the left or right side of the iri.
   */
 
-  copyButton?: 'right' | 'left' | 'none'
+  copyButton?: 'right' | 'left' | 'none';
 }
 
 export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
