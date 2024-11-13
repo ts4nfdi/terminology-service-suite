@@ -293,7 +293,7 @@ export type IriWidgetProps = ForcedIriObj & {
 
   /**
    * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
-   * left/right means showing the button on the left or right side of the iri.
+   * left/right means showing the button on the left or right side of the iri link.
   */
 
   copyButton?: 'right' | 'left' | 'none';
