@@ -299,7 +299,11 @@ export type IriWidgetProps = ForcedIriObj & {
 
 export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
 
-export type TabWidgetProps = TabSubwidgetsProps & TabList;
+export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
+    hierarchyPreferredRoots?: boolean
+    hierarchyKeepExpansionStates?: boolean
+    hierarchyShowSiblingsOnInit?: boolean
+};
 
 export type TabPresentationProps = TabWidgetProps & {
   data: Thing;
@@ -390,18 +394,6 @@ export type OnNavigateToDisambiguate = {
 
 export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
-export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
-  /**
-   * This function is called every time an entity link is clicked
-   */
-  onNavigateToEntity?: (ontologyId: string, entityType: string, iri: string) => void;
-
-  /**
-   * This function is called every time a badge linking to an entity in its defining ontology is clicked
-   */
-  onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
-};
-
 export type HierarchyWidgetProps = {
   /**
    * The API URL for the API call.
@@ -448,19 +440,12 @@ export type TitlePresentationProps = TitleTextObj & {
   defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj &
-  OptionalEntityTypeObj &
-  OptionalOntologyIdObj &
-  ForcedIriObj &
-  TermParameterObj &
-  UseLegacyObj &
-  OnNavigateToOntology &
-  TabList &
-{
-  /**
-   * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
-   */
-  termLink?: string;
+export type MetadataWidgetProps =
+    TabWidgetProps & {
+    /**
+     * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+     */
+    termLink?: string;
 };
 
 /*TODO: add onNavigate functions*/
