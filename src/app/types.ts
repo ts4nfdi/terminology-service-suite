@@ -297,15 +297,9 @@ export type IriWidgetProps = ForcedIriObj & {
   copyButton?: boolean;
 }
 
-export type TabWidgetProps =
-    ApiObj &
-    OptionalEntityTypeObj &
-    OptionalOntologyIdObj &
-    ForcedIriObj &
-    TermParameterObj &
-    UseLegacyObj &
-    OnNavigates &
-    TabList & {
+export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
+
+export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
     hierarchyPreferredRoots?: boolean
     hierarchyKeepExpansionStates?: boolean
     hierarchyShowSiblingsOnInit?: boolean
@@ -315,7 +309,7 @@ export type TabPresentationProps = TabWidgetProps & {
   data: Thing;
 }
 
-export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
 
 export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
   ontolist: any[];
@@ -325,13 +319,13 @@ export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriO
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
 export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
-export type AlternativeNameTabWidgetProps = TabWidgetProps;
+export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {
   synonyms: any[];
 }
 
-export type CrossRefWidgetProps = TabWidgetProps;
+export type CrossRefWidgetProps = TabSubwidgetsProps;
 
 export type CrossRefPresentationProps = {
   crossrefs: any[];
@@ -454,8 +448,7 @@ export type MetadataWidgetProps =
     termLink?: string;
 };
 
-/*TODO: add onNavigate functions*/
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
   /**
@@ -559,7 +552,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
-export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj & 
+export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
 { 
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.

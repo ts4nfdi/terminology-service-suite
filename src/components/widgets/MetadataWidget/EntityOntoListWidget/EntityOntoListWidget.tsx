@@ -27,13 +27,19 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
         let label : string;
         if(useLegacy) {
             const embedded = (await olsApi.getEntityResponse(iri, entityType, undefined, parameter, useLegacy))["_embedded"];
-            ontolist = embedded[Object.keys(embedded)[0]].map((entityInOntology : any) => entityInOntology["ontology_name"]);
+
+            // obtain definedBy to filter these out of ontolist
+            const definedBy = embedded[Object.keys(embedded)[0]]
+                .filter((entityInOntology : any) => entityInOntology["is_defining_ontology"])
+                .map((entityInOntology : any) => entityInOntology["ontology_name"]);
+
+            ontolist = embedded[Object.keys(embedded)[0]].map((entityInOntology : any) => entityInOntology["ontology_name"]).filter((elem: any) => !definedBy.includes(elem));
             realEntityType = entityType || singularizeType(Object.keys(embedded)[0]) as EntityTypeName;
             label = embedded[Object.keys(embedded)[0]][0]["label"];
         }
         else {
             const entity = await olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
-            ontolist = entity.getAppearsIn();
+            ontolist = entity.getAppearsIn().filter((elem: any) => !entity.getDefinedBy().includes(elem));
             realEntityType = entityType || entity.getType() as EntityTypeName;
             label = entity.getLabel() || "";
         }
