@@ -17,7 +17,11 @@ declare global {
       preselected?: { label?: string; iri?: string };
       placeholder?: string;
       hasShortSelectedLabel?: boolean;
-      allowCustomTerms: boolean;
+      allowCustomTerms?: boolean;
+      singleSelection?: boolean;
+      ts4nfdiGateway: boolean;
+      singleSuggestionRow?: boolean;
+      showApiSource?: boolean;
     }
     )=>void,
     createDataContent:(props:{
@@ -38,6 +42,9 @@ declare global {
       parameter?: string;
       useLegacy?: boolean;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createEntityRelations:(props:{
@@ -52,6 +59,9 @@ declare global {
           | "property";
       parameter?: string;
       showBadges?: boolean;
+      onNavigateToEntity?:  (ontologyId: string, entityType: string, entity: {iri: string, label?: string}) => void,
+      onNavigateToOntology?: (ontologyId: string, entityType: string, entity: { iri: string, label?: string }) => void,
+      onNavigateToDisambiguate?: (entityType: string, entity: { iri: string, label?: string }) => void
     }
     )=>void,
     createJsonApi:(props:{
@@ -83,7 +93,8 @@ declare global {
           | "subdued"
           | string;
       colorSecond?: string;
-      parameter?: string
+      parameter?: string;
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     }
     )=>void,
     createDescription:(props:{
@@ -129,6 +140,10 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      altNamesTab?: boolean;
+      hierarchyTab?: boolean;
+      crossRefTab?: boolean;
+      terminologyInfoTab?: boolean;
     }
     )=>void,
     createAlternativeNameTab:(props:{
@@ -179,9 +194,36 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string;
+      className?: string;
+      useLegacy?: boolean;
+      defaultValue?: string;
     }
     )=>void,
+    createEntityOntoList:(props:{
+      api: string
+      iri: string
+      ontologyId?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      parameter?: string
+      useLegacy?: string
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+    })=>void;
+    createEntityDefinedBy:(props:{
+      api: string
+      iri: string
+      ontologyId?: string
+      entityType?:
+          | "term" | "class"
+          | "individual"
+          | "property"
+      parameter?: string
+      useLegacy?: string
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+    })=>void;
     createHierarchy:(props:{
       apiUrl: string
       apiKey?: string
@@ -213,7 +255,13 @@ declare global {
           | "individual"
           | "property"
           | string;
-      parameter?: string
+      parameter?: string,
+      termLink?: string,
+      altNamesTab?: boolean,
+      hierarchyTab?: boolean,
+      crossRefTab?: boolean,
+      terminologyInfoTab?: boolean,
+      onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
     })=>void,
     createOntologyInfo:(props:{
       ontologyId: string;
@@ -257,8 +305,16 @@ declare global {
     createDepiction:(props:{
       iri: string;
       ontologyId: string;
-      api: string;      
-      useLegacy: boolean;      
+      api: string;
+      useLegacy: boolean;
+    }
+    )=>void,
+    createGraphView:(props:{
+      iri: string;
+      ontologyId: string;
+      api: string;
+      useLegacy: boolean;
+      rootWalk: boolean;
     }
     )=>void,
   }

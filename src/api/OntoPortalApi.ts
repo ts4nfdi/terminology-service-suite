@@ -1,7 +1,8 @@
 import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
+import { Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import {pluralizeType} from "../app/util";
+import {EntityData} from "../app/types";
 
 type HierarchyNode = {
     prefLabel: string
@@ -19,7 +20,7 @@ type HierarchyNode = {
     }
 }
 
-function HierarchyNodeToEntityDataForHierarchy(hierarchyNode: HierarchyNode) : EntityDataForHierarchy {
+function HierarchyNodeToEntityData(hierarchyNode: HierarchyNode) : EntityData {
     return {
         iri: hierarchyNode["@id"],
         label: hierarchyNode["prefLabel"],
@@ -68,13 +69,13 @@ export class OntoPortalApi implements HierarchyBuilder{
         if(!entityType) throw Error("entityType has to be specified for OntoPortal API.");
 
         const rootEntities: string[] = [];
-        const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+        const entitiesData: Map<string, EntityData> = new Map<string, EntityData>();
         const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
         const allChildrenPresent: Set<string> = new Set<string>();
         const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
         function buildRelations(currNode: HierarchyNode) {
-            entitiesData.set(currNode["@id"], HierarchyNodeToEntityDataForHierarchy(currNode))
+            entitiesData.set(currNode["@id"], HierarchyNodeToEntityData(currNode))
             if(currNode.hasChildren && currNode.children.length > 0) {
                 parentChildRelations.set(currNode["@id"], currNode.children.map((c) => {return {childIri: c["@id"]}}));
 
@@ -110,30 +111,46 @@ export class OntoPortalApi implements HierarchyBuilder{
             }
         }
 
-        function createTreeNode(entityData: EntityDataForHierarchy): TreeNode {
+        function createTreeNode(entityData: EntityData, cycleCheck: Set<string>): TreeNode {
+            cycleCheck.add(entityData.iri); // add current entity to cycle check set
+
             const node = new TreeNode(entityData);
             const children = parentChildRelations.get(entityData.iri) || [];
 
             if(!showSiblingsOnInit) {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    if(onInitialPath.has(child.childIri)) node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
+                    if(onInitialPath.has(child.childIri)) node.addChild(createTreeNode(entitiesData.get(child.childIri)!, cycleCheck));
                 }
             }
             else {
                 for(const child of children) {
+                    if(cycleCheck.has(child.childIri)) {
+                        // cyclic tree, skip cycle
+                        console.error(`Cyclic tree at entity "${child.childIri}".`);
+                        continue;
+                    }
+
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    node.addChild(createTreeNode(entitiesData.get(child.childIri)!));
+                    node.addChild(createTreeNode(entitiesData.get(child.childIri)!, cycleCheck));
                 }
             }
 
             if(node.loadedChildren.length > 0) node.expanded = true;
 
+            cycleCheck.delete(entityData.iri);
             return node;
         }
 
+        const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
+        const rootNodes: TreeNode[] = rootEntities.map((rootEntity) => createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)).sort((a,b) => (a.entityData.label || a.entityData.iri).localeCompare(b.entityData.label || b.entityData.iri));
 
         return new Hierarchy({
             parentChildRelations: parentChildRelations,
@@ -148,7 +165,7 @@ export class OntoPortalApi implements HierarchyBuilder{
         });
     }
 
-    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
+    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityData[]> {
         const {
             nodeToExpand,
             ontologyId,
@@ -162,6 +179,6 @@ export class OntoPortalApi implements HierarchyBuilder{
             {params: {include: "@id,prefLabel,hasChildren"}}
         ))["collection"];
 
-        return children.map((child) => HierarchyNodeToEntityDataForHierarchy(child));
+        return children.map((child) => HierarchyNodeToEntityData(child));
     }
 }

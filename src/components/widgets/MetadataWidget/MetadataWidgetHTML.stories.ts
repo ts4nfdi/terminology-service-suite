@@ -31,7 +31,18 @@ window['SemLookPWidgets'].createMetadata(
         api:"${args.api}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        termLink: "${args.termLink}",
+        altNamesTab: ${args.altNamesTab},
+        hierarchyTab: ${args.hierarchyTab},
+        crossRefTab: ${args.crossRefTab},
+        terminologyInfoTab: ${args.terminologyInfoTab},
+        hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
+        hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
+        hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )
@@ -48,5 +59,8 @@ export {
     OLS4V1,
     OLS4V2,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    DefinedByAlsoAppearsInWidgets,
+    HiddenTabs,
+    TermAsLink
 } from "./MetadataWidgetStories"

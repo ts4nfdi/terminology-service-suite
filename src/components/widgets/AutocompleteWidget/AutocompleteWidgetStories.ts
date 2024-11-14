@@ -1,61 +1,105 @@
+import * as globals from '../../../app/globals';
+
+import { action } from "@storybook/addon-actions";
+import {
+  allowCustomTermsArgType,
+  apiArgType,
+  hasShortSelectedLabelArgType,
+  parameterArgType,
+  placeholderArgType,
+  preselectedArgType,
+  selectionChangedEventArgType, showApiSourceArgType,
+  singleSelectionArgType,
+  singleSuggestionRowArgType,
+  ts4nfdiGatewayArgType
+} from "../../../stories/storyArgs";
+
 export const AutocompleteWidgetStoryArgTypes = {
   argTypes: {
-    api: {
-      control: {
-        type: "radio",
-      },
-      options: [
-        "https://www.ebi.ac.uk/ols4/api/",
-        "https://semanticlookup.zbmed.de/ols/api/",
-        "https://semanticlookup.zbmed.de/api/",
-        "https://service.tib.eu/ts4tib/api/"
-      ],
-    },
-    selectionChangedEvent: {
-      action: "selectionChangedEvent",
-    },
-    placeholder: {},
-    preselected: {},
-    parameter: {},
-    hasShortSelectedLabel: {
-     required: false,
-    },
-    allowCustomTerms: {
-      required: false,
-    },
-    singleSelection: {
-      required: false,
-    }
+    ...apiArgType,
+    ...selectionChangedEventArgType,
+    ...placeholderArgType,
+    ...preselectedArgType,
+    ...parameterArgType,
+    ...hasShortSelectedLabelArgType,
+    ...allowCustomTermsArgType,
+    ...singleSelectionArgType,
+    ...ts4nfdiGatewayArgType,
+    ...singleSuggestionRowArgType,
+    ...showApiSourceArgType
   }
 }
 
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-    hasShortSelectedLabel: true,
-    allowCustomTerms: false,
+    api: globals.ZBMED_OLS_API_ENDPOINT,
+    ts4nfdiGateway: false,
     singleSelection: true,
+    allowCustomTerms: false,
+    selectionChangedEvent: action('selectionChangedEvent'),
+    hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
+    showApiSource: true,
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
-export const AutocompleteWidgetStoryArgs = {
+export const AutocompleteWidgetStoryArgsHTML = {
   args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
-    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-    hasShortSelectedLabel: true,
-    allowCustomTerms: false,
+    api: globals.ZBMED_OLS_API_ENDPOINT,
+    ts4nfdiGateway: false,
     singleSelection: true,
+    allowCustomTerms: false,
+    selectionChangedEvent: () => {return;},
+    hasShortSelectedLabel: true,
     placeholder: "Search for a Concept",
     preselected: [],
-    selectionChangedEvent: () => {return;}
+    showApiSource: true,
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
 export const WithDefaults = {
   args: {},
+};
+
+export const UseAPIGatewayWithOLS = {
+  args: {
+    api: globals.GATEWAY_API_ENDPOINT,
+    ts4nfdiGateway: true,
+    parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+export const UseAPIGatewayWithOntoPortal = {
+  args: {
+    api: globals.GATEWAY_API_ENDPOINT,
+    ts4nfdiGateway: true,
+    parameter: "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+
+export const UseAPIGatewayWithSkosmos = {
+  args: {
+    api: globals.GATEWAY_API_ENDPOINT,
+    ts4nfdiGateway: true,
+    parameter: "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+
+export const HideApiSourceApiGateway = {
+  args: {
+    api: globals.GATEWAY_API_ENDPOINT,
+    ts4nfdiGateway: true,
+    showApiSource: false,
+    parameter: "database=ols&fieldList=description,label,iri,ontology_name,type,short_form"
+  },
+}
+
+export const WithDefaultsCompact = {
+  args: {
+    singleSuggestionRow: true
+  },
 };
 
 export const WithValue = {
@@ -81,14 +125,14 @@ export const WithInvalidValue = {
 
 export const WithGermanInput = {
   args: {
-    api: "https://semanticlookup.zbmed.de/api/",
+    api: globals.ZBMED_API_ENDPOINT,
     parameter: "collection=nfdi4health&lang=de&type=class",
   }
 };
 
 export const WithDescriptionAndShortForm = {
   args: {
-    api: "https://semanticlookup.zbmed.de/api/",
+    api: globals.ZBMED_API_ENDPOINT,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   }
 };
@@ -120,14 +164,14 @@ export const WithMultipleValues = {
 
 export const TibNFDI4CHEM = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
   parameter: "classification=NFDI4CHEM&schema=collection",
   }
 };
 
 export const TibDataPlant = {
   args: {
-    api: "https://service.tib.eu/ts4tib/api/",
+    api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
   }
 };

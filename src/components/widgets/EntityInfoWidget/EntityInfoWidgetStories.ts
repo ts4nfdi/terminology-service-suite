@@ -1,105 +1,72 @@
-import {entityTypeNames} from "../../../model/ModelTypeCheck";
+import {
+    apiArgType,
+    entityTypeArgType,
+    hasTitleArgType,
+    iriArgType, onNavigateToDisambiguateArgType, onNavigateToEntityArgType, onNavigateToOntologyArgType,
+    ontologyIdArgType,
+    parameterArgType,
+    showBadgesArgType,
+    useLegacyArgType
+} from "../../../stories/storyArgs";
+import * as globals from '../../../app/globals';
 
 export const EntityInfoWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
-        ],
-    },
-    hasTitle: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    },
-    ontologyId: {
-        table: {
-            defaultValue: { summary: undefined }
-        }
-    },
-    entityType: {
-        type: { required: false },
-        control: {
-            type: "radio",
-        },
-        table: {
-            type: { summary: `${entityTypeNames.join(" | ")}` },
-        },
-        options: [
-            "term",
-            "class",
-            "property",
-            "individual",
-            "INVALID STRING",
-            ""
-        ],
-    },
-    iri: {},
-    parameter: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: undefined }
-        }
-    },
-    showBadges: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    },
-    useLegacy: {
-        type: { required: false },
-        table: {
-            defaultValue: { summary: true }
-        }
-    }
-}
+  ...apiArgType,
+  ...hasTitleArgType,
+  ...ontologyIdArgType,
+  ...entityTypeArgType,
+  ...parameterArgType,
+  ...showBadgesArgType,
+  ...useLegacyArgType,
+  ...iriArgType,
+  ...onNavigateToEntityArgType,
+  ...onNavigateToOntologyArgType,
+  ...onNavigateToDisambiguateArgType
+};
 
 export const EntityInfoWidgetStoryArgs = {
-    api: "https://semanticlookup.zbmed.de/api/",
-    hasTitle: true,
-    showBadges: true,
-    useLegacy: true,
-    ontologyId: "",
-    entityType: "",
-    parameter: ""
-}
+  api: globals.ZBMED_API_ENDPOINT,
+  iri: "",
+  useLegacy: true,
+  ontologyId: "",
+  entityType: "",
+  hasTitle: true,
+  showBadges: true,
+  parameter: "",
+  onNavigateToEntity: "Console message",
+  onNavigateToOntology: "Console message",
+  onNavigateToDisambiguate: "Console message"
+};
 
 
 export const TermInfoWidget = {
-    args: {
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        entityType: "term",
-        ontologyId: "ncit",
-        hasTitle: true,
-    }
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    entityType: "term",
+    ontologyId: "ncit",
+    hasTitle: true
+  }
 };
 
 export const PropertyInfoWidget = {
-    args: {
-        iri: "http://www.w3.org/2004/02/skos/core#altLabel",
-        entityType: "property",
-        ontologyId: "mesh"
-    }
+  args: {
+    iri: "http://www.w3.org/2004/02/skos/core#altLabel",
+    entityType: "property",
+    ontologyId: "mesh"
+  }
 };
 
 export const IndividualInfoWidget = {
-     args: {
-        iri: "http://purl.obolibrary.org/obo/IAO_0000423",
-        entityType: "individual",
-        ontologyId: "clo"
-    }
+  args: {
+    iri: "http://purl.obolibrary.org/obo/IAO_0000423",
+    entityType: "individual",
+    ontologyId: "clo"
+  }
 };
 
 export const InfoWidgetBadges = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         entityType: "class",
         iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
@@ -109,14 +76,14 @@ export const InfoWidgetBadges = {
 
 export const OptionalEntityTypeLegacyAPI = {
     args: {
-        api: "https://semanticlookup.zbmed.de/ols/api/",
+        api: globals.ZBMED_OLS_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
     }
 };
 
 export const InfoWidgetDomain = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/NCIT_R89",
     }
@@ -124,7 +91,7 @@ export const InfoWidgetDomain = {
 
 export const InfoWidgetRange = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/RO_0002029",
     }
@@ -132,7 +99,7 @@ export const InfoWidgetRange = {
 
 export const InfoWidgetPropertyAssertion = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
     }
@@ -140,9 +107,20 @@ export const InfoWidgetPropertyAssertion = {
 
 export const InfoWidgetPropertyCharacteristics = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         useLegacy: false,
         iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
+    }
+};
+
+export const NavigateToEBIPage = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        useLegacy: false,
+        iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+        onNavigateToEntity: "Navigate to EBI page",
+        onNavigateToOntology: "Navigate to EBI page",
+        onNavigateToDisambiguate: "Navigate to EBI page",
     }
 };
 

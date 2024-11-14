@@ -1,5 +1,5 @@
 import 'semlookp-widgets';
-import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgs} from "./AutocompleteWidgetStories";
+import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
 
 let counter = 0;
@@ -33,6 +33,9 @@ window['SemLookPWidgets'].createAutocomplete(
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
+        ts4nfdiGateway:${args.ts4nfdiGateway},
+        singleSuggestionRow:${args.singleSuggestionRow},
+        showApiSource:${args.showApiSource},
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -40,11 +43,16 @@ window['SemLookPWidgets'].createAutocomplete(
         `
     },
     ...AutocompleteWidgetStoryArgTypes,
-    ...AutocompleteWidgetStoryArgs,
+    ...AutocompleteWidgetStoryArgsHTML,
 }
 
 export {
     WithDefaults,
+    UseAPIGatewayWithOLS,
+    UseAPIGatewayWithOntoPortal,
+    UseAPIGatewayWithSkosmos,
+    HideApiSourceApiGateway,
+    WithDefaultsCompact,
     WithValue,
     WithCustomValue,
     WithInvalidValue,

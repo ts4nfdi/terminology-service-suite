@@ -12,7 +12,11 @@ export default {
 };
 
 export {
-    TitleWidget1,
+    TitleWidgetDefault,
+    TitleWidgetWithTitleText,
+    IncorrectIriWithDefaultValue,
+    IncorrectIriWithoutDefaultValue,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    TitleWidgetWithStyles
 } from "./TitleWidgetStories";

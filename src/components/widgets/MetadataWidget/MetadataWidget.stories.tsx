@@ -1,11 +1,17 @@
 import { MetadataWidget } from "./MetadataWidget";
 import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories";
+import {manuallyEmbedOnNavigate} from "../../../app/util";
 
 export default {
   title: "MetadataWidget",
   component: MetadataWidget,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: manuallyEmbedOnNavigate
+      }
+    },
   },
   argTypes: MetadataWidgetStoryArgTypes,
   args: MetadataWidgetStoryArgs
@@ -17,5 +23,7 @@ export {
     OLS4V1,
     OLS4V2,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    HiddenTabs,
+    TermAsLink
 } from "./MetadataWidgetStories"

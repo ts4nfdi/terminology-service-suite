@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {EntityInfoWidgetProps} from "../../../app/types";
+import "../../../style/semlookp-styles.css";
 
 let counter = 0;
 
@@ -32,7 +33,10 @@ window['SemLookPWidgets'].createEntityInfo(
         hasTitle:${args.hasTitle},
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#entity_info_widget_container_${num}')
 )
@@ -52,5 +56,6 @@ export {
     InfoWidgetPropertyAssertion,
     InfoWidgetPropertyCharacteristics,
     InfoWidgetRange,
-    OptionalEntityTypeLegacyAPI
+    OptionalEntityTypeLegacyAPI,
+    NavigateToEBIPage
 } from "./EntityInfoWidgetStories"

@@ -1,6 +1,7 @@
-import {EntityDataForHierarchy} from "../../../../../model/interfaces/Hierarchy";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidget";
 import {entityTypeNames} from "../../../../../model/ModelTypeCheck";
+import * as globals from '../../../../../app/globals';
+import {onNavigateToEntityArgType, onNavigateToOntologyArgType} from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
     apiUrl: {},
@@ -26,26 +27,8 @@ export const HierarchyWidgetStoryArgTypes = {
             }
         }
     },
-    onNavigateToEntity: {
-        control: {
-            disabled: true
-        },
-        table: {
-            defaultValue: {
-                summary: undefined
-            }
-        }
-    },
-    onNavigateToOntology: {
-        control: {
-            disabled: true
-        },
-        table: {
-            defaultValue: {
-                summary: undefined
-            }
-        }
-    },
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
     iri: {
         table: {
             defaultValue: {
@@ -121,8 +104,8 @@ export const HierarchyWidgetStoryArgs = {
     apiUrl: {},
     backendType: {},
     apiKey: {},
-    onNavigateToEntity: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Triggered onNavigateToEntity() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}").`)},
-        onNavigateToOntology: (ontologyId: string, entityType: string, entity: EntityDataForHierarchy) => {console.log(`Trigerred onNavigateToOntology() for ${entityType || "entity"} "${entity.label}" (iri="${entity.iri}") and ontologyId "${ontologyId}".`)},
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
     iri: "",
     ontologyId: "",
     entityType: "",
@@ -135,7 +118,7 @@ export const HierarchyWidgetStoryArgs = {
 
 export const ClassHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
         entityType: "class",
@@ -145,7 +128,7 @@ export const ClassHierarchy = {
 
 export const IndividualHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "http://purl.obolibrary.org/obo/IAO_0000120",
         entityType: "individual",
@@ -155,7 +138,7 @@ export const IndividualHierarchy = {
 
 export const PreferredRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "",
         entityType: "class",
@@ -166,28 +149,30 @@ export const PreferredRoots = {
 
 export const IncludeObsoleteEntities = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "",
         entityType: "class",
         ontologyId: "uberon",
-        includeObsoleteEntities: true
+        includeObsoleteEntities: true,
+        useLegacy: true
     }
 };
 
 export const PropertyRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "",
         entityType: "property",
         ontologyId: "bco",
+        useLegacy: true
     }
 };
 
 export const IndividualRoots = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "",
         entityType: "individual",
@@ -197,7 +182,7 @@ export const IndividualRoots = {
 
 export const LargeHierarchy = {
     args: {
-        apiUrl: "https://www.ebi.ac.uk/ols4/api",
+        apiUrl: globals.EBI_API_ENDPOINT,
         backendType: "ols",
         iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
         entityType: "class",
@@ -207,12 +192,21 @@ export const LargeHierarchy = {
 
 export const SkosHierarchy = {
     args: {
-        apiUrl: "https://api.finto.fi/rest/v1",
+        apiUrl: globals.FINTO_V1_API_ENDPOINT,
         backendType: "skosmos",
         iri: "http://www.yso.fi/onto/yso/p864",
         ontologyId: "yso",
     }
 };
+
+export const SagePubHierarchy = {
+    args: {
+        apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/",
+        backendType: "skosmos",
+        iri: "https://concepts.sagepub.com/social-science/concept/economic_forecasting",
+        ontologyId: "social-science"
+    }
+}
 
 export const OntoportalHierarchy = {
     args: {

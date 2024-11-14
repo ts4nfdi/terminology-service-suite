@@ -1,5 +1,6 @@
 import {EntityTypeName} from "../model/ModelTypeCheck";
-import {EntityDataForHierarchy, Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {Hierarchy, TreeNode} from "../model/interfaces/Hierarchy";
+import {EntityData} from "../app/types";
 
 export type HierarchyQueryProps = {
     /**
@@ -63,5 +64,5 @@ export type LoadHierarchyChildrenProps = HierarchyQueryProps & {
 
 export interface HierarchyBuilder {
     buildHierarchyWithIri(props: BuildHierarchyProps & HierarchyIriProp): Promise<Hierarchy>
-    loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]>
+    loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityData[]>
 }

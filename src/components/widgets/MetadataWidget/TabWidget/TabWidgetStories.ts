@@ -1,4 +1,11 @@
 import {entityTypeNames} from "../../../../model/ModelTypeCheck";
+import * as globals from '../../../../app/globals';
+import {
+    onNavigateToDisambiguateArgType,
+    onNavigateToEntityArgType,
+    onNavigateToOntologyArgType
+} from "../../../../stories/storyArgs";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./HierarchyWidgetSemLookP/HierarchyWidget";
 
 export const TabWidgetStoryArgTypes =  {
     api: {
@@ -6,10 +13,10 @@ export const TabWidgetStoryArgTypes =  {
             type: "radio",
         },
         options: [
-            "https://www.ebi.ac.uk/ols4/api/",
-            "https://semanticlookup.zbmed.de/ols/api/",
-            "https://semanticlookup.zbmed.de/api/",
-            "https://service.tib.eu/ts4tib/api/"
+            globals.EBI_API_ENDPOINT,
+            globals.ZBMED_OLS_API_ENDPOINT,
+            globals.ZBMED_API_ENDPOINT,
+            globals.TIB_API_ENDPOINT
         ],
     },
     ontologyId: {},
@@ -36,19 +43,34 @@ export const TabWidgetStoryArgTypes =  {
             "INVALID STRING"
         ],
     },
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
+    ...onNavigateToDisambiguateArgType
 }
 
 export const TabWidgetStoryArgs = {
-    ontologyId: "",
-    entityType: "",
+    api: "",
     parameter: "collection=nfdi4health",
     useLegacy: true,
+    ontologyId: "",
+    entityType: "",
+    iri: "",
+    altNamesTab: true,
+    hierarchyTab: true,
+    crossRefTab: true,
+    terminologyInfoTab: true,
+    hierarchyPreferredRoots: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
+    hierarchyKeepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
+    hierarchyShowSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
+    onNavigateToEntity: "Console message",
+    onNavigateToOntology: "Console message",
+    onNavigateToDisambiguate: "Console message",
 }
 
 export const Default = {
     storyName: "Default",
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "hp",
         iri: "http://purl.obolibrary.org/obo/HP_0000819",
         useLegacy: true
@@ -58,7 +80,7 @@ export const Default = {
 export const TabWidgetOLS3 = {
     storyName: "OLS3",
     args: {
-        api: "https://semanticlookup.zbmed.de/api/",
+        api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "efo",
         iri: "http://www.ebi.ac.uk/efo/EFO_0009644",
         useLegacy: true
@@ -68,7 +90,7 @@ export const TabWidgetOLS3 = {
 export const TabWidgetOLS4V1 = {
     storyName: "OLS4 V1",
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "efo",
         iri: "http://www.ebi.ac.uk/efo/EFO_0009644",
         useLegacy: true
@@ -78,7 +100,7 @@ export const TabWidgetOLS4V1 = {
 export const TabWidgetOLS4V2 = {
     storyName: "OLS4 V2",
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "efo",
         iri: "http://www.ebi.ac.uk/efo/EFO_0009644",
         useLegacy: false,
@@ -88,7 +110,7 @@ export const TabWidgetOLS4V2 = {
 
 export const SelectingDefiningOntology = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://purl.obolibrary.org/obo/IAO_0000631",
         entityType: "term",
         parameter: ""
@@ -97,7 +119,7 @@ export const SelectingDefiningOntology = {
 
 export const DefiningOntologyUnavailable = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
         entityType: "term",
         parameter: ""
@@ -106,10 +128,26 @@ export const DefiningOntologyUnavailable = {
 
 export const TabWidgetLarge = {
     args: {
-        api: "https://www.ebi.ac.uk/ols4/api/",
+        api: globals.EBI_API_ENDPOINT,
         ontologyId: "ncbitaxon",
         iri: "http://purl.obolibrary.org/obo/NCBITaxon_2489341",
         useLegacy: false,
         parameter: ""
+    }
+};
+
+export const HiddenTabs = {
+    storyName: "Hidden Tabs",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "ncit",
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+        entityType: "term",
+        useLegacy: false,
+        parameter: "",
+        altNamesTab: true,
+        hierarchyTab: false,
+        crossRefTab: false,
+        terminologyInfoTab: false
     }
 };

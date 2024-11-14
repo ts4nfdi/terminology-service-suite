@@ -14,6 +14,11 @@ export default {
 
 export {
   WithDefaults,
+  UseAPIGatewayWithOLS,
+  UseAPIGatewayWithOntoPortal,
+  UseAPIGatewayWithSkosmos,
+  HideApiSourceApiGateway,
+  WithDefaultsCompact,
   WithValue,
   WithCustomValue,
   WithInvalidValue,

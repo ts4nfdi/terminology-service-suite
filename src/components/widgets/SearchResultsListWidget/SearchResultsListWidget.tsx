@@ -219,6 +219,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           transform_to_searchValue(selectedOption);
         }}
       />
+      <EuiSpacer size="xl" />
       <EuiSpacer size="s" />
 
       <EuiFlexGroup>

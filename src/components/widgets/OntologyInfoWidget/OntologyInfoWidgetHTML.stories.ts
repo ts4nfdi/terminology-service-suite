@@ -30,7 +30,10 @@ window['SemLookPWidgets'].createOntologyInfo(
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
         hasTitle:${args.hasTitle},
-        showBadges:${args.showBadges}
+        showBadges:${args.showBadges},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#ontology_info_widget_container_${num}')
 )
@@ -44,5 +47,6 @@ window['SemLookPWidgets'].createOntologyInfo(
 export {
     OntologyInfoWidget1,
     OntologyInfoWidget2,
-    OntologyInfoWidgetOLS4API
+    OntologyInfoWidgetOLS4API,
+    NavigateToEBIPage
 } from "./OntologyInfoWidgetStories"

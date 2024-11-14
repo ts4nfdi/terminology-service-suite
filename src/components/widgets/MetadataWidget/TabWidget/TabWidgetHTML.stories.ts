@@ -32,7 +32,17 @@ window['SemLookPWidgets'].createTab(
         ontologyId:"${args.ontologyId}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        altNamesTab: ${args.altNamesTab},
+        hierarchyTab: ${args.hierarchyTab},
+        crossRefTab: ${args.crossRefTab},
+        terminologyInfoTab: ${args.terminologyInfoTab},
+        hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
+        hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
+        hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#tab_widget_container_${num}')
 )
@@ -50,5 +60,6 @@ export {
     TabWidgetOLS4V2,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
-    TabWidgetLarge
+    TabWidgetLarge,
+    HiddenTabs
 } from "./TabWidgetStories"
