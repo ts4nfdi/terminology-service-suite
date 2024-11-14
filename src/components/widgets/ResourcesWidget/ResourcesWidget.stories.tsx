@@ -14,5 +14,6 @@ export default {
 export {
     ResourcesWidget1,
     WithActions,
-    WithActionsAndSafety
+    WithActionsAndSafety,
+    ResourcesWidgetLogos
 } from "./ResourcesWidgetStories"

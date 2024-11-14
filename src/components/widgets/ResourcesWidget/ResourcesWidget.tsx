@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   Comparators,
   CriteriaWithPagination,
@@ -8,7 +8,10 @@ import {
   EuiProvider,
   EuiLink,
   EuiSpacer,
-  EuiText
+  EuiText,
+  EuiScreenReaderOnly,
+  EuiDescriptionList,
+  EuiCallOut
 } from "@elastic/eui";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -44,6 +47,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [sortField, setSortField] = useState<string | number>(initialSortField);
   const [sortDirection, setSortDirection] = useState(initialSortDir);
 
+  const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
+    Record<string, ReactNode>
+  >({});
 
   const columns: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
     {
@@ -61,15 +67,15 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Resource Name",
       field: "config.title",
+      render: (value: string) => (
+        targetLink ? <EuiLink href={targetLink + "ontologies/" + value + "/"}>{value}</EuiLink> : value
+      ),
       width: "15%",
       sortable: true
     },
     {
       name: "Short Name",
       field: "ontologyId",
-      render: (value: string) => (
-        targetLink ? <EuiLink href={targetLink + "ontologies/" + value + "/"}>{value}</EuiLink> : value
-      ),
       width: "10%",
       sortable: true
     },
@@ -181,7 +187,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         preferredPrefix: ontology.getPreferredPrefix(),
         allowDownload: false, // in legacy (OLS), all ontologies have allowDownload = false
         fileLocation: ontology.getIri(),
-        version: ontology.getVersion()
+        version: ontology.getVersion(),
+        iri: ontology.getIri(),
+        homepage: ontology.getHomepage(),
+        license: ontology.getLicense()
       }
     }
   }
@@ -191,7 +200,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         ...ontology.properties
       })) || [] :
       ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
-  console.log(ontos)
+
   const findOntologies = (
     ontologies: any[],
     pageIndex: number,
@@ -264,11 +273,90 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     }
   };
 
+  const toggleDetails = (resource: any) => {
+    const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
+
+    if (itemIdToExpandedRowMapValues[resource.ontologyId]) {
+      delete itemIdToExpandedRowMapValues[resource.ontologyId];
+    } else {
+
+      const listItems = [
+        {
+          title: "IRI",
+          description: <EuiLink
+            href={`${resource.config.iri ? resource.config.iri : "-"}`}>{`${resource.config.iri ? resource.config.iri : "-"}`}</EuiLink>
+        }];
+
+      if (resource.config.homepage) {
+        listItems.push({
+            title: "Homepage",
+            description: <EuiLink
+              href={`${resource.config.homepage ? resource.config.homepage : "-"}`}>{`${resource.config.homepage ? resource.config.homepage : "-"}`}</EuiLink>
+          }
+        );
+        if (resource.config.license) {
+          listItems.push({
+              title: "License",
+              description: <EuiLink
+                href={`${resource.config.license.url ? resource.config.license.url : "-"}`}>{`${resource.config.license.label ? resource.config.license.label : "-"}`}</EuiLink>
+            }
+          );
+        }
+      }
+
+      itemIdToExpandedRowMapValues[resource.ontologyId] = (
+        <EuiDescriptionList listItems={listItems} />
+      );
+    }
+
+    setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
+  };
+
+  const columnsWithExpandingRowToggle: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
+    ...columns,
+    {
+      align: "right",
+      width: "40px",
+      isExpander: true,
+      name: (
+        <EuiScreenReaderOnly>
+          <span>Expand row</span>
+        </EuiScreenReaderOnly>
+      ),
+      mobileOptions: { header: false },
+      render: (resource: any) => {
+        const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
+
+        return (
+          <EuiButtonIcon
+            onClick={() => {toggleDetails(resource)
+            console.log("res", resource)}}
+            iconType={
+              itemIdToExpandedRowMapValues[resource.ontologyId] ? "arrowDown" : "arrowRight"
+            }
+            aria-label={
+              itemIdToExpandedRowMapValues[resource.ontologyId] ? "Collapse" : "Expand"
+            }
+          />
+        );
+      }
+    }
+  ];
 
   return (
     <>
       {isSuccess &&
         <>
+          <EuiCallOut
+            title={"Licenses"}
+            iconType="magnifyWithExclamation"
+            color={"warning"}
+          >
+            <p>The use and distribution of the terminologies beyond this service is only permitted in compliance with
+              the license conditions of the respective terminology, also in compliance with the license conditions in
+              the respective countries.</p>
+          </EuiCallOut>
+          <EuiSpacer size="s" />
           <EuiText size="xs">
             Showing {resultsCount} <strong>Ontologies</strong>
           </EuiText>
@@ -276,17 +364,20 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
           <EuiBasicTable
-            columns={columns}
+            columns={columnsWithExpandingRowToggle}
             items={pageOfItems}
             onChange={onTableChange}
             pagination={pagination}
             sorting={sorting}
+            itemIdToExpandedRowMap={itemIdToExpandedRowMap}
+            isExpandable={true}
+            itemId={"ontologyId"}
           />
         </>
       }
       {isLoading &&
         <EuiBasicTable
-          columns={columns}
+          columns={columnsWithExpandingRowToggle}
           items={pageOfItems}
           onChange={onTableChange}
           pagination={pagination}

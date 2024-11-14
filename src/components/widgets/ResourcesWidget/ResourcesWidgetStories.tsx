@@ -7,7 +7,7 @@ import {
     apiArgType,
     initialEntriesPerPageArgType, initialSortDirArgType,
     initialSortFieldArgType,
-    pageSizeOptionsArgType, parameterArgType, targetLinkArgType
+    pageSizeOptionsArgType, parameterArgType, targetLinkArgType, useLegacyArgType
 } from "../../../stories/storyArgs";
 
 export const ResourcesWidgetStoryArgTypes = {
@@ -19,10 +19,12 @@ export const ResourcesWidgetStoryArgTypes = {
     ...targetLinkArgType,
     ...actionsArgType,
     ...parameterArgType,
+    ...useLegacyArgType
 }
 
 export const ResourcesWidgetStoryArgs = {
     api: "",
+    useLegacy: true,
     initialEntriesPerPage: 10,
     pageSizeOptions: [10, 25, 50, 100],
     initialSortField: "config.preferredPrefix",
@@ -31,7 +33,6 @@ export const ResourcesWidgetStoryArgs = {
     actions: [],
     parameter: "collection=nfdi4health"
 }
-
 
 export const ResourcesWidget1 = {
     args: {
@@ -44,6 +45,7 @@ export const ResourcesWidget1 = {
         parameter: "collection=nfdi4health"
     }
 };
+
 export const WithActions = {
     args: {
         ...ResourcesWidget1.args,
@@ -89,3 +91,16 @@ export const WithActionsAndSafety = {
         parameter: "collection=safety",
     }
 }
+
+export const ResourcesWidgetLogos = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        initialEntriesPerPage: 10,
+        pageSizeOptions: [10, 25, 50, 100],
+        initialSortField: "config.preferredPrefix",
+        initialSortDir: "asc" as const,
+        targetLink: "https://semanticlookup.zbmed.de/dev/",
+        parameter: "",
+        useLegacy: false,
+    }
+};
