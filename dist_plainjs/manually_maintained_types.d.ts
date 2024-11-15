@@ -126,7 +126,7 @@ declare global {
       parameter?: string;
       externalIcon?: boolean;
       urlPrefix?: string;
-      copyButton?: boolean;
+      copyButton?: 'right' | 'left' | 'none';
     }
     )=>void,
     createTab:(props:{
