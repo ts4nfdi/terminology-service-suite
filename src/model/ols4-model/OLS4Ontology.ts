@@ -125,9 +125,7 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getLicense(): string[] {
     return this.properties["license"];
   }
-
-  // TODO: not available?
-  getAllowDownload(): string {
+  getAllowDownload(): boolean {
     return this.properties["allowDownload"];
   }
 }

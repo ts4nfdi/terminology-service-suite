@@ -25,6 +25,6 @@ export interface Ontology extends Thing {
     getLanguages(): string[];
     getImportsFrom(): string[];
     getExportsTo(): string[];
-    getAllowDownload(): string;
+    getAllowDownload(): boolean;
     getLicense(): string[];
 }

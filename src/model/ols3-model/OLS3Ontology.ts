@@ -144,7 +144,11 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   getExportsTo(): string[] {
     return asArray(this.properties["exportsTo"]);
   }
-  getAllowDownload(): string {
+  getAllowDownload(): boolean {
     return this.properties["config"]["allowDownload"];
+  }
+
+  getLicense(): string[] {
+    return this.properties["config"]["annotations"]["license"];
   }
 }

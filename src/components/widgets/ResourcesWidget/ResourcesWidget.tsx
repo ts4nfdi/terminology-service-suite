@@ -13,15 +13,15 @@ import {
   EuiDescriptionList,
   EuiCallOut
 } from "@elastic/eui";
-import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
 import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
-import {OLS4Ontology} from "../../../model/ols4-model";
-import {OBO_FOUNDRY_REPO_URL_RAW} from "../../../app/util";
+import { OLS4Ontology } from "../../../model/ols4-model";
+import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -38,7 +38,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     targetLink,
     parameter,
-    useLegacy= DEFAULT_USE_LEGACY
+    useLegacy = DEFAULT_USE_LEGACY
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -57,8 +57,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       field: "config.logo",
       // TODO: improve position of logo (maybe inside another cell, but this makes sorting more complicated)
       render: (logoUrl: string) => (
-          logoUrl ?
-          <img width={"100%"} style={{objectFit: "contain"}} src={logoUrl.startsWith("/images") ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl : logoUrl} alt={"-logo-"}/> :
+        logoUrl ?
+          <img width={"100%"} style={{ objectFit: "contain" }}
+               src={logoUrl.startsWith("/images") ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl : logoUrl} alt={"-logo-"} /> :
           <></>
       ),
       width: "7%",
@@ -144,9 +145,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   ];
 
   const onTableChange = ({
-    page,
-    sort,
-  }: CriteriaWithPagination<OlsResource>) => {
+                           page,
+                           sort
+                         }: CriteriaWithPagination<OlsResource>) => {
     const { index: pageIndex, size: pageSize } = page;
     setPageIndex(pageIndex);
     setPageSize(pageSize);
@@ -185,21 +186,21 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         title: ontology.getName().trim(),
         description: ontology.getDescription(),
         preferredPrefix: ontology.getPreferredPrefix(),
-        allowDownload: false, // in legacy (OLS), all ontologies have allowDownload = false
+        allowDownload: ontology.getAllowDownload(),
         fileLocation: ontology.getIri(),
         version: ontology.getVersion(),
         iri: ontology.getIri(),
         homepage: ontology.getHomepage(),
         license: ontology.getLicense()
       }
-    }
+    };
   }
 
   const ontos = useLegacy ?
-      ontologiesData?.properties.map(ontology => ({
-        ...ontology.properties
-      })) || [] :
-      ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
+    ontologiesData?.properties.map(ontology => ({
+      ...ontology.properties
+    })) || [] :
+    ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
 
   const findOntologies = (
     ontologies: any[],
@@ -294,15 +295,16 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
               href={`${resource.config.homepage ? resource.config.homepage : "-"}`}>{`${resource.config.homepage ? resource.config.homepage : "-"}`}</EuiLink>
           }
         );
-        if (resource.config.license) {
-          listItems.push({
-              title: "License",
-              description: <EuiLink
-                href={`${resource.config.license.url ? resource.config.license.url : "-"}`}>{`${resource.config.license.label ? resource.config.license.label : "-"}`}</EuiLink>
-            }
-          );
-        }
       }
+      if (resource.config.license) {
+        listItems.push({
+            title: "License",
+            description: <EuiLink
+              href={`${resource.config.license.url ? resource.config.license.url : "-"}`}>{`${resource.config.license.label ? resource.config.license.label : "-"}`}</EuiLink>
+          }
+        );
+      }
+
 
       itemIdToExpandedRowMapValues[resource.ontologyId] = (
         <EuiDescriptionList listItems={listItems} />
@@ -329,8 +331,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
         return (
           <EuiButtonIcon
-            onClick={() => {toggleDetails(resource)
-            console.log("res", resource)}}
+            onClick={() => {
+              toggleDetails(resource);
+            }}
             iconType={
               itemIdToExpandedRowMapValues[resource.ontologyId] ? "arrowDown" : "arrowRight"
             }
@@ -402,28 +405,28 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   );
 }
 
-function createResources(props: ResourcesWidgetProps, container: Element, callback?: ()=>void) {
+function createResources(props: ResourcesWidgetProps, container: Element, callback?: () => void) {
   ReactDOM.render(WrappedResourcesWidget(props), container, callback);
 }
 
 function WrappedResourcesWidget(props: ResourcesWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
-        <QueryClientProvider client={queryClient}>
-          <ResourcesWidget
-              api={props.api}
-              initialEntriesPerPage={props.initialEntriesPerPage}
-              pageSizeOptions={props.pageSizeOptions}
-              initialSortField={props.initialSortField}
-              initialSortDir={props.initialSortDir}
-              targetLink={props.targetLink}
-              actions={props.actions}
-              parameter={props.parameter}
-          />
-        </QueryClientProvider>
-      </EuiProvider>
-  )
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <ResourcesWidget
+          api={props.api}
+          initialEntriesPerPage={props.initialEntriesPerPage}
+          pageSizeOptions={props.pageSizeOptions}
+          initialSortField={props.initialSortField}
+          initialSortDir={props.initialSortDir}
+          targetLink={props.targetLink}
+          actions={props.actions}
+          parameter={props.parameter}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { ResourcesWidget, createResources };
