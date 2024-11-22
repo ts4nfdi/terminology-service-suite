@@ -1,7 +1,7 @@
 import React, {ReactElement} from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import { EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText } from "@elastic/eui";
 import {Class, Entity, Individual, Property, Thing} from "../../../model/interfaces";
 import {getClassExpressionJSX, getEntityLinkJSX, getReifiedJSX, getSectionListJSX} from "../../../model/StructureRendering";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
@@ -59,10 +59,13 @@ function getIndividualDifferentFromSectionJSX(individual: Individual, props: Ent
 
     if(differentFrom.length > 0) {
         return (
+          <>
+          <EuiSpacer/>
             <EuiFlexItem>
                 <b>Different from</b>
                 {getSectionListJSX(individual, individual.getLinkedEntities(), differentFrom, props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}
             </EuiFlexItem>
+          </>
         );
     }
 }
@@ -140,12 +143,13 @@ function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWi
 
     if(propertyChains.length > 0) {
         return (
-            <EuiFlexItem>
-                <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
-                {!hasMultipleChains ?
-                    (
-                        <p>{getPropertyChainJSX(propertyChains, property, props)}</p>
-                    ) :
+          <EuiFlexItem>
+              <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
+              {!hasMultipleChains ?
+                (
+                  <p>{getPropertyChainJSX(propertyChains, property, props)}</p>
+                ) :
+                <>
                     <ul>
                         {
                             propertyChains.map((item: any) => {
@@ -153,8 +157,9 @@ function getPropertyChainSectionJSX(property: Property, props: EntityRelationsWi
                             })
                         }
                     </ul>
-                }
-            </EuiFlexItem>
+                    <p></p></>
+              }
+          </EuiFlexItem>
         );
     }
 }
@@ -170,21 +175,31 @@ function getEntityEquivalentToSectionJSX(entity: Property | Class, props: Entity
 
     if(equivalents.length > 0) {
         return (
-            <EuiFlexItem>
-                <b>Equivalent to</b>
-                {equivalents.length === 1 ?
-                    (
-                        <p>{getReifiedJSX(entity, equivalents[0], props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
-                    ) :
+          <EuiFlexItem>
+              <b>Equivalent to</b>
+              {equivalents.length === 1 ?
+                (
+                  <p>{getReifiedJSX(entity, equivalents[0], props.showBadges, {
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                  })}</p>
+                ) :
+                <>
                     <ul>
                         {
                             equivalents.map((item: any) => {
-                                return (<li key={randomString()} >{getReifiedJSX(entity, item, props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>);
+                                return (<li key={randomString()}>{getReifiedJSX(entity, item, props.showBadges, {
+                                    onNavigateToEntity: props.onNavigateToEntity,
+                                    onNavigateToOntology: props.onNavigateToOntology,
+                                    onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                                })}</li>);
                             })
                         }
                     </ul>
-                }
-            </EuiFlexItem>
+                    <p></p></>
+              }
+          </EuiFlexItem>
         );
     }
 }
@@ -200,21 +215,31 @@ function getSubEntityOfSectionJSX(entity: Property | Class, props: EntityRelatio
 
     if(superEntities.length > 0) {
         return (
-            <EuiFlexItem>
-                <b>Sub{entity.getType()} of</b>
-                {superEntities.length === 1 ?
-                    (
-                        <p>{getReifiedJSX(entity, superEntities[0], props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
-                    ) :
+          <EuiFlexItem>
+              <b>Sub{entity.getType()} of</b>
+              {superEntities.length === 1 ?
+                (
+                  <p>{getReifiedJSX(entity, superEntities[0], props.showBadges, {
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                  })}</p>
+                ) :
+                <>
                     <ul>
                         {
                             superEntities.map((item: any) => {
-                                return (<li key={randomString()}>{getReifiedJSX(entity, item, props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>);
+                                return (<li key={randomString()}>{getReifiedJSX(entity, item, props.showBadges, {
+                                    onNavigateToEntity: props.onNavigateToEntity,
+                                    onNavigateToOntology: props.onNavigateToOntology,
+                                    onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                                })}</li>);
                             })
                         }
                     </ul>
-                }
-            </EuiFlexItem>
+                    <p></p></>
+              }
+          </EuiFlexItem>
         );
     }
 }
@@ -240,14 +265,14 @@ function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityR
                             <div>
                                 <a style={{color: "black"}} href={p}><i>{label || p}</i></a>
                             </div>
-                            <ul style={{marginBottom: 0}}>
+                            <><ul style={{marginBottom: 0}}>
                                 {relatedFroms.filter((elem: any) => {return elem.value["property"] === p})
                                     .map((elem) => {
                                         return(
                                             <li key={randomString()}>{getClassExpressionJSX(entity, entity.getLinkedEntities(), elem.value["value"], props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>
                                         )
                                     })}
-                            </ul>
+                            </ul><p></p></>
                             <p></p> {/* Works as empty space left to next section */}
                         </div>
                     );})
@@ -267,21 +292,27 @@ function getEntityRelatedFromSectionJSX(entity: Property | Class, props: EntityR
 function getClassInstancesSectionJSX(term: Class, instances: Thing[], props: EntityRelationsWidgetProps): ReactElement | undefined {
     if(instances.length > 0) {
         return (
-            <EuiFlexItem>
-                {
-                    <b>Instances</b>
-                }
-                <ul>
-                    {
-                        instances.map((instance) => {
-                            return (<li key={randomString()} >
+          <EuiFlexItem>
+              {
+                  <b>Instances</b>
+              }
+              <>
+                  <ul>
+                      {
+                          instances.map((instance) => {
+                              return (<li key={randomString()}>
 
-                                {getEntityLinkJSX(term, term.getLinkedEntities(), instance.getIri(), props.showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}
-                            </li>);
-                        })
-                    }
-                </ul>
-            </EuiFlexItem>
+                                  {getEntityLinkJSX(term, term.getLinkedEntities(), instance.getIri(), props.showBadges, {
+                                      onNavigateToEntity: props.onNavigateToEntity,
+                                      onNavigateToOntology: props.onNavigateToOntology,
+                                      onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                                  })}
+                              </li>);
+                          })
+                      }
+                  </ul>
+                  <p></p></>
+          </EuiFlexItem>
         );
     }
 }
