@@ -17,8 +17,6 @@ export default [
       commonjs({
       include: [ "./index.js", "node_modules/**" ],
     }),
-      nodeResolve({modulePaths: ["node_modules/@zbmed/treeview-ols"]}),
-      typescript({ tsconfig: "./tsconfig.json" }),
       copy({
         targets: [
           { src: "src/style/32px.png", dest: "dist/esm" }
@@ -28,7 +26,8 @@ export default [
         extensions: [".css"],
         minimize: true,
         extract: true
-      })
+      }),
+      typescript({ tsconfig: "./tsconfig.json" }),
     ]
   }
 ];

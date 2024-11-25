@@ -122,7 +122,7 @@ export function getErrorMessageToDisplay(error: any, messagePlaceholder = "infor
 export function inferTypeFromTypeArray(types: string[]) {
     let res = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
     res = res.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
-    res = [...new Set<string>(res)]; // remove duplicates
+    res = [...new Set<"class" | "term" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology">(res)]; // remove duplicates
 
     if(res.length === 1) return res[0] as ThingTypeName;
     else if(res.length === 0) throw Error("Entity type could not be correctly inferred: No suitable type found in array.");

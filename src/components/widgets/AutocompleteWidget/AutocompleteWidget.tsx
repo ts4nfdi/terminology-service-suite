@@ -356,6 +356,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 }
 
 function createAutocomplete(props: AutocompleteWidgetProps, container: any, callback?: () => void) {
+  // @ts-ignore
   ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
 }
 
@@ -369,7 +370,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           parameter={props.parameter}
           selectionChangedEvent={props.selectionChangedEvent}
           preselected={props.preselected}
-          singleSelection={props.singleSelection}
+          singleSelection={props.singleSelection as boolean}
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
