@@ -1,13 +1,13 @@
 import typescript from "@rollup/plugin-typescript";
 import postcss from "rollup-plugin-postcss";
 import copy from "rollup-plugin-copy";
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+
 
 export default [
   {
     input: "src/index.ts",
-    external: ["@elastic/eui", "react", "react-query", "@emotion/react", "axios"],
+    external: ["@elastic/eui", "react", "react-query", "@emotion/react", "react-dom"],
     output: {
       dir: "dist/esm",
       format: "esm",
