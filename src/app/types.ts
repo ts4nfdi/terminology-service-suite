@@ -2,12 +2,12 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
-import { EuiSuggestProps } from "@elastic/eui/src/components";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { Thing } from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
+import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
   /**
@@ -277,9 +277,9 @@ export type IriWidgetProps = ForcedIriObj & {
    */
   iriText?: string;
   /**
-   * Color of the text, names, hex or rgb
+   * Color of the text: "text", "accent", "primary", "success", "warning", "danger"
    */
-  color?: EuiLinkColor | string;
+  color?: EuiButtonColor;
 
   /**
    * Indicates that the target is external and needs an icon.
@@ -496,7 +496,7 @@ export type OlsResource = ForcedOntologyIdObj & {
   [otherFields: string]: unknown;
 }
 
-export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value"> & ApiObj & ParameterObj & {
+export type SearchBarWidgetProps = ApiObj & ParameterObj & {
   /**
    * The search term to receive suggestions for.
    */

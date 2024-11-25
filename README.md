@@ -28,18 +28,19 @@ package.
 
 - Node v16.13.1
 - NPM v8.19.2
-- ElasticUI <88.0.0 
+- ElasticUI ^97.3.1
 
-If your React consumer project uses ElasticUI v> 88.0.0., it might get a conflict in dependencies.   
+To install the package for development, it's necessary to additionally install following peer dependencies:
 
-To install the package for development, it may be necessary to move the `peerDependencies` in the `package.json` to
-the `devDependencies` section, if the corresponding modules are not present on your machine.
+- @elastic/eui@97.3.1 
+- @emotion/react@11.13.5 
+- react@17.0.2 
+- react-dom@17.0.2 
+- react-query@3.39.2
 
-IMPORTANT NOTE:  To build the package, they must be defined as peerDependencies to avoid dependency conflicts in the
-consumer projects.
-
-You will need access to a sub-widget repository to run the HierarchyWidgetOLS (and the entire project) in development mode.
-Please contact the SemLookP or TS4NFDI teams. We are working on avoiding this hurdle in the future.
+```
+npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2
+```
 
 ### Authenticate
 
@@ -48,7 +49,6 @@ token (classic). You need to have access to a ZB MED project for developing the 
 team.
 
 ```
-@zbmed:registry=https://npm.pkg.github.com
 @ts4nfdi:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=TOKEN
 ```

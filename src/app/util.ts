@@ -111,6 +111,10 @@ export function isEuiLinkColor(str: string) : str is EuiLinkColor {
     return ["primary", "subdued", "success", "accent", "danger", "warning", "text", "ghost"].includes(str);
 }
 
+export function isEuiButtonColor(str: string) : str is EuiLinkColor {
+    return ["text", "accent", "primary", "success", "warning", "danger"].includes(str);
+}
+
 export function getErrorMessageToDisplay(error: any, messagePlaceholder = "information"): string {
     const error_msg : string = error.message;
     if(error_msg === ("Response contains 0 elements")) {

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {EuiFlexItem, EuiLink, EuiProvider, EuiButtonIcon} from "@elastic/eui";
 import {IriWidgetProps} from "../../../../app/types";
-import {isEuiLinkColor, isHexColor, isRgbColor} from "../../../../app/util";
+import { isEuiButtonColor, isEuiLinkColor, isHexColor, isRgbColor } from "../../../../app/util";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
 
@@ -19,7 +19,7 @@ function IriWidget(props: IriWidgetProps) {
           iconType="copy"                       
           key={"copy-btn"}
           style={{marginLeft: "5px", marginRight: "5px", color: color && (isHexColor(color) || isRgbColor(color)) ? color : ""}} 
-          color={color && isEuiLinkColor(color) ? color : undefined}
+          color={color && isEuiButtonColor(color) ? color : undefined}
           onClick={() => {                  
             navigator.clipboard.writeText(iriUrl);
             setCopied(true);
