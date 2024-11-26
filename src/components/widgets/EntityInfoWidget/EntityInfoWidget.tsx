@@ -52,9 +52,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>Synonyms:</b>
                         {entity.getSynonyms().length > 1 ?
-                            <ul>{entity.getSynonyms().map((synonym) => {
+                            <><ul>{entity.getSynonyms().map((synonym) => {
                                 return <li key={randomString()} id={synonym.value}>{getReifiedJSX(entity, synonym, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>;
-                            })}</ul> :
+                            })}</ul><p></p></> :
                             <p>{getReifiedJSX(entity, entity.getSynonyms()[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
                         }
                     </EuiFlexItem></>
@@ -71,10 +71,21 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>Has Key:</b>
                         {keys.length > 1 ?
-                            <ul>{keys.map((keys) => {
-                                return <li key={randomString()}>{getClassExpressionJSX(term, term.getLinkedEntities(), keys, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>
-                            })}</ul> :
-                            <p>{getClassExpressionJSX(term, term.getLinkedEntities(), keys[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
+                          <>
+                              <ul>{keys.map((keys) => {
+                                  return <li
+                                    key={randomString()}>{getClassExpressionJSX(term, term.getLinkedEntities(), keys, showBadges, {
+                                      onNavigateToEntity: props.onNavigateToEntity,
+                                      onNavigateToOntology: props.onNavigateToOntology,
+                                      onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                                  })}</li>;
+                              })}</ul>
+                              <p></p></> :
+                          <p>{getClassExpressionJSX(term, term.getLinkedEntities(), keys[0], showBadges, {
+                              onNavigateToEntity: props.onNavigateToEntity,
+                              onNavigateToOntology: props.onNavigateToOntology,
+                              onNavigateToDisambiguate: props.onNavigateToDisambiguate
+                          })}</p>
                         }
                     </EuiFlexItem></>
                 }
@@ -89,9 +100,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>In Subsets:</b>
                         {term.getSubsets().length > 1 ?
-                            <ul>{term.getSubsets().map((subset) => {
+                            <><ul>{term.getSubsets().map((subset) => {
                                 return <li key={randomString()} id={subset + randomString()}>{getEntityLinkJSX(term, term.getLinkedEntities(), subset, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>
-                            })}</ul> :
+                            })}</ul><p></p></> :
                             <p>{getEntityLinkJSX(term, term.getLinkedEntities(), term.getSubsets()[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
                         }
                     </EuiFlexItem></>
@@ -119,10 +130,10 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>Characteristics:</b>
                         {characteristics.length > 1 ?
-                            <ul>{characteristics.map((characteristic) => {
+                            <><ul>{characteristics.map((characteristic) => {
                                 return <li key={randomString()}>{characteristic}</li>
                             })
-                                .sort()}</ul> :
+                              .sort()}</ul><p></p></> :
                             <p>{characteristics[0]}</p>
                         }
                     </EuiFlexItem></>
@@ -139,9 +150,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>Domain:</b>
                         {domains.length > 1 ?
-                            <ul>{domains.map((domains) => {
+                            <><ul>{domains.map((domains) => {
                                 return <li key={randomString()}>{getClassExpressionJSX(property, property.getLinkedEntities(), domains, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>
-                            })}</ul> :
+                            })}</ul><p></p></> :
                             <p>{getClassExpressionJSX(property, property.getLinkedEntities(), domains[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
                         }
                     </EuiFlexItem></>
@@ -158,9 +169,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <EuiFlexItem>
                         <b>Range:</b>
                         {ranges.length > 1 ?
-                            <ul>{ranges.map((ranges) => {
+                            <><ul>{ranges.map((ranges) => {
                                 return <li key={randomString()}>{getClassExpressionJSX(property, property.getLinkedEntities(), ranges, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>
-                            })}</ul> :
+                            })}</ul><p></p></> :
                             <p>{getClassExpressionJSX(property, property.getLinkedEntities(), ranges[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
                         }
                     </EuiFlexItem>
@@ -257,10 +268,10 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <><EuiFlexItem>
                         <b>Property assertions:</b>
                         {propertyAssertions.length > 1 ?
-                            <ul>{propertyAssertions.map((pa) => {
+                            <><ul>{propertyAssertions.map((pa) => {
                                 return <li key={randomString()}>{pa}</li>
                             })
-                                .sort()}</ul> :
+                              .sort()}</ul><p></p></> :
                             <p>{propertyAssertions[0]}</p>
                         }
                     </EuiFlexItem></>
@@ -272,19 +283,20 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     function getAnnotationSection(thing: Thing) : ReactElement {
         return (
             <>
-                {thing.getAnnotationPredicates().map((annoKey) => {
+                {thing.getAnnotationPredicates().map((annoKey, index, arr) => {
                     const annos = thing.getAnnotationById(annoKey);
                     if(annos.length == 0) return <></>;
 
-                    return <EuiFlexItem grow={false} key={annoKey}>
+                    return <><EuiFlexItem grow={false} key={annoKey}>
                         <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
                         {annos.length > 1 ?
-                            <ul>{annos.map((annotation) => {
+                            <><ul>{annos.map((annotation) => {
                                 return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</li>;
-                            })}</ul> :
+                            })}</ul><p></p></> :
                             <p key={randomString()}>{getReifiedJSX(thing, annos[0], showBadges, {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate})}</p>
                         }
                     </EuiFlexItem>
+                    </>
                     }
                 )}
             </>
@@ -303,7 +315,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     <EuiText {...rest}>
                         {getLabelSection(entity)}
                         {getSynonymsSection(entity)}
-
                         {isClass(entity) &&
                             <>
                                 {getSubsetsSection(entity)}
@@ -324,7 +335,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                                 {getIndividualPropertyAssertionsSection(entity)}
                             </>
                         }
-
                         {getAnnotationSection(entity)}
                     </EuiText>
                 }

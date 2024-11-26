@@ -172,8 +172,11 @@ export class Hierarchy {
                 const parChildRel: ParentChildRelation[] = [];
                 for(const child of children){
                     this.entitiesData.set(child.iri, child);
-                    const parRelation = child.parents.filter((par) => par.value == nodeToExpand.entityData.iri); // should have exactly one element
-                    parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                    if (child.parents) {
+                        const parRelation = child.parents.filter((par) => par.value == nodeToExpand.entityData.iri);
+                        parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                    } // should have exactly one element
+
                 }
                 this.parentChildRelations.set(nodeToExpand.entityData.iri, parChildRel);
             }

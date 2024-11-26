@@ -121,9 +121,9 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
               <><EuiFlexItem>
                 <b>Creators:</b>
                 {ontology.getCreators().length > 1 ?
-                    <ul>{ontology.getCreators().map((creator) => {
+                    <><ul>{ontology.getCreators().map((creator) => {
                       return <li key={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, showBadges, onNavigates)}</li>
-                    })}</ul> :
+                    })}</ul><p></p></> :
                     <p>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), ontology.getCreators()[0], showBadges, onNavigates)}</p>
                 }
               </EuiFlexItem><EuiSpacer/></>
@@ -142,13 +142,16 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                 return <EuiFlexItem grow={false} key={annoKey}>
                   <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
                   {annos.length > 1 ?
+                    <>
                       <ul>{annos.map((annotation) => {
-                        return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, showBadges, onNavigates)}</li>;
-                      })}</ul> :
-                      <p key={randomString()}>{getReifiedJSX(thing, annos[0], showBadges, onNavigates)}</p>
+                        return <li key={randomString()}
+                                   id={annotation.value}>{getReifiedJSX(thing, annotation, showBadges, onNavigates)}</li>;
+                      })}</ul>
+                      <p></p></> :
+                    <p key={randomString()}>{getReifiedJSX(thing, annos[0], showBadges, onNavigates)}</p>
                   }
                 </EuiFlexItem>
-              }
+            }
           )}
         </>
     );
