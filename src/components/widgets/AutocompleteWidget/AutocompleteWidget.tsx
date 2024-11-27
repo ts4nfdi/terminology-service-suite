@@ -300,7 +300,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any) {
-    console.log(item)
+
     return (
       item.getLabel() +
       " (" +
