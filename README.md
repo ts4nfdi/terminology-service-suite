@@ -1,4 +1,4 @@
-# SemLookP Widgets
+# Terminology Service Suite (TSS) Widgets
 
 Documentation: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
 React package: [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)<br>
@@ -6,7 +6,7 @@ JavaScript modules: [Latest](https://github.com/ts4nfdi/terminology-service-suit
 
 ## About The Project
 
-The SemLookP Widgets project, derived from the [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on
+The TSS Widgets project, derived from the [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on
 GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to
 ease the integration of terminology service functions into third-party applications.
 
@@ -32,11 +32,11 @@ package.
 
 To install the package for development, it's necessary to additionally install following peer dependencies:
 
-- @elastic/eui@97.3.1 
-- @emotion/react@11.13.5 
-- react@17.0.2 
-- react-dom@17.0.2 
-- react-query@3.39.2
+- @elastic/eui 
+- @emotion/react
+- react
+- react-dom
+- react-query
 
 ```
 npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2
@@ -53,7 +53,7 @@ team.
 //npm.pkg.github.com/:_authToken=TOKEN
 ```
 
-### Run Storybook
+### Run Storybook for development
 
 #### Manually
 
@@ -161,15 +161,29 @@ Do a `npm run build:plainJS` before testing the HTML Storybook.
 ### Commit Message Formatting
 
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline
-analyzes the commit messages and automatically performs a release depending on the format. Therefore, please format your
-commit messages according to https://www.conventionalcommits.org/en/v1.0.0/
+analyzes the commit messages and automatically performs a release depending on the format. 
+Release notes are automatically created from commit messages.  
+Therefore, please format your commit messages according to the [Angular Commit Message Conventions](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format)
 
 In short:
+
+**Commit message header** (mandatory): `<type>(<scope>): <short summary>`
+
+- Commit Type: build|ci|docs|feat|fix|perf|refactor|test
+- Scope (otpional): e.g. widget type (autocomplete, hierarchy, dataContent)
+- Summary: in present tense. Not capitalized. No period at the end.
+
+**Commit message body**: motivation for the change
+
+**Commit message footer**: information about breaking changes, deprecations, references to GitHub issues
+
 | Release type  | Commit message |
 | ------------- | ------------- |
 | Fix release  | fix(autocomplete): fix something   |
-| Feature relese  | feat(autocomplet): add suggest function  |
-| Breaking change  | BREAKING CHANGE: parameter removed  |
+| Feature relese  | feat(autocomplete): add suggest function  |
+| Breaking change  | feat(autocomplete): parameter removed <br> <br> BREAKING CHANGE: The parameter has been removed |
+
+(Note that the BREAKING CHANGE:  token must be in the footer of the commit)
 
 **HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
 
