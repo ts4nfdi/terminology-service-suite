@@ -26,7 +26,7 @@ export {
   AllowMultipleTerms,
   AllowAddingCustomTerms,
   WithGermanInput,
-  DisplaySelectedEntityWithLongForm,
+  WithLongForm,
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
   TibDataPlant

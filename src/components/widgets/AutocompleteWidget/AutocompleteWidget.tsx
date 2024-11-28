@@ -300,12 +300,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any) {
+
     return (
-      item.label +
+      item.getLabel() +
       " (" +
-      item.ontology_name.toUpperCase() +
+      item.getOntologyId().toUpperCase() +
       " " +
-      item.short_form +
+      item.getShortForm() +
       ")"
     );
   }

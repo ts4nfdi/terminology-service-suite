@@ -60,6 +60,6 @@ export {
     AllowMultipleTerms,
     AllowAddingCustomTerms,
     WithGermanInput,
-    DisplaySelectedEntityWithLongForm,
+    WithLongForm,
     WithDescriptionAndShortForm
 } from "./AutocompleteWidgetStories"

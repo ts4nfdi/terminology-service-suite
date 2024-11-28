@@ -137,7 +137,7 @@ export const WithDescriptionAndShortForm = {
   }
 };
 
-export const DisplaySelectedEntityWithLongForm = {
+export const WithLongForm = {
   args: {
     hasShortSelectedLabel: false
   }
