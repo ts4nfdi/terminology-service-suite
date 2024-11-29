@@ -94,43 +94,48 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       );
     };
 
-    const renderEntityWithDescription = () => {
+    const renderEntity = () => {
       return (
-        <span title={hoverText} style={{ height: 200 + "px" }}>
-            <EuiHealth
-              color={dotColor}>
-                <span>
-                    <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <BreadcrumbPresentation
-                    ontologyName={value.ontology_name}
-                    shortForm={value.short_form}
-                    colorFirst={"primary"}
-                    colorSecond={"success"}
-                  />
-                  <EuiIcon
-                    type={"iInCircle"}
-                    style={{ marginLeft: 5 }}
-                    title={hoverText}
-                  />
-                  {!singleSuggestionRow && value.description &&
-                      <>
-                      <br />
-                      {value.description.substring(0, 40) + "..."}
-                      </>
-                  }
-                </span>
+        <span
+          title={hoverText}
+        >
+            <EuiHealth color={dotColor}>
+              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
             </EuiHealth>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <BreadcrumbPresentation
+              ontologyName={value.ontology_name}
+              shortForm={value.short_form}
+              colorFirst={"primary"}
+              colorSecond={"success"}
+            />
+            <EuiIcon
+              type={"iInCircle"}
+              style={{ marginLeft: "5px" }}
+              title={hoverText}
+            />
+          {!singleSuggestionRow && value.description && (
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "block",
+              }}
+            >
+              {value.description}
+            </span>
+          )}
         </span>
       );
-    };
+};
 
-    return value.type === "ontology" ? renderOntology() : renderEntityWithDescription();
+    return value.type === "ontology" ? renderOntology() : renderEntity();
   };
 
-    /**
-     * on mount: fetches term for preselected
-     * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
+  /**
+   * on mount: fetches term for preselected
+   * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
      * only if allowCustomTerms is true
      */
     const {
