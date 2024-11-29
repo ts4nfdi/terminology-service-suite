@@ -111,16 +111,20 @@ function MetadataWidget(props: MetadataWidgetProps) {
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
+          {data.entity.getDescription() &&
           <EuiFlexItem style={{ maxWidth: 600 }}>
             <DescriptionPresentation
               description={data.entity.getDescription()}
             />
           </EuiFlexItem>
+          }
 
+          {data.ontoList && data.ontoList.length > 0 &&
           <div style={{margin: "0 12px 0", maxWidth: 600 }}>
               <EntityOntoListPresentation iri={props.iri} label={data.entity.getLabel() || ""} ontolist={data.ontoList} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
               <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} label={data.entity.getLabel() || ""} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
           </div>
+          }
 
           <EuiFlexItem>
               <TabPresentation
