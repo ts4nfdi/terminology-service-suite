@@ -36,6 +36,7 @@ window['SemLookPWidgets'].createAutocomplete(
         ts4nfdiGateway:${args.ts4nfdiGateway},
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
+        subTreeIris: "${args.subTreeIris}",
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -61,5 +62,6 @@ export {
     AllowAddingCustomTerms,
     WithGermanInput,
     WithLongForm,
-    WithDescriptionAndShortForm
+    WithDescriptionAndShortForm,
+    SubTreeFiltering
 } from "./AutocompleteWidgetStories"

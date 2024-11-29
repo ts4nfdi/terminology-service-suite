@@ -30,6 +30,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     placeholder,
     singleSelection,
     singleSuggestionRow,
+    subTreeIris,
     ts4nfdiGateway = false,
     showApiSource = true,
     ...rest
@@ -39,6 +40,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
   const visColors = euiPaletteColorBlind();
   const visColorsBehindText = euiPaletteColorBlindBehindText();
+  
+  
 
   /**
    * The current search value
@@ -54,6 +57,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
+  /** 
+   * update the input url parameter in case a list of iris for subtree filtering is given.
+   * */
+  const updatedParameter = subTreeIris ? (parameter + `&childrenOf=${subTreeIris}`) : parameter;
+  
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -157,7 +166,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             {query: option.iri},
                             undefined,
                             undefined,
-                            parameter,
+                            updatedParameter,
 
                             ts4nfdiGateway
                         ).then((response) => {
@@ -227,7 +236,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           { query: searchValue },
           undefined,
           undefined,
-          parameter,
+          updatedParameter,
           ts4nfdiGateway
         ).then((response) => {
           if (response) {
@@ -378,6 +387,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
+          subTreeIris={props.subTreeIris}
         />
       </QueryClientProvider>
     </EuiProvider>
