@@ -1,5 +1,6 @@
 import { Thing } from "./";
 import Reified from "../Reified";
+import {EntityTypeName} from "../ModelTypeCheck";
 
 export interface Entity extends Thing {
     getParents(): Reified<any>[];
@@ -20,6 +21,7 @@ export interface Entity extends Thing {
     getSynonyms(): Reified<any>[];
     getAppearsIn(): string[];
     getDefinedBy(): string[];
+    getType(): EntityTypeName
     getShortForm(): string;
     getDepictedBy(): Reified<string>[];
     isPredicateFromInformalVocabulary(predicate: string): boolean;

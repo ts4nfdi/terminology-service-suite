@@ -583,3 +583,13 @@ export type OlsGraphEdge = {
     target?: string
   }
 }
+
+type EntityTypeNums = {
+  numClasses: number,
+  numProperties: number,
+  numIndividuals: number
+}
+
+export type HierarchyGraphWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & OptionalIriObj & TermParameterObj & UseLegacyObj & BuildHierarchyProps & OnNavigates & {
+  rootWalk?: boolean
+};
