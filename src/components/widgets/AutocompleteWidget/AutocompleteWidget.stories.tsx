@@ -1,5 +1,4 @@
 import { AutocompleteWidget } from "./AutocompleteWidget";
-import "@elastic/eui/dist/eui_theme_light.json";
 import {
   AutocompleteWidgetStoryArgTypes,
   AutocompleteWidgetStoryArgsReact

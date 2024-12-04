@@ -8,7 +8,6 @@ export const parameters = {
   },
 };
 
-import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
@@ -16,11 +15,9 @@ const queryClient = new QueryClient();
 export const decorators = [
   (Story) => (
     <>
-      <EuiProvider colorMode="light">
         <QueryClientProvider client={queryClient}>
           {Story()}
         </QueryClientProvider>
-      </EuiProvider>
     </>
   ),
 ];

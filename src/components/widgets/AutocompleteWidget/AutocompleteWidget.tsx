@@ -9,7 +9,6 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiProvider,
   EuiIcon
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -363,7 +362,6 @@ function createAutocomplete(props: AutocompleteWidgetProps, container: any, call
 function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <AutocompleteWidget
           api={props.api}
@@ -379,7 +377,6 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           showApiSource={props.showApiSource}
         />
       </QueryClientProvider>
-    </EuiProvider>
   );
 }
 
