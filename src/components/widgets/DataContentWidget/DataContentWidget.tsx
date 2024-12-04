@@ -47,12 +47,38 @@ function DataContentWidget(props: DataContentWidgetProps) {
           css={{
             ...fontReset,
             color: euiTheme.colors.text,
+            padding: "16px",
+            ".euiCard__title": {
+              marginTop: "4px",
+              marginBottom: "-0.4em",
+            },
         }}
           title="Data Content"
-          description={dataUpdatedAt ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}` : ""}
+          description={
+          <div
+            style={{
+              fontSize: "0.9em",
+              marginBottom: "0.4em"
+          }}
+          >
+            {dataUpdatedAt ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}` : ""}
+          </div>
+        }
           layout="horizontal"
         >
-          <EuiText {...rest}>
+          <EuiText
+            {...rest}
+            css={{
+              ul: {
+                paddingLeft: "25px",
+                margin: 0,
+              },
+              li: {
+                marginBottom: "4px",
+                fontSize: "1.2em",
+              },
+            }}
+          >
             {(isError) && <EuiText>No data content available</EuiText>}
             {isLoading
               ? <EuiLoadingSpinner size="s" />
