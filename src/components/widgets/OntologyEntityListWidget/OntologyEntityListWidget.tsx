@@ -25,6 +25,7 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
     } = useQuery(
         [props],
         async () => {
+            // TODO: NumClasses etc. on ontology response do not correspond to NumClasses on /classes api route. This causes a pagination bug. Why is that?
             const response = await olsApi.getOntologyObject(props.ontologyId, undefined, props.useLegacy)
 
             // reset pagination
@@ -67,18 +68,6 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
             return olsApi.getEntityObjects(props.entityType, props.ontologyId, `page=${pageIndex}&size=${pageSize}`, props.useLegacy)
         });
 
-    const resultsCount =
-        pageSize === 0 ? (
-            <strong>All</strong>
-            ) : (
-                <>
-                    <strong>
-                        {pageSize * pageIndex + 1}-{pageSize * pageIndex + pageSize}
-                    </strong>{' '}
-                    of {totalItemCount}
-                </>
-        )
-
     function renderEntities(entities: Entity[], totalItemCount: number) {
         const pagination = {
             pageIndex,
@@ -88,7 +77,20 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
             showPerPageOptions: true
         }
 
+        const resultsCount =
+            pageSize === 0 ? (
+                <strong>All</strong>
+            ) : (
+                <>
+                    <strong>
+                        {pageSize * pageIndex + 1}-{Math.min(pageSize * pageIndex + pageSize, totalItemCount)}
+                    </strong>{' '}
+                    of {totalItemCount}
+                </>
+            )
+
         return <>
+            <EuiSpacer size="xl" />
             <EuiText size="xs">
                 Showing {resultsCount} <strong>{capitalize(pluralizeType(props.entityType, props.useLegacy))}</strong>
             </EuiText>

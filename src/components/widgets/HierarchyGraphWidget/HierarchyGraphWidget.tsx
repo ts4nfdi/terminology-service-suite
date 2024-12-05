@@ -14,6 +14,7 @@ import {
     isOntologyTypeName, propertyTypeNames
 } from "../../../model/ModelTypeCheck";
 import {Ontology} from "../../../model/interfaces";
+import {OntologyEntityListWidget} from "../OntologyEntityListWidget";
 
 function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) {
     const classTabs = [
@@ -36,7 +37,12 @@ function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) 
         {
             name: "List",
             id: "classList",
-            content: <></>
+            content: <OntologyEntityListWidget
+                api={props.api}
+                entityType={classTypeNames[0]}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                useLegacy={props.useLegacy}
+            />
         }
     ];
 
@@ -60,7 +66,12 @@ function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) 
         {
             name: "List",
             id: "propertyList",
-            content: <></>
+            content: <OntologyEntityListWidget
+                api={props.api}
+                entityType={propertyTypeNames[0]}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                useLegacy={props.useLegacy}
+            />
         }
     ];
 
@@ -85,7 +96,12 @@ function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) 
         {
             name: "List",
             id: "individualList",
-            content: <></>
+            content: <OntologyEntityListWidget
+                api={props.api}
+                entityType={individualTypeNames[0]}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                useLegacy={props.useLegacy}
+            />
         }
     ];
 

@@ -601,4 +601,4 @@ export type HierarchyGraphWidgetProps = ApiObj & OptionalEntityTypeObj & Optiona
   rootWalk?: boolean
 };
 
-export type OntologyEntityListWidgetProps = ApiObj & EntityTypeObj & ForcedOntologyIdObj & UseLegacyObj & ParameterObj;
+export type OntologyEntityListWidgetProps = ApiObj & EntityTypeObj & ForcedOntologyIdObj & UseLegacyObj;

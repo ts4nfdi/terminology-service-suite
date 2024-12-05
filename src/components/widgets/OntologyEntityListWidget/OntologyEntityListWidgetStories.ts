@@ -17,9 +17,6 @@ export const OntologyEntityListWidgetStoryArgTypes =  {
         ],
     },
     ontologyId: {},
-    parameter: {
-        type: { required: false }
-    },
     entityType: {
         type: { required: false },
         table: {
@@ -43,7 +40,6 @@ export const OntologyEntityListWidgetStoryArgTypes =  {
 
 export const OntologyEntityListWidgetStoryArgs = {
     api: "",
-    parameter: "",
     useLegacy: true,
     ontologyId: "",
     entityType: "",
