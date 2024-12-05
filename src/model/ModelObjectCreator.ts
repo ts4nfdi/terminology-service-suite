@@ -1,10 +1,18 @@
 import { OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual } from "./ols3-model";
-import { OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual } from "./ols4-model";
+import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual, OLS4Ontologies} from "./ols4-model";
 import { Thing } from "./interfaces";
 import { ThingTypeName } from "./ModelTypeCheck";
 import { asArray, inferTypeFromTypeArray } from "../app/util";
 
 export function createModelObject(response: any) {
+  return createModelObjectProcedure(response) as Thing;
+}
+
+export function createModelObjects(response: any) {
+  return createModelObjectProcedure(response, true) as Thing[];
+}
+
+function createModelObjectProcedure(response: any, fetchAll = false) {
   let useLegacy: boolean;
   if (response["_embedded"] !== undefined || response["numberOfTerms"] !== undefined) useLegacy = true;
   else if (response["elements"] !== undefined || response["numberOfClasses"] !== undefined) useLegacy = false;
@@ -34,23 +42,43 @@ export function createModelObject(response: any) {
 
   if (entityType === undefined) throw Error("Entity type could not be correctly inferred.");
 
-  return createModelObjectWithEntityTypeWithUseLegacy(response, entityType, useLegacy);
+  return createModelObjectWithEntityTypeWithUseLegacy(response, entityType, useLegacy, fetchAll);
 }
 
-function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType: string, useLegacy: boolean): Thing {
+function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType: string, useLegacy: boolean, fetchAll: boolean): Thing | Thing[] {
   switch (entityType) {
     case "ontology":
-      return useLegacy ? new OLS3Ontology(response) : new OLS4Ontology(response);
+      if(fetchAll) {
+        return useLegacy ?
+            asArray(response["embedded"]["ontologies"]).map((elem) => new OLS3Ontology(elem)) :
+            asArray(response["elements"]).map((elem) => new OLS4Ontology(elem));
+      }
+      else return useLegacy ? new OLS3Ontology(response) : new OLS4Ontology(response);
 
     case "term":
     case "class": // allow BOTH, even if it should actually be "term"
-      return useLegacy ? new OLS3Class(getPreferredOntologyJSON(asArray(response["_embedded"]["terms"]), useLegacy)) : new OLS4Class(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
+      if(fetchAll) {
+        return useLegacy ?
+            asArray(response["embedded"]["terms"]).map((elem) => new OLS3Class(elem)) :
+            asArray(response["elements"]).map((elem) => new OLS4Class(elem));
+      }
+      else return useLegacy ? new OLS3Class(getPreferredOntologyJSON(asArray(response["_embedded"]["terms"]), useLegacy)) : new OLS4Class(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
     case "property":
-      return useLegacy ? new OLS3Property(getPreferredOntologyJSON(asArray(response["_embedded"]["properties"]), useLegacy)) : new OLS4Property(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
+      if(fetchAll) {
+        return useLegacy ?
+            asArray(response["embedded"]["properties"]).map((elem) => new OLS3Property(elem)) :
+            asArray(response["elements"]).map((elem) => new OLS4Property(elem));
+      }
+      else return useLegacy ? new OLS3Property(getPreferredOntologyJSON(asArray(response["_embedded"]["properties"]), useLegacy)) : new OLS4Property(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
     case "individual":
-      return useLegacy ? new OLS3Individual(getPreferredOntologyJSON(asArray(response["_embedded"]["individuals"]), useLegacy)) : new OLS4Individual(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
+      if(fetchAll) {
+        return useLegacy ?
+            asArray(response["embedded"]["individuals"]).map((elem) => new OLS3Individual(elem)) :
+            asArray(response["elements"]).map((elem) => new OLS4Individual(elem));
+      }
+      else return useLegacy ? new OLS3Individual(getPreferredOntologyJSON(asArray(response["_embedded"]["individuals"]), useLegacy)) : new OLS4Individual(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
 
     default:
       throw Error('Invalid entity type "' + entityType + '". Must be one of {"term", "class", "ontology", "property", "individual"}');

@@ -87,6 +87,13 @@ type OptionalEntityTypeObj = {
   entityType?: EntityTypeName;
 };
 
+type EntityTypeObj = {
+  /**
+   * Sets the type of the entity whose information you want to fetch.
+   */
+  entityType: EntityTypeName;
+};
+
 type OptionalOntologyIdObj = {
   /**
    * Select a specific ontology by id
@@ -593,3 +600,5 @@ type EntityTypeNums = {
 export type HierarchyGraphWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & OptionalIriObj & TermParameterObj & UseLegacyObj & BuildHierarchyProps & OnNavigates & {
   rootWalk?: boolean
 };
+
+export type OntologyEntityListWidgetProps = ApiObj & EntityTypeObj & ForcedOntologyIdObj & UseLegacyObj & ParameterObj;

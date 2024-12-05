@@ -13,8 +13,105 @@ import {
     isOntology,
     isOntologyTypeName, propertyTypeNames
 } from "../../../model/ModelTypeCheck";
+import {Ontology} from "../../../model/interfaces";
 
-//TODO: update props
+function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) {
+    const classTabs = [
+        {
+            name: "Hierarchy",
+            id: "classHierarchy",
+            content: <HierarchyWidget
+                // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                apiUrl={props.api}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                entityType={classTypeNames[0]}
+                useLegacy={props.useLegacy}
+                onNavigateToEntity={props.onNavigateToEntity}
+                onNavigateToOntology={props.onNavigateToOntology}
+                preferredRoots={props.preferredRoots}
+                showSiblingsOnInit={props.showSiblingsOnInit}
+                keepExpansionStates={props.keepExpansionStates}
+            />
+        },
+        {
+            name: "List",
+            id: "classList",
+            content: <></>
+        }
+    ];
+
+    const propertyTabs = [
+        {
+            name: "Hierarchy",
+            id: "propertyHierarchy",
+            content: <HierarchyWidget
+                // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                apiUrl={props.api}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                entityType={propertyTypeNames[0]}
+                useLegacy={props.useLegacy}
+                onNavigateToEntity={props.onNavigateToEntity}
+                onNavigateToOntology={props.onNavigateToOntology}
+                preferredRoots={props.preferredRoots}
+                showSiblingsOnInit={props.showSiblingsOnInit}
+                keepExpansionStates={props.keepExpansionStates}
+            />
+        },
+        {
+            name: "List",
+            id: "propertyList",
+            content: <></>
+        }
+    ];
+
+    const individualTabs = [
+        {
+            name: "Hierarchy",
+            disabled: true, // permanently disabled as long as HierarchyWidget is not featured for individuals
+            id: "individualHierarchy",
+            content: <HierarchyWidget
+                // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                apiUrl={props.api}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                entityType={individualTypeNames[0]}
+                useLegacy={props.useLegacy}
+                onNavigateToEntity={props.onNavigateToEntity}
+                onNavigateToOntology={props.onNavigateToOntology}
+                preferredRoots={props.preferredRoots}
+                showSiblingsOnInit={props.showSiblingsOnInit}
+                keepExpansionStates={props.keepExpansionStates}
+            />
+        },
+        {
+            name: "List",
+            id: "individualList",
+            content: <></>
+        }
+    ];
+
+    const ontologyTabs = [
+        {
+            name: `Classes (${data.getNumClasses().toLocaleString()})`,
+            disabled: data.getNumClasses() == 0,
+            id: "classes",
+            content: <EuiTabbedContent size="s" tabs={classTabs}/>
+        },
+        {
+            name: `Properties (${data.getNumProperties().toLocaleString()})`,
+            disabled: data.getNumProperties() == 0,
+            id: "properties",
+            content: <EuiTabbedContent size="s" tabs={propertyTabs}/>
+        },
+        {
+            name: `Individuals (${data.getNumIndividuals().toLocaleString()})`,
+            disabled: data.getNumIndividuals() == 0,
+            id: "individuals",
+            content: <EuiTabbedContent size="s" tabs={individualTabs} initialSelectedTab={individualTabs[1]}/>
+        }
+    ]
+
+    return <EuiTabbedContent size="l" tabs={ontologyTabs} initialSelectedTab={ontologyTabs[2]}/>
+}
 
 function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
 
@@ -27,7 +124,7 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
         isError,
         error
     } = useQuery(
-        [props.ontologyId, props.api, props.useLegacy],
+        [props],
         async () => {
             if(props.ontologyId && props.entityType && isOntologyTypeName(props.entityType)) {
                 return await olsApi.getOntologyObject(props.ontologyId, props.parameter, props.useLegacy);
@@ -54,7 +151,7 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
                                 [
                                     {
                                         name: "Hierarchy",
-                                        id: "hierarchy",
+                                        id: "entityHierarchy",
                                         content: <HierarchyWidget
                                             // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
                                             apiUrl={props.api}
@@ -71,7 +168,7 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
                                     },
                                     {
                                         name: "Graph",
-                                        id: "graph",
+                                        id: "entityGraph",
                                         content: <GraphViewWidget
                                             api={props.api}
                                             iri={props.iri || data.getIri()}
@@ -84,64 +181,8 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
                         </>
                     }
                     {isOntology(data) &&
-                        // Ontology widget TODO: add lists tab
-                        <>
-                            <EuiTabbedContent size="l" tabs={
-                                [
-                                    {
-                                        name: `Classes (${data.getNumClasses().toLocaleString()})`,
-                                        disabled: data.getNumClasses() == 0,
-                                        id: "classes",
-                                        content: <HierarchyWidget
-                                            // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
-                                            apiUrl={props.api}
-                                            ontologyId={props.ontologyId || data.getOntologyId()}
-                                            entityType={classTypeNames[0]}
-                                            useLegacy={props.useLegacy}
-                                            onNavigateToEntity={props.onNavigateToEntity}
-                                            onNavigateToOntology={props.onNavigateToOntology}
-                                            preferredRoots={props.preferredRoots}
-                                            showSiblingsOnInit={props.showSiblingsOnInit}
-                                            keepExpansionStates={props.keepExpansionStates}
-                                        />
-                                    },
-                                    {
-                                        name: `Properties (${data.getNumProperties().toLocaleString()})`,
-                                        disabled: data.getNumProperties() == 0,
-                                        id: "properties",
-                                        content: <HierarchyWidget
-                                            // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
-                                            apiUrl={props.api}
-                                            ontologyId={props.ontologyId || data.getOntologyId()}
-                                            entityType={propertyTypeNames[0]}
-                                            useLegacy={props.useLegacy}
-                                            onNavigateToEntity={props.onNavigateToEntity}
-                                            onNavigateToOntology={props.onNavigateToOntology}
-                                            preferredRoots={props.preferredRoots}
-                                            showSiblingsOnInit={props.showSiblingsOnInit}
-                                            keepExpansionStates={props.keepExpansionStates}
-                                        />
-                                    },
-                                    {
-                                        name: `Individuals (${data.getNumIndividuals().toLocaleString()})`,
-                                        disabled: true || data.getNumIndividuals() == 0, // TODO: Currently always disabled due to individual hierarchy not working to date
-                                        id: "individuals",
-                                        content: <HierarchyWidget
-                                            // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
-                                            apiUrl={props.api}
-                                            ontologyId={props.ontologyId || data.getOntologyId()}
-                                            entityType={individualTypeNames[0]}
-                                            useLegacy={props.useLegacy}
-                                            onNavigateToEntity={props.onNavigateToEntity}
-                                            onNavigateToOntology={props.onNavigateToOntology}
-                                            preferredRoots={props.preferredRoots}
-                                            showSiblingsOnInit={props.showSiblingsOnInit}
-                                            keepExpansionStates={props.keepExpansionStates}
-                                        />
-                                    }
-                                ]
-                            }/>
-                        </>
+                        // Ontology widget
+                        renderOntologyWidget(props, data)
                     }
                 </>
             }

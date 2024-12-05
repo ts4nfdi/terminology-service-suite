@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { asArray, getEntityInOntologySuffix, getUseLegacy, pluralizeType } from "../app/util";
-import { createModelObject } from "../model/ModelObjectCreator";
+import {createModelObject, createModelObjects} from "../model/ModelObjectCreator";
 import { Ontology, Ontologies, Entity, Thing, Individual } from "../model/interfaces";
 import { OLS3Ontologies, OLS3Ontology } from "../model/ols3-model";
 import {
@@ -428,14 +428,12 @@ export class OlsApi implements HierarchyBuilder {
    * @param parameter
    * @param useLegacy affects how entityType is inferred if not provided
    */
-  public async getEntityResponse(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<any> {
+  public async getEntityResponse(iri?: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<any> {
     let response;
-    if (!iri) throw Error('No IRI provided');
-
-    if (entityType) {
-      response = await this.getEntityWithEntityTypeProvided(iri, entityType, ontologyId, parameter, useLegacy);
+    if (entityType && (iri ||  ontologyId)) {
+      response = await this.getEntityWithEntityTypeProvided(entityType, iri, ontologyId, parameter, useLegacy);
     }
-    else {
+    else if (iri) {
       if (getUseLegacy(useLegacy)) {
         response = await this.getEntityWithInferredEntityType(iri, ontologyId, parameter);
       }
@@ -443,6 +441,7 @@ export class OlsApi implements HierarchyBuilder {
         response = await this.getEntity(undefined, undefined, { ontologyId: ontologyId, termIri: iri }, parameter, useLegacy);
       }
     }
+    else throw Error('Either IRI or both ontologyId and entityType have to be provided.');
 
     return response;
   }
@@ -459,6 +458,10 @@ export class OlsApi implements HierarchyBuilder {
    */
   public async getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<Entity> {
     return createModelObject(await this.getEntityResponse(iri, entityType, ontologyId, parameter, useLegacy)) as Entity;
+  }
+
+  public async getEntityObjects(entityType: EntityTypeName, ontologyId: string, parameter?: string, useLegacy?: boolean): Promise<Entity[]> {
+    return createModelObjects(await this.getEntityResponse(undefined, entityType, ontologyId, parameter, useLegacy)) as Entity[];
   }
 
   /**
@@ -498,7 +501,7 @@ export class OlsApi implements HierarchyBuilder {
     }
   }
 
-  private async getEntityWithEntityTypeProvided(iri: string, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<any> {
+  private async getEntityWithEntityTypeProvided(entityType: EntityTypeName, iri?: string, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<any> {
     switch (entityType) {
       case 'term': case 'class': // also allow "class" even if it should actually be "term"
         return await this.getTerm(undefined, undefined, { ontologyId: ontologyId, termIri: iri }, parameter, useLegacy);
@@ -556,7 +559,7 @@ export class OlsApi implements HierarchyBuilder {
       ancestors = await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, useLegacy)}/ancestors`, { params: { size: "1000", includeObsoleteEntities: includeObsoleteEntities } }, useLegacy);
     }
     if (useLegacy) {
-      let listOfAncestorObj: Array<Entity> = [];
+      const listOfAncestorObj: Array<Entity> = [];
       let extractKey = "";
       switch (entityType) {
         case "class":
