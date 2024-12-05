@@ -6,8 +6,6 @@ import {EuiBasicTable, EuiHorizontalRule, EuiLoadingSpinner, EuiSpacer, EuiText}
 import {capitalize, getErrorMessageToDisplay, pluralizeType} from "../../../app/util";
 import {Entity} from "../../../model/interfaces";
 import {Criteria, EuiBasicTableColumn} from "@elastic/eui/src/components/basic_table/basic_table";
-import {isClassTypeName, isIndividualTypeName, isPropertyTypeName} from "../../../model/ModelTypeCheck";
-
 
 function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
@@ -15,27 +13,6 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-
-    const {
-        data: totalItemCount,
-        isLoadingTotalItemCount,
-        isSuccessTotalItemCount,
-        isErrorTotalItemCount,
-        errorTotalItemCount
-    } = useQuery(
-        [props],
-        async () => {
-            // TODO: NumClasses etc. on ontology response do not correspond to NumClasses on /classes api route. This causes a pagination bug. Why is that?
-            const response = await olsApi.getOntologyObject(props.ontologyId, undefined, props.useLegacy)
-
-            // reset pagination
-            setPageIndex(0);
-            setPageSize(10);
-
-            if(isClassTypeName(props.entityType)) return response.getNumClasses();
-            if(isPropertyTypeName(props.entityType)) return response.getNumProperties();
-            if(isIndividualTypeName(props.entityType)) return response.getNumIndividuals();
-        });
 
     const columns: EuiBasicTableColumn<Entity>[] = [
         {
@@ -50,11 +27,42 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
     const onTableChange = ({page}: Criteria<Entity>) => {
         if(page) {
-            const { index: pageIndex, size: pageSize } = page;
-            setPageIndex(pageIndex);
-            setPageSize(pageSize);
+            const { index, size } = page;
+
+            if(size != pageSize) {
+                const currStartEntity = pageSize * pageIndex + 1;
+
+                // set index so that it approximately starts with the same entities depicted before
+                const newIndex = Math.floor(currStartEntity / size);
+
+                setPageIndex(newIndex);
+                setPageSize(size);
+            }
+            else {
+                setPageIndex(index);
+            }
         }
     }
+
+    const {
+        data: totalItemCount,
+        isLoadingTotalItemCount,
+        isSuccessTotalItemCount,
+        isErrorTotalItemCount,
+        errorTotalItemCount
+    } = useQuery(
+        [props],
+        async () => {
+            // reset pagination
+            setPageIndex(0);
+            setPageSize(10);
+
+            const response = await olsApi.getEntityResponse(undefined, props.entityType, props.ontologyId, undefined, props.useLegacy)
+
+            const totalItems = props.useLegacy ? response["page"]["totalElements"] : response["totalElements"];
+
+            return totalItems;
+        });
 
     const {
         data: entities,
@@ -65,7 +73,8 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
     } = useQuery(
         [pageIndex, pageSize],
         async () => {
-            return olsApi.getEntityObjects(props.entityType, props.ontologyId, `page=${pageIndex}&size=${pageSize}`, props.useLegacy)
+            const response = await olsApi.getEntityObjects(props.entityType, props.ontologyId, `page=${pageIndex}&size=${pageSize}`, props.useLegacy);
+            return response;
         });
 
     function renderEntities(entities: Entity[], totalItemCount: number) {
@@ -83,7 +92,11 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
             ) : (
                 <>
                     <strong>
-                        {pageSize * pageIndex + 1}-{Math.min(pageSize * pageIndex + pageSize, totalItemCount)}
+                        {
+                            isLoading ?
+                                <EuiLoadingSpinner size="s"/> :
+                                <>{pageSize * pageIndex + 1}-{Math.min(pageSize * pageIndex + pageSize, totalItemCount)}</>
+                        }
                     </strong>{' '}
                     of {totalItemCount}
                 </>
@@ -102,10 +115,13 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
     return (
         <>
-            {isLoading && <EuiLoadingSpinner />}
-            {isError && <EuiText>{getErrorMessageToDisplay(error, "metadata")}</EuiText>}
-            {isSuccess && entities && totalItemCount &&
+            {(isLoading || isLoadingTotalItemCount) && <EuiLoadingSpinner />}
+            {(isError || isErrorTotalItemCount) && <EuiText>{getErrorMessageToDisplay(error || errorTotalItemCount, "metadata")}</EuiText>}
+            {entities != undefined && entities.length > 0 && totalItemCount != undefined &&
                 renderEntities(entities, totalItemCount)
+            }
+            {entities != undefined && entities.length == 0 &&
+                <EuiText>No entities found.</EuiText>
             }
         </>
     )
