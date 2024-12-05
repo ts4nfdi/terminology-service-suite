@@ -23,6 +23,16 @@ export default {
 <div id="autocomplete_widget_container_${num}"></div>
 
 <script type="text/javascript">
+document.querySelector('#autocomplete_widget_container_${num}').attachShadow({ mode: "open" });
+
+function addStylesheet(url, shadowRoot) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = url;
+  shadowRoot.appendChild(link);
+}
+
+
 window['SemLookPWidgets'].createAutocomplete(
     {
         api:"${args.api}",
@@ -37,8 +47,10 @@ window['SemLookPWidgets'].createAutocomplete(
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
     },
-    document.querySelector('#autocomplete_widget_container_${num}')
+    document.querySelector('#autocomplete_widget_container_${num}').shadowRoot
 )
+addStylesheet('https://unpkg.com/@elastic/eui@62.2.4/dist/eui_theme_light.css', document.querySelector('#autocomplete_widget_container_${num}').shadowRoot);
+
 </script>
         `
     },
