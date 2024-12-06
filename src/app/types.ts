@@ -206,6 +206,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
    * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
    */
   showApiSource?: boolean;
+  /**
+   * The API endpoint. Either search or select.
+   */
+  apiEndpoint?: "search" | "select";
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;

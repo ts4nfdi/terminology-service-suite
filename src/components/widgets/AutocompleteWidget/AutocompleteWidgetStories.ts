@@ -4,14 +4,16 @@ import { action } from "@storybook/addon-actions";
 import {
   allowCustomTermsArgType,
   apiArgType,
+  apiEndpointArgType,
   hasShortSelectedLabelArgType,
   parameterArgType,
   placeholderArgType,
   preselectedArgType,
-  selectionChangedEventArgType, showApiSourceArgType,
+  selectionChangedEventArgType,
+  showApiSourceArgType,
   singleSelectionArgType,
   singleSuggestionRowArgType,
-  ts4nfdiGatewayArgType
+  ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
@@ -26,7 +28,8 @@ export const AutocompleteWidgetStoryArgTypes = {
     ...singleSelectionArgType,
     ...ts4nfdiGatewayArgType,
     ...singleSuggestionRowArgType,
-    ...showApiSourceArgType
+    ...showApiSourceArgType,
+    ...apiEndpointArgType,
   }
 }
 
@@ -41,6 +44,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     placeholder: "Search for a Concept",
     preselected: [],
     showApiSource: true,
+    apiEndpoint: "select",
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -56,6 +60,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
     placeholder: "Search for a Concept",
     preselected: [],
     showApiSource: true,
+    apiEndpoint: "select",
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -173,5 +178,13 @@ export const TibDataPlant = {
   args: {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
+  }
+};
+
+export const SearchApiEndpoint = {
+  args: {
+    api: globals.ZBMED_API_ENDPOINT,
+    apiEndpoint: "search",
+    parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   }
 };
