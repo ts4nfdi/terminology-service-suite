@@ -33,6 +33,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ts4nfdiGateway = false,
     showApiSource = true,
     apiEndpoint = "select",
+    autosuggest = true,
     ...rest
   } = props;
 
@@ -47,14 +48,20 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const [searchValue, setSearchValue] = useState<string>("");
 
   /**
-   * The set of available options.s
+   * The set of available OLS API select endpoint options.
    */
   const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  const [searchOptions, setSearchOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
   /**
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+
+  /**
+   * The set of available OLS API search endpoint options.
+   */
+  const [allOptions, setAllOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -115,10 +122,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     title={hoverText}
                   />
                   {!singleSuggestionRow && value.description &&
-                      <>
+                    <>
                       <br />
                       {value.description.substring(0, 40) + "..."}
-                      </>
+                    </>
                   }
                 </span>
             </EuiHealth>
@@ -206,7 +213,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           }
         }
 
-        setOptions(preselectedValues);
+        if (autosuggest){
+          setAllOptions(() => {
+          const preselectedOptions = { label: "", options: preselectedValues};
+          return [preselectedOptions]
+        })} else {
+         setOptions(preselectedValues);
+        }
         setSelectedOptions(preselectedValues);
       }
     }
@@ -286,9 +299,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
   async function updateOptions(query: string) {
     const fetchResults = apiEndpoint === "search" ? fetchSearchResults : fetchSelectResults;
-    const options = await fetchResults(query);
-    setOptions(options);
+    const fetchedOptions = await fetchResults(query);
+    const fetchedSearchOptions = await fetchSearchResults(query);
+    if (autosuggest){
+      setAllOptions(() => {
+      const selectOptions = { label: "Select", options: fetchedOptions};
+      const searchOptions = { label: "Search", options: fetchedSearchOptions};
+      return [selectOptions, searchOptions]
+    })} else {
+     setOptions(fetchedOptions);
+    }
   }
+
 
   /**
    * fetches new options when searchValue changes
@@ -373,7 +395,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       }
     };
 
-    setOptions([...options, newOption]);
+    if (autosuggest){
+      setAllOptions(() => {
+      const [selectOptions = { label: "Select", options: options},
+        searchOptions = { label: "Search", options: options},
+        custom = {label: "Custom", options: []}] = allOptions;
+      return [
+        selectOptions,
+        searchOptions,
+        {
+          ...custom,
+          options: [...custom.options, newOption]
+        }
+      ]
+    })} else {
+     setOptions([...options, newOption]);
+    }
     setSelectedOptions(singleSelection ? [newOption] : [...selectedOptions, newOption]);
   }
 
@@ -389,7 +426,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       placeholder={
         placeholder ? placeholder : "Search for a Concept"
       }
-      options={options}
+      options={autosuggest ? allOptions : options}
       selectedOptions={selectedOptions}
       onSearchChange={setSearchValue}
       onChange={onChangeHandler}
