@@ -1,5 +1,4 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
-import {pluralizeType} from "../app/util";
 
 export const apiArgType = {
   api: {
@@ -232,6 +231,23 @@ export const showApiSourceArgType = {
     description: "Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.",
     defaultValue: { summary: true },
     type: { summary: "boolean" }
+  }
+};
+export const apiEndpointArgType = {
+  apiEndpoint: {
+    required: false,
+    description: "API endpoint for fetching the data.",
+    defaultValue: { summary: "select" },
+    table: {
+      type: { summary: `select | search` }
+    },
+    control: {
+      type: "radio"
+    },
+    options: [
+      "select",
+      "search"
+    ]
   }
 };
 export const hasTitleArgType = {

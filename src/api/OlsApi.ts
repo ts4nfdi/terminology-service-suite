@@ -16,6 +16,9 @@ import { Select } from "../model/interfaces/Select";
 import { OLSSelectResult } from "../model/ols-model/OLSSelectResult";
 import { Ts4nfdiSearchResult } from "../model/ts4nfdi-model/Ts4nfdiSearchResult";
 import { EntityData } from "../app/types";
+import { OLSSearchResult } from "../model/ols-model/OLSSearchResult";
+import { OLSSearch } from "../model/ols-model/OLSSearch";
+import { Search } from "../model/interfaces/Search";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string): boolean {
@@ -331,7 +334,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(queryPrefix + "individuals", { params: params, signal: abortSignal }, getUseLegacy(useLegacy));
   }
 
-  public search = async (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
+  public search = async (queryParams: SearchQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal): Promise<any> => {
     return this.makeCall("search", { params: this.buildParamsForSearch(queryParams, paginationParams, contentParams, parameter), signal: abortSignal }, true);
   }
 
@@ -388,6 +391,38 @@ export class OlsApi implements HierarchyBuilder {
     }
 
     return new OLSSelect(selectData);
+  }
+
+  /**
+   * Fetch search data.
+   * @param queryParams
+   * @param paginationParams
+   * @param contentParams
+   * @param parameter
+   */
+  public async getSearchData(queryParams: SearchQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string, ts4nfdiGateway?: boolean): Promise<Search> {
+    let response;
+    let searchData: OLSSearchResult[] = [];
+
+    if (ts4nfdiGateway) {
+      throw new Error("Search endpoint not available for the TS4NFDI Gateway yet.");
+        } else {
+      response = await this.search(
+        queryParams,
+        paginationParams,
+        contentParams,
+        parameter
+      );
+      if (!response || !response["response"]["docs"]) {
+        throw new Error("Search data not found");
+      } else {
+        searchData = searchData.concat(response["response"]["docs"].map((data: any) => {
+          return new OLSSearchResult(data);
+        }));
+      }
+    }
+
+    return new OLSSearch(searchData);
   }
 
 

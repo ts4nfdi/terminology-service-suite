@@ -29,7 +29,8 @@ export {
   WithLongForm,
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
+  SearchApiEndpoint
 } from "./AutocompleteWidgetStories"
 
 

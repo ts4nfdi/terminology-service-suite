@@ -32,6 +32,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     singleSuggestionRow,
     ts4nfdiGateway = false,
     showApiSource = true,
+    apiEndpoint = "select",
     ...rest
   } = props;
 
@@ -128,7 +129,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     return value.type === "ontology" ? renderOntology() : renderEntityWithDescription();
   };
 
-    /**
+  /**
      * on mount: fetches term for preselected
      * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
      * only if allowCustomTerms is true
@@ -211,51 +212,94 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
   );
 
+  async function fetchSelectResults(query: string): Promise<EuiComboBoxOptionOption<any>[]> {
+      if (query.length === 0) return [];
+
+      try {
+          const response = await olsApi.getSelectData(
+              { query },
+              undefined,
+              undefined,
+              parameter,
+              ts4nfdiGateway
+          );
+
+          if (response) {
+              return response.properties.map((selection: any) => ({
+                  label: hasShortSelectedLabel
+                      ? selection.getLabel()
+                      : generateDisplayLabel(selection),
+                  key: selection.getIri(),
+                  value: {
+                      iri: selection.getIri(),
+                      label: selection.getLabel(),
+                      ontology_name: selection.getOntologyId(),
+                      type: selection.getType(),
+                      short_form: selection.getShortForm(),
+                      description: selection.getDescription(),
+                      source: selection.getApiSourceName(),
+                      source_url: selection.getApiSourceEndpoint(),
+                  },
+              }));
+          }
+      } catch (error) {
+          console.error("Error fetching select results:", error);
+      }
+      return [];
+  }
+
+  async function fetchSearchResults(query: string): Promise<EuiComboBoxOptionOption<any>[]> {
+      if (query.length === 0) return [];
+
+      try {
+          const response = await olsApi.getSearchData(
+              { query },
+              undefined,
+              undefined,
+              parameter,
+              ts4nfdiGateway
+          );
+
+          if (response) {
+              return response.properties.map((selection: any) => ({
+                  label: hasShortSelectedLabel
+                      ? selection.getLabel()
+                      : generateDisplayLabel(selection),
+                  key: selection.getIri(),
+                  value: {
+                      iri: selection.getIri(),
+                      label: selection.getLabel(),
+                      ontology_name: selection.getOntologyId(),
+                      type: selection.getType(),
+                      short_form: selection.getShortForm(),
+                      description: selection.getDescription(),
+                      source: selection.getApiSourceName(),
+                      source_url: selection.getApiSourceEndpoint(),
+                  },
+              }));
+          }
+      } catch (error) {
+          console.error("Error fetching select results:", error);
+      }
+      return [];
+  }
+
+  async function updateOptions(query: string) {
+    const fetchResults = apiEndpoint === "search" ? fetchSearchResults : fetchSelectResults;
+    const options = await fetchResults(query);
+    setOptions(options);
+  }
+
   /**
    * fetches new options when searchValue changes
    */
-  const {
-    isLoading: isLoadingTerms
-  } = useQuery(
-    [
-      "onSearchChange",
-      searchValue
-    ],
-    async () => {
-      if (searchValue.length > 0) {
-        return olsApi.getSelectData(
-          { query: searchValue },
-          undefined,
-          undefined,
-          parameter,
-          ts4nfdiGateway
-        ).then((response) => {
-          if (response) {
-            setOptions(response.properties.map((selection: any) => (
-              {
-                // label to display within the combobox either raw value or generated one
-                // #renderOption() is used to display during selection.
-                label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
-                // key to distinguish the options (especially those with same label)
-                key: selection.getIri(),
-                // values to pass to clients
-                value: {
-                  iri: selection.getIri(),
-                  label: selection.getLabel(),
-                  ontology_name: selection.getOntologyId(),
-                  type: selection.getType(),
-                  short_form: selection.getShortForm(),
-                  description: selection.getDescription(),
-                  source: selection.getApiSourceName(),
-                  source_url: selection.getApiSourceEndpoint()
-                }
-              })
-            ));
-          }
-        });
+  const { isLoading: isLoadingTerms } = useQuery(
+      ["onSearchChange", searchValue],
+      async () => {
+          await updateOptions(searchValue);
       }
-    }
   );
+
 
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -378,6 +422,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
+          apiEndpoint={props.apiEndpoint}
         />
       </QueryClientProvider>
     </EuiProvider>
