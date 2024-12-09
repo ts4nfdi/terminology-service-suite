@@ -10,7 +10,7 @@ import {
   EuiHighlight,
   EuiHealth,
   EuiProvider,
-  EuiIcon
+  EuiIcon, EuiText
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
@@ -33,6 +33,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ts4nfdiGateway = false,
     showApiSource = true,
     apiEndpoint = "select",
+    autosuggest = true,
     ...rest
   } = props;
 
@@ -50,16 +51,33 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * The set of available options.s
    */
   const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  /**
+   * The set of available OLS API search endpoint options.
+   */
+  const [searchOptions, setSearchOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  /**
+   * All options.
+   */
+  const [allOptions, setAllOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  const [orderedOptions, setOrderedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
   /**
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
+
+  useEffect(() => {
+    console.log("a", allOptions)
+    const selectOptions = allOptions.filter((option) => option.group === "select");
+    const searchOptions = allOptions.filter((option) => option.group === "search");
+    setOrderedOptions((prevList) => prevList.concat(selectOptions, searchOptions))
+  }, [allOptions])
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const renderOption = (option, searchValue) => {
-    const { label, value } = option;
+    const { label, value, group } = option;
     const dotColorIndex = visColorsBehindText.indexOf(value.type === "class" ? visColorsBehindText[5] :
       value.type === "individual" ? visColorsBehindText[3] :
         value.type === "property" ? visColorsBehindText[1] : "");
@@ -98,6 +116,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const renderEntityWithDescription = () => {
       return (
         <span title={hoverText} style={{ height: 200 + "px" }}>
+          {group === "select" &&
             <EuiHealth
               color={dotColor}>
                 <span>
@@ -122,6 +141,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   }
                 </span>
             </EuiHealth>
+          }
+          {group === "search" &&
+          <EuiText>
+            {value.label}
+          </EuiText>
+          }
         </span>
       );
     };
@@ -240,6 +265,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                       source: selection.getApiSourceName(),
                       source_url: selection.getApiSourceEndpoint(),
                   },
+                  group: "select",
               }));
           }
       } catch (error) {
@@ -276,6 +302,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                       source: selection.getApiSourceName(),
                       source_url: selection.getApiSourceEndpoint(),
                   },
+                  group: "search",
               }));
           }
       } catch (error) {
@@ -287,7 +314,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   async function updateOptions(query: string) {
     const fetchResults = apiEndpoint === "search" ? fetchSearchResults : fetchSelectResults;
     const options = await fetchResults(query);
-    setOptions(options);
+    const searchOptions = await fetchSearchResults(query);
+
+    if (autosuggest){
+      setAllOptions((prevList) => prevList.concat(options, searchOptions))
+    } else {
+     setOptions(options);
+    }
   }
 
   /**
@@ -389,7 +422,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       placeholder={
         placeholder ? placeholder : "Search for a Concept"
       }
-      options={options}
+      options={autosuggest ? orderedOptions : options}
       selectedOptions={selectedOptions}
       onSearchChange={setSearchValue}
       onChange={onChangeHandler}
