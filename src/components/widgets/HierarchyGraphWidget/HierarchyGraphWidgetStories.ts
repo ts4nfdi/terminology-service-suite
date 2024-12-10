@@ -74,8 +74,8 @@ export const HierarchyGraphWidgetStoryArgs = {
     onNavigateToDisambiguate: "Console message",
 }
 
-export const OLS4V1Class = {
-    storyName: "OLS4 V1 Class",
+export const OLS4V2Class = {
+    storyName: "OLS4 V2 Class",
     args: {
         api: globals.EBI_API_ENDPOINT,
         ontologyId: "efo",
@@ -84,3 +84,14 @@ export const OLS4V1Class = {
         useLegacy: false
     }
 };
+
+export const OLS4V2Ontology = {
+    storyName: "OLS4 V2 Ontology",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "uberon",
+        entityType: "ontology",
+        useLegacy: false
+    }
+};
+

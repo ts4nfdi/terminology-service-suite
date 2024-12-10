@@ -47,7 +47,6 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
     const {
         data: totalItemCount,
         isLoadingTotalItemCount,
-        isSuccessTotalItemCount,
         isErrorTotalItemCount,
         errorTotalItemCount
     } = useQuery(
@@ -59,22 +58,22 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
             const response = await olsApi.getEntityResponse(undefined, props.entityType, props.ontologyId, undefined, props.useLegacy)
 
-            const totalItems = props.useLegacy ? response["page"]["totalElements"] : response["totalElements"];
-
-            return totalItems;
+            return props.useLegacy ? response["page"]["totalElements"] : response["totalElements"];
         });
 
     const {
         data: entities,
         isLoading,
-        isSuccess,
         isError,
         error
     } = useQuery(
-        [pageIndex, pageSize],
+        [pageIndex, pageSize, props],
         async () => {
-            const response = await olsApi.getEntityObjects(props.entityType, props.ontologyId, `page=${pageIndex}&size=${pageSize}`, props.useLegacy);
-            return response;
+            return await olsApi.getEntityObjects(props.entityType, props.ontologyId, `page=${pageIndex}&size=${pageSize}`, props.useLegacy)
+                .catch((reason) => {
+                    if (reason.toString() == "Error: Empty response." || reason.toString() == "Error: Response contains 0 elements") return [] as Entity[]
+                    else throw Error(reason)
+                });
         });
 
     function renderEntities(entities: Entity[], totalItemCount: number) {
@@ -98,7 +97,7 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
                                 <>{pageSize * pageIndex + 1}-{Math.min(pageSize * pageIndex + pageSize, totalItemCount)}</>
                         }
                     </strong>{' '}
-                    of {totalItemCount}
+                    of {!totalItemCount ? <EuiLoadingSpinner size="s"/> : totalItemCount}
                 </>
             )
 
@@ -109,19 +108,18 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
             </EuiText>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="none" style={{ height: 2 }} />
-            <EuiBasicTable items={entities} columns={columns} pagination={pagination} onChange={onTableChange}/>
+            <EuiBasicTable items={entities} columns={columns} pagination={pagination} onChange={onTableChange} loading={isLoading || isLoadingTotalItemCount}/>
         </>
     }
 
     return (
         <>
-            {(isLoading || isLoadingTotalItemCount) && <EuiLoadingSpinner />}
-            {(isError || isErrorTotalItemCount) && <EuiText>{getErrorMessageToDisplay(error || errorTotalItemCount, "metadata")}</EuiText>}
-            {entities != undefined && entities.length > 0 && totalItemCount != undefined &&
-                renderEntities(entities, totalItemCount)
+            {(isError || isErrorTotalItemCount) && <EuiText>{getErrorMessageToDisplay(errorTotalItemCount || error, "metadata")}</EuiText>}
+            {((isLoading || isLoadingTotalItemCount) || (entities != undefined && entities.length > 0 && totalItemCount != undefined)) &&
+                renderEntities(entities || [], totalItemCount)
             }
             {entities != undefined && entities.length == 0 &&
-                <EuiText>No entities found.</EuiText>
+                <EuiText>No {pluralizeType(props.entityType, props.useLegacy)} found.</EuiText>
             }
         </>
     )

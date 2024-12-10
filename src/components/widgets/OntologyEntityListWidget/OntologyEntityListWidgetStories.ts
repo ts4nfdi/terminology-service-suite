@@ -30,7 +30,6 @@ export const OntologyEntityListWidgetStoryArgTypes =  {
             "class",
             "property",
             "individual",
-            "ontology",
             "",
             "INVALID STRING"
         ],

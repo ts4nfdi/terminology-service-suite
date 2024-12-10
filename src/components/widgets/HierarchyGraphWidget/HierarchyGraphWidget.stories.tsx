@@ -12,7 +12,8 @@ export default {
 };
 
 export {
-    OLS4V1Class
+    OLS4V2Class,
+    OLS4V2Ontology
 } from "./HierarchyGraphWidgetStories"
 
 

@@ -126,7 +126,7 @@ function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) 
         }
     ]
 
-    return <EuiTabbedContent size="l" tabs={ontologyTabs} initialSelectedTab={ontologyTabs[2]}/>
+    return <EuiTabbedContent size="l" tabs={ontologyTabs} initialSelectedTab={ontologyTabs[0]}/>
 }
 
 function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {

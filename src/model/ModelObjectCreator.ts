@@ -1,5 +1,5 @@
 import { OLS3Ontology, OLS3Class, OLS3Property, OLS3Individual } from "./ols3-model";
-import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual, OLS4Ontologies} from "./ols4-model";
+import {OLS4Ontology, OLS4Class, OLS4Property, OLS4Individual} from "./ols4-model";
 import { Thing } from "./interfaces";
 import { ThingTypeName } from "./ModelTypeCheck";
 import { asArray, inferTypeFromTypeArray } from "../app/util";
@@ -50,7 +50,7 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
     case "ontology":
       if(fetchAll) {
         return useLegacy ?
-            asArray(response["embedded"]["ontologies"]).map((elem) => new OLS3Ontology(elem)) :
+            asArray(response["_embedded"]["ontologies"]).map((elem) => new OLS3Ontology(elem)) :
             asArray(response["elements"]).map((elem) => new OLS4Ontology(elem));
       }
       else return useLegacy ? new OLS3Ontology(response) : new OLS4Ontology(response);
@@ -59,7 +59,7 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
     case "class": // allow BOTH, even if it should actually be "term"
       if(fetchAll) {
         return useLegacy ?
-            asArray(response["embedded"]["terms"]).map((elem) => new OLS3Class(elem)) :
+            asArray(response["_embedded"]["terms"]).map((elem) => new OLS3Class(elem)) :
             asArray(response["elements"]).map((elem) => new OLS4Class(elem));
       }
       else return useLegacy ? new OLS3Class(getPreferredOntologyJSON(asArray(response["_embedded"]["terms"]), useLegacy)) : new OLS4Class(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
@@ -67,7 +67,7 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
     case "property":
       if(fetchAll) {
         return useLegacy ?
-            asArray(response["embedded"]["properties"]).map((elem) => new OLS3Property(elem)) :
+            asArray(response["_embedded"]["properties"]).map((elem) => new OLS3Property(elem)) :
             asArray(response["elements"]).map((elem) => new OLS4Property(elem));
       }
       else return useLegacy ? new OLS3Property(getPreferredOntologyJSON(asArray(response["_embedded"]["properties"]), useLegacy)) : new OLS4Property(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
@@ -75,7 +75,7 @@ function createModelObjectWithEntityTypeWithUseLegacy(response: any, entityType:
     case "individual":
       if(fetchAll) {
         return useLegacy ?
-            asArray(response["embedded"]["individuals"]).map((elem) => new OLS3Individual(elem)) :
+            asArray(response["_embedded"]["individuals"]).map((elem) => new OLS3Individual(elem)) :
             asArray(response["elements"]).map((elem) => new OLS4Individual(elem));
       }
       else return useLegacy ? new OLS3Individual(getPreferredOntologyJSON(asArray(response["_embedded"]["individuals"]), useLegacy)) : new OLS4Individual(getPreferredOntologyJSON(asArray(response["elements"]), useLegacy));
