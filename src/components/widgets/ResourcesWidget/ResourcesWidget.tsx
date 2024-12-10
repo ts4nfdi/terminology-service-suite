@@ -83,7 +83,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Description",
       field: "config.description",
-      width: "30%",
+      // width: "30%",
       css: css`
           display: block;
           max-height: 200px;

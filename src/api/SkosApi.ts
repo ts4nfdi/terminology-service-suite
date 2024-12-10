@@ -131,7 +131,10 @@ export class SkosApi implements HierarchyBuilder{
                             entitiesData.set(childNodeData.iri, childNodeData);
                         }
                         else {
-                            if(!childNodeData.parents.map((r) => r.value).includes(node.uri)) childNodeData.parents.push(...Reified.fromJson<string>(node.uri));
+                            // @ts-ignore
+                            if(!childNodeData.parents.map((r) => r.value).includes(node.uri)) if (childNodeData.parents) {
+                                childNodeData.parents.push(...Reified.fromJson<string>(node.uri));
+                            }
                         }
                         children.push(childNodeData);
                     }
