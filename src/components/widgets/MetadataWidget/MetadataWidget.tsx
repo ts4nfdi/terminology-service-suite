@@ -56,8 +56,9 @@ function MetadataWidget(props: MetadataWidgetProps) {
             ontoList = entity.getAppearsIn();
             definedBy = entity.getDefinedBy();
         }
-        ontoList = ontoList.filter((onto : string) => onto != entity.getOntologyId()).sort();
+
         definedBy = definedBy.filter((onto: string) => onto != entity.getOntologyId()).sort();
+        ontoList = ontoList.filter((onto : string) => onto != entity.getOntologyId() && !definedBy.includes(onto)).sort();
 
         return {
             entity: entity,
@@ -133,6 +134,12 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 crossRefTab={crossRefTab}
                 terminologyInfoTab={terminologyInfoTab}
                 altNamesTab={altNamesTab}
+                hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+                hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+                hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+                onNavigateToEntity={props.onNavigateToEntity}
+                onNavigateToOntology={props.onNavigateToOntology}
+                onNavigateToDisambiguate={props.onNavigateToDisambiguate}
               />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -169,12 +176,17 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
-                    onNavigateToOntology={props.onNavigateToOntology}
                     termLink={props.termLink}
                     altNamesTab={props.altNamesTab}
                     hierarchyTab={props.hierarchyTab}
                     crossRefTab={props.crossRefTab}
                     terminologyInfoTab={props.terminologyInfoTab}
+                    hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+                    hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+                    hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+                    onNavigateToEntity={props.onNavigateToEntity}
+                    onNavigateToOntology={props.onNavigateToOntology}
+                    onNavigateToDisambiguate={props.onNavigateToDisambiguate}
                 />
             </QueryClientProvider>
         </EuiProvider>

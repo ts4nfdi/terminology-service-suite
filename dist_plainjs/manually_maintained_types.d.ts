@@ -1,6 +1,5 @@
 import {Action} from "@elastic/eui/src/components/basic_table/action_types";
 import {OlsResource} from "../src/components/widgets/ResourcesWidget/ResourcesWidget";
-import {EuiSuggestProps} from "@elastic/eui/src/components";
 import {EuiCardProps} from "@elastic/eui";
 
 declare global {
@@ -126,7 +125,7 @@ declare global {
       parameter?: string;
       externalIcon?: boolean;
       urlPrefix?: string;
-      copyButton?: boolean;
+      copyButton?: 'right' | 'left' | 'none';
     }
     )=>void,
     createTab:(props:{

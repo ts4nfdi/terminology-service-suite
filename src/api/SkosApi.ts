@@ -1,7 +1,8 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import {BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps} from "./HierarchyBuilder";
-import {EntityDataForHierarchy, Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
+import { Hierarchy, ParentChildRelation, TreeNode} from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
+import { EntityData } from "../app/types";
 
 type TopConcept = {
     uri: string,
@@ -33,8 +34,8 @@ type PrefAndUriAndChildren = {
     notation?: string
 }
 
-abstract class SkosEntityDataForHierarchyBuilder {
-    static fromTopConcept(obj: TopConcept) : EntityDataForHierarchy {
+abstract class SkosEntityDataBuilder {
+    static fromTopConcept(obj: TopConcept) : EntityData {
         return  {
             iri: obj.uri,
             label: obj.label,
@@ -43,7 +44,7 @@ abstract class SkosEntityDataForHierarchyBuilder {
         };
     }
 
-    static fromHierarchyResult(obj: HierarchyResult) : EntityDataForHierarchy {
+    static fromHierarchyResult(obj: HierarchyResult) : EntityData {
         return {
             iri: obj.uri,
             label: obj.prefLabel,
@@ -52,7 +53,7 @@ abstract class SkosEntityDataForHierarchyBuilder {
         }
     }
 
-    static fromPrefAndUriAndChildren(obj: PrefAndUriAndChildren, parents?: string[]) : EntityDataForHierarchy {
+    static fromPrefAndUriAndChildren(obj: PrefAndUriAndChildren, parents?: string[]) : EntityData {
         return {
             iri: obj.uri,
             label: obj.prefLabel,
@@ -61,7 +62,7 @@ abstract class SkosEntityDataForHierarchyBuilder {
         };
     }
 
-    static fromLabelAndUriAndChildren(obj: LabelAndUriAndChildren, parents?: string[]) : EntityDataForHierarchy {
+    static fromLabelAndUriAndChildren(obj: LabelAndUriAndChildren, parents?: string[]) : EntityData {
         return {
             iri: obj.uri,
             label: obj.label,
@@ -99,7 +100,7 @@ export class SkosApi implements HierarchyBuilder{
 
         const rootEntities: string[] = []
         const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<string, ParentChildRelation[]>();
-        const entitiesData: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>();
+        const entitiesData: Map<string, EntityData> = new Map<string, EntityData>();
         const allChildrenPresent: Set<string> = new Set<string>();
         const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
@@ -108,10 +109,10 @@ export class SkosApi implements HierarchyBuilder{
                 .then((obj) => Object.keys(obj["broaderTransitive"]).map((key) => obj["broaderTransitive"][key]))
 
             // stores all entities appearing in broaderTransitive
-            //const entities: Map<string, EntityDataForHierarchy> = new Map<string, EntityDataForHierarchy>()
+            //const entities: Map<string, EntityData> = new Map<string, EntityData>()
 
             for(const node of broaderTransitive) {
-                const nodeData: EntityDataForHierarchy = SkosEntityDataForHierarchyBuilder.fromHierarchyResult(node);
+                const nodeData: EntityData = SkosEntityDataBuilder.fromHierarchyResult(node);
 
                 entitiesData.set(nodeData.iri, nodeData);
                 if(node.top) rootEntities.push(nodeData.iri);
@@ -120,17 +121,20 @@ export class SkosApi implements HierarchyBuilder{
             }
             for(const node of broaderTransitive) {
                 if(node.narrower != undefined) {
-                    const children: EntityDataForHierarchy[] = [];
+                    const children: EntityData[] = [];
 
                     for(const childNode of node.narrower) {
                         let childNodeData = entitiesData.get(childNode.uri);
                         if(childNodeData == undefined) {
-                            childNodeData = SkosEntityDataForHierarchyBuilder.fromLabelAndUriAndChildren(childNode, [node.uri]);
+                            childNodeData = SkosEntityDataBuilder.fromLabelAndUriAndChildren(childNode, [node.uri]);
 
                             entitiesData.set(childNodeData.iri, childNodeData);
                         }
                         else {
-                            if(!childNodeData.parents.map((r) => r.value).includes(node.uri)) childNodeData.parents.push(...Reified.fromJson<string>(node.uri));
+                            // @ts-ignore
+                            if(!childNodeData.parents.map((r) => r.value).includes(node.uri)) if (childNodeData.parents) {
+                                childNodeData.parents.push(...Reified.fromJson<string>(node.uri));
+                            }
                         }
                         children.push(childNodeData);
                     }
@@ -151,7 +155,7 @@ export class SkosApi implements HierarchyBuilder{
             }
         }
 
-        function createTreeNode(entityData: EntityDataForHierarchy, cycleCheck: Set<string>): TreeNode {
+        function createTreeNode(entityData: EntityData, cycleCheck: Set<string>): TreeNode {
             cycleCheck.add(entityData.iri); // add current entity to cycle check set
 
             const node = new TreeNode(entityData);
@@ -206,7 +210,7 @@ export class SkosApi implements HierarchyBuilder{
         });
     }
 
-    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityDataForHierarchy[]> {
+    public async loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityData[]> {
         const {
             nodeToExpand,
             ontologyId
@@ -214,7 +218,7 @@ export class SkosApi implements HierarchyBuilder{
 
         const narrower: PrefAndUriAndChildren[] = (await this.makeCall(`/${ontologyId}/children`, {params: {uri: nodeToExpand.entityData.iri, lang: "en", format: "application/json"}}))["narrower"];
 
-        return narrower.map((obj) => SkosEntityDataForHierarchyBuilder.fromPrefAndUriAndChildren(obj, [nodeToExpand.entityData.iri]));
+        return narrower.map((obj) => SkosEntityDataBuilder.fromPrefAndUriAndChildren(obj, [nodeToExpand.entityData.iri]));
     }
 
 }

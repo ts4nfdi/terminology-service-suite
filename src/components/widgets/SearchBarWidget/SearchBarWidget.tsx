@@ -1,4 +1,4 @@
-import { EuiComboBox, EuiProvider, EuiSuggest, EuiSuggestionProps } from "@elastic/eui";
+import { EuiComboBox, EuiProvider } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { OlsApi } from "../../../api/OlsApi";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";

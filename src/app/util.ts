@@ -111,6 +111,10 @@ export function isEuiLinkColor(str: string) : str is EuiLinkColor {
     return ["primary", "subdued", "success", "accent", "danger", "warning", "text", "ghost"].includes(str);
 }
 
+export function isEuiButtonColor(str: string) : str is EuiLinkColor {
+    return ["text", "accent", "primary", "success", "warning", "danger"].includes(str);
+}
+
 export function getErrorMessageToDisplay(error: any, messagePlaceholder = "information"): string {
     const error_msg : string = error.message;
     if(error_msg === ("Response contains 0 elements")) {
@@ -122,7 +126,7 @@ export function getErrorMessageToDisplay(error: any, messagePlaceholder = "infor
 export function inferTypeFromTypeArray(types: string[]) {
     let res = types.filter((elem : string) => isThingTypeName(elem)); // filter not matching strings
     res = res.map(item => item === "annotationProperty" || item === "objectProperty" || item === "dataProperty" ? "property" : item);
-    res = [...new Set<string>(res)]; // remove duplicates
+    res = [...new Set<"class" | "term" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology">(res)]; // remove duplicates
 
     if(res.length === 1) return res[0] as ThingTypeName;
     else if(res.length === 0) throw Error("Entity type could not be correctly inferred: No suitable type found in array.");

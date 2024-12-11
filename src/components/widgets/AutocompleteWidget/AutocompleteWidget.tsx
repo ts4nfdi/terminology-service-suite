@@ -300,12 +300,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any) {
+
     return (
-      item.label +
+      item.getLabel() +
       " (" +
-      item.ontology_name.toUpperCase() +
+      item.getOntologyId().toUpperCase() +
       " " +
-      item.short_form +
+      item.getShortForm() +
       ")"
     );
   }
@@ -356,6 +357,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 }
 
 function createAutocomplete(props: AutocompleteWidgetProps, container: any, callback?: () => void) {
+  // @ts-ignore
   ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
 }
 
@@ -369,7 +371,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           parameter={props.parameter}
           selectionChangedEvent={props.selectionChangedEvent}
           preselected={props.preselected}
-          singleSelection={props.singleSelection}
+          singleSelection={props.singleSelection as boolean}
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}

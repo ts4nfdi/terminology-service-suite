@@ -4,18 +4,15 @@ import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiIcon, EuiPanel,EuiSwitch, EuiPopover, EuiButtonEmpty } from "@elastic/eui";
+import { EuiProvider, EuiLoadingSpinner, EuiText, EuiButton, EuiPanel,EuiSwitch, EuiPopover, EuiButtonEmpty } from "@elastic/eui";
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { JSTreeNode } from "../../../api/OlsApi";
 
-
-
-
 function GraphViewWidget(props: GraphViewWidgetProps) {
-  const { api, iri, ontologyId, useLegacy, rootWalk } = props;
+  const { api, iri, ontologyId, rootWalk } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -34,7 +31,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     isError,
     error,
   } = useQuery(
-    ["termGraph", api, selectedIri, ontologyId, useLegacy, rootWalkIsSelected, dbclicked,counter],
+    ["termGraph", api, selectedIri, ontologyId, rootWalkIsSelected, dbclicked,counter],
     async () => {
       if (rootWalkIsSelected && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
@@ -327,7 +324,6 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           api={props.api}
           iri={props.iri}
           ontologyId={props.ontologyId}
-          useLegacy={props.useLegacy}
           rootWalk={props.rootWalk}
         />
       </QueryClientProvider>

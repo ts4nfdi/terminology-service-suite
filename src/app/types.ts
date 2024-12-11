@@ -2,12 +2,12 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
-import { EuiSuggestProps } from "@elastic/eui/src/components";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { Thing } from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
+import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
   /**
@@ -277,9 +277,9 @@ export type IriWidgetProps = ForcedIriObj & {
    */
   iriText?: string;
   /**
-   * Color of the text, names, hex or rgb
+   * Color of the text: "text", "accent", "primary", "success", "warning", "danger"
    */
-  color?: EuiLinkColor | string;
+  color?: EuiButtonColor;
 
   /**
    * Indicates that the target is external and needs an icon.
@@ -292,18 +292,26 @@ export type IriWidgetProps = ForcedIriObj & {
   urlPrefix?: string;
 
   /**
-   * If true, a copy button is shown next to the link.
+   * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+   * left/right means showing the button on the left or right side of the iri link.
   */
-  copyButton?: boolean;
+
+  copyButton?: 'right' | 'left' | 'none';
 }
 
-export type TabWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & TabList;
+export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
 
-export type TabPresentationProps = ApiObj & OptionalOntologyIdObj & ForcedIriObj & UseLegacyObj & OptionalEntityTypeObj & TabList & {
+export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
+    hierarchyPreferredRoots?: boolean
+    hierarchyKeepExpansionStates?: boolean
+    hierarchyShowSiblingsOnInit?: boolean
+};
+
+export type TabPresentationProps = TabWidgetProps & {
   data: Thing;
 }
 
-export type EntityOntoListWidgetProps = TabWidgetProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
 
 export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
   ontolist: any[];
@@ -313,13 +321,13 @@ export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriO
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
 export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
-export type AlternativeNameTabWidgetProps = TabWidgetProps;
+export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
 export type AlternativeNameTabWidgetPresentationProps = {
   synonyms: any[];
 }
 
-export type CrossRefWidgetProps = TabWidgetProps;
+export type CrossRefWidgetProps = TabSubwidgetsProps;
 
 export type CrossRefPresentationProps = {
   crossrefs: any[];
@@ -388,18 +396,6 @@ export type OnNavigateToDisambiguate = {
 
 export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
-export type HierarchyWidgetOLSProps = ApiObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OptionalIriObj & {
-  /**
-   * This function is called every time an entity link is clicked
-   */
-  onNavigateToEntity?: (ontologyId: string, entityType: string, iri: string) => void;
-
-  /**
-   * This function is called every time a badge linking to an entity in its defining ontology is clicked
-   */
-  onNavigateToOntology?: (ontologyId: string, entityType: string, iri: string) => void;
-};
-
 export type HierarchyWidgetProps = {
   /**
    * The API URL for the API call.
@@ -446,23 +442,15 @@ export type TitlePresentationProps = TitleTextObj & {
   defaultValue?: string
 }
 
-export type MetadataWidgetProps = ApiObj &
-  OptionalEntityTypeObj &
-  OptionalOntologyIdObj &
-  ForcedIriObj &
-  TermParameterObj &
-  UseLegacyObj &
-  OnNavigateToOntology &
-  TabList &
-{
-  /**
-   * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
-   */
-  termLink?: string;
+export type MetadataWidgetProps =
+    TabWidgetProps & {
+    /**
+     * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+     */
+    termLink?: string;
 };
 
-/*TODO: add onNavigate functions*/
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
   /**
@@ -508,7 +496,7 @@ export type OlsResource = ForcedOntologyIdObj & {
   [otherFields: string]: unknown;
 }
 
-export type SearchBarWidgetProps = Omit<EuiSuggestProps, "suggestions" | "onChange" | "onItemClick" | "value"> & ApiObj & ParameterObj & {
+export type SearchBarWidgetProps = ApiObj & ParameterObj & {
   /**
    * The search term to receive suggestions for.
    */
@@ -566,7 +554,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
-export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj & 
+export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
 { 
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.

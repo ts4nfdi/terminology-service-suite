@@ -38,12 +38,17 @@ window['SemLookPWidgets'].createMetadata(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        onNavigateToOntology:${args.onNavigateToOntology},
         termLink: "${args.termLink}",
         altNamesTab: ${args.altNamesTab},
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
-        terminologyInfoTab: ${args.terminologyInfoTab}
+        terminologyInfoTab: ${args.terminologyInfoTab},
+        hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
+        hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
+        hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        onNavigateToEntity:${args.onNavigateToEntity},
+        onNavigateToOntology:${args.onNavigateToOntology},
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )

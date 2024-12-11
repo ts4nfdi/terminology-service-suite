@@ -492,10 +492,12 @@ export const urlPrefixArgType = {
 export const copyButtonArgType = {
   copyButton: {
     required: false,
-    options: [true, false],
+    options: ['left', 'right', 'none'],
     defaultValue: false,
-    type: { summary: `boolean` },
-    description: "If true, a copy button is shown next to the link."
+    control: {
+      type: "radio"
+    },
+    description: "Position the copy button on the right or left side of the iri. Leave it none for hiding it."
   }
 };
 export const titleTextArgType = {

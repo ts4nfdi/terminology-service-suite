@@ -1,14 +1,13 @@
 import React from "react";
 import { EuiTabbedContent } from "@elastic/eui";
-import { HierarchyWidgetOLS } from "./HierarchyWidget";
 import { Entity } from "../../../../model/interfaces";
 import { isEntity, isIndividual, isProperty } from "../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
-import { HierarchyWidgetDeprecated } from "./HierarchyWidgetDeprecated";
 import Reified from "../../../../model/Reified";
 import {TabPresentationProps} from "../../../../app/types";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
+import {HierarchyWidget} from "./HierarchyWidgetSemLookP";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
@@ -33,21 +32,21 @@ function TabPresentation(props: TabPresentationProps) {
           {
                 content: (
                   <>
+                    {/* TODO: Is overflow: "auto" wanted? */}
                     <div style={{ overflow: "auto"}}>
-                    {props.useLegacy == undefined || props.useLegacy
-                      ? <HierarchyWidgetDeprecated
-                        ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
-                        api={props.api}
-                        iri={props.iri}
-
-                      />
-                      : <HierarchyWidgetOLS
-                        api={props.api}
+                      <HierarchyWidget
+                        // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                        apiUrl={props.api}
                         iri={props.iri}
                         ontologyId={props.ontologyId || ((data && data.getOntologyId() !== undefined) ? data.getOntologyId() : "")}
                         entityType={props.entityType}
+                        useLegacy={props.useLegacy}
+                        onNavigateToEntity={props.onNavigateToEntity}
+                        onNavigateToOntology={props.onNavigateToOntology}
+                        preferredRoots={props.hierarchyPreferredRoots}
+                        showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+                        keepExpansionStates={props.hierarchyKeepExpansionStates}
                       />
-                    }
                     </div>
                   </>
                 ),
@@ -75,7 +74,7 @@ function TabPresentation(props: TabPresentationProps) {
         {
             content:
               <OntologyInfoWidget
-                ontologyId={props.ontologyId}
+                ontologyId={props.ontologyId || data.getOntologyId()}
                 api={props.api}
                 parameter={""}
                 useLegacy={props.useLegacy}

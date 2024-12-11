@@ -1,6 +1,6 @@
 import {EntityTypeName} from "../ModelTypeCheck";
 import {HierarchyBuilder} from "../../api/HierarchyBuilder";
-import {EntityDataForHierarchy} from "../../app/types";
+import {EntityData} from "../../app/types";
 
 export type ParentChildRelation = {
     childIri: string,
@@ -8,7 +8,7 @@ export type ParentChildRelation = {
 }
 
 export class TreeNode {
-    entityData: EntityDataForHierarchy;
+    entityData: EntityData;
     childRelationToParent?: string;
     loadedChildren: TreeNode[];
     expanded: boolean;
@@ -18,7 +18,7 @@ export class TreeNode {
      * @param entityData
      * @param childRelationToParent
      */
-    constructor(entityData: EntityDataForHierarchy, childRelationToParent?: string) {
+    constructor(entityData: EntityData, childRelationToParent?: string) {
         this.entityData = entityData;
         this.loadedChildren = [];
         this.expanded = false;
@@ -36,7 +36,7 @@ const DEFAULT_KEEP_EXPANSION_STATE: boolean = true as const;
 
 export class Hierarchy {
     parentChildRelations: Map<string, ParentChildRelation[]>;
-    entitiesData: Map<string, EntityDataForHierarchy>;
+    entitiesData: Map<string, EntityData>;
     allChildrenPresent: Set<string>;
     roots: TreeNode[]; // stores the tree hierarchy
     protected api: HierarchyBuilder;
@@ -51,7 +51,7 @@ export class Hierarchy {
 
     constructor(props: {
         parentChildRelations: Map<string, ParentChildRelation[]>,
-        entitiesData: Map<string, EntityDataForHierarchy>,
+        entitiesData: Map<string, EntityData>,
         allChildrenPresent: Set<string>,
         roots: TreeNode[],
         api: HierarchyBuilder,
@@ -158,7 +158,7 @@ export class Hierarchy {
         if(!allChildrenPresent || nodeToExpand.loadedChildren.length <= nodeParentChildRelations.length) {
             if(!allChildrenPresent) {
                 // dynamically load children from api
-                const children: EntityDataForHierarchy[] = (await this.api.loadHierarchyChildren({
+                const children: EntityData[] = (await this.api.loadHierarchyChildren({
                     nodeToExpand: nodeToExpand,
                     entityType: this.entityType,
                     ontologyId: this.ontologyId,
@@ -172,8 +172,11 @@ export class Hierarchy {
                 const parChildRel: ParentChildRelation[] = [];
                 for(const child of children){
                     this.entitiesData.set(child.iri, child);
-                    const parRelation = child.parents.filter((par) => par.value == nodeToExpand.entityData.iri); // should have exactly one element
-                    parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                    if (child.parents) {
+                        const parRelation = child.parents.filter((par) => par.value == nodeToExpand.entityData.iri);
+                        parChildRel.push({childIri: child.iri, childRelationToParent: parRelation.length > 0 && parRelation[0].getMetadata() ? parRelation[0].getMetadata()["childRelationToParent"] : undefined});
+                    } // should have exactly one element
+
                 }
                 this.parentChildRelations.set(nodeToExpand.entityData.iri, parChildRel);
             }

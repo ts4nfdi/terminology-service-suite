@@ -1,5 +1,6 @@
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
+import {manuallyEmbedOnNavigate} from "../../../app/util";
 import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
@@ -8,10 +9,13 @@ export default {
   parameters: {
     layout: "centered",
     docs: {
-        description: {
+      source: {
+        transform: manuallyEmbedOnNavigate
+      },
+      description: {
             component: OntologyInfoDescription
-        }
-    }
+        },
+    },
   },
   argTypes: OntologyInfoWidgetStoryArgTypes,
   args: OntologyInfoWidgetStoryArgs
@@ -20,5 +24,6 @@ export default {
 export {
     OntologyInfoWidget1,
     OntologyInfoWidget2,
-    OntologyInfoWidgetOLS4API
+    OntologyInfoWidgetOLS4API,
+    NavigateToEBIPage
 } from "./OntologyInfoWidgetStories"

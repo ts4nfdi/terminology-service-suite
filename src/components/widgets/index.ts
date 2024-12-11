@@ -8,8 +8,6 @@ import { createIri } from "./MetadataWidget/IriWidget/IriWidget";
 import { createTab } from "./MetadataWidget/TabWidget/TabWidget";
 import { createAlternativeNameTab } from "./MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
 import { createCrossRefTab } from "./MetadataWidget/TabWidget/CrossRefWidget/CrossRefTabWidget";
-import { createHierarchyOLS } from "./MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetOLS";
-import { createHierarchyDeprecated } from "./MetadataWidget/TabWidget/HierarchyWidgetDeprecated/HierarchyWidgetDeprecated";
 import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
 import { createTitle} from "./MetadataWidget/TitleWidget/TitleWidget";
 import { createMetadata } from "./MetadataWidget/MetadataWidget";
@@ -36,7 +34,6 @@ import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
     createAlternativeNameTab,
     createCrossRefTab,
     createHierarchy,
-    createHierarchyDeprecated,
     createTitle,
     createOntologyInfo,
     createResources,
@@ -44,7 +41,6 @@ import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
     createSearchResultsList,
     createMetadata,
     createDepiction,
-    createHierarchyOLS,
     createEntityOntoList,
     createEntityDefinedBy,
     createGraphView,
@@ -62,8 +58,6 @@ export {
     createTab,
     createAlternativeNameTab,
     createCrossRefTab,
-    createHierarchyOLS,
-    createHierarchyDeprecated,
     createTitle,
     createOntologyInfo,
     createResources,

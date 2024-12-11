@@ -1,6 +1,11 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
-import {onNavigateToOntologyArgType} from "../../../stories/storyArgs";
+import {
+    onNavigateToDisambiguateArgType,
+    onNavigateToEntityArgType,
+    onNavigateToOntologyArgType
+} from "../../../stories/storyArgs";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -39,7 +44,9 @@ export const MetadataWidgetStoryArgTypes = {
     parameter: {
         type: { required: false }
     },
-    ...onNavigateToOntologyArgType
+    ...onNavigateToEntityArgType,
+    ...onNavigateToOntologyArgType,
+    ...onNavigateToDisambiguateArgType,
 }
 
 export const MetadataWidgetStoryArgs = {
@@ -54,7 +61,12 @@ export const MetadataWidgetStoryArgs = {
     hierarchyTab: true,
     crossRefTab: true,
     terminologyInfoTab: true,
+    hierarchyPreferredRoots: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
+    hierarchyKeepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
+    hierarchyShowSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
+    onNavigateToEntity: "Console message",
     onNavigateToOntology: "Console message",
+    onNavigateToDisambiguate: "Console message",
 }
 
 export const MetadataWidget1 = {

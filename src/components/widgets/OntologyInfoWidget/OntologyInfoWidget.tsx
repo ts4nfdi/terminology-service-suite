@@ -14,6 +14,7 @@ const DEFAULT_HAS_TITLE = true;
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   const { ontologyId, api, parameter, hasTitle = DEFAULT_HAS_TITLE, useLegacy, showBadges, ...rest } = props;
   const olsApi = new OlsApi(api);
+  const onNavigates = {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate};
 
   const {
     data: ontology,
@@ -120,10 +121,10 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
               <><EuiFlexItem>
                 <b>Creators:</b>
                 {ontology.getCreators().length > 1 ?
-                    <ul>{ontology.getCreators().map((creator) => {
-                      return <li key={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, api, showBadges)}</li>
-                    })}</ul> :
-                    <p>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), ontology.getCreators()[0], api, showBadges)}</p>
+                    <><ul>{ontology.getCreators().map((creator) => {
+                      return <li key={creator + randomString()}>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), creator, showBadges, onNavigates)}</li>
+                    })}</ul><p></p></> :
+                    <p>{getEntityLinkJSX(ontology, ontology.getLinkedEntities(), ontology.getCreators()[0], showBadges, onNavigates)}</p>
                 }
               </EuiFlexItem><EuiSpacer/></>
           }
@@ -141,13 +142,16 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                 return <EuiFlexItem grow={false} key={annoKey}>
                   <b>{capitalize(deUnderscore(deCamelCase(thing.getAnnotationTitleById(annoKey))))}:</b>
                   {annos.length > 1 ?
+                    <>
                       <ul>{annos.map((annotation) => {
-                        return <li key={randomString()} id={annotation.value}>{getReifiedJSX(thing, annotation, api, showBadges)}</li>;
-                      })}</ul> :
-                      <p key={randomString()}>{getReifiedJSX(thing, annos[0], api, showBadges)}</p>
+                        return <li key={randomString()}
+                                   id={annotation.value}>{getReifiedJSX(thing, annotation, showBadges, onNavigates)}</li>;
+                      })}</ul>
+                      <p></p></> :
+                    <p key={randomString()}>{getReifiedJSX(thing, annos[0], showBadges, onNavigates)}</p>
                   }
                 </EuiFlexItem>
-              }
+            }
           )}
         </>
     );
@@ -158,7 +162,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
         <EuiCard
             title={hasTitle ? "Ontology Information" : ""}
             layout="horizontal"
-            style={props.width && {width: props.width}}
+            style={props.width ? {width: props.width} : {}}
         >
 
           {isLoadingOntology && <EuiLoadingSpinner size={'s'}/>}
@@ -204,6 +208,9 @@ function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {
               useLegacy={props.useLegacy}
               showBadges={props.showBadges}
               hasTitle={props.hasTitle}
+              onNavigateToEntity={props.onNavigateToEntity}
+              onNavigateToOntology={props.onNavigateToOntology}
+              onNavigateToDisambiguate={props.onNavigateToDisambiguate}
           />
         </QueryClientProvider>
       </EuiProvider>
