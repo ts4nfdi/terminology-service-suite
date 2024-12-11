@@ -122,7 +122,7 @@ export const parameterArgType = {
     defaultValue: { summary: undefined },
     description:
       `Additional parameters to pass to the API.<br><br>
-      This parameters can be used to filter the search results. Each parameter can be combined via the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign <i><b>,</b></i>. The following keys could be used:<br><br>
+      This parameters can be used to filter the search results. Each parameter can be combined with the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign (<i><b>,</b></i>). The following keys can be used:<br><br>
       <table>
         <thead>
           <tr>

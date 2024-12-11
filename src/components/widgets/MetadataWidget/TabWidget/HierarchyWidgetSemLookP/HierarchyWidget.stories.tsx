@@ -4,7 +4,7 @@ import {manuallyEmbedOnNavigate} from "../../../../../app/util";
 import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
 
 export default {
-    title: "HierarchyWidget",
+    title: "Metadata/Ontology Information/HierarchyWidget",
     component: HierarchyWidget,
     parameters: {
         layout: "centered",

@@ -2,7 +2,7 @@ import { HierarchyWidgetOLS } from "./HierarchyWidgetOLS";
 import {HierarchyWidgetOLSStoryArgs, HierarchyWidgetOLSStoryArgTypes} from "./HierarchyWidgetOLSStories";
 
 export default {
-  title: "HierarchyWidgetOLS",
+  title: "Metadata/Ontology Information/HierarchyWidgetOLS",
   component: HierarchyWidgetOLS,
   parameters: {
     layout: "centered",

@@ -7,7 +7,7 @@ import {
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "AutocompleteWidget",
+  title: "Search and Autocomplete/AutocompleteWidget",
   parameters: {
     docs: {
       description: {

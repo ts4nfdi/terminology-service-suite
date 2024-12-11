@@ -3,7 +3,7 @@ import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./Desc
 import {DescriptionDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "DescriptionWidget",
+  title: "Metadata/Entity Information/DescriptionWidget",
   component: DescriptionWidget,
   parameters: {
     layout: "centered",

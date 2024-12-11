@@ -41,6 +41,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     placeholder: "Search for a Concept",
     preselected: [],
     showApiSource: true,
+    singleSuggestionRow: false,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -56,6 +57,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
     placeholder: "Search for a Concept",
     preselected: [],
     showApiSource: true,
+    singleSuggestionRow: false,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };

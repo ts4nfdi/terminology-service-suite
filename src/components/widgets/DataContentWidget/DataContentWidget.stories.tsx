@@ -3,7 +3,7 @@ import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./Data
 import {DataContentDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "DataContentWidget",
+  title: "Metadata/Ontology Information/DataContentWidget",
   component: DataContentWidget,
   parameters: {
     layout: "centered",

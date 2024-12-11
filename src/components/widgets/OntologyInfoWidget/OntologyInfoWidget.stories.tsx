@@ -3,7 +3,7 @@ import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./On
 import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "OntologyInfoWidget",
+  title: "Metadata/Ontology Information/OntologyInfoWidget",
   component: OntologyInfoWidget,
   parameters: {
     layout: "centered",

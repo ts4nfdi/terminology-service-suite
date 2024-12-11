@@ -3,7 +3,7 @@ import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} 
 import {SearchResultsListDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "SearchResultsListWidget",
+  title: "Search and Autocomplete/SearchResultsListWidget",
   component: SearchResultsListWidget,
   parameters: {
       docs: {

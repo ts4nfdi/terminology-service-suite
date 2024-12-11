@@ -4,7 +4,7 @@ import {manuallyEmbedOnNavigate} from "../../../app/util";
 import {MetadataDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "MetadataWidget",
+  title: "Metadata/MetadataWidget",
   component: MetadataWidget,
   parameters: {
     layout: "centered",

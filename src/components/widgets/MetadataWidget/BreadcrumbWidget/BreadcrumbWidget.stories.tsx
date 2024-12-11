@@ -7,7 +7,7 @@ import {manuallyEmbedOnNavigate} from "../../../../app/util";
 import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "BreadcrumbWidget",
+  title: "Entity Information/BreadcrumbWidget",
   component: BreadcrumbWidget,
   parameters: {
     layout: "centered",

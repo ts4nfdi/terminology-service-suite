@@ -3,7 +3,7 @@ import { GraphViewWidgetStoryArgTypes, GraphViewWidgetStoryArgs } from "./GraphV
 import {GraphViewDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "GraphViewWidget",
+  title: "Metadata/Ontology Information/GraphViewWidget",
   component: GraphViewWidget,
   parameters: {
     layout: "centered",

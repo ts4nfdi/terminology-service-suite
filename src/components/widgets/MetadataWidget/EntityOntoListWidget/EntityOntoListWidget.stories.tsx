@@ -7,7 +7,7 @@ import {manuallyEmbedOnNavigate} from "../../../../app/util";
 import {EntityOntoListDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "EntityOntoListWidget",
+  title: "Metadata/Entity Information/EntityOntoListWidget",
   component: EntityOntoListWidget,
   parameters: {
     layout: "centered",
