@@ -20,6 +20,8 @@ import { createDepiction } from "./TermDepictionWidget/TermDepictionWidget";
 import { createEntityOntoList } from "./MetadataWidget/EntityOntoListWidget/EntityOntoListWidget";
 import { createEntityDefinedBy } from "./MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget"
 import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
+import { createOntologyEntityList } from "./OntologyEntityListWidget/OntologyEntityListWidget";
+import { createHierarchyGraph } from "./HierarchyGraphWidget/HierarchyGraphWidget";
 
 (window as any)['SemLookPWidgets'] = {
     createAutocomplete,
@@ -44,6 +46,8 @@ import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
     createEntityOntoList,
     createEntityDefinedBy,
     createGraphView,
+    createHierarchyGraph,
+    createOntologyEntityList
 }
 
 export {
@@ -69,6 +73,8 @@ export {
     createEntityOntoList,
     createEntityDefinedBy,
     createGraphView,
+    createHierarchyGraph,
+    createOntologyEntityList
 }
 
 export * from "./MetadataWidget";
@@ -83,3 +89,5 @@ export * from "./EntityInfoWidget";
 export * from "./EntityRelationsWidget";
 export * from "./TermDepictionWidget";
 export * from "./GraphViewWidget";
+export * from "./HierarchyGraphWidget";
+export * from "./OntologyEntityListWidget";

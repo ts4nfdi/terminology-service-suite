@@ -12,7 +12,8 @@ export default {
 };
 
 export {
-    OLS4V1Class
+    OLS4V1Classes,
+    SemlookPIndividuals
 } from "./OntologyEntityListWidgetStories"
 
 

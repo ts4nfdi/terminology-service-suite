@@ -45,8 +45,8 @@ export const OntologyEntityListWidgetStoryArgs = {
     onNavigateToEntity: "Console message",
 }
 
-export const OLS4V1Class = {
-    storyName: "OLS4 V1 Class",
+export const OLS4V1Classes = {
+    storyName: "OLS4 V1 Classes",
     args: {
         api: globals.EBI_API_ENDPOINT,
         ontologyId: "efo",
@@ -54,3 +54,14 @@ export const OLS4V1Class = {
         useLegacy: false
     }
 };
+
+export const SemlookPIndividuals = {
+    storyName: "SemlookP Individuals",
+    args: {
+        api: globals.ZBMED_OLS_API_ENDPOINT,
+        ontologyId: "mesh",
+        entityType: "individual",
+        useLegacy: true
+    }
+};
+

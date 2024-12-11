@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import {OntologyEntityListWidgetProps} from "../../../app/types";
+import {HierarchyGraphWidgetProps, OntologyEntityListWidgetProps} from "../../../app/types";
 import {OlsApi} from "../../../api/OlsApi";
-import {useQuery} from "react-query";
-import {EuiBasicTable, EuiHorizontalRule, EuiLoadingSpinner, EuiSpacer, EuiText} from "@elastic/eui";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiBasicTable, EuiHorizontalRule, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
 import {capitalize, getErrorMessageToDisplay, pluralizeType} from "../../../app/util";
 import {Entity} from "../../../model/interfaces";
 import {Criteria, EuiBasicTableColumn} from "@elastic/eui/src/components/basic_table/basic_table";
+import ReactDOM from "react-dom";
+import {HierarchyGraphWidget} from "../HierarchyGraphWidget";
 
 function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
 
@@ -125,4 +127,24 @@ function OntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
     )
 }
 
-export { OntologyEntityListWidget }
+function createOntologyEntityList(props: OntologyEntityListWidgetProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedOntologyEntityListWidget(props), container, callback);
+}
+
+function WrappedOntologyEntityListWidget(props: OntologyEntityListWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <OntologyEntityListWidget
+                    api={props.api}
+                    entityType={props.entityType}
+                    ontologyId={props.ontologyId}
+                    useLegacy={props.useLegacy}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { OntologyEntityListWidget, createOntologyEntityList }

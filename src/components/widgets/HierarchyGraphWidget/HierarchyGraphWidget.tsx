@@ -1,13 +1,13 @@
 import React from "react";
-import {HierarchyGraphWidgetProps} from "../../../app/types";
+import {HierarchyGraphWidgetProps, TabWidgetProps} from "../../../app/types";
 import {OlsApi} from "../../../api/OlsApi";
-import {useQuery} from "react-query";
-import {EuiLoadingSpinner, EuiTabbedContent, EuiText} from "@elastic/eui";
-import {HierarchyWidget} from "../MetadataWidget";
+import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import {EuiLoadingSpinner, EuiProvider, EuiTabbedContent, EuiText} from "@elastic/eui";
+import {HierarchyWidget, TabWidget} from "../MetadataWidget";
 import {GraphViewWidget} from "../GraphViewWidget";
 import {getErrorMessageToDisplay} from "../../../app/util";
 import {
-    classTypeNames, individualTypeNames,
+    classTypeNames, individualTypeNames, isClass,
     isEntity,
     isEntityTypeName,
     isOntology,
@@ -15,6 +15,7 @@ import {
 } from "../../../model/ModelTypeCheck";
 import {Ontology} from "../../../model/interfaces";
 import {OntologyEntityListWidget} from "../OntologyEntityListWidget";
+import ReactDOM from "react-dom";
 
 function renderOntologyWidget(props: HierarchyGraphWidgetProps, data: Ontology) {
     const classTabs = [
@@ -185,6 +186,7 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
                                     {
                                         name: "Graph",
                                         id: "entityGraph",
+                                        disabled: !isClass(data),
                                         content: <GraphViewWidget
                                             api={props.api}
                                             iri={props.iri || data.getIri()}
@@ -206,4 +208,34 @@ function HierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
     )
 }
 
-export { HierarchyGraphWidget }
+function createHierarchyGraph(props: HierarchyGraphWidgetProps, container: Element, callback?: ()=>void) {
+    ReactDOM.render(WrappedHierarchyGraphWidget(props), container, callback);
+}
+
+function WrappedHierarchyGraphWidget(props: HierarchyGraphWidgetProps) {
+    const queryClient = new QueryClient();
+    return (
+        <EuiProvider colorMode="light">
+            <QueryClientProvider client={queryClient}>
+                <HierarchyGraphWidget
+                    api={props.api}
+                    entityType={props.entityType}
+                    ontologyId={props.ontologyId}
+                    iri={props.iri}
+                    parameter={props.parameter}
+                    useLegacy={props.useLegacy}
+                    includeObsoleteEntities={props.includeObsoleteEntities}
+                    preferredRoots={props.preferredRoots}
+                    showSiblingsOnInit={props.showSiblingsOnInit}
+                    keepExpansionStates={props.keepExpansionStates}
+                    onNavigateToEntity={props.onNavigateToEntity}
+                    onNavigateToOntology={props.onNavigateToOntology}
+                    onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+                    rootWalk={props.rootWalk}
+                />
+            </QueryClientProvider>
+        </EuiProvider>
+    )
+}
+
+export { HierarchyGraphWidget, createHierarchyGraph }

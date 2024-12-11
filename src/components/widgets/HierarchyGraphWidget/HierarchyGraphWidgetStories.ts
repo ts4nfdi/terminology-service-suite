@@ -95,3 +95,36 @@ export const OLS4V2Ontology = {
     }
 };
 
+export const OLS4V2Property = {
+    storyName: "OLS4 V2 Property",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "snomed",
+        entityType: "property",
+        iri: "http://snomed.info/id/116676008",
+        useLegacy: false
+    }
+};
+
+export const OLS4V2Individual = {
+    storyName: "OLS4 V2 Individual",
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        ontologyId: "envo",
+        entityType: "individual",
+        iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+        useLegacy: false
+    }
+};
+
+export const SemlookPTerm = {
+    storyName: "SemLookP Term",
+    args: {
+        api: globals.ZBMED_OLS_API_ENDPOINT,
+        ontologyId: "uberon",
+        entityType: "class",
+        iri: "http://purl.obolibrary.org/obo/UBERON_0013701",
+        useLegacy: true
+    }
+};
+

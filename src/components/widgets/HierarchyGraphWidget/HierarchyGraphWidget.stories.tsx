@@ -13,7 +13,10 @@ export default {
 
 export {
     OLS4V2Class,
-    OLS4V2Ontology
+    OLS4V2Ontology,
+    OLS4V2Property,
+    OLS4V2Individual,
+    SemlookPTerm
 } from "./HierarchyGraphWidgetStories"
 
 
