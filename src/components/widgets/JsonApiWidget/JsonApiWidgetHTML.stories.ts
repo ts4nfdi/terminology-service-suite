@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {JsonApiWidgetProps} from "../../../app/types";
 import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
+import {JsonApiDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: JsonApiDescription
+            }
+        }
     },
     render: (args: JsonApiWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

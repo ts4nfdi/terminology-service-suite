@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import { GraphViewWidgetProps } from '../../../app/types';
 import { GraphViewWidgetStoryArgTypes, GraphViewWidgetStoryArgs } from "./GraphViewWidgetStories";
+import {GraphViewDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: GraphViewDescription
+            }
+        }
     },
     render: (args: GraphViewWidgetProps) => {      
         const num = getIncNum();

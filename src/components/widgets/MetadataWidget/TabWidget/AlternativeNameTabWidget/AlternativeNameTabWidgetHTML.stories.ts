@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {AlternativeNameTabWidgetProps} from "../../../../../app/types";
 import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "./AlternativeNameTabWidgetStories";
+import {AlternativeNameTabDescription} from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: AlternativeNameTabDescription
+            }
+        }
     },
     render: (args: AlternativeNameTabWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

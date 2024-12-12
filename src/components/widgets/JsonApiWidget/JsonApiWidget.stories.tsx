@@ -1,11 +1,17 @@
 import { JsonApiWidget } from "./JsonApiWidget";
 import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
+import {JsonApiDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "JsonApiWidget",
+  title: "General Utility/JsonApiWidget",
   component: JsonApiWidget,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: JsonApiDescription
+      }
+    }
   },
   argTypes: JsonApiWidgetStoryArgTypes,
   args: JsonApiWidgetStoryArgs

@@ -1,15 +1,19 @@
 import { EntityInfoWidget } from "./EntityInfoWidget";
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../app/util";
+import {EntityInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "EntityInfoWidget",
+  title: "Entity Information/EntityInfoWidget",
   component: EntityInfoWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+        component: EntityInfoDescription
       }
     },
   },

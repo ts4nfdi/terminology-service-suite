@@ -1,6 +1,7 @@
 import "semlookp-widgets";
 import { SearchBarWidgetProps } from "../../../app/types";
 import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
+import {SearchBarDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -12,7 +13,12 @@ export default {
   title: "SearchBarWidget",
   tags: ["autodocs"],
   parameters: {
-    layout: "centered"
+    layout: "centered",
+    docs: {
+      description: {
+        component: SearchBarDescription
+      }
+    }
   },
   render: (args: SearchBarWidgetProps) => {
     // You can either use a function to create DOM elements or use a plain html string!

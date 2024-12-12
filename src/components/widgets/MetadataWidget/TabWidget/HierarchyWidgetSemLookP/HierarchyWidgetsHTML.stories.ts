@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
 import {HierarchyWidgetProps} from "../../../../../app/types";
+import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -14,6 +15,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: HierarchyDescription
+            }
+        }
     },
     render: (args: HierarchyWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

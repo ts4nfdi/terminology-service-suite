@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 import {CrossRefWidgetProps} from "../../../../../app/types";
+import {CrossRefTabDescription} from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: CrossRefTabDescription
+            }
+        }
     },
     render: (args: CrossRefWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

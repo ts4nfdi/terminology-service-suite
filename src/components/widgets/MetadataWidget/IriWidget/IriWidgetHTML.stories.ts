@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
 import {IriWidgetProps} from "../../../../app/types";
+import {IriDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: IriDescription
+            }
+        }
     },
     render: (args: IriWidgetProps) => {        
         // You can either use a function to create DOM elements or use a plain html string!
