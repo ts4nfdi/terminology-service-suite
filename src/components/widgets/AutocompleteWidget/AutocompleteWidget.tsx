@@ -295,7 +295,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    */
   const { isLoading: isLoadingTerms } = useQuery(
       ["onSearchChange", searchValue],
-      async () => {
+
+    apiEndpoint === "search"
+      ? async () => {
+          await updateOptions(searchValue === "" ? "" : "*" + searchValue + "*");
+      }
+      : async () => {
           await updateOptions(searchValue);
       }
   );
