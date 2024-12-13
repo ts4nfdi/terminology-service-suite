@@ -23,7 +23,7 @@ import ReactDOM from "react-dom";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 
-const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
+const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 const DEFAULT_INITIAL_SORT_FIELD = "config.preferredPrefix";
 const DEFAULT_INITIAL_SORT_DIR = "asc" as const;
