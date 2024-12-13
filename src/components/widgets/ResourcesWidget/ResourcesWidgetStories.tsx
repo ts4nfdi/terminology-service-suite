@@ -25,7 +25,7 @@ export const ResourcesWidgetStoryArgTypes = {
 export const ResourcesWidgetStoryArgs = {
     api: "",
     useLegacy: true,
-    initialEntriesPerPage: 10,
+    initialEntriesPerPage: 100,
     pageSizeOptions: [10, 25, 50, 100],
     initialSortField: "config.preferredPrefix",
     initialSortDir: "asc",
@@ -37,7 +37,7 @@ export const ResourcesWidgetStoryArgs = {
 export const ResourcesWidget1 = {
     args: {
         api: globals.ZBMED_API_ENDPOINT,
-        initialEntriesPerPage: 10,
+        initialEntriesPerPage: 100,
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",
         initialSortDir: "asc" as const,
@@ -95,7 +95,7 @@ export const WithActionsAndSafety = {
 export const ResourcesWidgetLogos = {
     args: {
         api: globals.EBI_API_ENDPOINT,
-        initialEntriesPerPage: 10,
+        initialEntriesPerPage: 100,
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",
         initialSortDir: "asc" as const,

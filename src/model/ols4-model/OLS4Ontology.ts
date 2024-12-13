@@ -17,7 +17,7 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   }
   getDescription(): string {
     const descriptions = Reified.fromJson<string>(
-      this.properties["definition"] || this.properties["description"] || ""
+      this.properties["description"] || this.properties["definition"] || ""
     );
     return (descriptions[0] && descriptions[0].value) || "";
   }
