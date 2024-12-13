@@ -191,7 +191,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         version: ontology.getVersion(),
         iri: ontology.getIri(),
         homepage: ontology.getHomepage(),
-        license: ontology.getLicense()
+        annotations: {
+          license: ontology.getLicense()
+        },
       }
     };
   }
@@ -281,26 +283,47 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       delete itemIdToExpandedRowMapValues[resource.ontologyId];
     } else {
 
+      let iri = null
+      let homepage = null
+      let licenseUrl = ""
+      let licenseLabel = ""
+
+      resource.config.iri ? iri = resource.config.iri : null
+      resource.config.homepage ? homepage = resource.config.homepage : null
+
+      if (resource?.config?.annotations?.license) {
+        const license = resource.config.annotations.license;
+        if (useLegacy) {
+          if (license[0] !== "") {
+            licenseUrl = `https://${license[0]}`;
+            licenseLabel = license[0];
+          }
+        } else {
+          licenseUrl = license.url ? license.url : "";
+          licenseLabel = license.label ? license.label : "";
+        }
+      }
+
       const listItems = [
         {
           title: "IRI",
           description: <EuiLink
-            href={`${resource.config.iri ? resource.config.iri : "-"}`}>{`${resource.config.iri ? resource.config.iri : "-"}`}</EuiLink>
+            href={`${iri ? iri : "-"}`}>{`${iri ? iri : "-"}`}</EuiLink>
         }];
 
-      if (resource.config.homepage) {
+      if (homepage) {
         listItems.push({
             title: "Homepage",
             description: <EuiLink
-              href={`${resource.config.homepage ? resource.config.homepage : "-"}`}>{`${resource.config.homepage ? resource.config.homepage : "-"}`}</EuiLink>
+              href={`${homepage ? homepage : "-"}`}>{`${homepage ? homepage : "-"}`}</EuiLink>
           }
         );
       }
-      if (resource.config.license) {
+      if (licenseLabel !== "") {
         listItems.push({
             title: "License",
             description: <EuiLink
-              href={`${resource.config.license.url ? resource.config.license.url : "-"}`}>{`${resource.config.license.label ? resource.config.license.label : "-"}`}</EuiLink>
+              href={`${licenseUrl !== "" ? licenseUrl : null}`}>{`${licenseLabel}`}</EuiLink>
           }
         );
       }
