@@ -452,7 +452,7 @@ export type MetadataWidgetProps =
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
-export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
+export type ResourcesWidgetProps = ApiObj & ParameterObj & {
   /**
    * Initial number of entries displayed per page.
    */
@@ -477,6 +477,8 @@ export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
    * Pass actions to each item in the table.
    */
   actions?: Array<Action<OlsResource>>;
+
+  onNavigate?: (ontologyId: string) => void;
 }
 
 export type OlsResource = ForcedOntologyIdObj & {
