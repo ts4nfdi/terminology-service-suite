@@ -8,7 +8,7 @@ import {
   thingTypeArgType,
   titleTextArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
-import "../../../../style/titleStyles.css"
+import "../../../../style/titleStyles.css";
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,

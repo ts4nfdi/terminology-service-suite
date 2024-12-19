@@ -32,6 +32,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     singleSuggestionRow,
     ts4nfdiGateway = false,
     showApiSource = true,
+    className,
     ...rest
   } = props;
 
@@ -83,20 +84,22 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderOntology = () => {
       return (
-        <EuiHealth
-          color={dotColor}>
-              <span>
-                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                  <br />
-                {value.description}
-              </span>
-        </EuiHealth>
+        <span className={className}>
+          <EuiHealth
+            color={dotColor}>
+                <span>
+                    <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                    <br />
+                  {value.description}
+                </span>
+          </EuiHealth>
+        </span>
       );
     };
 
     const renderEntityWithDescription = () => {
       return (
-        <span title={hoverText} style={{ height: 200 + "px" }}>
+        <span title={hoverText} style={{ height: 200 + "px" }} className={className}>
             <EuiHealth
               color={dotColor}>
                 <span>
@@ -332,27 +335,28 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     setOptions([...options, newOption]);
     setSelectedOptions(singleSelection ? [newOption] : [...selectedOptions, newOption]);
   }
-
   return (
-    <EuiComboBox
-      isClearable
-      aria-label="searchBar"
-      fullWidth={true}
-      {...rest} // items above can be overridden by a client
-      async={true}
-      isLoading={isLoadingTerms || isLoadingOnMount}
-      singleSelection={singleSelection ? { asPlainText: true } : false}
-      placeholder={
-        placeholder ? placeholder : "Search for a Concept"
-      }
-      options={options}
-      selectedOptions={selectedOptions}
-      onSearchChange={setSearchValue}
-      onChange={onChangeHandler}
-      renderOption={renderOption}
-      onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
-      rowHeight={singleSuggestionRow ? 30 : 50}
-    />
+    <div className={className}>
+      <EuiComboBox
+        isClearable
+        aria-label="searchBar"
+        fullWidth={true}
+        {...rest} // items above can be overridden by a client
+        async={true}
+        isLoading={isLoadingTerms || isLoadingOnMount}
+        singleSelection={singleSelection ? { asPlainText: true } : false}
+        placeholder={
+          placeholder ? placeholder : "Search for a Concept"
+        }
+        options={options}
+        selectedOptions={selectedOptions}
+        onSearchChange={setSearchValue}
+        onChange={onChangeHandler}
+        renderOption={renderOption}
+        onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
+        rowHeight={singleSuggestionRow ? 30 : 50}
+      />
+    </div>
   );
 }
 
@@ -378,6 +382,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
+          className={props.className}
         />
       </QueryClientProvider>
     </EuiProvider>

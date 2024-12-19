@@ -1,0 +1,10 @@
+.custom-autocomplete-style * {
+  font-size: 18px !important;
+}
+
+.custom-autocomplete-style input,
+.custom-autocomplete-style .euiComboBox__inputWrap{
+  background-color: #edc4c4 !important;
+}
+
+
