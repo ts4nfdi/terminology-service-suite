@@ -98,9 +98,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return (
         <span
           title={hoverText}
-          style={{ display: "inline-flex", flexDirection: "column" }}
         >
-          <span style={{ display: "inline-flex", alignItems: "center" }}>
+          <span>
             <EuiHealth color={dotColor}>
               <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
             </EuiHealth>
