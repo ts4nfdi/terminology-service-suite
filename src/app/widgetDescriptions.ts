@@ -10,7 +10,11 @@ This widget is a powerful addition to any application requiring ontology search 
 Provides real-time autosuggestions as users type and highlights matching portions of suggestions for better usability.  
 
 - **Seamless ontology integration**:
-Fetches data directly from OLS-based APIs and displays rich ontology-specific metadata, such as label, term type, description and short form.  
+Fetches data directly from OLS-based APIs and displays rich ontology-specific metadata, such as label, term type, description and short form.
+The default search is across all text fields in the terminologies, but results are ranked (regardless of their terminology) 
+by hits in labels, then synonyms, then definitions, then annotations. 
+The OLS system does not provide a feature to change search rankings. 
+See the underlying [Lucene Scoring algorithm documentation](https://www.lucenetutorial.com/advanced-topics/scoring.html) for more information.
 
 - **Customizability through a flexible design to adapt to various use cases**:
 Supports custom term sets and preselected concepts and is configurable for single or multiple selections depending on user needs.  
