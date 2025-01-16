@@ -56,6 +56,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
+  const finalClassName = className || "ts4nfdi-autocomplete-style";
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const renderOption = (option, searchValue) => {
@@ -84,7 +86,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderOntology = () => {
       return (
-        <span className={className}>
+        <span className={finalClassName}>
           <EuiHealth
             color={dotColor}>
                 <span>
@@ -99,7 +101,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntityWithDescription = () => {
       return (
-        <span title={hoverText} style={{ height: 200 + "px" }} className={className}>
+        <span title={hoverText} style={{ height: 200 + "px" }} className={finalClassName}>
             <EuiHealth
               color={dotColor}>
                 <span>
@@ -336,7 +338,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     setSelectedOptions(singleSelection ? [newOption] : [...selectedOptions, newOption]);
   }
   return (
-    <div className={className}>
+    <div className={finalClassName}>
       <EuiComboBox
         isClearable
         aria-label="searchBar"

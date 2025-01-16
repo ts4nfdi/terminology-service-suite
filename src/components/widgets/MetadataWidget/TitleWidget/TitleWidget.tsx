@@ -24,7 +24,7 @@ function TitleWidget(props: TitleWidgetProps) {
     className
   } = props;
   const olsApi = new OlsApi(api);
-  const finalClassName = className || "default-class";
+  const finalClassName = className || "ts4nfdi-title-style";
 
   const {
     data,

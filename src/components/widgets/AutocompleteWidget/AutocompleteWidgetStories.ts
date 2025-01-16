@@ -1,5 +1,5 @@
 import * as globals from '../../../app/globals';
-import "../../../style/autocompleteStyles.css";
+import "../../../style/ts4nfdiAutocompleteStyle.css";
 
 import { action } from "@storybook/addon-actions";
 import {
@@ -180,7 +180,7 @@ export const TibDataPlant = {
   }
 };
 
-export const WithStyles = {
+export const WithCustomStyles = {
   args: {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection",

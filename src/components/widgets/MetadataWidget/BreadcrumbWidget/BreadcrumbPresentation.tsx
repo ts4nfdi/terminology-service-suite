@@ -5,7 +5,7 @@ import {BreadcrumbPresentationProps} from "../../../../app/types";
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   return (
     <>
-        <span>
+        <span className={props.className}>
             <button onClick={() => {if(props.onNavigateToOntology) props.onNavigateToOntology(props.ontologyId || "", undefined, undefined)}}>
                 <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={props.colorFirst || "primary"}>
                     {props.ontologyName ? props.ontologyName.toUpperCase() : "No ontology name available"}

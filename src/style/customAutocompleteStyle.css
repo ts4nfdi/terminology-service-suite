@@ -1,0 +1,22 @@
+.custom-autocomplete-style * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.custom-autocomplete-style input,
+.custom-autocomplete-style .euiComboBox__inputWrap{
+  background-color: #edc4c4 !important;
+}
+
+.custom-autocomplete-style button {
+  background: none;
+  border: none;
+}
+
+.euiComboBoxOptionsList * {
+  border: none;
+  background-color: inherit;
+}
+
+.euiComboBoxOptionsList__empty {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}

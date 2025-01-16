@@ -25,7 +25,10 @@ export default {
 };
 
 export {
+    BreadcrumbWidgetDefault,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
-    ErrorBreadcrumbWidget
+    ErrorBreadcrumbWidget,
+    CustomColors,
+    CustomStyle,
 } from "./BreadcrumbWidgetStories"

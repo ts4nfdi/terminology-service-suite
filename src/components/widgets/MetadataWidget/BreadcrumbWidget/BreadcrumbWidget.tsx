@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiBadge, EuiIcon, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import {BreadcrumbWidgetProps} from "../../../../app/types";
@@ -7,11 +7,12 @@ import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
-import "../../../../style/semlookp-styles.css";
+
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology} = props;
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology, className} = props;
   const olsApi = new OlsApi(api);
+  const finalClassName = className || "ts4nfdi-breadcrumb-style";
 
   const {
     data,
@@ -28,15 +29,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
 
   return (
     <>
-      {isLoading &&
-          <span>
-            <button onClick={() => {if(props.onNavigateToOntology && props.ontologyId) props.onNavigateToOntology(props.ontologyId || "", undefined, undefined)}}>
-                <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
-            </button>
-             &nbsp;<EuiIcon type="arrowRight"/>&nbsp;
-            <EuiBadge className="breadcrumb" color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
-          </span>
-      }
+      {isLoading && <EuiLoadingSpinner size={"s"}/>}
       {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
           ontologyName={data.getOntologyId()}
@@ -45,6 +38,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
           colorFirst={colorFirst}
           colorSecond={colorSecond}
           onNavigateToOntology={onNavigateToOntology}
+          className={finalClassName}
         />
       }
       {isError &&
@@ -55,6 +49,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
               colorFirst={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}
               colorSecond={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}
               onNavigateToOntology={onNavigateToOntology}
+              className={finalClassName}
           />
       }
       </>

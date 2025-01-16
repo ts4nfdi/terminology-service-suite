@@ -1,14 +1,12 @@
-.custom-autocomplete-style * {
-  font-size: 18px !important;
+.ts4nfdi-autocomplete-style * {
   font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
 }
 
-.custom-autocomplete-style input,
-.custom-autocomplete-style .euiComboBox__inputWrap{
-  background-color: #edc4c4 !important;
+.ts4nfdi-autocomplete-style input,
+.ts4nfdi-autocomplete-style .euiComboBox__inputWrap{
 }
 
-.custom-autocomplete-style button {
+.ts4nfdi-autocomplete-style button {
   background: none;
   border: none;
 }
