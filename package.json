@@ -9,8 +9,7 @@
     "package.json"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/",
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   },
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
   "scripts": {
@@ -35,7 +34,6 @@
   "author": "TS4NFDI",
   "license": "MIT",
   "devDependencies": {
-    "@amanda-mitchell/semantic-release-npm-multiple": "^3.11.1",
     "@babel/preset-env": "^7.23.7",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
@@ -44,6 +42,7 @@
     "@rollup/plugin-typescript": "^8.3.4",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.6",
+    "@semantic-release/gitlab": "^9.4.1",
     "@semantic-release/npm": "^9.0.1",
     "@storybook/addon-actions": "^7.6.7",
     "@storybook/addon-essentials": "^7.6.7",
