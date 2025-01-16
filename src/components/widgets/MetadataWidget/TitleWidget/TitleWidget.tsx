@@ -41,27 +41,27 @@ function TitleWidget(props: TitleWidgetProps) {
 
 
   return (
-    <>
+    <div className={finalClassName}>
       {titleText &&
         <TitlePresentation
           titleText={titleText}
-          className={finalClassName} />
+        />
       }
 
       {!titleText && isSuccess && data &&
         <TitlePresentation
-          title={isOntology(data) ? data.getName() : data.getLabel()} className={finalClassName} />
+          title={isOntology(data) ? data.getName() : data.getLabel()} />
       }
 
       {!titleText && isLoading && (defaultValue ? (
-          <TitlePresentation titleText={defaultValue} className={finalClassName} />)
+          <TitlePresentation titleText={defaultValue} />)
         : <EuiLoadingSpinner size="s" />)
       }
 
       {!titleText && isError && (defaultValue ?
-        <TitlePresentation titleText={defaultValue} className={finalClassName} /> :
+        <TitlePresentation titleText={defaultValue} /> :
         <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>)}
-    </>
+    </div>
   );
 }
 

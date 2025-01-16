@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 export const decorators = [
   (Story) => (
     <>
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           {Story()}
         </QueryClientProvider>

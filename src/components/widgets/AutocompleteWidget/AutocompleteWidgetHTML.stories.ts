@@ -42,6 +42,7 @@ window['SemLookPWidgets'].createAutocomplete(
         ts4nfdiGateway:${args.ts4nfdiGateway},
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
+        className: "${args.className}"
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -67,5 +68,8 @@ export {
     AllowAddingCustomTerms,
     WithGermanInput,
     WithLongForm,
-    WithDescriptionAndShortForm
+    WithDescriptionAndShortForm,
+    TibNFDI4CHEM,
+    TibDataPlant,
+    WithStyles
 } from "./AutocompleteWidgetStories"

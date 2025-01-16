@@ -1,4 +1,5 @@
 import * as globals from '../../../app/globals';
+import "../../../style/autocompleteStyles.css";
 
 import { action } from "@storybook/addon-actions";
 import {
@@ -43,6 +44,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     showApiSource: true,
     singleSuggestionRow: false,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    className: ""
   },
 };
 
@@ -167,7 +169,7 @@ export const WithMultipleValues = {
 export const TibNFDI4CHEM = {
   args: {
     api: globals.TIB_API_ENDPOINT,
-  parameter: "classification=NFDI4CHEM&schema=collection",
+    parameter: "classification=NFDI4CHEM&schema=collection",
   }
 };
 
@@ -175,5 +177,13 @@ export const TibDataPlant = {
   args: {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
+  }
+};
+
+export const WithStyles = {
+  args: {
+    api: globals.TIB_API_ENDPOINT,
+    parameter: "classification=NFDI4CHEM&schema=collection",
+    className: "custom-autocomplete-style"
   }
 };

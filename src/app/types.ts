@@ -145,6 +145,13 @@ type ContainerWidthObj = {
   width?: number
 }
 
+type CssClassNameObj = {
+  /**
+   * CSS class for styling
+   */
+  className?: string;
+}
+
 type TabList = {
   /**
    * It is possible to show and hide the Alternative Names tab. **True** shows the tab. **False** hides the tab.
@@ -164,7 +171,7 @@ type TabList = {
   terminologyInfoTab?: boolean;
 }
 
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
+export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & CssClassNameObj &{
   /**
    * A method that is called once the set of selection changes
    */
@@ -419,15 +426,12 @@ export type TitleTextObj = {
   titleText?: string;
 }
 
-export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & {
+export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & CssClassNameObj &{
   /**
    * Set the default text shown if the API fails to retrieve one.
    */
   defaultValue?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
+  
 }
 
 export type TitlePresentationProps = TitleTextObj & {
