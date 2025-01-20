@@ -206,6 +206,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
    * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
    */
   showApiSource?: boolean;
+  /**
+   * Comma-separated list of terms Iris. Used for narrowing down the results to sub-tree of the given terms. Example: http://purl.obolibrary.org/obo/OBI_0000070,http://purl.obolibrary.org/obo/IAO_0000027
+   */
+  subTreeIris?: string;
 };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;

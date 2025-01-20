@@ -45,6 +45,15 @@ export const iriArgType = {
     type: { summary: "string" }
   }
 };
+export const subTreeIrisArgType = {
+  subTreeIris: {
+    required: false,
+    description: `Comma-separated list of terms Iris. Used for narrowing down the results to sub-tree of the given terms.
+      Example: http://purl.obolibrary.org/obo/OBI_0000070,http://purl.obolibrary.org/obo/IAO_0000027
+      `,
+    type: { summary: "string" }
+  }
+};
 export const ontologyIdArgType = {
   ontologyId: {
     required: false,

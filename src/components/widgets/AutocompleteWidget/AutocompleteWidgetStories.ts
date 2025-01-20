@@ -11,7 +11,8 @@ import {
   selectionChangedEventArgType, showApiSourceArgType,
   singleSelectionArgType,
   singleSuggestionRowArgType,
-  ts4nfdiGatewayArgType
+  ts4nfdiGatewayArgType,
+  subTreeIrisArgType
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
@@ -20,6 +21,7 @@ export const AutocompleteWidgetStoryArgTypes = {
     ...selectionChangedEventArgType,
     ...placeholderArgType,
     ...preselectedArgType,
+    ...subTreeIrisArgType,
     ...parameterArgType,
     ...hasShortSelectedLabelArgType,
     ...allowCustomTermsArgType,
@@ -43,6 +45,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     showApiSource: true,
     singleSuggestionRow: false,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    subTreeIris: ""
   },
 };
 
@@ -59,6 +62,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
     showApiSource: true,
     singleSuggestionRow: false,
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    subTreeIris: ""
   },
 };
 
@@ -175,5 +179,13 @@ export const TibDataPlant = {
   args: {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
+  }
+};
+
+export const SubTreeFiltering = {
+  args: {
+    api: globals.TIB_API_ENDPOINT,
+    subTreeIris: "http://purl.obolibrary.org/obo/OBI_0000070,http://purl.obolibrary.org/obo/IAO_0000027",
+    parameter: ""
   }
 };

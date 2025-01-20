@@ -37,7 +37,8 @@ export {
   WithLongForm,
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
+  SubTreeFiltering
 } from "./AutocompleteWidgetStories"
 
 

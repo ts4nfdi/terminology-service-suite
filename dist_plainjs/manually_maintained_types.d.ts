@@ -21,6 +21,7 @@ declare global {
       ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
       showApiSource?: boolean;
+      subTreeIris?: string;
     }
     )=>void,
     createDataContent:(props:{
