@@ -8,6 +8,7 @@ import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
+import "../../../../style/ts4nfdiTitleStyles.css"
 
 const NO_TITLE = "No title available.";
 

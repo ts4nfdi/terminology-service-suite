@@ -1,5 +1,6 @@
 import * as globals from '../../../app/globals';
 import "../../../style/ts4nfdiAutocompleteStyle.css";
+import "../../../style/customAutocompleteStyle.css";
 
 import { action } from "@storybook/addon-actions";
 import {

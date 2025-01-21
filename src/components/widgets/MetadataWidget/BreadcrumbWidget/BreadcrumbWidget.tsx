@@ -7,7 +7,7 @@ import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
-
+import "../../../../style/ts4nfdiBreadcrumbStyle.css";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology, className} = props;
