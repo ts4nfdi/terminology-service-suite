@@ -2,6 +2,7 @@ import 'semlookp-widgets';
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
 import "../../../../style/semlookp-styles.css";
+import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -14,6 +15,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: BreadcrumbDescription
+            }
+        }
     },
     render: (args: BreadcrumbWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

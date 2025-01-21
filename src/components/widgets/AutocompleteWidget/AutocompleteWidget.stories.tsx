@@ -5,9 +5,17 @@ import {
   AutocompleteWidgetStoryArgsReact
 } from "./AutocompleteWidgetStories";
 import "../../../style/semlookp-styles.css";
+import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "AutocompleteWidget",
+  title: "Search and Autocomplete/AutocompleteWidget",
+  parameters: {
+    docs: {
+      description: {
+        component: AutocompleteDescription
+      }
+    }
+  },
   component: AutocompleteWidget,
   ...AutocompleteWidgetStoryArgTypes,
   ...AutocompleteWidgetStoryArgsReact,

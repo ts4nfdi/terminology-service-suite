@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories";
 import {ResourcesWidgetProps} from "../../../app/types";
+import {ResourcesDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: ResourcesDescription
+            }
+        }
     },
     render: (args: ResourcesWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

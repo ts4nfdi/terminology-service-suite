@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
 import {OntologyInfoWidgetProps} from "../../../app/types";
+import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: OntologyInfoDescription
+            }
+        }
     },
     render: (args: OntologyInfoWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

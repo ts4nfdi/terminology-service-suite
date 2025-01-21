@@ -1,0 +1,12 @@
+<build|ci|docs|feat|fix|perf|refactor|test>(widgetname[lowercase, optional]): <description> (in present tense. Not capitalized. No period at the end)
+
+<motivation for the change>
+
+<information about breaking changes, deprecations, references to GitHub issues>
+
+
+#(Note that the BREAKING CHANGE: token must be in the footer of the commit)
+
+#HINT: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
+
+#HINT 2: Don't use Emoji in commit messages (e.g. 🐛), because it breaks semantic versioning!

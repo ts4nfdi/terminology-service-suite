@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import { TermDepictionWidgetProps } from '../../../app/types';
 import { TermDepictionWidgetStoryArgs, TermDepictionWidgetStoryArgTypes } from './TermDepictionWidgetStories';
+import {TermDepictionDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: TermDepictionDescription
+            }
+        }
     },
     render: (args: TermDepictionWidgetProps) => {      
         const num = getIncNum();

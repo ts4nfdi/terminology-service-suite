@@ -9,6 +9,7 @@ import ReactDOM from "react-dom";
 import "../../../../style/semlookp-styles.css";
 import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
+// TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
   const olsApi = new OlsApi(api);

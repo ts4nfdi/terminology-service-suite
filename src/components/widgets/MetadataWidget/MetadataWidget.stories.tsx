@@ -1,15 +1,19 @@
 import { MetadataWidget } from "./MetadataWidget";
 import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../app/util";
+import {MetadataDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "MetadataWidget",
+  title: "Metadata/MetadataWidget",
   component: MetadataWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+          component: MetadataDescription,
       }
     },
   },
