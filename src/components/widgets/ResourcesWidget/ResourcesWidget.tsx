@@ -30,7 +30,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
-    targetLink,
+    onNavigate,
     parameter,
   } = props;
   const olsApi = new OlsApi(api);
@@ -51,8 +51,18 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Short Name",
       field: "ontologyId",
-      render: (value: string) => (
-        targetLink ? <EuiLink href={targetLink + "ontologies/" + value + "/"}>{value}</EuiLink> : value
+      render: (ontologyId: string) => (
+        <EuiLink
+          href={"#"}
+          onClick={(e) => {
+            e.preventDefault();
+            if (onNavigate){
+              onNavigate(ontologyId || "");
+            }
+          }}
+        >
+          {ontologyId}
+        </EuiLink>
       ),
       width: "10%",
       sortable: true
@@ -154,7 +164,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const ontos = ontologiesData?.properties.map(ontology => ({
     ...ontology.properties
   })) || [];
-console.log(ontos)
+
   const findOntologies = (
     ontologies: any[],
     pageIndex: number,

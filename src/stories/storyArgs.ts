@@ -589,4 +589,27 @@ export const onNavigateToDisambiguateArgType = {
     }
   }
 };
+export const onNavigateArgType = {
+  onNavigate: {
+    required: false,
+    type: {summary: "string"},
+    action: "onNavigateArgType",
+    description: "This function is called every time an ontology link is clicked.",
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (ontologyId: string) => {
+        console.log('Triggered onNavigate() with ontologyId = ' + (ontologyId));
+      },
+      "Navigate to EBI page": (ontologyId: string) => {
+        if(ontologyId) {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+        else {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+      },
+    }
+  }
+};
 export const ArgType = {};
