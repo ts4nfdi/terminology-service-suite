@@ -1,3 +1,7 @@
+.euiFilterSelectItem:hover{
+    text-decoration: none !important;
+}
+
 button {
     -webkit-user-select: text;
     -moz-user-select: text;
