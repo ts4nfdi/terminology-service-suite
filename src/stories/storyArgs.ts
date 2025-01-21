@@ -594,7 +594,7 @@ export const onNavigateArgType = {
     required: false,
     type: {summary: "string"},
     action: "onNavigateArgType",
-    description: "This function is called every time a link is clicked.",
+    description: "This function is called every time an ontology link is clicked.",
     control: {type: "radio"},
     options: ["Console message", "Navigate to EBI page"],
     mapping: {

@@ -478,6 +478,9 @@ export type ResourcesWidgetProps = ApiObj & ParameterObj & {
    */
   actions?: Array<Action<OlsResource>>;
 
+  /**
+   * This function is called every time an ontology link is clicked.
+   */
   onNavigate?: (ontologyId: string) => void;
 }
 
