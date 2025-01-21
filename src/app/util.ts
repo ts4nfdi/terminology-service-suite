@@ -8,6 +8,8 @@ import {
 } from "../model/ModelTypeCheck";
 import {StoryContext} from "@storybook/react";
 
+export const OBO_FOUNDRY_REPO_URL_RAW = "https://raw.githubusercontent.com/OBOFoundry/OBOFoundry.github.io/master" as const;
+
 export function asArray<T>(obj: T | T[]): T[] {
     if (Array.isArray(obj)) {
         return obj;
