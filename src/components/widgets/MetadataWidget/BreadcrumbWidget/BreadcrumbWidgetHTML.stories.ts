@@ -1,7 +1,7 @@
 import 'semlookp-widgets';
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
-import "../../../../style/semlookp-styles.css";
+import "../../../../style/tssStyles.css";
 import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;

@@ -1,7 +1,7 @@
 import 'semlookp-widgets';
 import {EntityRelationsWidgetProps} from "../../../app/types";
 import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
-import "../../../style/semlookp-styles.css";
+import "../../../style/tssStyles.css";
 import {EntityRelationsDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;

@@ -6,7 +6,7 @@ import {getErrorMessageToDisplay, singularizeType} from "../../../../app/util";
 import {EntityDefinedByWidgetProps} from "../../../../app/types";
 import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 import ReactDOM from "react-dom";
-import "../../../../style/semlookp-styles.css";
+import "../../../../style/tssStyles.css";
 import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {

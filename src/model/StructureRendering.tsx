@@ -4,7 +4,7 @@ import {EuiIconTip, EuiIcon} from "@elastic/eui";
 import {asArray, inferTypeFromTypeArray, randomString} from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
-import "../style/semlookp-styles.css";
+import "../style/tssStyles.css";
 import {OnNavigates} from "../app/types";
 
 const DEFAULT_SHOW_BADGES = true;

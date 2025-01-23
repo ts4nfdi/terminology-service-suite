@@ -15,7 +15,7 @@ import ReactDOM from "react-dom";
 import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelObjectCreator";
 import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListPresentation";
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
-import "../../../style/semlookp-styles.css"
+import "../../../style/tssStyles.css"
 
 type MetadataInfo = {
     entity: Entity,
