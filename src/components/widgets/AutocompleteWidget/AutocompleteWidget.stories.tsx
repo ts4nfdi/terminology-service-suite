@@ -4,7 +4,7 @@ import {
   AutocompleteWidgetStoryArgTypes,
   AutocompleteWidgetStoryArgsReact
 } from "./AutocompleteWidgetStories";
-import "../../../style/semlookp-styles.css";
+import "../../../style/tssStyles.css";
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 export default {
