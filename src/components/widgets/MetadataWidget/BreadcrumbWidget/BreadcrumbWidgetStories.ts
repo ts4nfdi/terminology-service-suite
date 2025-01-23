@@ -6,7 +6,7 @@ import {
     ontologyIdArgType,
     parameterArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
-import "../../../../style/ts4nfdiBreadcrumbStyle.css";
+import "../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import "../../../../style/customBreadcrumbStyle.css";
 
 export const BreadcrumbWidgetStoryArgTypes = {

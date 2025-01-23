@@ -15,7 +15,7 @@ import {
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
-import "../../../style/ts4nfdiAutocompleteStyle.css";
+import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
