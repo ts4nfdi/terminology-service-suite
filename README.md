@@ -39,7 +39,7 @@ To install the package for development, it's necessary to additionally install f
 - react-query
 
 ```
-npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2
+npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2 axios@1.1.2
 ```
 
 ### Authenticate
