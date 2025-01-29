@@ -65,5 +65,6 @@ export {
     LargeHierarchy,
     SkosHierarchy,
     SagePubHierarchy,
-    OntoportalHierarchy
+    OntoportalHierarchy,
+    OLS3Hierarchy
 } from "./HierarchyWidgetStories"

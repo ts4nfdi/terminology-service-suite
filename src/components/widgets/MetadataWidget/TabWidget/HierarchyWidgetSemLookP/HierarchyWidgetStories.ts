@@ -218,3 +218,14 @@ export const OntoportalHierarchy = {
         apiKey: ""
     }
 }
+
+export const OLS3Hierarchy = {
+    args: {
+        apiUrl: globals.ZBMED_OLS_API_ENDPOINT,
+        backendType: "ols",
+        iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+        entityType: "class",
+        ontologyId: "efo",
+        useLegacy: true,
+    }
+};
