@@ -4,14 +4,15 @@ import {OLS3Thing} from "./OLS3Thing";
 import Reified from "../Reified";
 
 import {asArray, deCamelCase} from "../../app/util";
+import {ThingTypeName} from "../ModelTypeCheck";
 
 export class OLS3Ontology extends OLS3Thing implements Ontology{
 
-  getType(): "ontology" | "class" | "property" | "individual" {
+  getType(): ThingTypeName {
     return "ontology";
   }
 
-  getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" {
+  getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals" {
     return "ontologies";
   }
 
@@ -124,6 +125,11 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   getPreferredRoots(): string[] {
     return asArray(this.properties["hasPreferredRoot"]);
   }
+
+  getPreferredPrefix(): string {
+    return this.properties["config"]["preferredPrefix"];
+  }
+
   getLanguages(): string[] {
     // not available in semlookp API, but in ebi API
     return asArray(this.properties["lang"]);
@@ -138,7 +144,11 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   getExportsTo(): string[] {
     return asArray(this.properties["exportsTo"]);
   }
-  getAllowDownload(): string {
+  getAllowDownload(): boolean {
     return this.properties["config"]["allowDownload"];
+  }
+
+  getLicense(): string[] {
+    return this.properties["config"]["annotations"]["license"];
   }
 }
