@@ -76,7 +76,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (value.description != undefined) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
-    if (showApiSource && value.source_url && value.source_url !== ""){
+    if (showApiSource && value.source_url && value.source_url !== "") {
       hoverText += "\n\nSource: " + value.source;
       hoverText += "\n\nSource URL: " + value.source_url;
     }
@@ -122,7 +122,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                display: "block",
+                display: "block"
               }}
             >
               {value.description}
@@ -130,7 +130,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           )}
         </span>
       );
-};
+    };
 
     return value.type === "ontology" ? renderOntology() : renderEntity();
   };
@@ -138,17 +138,17 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   /**
    * on mount: fetches term for preselected
    * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
-     * only if allowCustomTerms is true
-     */
-    const {
-        isLoading: isLoadingOnMount
-    } = useQuery(
-        [
-            "onMount",
-            preselected
-        ],
-        async () => {
-            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
+   * only if allowCustomTerms is true
+   */
+  const {
+    isLoading: isLoadingOnMount
+  } = useQuery(
+    [
+      "onMount",
+      preselected
+    ],
+    async () => {
+      let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
       let uniqueValues = [...new Set(preselected)]
         .filter((option) => {
@@ -158,38 +158,38 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       if (uniqueValues.length > 0) {
         if (singleSelection) uniqueValues = [uniqueValues[0]];
 
-                for (const option of uniqueValues) {
-                    if (option && option.iri && option.iri.startsWith("http")) {
-                      await olsApi.getSelectData(
-                            {query: option.iri},
-                            undefined,
-                            undefined,
-                            parameter,
+        for (const option of uniqueValues) {
+          if (option && option.iri && option.iri.startsWith("http")) {
+            await olsApi.getSelectData(
+              { query: option.iri },
+              undefined,
+              undefined,
+              parameter,
 
-                            ts4nfdiGateway
-                        ).then((response) => {
-                            if (response) {
-                                response.properties.map((selection: any) => {
-                                    if (option.iri === selection.getIri()) {
-                                        preselectedValues.push({
-                                            // label to display within the combobox either raw value or generated one
-                                            // #renderOption() is used to display during selection.
-                                            label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
-                                            // key to distinguish the options (especially those with same label)
-                                            key: `${selection.getOntologyId()}::${selection.getIri()}`,
-                                            value: {
-                                                iri: selection.getIri(),
-                                                label: selection.getLabel(),
-                                                ontology_name: selection.getOntologyId(),
-                                                type: selection.getType(),
-                                                short_form: selection.getShortForm(),
-                                                description: selection.getDescription(),
-                                                source: selection.getApiSourceName(),
-                                                source_url: selection.getApiSourceEndpoint()
-                                            },
-                                        });
-                                    }
-                                })
+              ts4nfdiGateway
+            ).then((response) => {
+              if (response) {
+                response.properties.map((selection: any) => {
+                  if (option.iri === selection.getIri()) {
+                    preselectedValues.push({
+                      // label to display within the combobox either raw value or generated one
+                      // #renderOption() is used to display during selection.
+                      label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
+                      // key to distinguish the options (especially those with same label)
+                      key: `${selection.getOntologyId()}::${selection.getIri()}`,
+                      value: {
+                        iri: selection.getIri(),
+                        label: selection.getLabel(),
+                        ontology_name: selection.getOntologyId(),
+                        type: selection.getType(),
+                        short_form: selection.getShortForm(),
+                        description: selection.getDescription(),
+                        source: selection.getApiSourceName(),
+                        source_url: selection.getApiSourceEndpoint()
+                      }
+                    });
+                  }
+                });
 
                 if (singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
               }
@@ -306,14 +306,14 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     );
   }, [selectedOptions]);
 
-  function generateDisplayLabel(item: any) {
+  function generateDisplayLabel(item: any): string {
 
     return (
-      item.getLabel() +
+      item?.getLabel() ?? "-" +
       " (" +
-      item.getOntologyId().toUpperCase() +
+      item?.getOntologyId()?.toUpperCase() ?? "-" +
       " " +
-      item.getShortForm() +
+      item?.getShortForm() ?? "-" +
       ")"
     );
   }
