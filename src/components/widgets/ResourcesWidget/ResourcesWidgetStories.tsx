@@ -7,7 +7,8 @@ import {
     apiArgType,
     initialEntriesPerPageArgType, initialSortDirArgType,
     initialSortFieldArgType,
-    pageSizeOptionsArgType, parameterArgType, targetLinkArgType
+    pageSizeOptionsArgType, parameterArgType,
+    onNavigateArgType
 } from "../../../stories/storyArgs";
 
 export const ResourcesWidgetStoryArgTypes = {
@@ -16,9 +17,9 @@ export const ResourcesWidgetStoryArgTypes = {
     ...pageSizeOptionsArgType,
     ...initialSortFieldArgType,
     ...initialSortDirArgType,
-    ...targetLinkArgType,
     ...actionsArgType,
     ...parameterArgType,
+    ...onNavigateArgType,
 }
 
 export const ResourcesWidgetStoryArgs = {
@@ -27,8 +28,8 @@ export const ResourcesWidgetStoryArgs = {
     pageSizeOptions: [10, 25, 50, 100],
     initialSortField: "config.preferredPrefix",
     initialSortDir: "asc",
-    targetLink: "",
     actions: [],
+    onNavigate: "Console message",
     parameter: "collection=nfdi4health"
 }
 
@@ -40,7 +41,7 @@ export const ResourcesWidget1 = {
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",
         initialSortDir: "asc" as const,
-        targetLink: "https://semanticlookup.zbmed.de/dev/",
+        onNavigate: "Console message",
         parameter: "collection=nfdi4health"
     }
 };
@@ -85,7 +86,6 @@ export const WithActions = {
 export const WithActionsAndSafety = {
     args: {
         ...WithActions.args,
-        targetLink: "https://semanticlookup.zbmed.de/safety/",
         parameter: "collection=safety",
     }
 }

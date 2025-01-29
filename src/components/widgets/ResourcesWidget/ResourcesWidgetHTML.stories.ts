@@ -36,7 +36,7 @@ window['SemLookPWidgets'].createResources(
         pageSizeOptions:[${args.pageSizeOptions}],
         initialSortField:"${args.initialSortField}",
         initialSortDir:"${args.initialSortDir}",
-        targetLink:"${args.targetLink}",
+        onNavigate:"${args.onNavigate}",
         actions:[${args.actions}],
         parameter:"${args.parameter}",
     },
