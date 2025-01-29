@@ -283,12 +283,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       delete itemIdToExpandedRowMapValues[resource.ontologyId];
     } else {
 
-      let iri = null
       let homepage = null
       let licenseUrl = ""
       let licenseLabel = ""
 
-      resource.config.iri ? iri = resource.config.iri : null
       resource.config.homepage ? homepage = resource.config.homepage : null
 
       if (resource?.config?.annotations?.license) {
@@ -304,12 +302,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         }
       }
 
-      const listItems = [
-        {
-          title: "IRI",
-          description: <EuiLink
-            href={`${iri ? iri : "-"}`}>{`${iri ? iri : "-"}`}</EuiLink>
-        }];
+      const listItems = [];
 
       if (homepage) {
         listItems.push({
