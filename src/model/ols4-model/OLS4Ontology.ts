@@ -17,7 +17,7 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   }
   getDescription(): string {
     const descriptions = Reified.fromJson<string>(
-      this.properties["definition"] || this.properties["description"] || ""
+      this.properties["description"] || this.properties["definition"] || ""
     );
     return (descriptions[0] && descriptions[0].value) || "";
   }
@@ -41,8 +41,8 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getNumIndividuals(): number {
     return parseInt(this.properties["numberOfIndividuals"]);
   }
-  getLogoURL(): string {
-    return this.properties["depicted_by"] || undefined;
+  getLogoURL(): string | undefined {
+    return this.properties["depicted_by"];
   }
   getOntologyPurl(): string {
     return this.properties["ontology_purl"];
@@ -109,6 +109,10 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getPreferredRoots(): string[] {
     return asArray(this.properties["hasPreferredRoot"]);
   }
+  getPreferredPrefix(): string {
+    return this.properties["preferredPrefix"];
+  }
+
   getLanguages(): string[] {
     return asArray(this.properties["language"]);
   }
@@ -118,9 +122,10 @@ export class OLS4Ontology extends OLS4Thing implements Ontology{
   getExportsTo(): string[] {
     return asArray(this.properties["exportsTo"]);
   }
-
-  // TODO: not available?
-  getAllowDownload(): string {
+  getLicense(): string[] {
+    return this.properties["license"];
+  }
+  getAllowDownload(): boolean {
     return this.properties["allowDownload"];
   }
 }

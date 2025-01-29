@@ -1,4 +1,5 @@
 import { Thing } from "./";
+import { asArray } from "../../app/util";
 
 export interface Ontology extends Thing {
     getOntologyId(): string;
@@ -20,8 +21,10 @@ export interface Ontology extends Thing {
     getVersionFromIri(): string;
     getLoaded(): string;
     getPreferredRoots(): string[];
+    getPreferredPrefix(): string;
     getLanguages(): string[];
     getImportsFrom(): string[];
     getExportsTo(): string[];
-    getAllowDownload(): string;
+    getAllowDownload(): boolean;
+    getLicense(): string[];
 }

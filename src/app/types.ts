@@ -452,7 +452,9 @@ export type MetadataWidgetProps =
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
-export type ResourcesWidgetProps = ApiObj & ParameterObj & {
+
+export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
+
   /**
    * Initial number of entries displayed per page.
    */
@@ -490,15 +492,16 @@ export type OlsResource = ForcedOntologyIdObj & {
   numberOfProperties: number;
   numberOfIndividuals: number;
   config: {
-    title: string;
-    description: string;
-    preferredPrefix: string;
-    allowDownload: boolean;
-    fileLocation: string;
-    version?: string;
+      logo?: string;
+      title: string;
+      description: string;
+      preferredPrefix: string;
+      allowDownload: boolean;
+      fileLocation: string;
+      version?: string;
+      [otherFields: string]: unknown;
+    };
     [otherFields: string]: unknown;
-  };
-  [otherFields: string]: unknown;
 }
 
 export type SearchBarWidgetProps = ApiObj & ParameterObj & {
@@ -560,11 +563,11 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
 export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
-{ 
+{
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.
    */
-  rootWalk?: boolean; 
+  rootWalk?: boolean;
 };
 
 export type OlsGraphNode = {

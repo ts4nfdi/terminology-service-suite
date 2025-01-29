@@ -27,6 +27,4 @@ export class OLS4Ontologies implements Ontologies {
   getNumIndividuals(): number {
     return this.properties.reduce((total, ontology) => total + ontology.getNumIndividuals(), 0);
   }
-
-
 }
