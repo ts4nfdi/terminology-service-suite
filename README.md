@@ -188,7 +188,7 @@ In short:
 | Feature relese  | feat(autocomplete): add suggest function  |
 | Breaking change  | feat(autocomplete): parameter removed <br> <br> BREAKING CHANGE: The parameter has been removed |
 
-(Note that the BREAKING CHANGE:  token must be in the footer of the commit)
+(Note that the BREAKING CHANGE:  token must be in the footer of the commit - capital letters)
 
 **HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
 
