@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "./SearchResultsListWidgetStories"
 import {SearchResultsListWidgetProps} from "../../../app/types";
+import {SearchResultsListDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -13,6 +14,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: SearchResultsListDescription
+            }
+        }
     },
     render: (args: SearchResultsListWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

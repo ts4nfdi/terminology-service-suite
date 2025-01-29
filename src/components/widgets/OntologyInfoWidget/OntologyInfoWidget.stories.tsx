@@ -1,16 +1,20 @@
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
 import {manuallyEmbedOnNavigate} from "../../../app/util";
+import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "OntologyInfoWidget",
+  title: "Metadata/Ontology Information/OntologyInfoWidget",
   component: OntologyInfoWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
-      }
+      },
+      description: {
+            component: OntologyInfoDescription
+        },
     },
   },
   argTypes: OntologyInfoWidgetStoryArgTypes,

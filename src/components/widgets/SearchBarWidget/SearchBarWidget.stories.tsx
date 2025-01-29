@@ -1,13 +1,20 @@
 import { SearchBarWidget } from "./SearchBarWidget";
 import {
-  SearchBarWidgetStoryArgs,
   SearchBarWidgetStoryArgsReact,
   SearchBarWidgetStoryArgTypes
 } from "./SearchBarWidgetStories";
+import {SearchBarDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "SearchBarWidget",
+  title: "Search and Autocomplete/SearchBarWidget",
   component: SearchBarWidget,
+  parameters: {
+    docs: {
+      description: {
+        component: SearchBarDescription
+      }
+    }
+  },
   argTypes: SearchBarWidgetStoryArgTypes,
   args: SearchBarWidgetStoryArgsReact
 };

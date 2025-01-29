@@ -1,6 +1,7 @@
 import 'semlookp-widgets';
 import {DescriptionWidgetProps} from "../../../../app/types";
 import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
+import {DescriptionDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -14,6 +15,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: DescriptionDescription
+            }
+        }
     },
     render: (args: DescriptionWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

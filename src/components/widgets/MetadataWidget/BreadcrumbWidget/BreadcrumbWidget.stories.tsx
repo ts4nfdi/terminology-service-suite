@@ -4,15 +4,19 @@ import {
   BreadcrumbWidgetStoryArgTypes
 } from "./BreadcrumbWidgetStories";
 import {manuallyEmbedOnNavigate} from "../../../../app/util";
+import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "BreadcrumbWidget",
+  title: "Entity Information/BreadcrumbWidget",
   component: BreadcrumbWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
         transform: manuallyEmbedOnNavigate
+      },
+      description: {
+        component: BreadcrumbDescription
       }
     },
   },

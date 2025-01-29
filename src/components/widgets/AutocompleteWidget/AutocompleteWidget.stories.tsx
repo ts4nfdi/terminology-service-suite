@@ -4,9 +4,18 @@ import {
   AutocompleteWidgetStoryArgTypes,
   AutocompleteWidgetStoryArgsReact
 } from "./AutocompleteWidgetStories";
+import "../../../style/tssStyles.css";
+import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "AutocompleteWidget",
+  title: "Search and Autocomplete/AutocompleteWidget",
+  parameters: {
+    docs: {
+      description: {
+        component: AutocompleteDescription
+      }
+    }
+  },
   component: AutocompleteWidget,
   ...AutocompleteWidgetStoryArgTypes,
   ...AutocompleteWidgetStoryArgsReact,

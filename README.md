@@ -160,6 +160,11 @@ Do a `npm run build:plainJS` before testing the HTML Storybook.
 
 ### Commit Message Formatting
 
+**Note:** There is a commit message template named **.gitmessage** inside this repo which you can use as your template locally by running:
+
+    git config --local commit.template .gitmessage
+
+
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline
 analyzes the commit messages and automatically performs a release depending on the format. 
 Release notes are automatically created from commit messages.  

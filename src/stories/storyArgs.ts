@@ -121,7 +121,7 @@ export const parameterArgType = {
     defaultValue: { summary: undefined },
     description:
       `Additional parameters to pass to the API.<br><br>
-      This parameters can be used to filter the search results. Each parameter can be combined via the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign <i><b>,</b></i>. The following keys could be used:<br><br>
+      This parameters can be used to filter the search results. Each parameter can be combined with the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign (<i><b>,</b></i>). The following keys can be used:<br><br>
       <table>
         <thead>
           <tr>
@@ -585,6 +585,29 @@ export const onNavigateToDisambiguateArgType = {
       "Navigate to EBI page": (entityType?: string, entity?: { iri: string, label?: string }) => {
         window.open(`https://www.ebi.ac.uk/ols4/search?q=${(entity && entity.label) ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
       }
+    }
+  }
+};
+export const onNavigateArgType = {
+  onNavigate: {
+    required: false,
+    type: {summary: "string"},
+    action: "onNavigateArgType",
+    description: "This function is called every time an ontology link is clicked.",
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (ontologyId: string) => {
+        console.log('Triggered onNavigate() with ontologyId = ' + (ontologyId));
+      },
+      "Navigate to EBI page": (ontologyId: string) => {
+        if(ontologyId) {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+        else {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+      },
     }
   }
 };

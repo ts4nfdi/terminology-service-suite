@@ -2,6 +2,7 @@ import 'semlookp-widgets';
 import "semlookp-widgets/terminology-service-suite.css"
 import {TabWidgetProps} from "../../../../app/types";
 import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
+import {TabDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -15,6 +16,11 @@ export default {
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
+        docs: {
+            description: {
+                component: TabDescription
+            }
+        }
     },
     render: (args: TabWidgetProps) => {
         // You can either use a function to create DOM elements or use a plain html string!

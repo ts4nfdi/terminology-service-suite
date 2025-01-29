@@ -36,7 +36,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     initialSortField = DEFAULT_INITIAL_SORT_FIELD,
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
-    targetLink,
+    onNavigate,
     parameter,
     useLegacy = DEFAULT_USE_LEGACY
   } = props;
@@ -77,6 +77,21 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Short Name",
       field: "ontologyId",
+
+      render: (ontologyId: string) => (
+        <EuiLink
+          href={"#"}
+          onClick={(e) => {
+            e.preventDefault();
+            if (onNavigate){
+              onNavigate(ontologyId || "");
+            }
+          }}
+        >
+          {ontologyId}
+        </EuiLink>
+      ),
+
       width: "10%",
       sortable: true
     },
@@ -203,6 +218,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       ...ontology.properties
     })) || [] :
     ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
+
+  const ontos = ontologiesData?.properties.map(ontology => ({
+    ...ontology.properties
+  })) || [];
 
   const findOntologies = (
     ontologies: any[],
