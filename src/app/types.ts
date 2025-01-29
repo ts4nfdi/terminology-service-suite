@@ -453,7 +453,7 @@ export type MetadataWidgetProps =
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
 
 
-export type ResourcesWidgetProps = ApiObj & ParameterObj & {
+export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
 
   /**
    * Initial number of entries displayed per page.

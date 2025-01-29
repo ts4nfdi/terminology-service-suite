@@ -68,9 +68,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Resource Name",
       field: "config.title",
-      render: (value: string) => (
-        targetLink ? <EuiLink href={targetLink + "ontologies/" + value + "/"}>{value}</EuiLink> : value
-      ),
       width: "15%",
       sortable: true
     },
@@ -218,10 +215,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       ...ontology.properties
     })) || [] :
     ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
-
-  const ontos = ontologiesData?.properties.map(ontology => ({
-    ...ontology.properties
-  })) || [];
 
   const findOntologies = (
     ontologies: any[],
@@ -455,7 +448,6 @@ function WrappedResourcesWidget(props: ResourcesWidgetProps) {
           pageSizeOptions={props.pageSizeOptions}
           initialSortField={props.initialSortField}
           initialSortDir={props.initialSortDir}
-          targetLink={props.targetLink}
           actions={props.actions}
           parameter={props.parameter}
         />

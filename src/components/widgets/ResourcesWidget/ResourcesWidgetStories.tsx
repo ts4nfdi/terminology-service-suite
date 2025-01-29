@@ -9,7 +9,7 @@ import {
     initialSortFieldArgType,
 
     pageSizeOptionsArgType, parameterArgType,
-    onNavigateArgType
+    onNavigateArgType, useLegacyArgType
 
 } from "../../../stories/storyArgs";
 
@@ -22,7 +22,7 @@ export const ResourcesWidgetStoryArgTypes = {
     ...actionsArgType,
     ...parameterArgType,
     ...onNavigateArgType,
-
+    ...useLegacyArgType
 }
 
 export const ResourcesWidgetStoryArgs = {
