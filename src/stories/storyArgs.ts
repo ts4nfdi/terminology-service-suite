@@ -13,6 +13,7 @@ export const apiArgType = {
       "https://semanticlookup.zbmed.de/api/",
       "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
       "https://service.tib.eu/ts4tib/api/",
+      "https://api.terminology.tib.eu/api/",
       "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
     ],
     description:
@@ -21,7 +22,8 @@ export const apiArgType = {
       "**Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br> " +
       "**Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)<br> " +
       "**OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)<br> " +
-      "**TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
+      "**TIB Terminology Service (OLS3)**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
+      "**TIB Terminology Service (OLS4)**: [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br> " +
       "**TS4NFDI API Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)<br> "
     ,
     type: { summary: "string" }
