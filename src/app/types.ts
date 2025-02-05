@@ -411,7 +411,7 @@ export type OnNavigateToDisambiguate = {
 
 export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
-export type HierarchyWidgetProps = {
+export type HierarchyWidgetProps = CssClassNameObj & {
   /**
    * The API URL for the API call.
    */

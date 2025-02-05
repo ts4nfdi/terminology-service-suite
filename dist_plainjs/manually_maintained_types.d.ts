@@ -246,6 +246,7 @@ declare global {
       keepExpansionStates?: boolean
       showSiblingsOnInit?: boolean
       iri?: string
+      className?: string;
       onNavigateToEntity?: (ontologyId: string, entityType: string, entity: {
         iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
       }) => void
