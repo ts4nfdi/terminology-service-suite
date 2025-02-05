@@ -145,6 +145,7 @@ declare global {
       hierarchyTab?: boolean;
       crossRefTab?: boolean;
       terminologyInfoTab?: boolean;
+      className?: string;
     }
     )=>void,
     createAlternativeNameTab:(props:{

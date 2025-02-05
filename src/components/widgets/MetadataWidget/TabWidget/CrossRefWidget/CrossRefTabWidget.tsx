@@ -11,14 +11,12 @@ import Reified from "../../../../../model/Reified";
 import ReactDOM from "react-dom";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } = props;
   const olsApi = new OlsApi(api);
 
   const {
     data,
     isLoading,
-    isSuccess,
-    isError,
     error
   } = useQuery<Thing>(
     ["crossRefTab", api, parameter, entityType, iri, ontologyId, useLegacy],
@@ -28,14 +26,14 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 
   return (
-    <>
-      {isSuccess && data && isEntity(data) &&
-        <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
-          return value.value;
-        })} />}
-      {isLoading && <EuiLoadingSpinner />}
-      {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
-    </>
+    <CrossRefTabPresentation
+      crossrefs={data ? isEntity(data) ? Reified.fromJson(data.getCrossReferences()).map((value) => {
+      return value.value;
+    }) : [] : []}
+      isLoading={isLoading}
+      error={error}
+      className={className}
+    />
   );
 }
 
@@ -55,6 +53,7 @@ function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
                     entityType={props.entityType}
                     parameter={props.parameter}
                     useLegacy={props.useLegacy}
+                    className={props.className}
                 />
             </QueryClientProvider>
         </EuiProvider>

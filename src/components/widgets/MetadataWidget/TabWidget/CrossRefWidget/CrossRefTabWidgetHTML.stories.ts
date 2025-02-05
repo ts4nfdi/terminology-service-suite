@@ -29,14 +29,15 @@ export default {
 <div id="cross_ref_tab_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createCrossRefTab(
+window['Ts4nfdiWidgets'].createCrossRefTab(
     {
         iri:"${args.iri}",
         api:"${args.api}",
         ontologyId:"${args.ontologyId}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        className:${args.className}
     },
     document.querySelector('#cross_ref_tab_widget_container_${num}')
 )
