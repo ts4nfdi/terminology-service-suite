@@ -39,7 +39,9 @@ window['SemLookPWidgets'].createDescription(
         thingType:"${args.thingType}",
         parameter:"${args.parameter}",
         color:"${args.color}",
-        useLegacy:${args.useLegacy}
+        useLegacy:"${args.useLegacy}",
+        className:"${args.className}",
+        
     },
     document.querySelector('#description_widget_container_${num}')
 )

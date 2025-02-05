@@ -267,15 +267,17 @@ export type DescTextObj = {
   descText?: string;
 }
 
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & {
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & CssClassNameObj & {
   /**
    * Color of the text, names, hex or rgb
    */
   color?: EuiLinkColor | string;
 }
 
-export type DescriptionPresentationProps = DescTextObj & {
+export type DescriptionPresentationProps = DescTextObj & CssClassNameObj & {
   description: string,
+  isLoading?: boolean,
+  error?: string | unknown,
 }
 
 export type IriWidgetProps = ForcedIriObj & CssClassNameObj & {
