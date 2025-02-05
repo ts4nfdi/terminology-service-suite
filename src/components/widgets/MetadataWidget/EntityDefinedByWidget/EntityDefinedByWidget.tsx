@@ -10,7 +10,7 @@ import "../../../../style/semlookp-styles.css";
 import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -47,7 +47,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   return (
     <>
       {isSuccess && data &&
-        <EntityDefinedByPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} />}
+        <EntityDefinedByPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} className={className}/>}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>}
     </>

@@ -322,9 +322,9 @@ export type TabPresentationProps = TabWidgetProps & CssClassNameObj & {
   error?: string | unknown;
 }
 
-export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology & CssClassNameObj;
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & CssClassNameObj & {
   ontolist: any[];
   label: string;
 }

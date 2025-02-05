@@ -41,7 +41,8 @@ window['SemLookPWidgets'].createEntityDefinedBy(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className:${args.className}
     },
     document.querySelector('#entity_defined_by_widget_container_${num}')
 )

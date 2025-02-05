@@ -2,12 +2,14 @@ import React, {useState} from "react";
 import { EuiText } from "@elastic/eui";
 import {EntityOntoListPresentationProps} from "../../../../app/types";
 import {randomString} from "../../../../app/util";
+import "../../../../style/ts4nfdiStyles/ts4nfdiEntityDefinedByStyle.css"
 
 const MAX_ONTOLOGIES_ON_DISPLAY = 5 as const;
 
 function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
 
     const [appearsInExpanded, setAppearsInExpanded] = useState<boolean>(false);
+    const finalClassName = props.className || "ts4nfdi-entity-defined-by-style";
 
   function renderOntoBadge(ontology: string) {
       return (
@@ -45,14 +47,14 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
   }
 
   return (
-    <>
+    <div className={finalClassName}>
         {props.ontolist && props.ontolist.length > 0 && (
             <EuiText style={{fontWeight: "normal"}}>
                 Defined by&nbsp;
                 {renderOntoBadges()}
             </EuiText>
         )}
-    </>
+    </div>
 
   );
 }
