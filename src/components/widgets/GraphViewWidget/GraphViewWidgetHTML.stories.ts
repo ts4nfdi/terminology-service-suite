@@ -33,6 +33,7 @@ window['SemLookPWidgets'].createGraphView(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
+        className:${args.className}
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )

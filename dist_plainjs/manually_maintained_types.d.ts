@@ -324,6 +324,7 @@ declare global {
       api: string;
       useLegacy: boolean;
       rootWalk: boolean;
+      className?: string;
     }
     )=>void,
   }
