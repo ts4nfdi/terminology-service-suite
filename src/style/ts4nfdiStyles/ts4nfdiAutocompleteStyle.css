@@ -1,11 +1,5 @@
-@import "ts4nfdiBreadcrumbStyle.css";
-
 .ts4nfdi-autocomplete-style * {
   font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
-}
-
-.ts4nfdi-autocomplete-style input,
-.ts4nfdi-autocomplete-style .euiComboBox__inputWrap{
 }
 
 .ts4nfdi-autocomplete-style button {
@@ -20,4 +14,23 @@
 
 .euiComboBoxOptionsList__empty {
   font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-autocomplete-breadcrumb button {
+  background: none;
+  border: none;
+}
+
+.ts4nfdi-autocomplete-breadcrumb .euiBadge * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-autocomplete-breadcrumb .breadcrumb {
+    padding: 3px 3px 0;
+    border-radius: 6px;
+    border: 2px solid rgba(0,0,0,0);
+}
+
+.ts4nfdi-autocomplete-breadcrumb .clickable-breadcrumb:hover {
+    border: 2px solid black;
 }

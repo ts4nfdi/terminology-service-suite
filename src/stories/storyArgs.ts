@@ -516,11 +516,17 @@ export const defaultValueArgType = {
   }
 };
 export const classNameArgType = {
-  defaultValue: {
+  className: {
     required: false,
-    description: "CSS class for styling.",
+    description: "CSS class for styling. Set no value or an empty string for " +
+      "the TS4NFDI styling. Set 'none' for the basic Elastic UI styling " +
+      "(recommended for apps based on Elastic UI).",
     control: "text",
     type: { summary: `string` }
+    type: { summary: `string` },
+    table: {
+     defaultValue : { summary: "ts4nfdi-title-style" }
+    },
   }
 };
 

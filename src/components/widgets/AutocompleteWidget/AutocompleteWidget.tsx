@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
+import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -113,6 +114,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     shortForm={value.short_form}
                     colorFirst={"primary"}
                     colorSecond={"success"}
+                    className={`${finalClassName}-breadcrumb`}
                   />
                   <EuiIcon
                     type={"iInCircle"}
@@ -156,7 +158,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
       if (uniqueValues.length > 0) {
         if (singleSelection) uniqueValues = [uniqueValues[0]];
-
                 for (const option of uniqueValues) {
                     if (option && option.iri && option.iri.startsWith("http")) {
                       await olsApi.getSelectData(
@@ -164,7 +165,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                             undefined,
                             undefined,
                             parameter,
-
                             ts4nfdiGateway
                         ).then((response) => {
                             if (response) {
@@ -371,7 +371,7 @@ function createAutocomplete(props: AutocompleteWidgetProps, container: any, call
 function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <AutocompleteWidget
           api={props.api}
