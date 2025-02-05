@@ -12,6 +12,10 @@
   background-color: inherit;
 }
 
+.euiComboBoxOptionsList .euiFilterSelectItem {
+  background: none;
+}
+
 .euiComboBoxOptionsList__empty {
   font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
 }
