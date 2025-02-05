@@ -7,10 +7,12 @@ import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentatio
 import Reified from "../../../../model/Reified";
 import {TabPresentationProps} from "../../../../app/types";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
-import {HierarchyWidget} from "./HierarchyWidgetSemLookP";
+import {HierarchyWidget} from "./HierarchyWidget";
+import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css"
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
+    const finalClassName = props.className || "ts4nfdi-tab-style"
     const tabs = [];
      /**
      * The default behaviour is to show the tabs. Therefore, undefined gets treated as truthy.
@@ -19,7 +21,12 @@ function TabPresentation(props: TabPresentationProps) {
       tabs.push(
             {
               content: (
-                <AlternativeNameTabPresentation synonyms={data.getSynonyms().map(synonym => synonym.value)} />
+                <AlternativeNameTabPresentation
+                  synonyms={data ? data.getSynonyms().map(synonym => synonym.value) : []}
+                  isLoading={props.isLoading}
+                  error={props.error}
+                  className={`${finalClassName}-altNameTab`}
+                />
               ),
               id: "tab1",
               name: "Alternative Names"
@@ -46,6 +53,7 @@ function TabPresentation(props: TabPresentationProps) {
                         preferredRoots={props.hierarchyPreferredRoots}
                         showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
                         keepExpansionStates={props.hierarchyKeepExpansionStates}
+                        className={`${finalClassName}-hierarchy`}
                       />
                     </div>
                   </>
@@ -60,9 +68,14 @@ function TabPresentation(props: TabPresentationProps) {
       tabs.push(
           {
               content:
-                <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
-                  return value.value;
-                })} />,
+                (<CrossRefTabPresentation
+                  crossrefs={data ? Reified.fromJson(data.getCrossReferences()).map((value) => {
+                    return value.value;
+                  }) : []}
+                  isLoading={props.isLoading}
+                  error={props.error}
+                  className={`${finalClassName}-crossRef`}
+                />),
               id: "tab3",
               name: "Cross references"
           }
@@ -97,9 +110,9 @@ function TabPresentation(props: TabPresentationProps) {
     }
 
     return (
-      <>
+      <div className={finalClassName}>
           <EuiTabbedContent size="s" tabs={tabs} />
-      </>
+      </div>
     );
   }
 

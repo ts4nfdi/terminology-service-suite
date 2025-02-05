@@ -316,6 +316,8 @@ export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & CssCla
 
 export type TabPresentationProps = TabWidgetProps & CssClassNameObj & {
   data: Thing;
+  isLoading?: boolean;
+  error?: string | unknown;
 }
 
 export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
@@ -338,8 +340,10 @@ export type AlternativeNameTabWidgetPresentationProps = CssClassNameObj & {
 
 export type CrossRefWidgetProps = TabSubwidgetsProps;
 
-export type CrossRefPresentationProps = {
+export type CrossRefPresentationProps = CssClassNameObj & {
   crossrefs: any[];
+  isLoading?: boolean;
+  error?: string | unknown
 }
 
 // Is mainly used for Hierarchy
