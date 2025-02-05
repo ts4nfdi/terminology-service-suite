@@ -1,0 +1,88 @@
+.ts4nfdi-metadata-style-title {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-title .euiText {
+    font-weight: bold;
+}
+
+.ts4nfdi-metadata-style-description * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-breadcrumb button {
+  background: none;
+  border: none;
+}
+
+.ts4nfdi-metadata-style-breadcrumb .breadcrumb {
+    padding: 3px 3px 0;
+    border-radius: 6px;
+    border: 2px solid rgba(0,0,0,0);
+}
+
+.ts4nfdi-metadata-style-breadcrumb .clickable-breadcrumb:hover {
+    border: 2px solid black;
+}
+
+.ts4nfdi-metadata-style-iri * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-altNameTab * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-crossRef * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-hierarchy {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-hierarchy button {
+  background: none;
+  border: none;
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-size: inherit;
+  padding: 0;
+}
+
+.ts4nfdi-metadata-style-hierarchy ul {
+  margin-block-start: 0;
+  padding-inline-start: 0;
+}
+
+.ts4nfdi-metadata-style-hierarchy div {
+  margin: 0 !important;
+}
+
+.ts4nfdi-metadata-style-entity-defined-by * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-entity-defined-by button {
+  border: none;
+  background: none;
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-entity-onto-list * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-metadata-style-entity-onto-list button {
+  border: none;
+  background: none;
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.euiText p {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.euiCard {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}

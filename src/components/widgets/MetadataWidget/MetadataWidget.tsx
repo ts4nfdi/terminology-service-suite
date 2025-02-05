@@ -16,6 +16,7 @@ import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelO
 import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListPresentation";
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/semlookp-styles.css"
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
 
 type MetadataInfo = {
     entity: Entity,
@@ -24,13 +25,9 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink, className } = props;
   const olsApi = new OlsApi(api);
-  const metadataWidgetCSS = `
-    .boldText{
-      font-weight: bold;
-    }
-  `;
+  const finalClassName = className || "ts4nfdi-metadata-style"
 
   const {
     data,
@@ -70,21 +67,24 @@ function MetadataWidget(props: MetadataWidgetProps) {
 
   function render(data: MetadataInfo) {
     return (
-      <>
-        <style>{metadataWidgetCSS}</style>
+      <div className={finalClassName}>
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
                 {termLink ?
                   <EuiLink href={termLink} target="_blank" external={false}>
                     <TitlePresentation
                     title={data.entity.getLabel()}
-                    className="boldText"
+                    className={`${finalClassName}-title`}
+                    isLoading={isLoading}
+                    error={error}
                     />
                   </EuiLink>
                   :
                   <TitlePresentation
                     title={data.entity.getLabel()}
-                    className="boldText"
+                    className={`${finalClassName}-title`}
+                    isLoading={isLoading}
+                    error={error}
                   />
                 }
           </EuiFlexItem>
@@ -95,6 +95,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
                     ontologyId={ontologyId || data.entity.getOntologyId()}
                     ontologyName={data.entity.getOntologyId()}
                     shortForm={data.entity.getShortForm()}
+                    className={`${finalClassName}-breadcrumb`}
                   />
                 </span>
           </EuiFlexItem>
@@ -105,6 +106,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
                   <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
                     <IriWidget
                       iri={iri}
+                      className={`${finalClassName}-iri`}
                     />
                   </EuiFlexItem>
                 </EuiFlexGroup>
@@ -114,17 +116,22 @@ function MetadataWidget(props: MetadataWidgetProps) {
           <EuiFlexItem style={{ maxWidth: 600 }}>
             <DescriptionPresentation
               description={data.entity.getDescription()}
+              className={`${finalClassName}-description`}
+              isLoading={isLoading}
+              error={error}
             />
           </EuiFlexItem>
 
           <div style={{margin: "0 12px 0", maxWidth: 600 }}>
-              <EntityOntoListPresentation iri={props.iri} label={data.entity.getLabel() || ""} ontolist={data.ontoList} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
-              <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} label={data.entity.getLabel() || ""} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} />
+              <EntityOntoListPresentation iri={props.iri} label={data.entity.getLabel() || ""} ontolist={data.ontoList} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} className={`${finalClassName}-entity-onto-list`}/>
+              <EntityDefinedByPresentation iri={props.iri} ontolist={data.definedBy} label={data.entity.getLabel() || ""} entityType={entityType || data.entity.getType() as EntityTypeName} onNavigateToOntology={onNavigateToOntology} className={`${finalClassName}-entity-defined-by`}/>
           </div>
 
           <EuiFlexItem>
               <TabPresentation
                 data={data.entity}
+                isLoading={isLoading}
+                error={error}
                 iri={iri}
                 entityType={props.entityType}
                 api={api}
@@ -140,10 +147,11 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 onNavigateToEntity={props.onNavigateToEntity}
                 onNavigateToOntology={props.onNavigateToOntology}
                 onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+                className={className}
               />
           </EuiFlexItem>
         </EuiFlexGroup>
-      </>
+      </div>
     );
   }
 
@@ -161,13 +169,13 @@ function MetadataWidget(props: MetadataWidgetProps) {
 }
 
 function createMetadata(props: MetadataWidgetProps, container: Element, callback?: ()=>void) {
-    ReactDOM.render(WrappedMetadataWidget(props), container, callback);
+  // @ts-ignore
+  ReactDOM.render(WrappedMetadataWidget(props), container, callback);
 }
 
 function WrappedMetadataWidget(props: MetadataWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
             <QueryClientProvider client={queryClient}>
                 <MetadataWidget
                     iri={props.iri}
@@ -187,9 +195,9 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     onNavigateToEntity={props.onNavigateToEntity}
                     onNavigateToOntology={props.onNavigateToOntology}
                     onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+                    className={props.className}
                 />
             </QueryClientProvider>
-        </EuiProvider>
     )
 }
 

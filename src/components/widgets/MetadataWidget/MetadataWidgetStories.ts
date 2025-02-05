@@ -5,7 +5,9 @@ import {
     onNavigateToEntityArgType,
     onNavigateToOntologyArgType
 } from "../../../stories/storyArgs";
-import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidget/HierarchyWidget";
+import "../../../style/customMetadataStyle.css"
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -16,7 +18,8 @@ export const MetadataWidgetStoryArgTypes = {
             globals.EBI_API_ENDPOINT,
             globals.ZBMED_OLS_API_ENDPOINT,
             globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT
+            globals.TIB_API_ENDPOINT,
+          "http://127.0.0.1:5000/api/"
         ],
     },
     ontologyId: {
@@ -164,3 +167,15 @@ export const TermAsLink = {
         termLink: "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819"
     }
 }
+
+export const MetadataWidgetCustomStyles = {
+    storyName: "Metadata Widget",
+    args: {
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+        entityType: "term",
+        useLegacy: true,
+        className: "custom-metadata-style"
+    }
+};

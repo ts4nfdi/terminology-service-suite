@@ -1,0 +1,36 @@
+.custom-metadata-style {
+
+}
+
+.custom-metadata-style-title {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  color: #edc4c4 !important;
+  background-color: #8b0000;
+}
+
+.custom-metadata-style-description {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.custom-metadata-style-breadcrumb button {
+  background: none;
+  border: none;
+}
+
+.euiBadge * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.custom-metadata-style-breadcrumb .clickable-breadcrumb {
+
+}
+
+.custom-metadata-style-breadcrumb .breadcrumb {
+    padding: 3px 3px 0;
+    border-radius: 6px;
+    border: 2px solid rgba(0,0,0,0);
+}
+
+.custom-metadata-style-breadcrumb .clickable-breadcrumb:hover {
+    border: 2px solid black;
+}

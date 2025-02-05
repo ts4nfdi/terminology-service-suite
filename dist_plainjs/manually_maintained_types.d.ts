@@ -175,19 +175,9 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
-    createHierarchyOLS:(props:{
-      iri?: string;
-      ontologyId: string;
-      api: string;
-    }
-    )=>void,
-    createHierarchyDeprecated:(props:{
-      iri?: string;
-      ontologyId?: string;
-      api: string;
-    })=>void,
     createTitle:(props:{
       iri?: string;
       ontologyId?: string;
@@ -270,6 +260,7 @@ declare global {
       crossRefTab?: boolean,
       terminologyInfoTab?: boolean,
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void,
     createOntologyInfo:(props:{
       ontologyId: string;

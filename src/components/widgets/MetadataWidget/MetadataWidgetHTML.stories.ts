@@ -48,7 +48,8 @@ window['SemLookPWidgets'].createMetadata(
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:${args.className}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )

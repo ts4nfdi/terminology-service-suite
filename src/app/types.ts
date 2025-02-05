@@ -453,7 +453,7 @@ export type TitlePresentationProps = TitleTextObj & CssClassNameObj & {
 }
 
 export type MetadataWidgetProps =
-    TabWidgetProps & {
+    TabWidgetProps & CssClassNameObj & {
     /**
      * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
      */
@@ -558,7 +558,7 @@ export type SearchResultProps = {
   type: ThingTypeName;
 }
 
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & CssClassNameObj & {
   result: SearchResultProps;
 };
 
