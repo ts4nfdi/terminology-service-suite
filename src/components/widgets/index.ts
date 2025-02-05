@@ -21,7 +21,7 @@ import { createEntityOntoList } from "./MetadataWidget/EntityOntoListWidget/Enti
 import { createEntityDefinedBy } from "./MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget"
 import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
 
-(window as any)['SemLookPWidgets'] = {
+(window as any)['ts4nfdiWidgets'] = {
     createAutocomplete,
     createDataContent,
     createEntityInfo,

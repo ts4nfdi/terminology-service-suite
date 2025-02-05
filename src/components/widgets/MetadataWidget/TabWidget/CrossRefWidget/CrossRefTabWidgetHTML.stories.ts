@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 import {CrossRefWidgetProps} from "../../../../../app/types";
 import {CrossRefTabDescription} from "../../../../../app/widgetDescriptions";

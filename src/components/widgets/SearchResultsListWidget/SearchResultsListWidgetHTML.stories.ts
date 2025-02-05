@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "./SearchResultsListWidgetStories"
 import {SearchResultsListWidgetProps} from "../../../app/types";
 import {SearchResultsListDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="search_results_list_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createSearchResultsList(
+window['ts4nfdiWidgets'].createSearchResultsList(
     {
         api:"${args.api}",
         query:"${args.query}",

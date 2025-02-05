@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {AlternativeNameTabWidgetProps} from "../../../../../app/types";
 import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "./AlternativeNameTabWidgetStories";
 import {AlternativeNameTabDescription} from "../../../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="alternative_name_tab_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createAlternativeNameTab(
+window['ts4nfdiWidgets'].createAlternativeNameTab(
     {
         iri:"${args.iri}",
         api:"${args.api}",

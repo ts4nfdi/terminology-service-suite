@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {DataContentWidgetProps} from "../../../app/types";
 import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./DataContentWidgetStories";
 import {DataContentDescription} from "../../../app/widgetDescriptions";
@@ -30,7 +30,7 @@ export default {
 <div id="data_content_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createDataContent(
+window['ts4nfdiWidgets'].createDataContent(
     {
         api:"${args.api}",
         parameter:"${args.parameter}",

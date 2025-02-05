@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {EntityRelationsWidgetProps} from "../../../app/types";
 import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
 import "../../../style/semlookp-styles.css";
@@ -30,7 +30,7 @@ export default {
 <div id="autocomplete_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityRelations(
+window['ts4nfdiWidgets'].createEntityRelations(
     {
         api:"${args.api}",
         entityType:"${args.entityType}",

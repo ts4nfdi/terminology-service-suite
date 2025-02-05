@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {DescriptionWidgetProps} from "../../../../app/types";
 import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
 import {DescriptionDescription} from "../../../../app/widgetDescriptions";
@@ -30,7 +30,7 @@ export default {
 <div id="description_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createDescription(
+window['ts4nfdiWidgets'].createDescription(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",

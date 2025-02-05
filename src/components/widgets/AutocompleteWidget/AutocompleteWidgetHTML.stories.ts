@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="autocomplete_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createAutocomplete(
+window['ts4nfdiWidgets'].createAutocomplete(
     {
         api:"${args.api}",
         parameter:"${args.parameter}",

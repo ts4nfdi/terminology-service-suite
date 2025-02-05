@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {
     EntityDefinedByWidgetStoryArgTypes,
     EntityDefinedByWidgetStoryArgs
@@ -33,7 +33,7 @@ export default {
 <div id="entity_defined_by_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityDefinedBy(
+window['ts4nfdiWidgets'].createEntityDefinedBy(
     {
         iri:"${args.iri}",
         api:"${args.api}",

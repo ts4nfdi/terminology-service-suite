@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {JsonApiWidgetProps} from "../../../app/types";
 import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
 import {JsonApiDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="json_api_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createJsonApi(
+window['ts4nfdiWidgets'].createJsonApi(
     {
         apiQuery:"${args.apiQuery}",
         buttonText:"${args.buttonText}",

@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
 import {OntologyInfoWidgetProps} from "../../../app/types";
 import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="ontology_info_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createOntologyInfo(
+window['ts4nfdiWidgets'].createOntologyInfo(
     {
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",

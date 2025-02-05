@@ -133,14 +133,14 @@ const queryClient = new QueryClient();
             ```
             <br></br>
         </ul>
-    <li style={{fontSize:18}}>An empty container with an id must be created. This container can then be referenced in a script tag where the SemLookP widget can now be rendered using the appropriate function added to `window['SemLookPWidgets']`. Here's a sample snippet:</li>
+    <li style={{fontSize:18}}>An empty container with an id must be created. This container can then be referenced in a script tag where the SemLookP widget can now be rendered using the appropriate function added to `window['ts4nfdiWidgets']`. Here's a sample snippet:</li>
     <br></br>
     ```html
     <body>
         <div id="datacontent_widget"></div>
         <script>
             let widgetContainer = document.getElementById('datacontent_widget');
-            window['SemLookPWidgets'].createDataContent(
+            window['ts4nfdiWidgets'].createDataContent(
                 {
                     api: "https://www.ebi.ac.uk/ols4/api/",
                 },

@@ -3,7 +3,7 @@ import {EuiCardProps} from "@elastic/eui";
 import { OlsResource } from "../src/app/types";
 
 declare global {
-  interface SemLookPWidgets {
+  interface ts4nfdiWidgets {
     createAutocomplete:(props:{
       api: string;
       parameter?: string;

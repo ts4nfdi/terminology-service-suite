@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
 import "../../../../style/semlookp-styles.css";
@@ -30,7 +30,7 @@ export default {
 <div id="breadcrumb_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createBreadcrumb(
+window['ts4nfdiWidgets'].createBreadcrumb(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",

@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {
     EntityOntoListWidgetStoryArgs,
     EntityOntoListWidgetStoryArgTypes

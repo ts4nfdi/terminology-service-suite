@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import { GraphViewWidgetProps } from '../../../app/types';
 import { GraphViewWidgetStoryArgTypes, GraphViewWidgetStoryArgs } from "./GraphViewWidgetStories";
 import {GraphViewDescription} from "../../../app/widgetDescriptions";
@@ -27,7 +27,7 @@ export default {
 <div id="graph_view_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createGraphView(
+window['ts4nfdiWidgets'].createGraphView(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",

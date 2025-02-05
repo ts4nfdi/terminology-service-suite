@@ -17,6 +17,7 @@ import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListP
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/semlookp-styles.css"
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
+import { globalStyles } from "@elastic/eui/src/global_styling/utility/utility";
 
 type MetadataInfo = {
     entity: Entity,
@@ -176,6 +177,7 @@ function createMetadata(props: MetadataWidgetProps, container: Element, callback
 function WrappedMetadataWidget(props: MetadataWidgetProps) {
     const queryClient = new QueryClient();
     return (
+      <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <MetadataWidget
                     iri={props.iri}
@@ -198,6 +200,7 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
                     className={props.className}
                 />
             </QueryClientProvider>
+      </EuiProvider>
     )
 }
 

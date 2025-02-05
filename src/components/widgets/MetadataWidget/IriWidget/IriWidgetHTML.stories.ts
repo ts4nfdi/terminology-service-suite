@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
 import {IriWidgetProps} from "../../../../app/types";
 import {IriDescription} from "../../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="iri_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createIri(
+window['ts4nfdiWidgets'].createIri(
     {
         iri:"${args.iri}",
         iriText:"${args.iriText}",

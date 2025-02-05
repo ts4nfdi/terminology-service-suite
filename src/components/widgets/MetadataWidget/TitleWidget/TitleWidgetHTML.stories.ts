@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {TitleWidgetProps} from "../../../../app/types";
 import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
 import {TitleDescription} from "../../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="title_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createTitle(
+window['ts4nfdiWidgets'].createTitle(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
