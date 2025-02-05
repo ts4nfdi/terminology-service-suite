@@ -1,10 +1,12 @@
 import {
+    classNameArgType,
     colorArgType,
     colorSecondArgType, copyButtonArgType,
     externalIconArgType,
     iriArgType,
     iriTextArgType, urlPrefixArgType
 } from "../../../../stories/storyArgs";
+import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css"
 
 export const IriWidgetStoryArgTypes = {
     ...colorArgType,
@@ -12,7 +14,8 @@ export const IriWidgetStoryArgTypes = {
     ...iriTextArgType,
     ...externalIconArgType,
     ...urlPrefixArgType,
-    ...copyButtonArgType
+    ...copyButtonArgType,
+    ...classNameArgType,
 }
 
 export const IriWidgetStoryArgs = {
@@ -21,6 +24,7 @@ export const IriWidgetStoryArgs = {
     iriText: "",
     urlPrefix: "",
     externalIcon: true,
+    className: "",
 }
 
 export const IriWidget1 = {
