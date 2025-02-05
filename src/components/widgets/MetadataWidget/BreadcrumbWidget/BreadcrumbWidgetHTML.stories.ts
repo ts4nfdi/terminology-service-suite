@@ -39,7 +39,8 @@ window['SemLookPWidgets'].createBreadcrumb(
         colorFirst:"${args.colorFirst}",
         colorSecond:"${args.colorSecond}",
         parameter:"${args.parameter}",
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className: "${args.className}"
     },
     document.querySelector('#breadcrumb_widget_container_${num}')
 )

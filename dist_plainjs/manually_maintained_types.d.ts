@@ -95,6 +95,7 @@ declare global {
       colorSecond?: string;
       parameter?: string;
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     }
     )=>void,
     createDescription:(props:{

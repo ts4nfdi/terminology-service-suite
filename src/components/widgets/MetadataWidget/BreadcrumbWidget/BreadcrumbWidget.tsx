@@ -7,12 +7,10 @@ import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
-import "../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology, className} = props;
   const olsApi = new OlsApi(api);
-  const finalClassName = className || "ts4nfdi-breadcrumb-style";
 
   const {
     data,
@@ -38,7 +36,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
           colorFirst={colorFirst}
           colorSecond={colorSecond}
           onNavigateToOntology={onNavigateToOntology}
-          className={finalClassName}
+          className={className}
         />
       }
       {isError &&
@@ -49,7 +47,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
               colorFirst={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}
               colorSecond={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}
               onNavigateToOntology={onNavigateToOntology}
-              className={finalClassName}
+              className={className}
           />
       }
       </>

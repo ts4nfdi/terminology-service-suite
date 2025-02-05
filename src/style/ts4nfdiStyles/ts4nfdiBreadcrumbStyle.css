@@ -1,17 +1,10 @@
-.ts4nfdi-breadcrumb-style * {
-}
-
 .ts4nfdi-breadcrumb-style button {
   background: none;
   border: none;
 }
 
-.euiBadge * {
+.ts4nfdi-breadcrumb-style .euiBadge * {
   font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
-}
-
-.ts4nfdi-breadcrumb-style .clickable-breadcrumb {
-
 }
 
 .ts4nfdi-breadcrumb-style .breadcrumb {
