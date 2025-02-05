@@ -270,6 +270,7 @@ declare global {
       ontologyId: string;
       api: string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
     createResources:(props:{

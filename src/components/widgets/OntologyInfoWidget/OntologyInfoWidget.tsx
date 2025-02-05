@@ -8,13 +8,15 @@ import {getEntityLinkJSX, getReifiedJSX} from "../../../model/StructureRendering
 import {getErrorMessageToDisplay} from "../../../app/util";
 import {OntologyInfoWidgetProps} from "../../../app/types";
 import ReactDOM from "react-dom";
+import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css"
 
 const DEFAULT_HAS_TITLE = true;
 
 function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
-  const { ontologyId, api, parameter, hasTitle = DEFAULT_HAS_TITLE, useLegacy, showBadges, ...rest } = props;
+  const { ontologyId, api, parameter, hasTitle = DEFAULT_HAS_TITLE, useLegacy, showBadges, className, ...rest } = props;
   const olsApi = new OlsApi(api);
   const onNavigates = {onNavigateToEntity: props.onNavigateToEntity, onNavigateToOntology: props.onNavigateToOntology, onNavigateToDisambiguate: props.onNavigateToDisambiguate};
+  const finalClassName = className || "ts4nfdi-ontologyy-info-style"
 
   const {
     data: ontology,
@@ -158,7 +160,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   }
 
   return (
-      <>
+      <div className={finalClassName}>
         <EuiCard
             title={hasTitle ? "Ontology Information" : ""}
             layout="horizontal"
@@ -187,7 +189,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
           }
           {isErrorOntology && <EuiText>{getErrorMessageToDisplay(errorOntology, "information")}</EuiText>}
         </EuiCard>
-      </>
+      </div>
   );
 
 }

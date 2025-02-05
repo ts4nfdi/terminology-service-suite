@@ -39,7 +39,8 @@ window['SemLookPWidgets'].createOntologyInfo(
         showBadges:${args.showBadges},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:${args.className}
     },
     document.querySelector('#ontology_info_widget_container_${num}')
 )

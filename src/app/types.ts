@@ -456,7 +456,7 @@ export type MetadataWidgetProps =
     termLink?: string;
 };
 
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates & CssClassNameObj;
 
 export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
   /**
