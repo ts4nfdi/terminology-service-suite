@@ -1,6 +1,6 @@
 import {Action} from "@elastic/eui/src/components/basic_table/action_types";
-import {OlsResource} from "../src/components/widgets/ResourcesWidget/ResourcesWidget";
 import {EuiCardProps} from "@elastic/eui";
+import { OlsResource } from "../src/app/types";
 
 declare global {
   interface SemLookPWidgets {
