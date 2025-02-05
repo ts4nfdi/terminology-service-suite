@@ -267,6 +267,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
+    let isMounted = true;
+    if (isMounted){
     selectionChangedEvent(
       selectedOptions.map((x) => {
         // return the value object with the raw values from OLS to a client
@@ -302,7 +304,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           };
         }
       })
-    );
+    );}
+    return () => { isMounted = false };
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any) {

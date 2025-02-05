@@ -522,7 +522,6 @@ export const classNameArgType = {
       "the TS4NFDI styling. Set 'none' for the basic Elastic UI styling " +
       "(recommended for apps based on Elastic UI).",
     control: "text",
-    type: { summary: `string` }
     type: { summary: `string` },
     table: {
      defaultValue : { summary: "ts4nfdi-title-style" }
