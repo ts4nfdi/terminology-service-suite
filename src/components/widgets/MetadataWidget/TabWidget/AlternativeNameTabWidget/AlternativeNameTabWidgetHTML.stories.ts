@@ -36,7 +36,8 @@ window['SemLookPWidgets'].createAlternativeNameTab(
         ontologyId:"${args.ontologyId}",
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
-        useLegacy:${args.useLegacy}
+        useLegacy:${args.useLegacy},
+        className:${args.className}
     },
     document.querySelector('#alternative_name_tab_widget_container_${num}')
 )

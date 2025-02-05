@@ -1,6 +1,6 @@
 import * as globals from '../../../../../app/globals';
 import {
-    apiArgType,
+    apiArgType, classNameArgType,
     entityTypeArgType,
     iriArgType,
     ontologyIdArgType,
@@ -13,7 +13,8 @@ export const AlternativeNameTabWidgetStoryArgTypes = {
     ...ontologyIdArgType,
     ...entityTypeArgType,
     ...parameterArgType,
-    ...useLegacyArgType
+    ...useLegacyArgType,
+    ...classNameArgType,
 }
 
 export const AlternativeNameTabWidgetStoryArgs = {
@@ -22,6 +23,7 @@ export const AlternativeNameTabWidgetStoryArgs = {
     iri: "",
     ontologyId: "",
     entityType: "",
+    className: "",
     parameter: "collection=nfdi4health",
 }
 

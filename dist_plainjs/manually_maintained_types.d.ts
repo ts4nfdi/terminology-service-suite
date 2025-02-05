@@ -158,6 +158,7 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
     createCrossRefTab:(props:{

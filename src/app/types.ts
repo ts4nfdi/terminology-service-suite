@@ -306,15 +306,15 @@ export type IriWidgetProps = ForcedIriObj & CssClassNameObj & {
   copyButton?: 'right' | 'left' | 'none';
 }
 
-export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
+export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & CssClassNameObj;
 
-export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
+export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & CssClassNameObj & {
     hierarchyPreferredRoots?: boolean
     hierarchyKeepExpansionStates?: boolean
     hierarchyShowSiblingsOnInit?: boolean
 };
 
-export type TabPresentationProps = TabWidgetProps & {
+export type TabPresentationProps = TabWidgetProps & CssClassNameObj & {
   data: Thing;
 }
 
@@ -330,8 +330,10 @@ export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
-export type AlternativeNameTabWidgetPresentationProps = {
+export type AlternativeNameTabWidgetPresentationProps = CssClassNameObj & {
   synonyms: any[];
+  isLoading?: boolean;
+  error?:  string | unknown,
 }
 
 export type CrossRefWidgetProps = TabSubwidgetsProps;
