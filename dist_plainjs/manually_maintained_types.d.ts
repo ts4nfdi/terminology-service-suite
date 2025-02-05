@@ -216,6 +216,7 @@ declare global {
       parameter?: string
       useLegacy?: string
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void;
     createEntityDefinedBy:(props:{
       api: string
@@ -228,6 +229,7 @@ declare global {
       parameter?: string
       useLegacy?: string
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void;
     createHierarchy:(props:{
       apiUrl: string

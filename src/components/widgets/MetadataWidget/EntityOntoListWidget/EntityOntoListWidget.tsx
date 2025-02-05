@@ -11,7 +11,7 @@ import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -52,7 +52,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   return (
     <>
       {isSuccess && data &&
-        <EntityOntoListPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} />}
+        <EntityOntoListPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} className={className}/>}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>}
     </>
