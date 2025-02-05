@@ -1,16 +1,12 @@
 import React from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { EuiProvider } from "@elastic/eui";
 import { OlsApi } from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay } from "../../../../app/util";
 import { TitleWidgetProps } from "../../../../app/types";
 import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
-import "../../../../style/ts4nfdiStyles/ts4nfdiTitleStyles.css"
-
-const NO_TITLE = "No title available.";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {
@@ -25,7 +21,6 @@ function TitleWidget(props: TitleWidgetProps) {
     className
   } = props;
   const olsApi = new OlsApi(api);
-  const finalClassName = className || "ts4nfdi-title-style";
 
   const {
     data,
@@ -40,29 +35,15 @@ function TitleWidget(props: TitleWidgetProps) {
     }
   );
 
-
   return (
-    <div className={finalClassName}>
-      {titleText &&
-        <TitlePresentation
-          titleText={titleText}
-        />
-      }
-
-      {!titleText && isSuccess && data &&
-        <TitlePresentation
-          title={isOntology(data) ? data.getName() : data.getLabel()} />
-      }
-
-      {!titleText && isLoading && (defaultValue ? (
-          <TitlePresentation titleText={defaultValue} />)
-        : <EuiLoadingSpinner size="s" />)
-      }
-
-      {!titleText && isError && (defaultValue ?
-        <TitlePresentation titleText={defaultValue} /> :
-        <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>)}
-    </div>
+      <TitlePresentation
+        title={data ? isOntology(data) ? data.getName() : data.getLabel() : null}
+        titleText={titleText}
+        defaultValue={defaultValue}
+        className={className}
+        isLoading={isLoading}
+        error={isError ? error: null}
+      />
   );
 }
 

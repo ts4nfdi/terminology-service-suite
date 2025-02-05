@@ -440,16 +440,14 @@ export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyI
   
 }
 
-export type TitlePresentationProps = TitleTextObj & {
+export type TitlePresentationProps = TitleTextObj & CssClassNameObj & {
   title?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
   /**
    * Set the default text shown if the API fails to retrieve one.
    */
-  defaultValue?: string
+  defaultValue?: string;
+  isLoading?: boolean,
+  error?: string | unknown,
 }
 
 export type MetadataWidgetProps =
