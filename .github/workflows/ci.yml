@@ -50,6 +50,7 @@ jobs:
           SCOPE: '@ts4nfdi'
           GITHUB_NPM_CONFIG_REGISTRY: https://npm.pkg.github.com/
           GITHUB_NPM_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           PUBLIC_NPM_CONFIG_REGISTRY: https://registry.npmjs.org
           PUBLIC_NPM_TOKEN: ${{ secrets.NPM_PUBLISH }}
 #      - name: Capture version number
