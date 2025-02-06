@@ -48,6 +48,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
           SCOPE: '@ts4nfdi'
+          GITHUB_NPM_CONFIG_REGISTRY: https://npm.pkg.github.com/
+          GITHUB_NPM_TOKEN: ${{ secrets.PAT_TO_PUSH }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PUBLIC_NPM_CONFIG_REGISTRY: https://registry.npmjs.org
+          PUBLIC_NPM_TOKEN: ${{ secrets.NPM_PUBLISH }}
       - name: Capture version number
         run: |
           echo "SRVERSION=$(echo "${{ steps.semantic_release.outputs.release_output }}" | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
@@ -186,4 +191,3 @@ jobs:
           npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
           npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
           npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
-
