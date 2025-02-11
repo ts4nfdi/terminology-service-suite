@@ -6,7 +6,6 @@ import {
     iriArgType,
     iriTextArgType, urlPrefixArgType
 } from "../../../../stories/storyArgs";
-import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css"
 
 export const IriWidgetStoryArgTypes = {
     ...colorArgType,

@@ -6,8 +6,6 @@ import {
     onNavigateToOntologyArgType
 } from "../../../stories/storyArgs";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidget/HierarchyWidget";
-import "../../../style/customMetadataStyle.css"
-import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
 
 export const MetadataWidgetStoryArgTypes = {
     api: {
@@ -167,15 +165,3 @@ export const TermAsLink = {
         termLink: "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819"
     }
 }
-
-export const MetadataWidgetCustomStyles = {
-    storyName: "Metadata Widget",
-    args: {
-        api: globals.ZBMED_API_ENDPOINT,
-        ontologyId: "ncit",
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
-        entityType: "term",
-        useLegacy: true,
-        className: "custom-metadata-style"
-    }
-};

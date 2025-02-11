@@ -37,7 +37,6 @@ export {
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
   TibDataPlant,
-  WithCustomStyles
 } from "./AutocompleteWidgetStories"
 
 

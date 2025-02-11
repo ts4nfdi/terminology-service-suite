@@ -30,5 +30,4 @@ export {
     DefiningOntologyUnavailable,
     HiddenTabs,
     TermAsLink,
-    MetadataWidgetCustomStyles
 } from "./MetadataWidgetStories"

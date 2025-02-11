@@ -16,6 +16,7 @@
 }
 
 .ts4nfdi-metadata-style-breadcrumb .breadcrumb {
+    font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
     padding: 3px 3px 0;
     border-radius: 6px;
     border: 2px solid rgba(0,0,0,0);

@@ -1,5 +1,4 @@
 import * as globals from '../../../app/globals';
-import "../../../style/customAutocompleteStyle.css"
 
 import { action } from "@storybook/addon-actions";
 import {
@@ -178,13 +177,5 @@ export const TibDataPlant = {
   args: {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
-  }
-};
-
-export const WithCustomStyles = {
-  args: {
-    api: globals.TIB_API_ENDPOINT,
-    parameter: "classification=NFDI4CHEM&schema=collection",
-    className: "custom-autocomplete-style"
   }
 };
