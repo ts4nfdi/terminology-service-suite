@@ -1,0 +1,1 @@
+const t="https://www.ebi.ac.uk/ols4/api/",s="https://semanticlookup.zbmed.de/ols/api/",a="https://semanticlookup.zbmed.de/api/",p="https://api.terminology.tib.eu/api/",o="https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",i="https://api.finto.fi/rest/v1";export{t as E,i as F,o as G,p as T,s as Z,a};
