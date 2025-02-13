@@ -3,7 +3,7 @@ import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStori
 import {TitleDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-    title: "Metadata/Entity Information/TitleWidget",
+    title: "Direct Metadata/TitleWidget",
     component: TitleWidget,
     parameters: {
         layout: "centered",

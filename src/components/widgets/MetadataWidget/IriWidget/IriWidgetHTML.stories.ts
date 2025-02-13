@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'IriWidget',
+    title: 'Direct Metadata/IriWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'TitleWidget',
+    title: 'Direct Metadata/TitleWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

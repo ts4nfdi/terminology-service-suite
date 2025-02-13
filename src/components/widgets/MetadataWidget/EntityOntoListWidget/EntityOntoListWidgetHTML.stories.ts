@@ -14,7 +14,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'EntityOntoListWidget',
+    title: 'Additional Metadata/EntityOntoListWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
