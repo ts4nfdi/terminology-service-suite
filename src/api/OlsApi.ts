@@ -608,7 +608,7 @@ export class OlsApi implements HierarchyBuilder {
   }
 
   public async getJSTree(iri: string, entityType: EntityTypeName, ontologyId: string): Promise<JSTreeNode[]> {
-    return await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`, { params: { size: "1000" } }, true);
+    return await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`, { params: { size: "1000", viewMode: "All" } }, true);
   }
 
   // TODO: Do we want the same behavior as EMBL EBI (e.g. not getting instances for classes if entityType != "individual")?
