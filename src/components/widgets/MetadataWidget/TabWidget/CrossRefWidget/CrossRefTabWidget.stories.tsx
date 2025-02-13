@@ -3,7 +3,7 @@ import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWi
 import {CrossRefTabDescription} from "../../../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/CrossRefTabWidget",
+  title: "Additional Metadata/CrossRefTabWidget",
   component: CrossRefTabWidget,
   parameters: {
     layout: "centered",

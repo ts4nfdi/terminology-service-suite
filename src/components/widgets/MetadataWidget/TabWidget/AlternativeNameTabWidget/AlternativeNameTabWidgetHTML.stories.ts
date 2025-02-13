@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'AlternativeNameTabWidget',
+    title: 'Direct Metadata/AlternativeNameTabWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'ResourcesWidget',
+    title: 'API and Data/ResourcesWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
