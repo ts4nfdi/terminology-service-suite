@@ -24,7 +24,7 @@ type MetadataInfo = {
 }
 
 function MetadataWidget(props: MetadataWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy = true, onNavigateToOntology, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, termLink } = props;
   const olsApi = new OlsApi(api);
   const metadataWidgetCSS = `
     .boldText{
