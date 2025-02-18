@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
 import {IriWidgetProps} from "../../../../app/types";
 import {IriDescription} from "../../../../app/widgetDescriptions";

@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {TitleWidgetProps} from "../../../../app/types";
 import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
 import {TitleDescription} from "../../../../app/widgetDescriptions";

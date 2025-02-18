@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import { GraphViewWidgetProps } from '../../../app/types';
 import { GraphViewWidgetStoryArgTypes, GraphViewWidgetStoryArgs } from "./GraphViewWidgetStories";
 import {GraphViewDescription} from "../../../app/widgetDescriptions";

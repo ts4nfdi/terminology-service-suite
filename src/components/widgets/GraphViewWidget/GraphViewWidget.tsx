@@ -320,7 +320,7 @@ function createGraphView(props: GraphViewWidgetProps, container: Element, callba
 function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <GraphViewWidget
           api={props.api}

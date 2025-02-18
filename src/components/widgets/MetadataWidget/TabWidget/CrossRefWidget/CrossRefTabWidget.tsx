@@ -44,7 +44,7 @@ function createCrossRefTab(props: CrossRefWidgetProps, container: Element, callb
 function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <CrossRefTabWidget
                     iri={props.iri}

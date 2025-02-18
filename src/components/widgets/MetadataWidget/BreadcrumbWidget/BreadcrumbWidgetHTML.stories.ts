@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
 import "../../../../style/semlookp-styles.css";

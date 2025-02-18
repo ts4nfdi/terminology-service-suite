@@ -209,7 +209,7 @@ function createHierarchy(props: HierarchyWidgetProps, container: Element, callba
 function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <HierarchyWidget
                     apiUrl={props.apiUrl}

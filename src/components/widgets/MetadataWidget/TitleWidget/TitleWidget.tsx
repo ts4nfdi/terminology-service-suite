@@ -54,7 +54,7 @@ function createTitle(props: TitleWidgetProps, container: Element, callback?: () 
 function WrappedTitleWidget(props: TitleWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <TitleWidget
           api={props.api}

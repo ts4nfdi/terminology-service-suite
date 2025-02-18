@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
 import {CrossRefWidgetProps} from "../../../../../app/types";
 import {CrossRefTabDescription} from "../../../../../app/widgetDescriptions";

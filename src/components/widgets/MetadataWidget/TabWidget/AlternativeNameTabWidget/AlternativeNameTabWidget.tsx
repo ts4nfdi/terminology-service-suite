@@ -41,7 +41,7 @@ function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, containe
 function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <AlternativeNameTabWidget
           iri={props.iri}

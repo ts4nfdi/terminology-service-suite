@@ -1,4 +1,5 @@
 import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
@@ -71,5 +72,4 @@ export {
     WithDescriptionAndShortForm,
     TibNFDI4CHEM,
     TibDataPlant,
-    WithCustomStyles
 } from "./AutocompleteWidgetStories"

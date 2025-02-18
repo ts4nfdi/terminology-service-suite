@@ -66,7 +66,7 @@ function createEntityOntoList(props: EntityOntoListWidgetProps, container: Eleme
 function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <EntityOntoListWidget
                     iri={props.iri}

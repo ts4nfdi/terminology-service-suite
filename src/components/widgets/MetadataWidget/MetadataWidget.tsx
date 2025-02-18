@@ -17,7 +17,6 @@ import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListP
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/semlookp-styles.css"
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
-import { globalStyles } from "@elastic/eui/src/global_styling/utility/utility";
 
 type MetadataInfo = {
     entity: Entity,

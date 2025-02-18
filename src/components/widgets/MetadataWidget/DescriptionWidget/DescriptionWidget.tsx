@@ -55,7 +55,7 @@ function createDescription(props: DescriptionWidgetProps, container: Element, ca
 function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           <DescriptionWidget
               api={props.api}

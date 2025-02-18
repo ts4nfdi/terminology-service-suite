@@ -61,7 +61,7 @@ function createBreadcrumb(props: BreadcrumbWidgetProps, container: Element, call
 function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           <BreadcrumbWidget
               api={props.api}

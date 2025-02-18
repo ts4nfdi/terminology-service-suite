@@ -61,7 +61,7 @@ function createEntityDefinedBy(props: EntityDefinedByWidgetProps, container: Ele
 function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <EntityDefinedByWidget
                     iri={props.iri}

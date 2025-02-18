@@ -73,7 +73,7 @@ function createIri(props: IriWidgetProps, container: Element, callback?: ()=>voi
 function WrappedIriWidget(props: IriWidgetProps) {
     const queryClient = new QueryClient();    
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <IriWidget
                     iri={props.iri}
