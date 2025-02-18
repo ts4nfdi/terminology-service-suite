@@ -6,7 +6,7 @@ import {
 import {SearchBarDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Terminology Service/SearchBarWidget",
+  title: "Search/SearchBarWidget",
   component: SearchBarWidget,
   parameters: {
     docs: {

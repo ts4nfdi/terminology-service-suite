@@ -11,7 +11,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'Additional Metadata/EntityRelationsWidget',
+    title: 'Additional Entity Metadata/EntityRelationsWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

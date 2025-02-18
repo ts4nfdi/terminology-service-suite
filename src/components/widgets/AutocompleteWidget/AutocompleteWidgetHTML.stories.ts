@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'AutocompleteWidget',
+    title: 'Search/AutocompleteWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

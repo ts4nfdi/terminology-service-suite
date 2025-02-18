@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'Terminology Service/SearchResultsListWidget',
+    title: 'Search/SearchResultsListWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

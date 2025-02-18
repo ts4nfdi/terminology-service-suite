@@ -6,7 +6,7 @@ import {
 import {TermDepictionDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Additional Metadata/TermDepictionWidget",
+  title: "Additional Entity Metadata/TermDepictionWidget",
   component: TermDepictionWidget,
   parameters: {
     layout: "centered",

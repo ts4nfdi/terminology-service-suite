@@ -3,7 +3,7 @@ import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 import {TabDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Deprecated/TabWidget",
+  title: "Additional Entity Metadata/TabWidget",
   component: TabWidget,
   parameters: {
     layout: "centered",

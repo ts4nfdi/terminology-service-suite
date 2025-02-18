@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'API and Data/ResourcesWidget',
+    title: 'Ontology Metadata/ResourcesWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

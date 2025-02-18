@@ -3,7 +3,7 @@ import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./Resource
 import {ResourcesDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "API and Data/ResourcesWidget",
+  title: "Ontology Metadata/ResourcesWidget",
   component: ResourcesWidget,
   parameters: {
     layout: "centered",

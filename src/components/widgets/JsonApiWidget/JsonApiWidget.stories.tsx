@@ -3,7 +3,7 @@ import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidge
 import {JsonApiDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "API and Data/JsonApiWidget",
+  title: "API/JsonApiWidget",
   component: JsonApiWidget,
   parameters: {
     layout: "centered",

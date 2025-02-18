@@ -4,7 +4,7 @@ import {manuallyEmbedOnNavigate} from "../../../app/util";
 import {EntityRelationsDescription} from "../../../app/widgetDescriptions";
 
 export default {
-    title: "Additional Metadata/EntityRelationsWidget",
+    title: "Additional Entity Metadata/EntityRelationsWidget",
     component: EntityRelationsWidget,
     parameters: {
         layout: "centered",

@@ -11,7 +11,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'Additional Metadata/BreadcrumbWidget',
+    title: 'Additional Entity Metadata/BreadcrumbWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

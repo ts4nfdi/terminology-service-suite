@@ -3,7 +3,7 @@ import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./Data
 import {DataContentDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "API and Data/DataContentWidget",
+  title: "Terminology Service/DataContentWidget",
   component: DataContentWidget,
   parameters: {
     layout: "centered",

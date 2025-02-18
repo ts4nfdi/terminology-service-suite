@@ -12,7 +12,7 @@ function getIncNum() {
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-    title: 'Additional Metadata/EntityInfoWidget',
+    title: 'Additional Entity Metadata/EntityInfoWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

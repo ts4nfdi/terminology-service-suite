@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'API and Data/JsonApiWidget',
+    title: 'API/JsonApiWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

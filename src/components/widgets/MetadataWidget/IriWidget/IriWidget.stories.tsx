@@ -6,7 +6,7 @@ import {
 import {IriDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Direct Metadata/IriWidget",
+  title: "Entity Metadata/IriWidget",
   component: IriWidget,
   parameters: {
     layout: "centered",
