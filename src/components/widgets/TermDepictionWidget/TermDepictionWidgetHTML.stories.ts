@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'TermDepictionWidget',
+    title: 'Additional Entity Metadata/TermDepictionWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

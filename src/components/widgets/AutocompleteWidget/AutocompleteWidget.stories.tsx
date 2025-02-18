@@ -8,7 +8,7 @@ import "../../../style/tssStyles.css";
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Search and Autocomplete/AutocompleteWidget",
+  title: "Search/AutocompleteWidget",
   parameters: {
     docs: {
       description: {

@@ -10,7 +10,7 @@ function getIncNum() {
 }
 
 export default {
-  title: "SearchBarWidget",
+  title: "Search/SearchBarWidget",
   tags: ["autodocs"],
   parameters: {
     layout: "centered",

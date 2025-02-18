@@ -3,7 +3,7 @@ import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes
 import {AlternativeNameTabDescription} from "../../../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/AlternativeNameTabWidget",
+  title: "Entity Metadata/AlternativeNameTabWidget",
   component: AlternativeNameTabWidget,
   parameters: {
     layout: "centered",
