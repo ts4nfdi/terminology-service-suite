@@ -10,11 +10,14 @@ import {
   EuiHighlight,
   EuiHealth,
   EuiProvider,
-  EuiIcon
+  EuiIcon,
+  EuiPanel,
+  EuiFlexGroup
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
+import { MetadataWidget } from "../MetadataWidget";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -218,6 +221,19 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     }
   );
 
+  const createToolTipContent = (iri) =>
+    <EuiFlexGroup style={{ color: "black" }}>
+      <EuiPanel>
+        <MetadataWidget
+          api={api}
+          iri={iri}
+          hierarchyTab={false}
+          crossRefTab={false}
+          terminologyInfoTab={false}
+        />
+      </EuiPanel>
+    </EuiFlexGroup>
+
   /**
    * fetches new options when searchValue changes
    */
@@ -254,7 +270,13 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                   short_form: selection.getShortForm(),
                   description: selection.getDescription(),
                   source: selection.getApiSourceName(),
-                  source_url: selection.getApiSourceEndpoint()
+                  source_url: selection.getApiSourceEndpoint(),
+                },
+                toolTipContent: createToolTipContent(
+                  selection.getIri()
+                ),
+                toolTipProps: {
+                  css: {maxWidth: "none", maxHeight: "none"},
                 }
               })
             ));
