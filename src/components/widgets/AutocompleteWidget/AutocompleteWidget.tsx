@@ -176,7 +176,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                       // #renderOption() is used to display during selection.
                       label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
                       // key to distinguish the options (especially those with same label)
-                      key: `${selection.getOntologyId()}::${selection.getIri()}`,
+                      key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
                       value: {
                         iri: selection.getIri(),
                         label: selection.getLabel(),
@@ -244,7 +244,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 // #renderOption() is used to display during selection.
                 label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
                 // key to distinguish the options (especially those with same label)
-                key: `${selection.getOntologyId()}::${selection.getIri()}`,
+                key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
                 // values to pass to clients
                 value: {
                   iri: selection.getIri(),
@@ -325,6 +325,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   function onCreateOptionHandler(searchValue: string) {
     const newOption = {
       label: searchValue,
+      key: searchValue,
       value: {
         iri: "",
         label: "",
