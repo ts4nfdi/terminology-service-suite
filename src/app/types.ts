@@ -165,16 +165,24 @@ type TabList = {
   terminologyInfoTab?: boolean;
 }
 
+export type AutocompleteWidgetSelectedOptions = {
+  /**
+   * The terms metadata that autocomplete selection change event returns to the client.
+   */
+  iri?: string,
+  description?: string,
+  label: string,
+  ontology_name?: string,
+  short_form?: string,
+  source?: string,
+  type?: string
+}
+
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
   /**
    * A method that is called once the set of selection changes
    */
-  selectionChangedEvent: (selectedOptions: {
-    label: string;
-    iri?: string;
-    ontology_name?: string;
-    type?: string;
-  }[]) => void;
+  selectionChangedEvent: (selectedOptions: AutocompleteWidgetSelectedOptions[]) => void;
   /**
    * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
    */
