@@ -4,7 +4,7 @@ import {manuallyEmbedOnNavigate} from "../../../app/util";
 import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Ontology Information/OntologyInfoWidget",
+  title: "Ontology Metadata/OntologyInfoWidget",
   component: OntologyInfoWidget,
   parameters: {
     layout: "centered",

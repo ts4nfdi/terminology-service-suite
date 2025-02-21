@@ -1,7 +1,7 @@
 import 'ts4nfdi-widgets';
 import {EntityRelationsWidgetProps} from "../../../app/types";
 import {EntityRelationsWidgetStoryArgs, EntityRelationsWidgetStoryArgTypes} from "./EntityRelationsWidgetStories";
-import "../../../style/semlookp-styles.css";
+import "../../../style/tssStyles.css";
 import {EntityRelationsDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -11,7 +11,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'EntityRelationsWidget',
+    title: 'Additional Entity Metadata/EntityRelationsWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

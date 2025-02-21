@@ -275,9 +275,9 @@ declare global {
       pageSizeOptions?: number[];
       initialSortField?: string;
       initialSortDir?: "asc" | "desc";
-      targetLink?: string;
       actions?: Array<Action<OlsResource>>;
       parameter?: string;
+      onNavigate?:  (ontologyId: string) => void,
     }
     )=>void,
     createSearchBar:(props:{

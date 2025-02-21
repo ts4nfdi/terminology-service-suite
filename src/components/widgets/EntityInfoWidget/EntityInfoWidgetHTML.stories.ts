@@ -1,7 +1,7 @@
 import 'ts4nfdi-widgets';
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {EntityInfoWidgetProps} from "../../../app/types";
-import "../../../style/semlookp-styles.css";
+import "../../../style/tssStyles.css";
 import {EntityInfoDescription} from "../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -12,7 +12,7 @@ function getIncNum() {
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-    title: 'EntityInfoWidget',
+    title: 'Additional Entity Metadata/EntityInfoWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

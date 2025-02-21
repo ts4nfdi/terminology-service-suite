@@ -13,8 +13,8 @@ export const apiArgType = {
       "https://semanticlookup.zbmed.de/api/",
       "https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/",
       "https://service.tib.eu/ts4tib/api/",
+      "https://api.terminology.tib.eu/api/",
       "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
-      "http://ols4-test.qa.km.k8s.zbmed.de/ols4/api/"
     ],
     description:
       "The API instance for the API call.<br> " +
@@ -22,7 +22,8 @@ export const apiArgType = {
       "**Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br> " +
       "**Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)<br> " +
       "**OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)<br> " +
-      "**TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
+      "**TIB Terminology Service (OLS3)**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
+      "**TIB Terminology Service (OLS4)**: [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br> " +
       "**TS4NFDI API Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)<br> "
     ,
     type: { summary: "string" }
@@ -32,10 +33,8 @@ export const useLegacyArgType = {
   useLegacy: {
     required: false,
     description: "Toggle between OLS3 (legacy) and OLS4 API versions.",
-    table: {
-      defaultValue: { summary: true }
-    },
-    type: { summary: "boolean" }
+    defaultValue: { summary: true },
+    control: { type: "boolean" }
   }
 };
 export const iriArgType = {
@@ -120,7 +119,7 @@ export const parameterArgType = {
     required: false,
     type: { summary: "string" },
     defaultValue: { summary: undefined },
-    description:
+    markdownDescription:
       `Additional parameters to pass to the API.<br><br>
       This parameters can be used to filter the search results. Each parameter can be combined with the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign (<i><b>,</b></i>). The following keys can be used:<br><br>
       <table>
@@ -591,6 +590,29 @@ export const onNavigateToDisambiguateArgType = {
       "Navigate to EBI page": (entityType?: string, entity?: { iri: string, label?: string }) => {
         window.open(`https://www.ebi.ac.uk/ols4/search?q=${(entity && entity.label) ? entity.label : ""}&exactMatch=true&lang=en`, "_top");
       }
+    }
+  }
+};
+export const onNavigateArgType = {
+  onNavigate: {
+    required: false,
+    type: {summary: "string"},
+    action: "onNavigateArgType",
+    description: "This function is called every time an ontology link is clicked.",
+    control: {type: "radio"},
+    options: ["Console message", "Navigate to EBI page"],
+    mapping: {
+      "Console message": (ontologyId: string) => {
+        console.log('Triggered onNavigate() with ontologyId = ' + (ontologyId));
+      },
+      "Navigate to EBI page": (ontologyId: string) => {
+        if(ontologyId) {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+        else {
+          window.open('https://www.ebi.ac.uk/ols4/ontologies/' + ontologyId);
+        }
+      },
     }
   }
 };

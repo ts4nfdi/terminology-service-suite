@@ -12,7 +12,7 @@ function getIncNum() {
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-    title: 'HierarchyWidget',
+    title: 'Hierarchy and Graph/HierarchyWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",
@@ -66,5 +66,6 @@ export {
     LargeHierarchy,
     SkosHierarchy,
     SagePubHierarchy,
-    OntoportalHierarchy
+    OntoportalHierarchy,
+    OLS3Hierarchy
 } from "./HierarchyWidgetStories"

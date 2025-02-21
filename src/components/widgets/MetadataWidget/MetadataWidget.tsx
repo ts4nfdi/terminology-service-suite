@@ -15,7 +15,7 @@ import ReactDOM from "react-dom";
 import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelObjectCreator";
 import {EntityOntoListPresentation} from "./EntityOntoListWidget/EntityOntoListPresentation";
 import {EntityDefinedByPresentation} from "./EntityDefinedByWidget/EntityDefinedByPresentation";
-import "../../../style/semlookp-styles.css"
+import "../../../style/tssStyles.css"
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
 
 type MetadataInfo = {
@@ -169,8 +169,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
 }
 
 function createMetadata(props: MetadataWidgetProps, container: Element, callback?: ()=>void) {
-  // @ts-ignore
-  ReactDOM.render(WrappedMetadataWidget(props), container, callback);
+    ReactDOM.render(WrappedMetadataWidget(props), container, callback);
 }
 
 function WrappedMetadataWidget(props: MetadataWidgetProps) {

@@ -11,7 +11,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'CrossRefTabWidget',
+    title: 'Additional Entity Metadata/CrossRefTabWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

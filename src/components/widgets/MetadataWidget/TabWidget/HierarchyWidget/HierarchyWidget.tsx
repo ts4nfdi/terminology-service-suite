@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import {SkosApi} from "../../../../../api/SkosApi";
 import {HierarchyBuilder} from "../../../../../api/HierarchyBuilder";
 import {OntoPortalApi} from "../../../../../api/OntoPortalApi";
-import "../../../../../style/semlookp-styles.css";
+import "../../../../../style/tssStyles.css";
 import {randomString} from "../../../../../app/util";
 import {HierarchyWidgetProps, EntityData} from "../../../../../app/types";
 import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";

@@ -4,7 +4,7 @@ import {manuallyEmbedOnNavigate} from "../../../../../app/util";
 import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
 
 export default {
-    title: "Metadata/Ontology Information/HierarchyWidget",
+    title: "Hierarchy and Graph/HierarchyWidget",
     component: HierarchyWidget,
     parameters: {
         layout: "centered",
@@ -31,5 +31,6 @@ export {
     LargeHierarchy,
     SkosHierarchy,
     SagePubHierarchy,
-    OntoportalHierarchy
+    OntoportalHierarchy,
+    OLS3Hierarchy
 } from "./HierarchyWidgetStories";

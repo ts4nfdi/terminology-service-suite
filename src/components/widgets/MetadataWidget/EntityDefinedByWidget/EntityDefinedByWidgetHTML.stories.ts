@@ -5,7 +5,7 @@ import {
     EntityDefinedByWidgetStoryArgs
 } from "./EntityDefinedByWidgetStories";
 import {EntityDefinedByWidgetProps} from "../../../../app/types";
-import "../../../../style/semlookp-styles.css";
+import "../../../../style/tssStyles.css";
 import {EntityDefinedByDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -15,7 +15,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'EntityDefinedByWidget',
+    title: 'Additional Entity Metadata/EntityDefinedByWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

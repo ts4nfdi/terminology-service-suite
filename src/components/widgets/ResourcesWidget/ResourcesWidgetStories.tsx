@@ -7,7 +7,10 @@ import {
     apiArgType,
     initialEntriesPerPageArgType, initialSortDirArgType,
     initialSortFieldArgType,
-    pageSizeOptionsArgType, parameterArgType, targetLinkArgType
+
+    pageSizeOptionsArgType, parameterArgType,
+    onNavigateArgType, useLegacyArgType
+
 } from "../../../stories/storyArgs";
 
 export const ResourcesWidgetStoryArgTypes = {
@@ -16,34 +19,36 @@ export const ResourcesWidgetStoryArgTypes = {
     ...pageSizeOptionsArgType,
     ...initialSortFieldArgType,
     ...initialSortDirArgType,
-    ...targetLinkArgType,
     ...actionsArgType,
     ...parameterArgType,
+    ...onNavigateArgType,
+    ...useLegacyArgType
 }
 
 export const ResourcesWidgetStoryArgs = {
     api: "",
-    initialEntriesPerPage: 10,
+    useLegacy: true,
+    initialEntriesPerPage: 100,
     pageSizeOptions: [10, 25, 50, 100],
     initialSortField: "config.preferredPrefix",
     initialSortDir: "asc",
-    targetLink: "",
     actions: [],
+    onNavigate: "Console message",
     parameter: "collection=nfdi4health"
 }
-
 
 export const ResourcesWidget1 = {
     args: {
         api: globals.ZBMED_API_ENDPOINT,
-        initialEntriesPerPage: 10,
+        initialEntriesPerPage: 100,
         pageSizeOptions: [10, 25, 50, 100],
         initialSortField: "config.preferredPrefix",
         initialSortDir: "asc" as const,
-        targetLink: "https://semanticlookup.zbmed.de/dev/",
+        onNavigate: "Console message",
         parameter: "collection=nfdi4health"
     }
 };
+
 export const WithActions = {
     args: {
         ...ResourcesWidget1.args,
@@ -85,7 +90,19 @@ export const WithActions = {
 export const WithActionsAndSafety = {
     args: {
         ...WithActions.args,
-        targetLink: "https://semanticlookup.zbmed.de/safety/",
         parameter: "collection=safety",
     }
 }
+
+export const ResourcesWidgetLogos = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        initialEntriesPerPage: 100,
+        pageSizeOptions: [10, 25, 50, 100],
+        initialSortField: "config.preferredPrefix",
+        initialSortDir: "asc" as const,
+        targetLink: "https://semanticlookup.zbmed.de/dev/",
+        parameter: "",
+        useLegacy: false,
+    }
+};

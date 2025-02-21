@@ -101,55 +101,63 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       );
     };
 
-    const renderEntityWithDescription = () => {
+    const renderEntity = () => {
       return (
-        <span title={hoverText} style={{ height: 200 + "px" }} className={finalClassName}>
-            <EuiHealth
-              color={dotColor}>
-                <span>
-                    <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <BreadcrumbPresentation
-                    ontologyName={value.ontology_name}
-                    shortForm={value.short_form}
-                    colorFirst={"primary"}
-                    colorSecond={"success"}
-                    className={`${finalClassName}-breadcrumb`}
-                  />
-                  <EuiIcon
-                    type={"iInCircle"}
-                    style={{ marginLeft: 5 }}
-                    title={hoverText}
-                  />
-                  {!singleSuggestionRow && value.description &&
-                      <>
-                      <br />
-                      {value.description.substring(0, 40) + "..."}
-                      </>
-                  }
-                </span>
+        <span
+          title={hoverText}
+          className={finalClassName}
+        >
+          <span>
+            <EuiHealth color={dotColor}>
+              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
             </EuiHealth>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <BreadcrumbPresentation
+              ontologyName={value.ontology_name}
+              shortForm={value.short_form}
+              colorFirst={"primary"}
+              colorSecond={"success"}
+              className={`${finalClassName}-breadcrumb`}
+            />
+            <EuiIcon
+              type={"iInCircle"}
+              style={{ marginLeft: "5px" }}
+              title={hoverText}
+            />
+          </span>
+          {!singleSuggestionRow && value.description && (
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "block"
+              }}
+            >
+              {value.description}
+            </span>
+          )}
         </span>
       );
     };
 
-    return value.type === "ontology" ? renderOntology() : renderEntityWithDescription();
+    return value.type === "ontology" ? renderOntology() : renderEntity();
   };
 
-    /**
-     * on mount: fetches term for preselected
-     * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
-     * only if allowCustomTerms is true
-     */
-    const {
-        isLoading: isLoadingOnMount
-    } = useQuery(
-        [
-            "onMount",
-            preselected
-        ],
-        async () => {
-            let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
+  /**
+   * on mount: fetches term for preselected
+   * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
+   * only if allowCustomTerms is true
+   */
+  const {
+    isLoading: isLoadingOnMount
+  } = useQuery(
+    [
+      "onMount",
+      preselected
+    ],
+    async () => {
+      let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
       let uniqueValues = [...new Set(preselected)]
         .filter((option) => {
@@ -158,37 +166,39 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
       if (uniqueValues.length > 0) {
         if (singleSelection) uniqueValues = [uniqueValues[0]];
-                for (const option of uniqueValues) {
-                    if (option && option.iri && option.iri.startsWith("http")) {
-                      await olsApi.getSelectData(
-                            {query: option.iri},
-                            undefined,
-                            undefined,
-                            parameter,
-                            ts4nfdiGateway
-                        ).then((response) => {
-                            if (response) {
-                                response.properties.map((selection: any) => {
-                                    if (option.iri === selection.getIri()) {
-                                        preselectedValues.push({
-                                            // label to display within the combobox either raw value or generated one
-                                            // #renderOption() is used to display during selection.
-                                            label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
-                                            // key to distinguish the options (especially those with same label)
-                                            key: selection.getIri(),
-                                            value: {
-                                                iri: selection.getIri(),
-                                                label: selection.getLabel(),
-                                                ontology_name: selection.getOntologyId(),
-                                                type: selection.getType(),
-                                                short_form: selection.getShortForm(),
-                                                description: selection.getDescription(),
-                                                source: selection.getApiSourceName(),
-                                                source_url: selection.getApiSourceEndpoint()
-                                            },
-                                        });
-                                    }
-                                })
+
+        for (const option of uniqueValues) {
+          if (option && option.iri && option.iri.startsWith("http")) {
+            await olsApi.getSelectData(
+              { query: option.iri },
+              undefined,
+              undefined,
+              parameter,
+
+              ts4nfdiGateway
+            ).then((response) => {
+              if (response) {
+                response.properties.map((selection: any) => {
+                  if (option.iri === selection.getIri()) {
+                    preselectedValues.push({
+                      // label to display within the combobox either raw value or generated one
+                      // #renderOption() is used to display during selection.
+                      label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
+                      // key to distinguish the options (especially those with same label)
+                      key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
+                      value: {
+                        iri: selection.getIri(),
+                        label: selection.getLabel(),
+                        ontology_name: selection.getOntologyId(),
+                        type: selection.getType(),
+                        short_form: selection.getShortForm(),
+                        description: selection.getDescription(),
+                        source: selection.getApiSourceName(),
+                        source_url: selection.getApiSourceEndpoint()
+                      }
+                    });
+                  }
+                });
 
                 if (singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
               }
@@ -243,7 +253,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                 // #renderOption() is used to display during selection.
                 label: hasShortSelectedLabel ? selection.getLabel() : generateDisplayLabel(selection),
                 // key to distinguish the options (especially those with same label)
-                key: selection.getIri(),
+                key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
                 // values to pass to clients
                 value: {
                   iri: selection.getIri(),
@@ -308,14 +318,14 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     return () => { isMounted = false };
   }, [selectedOptions]);
 
-  function generateDisplayLabel(item: any) {
+  function generateDisplayLabel(item: any): string {
 
     return (
-      item.getLabel() +
+      item?.getLabel() ?? "-" +
       " (" +
-      item.getOntologyId().toUpperCase() +
+      item?.getOntologyId()?.toUpperCase() ?? "-" +
       " " +
-      item.getShortForm() +
+      item?.getShortForm() ?? "-" +
       ")"
     );
   }
@@ -327,6 +337,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   function onCreateOptionHandler(searchValue: string) {
     const newOption = {
       label: searchValue,
+      key: searchValue,
       value: {
         iri: "",
         label: "",
@@ -341,6 +352,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     setOptions([...options, newOption]);
     setSelectedOptions(singleSelection ? [newOption] : [...selectedOptions, newOption]);
   }
+
   return (
     <div className={finalClassName}>
       <EuiComboBox

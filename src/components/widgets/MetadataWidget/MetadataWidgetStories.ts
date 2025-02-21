@@ -1,59 +1,28 @@
 import {entityTypeNames} from "../../../model/ModelTypeCheck";
 import * as globals from '../../../app/globals';
 import {
+    apiArgType, entityTypeArgType, iriArgType,
     onNavigateToDisambiguateArgType,
     onNavigateToEntityArgType,
-    onNavigateToOntologyArgType
+    onNavigateToOntologyArgType, ontologyIdArgType, parameterArgType, useLegacyArgType
 } from "../../../stories/storyArgs";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidget/HierarchyWidget";
 
 export const MetadataWidgetStoryArgTypes = {
-    api: {
-        control: {
-            type: "radio",
-        },
-        options: [
-            globals.EBI_API_ENDPOINT,
-            globals.ZBMED_OLS_API_ENDPOINT,
-            globals.ZBMED_API_ENDPOINT,
-            globals.TIB_API_ENDPOINT,
-          "http://127.0.0.1:5000/api/"
-        ],
-    },
-    ontologyId: {
-        description: "Ontology ID from where the term metadata should be taken.",
-    },
-    iri: {
-        description: "Iri of the term you want to fetch the metadata for.",
-    },
-    entityType: {
-        table: {
-            type: { summary: `${entityTypeNames.join(" | ")}` },
-        },
-        control: {
-            type: "radio",
-        },
-        options: [
-            "term",
-            "class",
-            "property",
-            "individual",
-            "",
-            "INVALID STRING"
-        ],
-    },
-    parameter: {
-        type: { required: false }
-    },
+    ...apiArgType,
+    ...iriArgType,
+    ...entityTypeArgType,
+    ...ontologyIdArgType,
     ...onNavigateToEntityArgType,
     ...onNavigateToOntologyArgType,
     ...onNavigateToDisambiguateArgType,
+    ...parameterArgType,
+    ...useLegacyArgType
 }
 
 export const MetadataWidgetStoryArgs = {
     api: "",
-    parameter: "collection=nfdi4health",
-    useLegacy: true,
+    useLegacy: "true",
     ontologyId: "",
     entityType: "",
     iri: "",
@@ -68,6 +37,7 @@ export const MetadataWidgetStoryArgs = {
     onNavigateToEntity: "Console message",
     onNavigateToOntology: "Console message",
     onNavigateToDisambiguate: "Console message",
+    parameter: "",
 }
 
 export const MetadataWidget1 = {
@@ -77,7 +47,6 @@ export const MetadataWidget1 = {
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
-        useLegacy: true
     }
 };
 
@@ -88,7 +57,6 @@ export const OLS3 = {
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
-        useLegacy: true
     }
 };
 
@@ -99,7 +67,6 @@ export const OLS4V1 = {
         ontologyId: "ncit",
         iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
         entityType: "term",
-        useLegacy: true
     }
 };
 

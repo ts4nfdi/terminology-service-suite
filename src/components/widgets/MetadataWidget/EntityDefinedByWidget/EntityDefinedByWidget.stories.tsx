@@ -7,7 +7,7 @@ import {manuallyEmbedOnNavigate} from "../../../../app/util";
 import {EntityDefinedByDescription} from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/EntityDefinedByWidget",
+  title: "Additional Entity Metadata/EntityDefinedByWidget",
   component: EntityDefinedByWidget,
   parameters: {
     layout: "centered",

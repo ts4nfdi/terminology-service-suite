@@ -6,7 +6,7 @@ import {
 import {SearchBarDescription} from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Search and Autocomplete/SearchBarWidget",
+  title: "Search/SearchBarWidget",
   component: SearchBarWidget,
   parameters: {
     docs: {

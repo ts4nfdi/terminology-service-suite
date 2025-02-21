@@ -2,7 +2,7 @@ import 'ts4nfdi-widgets';
 import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
-import "../../../../style/semlookp-styles.css";
+import "../../../../style/tssStyles.css";
 import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -12,7 +12,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'BreadcrumbWidget',
+    title: 'Additional Entity Metadata/BreadcrumbWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

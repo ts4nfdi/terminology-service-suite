@@ -5,7 +5,7 @@ import {
     EntityOntoListWidgetStoryArgTypes
 } from "./EntityOntoListWidgetStories";
 import {EntityOntoListWidgetProps} from "../../../../app/types";
-import "../../../../style/semlookp-styles.css";
+import "../../../../style/tssStyles.css";
 import {EntityOntoListDescription} from "../../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -15,7 +15,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'EntityOntoListWidget',
+    title: 'Additional Entity Metadata/EntityOntoListWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

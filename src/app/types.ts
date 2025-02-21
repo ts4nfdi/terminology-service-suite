@@ -60,7 +60,8 @@ type ApiObj = {
    * - **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
    * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
    * - **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)
-   * - **TIB Terminology Service**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
+   * - **TIB Terminology Service (OLS3)**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
+   * - **TIB Terminology Service (OLS4)**: [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)
    * - **TS4NFDI Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)
    */
   api: string;
@@ -439,7 +440,7 @@ export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyI
    * Set the default text shown if the API fails to retrieve one.
    */
   defaultValue?: string;
-  
+
 }
 
 export type TitlePresentationProps = TitleTextObj & CssClassNameObj & {
@@ -462,7 +463,9 @@ export type MetadataWidgetProps =
 
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates & CssClassNameObj;
 
-export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
+
+export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
+
   /**
    * Initial number of entries displayed per page.
    */
@@ -487,6 +490,11 @@ export type ResourcesWidgetProps = ApiObj & TargetLinkObj & ParameterObj & {
    * Pass actions to each item in the table.
    */
   actions?: Array<Action<OlsResource>>;
+
+  /**
+   * This function is called every time an ontology link is clicked.
+   */
+  onNavigate?: (ontologyId: string) => void;
 }
 
 export type OlsResource = ForcedOntologyIdObj & {
@@ -495,15 +503,16 @@ export type OlsResource = ForcedOntologyIdObj & {
   numberOfProperties: number;
   numberOfIndividuals: number;
   config: {
-    title: string;
-    description: string;
-    preferredPrefix: string;
-    allowDownload: boolean;
-    fileLocation: string;
-    version?: string;
+      logo?: string;
+      title: string;
+      description: string;
+      preferredPrefix: string;
+      allowDownload: boolean;
+      fileLocation: string;
+      version?: string;
+      [otherFields: string]: unknown;
+    };
     [otherFields: string]: unknown;
-  };
-  [otherFields: string]: unknown;
 }
 
 export type SearchBarWidgetProps = ApiObj & ParameterObj & {

@@ -39,7 +39,7 @@ To install the package for development, it's necessary to additionally install f
 - react-query
 
 ```
-npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2
+npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2 axios@1.1.2
 ```
 
 ### Authenticate
@@ -188,7 +188,7 @@ In short:
 | Feature relese  | feat(autocomplete): add suggest function  |
 | Breaking change  | feat(autocomplete): parameter removed <br> <br> BREAKING CHANGE: The parameter has been removed |
 
-(Note that the BREAKING CHANGE:  token must be in the footer of the commit)
+(Note that the BREAKING CHANGE:  token must be in the footer of the commit - capital letters )
 
 **HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
 

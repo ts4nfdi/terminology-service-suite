@@ -27,7 +27,23 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
 
   return (
     <>
-      {isLoading && <EuiLoadingSpinner size={"s"}/>}
+      {isLoading &&
+        <span>
+        <span
+            onClick={() => {
+                if (props.onNavigateToOntology)
+                    props.onNavigateToOntology(props.ontologyId || "", undefined, undefined);
+            }}
+            role="button" // Improve accessibility
+            tabIndex={0} // Make it focusable
+            onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.click(); }} // Handle keyboard navigation
+          >
+            <EuiBadge className={props.ontologyId ? "breadcrumb clickable-breadcrumb" : "breadcrumb"} color={colorFirst || ((props.ontologyId) ? "primary" : "warning")}>{props.ontologyId?.toUpperCase() || <EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+          </span>
+             &nbsp;<EuiIcon type="arrowRight"/>&nbsp;
+            <EuiBadge className="breadcrumb" color={colorSecond || "warning"}>{<EuiLoadingSpinner size={"s"}/>}</EuiBadge>
+          </span>
+      }
       {isSuccess && data && isEntity(data) &&
         <BreadcrumbPresentation
           ontologyName={data.getOntologyId()}

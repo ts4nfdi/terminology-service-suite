@@ -11,7 +11,7 @@ function getIncNum() {
 }
 
 export default {
-    title: 'GraphViewWidget',
+    title: 'Hierarchy and Graph/GraphViewWidget',
     tags: ['autodocs'],
     parameters: {
         layout: "centered",

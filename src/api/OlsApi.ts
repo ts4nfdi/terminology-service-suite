@@ -16,6 +16,7 @@ import { Select } from "../model/interfaces/Select";
 import { OLSSelectResult } from "../model/ols-model/OLSSelectResult";
 import { Ts4nfdiSearchResult } from "../model/ts4nfdi-model/Ts4nfdiSearchResult";
 import { EntityData } from "../app/types";
+import {OLS4Ontologies} from "../model/ols4-model";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string): boolean {
@@ -205,36 +206,58 @@ export class OlsApi implements HierarchyBuilder {
     return this.check_for_errors(response);
   }
 
-  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter) => {
-    return this.makeCall("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, true);
+  public getOntologies: apiCallFn = async (paginationParams, sortingParams, contentParams, parameter, useLegacy = true) => {
+    return this.makeCall("ontologies", { params: this.buildParamsForGet(paginationParams, sortingParams, contentParams, parameter) }, useLegacy);
   }
 
   /**
    * Fetch all ontologies. Currently only available for useLegacy since parameters aren't allowed in the OLS v2 API ontologies endpoint
    * @param parameter
+   * @param useLegacy
    */
-  public async getOntologiesData(parameter?: string): Promise<Ontologies> {
+  public async getOntologiesData(parameter?: string, useLegacy = true): Promise<Ontologies> {
     let response;
-    let ontologiesData: OLS3Ontology[] = [];
+    let ontologiesData: Ontology[] = [];
 
     let pageNum = 0;
     const pageSize = 500;
 
-    do {
-      response = await this.getOntologies({ size: pageSize.toString(), page: pageNum.toString() }, undefined, undefined, parameter); // assuming there are no more than 500 ontologies
-      if (!response || !response["_embedded"] || !response["_embedded"]["ontologies"]) {
-        throw new Error("Ontologies data not found"); //TODO consistent error handling
-      } else {
+    if(useLegacy) {
+      do {
+        response = await this.getOntologies({ size: pageSize.toString(), page: pageNum.toString() }, undefined, undefined, parameter, useLegacy); // assuming there are no more than 500 ontologies
 
-        ontologiesData = ontologiesData.concat(response["_embedded"]["ontologies"].map((ontologyData: any) => {
-          return createModelObject(ontologyData);
-        }));
-      }
+        if (!response || !response["_embedded"] || !response["_embedded"]["ontologies"]) {
+          throw new Error("Ontologies data not found"); //TODO consistent error handling
+        } else {
 
-      pageNum += 1;
-    } while (pageNum < response["page"]["totalPages"]);
+          ontologiesData = ontologiesData.concat(response["_embedded"]["ontologies"].map((ontologyData: any) => {
+            return createModelObject(ontologyData);
+          }));
+        }
 
-    return new OLS3Ontologies(ontologiesData);
+        pageNum += 1;
+      } while(pageNum < response["page"]["totalPages"]);
+
+      return new OLS3Ontologies(ontologiesData);
+    }
+    else {
+      do {
+        response = await this.getOntologies({ size: pageSize.toString(), page: pageNum.toString() }, undefined, undefined, parameter, useLegacy); // assuming there are no more than 500 ontologies
+
+        if (!response || !response["elements"]) {
+          throw new Error("Ontologies data not found"); //TODO consistent error handling
+        } else {
+
+          ontologiesData = ontologiesData.concat(response["elements"].map((ontologyData: any) => {
+            return createModelObject(ontologyData);
+          }));
+        }
+
+        pageNum += 1;
+      } while(pageNum < response["totalPages"]);
+
+      return new OLS4Ontologies(ontologiesData);
+    }
   }
 
   /**
@@ -585,7 +608,7 @@ export class OlsApi implements HierarchyBuilder {
   }
 
   public async getJSTree(iri: string, entityType: EntityTypeName, ontologyId: string): Promise<JSTreeNode[]> {
-    return await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`, { params: { size: "1000" } }, true);
+    return await this.makeCall(`${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`, { params: { size: "1000", viewMode: "All" } }, true);
   }
 
   // TODO: Do we want the same behavior as EMBL EBI (e.g. not getting instances for classes if entityType != "individual")?
