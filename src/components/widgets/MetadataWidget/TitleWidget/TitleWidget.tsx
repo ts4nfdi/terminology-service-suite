@@ -1,15 +1,12 @@
 import React from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { EuiProvider } from "@elastic/eui";
 import { OlsApi } from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay } from "../../../../app/util";
 import { TitleWidgetProps } from "../../../../app/types";
 import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
-
-const NO_TITLE = "No title available.";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {
@@ -24,7 +21,6 @@ function TitleWidget(props: TitleWidgetProps) {
     className
   } = props;
   const olsApi = new OlsApi(api);
-  const finalClassName = className || "default-class";
 
   const {
     data,
@@ -39,29 +35,15 @@ function TitleWidget(props: TitleWidgetProps) {
     }
   );
 
-
   return (
-    <>
-      {titleText &&
-        <TitlePresentation
-          titleText={titleText}
-          className={finalClassName} />
-      }
-
-      {!titleText && isSuccess && data &&
-        <TitlePresentation
-          title={isOntology(data) ? data.getName() : data.getLabel()} className={finalClassName} />
-      }
-
-      {!titleText && isLoading && (defaultValue ? (
-          <TitlePresentation titleText={defaultValue} className={finalClassName} />)
-        : <EuiLoadingSpinner size="s" />)
-      }
-
-      {!titleText && isError && (defaultValue ?
-        <TitlePresentation titleText={defaultValue} className={finalClassName} /> :
-        <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>)}
-    </>
+      <TitlePresentation
+        title={data ? isOntology(data) ? data.getName() : data.getLabel() : null}
+        titleText={titleText}
+        defaultValue={defaultValue}
+        className={className}
+        isLoading={isLoading}
+        error={isError ? error: null}
+      />
   );
 }
 
@@ -72,7 +54,7 @@ function createTitle(props: TitleWidgetProps, container: Element, callback?: () 
 function WrappedTitleWidget(props: TitleWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <TitleWidget
           api={props.api}

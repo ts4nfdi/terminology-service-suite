@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {
     EntityOntoListWidgetStoryArgs,
     EntityOntoListWidgetStoryArgTypes
@@ -33,7 +34,7 @@ export default {
 <div id="entity_onto_list_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityOntoList(
+window['Ts4nfdiWidgets'].createEntityOntoList(
     {
         iri:"${args.iri}",
         api:"${args.api}",
@@ -41,7 +42,8 @@ window['SemLookPWidgets'].createEntityOntoList(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className:${args.className}
     },
     document.querySelector('#entity_onto_list_widget_container_${num}')
 )

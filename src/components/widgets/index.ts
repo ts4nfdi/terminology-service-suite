@@ -8,7 +8,7 @@ import { createIri } from "./MetadataWidget/IriWidget/IriWidget";
 import { createTab } from "./MetadataWidget/TabWidget/TabWidget";
 import { createAlternativeNameTab } from "./MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
 import { createCrossRefTab } from "./MetadataWidget/TabWidget/CrossRefWidget/CrossRefTabWidget";
-import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
+import { createHierarchy } from "./MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
 import { createTitle} from "./MetadataWidget/TitleWidget/TitleWidget";
 import { createMetadata } from "./MetadataWidget/MetadataWidget";
 import { createOntologyInfo } from "./OntologyInfoWidget/OntologyInfoWidget";
@@ -21,7 +21,7 @@ import { createEntityOntoList } from "./MetadataWidget/EntityOntoListWidget/Enti
 import { createEntityDefinedBy } from "./MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget"
 import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
 
-(window as any)['SemLookPWidgets'] = {
+(window as any)['ts4nfdiWidgets'] = {
     createAutocomplete,
     createDataContent,
     createEntityInfo,

@@ -1,5 +1,5 @@
 import {
-  apiArgType,
+  apiArgType, classNameArgType,
   colorArgType,
   descTextArgType,
   iriArgType,
@@ -16,6 +16,7 @@ export const DescriptionWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...parameterArgType,
   ...thingTypeArgType,
+  ...classNameArgType,
 };
 
 export const DescriptionWidgetStoryArgs = {
@@ -26,6 +27,7 @@ export const DescriptionWidgetStoryArgs = {
   thingType: "term",
   descText: "",
   color: "",
+  className: "",
   parameter: "collection=nfdi4health"
 };
 
@@ -52,6 +54,15 @@ export const DefiningOntologyUnavailable = {
     args: {
         api: globals.EBI_API_ENDPOINT,
         iri: "http://identifiers.org/uniprot/Q9VAM9",
+        thingType: "term",
+        parameter: ""
+    }
+};
+
+export const ErrorFetchingData = {
+    args: {
+        api: globals.EBI_API_ENDPOINT,
+        iri: "http://identifiers.org/uniprot/Q9VA",
         thingType: "term",
         parameter: ""
     }

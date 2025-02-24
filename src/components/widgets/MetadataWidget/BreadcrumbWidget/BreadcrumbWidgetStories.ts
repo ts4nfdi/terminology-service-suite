@@ -6,6 +6,7 @@ import {
     ontologyIdArgType,
     parameterArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
+import "../../../../style/customBreadcrumbStyle.css";
 
 export const BreadcrumbWidgetStoryArgTypes = {
   ...apiArgType,
@@ -31,7 +32,7 @@ export const BreadcrumbWidgetStoryArgs = {
   onNavigateToOntology: "Console message"
 };
 
-export const BreadcrumbWidget1 = {
+export const BreadcrumbWidgetDefault = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
         api: globals.ZBMED_API_ENDPOINT,
@@ -66,5 +67,30 @@ export const ErrorBreadcrumbWidget = {
         ontologyId: "ncit",
         entityType: "term",
         parameter: "collection=nfdi4health",
+    }
+};
+
+export const CustomColors = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        entityType: "term",
+        parameter: "collection=nfdi4health",
+        colorFirst: "red",
+        colorSecond: "grey",
+    }
+};
+
+export const CustomStyle = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        entityType: "term",
+        parameter: "collection=nfdi4health",
+        colorFirst: "#eced8e",
+        colorSecond: "#8eaeed",
+        className: "custom-breadcrumb-style"
     }
 };

@@ -3,7 +3,7 @@ import * as globals from '../../../app/globals';
 import { action } from "@storybook/addon-actions";
 import {
   allowCustomTermsArgType,
-  apiArgType,
+  apiArgType, classNameArgType,
   hasShortSelectedLabelArgType,
   parameterArgType,
   placeholderArgType,
@@ -11,7 +11,7 @@ import {
   selectionChangedEventArgType, showApiSourceArgType,
   singleSelectionArgType,
   singleSuggestionRowArgType,
-  ts4nfdiGatewayArgType
+  ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
@@ -26,7 +26,8 @@ export const AutocompleteWidgetStoryArgTypes = {
     ...singleSelectionArgType,
     ...ts4nfdiGatewayArgType,
     ...singleSuggestionRowArgType,
-    ...showApiSourceArgType
+    ...showApiSourceArgType,
+    ...classNameArgType,
   }
 }
 
@@ -42,6 +43,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,
+    className: "",
     parameter: "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
@@ -167,7 +169,7 @@ export const WithMultipleValues = {
 export const TibNFDI4CHEM = {
   args: {
     api: globals.TIB_API_ENDPOINT,
-  parameter: "classification=NFDI4CHEM&schema=collection",
+    parameter: "classification=NFDI4CHEM&schema=collection",
   }
 };
 

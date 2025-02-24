@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {DescriptionWidgetProps} from "../../../../app/types";
 import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
 import {DescriptionDescription} from "../../../../app/widgetDescriptions";
@@ -30,7 +31,7 @@ export default {
 <div id="description_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createDescription(
+window['ts4nfdiWidgets'].createDescription(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -39,7 +40,9 @@ window['SemLookPWidgets'].createDescription(
         thingType:"${args.thingType}",
         parameter:"${args.parameter}",
         color:"${args.color}",
-        useLegacy:${args.useLegacy}
+        useLegacy:"${args.useLegacy}",
+        className:"${args.className}",
+        
     },
     document.querySelector('#description_widget_container_${num}')
 )

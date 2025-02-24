@@ -1,4 +1,4 @@
-import "semlookp-widgets";
+import "ts4nfdi-widgets";
 import { SearchBarWidgetProps } from "../../../app/types";
 import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
 import {SearchBarDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="search_bar_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createSearchBar(
+window['ts4nfdiWidgets'].createSearchBar(
     {
       api:"${args.api}",
       query:"${args.query}",

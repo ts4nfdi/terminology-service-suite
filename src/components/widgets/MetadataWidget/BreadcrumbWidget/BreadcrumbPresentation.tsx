@@ -1,11 +1,13 @@
 import React from "react";
 import {EuiBadge, EuiIcon} from "@elastic/eui";
 import {BreadcrumbPresentationProps} from "../../../../app/types";
+import "../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
+  const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
   return (
     <>
-        <span>
+        <span className={finalClassName}>
           <span
             onClick={() => {
                 if (props.onNavigateToOntology)

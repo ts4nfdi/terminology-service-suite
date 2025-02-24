@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {
     EntityDefinedByWidgetStoryArgTypes,
     EntityDefinedByWidgetStoryArgs
@@ -33,7 +34,7 @@ export default {
 <div id="entity_defined_by_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityDefinedBy(
+window['ts4nfdiWidgets'].createEntityDefinedBy(
     {
         iri:"${args.iri}",
         api:"${args.api}",
@@ -41,7 +42,8 @@ window['SemLookPWidgets'].createEntityDefinedBy(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className:${args.className}
     },
     document.querySelector('#entity_defined_by_widget_container_${num}')
 )

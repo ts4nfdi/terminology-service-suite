@@ -1,5 +1,5 @@
 import React from "react";
-import {EuiBadge, EuiIcon, EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
+import {EuiLoadingSpinner, EuiProvider} from "@elastic/eui";
 import {OlsApi} from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import {BreadcrumbWidgetProps} from "../../../../app/types";
@@ -7,10 +7,9 @@ import {isEntity} from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {QueryClient, QueryClientProvider, useQuery} from "react-query";
 import ReactDOM from "react-dom";
-import "../../../../style/tssStyles.css";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology} = props;
+  const { api, ontologyId, iri, entityType, colorFirst, colorSecond, parameter , useLegacy, onNavigateToOntology, className} = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -53,6 +52,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
           colorFirst={colorFirst}
           colorSecond={colorSecond}
           onNavigateToOntology={onNavigateToOntology}
+          className={className}
         />
       }
       {isError &&
@@ -63,6 +63,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
               colorFirst={colorFirst || ((props.ontologyId || (data && data.getOntologyId())) ? "primary" : "danger")}
               colorSecond={colorSecond || ((data && data.getShortForm()) ? "success" : "danger")}
               onNavigateToOntology={onNavigateToOntology}
+              className={className}
           />
       }
       </>
@@ -76,7 +77,7 @@ function createBreadcrumb(props: BreadcrumbWidgetProps, container: Element, call
 function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           <BreadcrumbWidget
               api={props.api}

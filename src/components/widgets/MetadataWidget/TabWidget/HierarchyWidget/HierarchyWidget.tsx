@@ -11,6 +11,7 @@ import "../../../../../style/tssStyles.css";
 import {randomString} from "../../../../../app/util";
 import {HierarchyWidgetProps, EntityData} from "../../../../../app/types";
 import {isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
+import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css"
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
     INCLUDE_OBSOLETE_ENTITIES: false,
@@ -72,7 +73,6 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         apiKey,
         onNavigateToEntity,
         onNavigateToOntology,
-
         iri,
         ontologyId,
         entityType,
@@ -81,7 +81,9 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         keepExpansionStates = HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
         showSiblingsOnInit = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
         useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+        className,
     } = props;
+    const finalClassName = className || "ts4nfdi-hierarchy-style";
 
     // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
     const [, forceUpdate] = useReducer(x => x + 1 % Number.MAX_SAFE_INTEGER, 0);
@@ -188,6 +190,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     }
 
     return (
+      <div className={finalClassName}>
         <EuiCard title={""} layout={"horizontal"} style={{ overflowX: "auto", overflowY: "hidden" }}>
             {(isSuccessHierarchy && hierarchy != undefined) ?
                 <EuiText style={{whiteSpace: "nowrap"}}> {/* // TODO: Does not get displayed correctly on storybook main page */}
@@ -195,6 +198,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 </EuiText>
                 : <EuiLoadingSpinner/>}
         </EuiCard>
+        </div>
     );
 }
 
@@ -205,7 +209,7 @@ function createHierarchy(props: HierarchyWidgetProps, container: Element, callba
 function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <HierarchyWidget
                     apiUrl={props.apiUrl}

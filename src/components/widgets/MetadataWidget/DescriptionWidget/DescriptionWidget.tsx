@@ -11,13 +11,22 @@ import ReactDOM from "react-dom";
 const NO_DESCRIPTION = "No description available.";
 
 function DescriptionWidget(props: DescriptionWidgetProps) {
-  const { api, ontologyId, iri, descText, thingType, parameter, useLegacy, ...rest } = props;
+  const {
+    api,
+    ontologyId,
+    iri,
+    descText,
+    thingType,
+    parameter,
+    useLegacy,
+    className,
+    ...rest
+  } = props;
   const olsApi = new OlsApi(api);
 
   const {
     data,
     isLoading,
-    isSuccess,
     isError,
     error
   } = useQuery<Thing>(
@@ -28,13 +37,14 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   );
 
   return (
-    <>
-      {isLoading && <EuiLoadingSpinner size="s" />}
-      {isSuccess && data &&
-        <DescriptionPresentation description={data.getDescription() || NO_DESCRIPTION} descText={descText} {...rest}/>
-      }
-      {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
-    </>
+    <DescriptionPresentation
+      description={data ? data.getDescription() : NO_DESCRIPTION}
+      descText={descText}
+      className={className}
+      isLoading={isLoading}
+      error={isError ? error: null}
+      {...rest}
+    />
   );
 }
 
@@ -45,7 +55,7 @@ function createDescription(props: DescriptionWidgetProps, container: Element, ca
 function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
+      <EuiProvider colorMode="light" globalStyles={false}>
         <QueryClientProvider client={queryClient}>
           <DescriptionWidget
               api={props.api}
@@ -56,6 +66,7 @@ function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
               parameter={props.parameter}
               color={props.color}
               useLegacy={props.useLegacy}
+              className={props.className}
           />
         </QueryClientProvider>
       </EuiProvider>

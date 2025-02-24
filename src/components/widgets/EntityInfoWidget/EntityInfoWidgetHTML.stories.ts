@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
 import {EntityInfoWidgetProps} from "../../../app/types";
 import "../../../style/tssStyles.css";
@@ -31,7 +31,7 @@ export default {
 <div id="entity_info_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityInfo(
+window['ts4nfdiWidgets'].createEntityInfo(
     {
         api:"${args.api}",
         iri:"${args.iri}",

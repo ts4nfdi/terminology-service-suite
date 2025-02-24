@@ -29,5 +29,5 @@ export {
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
     HiddenTabs,
-    TermAsLink
+    TermAsLink,
 } from "./MetadataWidgetStories"

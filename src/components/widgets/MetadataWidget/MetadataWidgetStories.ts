@@ -6,7 +6,7 @@ import {
     onNavigateToEntityArgType,
     onNavigateToOntologyArgType, ontologyIdArgType, parameterArgType, useLegacyArgType
 } from "../../../stories/storyArgs";
-import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidgetSemLookP/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "./TabWidget/HierarchyWidget/HierarchyWidget";
 
 export const MetadataWidgetStoryArgTypes = {
     ...apiArgType,
