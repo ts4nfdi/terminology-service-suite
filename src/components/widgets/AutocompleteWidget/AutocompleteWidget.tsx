@@ -159,7 +159,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     async () => {
       let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
-      let uniqueValues = [...new Set(preselected)]
+      let uniqueValues = [...new Set(preselected ?? [])]
         .filter((option) => {
           return (allowCustomTerms && option.label) || option.iri;
         });
@@ -178,8 +178,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               ts4nfdiGateway
             ).then((response) => {
               if (response) {
+                let matchFound = false
                 response.properties.map((selection: any) => {
                   if (option.iri === selection.getIri()) {
+                    matchFound = true
                     preselectedValues.push({
                       // label to display within the combobox either raw value or generated one
                       // #renderOption() is used to display during selection.
@@ -199,7 +201,24 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     });
                   }
                 });
-
+                if (!matchFound) {
+                  if (option && option.label && allowCustomTerms) {
+                    preselectedValues.push({
+                      label: option.label,
+                      key: option.label,
+                      value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                        description: "",
+                        source: "",
+                        source_url: ""
+                      }
+                    });
+                          }
+                }
                 if (singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
               }
             });
