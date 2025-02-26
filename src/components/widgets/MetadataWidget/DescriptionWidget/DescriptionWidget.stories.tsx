@@ -20,5 +20,6 @@ export default {
 export {
     DescriptionWidget1,
     SelectingDefiningOntology,
-    DefiningOntologyUnavailable
+    DefiningOntologyUnavailable,
+    ErrorFetchingData
 } from "./DescriptionWidgetStories"

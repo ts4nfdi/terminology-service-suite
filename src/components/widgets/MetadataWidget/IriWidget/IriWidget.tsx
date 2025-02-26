@@ -4,16 +4,19 @@ import {IriWidgetProps} from "../../../../app/types";
 import { isEuiButtonColor, isEuiLinkColor, isHexColor, isRgbColor } from "../../../../app/util";
 import ReactDOM from "react-dom";
 import {QueryClient, QueryClientProvider} from "react-query";
+import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css"
 
 function IriWidget(props: IriWidgetProps) {       
-  const { iri, iriText, color, externalIcon, urlPrefix, copyButton } = props;
+  const { iri, iriText, color, externalIcon, urlPrefix, copyButton, className } = props;
   const [copied, setCopied] = useState(false);
   const urlPrefixExist = typeof(urlPrefix) !== "undefined" && urlPrefix !== "" ? true : false;
   const iriUrl = urlPrefixExist ? urlPrefix + encodeURIComponent(iri) : iri;
+  const finalClassName = className || "ts4nfdi-iri-style";
 
   const CopyLinkButton = () => {
     if (!copied) {
       return (
+        <div className={finalClassName}>
         <EuiButtonIcon 
           display="base"
           iconType="copy"                       
@@ -27,9 +30,11 @@ function IriWidget(props: IriWidgetProps) {
           }}
           >            
         </EuiButtonIcon>
+          </div>
       );
     }
     return (
+      <div className={finalClassName}>
       <EuiButtonIcon 
         style={{marginLeft: "5px", color: color && (isHexColor(color) || isRgbColor(color)) ? color : ""}}   
         display="base" 
@@ -38,12 +43,13 @@ function IriWidget(props: IriWidgetProps) {
         color={color && isEuiLinkColor(color) ? color : undefined}
         >
       </EuiButtonIcon>
+        </div>
     );    
   };
 
   return (
     <EuiFlexItem grow={false}>
-      <div>
+      <div className={finalClassName}>
         {copyButton === 'left' && <CopyLinkButton />}
         <EuiLink 
           href={iriUrl} 
@@ -67,7 +73,7 @@ function createIri(props: IriWidgetProps, container: Element, callback?: ()=>voi
 function WrappedIriWidget(props: IriWidgetProps) {
     const queryClient = new QueryClient();    
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <IriWidget
                     iri={props.iri}
@@ -76,6 +82,7 @@ function WrappedIriWidget(props: IriWidgetProps) {
                     externalIcon={props.externalIcon}
                     urlPrefix={props.urlPrefix}
                     copyButton={props.copyButton}
+                    className={props.className}
                 />
             </QueryClientProvider>
         </EuiProvider>

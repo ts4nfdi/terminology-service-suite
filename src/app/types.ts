@@ -146,6 +146,13 @@ type ContainerWidthObj = {
   width?: number
 }
 
+type CssClassNameObj = {
+  /**
+   * CSS class for styling
+   */
+  className?: string;
+}
+
 type TabList = {
   /**
    * It is possible to show and hide the Alternative Names tab. **True** shows the tab. **False** hides the tab.
@@ -178,7 +185,7 @@ export type AutocompleteWidgetSelectedOptions = {
   type?: string
 }
 
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
+export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & CssClassNameObj & {
   /**
    * A method that is called once the set of selection changes
    */
@@ -255,9 +262,9 @@ export type ColorSecondObj = {
 }
 
 
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
+export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology & CssClassNameObj;
 
-export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
+export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & CssClassNameObj & {
   ontologyName: string,
   shortForm: string,
 } & OnNavigateToOntology;
@@ -269,18 +276,20 @@ export type DescTextObj = {
   descText?: string;
 }
 
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & {
+export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & CssClassNameObj & {
   /**
    * Color of the text, names, hex or rgb
    */
   color?: EuiLinkColor | string;
 }
 
-export type DescriptionPresentationProps = DescTextObj & {
+export type DescriptionPresentationProps = DescTextObj & CssClassNameObj & {
   description: string,
+  isLoading?: boolean,
+  error?: string | unknown,
 }
 
-export type IriWidgetProps = ForcedIriObj & {
+export type IriWidgetProps = ForcedIriObj & CssClassNameObj & {
   /**
    * Set your own text manually, which will show as a clickable link instead of the IRI.
    */
@@ -308,21 +317,23 @@ export type IriWidgetProps = ForcedIriObj & {
   copyButton?: 'right' | 'left' | 'none';
 }
 
-export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
+export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj & CssClassNameObj;
 
-export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
+export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & CssClassNameObj & {
     hierarchyPreferredRoots?: boolean
     hierarchyKeepExpansionStates?: boolean
     hierarchyShowSiblingsOnInit?: boolean
 };
 
-export type TabPresentationProps = TabWidgetProps & {
+export type TabPresentationProps = TabWidgetProps & CssClassNameObj & {
   data: Thing;
+  isLoading?: boolean;
+  error?: string | unknown;
 }
 
-export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology & CssClassNameObj;
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & CssClassNameObj & {
   ontolist: any[];
   label: string;
 }
@@ -332,14 +343,18 @@ export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
-export type AlternativeNameTabWidgetPresentationProps = {
+export type AlternativeNameTabWidgetPresentationProps = CssClassNameObj & {
   synonyms: any[];
+  isLoading?: boolean;
+  error?:  string | unknown,
 }
 
 export type CrossRefWidgetProps = TabSubwidgetsProps;
 
-export type CrossRefPresentationProps = {
+export type CrossRefPresentationProps = CssClassNameObj & {
   crossrefs: any[];
+  isLoading?: boolean;
+  error?: string | unknown
 }
 
 // Is mainly used for Hierarchy
@@ -405,7 +420,7 @@ export type OnNavigateToDisambiguate = {
 
 export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
-export type HierarchyWidgetProps = {
+export type HierarchyWidgetProps = CssClassNameObj & {
   /**
    * The API URL for the API call.
    */
@@ -428,38 +443,33 @@ export type TitleTextObj = {
   titleText?: string;
 }
 
-export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & {
+export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & CssClassNameObj &{
   /**
    * Set the default text shown if the API fails to retrieve one.
    */
   defaultValue?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
+
 }
 
-export type TitlePresentationProps = TitleTextObj & {
+export type TitlePresentationProps = TitleTextObj & CssClassNameObj & {
   title?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
   /**
    * Set the default text shown if the API fails to retrieve one.
    */
-  defaultValue?: string
+  defaultValue?: string;
+  isLoading?: boolean,
+  error?: string | unknown,
 }
 
 export type MetadataWidgetProps =
-    TabWidgetProps & {
+    TabWidgetProps & CssClassNameObj & {
     /**
      * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
      */
     termLink?: string;
 };
 
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
+export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates & CssClassNameObj;
 
 
 export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
@@ -565,13 +575,13 @@ export type SearchResultProps = {
   type: ThingTypeName;
 }
 
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & CssClassNameObj & {
   result: SearchResultProps;
 };
 
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
-export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
+export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & CssClassNameObj &
 {
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.

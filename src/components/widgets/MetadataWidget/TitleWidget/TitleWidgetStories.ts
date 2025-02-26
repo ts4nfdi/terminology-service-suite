@@ -8,7 +8,7 @@ import {
   thingTypeArgType,
   titleTextArgType, useLegacyArgType
 } from "../../../../stories/storyArgs";
-import "../../../../style/titleStyles.css"
+import "../../../../style/customTitleStyle.css"
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,
@@ -90,13 +90,23 @@ export const DefiningOntologyUnavailable = {
   }
 };
 
-export const TitleWidgetWithStyles = {
+export const WithStyles = {
     args: {
         iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
         api: globals.ZBMED_API_ENDPOINT,
         ontologyId: "ncit",
         thingType: "term",
-        className: 'title-styles',
+        className: 'custom-title-style',
+    }
+};
+
+export const WithoutStyles = {
+    args: {
+        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+        api: globals.ZBMED_API_ENDPOINT,
+        ontologyId: "ncit",
+        thingType: "term",
+        className: "none",
     }
 };
 

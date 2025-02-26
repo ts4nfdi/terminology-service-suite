@@ -1,5 +1,5 @@
-import 'semlookp-widgets';
-import "semlookp-widgets/terminology-service-suite.css"
+import 'ts4nfdi-widgets';
+import "ts4nfdi-widgets/terminology-service-suite.css"
 import {TabWidgetProps} from "../../../../app/types";
 import {TabWidgetStoryArgs, TabWidgetStoryArgTypes} from "./TabWidgetStories";
 import {TabDescription} from "../../../../app/widgetDescriptions";
@@ -31,7 +31,7 @@ export default {
 <div id="tab_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createTab(
+window['ts4nfdiWidgets'].createTab(
     {
         iri:"${args.iri}",
         api:"${args.api}",

@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories";
 import {ResourcesWidgetProps} from "../../../app/types";
 import {ResourcesDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +29,7 @@ export default {
 <div id="resources_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createResources(
+window['ts4nfdiWidgets'].createResources(
     {
         api:"${args.api}",
         initialEntriesPerPage:${args.initialEntriesPerPage},

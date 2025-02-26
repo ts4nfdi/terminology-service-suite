@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
 import {HierarchyWidgetProps} from "../../../../../app/types";
 import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
@@ -30,7 +31,7 @@ export default {
 <div id="hierarchy_semlookp_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createHierarchy(
+window['ts4nfdiWidgets'].createHierarchy(
     {
         apiUrl:"${args.apiUrl}",
         apiKey:"${args.apiKey}",

@@ -1,5 +1,5 @@
-import 'semlookp-widgets';
-import 'semlookp-widgets/terminology-service-suite.css'
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {MetadataWidgetProps} from "../../../app/types";
 import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
 import {MetadataDescription} from "../../../app/widgetDescriptions";
@@ -30,7 +30,7 @@ export default {
 <div id="metadata_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createMetadata(
+window['ts4nfdiWidgets'].createMetadata(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -48,7 +48,8 @@ window['SemLookPWidgets'].createMetadata(
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:${args.className}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )

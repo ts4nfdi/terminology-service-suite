@@ -1,9 +1,9 @@
 import {Action} from "@elastic/eui/src/components/basic_table/action_types";
-import {OlsResource} from "../src/components/widgets/ResourcesWidget/ResourcesWidget";
 import {EuiCardProps} from "@elastic/eui";
+import { OlsResource } from "../src/app/types";
 
 declare global {
-  interface SemLookPWidgets {
+  interface ts4nfdiWidgets {
     createAutocomplete:(props:{
       api: string;
       parameter?: string;
@@ -21,6 +21,7 @@ declare global {
       ts4nfdiGateway: boolean;
       singleSuggestionRow?: boolean;
       showApiSource?: boolean;
+      className?: string;
     }
     )=>void,
     createDataContent:(props:{
@@ -94,6 +95,7 @@ declare global {
       colorSecond?: string;
       parameter?: string;
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     }
     )=>void,
     createDescription:(props:{
@@ -108,6 +110,7 @@ declare global {
           | "property"
           | string;
       parameter?: string
+      className?: string;
     }
     )=>void,
     createIri:(props:{
@@ -126,6 +129,7 @@ declare global {
       externalIcon?: boolean;
       urlPrefix?: string;
       copyButton?: 'right' | 'left' | 'none';
+      className?: string;
     }
     )=>void,
     createTab:(props:{
@@ -143,6 +147,7 @@ declare global {
       hierarchyTab?: boolean;
       crossRefTab?: boolean;
       terminologyInfoTab?: boolean;
+      className?: string;
     }
     )=>void,
     createAlternativeNameTab:(props:{
@@ -156,6 +161,7 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
     createCrossRefTab:(props:{
@@ -169,19 +175,9 @@ declare global {
           | "property"
           | string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
-    createHierarchyOLS:(props:{
-      iri?: string;
-      ontologyId: string;
-      api: string;
-    }
-    )=>void,
-    createHierarchyDeprecated:(props:{
-      iri?: string;
-      ontologyId?: string;
-      api: string;
-    })=>void,
     createTitle:(props:{
       iri?: string;
       ontologyId?: string;
@@ -210,6 +206,7 @@ declare global {
       parameter?: string
       useLegacy?: string
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void;
     createEntityDefinedBy:(props:{
       api: string
@@ -222,6 +219,7 @@ declare global {
       parameter?: string
       useLegacy?: string
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void;
     createHierarchy:(props:{
       apiUrl: string
@@ -238,6 +236,7 @@ declare global {
       keepExpansionStates?: boolean
       showSiblingsOnInit?: boolean
       iri?: string
+      className?: string;
       onNavigateToEntity?: (ontologyId: string, entityType: string, entity: {
         iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
       }) => void
@@ -261,11 +260,13 @@ declare global {
       crossRefTab?: boolean,
       terminologyInfoTab?: boolean,
       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+      className?: string;
     })=>void,
     createOntologyInfo:(props:{
       ontologyId: string;
       api: string;
       parameter?: string;
+      className?: string;
     }
     )=>void,
     createResources:(props:{
@@ -314,6 +315,7 @@ declare global {
       api: string;
       useLegacy: boolean;
       rootWalk: boolean;
+      className?: string;
     }
     )=>void,
   }

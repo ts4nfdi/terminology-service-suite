@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
 import {IriWidgetProps} from "../../../../app/types";
 import {IriDescription} from "../../../../app/widgetDescriptions";
@@ -29,14 +30,15 @@ export default {
 <div id="iri_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createIri(
+window['ts4nfdiWidgets'].createIri(
     {
         iri:"${args.iri}",
         iriText:"${args.iriText}",
         color:"${args.color}",
         externalIcon: ${args.externalIcon},
         urlPrefix:"${args.urlPrefix}",
-        copyButton: "${args.copyButton}"
+        copyButton: "${args.copyButton}",
+        className:${args.className}
     },
     document.querySelector('#iri_widget_container_${num}')
 )

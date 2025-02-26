@@ -24,5 +24,6 @@ export {
     IncorrectIriWithoutDefaultValue,
     SelectingDefiningOntology,
     DefiningOntologyUnavailable,
-    TitleWidgetWithStyles
+    WithStyles,
+    WithoutStyles,
 } from "./TitleWidgetStories";

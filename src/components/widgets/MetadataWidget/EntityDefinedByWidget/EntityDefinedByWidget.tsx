@@ -10,7 +10,7 @@ import "../../../../style/tssStyles.css";
 import {EntityTypeName} from "../../../../model/ModelTypeCheck";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } = props;
   const olsApi = new OlsApi(api);
 
   const {
@@ -47,7 +47,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   return (
     <>
       {isSuccess && data &&
-        <EntityDefinedByPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} />}
+        <EntityDefinedByPresentation ontolist={data.ontoList} entityType={data.entityType} label={data.label} iri={iri} onNavigateToOntology={props.onNavigateToOntology} className={className}/>}
       {isLoading && <EuiLoadingSpinner />}
       {isError && <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>}
     </>
@@ -61,7 +61,7 @@ function createEntityDefinedBy(props: EntityDefinedByWidgetProps, container: Ele
 function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
     const queryClient = new QueryClient();
     return (
-        <EuiProvider colorMode="light">
+        <EuiProvider colorMode="light" globalStyles={false}>
             <QueryClientProvider client={queryClient}>
                 <EntityDefinedByWidget
                     iri={props.iri}

@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {BreadcrumbWidgetProps} from "../../../../app/types";
 import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
 import "../../../../style/tssStyles.css";
@@ -30,7 +31,7 @@ export default {
 <div id="breadcrumb_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createBreadcrumb(
+window['ts4nfdiWidgets'].createBreadcrumb(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -39,7 +40,8 @@ window['SemLookPWidgets'].createBreadcrumb(
         colorFirst:"${args.colorFirst}",
         colorSecond:"${args.colorSecond}",
         parameter:"${args.parameter}",
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className: "${args.className}"
     },
     document.querySelector('#breadcrumb_widget_container_${num}')
 )

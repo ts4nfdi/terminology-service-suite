@@ -1,4 +1,5 @@
 import {
+    classNameArgType,
     colorArgType,
     colorSecondArgType, copyButtonArgType,
     externalIconArgType,
@@ -12,7 +13,8 @@ export const IriWidgetStoryArgTypes = {
     ...iriTextArgType,
     ...externalIconArgType,
     ...urlPrefixArgType,
-    ...copyButtonArgType
+    ...copyButtonArgType,
+    ...classNameArgType,
 }
 
 export const IriWidgetStoryArgs = {
@@ -21,6 +23,7 @@ export const IriWidgetStoryArgs = {
     iriText: "",
     urlPrefix: "",
     externalIcon: true,
+    className: "",
 }
 
 export const IriWidget1 = {

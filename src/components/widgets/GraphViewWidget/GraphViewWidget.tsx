@@ -10,9 +10,10 @@ import { DataSet } from 'vis-data';
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { JSTreeNode } from "../../../api/OlsApi";
+import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css"
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
-  const { api, iri, ontologyId, rootWalk } = props;
+  const { api, iri, ontologyId, rootWalk, className } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -24,6 +25,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [counter, setCounter] = useState(0); 
 
   const olsApi = new OlsApi(api);
+  const finalClassName = className || "ts4nfdi-graph-style"
 
   const {
     data,
@@ -275,7 +277,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   return (
-    <>
+    <div className={finalClassName}>
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
       <EuiPanel style={{ fontSize: 12 }} paddingSize='s' borderRadius="none">
         <EuiButton size="s" onClick={reset}>Reset</EuiButton>
@@ -306,7 +308,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         {isLoading && <EuiLoadingSpinner size="m" />}
         <div ref={container} className='graph-container' style={{ width: "850px", height: "850px", margin:'auto' }} />
       </EuiPanel>
-    </>
+    </div>
   );
 }
 
@@ -318,7 +320,7 @@ function createGraphView(props: GraphViewWidgetProps, container: Element, callba
 function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <GraphViewWidget
           api={props.api}

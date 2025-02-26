@@ -1,0 +1,33 @@
+.ts4nfdi-tab-style button {
+  background: none;
+  border: none;
+}
+
+.ts4nfdi-tab-style-altNameTab * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-tab-style-crossRef * {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-tab-style-hierarchy {
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+}
+
+.ts4nfdi-tab-style-hierarchy button {
+  background: none;
+  border: none;
+  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-size: inherit;
+  padding: 0;
+}
+
+.ts4nfdi-tab-style-hierarchy ul {
+  margin-block-start: 0;
+  padding-inline-start: 0;
+}
+
+.ts4nfdi-tab-style-hierarchy div {
+  margin: 0 !important;
+}

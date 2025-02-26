@@ -1,4 +1,4 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
 import { TermDepictionWidgetProps } from '../../../app/types';
 import { TermDepictionWidgetStoryArgs, TermDepictionWidgetStoryArgTypes } from './TermDepictionWidgetStories';
 import {TermDepictionDescription} from "../../../app/widgetDescriptions";
@@ -27,7 +27,7 @@ export default {
 <div id="term_depiction_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createDepiction(
+window['ts4nfdiWidgets'].createDepiction(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",

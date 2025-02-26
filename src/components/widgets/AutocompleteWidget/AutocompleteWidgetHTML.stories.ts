@@ -1,4 +1,5 @@
-import 'semlookp-widgets';
+import 'ts4nfdi-widgets';
+import 'ts4nfdi-widgets/terminology-service-suite.css'
 import {AutocompleteWidgetStoryArgTypes, AutocompleteWidgetStoryArgsHTML} from "./AutocompleteWidgetStories";
 import {AutocompleteWidgetProps} from "../../../app/types";
 import {AutocompleteDescription} from "../../../app/widgetDescriptions";
@@ -29,7 +30,7 @@ export default {
 <div id="autocomplete_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createAutocomplete(
+window['ts4nfdiWidgets'].createAutocomplete(
     {
         api:"${args.api}",
         parameter:"${args.parameter}",
@@ -42,6 +43,7 @@ window['SemLookPWidgets'].createAutocomplete(
         ts4nfdiGateway:${args.ts4nfdiGateway},
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
+        className: "${args.className}"
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )
@@ -59,7 +61,8 @@ export {
     UseAPIGatewayWithSkosmos,
     HideApiSourceApiGateway,
     WithDefaultsCompact,
-    WithValue,
+    WithPreselectedValue,
+    WithPreselectedValueAndUnresolvedIri,
     WithCustomValue,
     WithInvalidValue,
     WithMultipleValues,
@@ -67,5 +70,7 @@ export {
     AllowAddingCustomTerms,
     WithGermanInput,
     WithLongForm,
-    WithDescriptionAndShortForm
+    WithDescriptionAndShortForm,
+    TibNFDI4CHEM,
+    TibDataPlant,
 } from "./AutocompleteWidgetStories"

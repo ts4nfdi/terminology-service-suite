@@ -15,6 +15,8 @@ import {
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
+import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
+import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -32,6 +34,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     singleSuggestionRow,
     ts4nfdiGateway = false,
     showApiSource = true,
+    className,
     ...rest
   } = props;
 
@@ -55,6 +58,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    */
   const [selectedOptions, setSelectedOptions] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
 
+  const finalClassName = className || "ts4nfdi-autocomplete-style";
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const renderOption = (option, searchValue) => {
@@ -76,21 +81,23 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (value.description != undefined) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
-    if (showApiSource && value.source_url && value.source_url !== "") {
+    if (showApiSource && value.source_url && value.source_url !== ""){
       hoverText += "\n\nSource: " + value.source;
       hoverText += "\n\nSource URL: " + value.source_url;
     }
 
     const renderOntology = () => {
       return (
-        <EuiHealth
-          color={dotColor}>
-              <span>
-                  <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-                  <br />
-                {value.description}
-              </span>
-        </EuiHealth>
+        <span className={finalClassName}>
+          <EuiHealth
+            color={dotColor}>
+                <span>
+                    <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                    <br />
+                  {value.description}
+                </span>
+          </EuiHealth>
+        </span>
       );
     };
 
@@ -98,6 +105,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return (
         <span
           title={hoverText}
+          className={finalClassName}
         >
           <span>
             <EuiHealth color={dotColor}>
@@ -109,6 +117,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               shortForm={value.short_form}
               colorFirst={"primary"}
               colorSecond={"success"}
+              className={`${finalClassName}-breadcrumb`}
             />
             <EuiIcon
               type={"iInCircle"}
@@ -150,7 +159,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     async () => {
       let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
 
-      let uniqueValues = [...new Set(preselected)]
+      let uniqueValues = [...new Set(preselected ?? [])]
         .filter((option) => {
           return (allowCustomTerms && option.label) || option.iri;
         });
@@ -169,8 +178,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               ts4nfdiGateway
             ).then((response) => {
               if (response) {
+                let matchFound = false
                 response.properties.map((selection: any) => {
                   if (option.iri === selection.getIri()) {
+                    matchFound = true
                     preselectedValues.push({
                       // label to display within the combobox either raw value or generated one
                       // #renderOption() is used to display during selection.
@@ -190,7 +201,24 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     });
                   }
                 });
-
+                if (!matchFound) {
+                  if (option && option.label && allowCustomTerms) {
+                    preselectedValues.push({
+                      label: option.label,
+                      key: option.label,
+                      value: {
+                        iri: "",
+                        label: "",
+                        ontology_name: "",
+                        type: "",
+                        short_form: "",
+                        description: "",
+                        source: "",
+                        source_url: ""
+                      }
+                    });
+                          }
+                }
                 if (singleSelection && preselectedValues.length > 1) preselectedValues = [preselectedValues[0]];
               }
             });
@@ -268,6 +296,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
   useEffect(() => {
+    let isMounted = true;
+    if (isMounted){
     selectionChangedEvent(
       selectedOptions.map((x) => {
         // return the value object with the raw values from OLS to a client
@@ -303,7 +333,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           };
         }
       })
-    );
+    );}
+    return () => { isMounted = false };
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any): string {
@@ -342,25 +373,27 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }
 
   return (
-    <EuiComboBox
-      isClearable
-      aria-label="searchBar"
-      fullWidth={true}
-      {...rest} // items above can be overridden by a client
-      async={true}
-      isLoading={isLoadingTerms || isLoadingOnMount}
-      singleSelection={singleSelection ? { asPlainText: true } : false}
-      placeholder={
-        placeholder ? placeholder : "Search for a Concept"
-      }
-      options={options}
-      selectedOptions={selectedOptions}
-      onSearchChange={setSearchValue}
-      onChange={onChangeHandler}
-      renderOption={renderOption}
-      onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
-      rowHeight={singleSuggestionRow ? 30 : 50}
-    />
+    <div className={finalClassName}>
+      <EuiComboBox
+        isClearable
+        aria-label="searchBar"
+        fullWidth={true}
+        {...rest} // items above can be overridden by a client
+        async={true}
+        isLoading={isLoadingTerms || isLoadingOnMount}
+        singleSelection={singleSelection ? { asPlainText: true } : false}
+        placeholder={
+          placeholder ? placeholder : "Search for a Concept"
+        }
+        options={options}
+        selectedOptions={selectedOptions}
+        onSearchChange={setSearchValue}
+        onChange={onChangeHandler}
+        renderOption={renderOption}
+        onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
+        rowHeight={singleSuggestionRow ? 30 : 50}
+      />
+    </div>
   );
 }
 
@@ -372,7 +405,7 @@ function createAutocomplete(props: AutocompleteWidgetProps, container: any, call
 function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
   const queryClient = new QueryClient();
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <AutocompleteWidget
           api={props.api}
@@ -386,6 +419,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
+          className={props.className}
         />
       </QueryClientProvider>
     </EuiProvider>
