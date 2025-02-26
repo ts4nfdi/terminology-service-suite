@@ -172,16 +172,24 @@ type TabList = {
   terminologyInfoTab?: boolean;
 }
 
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & CssClassNameObj &{
+export type AutocompleteWidgetSelectedOptions = {
+  /**
+   * The terms metadata that autocomplete selection change event returns to the client.
+   */
+  iri?: string,
+  description?: string,
+  label: string,
+  ontology_name?: string,
+  short_form?: string,
+  source?: string,
+  type?: string
+}
+
+export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & CssClassNameObj & {
   /**
    * A method that is called once the set of selection changes
    */
-  selectionChangedEvent: (selectedOptions: {
-    label: string;
-    iri?: string;
-    ontology_name?: string;
-    type?: string;
-  }[]) => void;
+  selectionChangedEvent: (selectedOptions: AutocompleteWidgetSelectedOptions[]) => void;
   /**
    * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
    */
@@ -574,11 +582,11 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 
 export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & CssClassNameObj &
-{ 
+{
   /**
    * When true, the graph will show the tree hierarchy for the target node in form of a graph.
    */
-  rootWalk?: boolean; 
+  rootWalk?: boolean;
 };
 
 export type OlsGraphNode = {
