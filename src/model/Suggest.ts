@@ -1,8 +1,7 @@
-
 export interface Suggest {
-	response:{
-		docs:{
-			autosuggest:string
-		}[]
-	}
+  response: {
+    docs: {
+      autosuggest: string;
+    }[];
+  };
 }

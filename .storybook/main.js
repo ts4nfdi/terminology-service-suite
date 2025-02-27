@@ -4,7 +4,7 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/addon-docgen"
+    "@storybook/addon-docgen",
   ],
   framework: {
     name: "@storybook/html-vite",
@@ -14,32 +14,32 @@ module.exports = {
     autodocs: true,
   },
   typescript: {
-    reactDocgen: 'react-docgen'
+    reactDocgen: "react-docgen",
   },
   refs: (config, { configType }) => {
     const envConfigType = process.env.CONFIG_TYPE || configType;
-    if (envConfigType === 'DEVELOPMENT') {
+    if (envConfigType === "DEVELOPMENT") {
       return {
         react: {
-          title: 'REACT',
+          title: "REACT",
           // this has to be the port on which storybook:react runs
-          url: 'http://localhost:6006',
+          url: "http://localhost:6006",
         },
         html: {
-          title: 'HTML',
+          title: "HTML",
           // this has to be the port on which storybook:html runs
-          url: 'http://localhost:6007',
+          url: "http://localhost:6007",
         },
       };
     }
     return {
       react: {
-        title: 'REACT',
-        url: 'https://ts4nfdi.github.io/terminology-service-suite/react/latest',
+        title: "REACT",
+        url: "https://ts4nfdi.github.io/terminology-service-suite/react/latest",
       },
       html: {
-        title: 'HTML',
-        url: 'https://ts4nfdi.github.io/terminology-service-suite/html/latest',
+        title: "HTML",
+        url: "https://ts4nfdi.github.io/terminology-service-suite/html/latest",
       },
     };
   },

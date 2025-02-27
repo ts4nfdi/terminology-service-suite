@@ -1,10 +1,10 @@
-import {EntityOntoListWidget} from "./EntityOntoListWidget";
+import { EntityOntoListWidget } from "./EntityOntoListWidget";
 import {
-    EntityOntoListWidgetStoryArgs,
-    EntityOntoListWidgetStoryArgTypes
+  EntityOntoListWidgetStoryArgs,
+  EntityOntoListWidgetStoryArgTypes,
 } from "./EntityOntoListWidgetStories";
-import {manuallyEmbedOnNavigate} from "../../../../app/util";
-import {EntityOntoListDescription} from "../../../../app/widgetDescriptions";
+import { manuallyEmbedOnNavigate } from "../../../../app/util";
+import { EntityOntoListDescription } from "../../../../app/widgetDescriptions";
 
 export default {
   title: "Additional Entity Metadata/EntityOntoListWidget",
@@ -13,20 +13,20 @@ export default {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-          component: EntityOntoListDescription
-      }
+        component: EntityOntoListDescription,
+      },
     },
   },
   argTypes: EntityOntoListWidgetStoryArgTypes,
-  args: EntityOntoListWidgetStoryArgs
+  args: EntityOntoListWidgetStoryArgs,
 };
 
 export {
-    v2ApiEFO,
-    v2ApiONS,
-    legacyApi,
-    exceedsMaxDisplay
-} from "./EntityOntoListWidgetStories"
+  v2ApiEFO,
+  v2ApiONS,
+  legacyApi,
+  exceedsMaxDisplay,
+} from "./EntityOntoListWidgetStories";

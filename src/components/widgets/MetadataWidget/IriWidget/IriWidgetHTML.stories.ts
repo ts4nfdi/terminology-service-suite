@@ -1,32 +1,32 @@
-import 'ts4nfdi-widgets';
-import 'ts4nfdi-widgets/terminology-service-suite.css'
-import {IriWidgetStoryArgs, IriWidgetStoryArgTypes} from "./IriWidgetStories";
-import {IriWidgetProps} from "../../../../app/types";
-import {IriDescription} from "../../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import { IriWidgetStoryArgs, IriWidgetStoryArgTypes } from "./IriWidgetStories";
+import { IriWidgetProps } from "../../../../app/types";
+import { IriDescription } from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'Entity Metadata/IriWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: IriDescription
-            }
-        }
+  title: "Entity Metadata/IriWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: IriDescription,
+      },
     },
-    render: (args: IriWidgetProps) => {        
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: IriWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="iri_widget_container_${num}"></div>
 
 <script type="text/javascript">
@@ -43,12 +43,15 @@ window['ts4nfdiWidgets'].createIri(
     document.querySelector('#iri_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: IriWidgetStoryArgTypes,
-    args: IriWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: IriWidgetStoryArgTypes,
+  args: IriWidgetStoryArgs,
+};
 
 export {
-    IriWidget1, withCopyButton, withoutExternalIcon, withUrlPrefix
-} from "./IriWidgetStories"
+  IriWidget1,
+  withCopyButton,
+  withoutExternalIcon,
+  withUrlPrefix,
+} from "./IriWidgetStories";

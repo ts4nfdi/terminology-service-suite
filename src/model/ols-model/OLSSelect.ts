@@ -5,12 +5,10 @@ export class OLSSelect implements Select {
   properties: SelectResult[];
 
   constructor(properties: SelectResult[]) {
-      this.properties = properties;
-    }
+    this.properties = properties;
+  }
 
   getTotalSearchResults(): number {
     return this.properties.length;
   }
-
-
-  }
+}

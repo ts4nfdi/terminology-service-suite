@@ -1,88 +1,218 @@
-import { Meta } from '@storybook/addon-docs';
+import { Meta } from "@storybook/addon-docs";
 
 <Meta title="Overview" />
 
 # SemLookP Widgets
+
 ### As part of the TS4NFDI Service Suite
 
-<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
-    <div style={{ flex: '1 1 500px', marginRight: '40px'  }}>
-        <p style={{fontSize:18}}>The Terminology Service Suite project, derived from the [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to ease the integration of terminology service functions into third-party applications.</p>
-        <p style={{fontSize:18}}>In this Storybook, you will find an interactive documentation of the widget component library.</p>
-        <p style={{fontSize:18}}>The widgets are built using React and TypeScript and can be used in both React and plain HTML applications. The functionality and arguments are the same for the React and plain HTML versions. Only the code snippet you get when you click "Show code" in the Storybook is different.</p>
-        <p style={{fontSize:18}}>Click <a href="https://ts4nfdi.github.io/terminology-service-suite/" target="_blank" rel="noopener noreferrer">here</a> for documentation on the different versions.</p>
-        <p style={{fontSize:18}}><strong>The widgets are currently under active development. Please forgive any errors that occur and report issues via [GitHub Issue](https://github.com/ts4nfdi/terminology-service-suite/issues)</strong>.</p>
-    </div>
-    <div style={{ flex: '1 1 350px', marginRight: '20px' }}>
-        <img src="https://raw.githubusercontent.com/ts4nfdi/terminology-service-suite/main/img/TS4NFDI_Logo.svg" width="500" />
-    </div>
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+  }}
+>
+  <div style={{ flex: "1 1 500px", marginRight: "40px" }}>
+    <p style={{ fontSize: 18 }}>
+      The Terminology Service Suite project, derived from the
+      [SemLookP](https://semanticlookup.zbmed.de/) project and now hosted on
+      GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a
+      collection of interactive widgets designed to ease the integration of
+      terminology service functions into third-party applications.
+    </p>
+    <p style={{ fontSize: 18 }}>
+      In this Storybook, you will find an interactive documentation of the
+      widget component library.
+    </p>
+    <p style={{ fontSize: 18 }}>
+      The widgets are built using React and TypeScript and can be used in both
+      React and plain HTML applications. The functionality and arguments are the
+      same for the React and plain HTML versions. Only the code snippet you get
+      when you click "Show code" in the Storybook is different.
+    </p>
+    <p style={{ fontSize: 18 }}>
+      Click{" "}
+      <a
+        href="https://ts4nfdi.github.io/terminology-service-suite/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        here
+      </a>{" "}
+      for documentation on the different versions.
+    </p>
+    <p style={{ fontSize: 18 }}>
+      <strong>
+        The widgets are currently under active development. Please forgive any
+        errors that occur and report issues via [GitHub
+        Issue](https://github.com/ts4nfdi/terminology-service-suite/issues)
+      </strong>
+      .
+    </p>
+  </div>
+  <div style={{ flex: "1 1 350px", marginRight: "20px" }}>
+    <img
+      src="https://raw.githubusercontent.com/ts4nfdi/terminology-service-suite/main/img/TS4NFDI_Logo.svg"
+      width="500"
+    />
+  </div>
 </div>
 
-<p style={{ fontSize: 18 }}><b>Documentation:</b> [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)</p>
-<p style={{ fontSize: 18 }}><b>React package:</b> [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)</p>
-<p style={{ fontSize: 18 }}><b>JavaScript modules:</b> [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)</p>
+<p style={{ fontSize: 18 }}>
+  <b>Documentation:</b> [All
+  Versions](https://ts4nfdi.github.io/terminology-service-suite/)
+</p>
+<p style={{ fontSize: 18 }}>
+  <b>React package:</b>{" "}
+  [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite),
+  [All
+  Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)
+</p>
+<p style={{ fontSize: 18 }}>
+  <b>JavaScript modules:</b>{" "}
+  [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest),
+  [All
+  Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)
+</p>
 
 ## Content
 
 <ul>
-    <li><p style={{fontSize:18}}>[How to use this Storybook](#how-to-use-this-storybook)</p></li>
-    <li><p style={{fontSize:18}}>[How to use the widgets](#how-to-use-the-widgets)</p></li>
+  <li>
+    <p style={{ fontSize: 18 }}>
+      [How to use this Storybook](#how-to-use-this-storybook)
+    </p>
+  </li>
+  <li>
+    <p style={{ fontSize: 18 }}>
+      [How to use the widgets](#how-to-use-the-widgets)
+    </p>
+  </li>
+  <ul>
+    <li>
+      <p style={{ fontSize: 18 }}>[Installation](#installation)</p>
+    </li>
+    <li>
+      <p style={{ fontSize: 18 }}>[Implementation](#implementation)</p>
+    </li>
     <ul>
-        <li><p style={{fontSize:18}}>[Installation](#installation)</p></li>
-        <li><p style={{fontSize:18}}>[Implementation](#implementation)</p></li>
-            <ul>
-                <li><p style={{fontSize:18}}>[Implementation in a React app](#implementation-in-a-react-app)</p></li>
-                <li><p style={{fontSize:18}}>[Implementation in plain JavaScript](#implementation-in-plain-javascript)</p></li>
-            </ul>
+      <li>
+        <p style={{ fontSize: 18 }}>
+          [Implementation in a React app](#implementation-in-a-react-app)
+        </p>
+      </li>
+      <li>
+        <p style={{ fontSize: 18 }}>
+          [Implementation in plain
+          JavaScript](#implementation-in-plain-javascript)
+        </p>
+      </li>
     </ul>
-    <li><p style={{fontSize:18}}>[Further Information](#further-information)</p></li>
-    <ul>
-        <li><p style={{fontSize:18}}>[Project description](#project-description)</p></li>
-        <li><p style={{fontSize:18}}>[What is a widget?](#what-is-a-widget)</p></li>
-        <li><p style={{fontSize:18}}>[What is a Storybook?](#what-is-a-storybook)</p></li>
-    </ul>
+  </ul>
+  <li>
+    <p style={{ fontSize: 18 }}>[Further Information](#further-information)</p>
+  </li>
+  <ul>
+    <li>
+      <p style={{ fontSize: 18 }}>
+        [Project description](#project-description)
+      </p>
+    </li>
+    <li>
+      <p style={{ fontSize: 18 }}>[What is a widget?](#what-is-a-widget)</p>
+    </li>
+    <li>
+      <p style={{ fontSize: 18 }}>
+        [What is a Storybook?](#what-is-a-storybook)
+      </p>
+    </li>
+  </ul>
 </ul>
 
 ## How to use this Storybook
-<p style={{fontSize:18}}>Storybook is an open-source tool for developing, documenting, and maintaining UI components. We use it as a documentation to showcase the widgets interactively. Each widget has multiple stories. Each widget and its stories have a corresponding sidebar item. When you click on a widget, it renders in the Canvas in a `Docs` page. The `Docs` page displays auto-generated documentation for widgets. On the top you can see a showcase for the current story with a `Show code` option. Below are the properties and control options to test the widget interactively. When you click on the widgets, the canvas shows the widget with its `Controls` and `Actions` addons. `Controls` allows you to interact with a component inputs dynamically. Experiment with alternate configurations of the component to discover edge cases. `Actions` help you verify interactions produce the correct outputs via callbacks. Navigate between stories by clicking on them in the sidebar. From the [Storybook documentation](https://storybook.js.org/docs/get-started).</p>
 
+<p style={{ fontSize: 18 }}>
+  Storybook is an open-source tool for developing, documenting, and maintaining
+  UI components. We use it as a documentation to showcase the widgets
+  interactively. Each widget has multiple stories. Each widget and its stories
+  have a corresponding sidebar item. When you click on a widget, it renders in
+  the Canvas in a `Docs` page. The `Docs` page displays auto-generated
+  documentation for widgets. On the top you can see a showcase for the current
+  story with a `Show code` option. Below are the properties and control options
+  to test the widget interactively. When you click on the widgets, the canvas
+  shows the widget with its `Controls` and `Actions` addons. `Controls` allows
+  you to interact with a component inputs dynamically. Experiment with alternate
+  configurations of the component to discover edge cases. `Actions` help you
+  verify interactions produce the correct outputs via callbacks. Navigate
+  between stories by clicking on them in the sidebar. From the [Storybook
+  documentation](https://storybook.js.org/docs/get-started).
+</p>
 
 ## How to use the widgets
 
-<p style={{fontSize:18}}>To use the widgets, you need to install and implement them in your consumer project.</p>
-<p style={{fontSize:18}}>For development, please see the [GitHub README](https://github.com/ts4nfdi/terminology-service-suite).</p>
+<p style={{ fontSize: 18 }}>
+  To use the widgets, you need to install and implement them in your consumer
+  project.
+</p>
+<p style={{ fontSize: 18 }}>
+  For development, please see the [GitHub
+  README](https://github.com/ts4nfdi/terminology-service-suite).
+</p>
 
 ### Installation
 
-<p style={{fontSize:18}}>This package is published as source code and compiled as a [npm package](https://github.com/ts4nfdi/terminology-service-suite/releases) on [GitHub.com](https://github.com/ts4nfdi/terminology-service-suite). To install the package, you need to authenticate to GitHub.com. Detailed documentation on this topic can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).</p>
-
+<p style={{ fontSize: 18 }}>
+  This package is published as source code and compiled as a [npm
+  package](https://github.com/ts4nfdi/terminology-service-suite/releases) on
+  [GitHub.com](https://github.com/ts4nfdi/terminology-service-suite). To install
+  the package, you need to authenticate to GitHub.com. Detailed documentation on
+  this topic can be found
+  [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
+</p>
 
 <ol>
-    <li style={{fontSize:18}}>Create a Personal Access Token (PAT), see [Creating a personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).</li>
-    <li style={{fontSize:18}}>Create a local `~/.npmrc` file add the following two lines to it. Replace `TOKEN` with your personal access token</li>
-```bash
-//npm.pkg.github.com/:_authToken=TOKEN
-@ts4nfdi:registry=https://npm.pkg.github.com
-```
-<br></br>
-    <li style={{fontSize:18}}>Install the package (For dependency issues, try installing with the --legacy-peer-deps flag):</li>
-```bash
-npm install @ts4nfdi/terminology-service-suite
-```
-<p style={{fontSize:18}}>For a list of available versions, see the [release page](https://github.com/ts4nfdi/terminology-service-suite/releases) or the [GitHub NPM registry](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite)</p>
-<br></br>
-    <li style={{fontSize:18}}>Install peer dependencies (For dependency issues, try installing with the --legacy-peer-deps flag):</li>
-```bash
-npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2 react-query@3.39.2 axios@1.1.2
-```
-<br></br>
-    </ol>
+  <li style={{ fontSize: 18 }}>
+    Create a Personal Access Token (PAT), see [Creating a personal access token
+    (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+  </li>
+  <li style={{ fontSize: 18 }}>
+    Create a local `~/.npmrc` file add the following two lines to it. Replace
+    `TOKEN` with your personal access token
+  </li>
+  ```bash //npm.pkg.github.com/:_authToken=TOKEN
+  @ts4nfdi:registry=https://npm.pkg.github.com ```
+  <br></br>
+  <li style={{ fontSize: 18 }}>
+    Install the package (For dependency issues, try installing with the
+    --legacy-peer-deps flag):
+  </li>
+  ```bash npm install @ts4nfdi/terminology-service-suite ```
+  <p style={{ fontSize: 18 }}>
+    For a list of available versions, see the [release
+    page](https://github.com/ts4nfdi/terminology-service-suite/releases) or the
+    [GitHub NPM
+    registry](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite)
+  </p>
+  <br></br>
+  <li style={{ fontSize: 18 }}>
+    Install peer dependencies (For dependency issues, try installing with the
+    --legacy-peer-deps flag):
+  </li>
+  ```bash npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17.0.2
+  react-query@3.39.2 axios@1.1.2 ```
+  <br></br>
+</ol>
 
 ### Implementation
 
 #### Implementation in a React app
 
-<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/ts4nfdi/react-widgets-demo-project).</p>
+<p style={{ fontSize: 18 }}>
+  You can find a demo project
+  [here](https://github.com/ts4nfdi/react-widgets-demo-project).
+</p>
 
 <ol>
     <li style={{fontSize:18}}>In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters.</li>
@@ -104,10 +234,12 @@ const queryClient = new QueryClient();
 ```
     </ol>
 
-
 #### Implementation in plain JavaScript
 
-<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/ts4nfdi/JS-Widgets-Demo-Project).</p>
+<p style={{ fontSize: 18 }}>
+  You can find a demo project
+  [here](https://github.com/ts4nfdi/JS-Widgets-Demo-Project).
+</p>
 
 <ol>
 
@@ -156,27 +288,75 @@ const queryClient = new QueryClient();
 ## Further information
 
 ### Project description
-<p style={{fontSize:18}}>The widget component library is derived from the Semantic Lookup Service [SemLookP](https://semanticlookup.zbmed.de/) project. User interface (UI) functionalities were extracted and implemented as separate reusable components (widgets) to allow integration into other 3rd party services, thus simplifying the development of user interfaces and the visualization of semantic information.</p>
-<p style={{fontSize:18}}>These widgets are built with an emphasis on accessibility of terminology features and cross-domain usage.</p>
+
+<p style={{ fontSize: 18 }}>
+  The widget component library is derived from the Semantic Lookup Service
+  [SemLookP](https://semanticlookup.zbmed.de/) project. User interface (UI)
+  functionalities were extracted and implemented as separate reusable components
+  (widgets) to allow integration into other 3rd party services, thus simplifying
+  the development of user interfaces and the visualization of semantic
+  information.
+</p>
+<p style={{ fontSize: 18 }}>
+  These widgets are built with an emphasis on accessibility of terminology
+  features and cross-domain usage.
+</p>
 
 ### What is a widget?
-<p style={{fontSize:18}}>A widget is a small, self-contained application or component that performs a specific function and can be integrated into other applications or websites. Widgets are designed to be reusable and can be easily added to various platforms, such as websites, mobile apps, or desktop applications, to enhance their functionality without requiring extensive modifications to the host application. They are often used to display information, provide interactive features, or automate tasks within the host application. Widgets can range from simple elements information displays to more complex functionality such as autocomplete. The key characteristic of a widget is its modularity, allowing developers to easily add or update functionality without disrupting the overall user experience.</p>
+
+<p style={{ fontSize: 18 }}>
+  A widget is a small, self-contained application or component that performs a
+  specific function and can be integrated into other applications or websites.
+  Widgets are designed to be reusable and can be easily added to various
+  platforms, such as websites, mobile apps, or desktop applications, to enhance
+  their functionality without requiring extensive modifications to the host
+  application. They are often used to display information, provide interactive
+  features, or automate tasks within the host application. Widgets can range
+  from simple elements information displays to more complex functionality such
+  as autocomplete. The key characteristic of a widget is its modularity,
+  allowing developers to easily add or update functionality without disrupting
+  the overall user experience.
+</p>
 
 ### What is a Storybook?
-<p style={{fontSize:18}}>Storybook is an open source tool for developing, documenting, and maintaining user interface components for React, Vue, Angular, and other frameworks.</p>
-<p style={{fontSize:18}}>For users, Storybook provides a clear and interactive way to explore and understand the various components that make up an application. It acts as a visual style guide, showing components in different states and variations. This makes it easier for users to understand how components are intended to be used. The interactive nature of Storybook means that users can see components in action, experiment with different props, and get a feel for how components behave under different conditions.</p>
-<p style={{fontSize:18}}>For developers, Storybook provides a structured environment for developing and testing components. It supports hot module reloading, allowing developers to see changes in real time as they work. This feature greatly accelerates the development process by allowing developers to quickly iterate on components and see the results immediately. In addition, Storybook's documentation feature ensures that components are well documented.</p>
 
-
+<p style={{ fontSize: 18 }}>
+  Storybook is an open source tool for developing, documenting, and maintaining
+  user interface components for React, Vue, Angular, and other frameworks.
+</p>
+<p style={{ fontSize: 18 }}>
+  For users, Storybook provides a clear and interactive way to explore and
+  understand the various components that make up an application. It acts as a
+  visual style guide, showing components in different states and variations.
+  This makes it easier for users to understand how components are intended to be
+  used. The interactive nature of Storybook means that users can see components
+  in action, experiment with different props, and get a feel for how components
+  behave under different conditions.
+</p>
+<p style={{ fontSize: 18 }}>
+  For developers, Storybook provides a structured environment for developing and
+  testing components. It supports hot module reloading, allowing developers to
+  see changes in real time as they work. This feature greatly accelerates the
+  development process by allowing developers to quickly iterate on components
+  and see the results immediately. In addition, Storybook's documentation
+  feature ensures that components are well documented.
+</p>
 
 ## Funding
 
-<p style={{fontSize:18}}>This project is hosted and developed by Terminology Services for NFDI (TS4NFDI). It is part of the [Base4NFDI consortium](https://base4nfdi.de/).</p>
-<p style={{fontSize:18}}>The project is derived from the Semantic Lookup Platform [SemLookP](https://semanticlookup.zbmed.de/) which was developed in part by the [NFDI4Health Consortium](www.nfdi4health.de) and the [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).</p>
+<p style={{ fontSize: 18 }}>
+  This project is hosted and developed by Terminology Services for NFDI
+  (TS4NFDI). It is part of the [Base4NFDI consortium](https://base4nfdi.de/).
+</p>
+<p style={{ fontSize: 18 }}>
+  The project is derived from the Semantic Lookup Platform
+  [SemLookP](https://semanticlookup.zbmed.de/) which was developed in part by
+  the [NFDI4Health Consortium](www.nfdi4health.de) and the [ZB MED - Information
+  Centre for Life Sciences](https://www.zbmed.de/en/).
+</p>
 <div>
-    <img src="https://raw.githubusercontent.com/nfdi4health/semlookp-widgets/main/img/NFDI_SemLookP_Logo.svg" width="500" />
+  <img
+    src="https://raw.githubusercontent.com/nfdi4health/semlookp-widgets/main/img/NFDI_SemLookP_Logo.svg"
+    width="500"
+  />
 </div>
-
-
-
-

@@ -1,9 +1,6 @@
 import { IriWidget } from "./IriWidget";
-import {
-  IriWidgetStoryArgs,
-  IriWidgetStoryArgTypes
-} from "./IriWidgetStories";
-import {IriDescription} from "../../../../app/widgetDescriptions";
+import { IriWidgetStoryArgs, IriWidgetStoryArgTypes } from "./IriWidgetStories";
+import { IriDescription } from "../../../../app/widgetDescriptions";
 
 export default {
   title: "Entity Metadata/IriWidget",
@@ -12,14 +9,17 @@ export default {
     layout: "centered",
     docs: {
       description: {
-        component: IriDescription
-      }
-    }
+        component: IriDescription,
+      },
+    },
   },
   argTypes: IriWidgetStoryArgTypes,
-  args: IriWidgetStoryArgs
+  args: IriWidgetStoryArgs,
 };
 
 export {
-  IriWidget1, withCopyButton, withoutExternalIcon, withUrlPrefix
-} from "./IriWidgetStories"
+  IriWidget1,
+  withCopyButton,
+  withoutExternalIcon,
+  withUrlPrefix,
+} from "./IriWidgetStories";

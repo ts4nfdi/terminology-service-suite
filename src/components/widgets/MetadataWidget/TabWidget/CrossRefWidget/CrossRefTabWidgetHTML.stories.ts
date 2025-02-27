@@ -1,32 +1,35 @@
-import 'ts4nfdi-widgets';
-import 'ts4nfdi-widgets/terminology-service-suite.css'
-import {CrossRefWidgetStoryArgs, CrossRefWidgetStoryArgTypes} from "./CrossRefWidgetStories";
-import {CrossRefWidgetProps} from "../../../../../app/types";
-import {CrossRefTabDescription} from "../../../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import {
+  CrossRefWidgetStoryArgs,
+  CrossRefWidgetStoryArgTypes,
+} from "./CrossRefWidgetStories";
+import { CrossRefWidgetProps } from "../../../../../app/types";
+import { CrossRefTabDescription } from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'Additional Entity Metadata/CrossRefTabWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: CrossRefTabDescription
-            }
-        }
+  title: "Additional Entity Metadata/CrossRefTabWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: CrossRefTabDescription,
+      },
     },
-    render: (args: CrossRefWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: CrossRefWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="cross_ref_tab_widget_container_${num}"></div>
 
 <script type="text/javascript">
@@ -43,14 +46,14 @@ window['Ts4nfdiWidgets'].createCrossRefTab(
     document.querySelector('#cross_ref_tab_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: CrossRefWidgetStoryArgTypes,
-    args: CrossRefWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: CrossRefWidgetStoryArgTypes,
+  args: CrossRefWidgetStoryArgs,
+};
 
 export {
-    CrossRefTabWidget1,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable
-} from "./CrossRefWidgetStories"
+  CrossRefTabWidget1,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+} from "./CrossRefWidgetStories";

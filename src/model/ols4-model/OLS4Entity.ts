@@ -1,23 +1,21 @@
-import {Entity} from "../interfaces";
-import {OLS4Thing} from "./OLS4Thing";
+import { Entity } from "../interfaces";
+import { OLS4Thing } from "./OLS4Thing";
 
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
 
-export abstract class OLS4Entity extends OLS4Thing implements Entity{
+export abstract class OLS4Entity extends OLS4Thing implements Entity {
   abstract getParents(): Reified<any>[];
   abstract getSuperEntities(): Reified<any>[];
   abstract getEquivalents(): Reified<any>[];
 
   isCanonical(): boolean {
-    return this.properties["isDefiningOntology"]
+    return this.properties["isDefiningOntology"];
   }
 
   isDeprecated(): boolean {
-    return (
-      this.properties["http://www.w3.org/2002/07/owl#deprecated"]
-    );
+    return this.properties["http://www.w3.org/2002/07/owl#deprecated"];
   }
 
   getDeprecationVersion(): string {
@@ -76,7 +74,9 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getCrossReferences(): any[] {
-    return (this.properties["http://www.geneontology.org/formats/oboInOwl#hasDbXref"] || []) as string[];
+    return (this.properties[
+      "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+    ] || []) as string[];
   }
 
   getDefinedBy(): string[] {
@@ -84,7 +84,7 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getIsDefiningOntology(): boolean {
-    return (this.properties["is_defining_ontology"] || undefined ) as boolean;
+    return (this.properties["is_defining_ontology"] || undefined) as boolean;
   }
 
   getShortForm(): string {
@@ -92,17 +92,21 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
   }
 
   getDepictedBy(): Reified<string>[] {
-    return Reified.fromJson<string>(
-      [ ...asArray(this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || []),
-        ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []) ]
-    );
+    return Reified.fromJson<string>([
+      ...asArray(
+        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || []
+      ),
+      ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []),
+    ]);
   }
 
   isPredicateFromInformalVocabulary(predicate: string): boolean {
-    return predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||
-        predicate.startsWith("http://purl.org/dc/terms/") ||
-        predicate.startsWith("http://purl.org/dc/elements/1.1/") ||
-        predicate.startsWith("http://schema.org/")
+    return (
+      predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||
+      predicate.startsWith("http://purl.org/dc/terms/") ||
+      predicate.startsWith("http://purl.org/dc/elements/1.1/") ||
+      predicate.startsWith("http://schema.org/")
+    );
   }
   getAnnotationPredicates(): string[] {
     const definitionProperties = asArray(this.properties["definitionProperty"]);
@@ -126,9 +130,17 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity{
 
       // Object properties and data properties are not annotation properties, except in the case of informal vocabularies.
       if (!this.isPredicateFromInformalVocabulary(predicate)) {
-        const linkedEntity = this.getLinkedEntities().get(predicate)
-        if (linkedEntity != undefined && linkedEntity.type.indexOf("objectProperty") !== -1) continue;
-        if (linkedEntity != undefined && linkedEntity.type.indexOf("dataProperty") !== -1) continue;
+        const linkedEntity = this.getLinkedEntities().get(predicate);
+        if (
+          linkedEntity != undefined &&
+          linkedEntity.type.indexOf("objectProperty") !== -1
+        )
+          continue;
+        if (
+          linkedEntity != undefined &&
+          linkedEntity.type.indexOf("dataProperty") !== -1
+        )
+          continue;
       }
 
       // If the value was already interpreted as definition/synonym/hierarchical, do

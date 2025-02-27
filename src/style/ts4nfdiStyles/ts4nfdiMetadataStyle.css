@@ -1,21 +1,21 @@
 .ts4nfdi-metadata-style button {
   background: none;
   border: none;
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   font-size: inherit;
   padding: 0;
 }
 
 .ts4nfdi-metadata-style-title {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-title .euiText {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .ts4nfdi-metadata-style-description * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-breadcrumb button {
@@ -24,36 +24,36 @@
 }
 
 .ts4nfdi-metadata-style-breadcrumb .breadcrumb {
-    font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
-    padding: 3px 3px 0;
-    border-radius: 6px;
-    border: 2px solid rgba(0,0,0,0);
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  padding: 3px 3px 0;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0);
 }
 
 .ts4nfdi-metadata-style-breadcrumb .clickable-breadcrumb:hover {
-    border: 2px solid black;
+  border: 2px solid black;
 }
 
 .ts4nfdi-metadata-style-iri * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-altNameTab * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-crossRef * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-hierarchy {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-hierarchy button {
   background: none;
   border: none;
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   font-size: inherit;
   padding: 0;
 }
@@ -68,23 +68,23 @@
 }
 
 .ts4nfdi-metadata-style-entity-defined-by * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-entity-defined-by button {
   border: none;
   background: none;
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-entity-onto-list * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-metadata-style-entity-onto-list button {
   border: none;
   background: none;
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .euiText p {
@@ -93,5 +93,5 @@
 }
 
 .euiCard {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }

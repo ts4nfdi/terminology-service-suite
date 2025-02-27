@@ -1,9 +1,9 @@
-import {Ontology} from "./Ontology";
+import { Ontology } from "./Ontology";
 
 export interface Ontologies {
   properties: Ontology[];
 
-  getTotalOntologies(): number,
+  getTotalOntologies(): number;
 
   getNumEntities(): number;
 

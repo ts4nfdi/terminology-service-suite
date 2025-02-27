@@ -1,2 +1,5 @@
 .eslintrc.js
-.gitlab-ci.yml
+**/.github
+build
+dist
+dist_plainjs

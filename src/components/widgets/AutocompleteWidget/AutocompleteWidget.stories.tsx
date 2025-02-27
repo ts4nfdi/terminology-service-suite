@@ -1,24 +1,24 @@
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import {
   AutocompleteWidgetStoryArgTypes,
-  AutocompleteWidgetStoryArgsReact
+  AutocompleteWidgetStoryArgsReact,
 } from "./AutocompleteWidgetStories";
 import "../../../style/tssStyles.css";
-import {AutocompleteDescription} from "../../../app/widgetDescriptions";
+import { AutocompleteDescription } from "../../../app/widgetDescriptions";
 
 export default {
   title: "Search/AutocompleteWidget",
   parameters: {
     docs: {
       description: {
-        component: AutocompleteDescription
-      }
-    }
+        component: AutocompleteDescription,
+      },
+    },
   },
   component: AutocompleteWidget,
   ...AutocompleteWidgetStoryArgTypes,
   ...AutocompleteWidgetStoryArgsReact,
-}
+};
 
 export {
   WithDefaults,
@@ -39,9 +39,4 @@ export {
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
   TibDataPlant,
-} from "./AutocompleteWidgetStories"
-
-
-
-
-
+} from "./AutocompleteWidgetStories";

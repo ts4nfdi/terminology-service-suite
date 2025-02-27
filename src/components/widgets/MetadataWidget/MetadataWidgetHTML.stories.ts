@@ -1,32 +1,35 @@
-import 'ts4nfdi-widgets';
-import 'ts4nfdi-widgets/terminology-service-suite.css'
-import {MetadataWidgetProps} from "../../../app/types";
-import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
-import {MetadataDescription} from "../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import { MetadataWidgetProps } from "../../../app/types";
+import {
+  MetadataWidgetStoryArgs,
+  MetadataWidgetStoryArgTypes,
+} from "./MetadataWidgetStories";
+import { MetadataDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'Entity Metadata/MetadataWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: MetadataDescription
-            }
-        }
+  title: "Entity Metadata/MetadataWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: MetadataDescription,
+      },
     },
-    render: (args: MetadataWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: MetadataWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="metadata_widget_container_${num}"></div>
 
 <script type="text/javascript">
@@ -54,20 +57,20 @@ window['ts4nfdiWidgets'].createMetadata(
     document.querySelector('#metadata_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: MetadataWidgetStoryArgTypes,
-    args: MetadataWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: MetadataWidgetStoryArgTypes,
+  args: MetadataWidgetStoryArgs,
+};
 
 export {
-    MetadataWidget1,
-    OLS3,
-    OLS4V1,
-    OLS4V2,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    DefinedByAlsoAppearsInWidgets,
-    HiddenTabs,
-    TermAsLink
-} from "./MetadataWidgetStories"
+  MetadataWidget1,
+  OLS3,
+  OLS4V1,
+  OLS4V2,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  DefinedByAlsoAppearsInWidgets,
+  HiddenTabs,
+  TermAsLink,
+} from "./MetadataWidgetStories";

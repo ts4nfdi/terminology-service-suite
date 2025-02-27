@@ -1,6 +1,9 @@
-import {AlternativeNameTabWidget} from "./AlternativeNameTabWidget";
-import {AlternativeNameTabWidgetStoryArgs, AlternativeNameTabWidgetStoryArgTypes} from "./AlternativeNameTabWidgetStories";
-import {AlternativeNameTabDescription} from "../../../../../app/widgetDescriptions";
+import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
+import {
+  AlternativeNameTabWidgetStoryArgs,
+  AlternativeNameTabWidgetStoryArgTypes,
+} from "./AlternativeNameTabWidgetStories";
+import { AlternativeNameTabDescription } from "../../../../../app/widgetDescriptions";
 
 export default {
   title: "Entity Metadata/AlternativeNameTabWidget",
@@ -8,17 +11,17 @@ export default {
   parameters: {
     layout: "centered",
     docs: {
-        description: {
-            component: AlternativeNameTabDescription
-        }
-    }
+      description: {
+        component: AlternativeNameTabDescription,
+      },
+    },
   },
   argTypes: AlternativeNameTabWidgetStoryArgTypes,
-  args: AlternativeNameTabWidgetStoryArgs
+  args: AlternativeNameTabWidgetStoryArgs,
 };
 
 export {
-    AlternativeNameTabWidget1,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable
-} from "./AlternativeNameTabWidgetStories"
+  AlternativeNameTabWidget1,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+} from "./AlternativeNameTabWidgetStories";

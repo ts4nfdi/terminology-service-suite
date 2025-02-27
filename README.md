@@ -32,7 +32,7 @@ package.
 
 To install the package for development, it's necessary to additionally install following peer dependencies:
 
-- @elastic/eui 
+- @elastic/eui
 - @emotion/react
 - react
 - react-dom
@@ -71,9 +71,9 @@ via `http://localhost:6007`.
 The React and HTML components can be combined in one Storybook using `npm run storybook`. Notice that, for this to work,
 the React Storybook has to be running at `http://localhost:6006` and the HTML Storybook at `http://localhost:6007`.
 
-
 #### Docker
-Before running the storybook via docker, make sure that you provide the needed authentication file `~/.npmrc`. 
+
+Before running the storybook via docker, make sure that you provide the needed authentication file `~/.npmrc`.
 
 First, build (name is arbitrary)
 
@@ -83,19 +83,18 @@ Then, run
 
     $ docker run \
         -p 6006:6006 -p 6007:6007 -p 6008:6008 \
-        --name story \    
+        --name story \
         storybook
 
 **Hint**: if you want to run the docker for development, you can use the docker bind mount to link the scripts inside the container to your local ones to check the changes immediately without re-building. Look at: https://docs.docker.com/storage/bind-mounts/#start-a-container-with-a-bind-mount
 
      $ docker run \
         -p 6006:6006 -p 6007:6007 -p 6008:6008 \
-        --name story \    
+        --name story \
         --mount type=bind,source=$(pwd)/src,target=/usr/storybook/src \
         storybook
 
 **Note** that the bind only works for the React version. For the HTML version, you need to re-build the storybook.
-
 
 ### Build widgets for React projects
 
@@ -110,7 +109,8 @@ plugin [esbuild-dynamic-import](https://github.com/zbmed/esbuild-dynamic-import)
 For further information on the usage of the HTML widgets, please visit the interactive documentation in
 the [HTML Storybook](#run-storybook).
 
-#### Testing the JavaScript package in a consumer project locally 
+#### Testing the JavaScript package in a consumer project locally
+
 If the environment features `npm`, a local module can be created from the output file. To do this, place all the files
 generated inside `dist_plainjs/`
 in `local_modules/terminology-service-suite/` in your consumer project. Now
@@ -120,42 +120,47 @@ add `"terminology-service-suite": "file:local_modules/terminology-service-suite"
 
 Structure of the project (Code and stories are in the respective widgets directories):
 
-`Widget.tsx` The widget code.   
+`Widget.tsx` The widget code.  
 `WidgetStories.ts` The configuration file for the stories.  
 `WidgetStoriesHTML.ts` The HTML widget stories.  
 `Widget.stories.tsx` The React widget stories.  
 `index.ts` Exports the widget. When creating a new widget, it needs to be exported in all parent index files.
 
-The story arguments for all widgets are defined in the `src/stories/storyArgs.ts`. 
-JSDocs comments in the `src/app/types.ts` are overwritten by these arguments. 
+The story arguments for all widgets are defined in the `src/stories/storyArgs.ts`.
+JSDocs comments in the `src/app/types.ts` are overwritten by these arguments.
 We need this file because HTML stories can't directly access JSDocs comments.
 
 #### Defining new widget property
-When defining a new property for a widget, it needs to be added 
+
+When defining a new property for a widget, it needs to be added
+
 - in the widget tsx code as prop, in the Wrapper function at the end of the tsx code file
 - in `src/app/types.ts`
 - in `dist_plainjs/manually_maintained_types.d.ts`
-- in `WidgetStories.ts` 
+- in `WidgetStories.ts`
 
 If the property is a function, the React and HTML Storybook args must be separated (see example below),
 because actions are handled differently.
+
 ```javascript
 export const SearchBarWidgetStoryArgsReact = {
   api: "",
   query: "",
-  selectionChangedEvent: action('selectionChangedEvent'),
+  selectionChangedEvent: action("selectionChangedEvent"),
   parameter: "collection=nfdi4health",
 };
 
 export const SearchBarWidgetStoryArgs = {
   api: "",
   query: "",
-  selectionChangedEvent: () => {return;},
+  selectionChangedEvent: () => {
+    return;
+  },
   parameter: "collection=nfdi4health",
 };
 ```
 
-Hint: For correct execution of the HTML Storybook, build files are needed. 
+Hint: For correct execution of the HTML Storybook, build files are needed.
 Do a `npm run build:plainJS` before testing the HTML Storybook.
 
 ### Commit Message Formatting
@@ -164,9 +169,8 @@ Do a `npm run build:plainJS` before testing the HTML Storybook.
 
     git config --local commit.template .gitmessage
 
-
 This project uses [Semantic Release](https://semantic-release.gitbook.io/semantic-release/), i.e. the CI/CD pipeline
-analyzes the commit messages and automatically performs a release depending on the format. 
+analyzes the commit messages and automatically performs a release depending on the format.
 Release notes are automatically created from commit messages.  
 Therefore, please format your commit messages according to the [Angular Commit Message Conventions](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format)
 
@@ -182,13 +186,13 @@ In short:
 
 **Commit message footer**: information about breaking changes, deprecations, references to GitHub issues
 
-| Release type  | Commit message |
-| ------------- | ------------- |
-| Fix release  | fix(autocomplete): fix something   |
-| Feature relese  | feat(autocomplete): add suggest function  |
-| Breaking change  | feat(autocomplete): parameter removed <br> <br> BREAKING CHANGE: The parameter has been removed |
+| Release type    | Commit message                                                                                  |
+| --------------- | ----------------------------------------------------------------------------------------------- |
+| Fix release     | fix(autocomplete): fix something                                                                |
+| Feature relese  | feat(autocomplete): add suggest function                                                        |
+| Breaking change | feat(autocomplete): parameter removed <br> <br> BREAKING CHANGE: The parameter has been removed |
 
-(Note that the BREAKING CHANGE:  token must be in the footer of the commit - capital letters )
+(Note that the BREAKING CHANGE: token must be in the footer of the commit - capital letters )
 
 **HINT**: Parameter renaming is a BREAKING CHANGE! Type changes of parameter functions are BREAKING CHANGES!
 
@@ -207,11 +211,11 @@ Build the package locally in the widgets project and install it in the consumer 
 To prevent unexpected behaviour remove the `node_modules` folder and `package-lock.json` file in the widgets project
 before using
 
-```npm install```
+`npm install`
 
-```npm run build```
+`npm run build`
 
-```npm pack```
+`npm pack`
 
 A `.tgz` folder will be created with the bundled module.
 Add `"@ts4nfdi/terminology-service-suite": "file:../path/to/ts4nfdi-terminology-service-suite-1.17.4.tgz",` (adapt path and file
@@ -224,22 +228,22 @@ Link the widgets project to the consumer project for testing/development:
 
 Run the following commands in the widgets project:
 
-Build the widgets: ```npm run build --if-present```
+Build the widgets: `npm run build --if-present`
 
 Link the peer dependencies from the consumer
-project: ```npm link path/to/consumer/node_modules/react path/to/consumer/node_modules/react-query path/to/consumer/node_modules/@emotion/react path/to/consumer/node_modules/axios```
+project: `npm link path/to/consumer/node_modules/react path/to/consumer/node_modules/react-query path/to/consumer/node_modules/@emotion/react path/to/consumer/node_modules/axios`
 
-Run the following command in the consumer project: ```npm link path/to/widgets-project-root```
+Run the following command in the consumer project: `npm link path/to/widgets-project-root`
 
-Start the application: ```npm start```
+Start the application: `npm start`
 
 ## Funding
 
 This project is developed by the Terminology Services for NFDI (TS4NFDI) project (as part of the [Base4NFDI
 consortium](https://base4nfdi.de/)), and the [NFDI4Health Consortium](https://www.nfdi4health.de).
 
-The NFDI4Health Consortium gratefully acknowledges the financial support of the Deutsche Forschungsgemeinschaft 
+The NFDI4Health Consortium gratefully acknowledges the financial support of the Deutsche Forschungsgemeinschaft
 (DFG, German Research Foundation) – project number 442326535.
 
-The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part 
+The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part
 by [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).

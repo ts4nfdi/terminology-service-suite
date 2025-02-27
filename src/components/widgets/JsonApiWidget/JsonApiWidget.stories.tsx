@@ -1,6 +1,9 @@
 import { JsonApiWidget } from "./JsonApiWidget";
-import {JsonApiWidgetStoryArgs, JsonApiWidgetStoryArgTypes} from "./JsonApiWidgetStories";
-import {JsonApiDescription} from "../../../app/widgetDescriptions";
+import {
+  JsonApiWidgetStoryArgs,
+  JsonApiWidgetStoryArgTypes,
+} from "./JsonApiWidgetStories";
+import { JsonApiDescription } from "../../../app/widgetDescriptions";
 
 export default {
   title: "API/JsonApiWidget",
@@ -9,14 +12,12 @@ export default {
     layout: "centered",
     docs: {
       description: {
-        component: JsonApiDescription
-      }
-    }
+        component: JsonApiDescription,
+      },
+    },
   },
   argTypes: JsonApiWidgetStoryArgTypes,
-  args: JsonApiWidgetStoryArgs
+  args: JsonApiWidgetStoryArgs,
 };
 
-export {
-  JsonApiWidgetDefault
-} from "./JsonApiWidgetStories"
+export { JsonApiWidgetDefault } from "./JsonApiWidgetStories";
