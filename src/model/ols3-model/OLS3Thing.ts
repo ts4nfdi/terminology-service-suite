@@ -1,9 +1,9 @@
-import {Thing} from "../interfaces";
+import { Thing } from "../interfaces";
 
 import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
-import {ThingTypeName} from "../ModelTypeCheck";
-import {pluralizeType} from "../../app/util";
+import { ThingTypeName } from "../ModelTypeCheck";
+import { pluralizeType } from "../../app/util";
 
 export abstract class OLS3Thing implements Thing {
   properties: any;
@@ -28,7 +28,12 @@ export abstract class OLS3Thing implements Thing {
   // standard responses don't have "type" key -> implement statically in subtypes
   abstract getType(): ThingTypeName;
 
-  getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals" {
+  getTypePlural():
+    | "ontologies"
+    | "classes"
+    | "terms"
+    | "properties"
+    | "individuals" {
     return pluralizeType(this.getType());
   }
 
@@ -38,16 +43,14 @@ export abstract class OLS3Thing implements Thing {
   }
 
   getName(): string {
-	return this.getNames()[0];
+    return this.getNames()[0];
   }
 
   // has additional key "shorthand"? (http://www.ebi.ac.uk/ols4/api/ontologies/ado/properties?iri=http://purl.obolibrary.org/obo/RO_0002175)
   getNames(): string[] {
-    const labels = Reified.fromJson<any>(
-      this.properties["label"]
-    );
+    const labels = Reified.fromJson<any>(this.properties["label"]);
     if (labels && labels.length > 0) {
-      return labels.map(label => label.value)
+      return labels.map((label) => label.value);
     }
     return [this.getIri()];
   }
@@ -68,8 +71,10 @@ export abstract class OLS3Thing implements Thing {
   getLabelForIri(id: string) {
     const linkedEntities = this.properties["linkedEntities"];
     if (linkedEntities) {
-      const label:Reified<string>[] = Reified.fromJson<string>( linkedEntities[id]?.label );
-      return label[0]?.value || id
+      const label: Reified<string>[] = Reified.fromJson<string>(
+        linkedEntities[id]?.label
+      );
+      return label[0]?.value || id;
     } else {
       return id;
     }
@@ -77,7 +82,7 @@ export abstract class OLS3Thing implements Thing {
 
   abstract getAnnotationPredicates(): string[];
   abstract getAnnotationTitleById(id: string): string;
-  abstract getAnnotationById(id: string):Reified<any>[];
+  abstract getAnnotationById(id: string): Reified<any>[];
 
   // TODO: not applicable / necessary in standard
   getLinkedEntities(): LinkedEntities {
@@ -85,7 +90,10 @@ export abstract class OLS3Thing implements Thing {
   }
 
   getDepictionUrl(): string {
-    if (this.properties["annotation"] && this.properties["annotation"]["depiction"]) {
+    if (
+      this.properties["annotation"] &&
+      this.properties["annotation"]["depiction"]
+    ) {
       return this.properties["annotation"]["depiction"][0];
     }
     return "";

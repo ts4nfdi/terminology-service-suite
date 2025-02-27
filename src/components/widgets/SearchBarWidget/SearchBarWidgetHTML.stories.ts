@@ -1,7 +1,10 @@
 import "ts4nfdi-widgets";
 import { SearchBarWidgetProps } from "../../../app/types";
-import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
-import {SearchBarDescription} from "../../../app/widgetDescriptions";
+import {
+  SearchBarWidgetStoryArgs,
+  SearchBarWidgetStoryArgTypes,
+} from "./SearchBarWidgetStories";
+import { SearchBarDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -16,9 +19,9 @@ export default {
     layout: "centered",
     docs: {
       description: {
-        component: SearchBarDescription
-      }
-    }
+        component: SearchBarDescription,
+      },
+    },
   },
   render: (args: SearchBarWidgetProps) => {
     // You can either use a function to create DOM elements or use a plain html string!
@@ -33,7 +36,9 @@ window['ts4nfdiWidgets'].createSearchBar(
     {
       api:"${args.api}",
       query:"${args.query}",
-      selectionChangedEvent:${args.selectionChangedEvent.toString().replace(/(\r\n|\n|\r)/gm, "")},
+      selectionChangedEvent:${args.selectionChangedEvent
+        .toString()
+        .replace(/(\r\n|\n|\r)/gm, "")},
       parameter:"${args.parameter}",
     },
     document.querySelector('#search_bar_widget_container_${num}')
@@ -42,12 +47,11 @@ window['ts4nfdiWidgets'].createSearchBar(
         `;
   },
   argTypes: SearchBarWidgetStoryArgTypes,
-  args: SearchBarWidgetStoryArgs
+  args: SearchBarWidgetStoryArgs,
 };
-
 
 export {
   SearchBarWidgetDefault,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
 } from "./SearchBarWidgetStories";

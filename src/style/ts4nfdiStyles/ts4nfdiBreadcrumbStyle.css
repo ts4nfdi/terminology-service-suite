@@ -4,15 +4,15 @@
 }
 
 .ts4nfdi-breadcrumb-style .euiBadge * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-breadcrumb-style .breadcrumb {
-    padding: 3px 3px 0;
-    border-radius: 6px;
-    border: 2px solid rgba(0,0,0,0);
+  padding: 3px 3px 0;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0);
 }
 
 .ts4nfdi-breadcrumb-style .clickable-breadcrumb:hover {
-    border: 2px solid black;
+  border: 2px solid black;
 }

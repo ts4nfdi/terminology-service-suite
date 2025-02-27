@@ -1,9 +1,9 @@
 import { SearchBarWidget } from "./SearchBarWidget";
 import {
   SearchBarWidgetStoryArgsReact,
-  SearchBarWidgetStoryArgTypes
+  SearchBarWidgetStoryArgTypes,
 } from "./SearchBarWidgetStories";
-import {SearchBarDescription} from "../../../app/widgetDescriptions";
+import { SearchBarDescription } from "../../../app/widgetDescriptions";
 
 export default {
   title: "Search/SearchBarWidget",
@@ -11,16 +11,16 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: SearchBarDescription
-      }
-    }
+        component: SearchBarDescription,
+      },
+    },
   },
   argTypes: SearchBarWidgetStoryArgTypes,
-  args: SearchBarWidgetStoryArgsReact
+  args: SearchBarWidgetStoryArgsReact,
 };
 
 export {
   SearchBarWidgetDefault,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
 } from "./SearchBarWidgetStories";

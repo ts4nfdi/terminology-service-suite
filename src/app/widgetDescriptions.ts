@@ -418,5 +418,3 @@ The widget fetches and displays the depiction (image) associated with a specific
 Once the image is successfully fetched, it is displayed with a medium size and shadow for enhanced aesthetics. 
 The image is clickable, allowing users to expand it and view it in full-screen mode for better clarity.
 `.trim();
-
-

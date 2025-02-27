@@ -8,18 +8,18 @@ export const parameters = {
   },
   options: {
     storySort: {
-     order: [
-       "Search",
-       "Entity Metadata",
-       "Additional Entity Metadata",
-       "Ontology Metadata",
-       "Hierarchy and Graph",
-       "API",
-       "Terminology Service"
-     ],
-      method: "alphabetical"
-    }
-  }
+      order: [
+        "Search",
+        "Entity Metadata",
+        "Additional Entity Metadata",
+        "Ontology Metadata",
+        "Hierarchy and Graph",
+        "API",
+        "Terminology Service",
+      ],
+      method: "alphabetical",
+    },
+  },
 };
 
 import { EuiProvider } from "@elastic/eui";

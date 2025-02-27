@@ -1,4 +1,4 @@
-import {Thing} from "../interfaces";
+import { Thing } from "../interfaces";
 
 import LinkedEntities from "../LinkedEntities";
 import Reified from "../Reified";
@@ -30,9 +30,7 @@ export abstract class OLS4Thing implements Thing {
     const types = this.properties["type"] as string[];
 
     for (const type of types) {
-      if (
-        isThingTypeName(type)
-      ) {
+      if (isThingTypeName(type)) {
         return type as any;
       }
     }
@@ -40,7 +38,12 @@ export abstract class OLS4Thing implements Thing {
     throw new Error("unknown type");
   }
 
-  getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "terms" {
+  getTypePlural():
+    | "ontologies"
+    | "classes"
+    | "properties"
+    | "individuals"
+    | "terms" {
     const type = this.getType();
 
     switch (type) {
@@ -48,7 +51,10 @@ export abstract class OLS4Thing implements Thing {
         return "ontologies";
       case "class":
         return "classes";
-      case "property": case "annotationProperty": case "dataProperty": case "objectProperty":
+      case "property":
+      case "annotationProperty":
+      case "dataProperty":
+      case "objectProperty":
         return "properties";
       case "individual":
         return "individuals";
@@ -58,21 +64,19 @@ export abstract class OLS4Thing implements Thing {
   }
 
   getRdfTypes(): string[] {
-    return asArray(this.properties[
-      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    ])
+    return asArray(
+      this.properties["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
+    );
   }
 
   getName(): string {
-	return this.getNames()[0];
+    return this.getNames()[0];
   }
 
   getNames(): string[] {
-    const labels = Reified.fromJson<any>(
-      this.properties["label"]
-    );
+    const labels = Reified.fromJson<any>(this.properties["label"]);
     if (labels && labels.length > 0) {
-      return labels.map(label => label.value)
+      return labels.map((label) => label.value);
     }
     return [this.getIri()];
   }
@@ -92,8 +96,10 @@ export abstract class OLS4Thing implements Thing {
   getLabelForIri(id: string) {
     const linkedEntities = this.properties["linkedEntities"];
     if (linkedEntities) {
-      const label:Reified<string>[] = Reified.fromJson<string>( linkedEntities[id]?.label );
-      return label[0]?.value || id
+      const label: Reified<string>[] = Reified.fromJson<string>(
+        linkedEntities[id]?.label
+      );
+      return label[0]?.value || id;
     } else {
       return id;
     }
@@ -101,8 +107,8 @@ export abstract class OLS4Thing implements Thing {
 
   abstract getAnnotationPredicates(): string[];
 
-  getAnnotationById(id: string):Reified<any>[] {
-    return Reified.fromJson(asArray(this.properties[id]))
+  getAnnotationById(id: string): Reified<any>[] {
+    return Reified.fromJson(asArray(this.properties[id]));
   }
 
   getAnnotationTitleById(id: string): string {

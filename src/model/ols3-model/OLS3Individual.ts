@@ -1,27 +1,24 @@
-import {Individual} from "../interfaces";
-import {OLS3Entity} from "./OLS3Entity";
+import { Individual } from "../interfaces";
+import { OLS3Entity } from "./OLS3Entity";
 
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
-import {IndividualTypeName} from "../ModelTypeCheck";
+import { IndividualTypeName } from "../ModelTypeCheck";
 
-export class OLS3Individual extends OLS3Entity implements Individual{
-
+export class OLS3Individual extends OLS3Entity implements Individual {
   getType(): IndividualTypeName {
     return "individual";
   }
 
   getParents() {
-    return Reified.fromJson<any>(
-      this.properties["directParent"]
-    );
+    return Reified.fromJson<any>(this.properties["directParent"]);
   }
   getEquivalents() {
     return [];
   }
   getSuperEntities(): Reified<any>[] {
-    return Reified.fromJson<any>([])
+    return Reified.fromJson<any>([]);
   }
 
   getDifferentFrom() {
@@ -44,7 +41,8 @@ export class OLS3Individual extends OLS3Entity implements Individual{
     return rdfTypes.filter(
       (t: any) =>
         t !== "http://www.w3.org/2002/07/owl#NamedIndividual" &&
-		( (! (typeof t === 'string') || !t.startsWith("http://www.w3.org/2000/01/rdf-schema#")))
+        (!(typeof t === "string") ||
+          !t.startsWith("http://www.w3.org/2000/01/rdf-schema#"))
     );
   }
 }

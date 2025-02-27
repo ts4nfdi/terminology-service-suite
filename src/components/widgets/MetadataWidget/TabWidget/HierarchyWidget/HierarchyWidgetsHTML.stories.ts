@@ -1,33 +1,36 @@
-import 'ts4nfdi-widgets';
-import 'ts4nfdi-widgets/terminology-service-suite.css'
-import {HierarchyWidgetStoryArgs, HierarchyWidgetStoryArgTypes} from "./HierarchyWidgetStories";
-import {HierarchyWidgetProps} from "../../../../../app/types";
-import {HierarchyDescription} from "../../../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import {
+  HierarchyWidgetStoryArgs,
+  HierarchyWidgetStoryArgTypes,
+} from "./HierarchyWidgetStories";
+import { HierarchyWidgetProps } from "../../../../../app/types";
+import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-    title: 'Hierarchy and Graph/HierarchyWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: HierarchyDescription
-            }
-        }
+  title: "Hierarchy and Graph/HierarchyWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: HierarchyDescription,
+      },
     },
-    render: (args: HierarchyWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: HierarchyWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `        
+    return `        
 <div id="hierarchy_semlookp_container_${num}"></div>
 
 <script type="text/javascript">
@@ -50,22 +53,22 @@ window['ts4nfdiWidgets'].createHierarchy(
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: HierarchyWidgetStoryArgTypes,
-    args: HierarchyWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: HierarchyWidgetStoryArgTypes,
+  args: HierarchyWidgetStoryArgs,
+};
 
 export {
-    ClassHierarchy,
-    IndividualHierarchy,
-    PreferredRoots,
-    IncludeObsoleteEntities,
-    PropertyRoots,
-    IndividualRoots,
-    LargeHierarchy,
-    SkosHierarchy,
-    SagePubHierarchy,
-    OntoportalHierarchy,
-    OLS3Hierarchy
-} from "./HierarchyWidgetStories"
+  ClassHierarchy,
+  IndividualHierarchy,
+  PreferredRoots,
+  IncludeObsoleteEntities,
+  PropertyRoots,
+  IndividualRoots,
+  LargeHierarchy,
+  SkosHierarchy,
+  SagePubHierarchy,
+  OntoportalHierarchy,
+  OLS3Hierarchy,
+} from "./HierarchyWidgetStories";

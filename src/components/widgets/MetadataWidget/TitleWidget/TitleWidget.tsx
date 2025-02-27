@@ -18,36 +18,42 @@ function TitleWidget(props: TitleWidgetProps) {
     parameter,
     useLegacy,
     defaultValue,
-    className
+    className,
   } = props;
   const olsApi = new OlsApi(api);
 
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useQuery<Thing>(
+  const { data, isLoading, isSuccess, isError, error } = useQuery<Thing>(
     ["titleData", api, parameter, thingType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getThingObject(iri, thingType, ontologyId, parameter, useLegacy);
+      return olsApi.getThingObject(
+        iri,
+        thingType,
+        ontologyId,
+        parameter,
+        useLegacy
+      );
     }
   );
 
   return (
-      <TitlePresentation
-        title={data ? isOntology(data) ? data.getName() : data.getLabel() : null}
-        titleText={titleText}
-        defaultValue={defaultValue}
-        className={className}
-        isLoading={isLoading}
-        error={isError ? error: null}
-      />
+    <TitlePresentation
+      title={
+        data ? (isOntology(data) ? data.getName() : data.getLabel()) : null
+      }
+      titleText={titleText}
+      defaultValue={defaultValue}
+      className={className}
+      isLoading={isLoading}
+      error={isError ? error : null}
+    />
   );
 }
 
-function createTitle(props: TitleWidgetProps, container: Element, callback?: () => void) {
+function createTitle(
+  props: TitleWidgetProps,
+  container: Element,
+  callback?: () => void
+) {
   ReactDOM.render(WrappedTitleWidget(props), container, callback);
 }
 

@@ -1,5 +1,5 @@
 .ts4nfdi-autocomplete-style * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-autocomplete-style button {
@@ -17,7 +17,7 @@
 }
 
 .euiComboBoxOptionsList__empty {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-autocomplete-breadcrumb button {
@@ -26,15 +26,15 @@
 }
 
 .ts4nfdi-autocomplete-breadcrumb .euiBadge * {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-autocomplete-breadcrumb .breadcrumb {
-    padding: 3px 3px 0;
-    border-radius: 6px;
-    border: 2px solid rgba(0,0,0,0);
+  padding: 3px 3px 0;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0);
 }
 
 .ts4nfdi-autocomplete-breadcrumb .clickable-breadcrumb:hover {
-    border: 2px solid black;
+  border: 2px solid black;
 }

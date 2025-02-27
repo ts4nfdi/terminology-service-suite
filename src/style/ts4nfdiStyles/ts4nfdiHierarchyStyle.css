@@ -1,11 +1,11 @@
 .ts4nfdi-hierarchy-style {
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 .ts4nfdi-hierarchy-style button {
   background: none;
   border: none;
-  font-family: 'Inter',BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   font-size: inherit;
   padding: 0;
 }

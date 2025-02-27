@@ -10,23 +10,40 @@ import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation
 import ReactDOM from "react-dom";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
+    props;
   const olsApi = new OlsApi(api);
 
-  const {
-    data,
-    isLoading,
-    error
-  } = useQuery<Thing>(
-    ["alternativeNameTab", api, parameter, entityType, iri, ontologyId, useLegacy],
+  const { data, isLoading, error } = useQuery<Thing>(
+    [
+      "alternativeNameTab",
+      api,
+      parameter,
+      entityType,
+      iri,
+      ontologyId,
+      useLegacy,
+    ],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+      return olsApi.getEntityObject(
+        iri,
+        entityType,
+        ontologyId,
+        parameter,
+        useLegacy
+      );
     }
   );
 
   return (
     <AlternativeNameTabPresentation
-      synonyms={data ? isEntity(data) ? data.getSynonyms().map(synonym => synonym.value) : [] : []}
+      synonyms={
+        data
+          ? isEntity(data)
+            ? data.getSynonyms().map((synonym) => synonym.value)
+            : []
+          : []
+      }
       isLoading={isLoading}
       error={error}
       className={className}
@@ -34,7 +51,11 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-function createAlternativeNameTab(props: AlternativeNameTabWidgetProps, container: Element, callback?: () => void) {
+function createAlternativeNameTab(
+  props: AlternativeNameTabWidgetProps,
+  container: Element,
+  callback?: () => void
+) {
   ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
 }
 

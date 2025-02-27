@@ -1,6 +1,9 @@
 import { DescriptionWidget } from "./DescriptionWidget";
-import {DescriptionWidgetStoryArgs, DescriptionWidgetStoryArgTypes} from "./DescriptionWidgetStories";
-import {DescriptionDescription} from "../../../../app/widgetDescriptions";
+import {
+  DescriptionWidgetStoryArgs,
+  DescriptionWidgetStoryArgTypes,
+} from "./DescriptionWidgetStories";
+import { DescriptionDescription } from "../../../../app/widgetDescriptions";
 
 export default {
   title: "Entity Metadata/DescriptionWidget",
@@ -8,18 +11,18 @@ export default {
   parameters: {
     layout: "centered",
     docs: {
-        description: {
-            component: DescriptionDescription
-        }
-    }
+      description: {
+        component: DescriptionDescription,
+      },
+    },
   },
   argTypes: DescriptionWidgetStoryArgTypes,
-  args: DescriptionWidgetStoryArgs
+  args: DescriptionWidgetStoryArgs,
 };
 
 export {
-    DescriptionWidget1,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    ErrorFetchingData
-} from "./DescriptionWidgetStories"
+  DescriptionWidget1,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  ErrorFetchingData,
+} from "./DescriptionWidgetStories";

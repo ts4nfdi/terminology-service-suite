@@ -1,6 +1,9 @@
-import {DataContentWidget} from "./DataContentWidget";
-import {DataContentWidgetStoryArgs, DataContentWidgetStoryArgTypes} from "./DataContentWidgetStories";
-import {DataContentDescription} from "../../../app/widgetDescriptions";
+import { DataContentWidget } from "./DataContentWidget";
+import {
+  DataContentWidgetStoryArgs,
+  DataContentWidgetStoryArgTypes,
+} from "./DataContentWidgetStories";
+import { DataContentDescription } from "../../../app/widgetDescriptions";
 
 export default {
   title: "Terminology Service/DataContentWidget",
@@ -9,16 +12,16 @@ export default {
     layout: "centered",
     docs: {
       description: {
-        component: DataContentDescription
-      }
-    }
+        component: DataContentDescription,
+      },
+    },
   },
   argTypes: DataContentWidgetStoryArgTypes,
-  args: DataContentWidgetStoryArgs
+  args: DataContentWidgetStoryArgs,
 };
 
 export {
   NFDI4HealthDataContentWidget,
   SafetyDataContentWidget,
-  ErrorDataContentWidget
-} from "./DataContentWidgetStories"
+  ErrorDataContentWidget,
+} from "./DataContentWidgetStories";

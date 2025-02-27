@@ -1,5 +1,5 @@
-import {Ontologies} from "../interfaces";
-import {OLS3Ontology} from "./OLS3Ontology";
+import { Ontologies } from "../interfaces";
+import { OLS3Ontology } from "./OLS3Ontology";
 
 export class OLS3Ontologies implements Ontologies {
   properties: OLS3Ontology[];
@@ -13,18 +13,30 @@ export class OLS3Ontologies implements Ontologies {
   }
 
   getNumEntities(): number {
-    return this.properties.reduce((total, ontology) => total + ontology.getNumEntities(), 0);
+    return this.properties.reduce(
+      (total, ontology) => total + ontology.getNumEntities(),
+      0
+    );
   }
 
   getNumClasses(): number {
-    return this.properties.reduce((total, ontology) => total + ontology.getNumClasses(), 0);
+    return this.properties.reduce(
+      (total, ontology) => total + ontology.getNumClasses(),
+      0
+    );
   }
 
   getNumProperties(): number {
-    return this.properties.reduce((total, ontology) => total + ontology.getNumProperties(), 0);
+    return this.properties.reduce(
+      (total, ontology) => total + ontology.getNumProperties(),
+      0
+    );
   }
 
   getNumIndividuals(): number {
-    return this.properties.reduce((total, ontology) => total + ontology.getNumIndividuals(), 0);
+    return this.properties.reduce(
+      (total, ontology) => total + ontology.getNumIndividuals(),
+      0
+    );
   }
 }
