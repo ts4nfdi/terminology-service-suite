@@ -216,7 +216,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                         label: option.label,
                         key: option.label,
                         value: {
-                          iri: "",
+                          iri: option.iri,
                           label: "",
                           ontology_name: "",
                           type: "",
