@@ -17,6 +17,7 @@ import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
+import { Entity } from "../../../model/interfaces";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -35,6 +36,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ts4nfdiGateway = false,
     showApiSource = true,
     className,
+    useLegacy = false,
     ...rest
   } = props;
 
@@ -156,6 +158,175 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   };
 
   /**
+   * For preselect property
+   * Creates option from preselected label and iri
+   * @param preselectedElement
+   */
+  function createCustomTermOption(preselectedElement: any): EuiComboBoxOptionOption<any> {
+    return {
+      label: preselectedElement.label,
+      key: preselectedElement.label,
+      value: {
+        iri: preselectedElement.iri || "",
+        label: preselectedElement.label,
+        ontology_name: "",
+        type: "",
+        short_form: "",
+        description: "",
+        source: "",
+        source_url: "",
+      },
+    };
+  }
+
+  /**
+   * For preselected property
+   * Creates option from OLS API select response
+   * @param selection The select response
+   */
+  function createSelectOption(selection: any): EuiComboBoxOptionOption<any> {
+    return {
+      label: hasShortSelectedLabel
+        ? selection.getLabel()
+        : generateDisplayLabel(selection),
+      key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
+      value: {
+        iri: selection.getIri(),
+        label: selection.getLabel(),
+        ontology_name: selection.getOntologyId(),
+        type: selection.getType(),
+        short_form: selection.getShortForm(),
+        description: selection.getDescription(),
+      },
+    };
+  }
+
+  /**
+   * For preselected property
+   * Creates option from OLS4 API entity response
+   * @param entity The Entity object response
+   */
+  function createEntityOption(entity: Entity): EuiComboBoxOptionOption<any> {
+    return {
+      label: hasShortSelectedLabel
+        ? entity.getLabel()
+        : generateDisplayLabel(entity),
+      key: `${entity.getOntologyId()}::${entity.getIri()}::${entity.getType()}`,
+      value: {
+        iri: entity.getIri(),
+        label: entity.getLabel(),
+        ontology_name: entity.getOntologyId(),
+        type: entity.getType(),
+        short_form: entity.getShortForm(),
+        description: entity.getDescription(),
+      },
+    };
+  }
+
+  /**
+   * For preselected property
+   * Request the OLS4 API entity endpoint and create the entity option
+   * @param preselectedElement
+   * @param preselectedOptions
+   */
+  async function fetchAndProcessEntityOption(
+    preselectedElement: any,
+    preselectedOptions: EuiComboBoxOptionOption<any>[]
+  ) {
+    try {
+      const response = await olsApi.getEntityObject(
+        preselectedElement.iri,
+        undefined,
+        undefined,
+        parameter,
+        useLegacy
+      );
+
+      preselectedOptions.push(createEntityOption(response));
+
+      if (singleSelection && preselectedOptions.length > 1) {
+        preselectedOptions.length = 1;
+      }
+    } catch (error) {
+      if (preselectedElement.label && allowCustomTerms)
+        preselectedOptions.push(createCustomTermOption(preselectedElement));
+      if (singleSelection && preselectedOptions.length > 1) {
+        preselectedOptions.length = 1;
+      }
+      console.error("Error fetching data for option:", preselectedElement, error);
+    }
+  }
+
+  /**
+   * For preselected property
+   * Request the OLS API select endpoint and create select option by either using select response or - if no response - use the preselected label and iri
+   * @param preselectedElement
+   * @param preselectedOptions
+   */
+  async function fetchAndProcessSelectOption(
+    preselectedElement: any,
+    preselectedOptions: EuiComboBoxOptionOption<any>[]
+  ) {
+    try {
+      const response = await olsApi.getSelectData(
+        { query: preselectedElement.iri },
+        undefined,
+        undefined,
+        parameter,
+        ts4nfdiGateway
+      );
+
+      if (!response) return;
+
+      const matchFound = processSelectResponse(
+        response,
+        preselectedElement,
+        preselectedOptions
+      );
+
+      if (!matchFound && preselectedElement.label && allowCustomTerms) {
+        preselectedOptions.push(createCustomTermOption(preselectedElement));
+      }
+
+      if (singleSelection && preselectedOptions.length > 1) {
+        preselectedOptions.length = 1;
+      }
+    } catch (error) {
+      if (preselectedElement.label && allowCustomTerms)
+        preselectedOptions.push(createCustomTermOption(preselectedElement));
+      if (singleSelection && preselectedOptions.length > 1) {
+        preselectedOptions.length = 1;
+      }
+      console.error("Error fetching data for option:", preselectedElement, error);
+    }
+  }
+
+  /**
+   * For preselected property
+   * If the preselected element has a select response, create the select option
+   * If no select response, return false
+   * @param response
+   * @param preselectedElement
+   * @param preselectedOptions
+   */
+  function processSelectResponse(
+    response: any,
+    preselectedElement: any,
+    preselectedOptions: EuiComboBoxOptionOption<any>[]
+  ): boolean {
+    let matchFound = false;
+
+    response.properties.forEach((selection: any) => {
+      if (preselectedElement.iri === selection.getIri()) {
+        matchFound = true;
+        preselectedOptions.push(createSelectOption(selection));
+      }
+    });
+
+    return matchFound;
+  }
+
+  /**
    * on mount: fetches term for preselected
    * sets its label or sets a given label if no iri is provided/the given iri cannot be resolved
    * only if allowCustomTerms is true
@@ -163,96 +334,33 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const { isLoading: isLoadingOnMount } = useQuery(
     ["onMount", preselected],
     async () => {
-      let preselectedValues: EuiComboBoxOptionOption<any>[] = [];
+      let preselectedOptions: EuiComboBoxOptionOption<any>[] = [];
 
-      let uniqueValues = [...new Set(preselected ?? [])].filter((option) => {
-        return (allowCustomTerms && option.label) || option.iri;
-      });
+      let uniqueValues = [...new Set(preselected ?? [])].filter(
+        (option) => (allowCustomTerms && option.label) || option.iri
+      );
 
-      if (uniqueValues.length > 0) {
-        if (singleSelection) uniqueValues = [uniqueValues[0]];
+      if (uniqueValues.length === 0) return;
 
-        for (const option of uniqueValues) {
-          if (option && option.iri && option.iri.startsWith("http")) {
-            await olsApi
-              .getSelectData(
-                { query: option.iri },
-                undefined,
-                undefined,
-                parameter,
+      if (singleSelection) uniqueValues = [uniqueValues[0]];
 
-                ts4nfdiGateway
-              )
-              .then((response) => {
-                if (response) {
-                  let matchFound = false;
-                  response.properties.map((selection: any) => {
-                    if (option.iri === selection.getIri()) {
-                      matchFound = true;
-                      preselectedValues.push({
-                        // label to display within the combobox either raw value or generated one
-                        // #renderOption() is used to display during selection.
-                        label: hasShortSelectedLabel
-                          ? selection.getLabel()
-                          : generateDisplayLabel(selection),
-                        // key to distinguish the options (especially those with same label)
-                        key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
-                        value: {
-                          iri: selection.getIri(),
-                          label: selection.getLabel(),
-                          ontology_name: selection.getOntologyId(),
-                          type: selection.getType(),
-                          short_form: selection.getShortForm(),
-                          description: selection.getDescription(),
-                          source: selection.getApiSourceName(),
-                          source_url: selection.getApiSourceEndpoint(),
-                        },
-                      });
-                    }
-                  });
-                  if (!matchFound) {
-                    if (option && option.label && allowCustomTerms) {
-                      preselectedValues.push({
-                        label: option.label,
-                        key: option.label,
-                        value: {
-                          iri: option.iri,
-                          label: "",
-                          ontology_name: "",
-                          type: "",
-                          short_form: "",
-                          description: "",
-                          source: "",
-                          source_url: "",
-                        },
-                      });
-                    }
-                  }
-                  if (singleSelection && preselectedValues.length > 1)
-                    preselectedValues = [preselectedValues[0]];
-                }
-              });
-          } else if (option && option.label && allowCustomTerms) {
-            preselectedValues.push({
-              label: option.label,
-              key: option.label,
-              value: {
-                iri: "",
-                label: "",
-                ontology_name: "",
-                type: "",
-                short_form: "",
-                description: "",
-                source: "",
-                source_url: "",
-              },
-            });
+      for (const preselectedElement of uniqueValues) {
+        if (useLegacy) {
+          if (preselectedElement?.iri?.startsWith("http")) {
+            await fetchAndProcessSelectOption(preselectedElement, preselectedOptions);
+          } else if (preselectedElement?.label && allowCustomTerms) {
+            preselectedOptions.push(createCustomTermOption(preselectedElement));
+          }
+        } else {
+          if (preselectedElement?.iri?.startsWith("http")) {
+            await fetchAndProcessEntityOption(preselectedElement, preselectedOptions);
+          } else if (preselectedElement?.label && allowCustomTerms) {
+            preselectedOptions.push(createCustomTermOption(preselectedElement));
           }
         }
-
-        setOptions(preselectedValues);
-        setSelectedOptions(preselectedValues);
       }
+      setOptions(preselectedOptions);
+      setSelectedOptions(preselectedOptions);
     }
   );
 

@@ -769,7 +769,8 @@ export class OlsApi implements HierarchyBuilder {
         await this.axiosInstance.get(
           baseRequest + "/children/" + treeParams.child
         )
-      ).data; //3)
+      ).data;
+    //3)
     else
       return (await this.axiosInstance.get(baseRequest, { params: treeParams }))
         .data; //2)
@@ -1630,26 +1631,22 @@ export class OlsApi implements HierarchyBuilder {
           ) {
             for (const parentReified of parents) {
               if (parentChildRelations.has(parentReified.value)) {
-                parentChildRelations
-                  .get(parentReified.value)
-                  ?.push({
-                    childIri: entityData.iri,
-                    childRelationToParent:
-                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  });
+                parentChildRelations.get(parentReified.value)?.push({
+                  childIri: entityData.iri,
+                  childRelationToParent:
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                });
               }
             }
           } else {
             for (const parentReified of parents) {
               if (parentChildRelations.has(parentReified.value)) {
-                parentChildRelations
-                  .get(parentReified.value)
-                  ?.push({
-                    childIri: entityData.iri,
-                    childRelationToParent: parentReified.getMetadata()
-                      ? parentReified.getMetadata()["childRelationToParent"]
-                      : undefined,
-                  });
+                parentChildRelations.get(parentReified.value)?.push({
+                  childIri: entityData.iri,
+                  childRelationToParent: parentReified.getMetadata()
+                    ? parentReified.getMetadata()["childRelationToParent"]
+                    : undefined,
+                });
               }
             }
           }
