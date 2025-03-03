@@ -188,7 +188,8 @@ export type AutocompleteWidgetSelectedOptions = {
 export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
   ParameterObj &
   ApiObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  UseLegacyObj & {
     /**
      * A method that is called once the set of selection changes
      */

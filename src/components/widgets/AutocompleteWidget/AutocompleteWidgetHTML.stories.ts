@@ -69,8 +69,6 @@ export {
   UseAPIGatewayWithSkosmos,
   HideApiSourceApiGateway,
   WithDefaultsCompact,
-  WithPreselectedValue,
-  WithPreselectedValueAndUnresolvedIri,
   WithCustomValue,
   WithInvalidValue,
   WithMultipleValues,
@@ -81,4 +79,7 @@ export {
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
   TibDataPlant,
+  WithPreselectedValueAndUnresolvedIriOLS3,
+  WithPreselectedValueOLS4v2,
+  WithPreselectedMultipleValuesOLS4,
 } from "./AutocompleteWidgetStories";

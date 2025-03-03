@@ -46,6 +46,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     showApiSource: true,
     singleSuggestionRow: false,
     className: "",
+    useLegacy: true,
     parameter:
       "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
@@ -65,6 +66,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,
+    useLegacy: true,
     parameter:
       "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   },
@@ -82,6 +84,7 @@ export const UseAPIGatewayWithOLS = {
       "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
+
 export const UseAPIGatewayWithOntoPortal = {
   args: {
     api: globals.GATEWAY_API_ENDPOINT,
@@ -116,19 +119,24 @@ export const WithDefaultsCompact = {
   },
 };
 
-export const WithPreselectedValue = {
+export const WithPreselectedValueOLS4v2 = {
   args: {
+    api: globals.ZBMED_K8S_ENDPOINT,
+    useLegacy: false,
     preselected: [
       {
         label: "COVID-19",
         iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
+    parameter: "",
   },
 };
 
-export const WithPreselectedValueAndUnresolvedIri = {
+export const WithPreselectedValueAndUnresolvedIriOLS3 = {
   args: {
+    api: globals.ZBMED_OLS_API_ENDPOINT,
+    useLegacy: true,
     preselected: [
       {
         label: "COVID-19",
@@ -136,6 +144,25 @@ export const WithPreselectedValueAndUnresolvedIri = {
       },
     ],
     allowCustomTerms: true,
+  },
+};
+
+export const WithPreselectedMultipleValuesOLS4 = {
+  args: {
+    api: globals.ZBMED_K8S_ENDPOINT,
+    useLegacy: false,
+    preselected: [
+      {
+        label: "COVID-19",
+        iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
+      },
+      {
+        label: "Survival Analysis",
+        iri: "http://purl.bioontology.org/ontology/MESH/D016019",
+      },
+    ],
+    singleSelection: false,
+    parameter: "",
   },
 };
 

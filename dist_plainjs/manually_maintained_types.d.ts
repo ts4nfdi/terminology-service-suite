@@ -22,6 +22,7 @@ declare global {
       singleSuggestionRow?: boolean;
       showApiSource?: boolean;
       className?: string;
+      useLegacy?: string;
     }
     )=>void,
     createDataContent:(props:{

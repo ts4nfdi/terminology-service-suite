@@ -5,7 +5,7 @@ import { ThingTypeName } from "../ModelTypeCheck";
 export interface Thing {
   properties: any;
 
-  getLabel(): string | undefined;
+  getLabel(): string;
   getId(): string;
   getIri(): string;
   getType(): ThingTypeName;
