@@ -1,0 +1,23 @@
+import{a as i,s as n,p as c,b as p,c as g,h as d,d as u,e as m,t as h,f as y,g as S,i as f,A}from"./widgetDescriptions-0d31b3f7.js";/* empty css                                  */import{Z as o,G as t,a as s,b as l,T as r}from"./globals-05d8f867.js";import{a as w}from"./chunk-WFFRPTHA-a68c42c5.js";import"./preview-errors-dde4324f.js";import"./index-356e4a49.js";const T={argTypes:{...i,...n,...c,...p,...g,...d,...u,...m,...h,...y,...S,...f}};o,w("selectionChangedEvent");const b={args:{api:o,ts4nfdiGateway:!1,singleSelection:!0,allowCustomTerms:!1,selectionChangedEvent:()=>{},hasShortSelectedLabel:!0,placeholder:"Search for a Concept",preselected:[],showApiSource:!0,singleSuggestionRow:!1,useLegacy:!0,parameter:"ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form"}},G={args:{}},M={args:{api:t,ts4nfdiGateway:!0,parameter:"database=ols&fieldList=description,label,iri,ontology_name,type,short_form"}},O={args:{api:t,ts4nfdiGateway:!0,parameter:"database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form"}},N={args:{api:t,ts4nfdiGateway:!0,parameter:"database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form"}},v={args:{api:t,ts4nfdiGateway:!0,showApiSource:!1,parameter:"database=ols&fieldList=description,label,iri,ontology_name,type,short_form"}},V={args:{singleSuggestionRow:!0}},$={args:{api:s,useLegacy:!1,preselected:[{label:"COVID-19",iri:"http://purl.bioontology.org/ontology/MESH/D000086382"}],parameter:""}},H={args:{api:o,useLegacy:!0,preselected:[{label:"COVID-19",iri:"http://purl.bioontology.org/ontology/MESH/D00008"}],allowCustomTerms:!0}},U={args:{api:s,useLegacy:!1,preselected:[{label:"COVID-19",iri:"http://purl.bioontology.org/ontology/MESH/D000086382"},{label:"Survival Analysis",iri:"http://purl.bioontology.org/ontology/MESH/D016019"}],singleSelection:!1,parameter:""}},F={args:{allowCustomTerms:!0,preselected:[{label:"freetext"}]}},R={args:{preselected:[{iri:"ht3stp://purl.bioontology.org/ontology/MESH/D000086382"}]}},x={args:{api:l,parameter:"collection=nfdi4health&lang=de&type=class"}},B={args:{api:l,parameter:"fieldList=description,label,iri,ontology_name,type,short_form"}},Z={args:{hasShortSelectedLabel:!1}},k={args:{allowCustomTerms:!0}},j={args:{singleSelection:!1}},q={args:{preselected:[{iri:"http://purl.bioontology.org/ontology/MESH/D000086382"},{iri:"http://purl.bioontology.org/ontology/MESH/D003920"}],singleSelection:!1}},J={args:{api:r,parameter:"classification=NFDI4CHEM&schema=collection"}},K={args:{api:r,parameter:"classification=DataPLANT&schema=collection"}};let W=0;function _(){return W++}const Y={title:"Search/AutocompleteWidget",tags:["autodocs"],parameters:{layout:"centered",docs:{description:{component:A}}},render:e=>{const a=_();return`
+<div id="autocomplete_widget_container_${a}"></div>
+
+<script type="text/javascript">
+window['ts4nfdiWidgets'].createAutocomplete(
+    {
+        api:"${e.api}",
+        parameter:"${e.parameter}",
+        selectionChangedEvent:${e.selectionChangedEvent.toString().replace(/(\r\n|\n|\r)/gm,"")},
+        preselected:${JSON.stringify(e.preselected).replace(/"([^"]+)":/g,"$1:")},
+        placeholder:"${e.placeholder}",
+        hasShortSelectedLabel:${e.hasShortSelectedLabel},
+        allowCustomTerms:${e.allowCustomTerms},
+        singleSelection:${e.singleSelection},
+        ts4nfdiGateway:${e.ts4nfdiGateway},
+        singleSuggestionRow:${e.singleSuggestionRow},
+        showApiSource:${e.showApiSource},
+        className: "${e.className}"
+    },
+    document.querySelector('#autocomplete_widget_container_${a}')
+)
+<\/script>
+        `},...T,...b},z=["WithDefaults","UseAPIGatewayWithOLS","UseAPIGatewayWithOntoPortal","UseAPIGatewayWithSkosmos","HideApiSourceApiGateway","WithDefaultsCompact","WithCustomValue","WithInvalidValue","WithMultipleValues","AllowMultipleTerms","AllowAddingCustomTerms","WithGermanInput","WithLongForm","WithDescriptionAndShortForm","TibNFDI4CHEM","TibDataPlant","WithPreselectedValueAndUnresolvedIriOLS3","WithPreselectedValueOLS4v2","WithPreselectedMultipleValuesOLS4"];export{k as AllowAddingCustomTerms,j as AllowMultipleTerms,v as HideApiSourceApiGateway,K as TibDataPlant,J as TibNFDI4CHEM,M as UseAPIGatewayWithOLS,O as UseAPIGatewayWithOntoPortal,N as UseAPIGatewayWithSkosmos,F as WithCustomValue,G as WithDefaults,V as WithDefaultsCompact,B as WithDescriptionAndShortForm,x as WithGermanInput,R as WithInvalidValue,Z as WithLongForm,q as WithMultipleValues,U as WithPreselectedMultipleValuesOLS4,H as WithPreselectedValueAndUnresolvedIriOLS3,$ as WithPreselectedValueOLS4v2,z as __namedExportsOrder,Y as default};
