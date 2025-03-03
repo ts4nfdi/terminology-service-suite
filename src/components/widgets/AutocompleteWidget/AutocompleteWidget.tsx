@@ -541,6 +541,7 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
           className={props.className}
+          useLegacy={props.useLegacy}
         />
       </QueryClientProvider>
     </EuiProvider>
