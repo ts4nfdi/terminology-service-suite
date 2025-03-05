@@ -129,7 +129,7 @@ export const WithPreselectedValueOLS4v2 = {
         iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
-    parameter: "",
+    parameter: "ontology=snomed,mesh&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };
 
@@ -238,3 +238,26 @@ export const TibDataPlant = {
     parameter: "classification=DataPLANT&schema=collection",
   },
 };
+
+export const Subtree = {
+  args: {
+    api: globals.ZBMED_API_ENDPOINT,
+    allowCustomTerms: true,
+    useLegacy: true,
+    parameter:
+      "type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&childrenOf=http://purl.bioontology.org/ontology/ICD10/J45",
+  },
+}
+
+export const NFDI4HealthStudyhub = {
+  args: {
+    allowCustomTerms: true,
+    hasShortSelectedLabel: false,
+    api: "https://semanticlookup.zbmed.de/ols/api/",
+    preselected: [{ "label": "Preventive procedure (procedure)", "iri": "http://snomed.info/id/169443000" }],
+    singleSelection: true,
+    useLegacy: true,
+    parameter:
+      "ontology=snomed,mesh&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
+  },
+}
