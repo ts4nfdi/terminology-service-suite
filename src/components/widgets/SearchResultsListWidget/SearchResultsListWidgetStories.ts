@@ -35,7 +35,7 @@ export const SearchResultsListWidgetStoryArgs = {
 
 export const SearchResultsListSafety = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     query: "d*",
     targetLink: "",
     parameter:
@@ -45,7 +45,7 @@ export const SearchResultsListSafety = {
 
 export const SearchResultsListNFDI4Health = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     query: "d*",
     targetLink: "",
     parameter:
@@ -57,7 +57,7 @@ export const SearchResultsListNFDI4Health = {
 
 export const ErrorSearchResultsList = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     query: "d*",
     targetLink: "",
     parameter: "collection=nfdi4health",

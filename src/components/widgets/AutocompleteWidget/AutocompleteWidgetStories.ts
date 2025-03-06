@@ -35,7 +35,7 @@ export const AutocompleteWidgetStoryArgTypes = {
 
 export const AutocompleteWidgetStoryArgsReact = {
   args: {
-    api: globals.ZBMED_OLS_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ts4nfdiGateway: false,
     singleSelection: true,
     allowCustomTerms: false,
@@ -54,7 +54,7 @@ export const AutocompleteWidgetStoryArgsReact = {
 
 export const AutocompleteWidgetStoryArgsHTML = {
   args: {
-    api: globals.ZBMED_OLS_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ts4nfdiGateway: false,
     singleSelection: true,
     allowCustomTerms: false,
@@ -121,7 +121,7 @@ export const WithDefaultsCompact = {
 
 export const WithPreselectedValueOLS4v2 = {
   args: {
-    api: globals.ZBMED_K8S_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
       {
@@ -135,7 +135,7 @@ export const WithPreselectedValueOLS4v2 = {
 
 export const WithPreselectedValueAndUnresolvedIriOLS3 = {
   args: {
-    api: globals.ZBMED_OLS_API_ENDPOINT,
+    api: globals.ZBMED_OLS3_API,
     useLegacy: true,
     preselected: [
       {
@@ -149,7 +149,7 @@ export const WithPreselectedValueAndUnresolvedIriOLS3 = {
 
 export const WithPreselectedMultipleValuesOLS4 = {
   args: {
-    api: globals.ZBMED_K8S_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
       {
@@ -185,14 +185,14 @@ export const WithInvalidValue = {
 
 export const WithGermanInput = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     parameter: "collection=nfdi4health&lang=de&type=class",
   },
 };
 
 export const WithDescriptionAndShortForm = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };

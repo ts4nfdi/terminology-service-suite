@@ -38,7 +38,7 @@ export const DescriptionWidgetStoryArgs = {
 export const DescriptionWidget1 = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_GATEWAY_API,
     ontologyId: "ncit",
     thingType: "term",
     parameter: "collection=nfdi4health",

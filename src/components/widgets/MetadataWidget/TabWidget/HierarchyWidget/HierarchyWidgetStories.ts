@@ -221,7 +221,7 @@ export const OntoportalHierarchy = {
 
 export const OLS3Hierarchy = {
   args: {
-    apiUrl: globals.ZBMED_OLS_API_ENDPOINT,
+    apiUrl: globals.ZBMED_OLS3_API,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     entityType: "class",
