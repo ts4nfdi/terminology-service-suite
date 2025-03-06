@@ -82,4 +82,6 @@ export {
   WithPreselectedValueAndUnresolvedIriOLS3,
   WithPreselectedValueOLS4v2,
   WithPreselectedMultipleValuesOLS4,
+  SubtreeDirectSubtypes,
+  SubtreeDirectAndIndirectSubtypes,
 } from "./AutocompleteWidgetStories";
