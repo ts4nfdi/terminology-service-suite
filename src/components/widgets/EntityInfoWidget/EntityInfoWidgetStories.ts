@@ -28,7 +28,7 @@ export const EntityInfoWidgetStoryArgTypes = {
 };
 
 export const EntityInfoWidgetStoryArgs = {
-  api: globals.ZBMED_API_ENDPOINT,
+  api: globals.ZBMED_OLS4_API,
   iri: "",
   useLegacy: true,
   ontologyId: "",
@@ -78,7 +78,7 @@ export const InfoWidgetBadges = {
 
 export const OptionalEntityTypeLegacyAPI = {
   args: {
-    api: globals.ZBMED_OLS_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     iri: "http://purl.obolibrary.org/obo/NCIT_C88403",
   },
 };

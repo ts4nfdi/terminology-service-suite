@@ -14,8 +14,8 @@ export const TabWidgetStoryArgTypes = {
     },
     options: [
       globals.EBI_API_ENDPOINT,
-      globals.ZBMED_OLS_API_ENDPOINT,
-      globals.ZBMED_API_ENDPOINT,
+      globals.ZBMED_OLS4_API,
+      globals.ZBMED_OLS4_API,
       globals.TIB_API_ENDPOINT,
     ],
   },
@@ -65,7 +65,7 @@ export const TabWidgetStoryArgs = {
 export const Default = {
   storyName: "Default",
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "hp",
     iri: "http://purl.obolibrary.org/obo/HP_0000819",
     useLegacy: true,
@@ -75,7 +75,7 @@ export const Default = {
 export const TabWidgetOLS3 = {
   storyName: "OLS3",
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS3_API,
     ontologyId: "efo",
     iri: "http://www.ebi.ac.uk/efo/EFO_0009644",
     useLegacy: true,

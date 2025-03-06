@@ -39,7 +39,7 @@ export const BreadcrumbWidgetStoryArgs = {
 export const BreadcrumbWidgetDefault = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     entityType: "term",
     parameter: "collection=nfdi4health",
@@ -67,7 +67,7 @@ export const DefiningOntologyUnavailable = {
 export const ErrorBreadcrumbWidget = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985987654345678",
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     entityType: "term",
     parameter: "collection=nfdi4health",
@@ -77,7 +77,7 @@ export const ErrorBreadcrumbWidget = {
 export const CustomColors = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     entityType: "term",
     parameter: "collection=nfdi4health",
@@ -89,7 +89,7 @@ export const CustomColors = {
 export const CustomStyle = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     entityType: "term",
     parameter: "collection=nfdi4health",

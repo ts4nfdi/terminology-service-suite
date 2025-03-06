@@ -40,7 +40,7 @@ export const ResourcesWidgetStoryArgs = {
 
 export const ResourcesWidget1 = {
   args: {
-    api: globals.ZBMED_API_ENDPOINT,
+    api: globals.ZBMED_OLS4_API,
     initialEntriesPerPage: 100,
     pageSizeOptions: [10, 25, 50, 100],
     initialSortField: "config.preferredPrefix",

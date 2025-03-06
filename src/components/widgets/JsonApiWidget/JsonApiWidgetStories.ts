@@ -20,7 +20,7 @@ export const JsonApiWidgetStoryArgs = {
 
 export const JsonApiWidgetDefault = {
   args: {
-    apiQuery: globals.ZBMED_OLS_API_ENDPOINT + "ontologies/atc",
+    apiQuery: globals.ZBMED_OLS4_API + "ontologies/atc",
     buttonText: "show JSON",
     buttonSize: "m",
   },
