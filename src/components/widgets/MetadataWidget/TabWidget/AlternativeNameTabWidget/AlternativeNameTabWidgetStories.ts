@@ -32,7 +32,7 @@ export const AlternativeNameTabWidgetStoryArgs = {
 export const AlternativeNameTabWidget1 = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     entityType: "term",
     ontologyId: "ncit",
   },

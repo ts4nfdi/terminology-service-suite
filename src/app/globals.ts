@@ -8,8 +8,8 @@ export const GATEWAY_API_ENDPOINT =
 
 // ZB MED
 export const ZBMED_OLS4_API = "https://semanticlookup.zbmed.de/ols/api/";
-export const ZBMED_OLS4_GATEWAY_API = "https://semanticlookup.zbmed.de/api/";
 export const ZBMED_OLS3_API = "https://ols3-semanticlookup.zbmed.de/ols/api/";
+export const ZBMED_OLS4_GATEWAY_API = "https://semanticlookup.zbmed.de/api/";
 export const ZBMED_OLS3_GATEWAY_API = "https://ols3-semanticlookup.zbmed.de/api/";
 
 // Others

@@ -185,14 +185,14 @@ export const WithInvalidValue = {
 
 export const WithGermanInput = {
   args: {
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     parameter: "collection=nfdi4health&lang=de&type=class",
   },
 };
 
 export const WithDescriptionAndShortForm = {
   args: {
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   },
 };

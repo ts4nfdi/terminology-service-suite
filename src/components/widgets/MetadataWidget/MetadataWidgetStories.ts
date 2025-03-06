@@ -50,7 +50,7 @@ export const MetadataWidgetStoryArgs = {
 export const MetadataWidget1 = {
   storyName: "Metadata Widget",
   args: {
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
     entityType: "term",
@@ -60,7 +60,7 @@ export const MetadataWidget1 = {
 export const OLS3 = {
   storyName: "OLS3",
   args: {
-    api: globals.ZBMED_OLS3_GATEWAY_API,
+    api: globals.ZBMED_OLS3_API,
     ontologyId: "ncit",
     iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
     entityType: "term",

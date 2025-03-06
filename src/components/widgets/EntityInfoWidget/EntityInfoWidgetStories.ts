@@ -28,7 +28,7 @@ export const EntityInfoWidgetStoryArgTypes = {
 };
 
 export const EntityInfoWidgetStoryArgs = {
-  api: globals.ZBMED_OLS4_GATEWAY_API,
+  api: globals.ZBMED_OLS4_API,
   iri: "",
   useLegacy: true,
   ontologyId: "",

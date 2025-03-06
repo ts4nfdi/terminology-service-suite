@@ -39,7 +39,7 @@ export const TitleWidgetStoryArgs = {
 export const TitleWidgetDefault = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
   },
@@ -57,7 +57,7 @@ export const SelectingDefiningOntology = {
 export const TitleWidgetWithTitleText = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     titleText: "title text",
@@ -67,7 +67,7 @@ export const TitleWidgetWithTitleText = {
 export const IncorrectIriWithDefaultValue = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     defaultValue: "default value",
@@ -77,7 +77,7 @@ export const IncorrectIriWithDefaultValue = {
 export const IncorrectIriWithoutDefaultValue = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
   },
@@ -95,7 +95,7 @@ export const DefiningOntologyUnavailable = {
 export const WithStyles = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     className: "custom-title-style",
@@ -105,7 +105,7 @@ export const WithStyles = {
 export const WithoutStyles = {
   args: {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     className: "none",

@@ -38,14 +38,14 @@ export const OntologyInfoWidgetStoryArgs = {
 
 export const OntologyInfoWidget1 = {
   args: {
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "atc",
   },
 };
 
 export const OntologyInfoWidget2 = {
   args: {
-    api: globals.ZBMED_OLS4_GATEWAY_API,
+    api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
   },
 };

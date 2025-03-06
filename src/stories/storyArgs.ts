@@ -11,10 +11,8 @@ export const apiArgType = {
       "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",
       "https://service.tib.eu/ts4tib/api/",
       "https://api.terminology.tib.eu/api/",
-      "https://semanticlookup.zbmed.de/ols/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
-      "https://semanticlookup.zbmed.de/api/",
-      "https://ols3-semanticlookup.zbmed.de/api/",
+      "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
     ],
     description:
@@ -25,10 +23,8 @@ export const apiArgType = {
       "TIB Terminology Service (OLS3): [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
       "**[ZB MED:](https://www.zbmed.de/)**<br> " +
-      "SemLookP API (OLS4): [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br> " +
       "SemLookP API (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/ols/api/)<br> " +
-      "SemLookP API Gateway (OLS4): [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)<br> " +
-      "SemLookP API Gateway (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/api/)<br><br> " +
+      "SemLookP API (OLS4): [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)<br><br> " +
       "**Others:**<br> " +
       "EMBL-EBI API (OLS4): [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)<br><br> ",
     type: { summary: "string" },
