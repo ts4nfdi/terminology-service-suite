@@ -129,7 +129,8 @@ export const WithPreselectedValueOLS4v2 = {
         iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
-    parameter: "",
+    parameter: "ontology=snomed,mesh&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
+    allowCustomTerms: true,
   },
 };
 

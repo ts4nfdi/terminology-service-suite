@@ -520,7 +520,7 @@ export class OlsApi implements HierarchyBuilder {
       : "";
     const params = {
       iri: contentParams?.termIri,
-      ...this.buildOtherParams(parameter),
+      ...this.buildParamsForEntities(parameter),
     };
     return this.makeCall(
       queryPrefix + "entities",
@@ -554,7 +554,7 @@ export class OlsApi implements HierarchyBuilder {
     const typePrefix = getUseLegacy(useLegacy) ? "terms" : "classes";
     const params = {
       iri: contentParams?.termIri,
-      ...this.buildParamsForEntities(parameter),
+      ...this.buildOtherParams(parameter),
     };
     return this.makeCall(
       ontologyPrefix + typePrefix,
