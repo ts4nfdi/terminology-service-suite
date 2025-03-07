@@ -1,0 +1,6 @@
+{
+  "name": "terminology-service-suite",
+  "version": "1.0.0",
+  "main": "terminology-service-suite.min.js",
+  "types": "manually_maintained_types.d.ts"
+}
