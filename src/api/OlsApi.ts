@@ -234,6 +234,23 @@ export class OlsApi implements HierarchyBuilder {
     return result;
   }
 
+  private buildParamsForEntities(parameter?: string) {
+    const result: any = {};
+    if (parameter) {
+      const paramsSplitted = parameter.split("&");
+
+      paramsSplitted.forEach((param: string) => {
+        const key: string = param.split("=")[0];
+        const value: string = param.split("=")[1];
+        const finalKey = key === "ontology" ? "ontologyId" : key;
+        if (finalKey === "ontologyId" || finalKey === "type") {
+                result[finalKey] = value;
+            }
+      });
+    }
+    return result;
+  }
+
   private buildParamsForSelect(
     queryParams: SuggestQueryParams,
     paginationParams?: PaginationParams,
@@ -503,7 +520,7 @@ export class OlsApi implements HierarchyBuilder {
       : "";
     const params = {
       iri: contentParams?.termIri,
-      ...this.buildOtherParams(parameter),
+      ...this.buildParamsForEntities(parameter),
     };
     return this.makeCall(
       queryPrefix + "entities",

@@ -116,70 +116,28 @@ export const parameterArgType = {
     required: false,
     type: { summary: "string" },
     defaultValue: { summary: undefined },
-    markdownDescription: `Additional parameters to pass to the API.<br><br>
-      This parameters can be used to filter the search results. Each parameter can be combined with the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign (<i><b>,</b></i>). The following keys can be used:<br><br>
-      <table>
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ontology</td>
-            <td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td>
-          </tr>
-          <tr>
-            <td>type</td>
-            <td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td>
-          </tr>
-          <tr>
-            <td>slim</td>
-            <td>Restrict a search to a particular set of slims by name</td>
-          </tr>
-          <tr>
-            <td>fieldList</td>
-            <td>Specify the fields to return. Defaults are <b>iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type</b></td>
-          </tr>
-          <tr>
-            <td>obsoletes</td>
-            <td>Set to true to include obsolete terms in the results</td>
-          </tr>
-          <tr>
-            <td>local</td>
-            <td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td>
-          </tr>
-          <tr>
-            <td>childrenOf</td>
-            <td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td>
-          </tr>
-          <tr>
-            <td>allChildrenOf</td>
-            <td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td>
-          </tr>
-          <tr>
-            <td>rows</td>
-            <td>Set results per page</td>
-          </tr>
-          <tr>
-            <td>start</td>
-            <td>Set the results page number</td>
-          </tr>
-          <tr>
-            <td>lang</td>
-            <td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b></td>
-          </tr>
-          <tr>
-            <td>collection</td>
-            <td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td>
-          </tr>
-          <tr>
-            <td>database</td>
-            <td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td>
-          </tr>
-        </tbody>
-      </table>`,
+    description: `
+
+Additional parameters to pass to the API.
+
+These parameters can be used to filter the search results. Each parameter can be combined with the special character **&**. The values of a parameter key can be combined with a comma (**,**). The following keys can be used:
+
+| Parameter      | Description |
+|---------------|------------|
+| **ontology**  | Restrict a search to a set of ontologies, e.g., \`ontology=uberon,mesh\`. |
+| **type**      | Restrict a search to an entity type, one of \`{class, property, individual, ontology}\`. |
+| **slim**      | Restrict a search to a particular set of slims by name. |
+| **fieldList** | Specify the fields to return. Defaults are **iri, label, short_form, obo_id, ontology_name, ontology_prefix, description, type**. |
+| **obsoletes** | Set to \`true\` to include obsolete terms in the results. |
+| **local**     | Set to \`true\` to only return terms that are in a defining ontology, e.g., only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced. |
+| **childrenOf** | Restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only). Example: \`childrenOf\` the Snomed CT term *Myocardial infarction (disorder)* (→ heart attack) results in returning direct subclasses such as *ST elevation myocardial infarction (STEMI)* or sub-subclasses such as *STEMI of anterior wall*. The search term *Coronary artery occlusion* will return, among other things, *Acute myocardial infarction due to left coronary artery occlusion* because it's a child of *Acute myocardial infarction*, which is a child of *Myocardial infarction*. |
+| **allChildrenOf** | Similar to \`childrenOf\`, but includes hierarchical/transitive properties like *"part of"* or *"develops from"*. Example: \`allChildrenOf\` the Snomed CT term *Myocardial infarction (disorder)* (→ heart attack) results in returning direct subclasses, sub-subclasses, and all other descendant terms. The search term *Coronary artery occlusion* will return, among other things, *Coronary occlusion* because it is a causative agent of *Myocardial infarction*. |
+| **rows**      | Set results per page. |
+| **start**     | Set the results page number. |
+| **lang**      | Set the language for the response, e.g., **\`en\`**, **\`de\`**, **\`fr\`**. The default value is **\`en\`**. |
+| **collection** | Restrict a search to a terminology subset, e.g., \`collection=nfdi4health\`. |
+| **database**  | Restrict a search via the API Gateway to specific terminology software stacks. Choose from **\`ols\`**, **\`ontoportal\`**, or **\`skosmos\`**. |
+    `
   },
 };
 export const hasShortSelectedLabelArgType = {

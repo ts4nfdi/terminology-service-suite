@@ -129,7 +129,8 @@ export const WithPreselectedValueOLS4v2 = {
         iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
-    parameter: "",
+    parameter: "ontology=snomed,mesh&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
+    allowCustomTerms: true,
   },
 };
 
@@ -238,3 +239,23 @@ export const TibDataPlant = {
     parameter: "classification=DataPLANT&schema=collection",
   },
 };
+
+export const SubtreeDirectSubtypes = {
+  args: {
+    api: globals.ZBMED_OLS4_API,
+    allowCustomTerms: true,
+    useLegacy: true,
+    parameter:
+      "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&childrenOf=http://snomed.info/id/22298006",
+  },
+}
+
+export const SubtreeDirectAndIndirectSubtypes = {
+  args: {
+    api: globals.ZBMED_OLS4_API,
+    allowCustomTerms: true,
+    useLegacy: true,
+    parameter:
+      "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&AllChildrenOf=http://snomed.info/id/22298006",
+  },
+}

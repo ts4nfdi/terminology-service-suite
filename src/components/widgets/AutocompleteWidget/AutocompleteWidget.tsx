@@ -36,7 +36,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ts4nfdiGateway = false,
     showApiSource = true,
     className,
-    useLegacy = false,
+    useLegacy,
     ...rest
   } = props;
 
