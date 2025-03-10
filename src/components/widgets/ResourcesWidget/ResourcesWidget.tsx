@@ -39,6 +39,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     onNavigate,
     parameter,
     useLegacy = DEFAULT_USE_LEGACY,
+    actions,
+    ...rest
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -390,7 +392,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       },
     },
   ];
-
+// @ts-ignore
   return (
     <>
       {isSuccess && (
@@ -423,6 +425,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             isExpandable={true}
             itemId={"ontologyId"}
+            {...rest}
           />
         </>
       )}
@@ -434,6 +437,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           pagination={pagination}
           sorting={sorting}
           loading
+          {...rest}
         />
       )}
       {isError && (
@@ -443,6 +447,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           onChange={onTableChange}
           pagination={pagination}
           sorting={sorting}
+          {...rest}
           /*
                           error={getErrorMessageToDisplay(error, "resources")}
           */
