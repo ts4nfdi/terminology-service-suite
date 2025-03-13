@@ -407,7 +407,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
             {searchResults &&
               searchResults.map((result: any) => (
-                <React.Fragment key={result.id}>
+                <React.Fragment key={result.iri+result.ontology_name+result.type}>
                   <MetadataCompact
                     api={api}
                     result={result}

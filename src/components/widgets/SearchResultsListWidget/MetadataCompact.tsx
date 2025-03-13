@@ -34,6 +34,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             : targetLink + "ontologies/" + result.ontology_name
           : undefined
       }
+      titleElement={"span"}
       title={
         <EuiFlexGroup>
           <EuiFlexItem grow={false}>
