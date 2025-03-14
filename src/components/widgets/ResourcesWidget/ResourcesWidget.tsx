@@ -22,6 +22,7 @@ import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
+import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css"
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -40,6 +41,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     parameter,
     useLegacy = DEFAULT_USE_LEGACY,
     actions,
+    className,
     ...rest
   } = props;
   const olsApi = new OlsApi(api);
@@ -52,6 +54,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
     Record<string, ReactNode>
   >({});
+
+  const finalClassName = className || "ts4nfdi-resources-style";
 
   const columns: Array<
     EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }
@@ -394,7 +398,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   ];
 // @ts-ignore
   return (
-    <>
+    <div className={finalClassName}>
       {isSuccess && (
         <>
           <EuiCallOut
@@ -453,7 +457,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           */
         />
       )}
-    </>
+    </div>
   );
 }
 
