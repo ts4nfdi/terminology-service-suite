@@ -536,7 +536,8 @@ export type OntologyInfoWidgetProps = ApiObj &
 
 export type ResourcesWidgetProps = ApiObj &
   ParameterObj &
-  UseLegacyObj & {
+  UseLegacyObj &
+  CssClassNameObj & {
     /**
      * Initial number of entries displayed per page.
      */
