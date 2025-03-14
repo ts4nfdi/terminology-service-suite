@@ -15,9 +15,10 @@ import { MetadataCompactProps } from "../../../app/types";
 import { pluralizeType } from "../../../app/util";
 
 function MetadataCompact(props: MetadataCompactProps) {
-  const { api, result, targetLink, ...rest } = props;
+  const { api, result, targetLink, className, ...rest } = props;
 
   return (
+    <div className={className}>
     <EuiCard
       textAlign="left"
       {...rest}
@@ -49,21 +50,24 @@ function MetadataCompact(props: MetadataCompactProps) {
                 iri={result.iri}
                 entityType={result.type}
                 ontologyId={result.ontology_name}
+                className={`${className}-breadcrumb`}
               />
             )}
           </EuiFlexItem>
         </EuiFlexGroup>
       }
     >
-      {result.type != "ontology" ? <IriWidget iri={result.iri} /> : undefined}
+      {result.type != "ontology" ? <IriWidget iri={result.iri} className={`${className}-iri`} /> : undefined}
       <EuiSpacer size="s" />
       <DescriptionWidget
         api={api}
         ontologyId={result.ontology_name}
         iri={result.iri}
         thingType={result.type}
+        className={`${className}-description`}
       />
     </EuiCard>
+      </div>
   );
 }
 

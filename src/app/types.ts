@@ -605,7 +605,8 @@ export type SearchResultsListWidgetProps = Partial<
   ApiObj &
   TargetLinkObj &
   ParameterObj &
-  UseLegacyObj & {
+  UseLegacyObj &
+  CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
      */

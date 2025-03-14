@@ -22,6 +22,7 @@ import { SearchResultsListWidgetProps } from "../../../app/types";
 import { AutocompleteWidget } from "../AutocompleteWidget";
 import ReactDOM from "react-dom";
 import { SearchBarWidget } from "../SearchBarWidget";
+import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -36,9 +37,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     targetLink,
     preselected,
     useLegacy = true,
+    className,
     ...rest
   } = props;
   const olsApi = new OlsApi(api);
+  const finalClassName = className || "ts4nfdi-searchResult-style";
 
   const [searchValue, setSearchValue] = useState(query);
   const [activePage, setActivePage] = useState(0);
@@ -273,6 +276,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
   return (
     <>
+      <div className={finalClassName}>
       <SearchBarWidget
         api={api}
         query={""}
@@ -412,6 +416,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     api={api}
                     result={result}
                     targetLink={targetLink}
+                    className={`${finalClassName}-metadata-compact`}
                   />
                   <EuiSpacer />
                 </React.Fragment>
@@ -419,6 +424,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           </EuiPanel>
         </EuiFlexItem>
       </EuiFlexGroup>
+        </div>
     </>
   );
 }
