@@ -1,4 +1,3 @@
-import { entityTypeNames } from "../../../model/ModelTypeCheck";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
@@ -36,6 +35,8 @@ export const MetadataWidgetStoryArgs = {
   hierarchyTab: true,
   crossRefTab: true,
   terminologyInfoTab: true,
+  graphViewTab: true,
+  termDepictionTab: true,
   hierarchyPreferredRoots: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
   hierarchyKeepExpansionStates:
     HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
@@ -51,8 +52,8 @@ export const MetadataWidget1 = {
   storyName: "Metadata Widget",
   args: {
     api: globals.ZBMED_OLS4_API,
-    ontologyId: "ncit",
-    iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+    ontologyId: "uberon",
+    iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
     entityType: "term",
   },
 };
@@ -119,8 +120,8 @@ export const HiddenTabs = {
   storyName: "Hidden Tabs",
   args: {
     api: globals.EBI_API_ENDPOINT,
-    ontologyId: "ncit",
-    iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
+    ontologyId: "uberon",
+    iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
     entityType: "term",
     useLegacy: false,
     parameter: "",
@@ -128,6 +129,8 @@ export const HiddenTabs = {
     hierarchyTab: false,
     crossRefTab: false,
     terminologyInfoTab: false,
+    graphViewTab: false,
+    termDepictionTab: false,
   },
 };
 

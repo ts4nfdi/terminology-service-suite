@@ -46,6 +46,8 @@ window['ts4nfdiWidgets'].createMetadata(
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
         terminologyInfoTab: ${args.terminologyInfoTab},
+        graphViewTab: ${args.graphViewTab},
+        termDepictionTab: ${args.termDepictionTab},
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},

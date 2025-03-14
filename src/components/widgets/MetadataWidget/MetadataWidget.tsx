@@ -46,6 +46,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
     hierarchyTab,
     crossRefTab,
     terminologyInfoTab,
+    graphViewTab,
+    termDepictionTab,
     altNamesTab,
     termLink,
     className,
@@ -208,6 +210,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
               hierarchyTab={hierarchyTab}
               crossRefTab={crossRefTab}
               terminologyInfoTab={terminologyInfoTab}
+              termDepictionTab={termDepictionTab}
+              graphViewTab={graphViewTab}
               altNamesTab={altNamesTab}
               hierarchyPreferredRoots={props.hierarchyPreferredRoots}
               hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
@@ -259,6 +263,8 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           hierarchyTab={props.hierarchyTab}
           crossRefTab={props.crossRefTab}
           terminologyInfoTab={props.terminologyInfoTab}
+          graphViewTab={props.graphViewTab}
+          termDepictionTab={props.termDepictionTab}
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
           hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}

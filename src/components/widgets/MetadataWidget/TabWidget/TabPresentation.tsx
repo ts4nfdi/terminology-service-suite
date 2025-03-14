@@ -12,6 +12,8 @@ import Reified from "../../../../model/Reified";
 import { TabPresentationProps } from "../../../../app/types";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 import { HierarchyWidget } from "./HierarchyWidget";
+import { GraphViewWidget } from "../../GraphViewWidget";
+import { TermDepictionWidget } from "../../TermDepictionWidget";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css";
 
 function TabPresentation(props: TabPresentationProps) {
@@ -78,8 +80,8 @@ function TabPresentation(props: TabPresentationProps) {
             crossrefs={
               data
                 ? Reified.fromJson(data.getCrossReferences()).map((value) => {
-                    return value.value;
-                  })
+                  return value.value;
+                })
                 : []
             }
             isLoading={props.isLoading}
@@ -110,6 +112,36 @@ function TabPresentation(props: TabPresentationProps) {
       });
     }
 
+    if (props.graphViewTab === undefined || props.graphViewTab) {
+      tabs.push({
+        content: (
+          <GraphViewWidget
+            api={props.api}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            iri={props.iri}
+            rootWalk={false}
+          />
+        ),
+        id: "tab5",
+        name: "Graph View",
+      });
+    }
+
+    if (props.termDepictionTab === undefined || props.termDepictionTab) {
+      tabs.push({
+        content: (
+          <TermDepictionWidget
+            api={props.api}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            iri={props.iri}
+            useLegacy={props.useLegacy}
+          />
+        ),
+        id: "tab6",
+        name: "Depiction",
+      });
+    }
+
     if (tabs.length === 0) {
       /**
        * EuiTabbedContent component raises exception if no tab is provided.
@@ -127,8 +159,8 @@ function TabPresentation(props: TabPresentationProps) {
   return (
     <>
       {isEntity(props.data) ||
-      isProperty(props.data) ||
-      isIndividual(props.data)
+        isProperty(props.data) ||
+        isIndividual(props.data)
         ? render(props.data)
         : null}
     </>
