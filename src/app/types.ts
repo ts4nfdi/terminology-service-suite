@@ -140,6 +140,14 @@ type TabList = {
    * It is possible to show and hide the About Terminology Info tab. **True** shows the tab. **False** hides the tab.
    */
   terminologyInfoTab?: boolean;
+  /**
+   * It is possible to show and hide the Graph view tab. **True** shows the tab. **False** hides the tab.
+   * */
+  graphViewTab?: boolean;
+  /**
+  * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
+  * */
+  termDepictionTab?: boolean;
 };
 
 export type AutocompleteWidgetSelectedOptions = {
