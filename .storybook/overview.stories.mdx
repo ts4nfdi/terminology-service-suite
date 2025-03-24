@@ -50,7 +50,7 @@ import { Meta } from '@storybook/addon-docs';
 ## How to use the widgets
 
 <p style={{fontSize:18}}>To use the widgets, you need to install and implement them in your consumer project.</p>
-<p style={{fontSize:18}}>For development, please see the [GitHub README](https://github.com/ts4nfdi/terminology-service-suite).</p>
+<p style={{fontSize:18}}>For development, please see the [GitHub Wiki](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development).</p>
 
 ### Installation
 
@@ -80,9 +80,12 @@ npm install @elastic/eui@97.3.1 @emotion/react@11.13.5 react@17.0.2 react-dom@17
 
 ### Implementation
 
-#### Implementation in a React app
+#### Demo projects
+<p style={{fontSize:18}}>[Demo React Next.js app](https://github.com/ts4nfdi/react-widgets-demo-project)</p>
+<p style={{fontSize:18}}>[TS4NFDI Service Portal (React Next.js app)](https://github.com/ts4nfdi/service-portal)</p>
+<p style={{fontSize:18}}>[Demo JavaScript](https://github.com/ts4nfdi/JS-Widgets-Demo-Project)</p>
 
-<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/ts4nfdi/react-widgets-demo-project).</p>
+#### Implementation in a React app
 
 <ol>
     <li style={{fontSize:18}}>In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters.</li>
@@ -99,15 +102,45 @@ const queryClient = new QueryClient();
 <QueryClientProvider client={queryClient}>YOUR COMPONENTS</QueryClientProvider>
 ```
 <br></br>
-    <li style={{fontSize:18}}>Import light theme (styling)</li>
-```bash
-```
-    </ol>
 
+</ol>
+
+#### Implementation in a Next.js React app
+<p style={{fontSize:18}}>The widgets are using the browser window object that is not accessible on the NextJS server. Therefore, just importing the widgets in a normal way does not work and raises errors on the build. The widgets need to get imported dynamically on runtime.</p>
+
+```bash
+'use client'
+
+import dynamic from 'next/dynamic';
+import { AutocompleteWidgetProps } from '@ts4nfdi/terminology-service-suite';
+
+const AutocompleteWidget = dynamic<AutocompleteWidgetProps>(() =>
+  import("@ts4nfdi/terminology-service-suite").then((mod) => mod.AutocompleteWidget)
+  , { ssr: false }) as React.ComponentType<AutocompleteWidgetProps>;;
+
+import { QueryClient, QueryClientProvider } from "react-query";
+
+export default function Widgets() {
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AutocompleteWidget
+        api={"https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/"}
+        hasShortSelectedLabel={true}
+        parameter={"ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form"}
+        placeholder="Search for a Concept"
+        preselected={[]}
+        selectionChangedEvent={function noRefCheck() { }}
+        showApiSource={true}
+        singleSelection={true}
+        ts4nfdiGateway={true}
+      />
+    </QueryClientProvider>
+  );
+}
+```
 
 #### Implementation in plain JavaScript
-
-<p style={{fontSize:18}}>You can find a demo project [here](https://github.com/ts4nfdi/JS-Widgets-Demo-Project).</p>
 
 <ol>
 
