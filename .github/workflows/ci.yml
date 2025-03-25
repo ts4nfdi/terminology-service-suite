@@ -29,12 +29,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://npm.pkg.github.com/'
+        scope: '@ts4nfdi'
 
       - name: Set up Node.js (npm registry)
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org/'
+        scope: '@ts4nfdi'
 
       - name: Install dependencies
         run: npm ci
@@ -57,8 +59,8 @@ jobs:
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.KM }}
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+          GITHUB_TOKEN: ${{ secrets.KM }} # for release creation
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for NPM registry publishing
 
       - name: Extract newly published version number
         run: |
