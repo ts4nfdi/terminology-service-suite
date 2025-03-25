@@ -8,6 +8,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,29 +19,39 @@ jobs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
       srrelease: ${{ steps.setoutput.outputs.srrelease }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false # Make sure the release step uses its own credentials.
-      - name: Use Node.js ${{ matrix.node-version }}
+          persist-credentials: false # Make sure semantic-release uses its own credentials
+
+      - name: Set up Node.js (GitHub registry)
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
           registry-url: 'https://npm.pkg.github.com/'
-          scope: '@zbmed'
-      - name: Run npm clean install
+
+      - name: Set up Node.js (npm registry)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Authenticate with npm
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
+      - name: Install dependencies
         run: npm ci
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - run: npm run style:format
+          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import
+
+      - name: Run style formatting
+        run: npm run style:format
         env:
           CI: false
-        working-directory: .
+
       - name: Run npm build
         run: npm run build --if-present
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
@@ -49,144 +60,141 @@ jobs:
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Capture version number
+          GITHUB_TOKEN: ${{ secrets.KM }}
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+
+      - name: Extract newly published version number
         run: |
           echo "SRVERSION=$(echo "${{ steps.semantic_release.outputs.release_output }}" | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Capture semantic-release
+
+      - name: Capture semantic-release status
         run: |
           if echo "${{ steps.semantic_release.outputs.release_output }}" | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Set output
+
+      - name: Save extracted version and release status as workflow outputs
         id: setoutput
         run: |
           echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
           echo "srrelease=$SRRELEASE" >> "$GITHUB_OUTPUT"
-      - name: Debug SRVERSION
+
+      - name: Print SRVERSION for debugging
         run: echo "SRVERSION is $SRVERSION"
-      - name: Debug SRRELEASE
+
+      - name: Print SRRELEASE for debugging
         run: echo "SRRELEASE is $SRRELEASE"
-      - name: Run npm build:plainJS
-        run: npm run build:plainJS
-      - name: Set Git Author Identity
-        if: env.SRRELEASE == 'release'
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-      - name: Configure Git to Use PAT for Authentication
-        if: env.SRRELEASE == 'release'
-        run: |
-          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
-      - name: Upload artifact
-        if: env.SRRELEASE == 'release'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: plainjs-widgets
-          path: dist_plainjs
-      - name: Copy as Latest to gh-pages
-        if: env.SRRELEASE == 'release'
-        run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Copy Version to gh-pages
-        if: env.SRRELEASE == 'release'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
-  documentation:
-    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: 'https://npm.pkg.github.com/'
-          scope: '@zbmed'
-          token: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Run npm clean install
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Run npm build:plainJS
-        run: npm run build:plainJS
-      - name: Install and Build HTML Storybook
-        run: |
-          npm install
-          npm run build-storybook-html -- -o html
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Upload html artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: html-widgets
-          path: 'html'
-      - name: Install and Build React Storybook
-        run: |
-          npm install
-          npm run build-storybook-react -- -o react
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Upload react artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: react-widgets
-          path: 'react'
-      - name: Install and Build Composed Storybook
-        run: |
-          npm install
-          npm run build-storybook -- -o public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'public'
-      - name: Set Git Author Identity
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-      - name: Configure Git to Use PAT for Authentication
-        run: |
-          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
-      - name: Use SRVERSION
-        env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
-        run: echo "SRVERSION is $SRVERSION"
-      - name: Deploy as Latest to GitHub Pages
-        if: env.SRVERSION != ''
-        env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages-multi deploy -s react --no-history -t react/latest
-          npx gh-pages-multi deploy -s html --no-history -t html/latest
-          npx gh-pages-multi deploy -s public --no-history -t comp/latest
-      - name: Deploy Version to GitHub Pages
-        if: env.SRVERSION != ''
-        env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
-          npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
-          npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
+
+#      - name: Run npm build:plainJS
+#        run: npm run build:plainJS
+#      - name: Set Git Author Identity
+#        if: env.SRRELEASE == 'release'
+#        run: |
+#          git config --global user.name "GitHub Actions"
+#          git config --global user.email "actions@github.com"
+#      - name: Configure Git to Use PAT for Authentication
+#        if: env.SRRELEASE == 'release'
+#        run: |
+#          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+#      - name: Upload artifact
+#        if: env.SRRELEASE == 'release'
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          name: plainjs-widgets
+#          path: dist_plainjs
+#      - name: Copy as Latest to gh-pages
+#        if: env.SRRELEASE == 'release'
+#        run: |
+#          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Copy Version to gh-pages
+#        if: env.SRRELEASE == 'release'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
+#  documentation:
+#    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
+#    needs: build
+#    runs-on: ubuntu-latest
+#    permissions:
+#      pages: write      # to deploy to Pages
+#      id-token: write   # to verify the deployment originates from an appropriate source
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#          registry-url: 'https://npm.pkg.github.com/'
+#          scope: '@zbmed'
+#          token: ${{ secrets.TREEVIEW_SECRET }}
+#      - name: Run npm clean install
+#        run: npm ci
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+#      - name: Run npm build:plainJS
+#        run: npm run build:plainJS
+#      - name: Install and Build HTML Storybook
+#        run: |
+#          npm install
+#          npm run build-storybook-html -- -o html
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+#      - name: Upload html artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          name: html-widgets
+#          path: 'html'
+#      - name: Install and Build React Storybook
+#        run: |
+#          npm install
+#          npm run build-storybook-react -- -o react
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+#      - name: Upload react artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          name: react-widgets
+#          path: 'react'
+#      - name: Install and Build Composed Storybook
+#        run: |
+#          npm install
+#          npm run build-storybook -- -o public
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+#      - name: Upload artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          path: 'public'
+#      - name: Set Git Author Identity
+#        run: |
+#          git config --global user.name "GitHub Actions"
+#          git config --global user.email "actions@github.com"
+#      - name: Configure Git to Use PAT for Authentication
+#        run: |
+#          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+#      - name: Use SRVERSION
+#        env:
+#          SRVERSION: ${{ needs.build.outputs.srversion }}
+#        run: echo "SRVERSION is $SRVERSION"
+#      - name: Deploy as Latest to GitHub Pages
+#        if: env.SRVERSION != ''
+#        env:
+#          SRVERSION: ${{ needs.build.outputs.srversion }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          npx gh-pages-multi deploy -s react --no-history -t react/latest
+#          npx gh-pages-multi deploy -s html --no-history -t html/latest
+#          npx gh-pages-multi deploy -s public --no-history -t comp/latest
+#      - name: Deploy Version to GitHub Pages
+#        if: env.SRVERSION != ''
+#        env:
+#          SRVERSION: ${{ needs.build.outputs.srversion }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
+#          npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
+#          npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
