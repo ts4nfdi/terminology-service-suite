@@ -28,3 +28,13 @@ export const TermDepictionWidgetExample = {
     useLegacy: false,
   },
 };
+
+
+export const TermDepictionWidget3D = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/UBERON_0002048",
+    ontologyId: "uberon",
+    useLegacy: false,
+  },
+};
