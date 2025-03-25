@@ -1,7 +1,7 @@
 import React from "react";
-import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
+import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { OlsApi } from "../../../../../api/OlsApi";
-import {QueryClient, QueryClientProvider, useQuery} from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { getErrorMessageToDisplay } from "../../../../../app/util";
 import { CrossRefWidgetProps } from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
@@ -11,54 +11,66 @@ import Reified from "../../../../../model/Reified";
 import ReactDOM from "react-dom";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
-  const { iri, api, parameter, entityType, ontologyId, useLegacy } = props;
+  const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
+    props;
   const olsApi = new OlsApi(api);
 
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useQuery<Thing>(
+  const { data, isLoading, error } = useQuery<Thing>(
     ["crossRefTab", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+      return olsApi.getEntityObject(
+        iri,
+        entityType,
+        ontologyId,
+        parameter,
+        useLegacy
+      );
     }
   );
 
   return (
-    <>
-      {isSuccess && data && isEntity(data) &&
-        <CrossRefTabPresentation crossrefs={Reified.fromJson(data.getCrossReferences()).map((value) => {
-          return value.value;
-        })} />}
-      {isLoading && <EuiLoadingSpinner />}
-      {isError && <EuiText>{getErrorMessageToDisplay(error, "cross references")}</EuiText>}
-    </>
+    <CrossRefTabPresentation
+      crossrefs={
+        data
+          ? isEntity(data)
+            ? Reified.fromJson(data.getCrossReferences()).map((value) => {
+                return value.value;
+              })
+            : []
+          : []
+      }
+      isLoading={isLoading}
+      error={error}
+      className={className}
+    />
   );
 }
 
-function createCrossRefTab(props: CrossRefWidgetProps, container: Element, callback?: ()=>void) {
-    ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
+function createCrossRefTab(
+  props: CrossRefWidgetProps,
+  container: Element,
+  callback?: () => void
+) {
+  ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
 }
 
 function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
-    const queryClient = new QueryClient();
-    return (
-        <EuiProvider colorMode="light">
-            <QueryClientProvider client={queryClient}>
-                <CrossRefTabWidget
-                    iri={props.iri}
-                    api={props.api}
-                    ontologyId={props.ontologyId}
-                    entityType={props.entityType}
-                    parameter={props.parameter}
-                    useLegacy={props.useLegacy}
-                />
-            </QueryClientProvider>
-        </EuiProvider>
-    )
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <CrossRefTabWidget
+          iri={props.iri}
+          api={props.api}
+          ontologyId={props.ontologyId}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          className={props.className}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { CrossRefTabWidget, createCrossRefTab };

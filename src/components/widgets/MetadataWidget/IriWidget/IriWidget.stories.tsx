@@ -1,25 +1,25 @@
 import { IriWidget } from "./IriWidget";
-import {
-  IriWidgetStoryArgs,
-  IriWidgetStoryArgTypes
-} from "./IriWidgetStories";
-import {IriDescription} from "../../../../app/widgetDescriptions";
+import { IriWidgetStoryArgs, IriWidgetStoryArgTypes } from "./IriWidgetStories";
+import { IriDescription } from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/IriWidget",
+  title: "Entity Metadata/IriWidget",
   component: IriWidget,
   parameters: {
     layout: "centered",
     docs: {
       description: {
-        component: IriDescription
-      }
-    }
+        component: IriDescription,
+      },
+    },
   },
   argTypes: IriWidgetStoryArgTypes,
-  args: IriWidgetStoryArgs
+  args: IriWidgetStoryArgs,
 };
 
 export {
-  IriWidget1, withCopyButton, withoutExternalIcon, withUrlPrefix
-} from "./IriWidgetStories"
+  IriWidget1,
+  withCopyButton,
+  withoutExternalIcon,
+  withUrlPrefix,
+} from "./IriWidgetStories";

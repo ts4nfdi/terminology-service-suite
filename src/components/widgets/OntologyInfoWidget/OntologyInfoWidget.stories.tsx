@@ -1,29 +1,32 @@
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
-import {OntologyInfoWidgetStoryArgs, OntologyInfoWidgetStoryArgTypes} from "./OntologyInfoWidgetStories"
-import {manuallyEmbedOnNavigate} from "../../../app/util";
-import {OntologyInfoDescription} from "../../../app/widgetDescriptions";
+import {
+  OntologyInfoWidgetStoryArgs,
+  OntologyInfoWidgetStoryArgTypes,
+} from "./OntologyInfoWidgetStories";
+import { manuallyEmbedOnNavigate } from "../../../app/util";
+import { OntologyInfoDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Ontology Information/OntologyInfoWidget",
+  title: "Ontology Metadata/OntologyInfoWidget",
   component: OntologyInfoWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-            component: OntologyInfoDescription
-        },
+        component: OntologyInfoDescription,
+      },
     },
   },
   argTypes: OntologyInfoWidgetStoryArgTypes,
-  args: OntologyInfoWidgetStoryArgs
+  args: OntologyInfoWidgetStoryArgs,
 };
 
 export {
-    OntologyInfoWidget1,
-    OntologyInfoWidget2,
-    OntologyInfoWidgetOLS4API,
-    NavigateToEBIPage
-} from "./OntologyInfoWidgetStories"
+  OntologyInfoWidget1,
+  OntologyInfoWidget2,
+  OntologyInfoWidgetOLS4API,
+  NavigateToEBIPage,
+} from "./OntologyInfoWidgetStories";

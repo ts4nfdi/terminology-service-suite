@@ -1,25 +1,28 @@
-import {ResourcesWidget} from "./ResourcesWidget";
-import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories"
-import {ResourcesDescription} from "../../../app/widgetDescriptions";
+import { ResourcesWidget } from "./ResourcesWidget";
+import {
+  ResourcesWidgetStoryArgs,
+  ResourcesWidgetStoryArgTypes,
+} from "./ResourcesWidgetStories";
+import { ResourcesDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Ontology Information/ResourcesWidget",
+  title: "Ontology Metadata/ResourcesWidget",
   component: ResourcesWidget,
   parameters: {
     layout: "centered",
     docs: {
-        description: {
-            component: ResourcesDescription
-        }
-    }
+      description: {
+        component: ResourcesDescription,
+      },
+    },
   },
   argTypes: ResourcesWidgetStoryArgTypes,
-  args: ResourcesWidgetStoryArgs
+  args: ResourcesWidgetStoryArgs,
 };
 
 export {
-    ResourcesWidget1,
-    WithActions,
-    WithActionsAndSafety,
-    ResourcesWidgetLogos
-} from "./ResourcesWidgetStories"
+  ResourcesWidget1,
+  WithActions,
+  WithActionsAndSafety,
+  ResourcesWidgetLogos,
+} from "./ResourcesWidgetStories";

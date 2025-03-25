@@ -1,35 +1,38 @@
-import 'semlookp-widgets';
-import {SearchResultsListWidgetStoryArgs, SearchResultsListWidgetStoryArgTypes} from "./SearchResultsListWidgetStories"
-import {SearchResultsListWidgetProps} from "../../../app/types";
-import {SearchResultsListDescription} from "../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import {
+  SearchResultsListWidgetStoryArgs,
+  SearchResultsListWidgetStoryArgTypes,
+} from "./SearchResultsListWidgetStories";
+import { SearchResultsListWidgetProps } from "../../../app/types";
+import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'SearchResultsListWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: SearchResultsListDescription
-            }
-        }
+  title: "Search/SearchResultsListWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: SearchResultsListDescription,
+      },
     },
-    render: (args: SearchResultsListWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: SearchResultsListWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="search_results_list_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createSearchResultsList(
+window['ts4nfdiWidgets'].createSearchResultsList(
     {
         api:"${args.api}",
         query:"${args.query}",
@@ -42,17 +45,17 @@ window['SemLookPWidgets'].createSearchResultsList(
     document.querySelector('#search_results_list_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: SearchResultsListWidgetStoryArgTypes,
-    args: SearchResultsListWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: SearchResultsListWidgetStoryArgTypes,
+  args: SearchResultsListWidgetStoryArgs,
+};
 
 export {
-    SearchResultsListSafety,
-    SearchResultsListNFDI4Health,
-    ErrorSearchResultsList,
-    TibNFDI4CHEM,
-    TibDataPlant,
-    SearchResultsListOls4
-} from "./SearchResultsListWidgetStories"
+  SearchResultsListSafety,
+  SearchResultsListNFDI4Health,
+  ErrorSearchResultsList,
+  TibNFDI4CHEM,
+  TibDataPlant,
+  SearchResultsListOls4,
+} from "./SearchResultsListWidgetStories";

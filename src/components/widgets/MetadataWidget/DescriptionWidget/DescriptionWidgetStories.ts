@@ -1,11 +1,15 @@
 import {
   apiArgType,
+  classNameArgType,
   colorArgType,
   descTextArgType,
   iriArgType,
-  ontologyIdArgType, parameterArgType, thingTypeArgType, useLegacyArgType
+  ontologyIdArgType,
+  parameterArgType,
+  thingTypeArgType,
+  useLegacyArgType,
 } from "../../../../stories/storyArgs";
-import * as globals from '../../../../app/globals';
+import * as globals from "../../../../app/globals";
 
 export const DescriptionWidgetStoryArgTypes = {
   ...apiArgType,
@@ -16,6 +20,7 @@ export const DescriptionWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...parameterArgType,
   ...thingTypeArgType,
+  ...classNameArgType,
 };
 
 export const DescriptionWidgetStoryArgs = {
@@ -26,33 +31,43 @@ export const DescriptionWidgetStoryArgs = {
   thingType: "term",
   descText: "",
   color: "",
-  parameter: "collection=nfdi4health"
+  className: "",
+  parameter: "collection=nfdi4health",
 };
 
 export const DescriptionWidget1 = {
-    args: {
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        api: globals.ZBMED_API_ENDPOINT,
-        ontologyId: "ncit",
-        thingType: "term",
-        parameter: "collection=nfdi4health",
-    }
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    thingType: "term",
+    parameter: "collection=nfdi4health",
+  },
 };
 
 export const SelectingDefiningOntology = {
-    args: {
-        api: globals.EBI_API_ENDPOINT,
-        iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-        thingType: "",
-        parameter: ""
-    }
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/IAO_0000631",
+    thingType: "",
+    parameter: "",
+  },
 };
 
 export const DefiningOntologyUnavailable = {
-    args: {
-        api: globals.EBI_API_ENDPOINT,
-        iri: "http://identifiers.org/uniprot/Q9VAM9",
-        thingType: "term",
-        parameter: ""
-    }
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://identifiers.org/uniprot/Q9VAM9",
+    thingType: "term",
+    parameter: "",
+  },
+};
+
+export const ErrorFetchingData = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://identifiers.org/uniprot/Q9VA",
+    thingType: "term",
+    parameter: "",
+  },
 };

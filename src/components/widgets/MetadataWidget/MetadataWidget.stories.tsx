@@ -1,33 +1,36 @@
 import { MetadataWidget } from "./MetadataWidget";
-import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories";
-import {manuallyEmbedOnNavigate} from "../../../app/util";
-import {MetadataDescription} from "../../../app/widgetDescriptions";
+import {
+  MetadataWidgetStoryArgs,
+  MetadataWidgetStoryArgTypes,
+} from "./MetadataWidgetStories";
+import { manuallyEmbedOnNavigate } from "../../../app/util";
+import { MetadataDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/MetadataWidget",
+  title: "Entity Metadata/MetadataWidget",
   component: MetadataWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-          component: MetadataDescription,
-      }
+        component: MetadataDescription,
+      },
     },
   },
   argTypes: MetadataWidgetStoryArgTypes,
-  args: MetadataWidgetStoryArgs
+  args: MetadataWidgetStoryArgs,
 };
 
 export {
-    MetadataWidget1,
-    OLS3,
-    OLS4V1,
-    OLS4V2,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    HiddenTabs,
-    TermAsLink
-} from "./MetadataWidgetStories"
+  MetadataWidget1,
+  OLS3,
+  OLS4V1,
+  OLS4V2,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  HiddenTabs,
+  TermAsLink,
+} from "./MetadataWidgetStories";

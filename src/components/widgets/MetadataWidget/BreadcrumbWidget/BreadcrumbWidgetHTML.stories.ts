@@ -1,36 +1,40 @@
-import 'semlookp-widgets';
-import {BreadcrumbWidgetProps} from "../../../../app/types";
-import {BreadcrumbWidgetStoryArgs, BreadcrumbWidgetStoryArgTypes} from "./BreadcrumbWidgetStories";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import { BreadcrumbWidgetProps } from "../../../../app/types";
+import {
+  BreadcrumbWidgetStoryArgs,
+  BreadcrumbWidgetStoryArgTypes,
+} from "./BreadcrumbWidgetStories";
 import "../../../../style/tssStyles.css";
-import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
+import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'BreadcrumbWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: BreadcrumbDescription
-            }
-        }
+  title: "Additional Entity Metadata/BreadcrumbWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: BreadcrumbDescription,
+      },
     },
-    render: (args: BreadcrumbWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: BreadcrumbWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="breadcrumb_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createBreadcrumb(
+window['ts4nfdiWidgets'].createBreadcrumb(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -39,19 +43,20 @@ window['SemLookPWidgets'].createBreadcrumb(
         colorFirst:"${args.colorFirst}",
         colorSecond:"${args.colorSecond}",
         parameter:"${args.parameter}",
-        onNavigateToOntology:${args.onNavigateToOntology}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className: "${args.className}"
     },
     document.querySelector('#breadcrumb_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: BreadcrumbWidgetStoryArgTypes,
-    args: BreadcrumbWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: BreadcrumbWidgetStoryArgTypes,
+  args: BreadcrumbWidgetStoryArgs,
+};
 
 export {
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    ErrorBreadcrumbWidget
-} from "./BreadcrumbWidgetStories"
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  ErrorBreadcrumbWidget,
+} from "./BreadcrumbWidgetStories";

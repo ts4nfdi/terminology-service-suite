@@ -1,25 +1,24 @@
 import { AutocompleteWidget } from "./AutocompleteWidget";
-import "@elastic/eui/dist/eui_theme_light.json";
 import {
   AutocompleteWidgetStoryArgTypes,
-  AutocompleteWidgetStoryArgsReact
+  AutocompleteWidgetStoryArgsReact,
 } from "./AutocompleteWidgetStories";
 import "../../../style/tssStyles.css";
-import {AutocompleteDescription} from "../../../app/widgetDescriptions";
+import { AutocompleteDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Search and Autocomplete/AutocompleteWidget",
+  title: "Search/AutocompleteWidget",
   parameters: {
     docs: {
       description: {
-        component: AutocompleteDescription
-      }
-    }
+        component: AutocompleteDescription,
+      },
+    },
   },
   component: AutocompleteWidget,
   ...AutocompleteWidgetStoryArgTypes,
   ...AutocompleteWidgetStoryArgsReact,
-}
+};
 
 export {
   WithDefaults,
@@ -28,7 +27,6 @@ export {
   UseAPIGatewayWithSkosmos,
   HideApiSourceApiGateway,
   WithDefaultsCompact,
-  WithValue,
   WithCustomValue,
   WithInvalidValue,
   WithMultipleValues,
@@ -38,10 +36,10 @@ export {
   WithLongForm,
   WithDescriptionAndShortForm,
   TibNFDI4CHEM,
-  TibDataPlant
-} from "./AutocompleteWidgetStories"
-
-
-
-
-
+  TibDataPlant,
+  WithPreselectedValueAndUnresolvedIriOLS3,
+  WithPreselectedValueOLS4v2,
+  WithPreselectedMultipleValuesOLS4,
+  SubtreeDirectSubtypes,
+  SubtreeDirectAndIndirectSubtypes,
+} from "./AutocompleteWidgetStories";

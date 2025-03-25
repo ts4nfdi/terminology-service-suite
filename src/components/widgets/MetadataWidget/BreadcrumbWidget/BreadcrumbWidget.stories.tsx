@@ -1,31 +1,34 @@
-import {BreadcrumbWidget} from "./BreadcrumbWidget";
+import { BreadcrumbWidget } from "./BreadcrumbWidget";
 import {
   BreadcrumbWidgetStoryArgs,
-  BreadcrumbWidgetStoryArgTypes
+  BreadcrumbWidgetStoryArgTypes,
 } from "./BreadcrumbWidgetStories";
-import {manuallyEmbedOnNavigate} from "../../../../app/util";
-import {BreadcrumbDescription} from "../../../../app/widgetDescriptions";
+import { manuallyEmbedOnNavigate } from "../../../../app/util";
+import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Entity Information/BreadcrumbWidget",
+  title: "Additional Entity Metadata/BreadcrumbWidget",
   component: BreadcrumbWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-        component: BreadcrumbDescription
-      }
+        component: BreadcrumbDescription,
+      },
     },
   },
   argTypes: BreadcrumbWidgetStoryArgTypes,
-  args: BreadcrumbWidgetStoryArgs
+  args: BreadcrumbWidgetStoryArgs,
 };
 
 export {
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    ErrorBreadcrumbWidget
-} from "./BreadcrumbWidgetStories"
+  BreadcrumbWidgetDefault,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  ErrorBreadcrumbWidget,
+  CustomColors,
+  CustomStyle,
+} from "./BreadcrumbWidgetStories";

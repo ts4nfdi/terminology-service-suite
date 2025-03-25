@@ -1,11 +1,16 @@
-import * as globals from '../../../../app/globals';
+import * as globals from "../../../../app/globals";
 import {
-    apiArgType, colorFirstArgType, colorSecondArgType,
-    entityTypeArgType,
-    iriArgType, onNavigateToOntologyArgType,
-    ontologyIdArgType,
-    parameterArgType, useLegacyArgType
+  apiArgType,
+  colorFirstArgType,
+  colorSecondArgType,
+  entityTypeArgType,
+  iriArgType,
+  onNavigateToOntologyArgType,
+  ontologyIdArgType,
+  parameterArgType,
+  useLegacyArgType,
 } from "../../../../stories/storyArgs";
+import "../../../../style/customBreadcrumbStyle.css";
 
 export const BreadcrumbWidgetStoryArgTypes = {
   ...apiArgType,
@@ -16,7 +21,7 @@ export const BreadcrumbWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...colorFirstArgType,
   ...colorSecondArgType,
-  ...onNavigateToOntologyArgType
+  ...onNavigateToOntologyArgType,
 };
 
 export const BreadcrumbWidgetStoryArgs = {
@@ -28,43 +33,68 @@ export const BreadcrumbWidgetStoryArgs = {
   colorFirst: "",
   colorSecond: "",
   parameter: "collection=nfdi4health",
-  onNavigateToOntology: "Console message"
+  onNavigateToOntology: "Console message",
 };
 
-export const BreadcrumbWidget1 = {
-    args: {
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-        api: globals.ZBMED_API_ENDPOINT,
-        ontologyId: "ncit",
-        entityType: "term",
-        parameter: "collection=nfdi4health",
-    }
+export const BreadcrumbWidgetDefault = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    entityType: "term",
+    parameter: "collection=nfdi4health",
+  },
 };
 
 export const SelectingDefiningOntology = {
-    args: {
-        api: globals.EBI_API_ENDPOINT,
-        iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-        entityType: "term",
-        parameter: ""
-    }
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/IAO_0000631",
+    entityType: "term",
+    parameter: "",
+  },
 };
 
 export const DefiningOntologyUnavailable = {
-    args: {
-        api: globals.EBI_API_ENDPOINT,
-        iri: "http://identifiers.org/uniprot/Q9VAM9",
-        entityType: "term",
-        parameter: ""
-    }
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://identifiers.org/uniprot/Q9VAM9",
+    entityType: "term",
+    parameter: "",
+  },
 };
 
 export const ErrorBreadcrumbWidget = {
-    args: {
-        iri: "http://purl.obolibrary.org/obo/NCIT_C2985987654345678",
-        api: globals.ZBMED_API_ENDPOINT,
-        ontologyId: "ncit",
-        entityType: "term",
-        parameter: "collection=nfdi4health",
-    }
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985987654345678",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    entityType: "term",
+    parameter: "collection=nfdi4health",
+  },
+};
+
+export const CustomColors = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    entityType: "term",
+    parameter: "collection=nfdi4health",
+    colorFirst: "red",
+    colorSecond: "grey",
+  },
+};
+
+export const CustomStyle = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    entityType: "term",
+    parameter: "collection=nfdi4health",
+    colorFirst: "#eced8e",
+    colorSecond: "#8eaeed",
+    className: "custom-breadcrumb-style",
+  },
 };

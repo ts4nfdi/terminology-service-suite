@@ -1,18 +1,22 @@
-import {Ontology} from "../interfaces";
-import {OLS3Thing} from "./OLS3Thing";
+import { Ontology } from "../interfaces";
+import { OLS3Thing } from "./OLS3Thing";
 
 import Reified from "../Reified";
 
-import {asArray, deCamelCase} from "../../app/util";
-import {ThingTypeName} from "../ModelTypeCheck";
+import { asArray, deCamelCase } from "../../app/util";
+import { ThingTypeName } from "../ModelTypeCheck";
 
-export class OLS3Ontology extends OLS3Thing implements Ontology{
-
+export class OLS3Ontology extends OLS3Thing implements Ontology {
   getType(): ThingTypeName {
     return "ontology";
   }
 
-  getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals" {
+  getTypePlural():
+    | "ontologies"
+    | "classes"
+    | "terms"
+    | "properties"
+    | "individuals" {
     return "ontologies";
   }
 
@@ -21,7 +25,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
   }
   getName(): string {
     const names = Reified.fromJson<string>(
-        this.properties["config"]["title"] || ""
+      this.properties["config"]["title"] || ""
     );
     return (names[0] && names[0].value) || this.getOntologyId();
   }
@@ -98,13 +102,14 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
    *  but in semanticlookup.zbmed.de/api.
    */
   getAnnotationPredicates(): string[] {
-    if(this.properties["config"] && this.properties["config"]["annotations"]) {
+    if (this.properties["config"] && this.properties["config"]["annotations"]) {
       /* ols4 excludes "has preferred root term",
        properties without an IRI and anything in rdf, rdfs and owl namespaces,
        but this is not possible here as the labels are keys here, not the IRI's */
-      return asArray<string>(Object.keys(this.properties["config"]["annotations"]));
-    }
-    else {
+      return asArray<string>(
+        Object.keys(this.properties["config"]["annotations"])
+      );
+    } else {
       // "annotations" key is not present in ols4/api
       return [];
     }
@@ -114,12 +119,12 @@ export class OLS3Ontology extends OLS3Thing implements Ontology{
     return deCamelCase(id);
   }
 
-  getAnnotationById(id: string):Reified<any>[] {
-    return Reified.fromJson(asArray(this.properties["config"]["annotations"][id])
-        .filter((elem) => {
-          return typeof elem !== "string" || elem !== ""
-        })
-    )
+  getAnnotationById(id: string): Reified<any>[] {
+    return Reified.fromJson(
+      asArray(this.properties["config"]["annotations"][id]).filter((elem) => {
+        return typeof elem !== "string" || elem !== "";
+      })
+    );
   }
 
   getPreferredRoots(): string[] {

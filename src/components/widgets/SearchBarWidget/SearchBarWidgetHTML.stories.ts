@@ -1,7 +1,10 @@
-import "semlookp-widgets";
+import "ts4nfdi-widgets";
 import { SearchBarWidgetProps } from "../../../app/types";
-import { SearchBarWidgetStoryArgs, SearchBarWidgetStoryArgTypes } from "./SearchBarWidgetStories";
-import {SearchBarDescription} from "../../../app/widgetDescriptions";
+import {
+  SearchBarWidgetStoryArgs,
+  SearchBarWidgetStoryArgTypes,
+} from "./SearchBarWidgetStories";
+import { SearchBarDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
@@ -10,15 +13,15 @@ function getIncNum() {
 }
 
 export default {
-  title: "SearchBarWidget",
+  title: "Search/SearchBarWidget",
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
       description: {
-        component: SearchBarDescription
-      }
-    }
+        component: SearchBarDescription,
+      },
+    },
   },
   render: (args: SearchBarWidgetProps) => {
     // You can either use a function to create DOM elements or use a plain html string!
@@ -29,11 +32,13 @@ export default {
 <div id="search_bar_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createSearchBar(
+window['ts4nfdiWidgets'].createSearchBar(
     {
       api:"${args.api}",
       query:"${args.query}",
-      selectionChangedEvent:${args.selectionChangedEvent.toString().replace(/(\r\n|\n|\r)/gm, "")},
+      selectionChangedEvent:${args.selectionChangedEvent
+        .toString()
+        .replace(/(\r\n|\n|\r)/gm, "")},
       parameter:"${args.parameter}",
     },
     document.querySelector('#search_bar_widget_container_${num}')
@@ -42,12 +47,11 @@ window['SemLookPWidgets'].createSearchBar(
         `;
   },
   argTypes: SearchBarWidgetStoryArgTypes,
-  args: SearchBarWidgetStoryArgs
+  args: SearchBarWidgetStoryArgs,
 };
-
 
 export {
   SearchBarWidgetDefault,
   TibNFDI4CHEM,
-  TibDataPlant
+  TibDataPlant,
 } from "./SearchBarWidgetStories";

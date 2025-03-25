@@ -11,7 +11,7 @@ import {
   EuiText,
   EuiScreenReaderOnly,
   EuiDescriptionList,
-  EuiCallOut
+  EuiCallOut,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
@@ -22,6 +22,7 @@ import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
+import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css"
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -38,7 +39,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     onNavigate,
     parameter,
-    useLegacy = DEFAULT_USE_LEGACY
+    useLegacy = DEFAULT_USE_LEGACY,
+    actions,
+    className,
+    ...rest
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -51,25 +55,38 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     Record<string, ReactNode>
   >({});
 
-  const columns: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
+  const finalClassName = className || "ts4nfdi-resources-style";
+
+  const columns: Array<
+    EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }
+  > = [
     {
       name: "Logo",
       field: "config.logo",
       // TODO: improve position of logo (maybe inside another cell, but this makes sorting more complicated)
-      render: (logoUrl: string) => (
-        logoUrl ?
-          <img width={"100%"} style={{ objectFit: "contain" }}
-               src={logoUrl.startsWith("/images") ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl : logoUrl} alt={"-logo-"} /> :
+      render: (logoUrl: string) =>
+        logoUrl ? (
+          <img
+            width={"100%"}
+            style={{ objectFit: "contain" }}
+            src={
+              logoUrl.startsWith("/images")
+                ? OBO_FOUNDRY_REPO_URL_RAW + logoUrl
+                : logoUrl
+            }
+            alt={"-logo-"}
+          />
+        ) : (
           <></>
-      ),
+        ),
       width: "7%",
-      sortable: false
+      sortable: false,
     },
     {
       name: "Resource Name",
       field: "config.title",
       width: "15%",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Short Name",
@@ -80,7 +97,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           href={"#"}
           onClick={(e) => {
             e.preventDefault();
-            if (onNavigate){
+            if (onNavigate) {
               onNavigate(ontologyId || "");
             }
           }}
@@ -90,50 +107,50 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       ),
 
       width: "10%",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Description",
       field: "config.description",
       // width: "30%",
       css: css`
-          display: block;
-          max-height: 200px;
-          overflow: auto;
-      `
+        display: block;
+        max-height: 200px;
+        overflow: auto;
+      `,
     },
     {
       name: "Version",
       field: "config.version",
-      width: "7%"
+      width: "7%",
     },
     {
       name: "Loaded on",
       field: "loaded",
       width: "8%",
       dataType: "date" as const,
-      sortable: true
+      sortable: true,
     },
     {
       name: "Terms",
       field: "numberOfTerms",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7%",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Properties",
       field: "numberOfProperties",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7%",
-      sortable: true
+      sortable: true,
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
       render: (value: number) => <>{value.toLocaleString()}</>,
       width: "7%",
-      sortable: true
+      sortable: true,
     },
     {
       width: "2%",
@@ -146,20 +163,21 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
               iconType="download"
               aria-label="Download"
               isDisabled={
-                !item.config.allowDownload || !item.config.fileLocation ||
+                !item.config.allowDownload ||
+                !item.config.fileLocation ||
                 item.config.fileLocation.startsWith("file://")
               }
             />
-          )
-        }
-      ]
-    }
+          ),
+        },
+      ],
+    },
   ];
 
   const onTableChange = ({
-                           page,
-                           sort
-                         }: CriteriaWithPagination<OlsResource>) => {
+    page,
+    sort,
+  }: CriteriaWithPagination<OlsResource>) => {
     const { index: pageIndex, size: pageSize } = page;
     setPageIndex(pageIndex);
     setPageSize(pageSize);
@@ -175,14 +193,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     data: ontologiesData,
     isSuccess,
     isError,
-    isLoading
+    isLoading,
   } = useQuery<Ontologies>(
     ["ontologiesData", api, parameter, useLegacy],
     async () => {
-      return olsApi.getOntologiesData(
-        props.parameter,
-        useLegacy
-      );
+      return olsApi.getOntologiesData(props.parameter, useLegacy);
     }
   );
 
@@ -204,17 +219,18 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         iri: ontology.getIri(),
         homepage: ontology.getHomepage(),
         annotations: {
-          license: ontology.getLicense()
+          license: ontology.getLicense(),
         },
-      }
+      },
     };
   }
 
-  const ontos = useLegacy ?
-    ontologiesData?.properties.map(ontology => ({
-      ...ontology.properties
-    })) || [] :
-    ontologiesData?.properties.map(ontology => v2toOlsResource(ontology)) || [];
+  const ontos = useLegacy
+    ? ontologiesData?.properties.map((ontology) => ({
+        ...ontology.properties,
+      })) || []
+    : ontologiesData?.properties.map((ontology) => v2toOlsResource(ontology)) ||
+      [];
 
   const findOntologies = (
     ontologies: any[],
@@ -249,7 +265,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
     return {
       pageOfItems,
-      totalItemCount: ontologies.length
+      totalItemCount: ontologies.length,
     };
   };
 
@@ -265,7 +281,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageIndex,
     pageSize,
     totalItemCount,
-    pageSizeOptions
+    pageSizeOptions,
   };
 
   const resultsCount =
@@ -280,12 +296,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       </>
     );
 
-
   const sorting = {
     sort: {
       field: sortField,
-      direction: sortDirection
-    }
+      direction: sortDirection,
+    },
   };
 
   const toggleDetails = (resource: any) => {
@@ -294,12 +309,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     if (itemIdToExpandedRowMapValues[resource.ontologyId]) {
       delete itemIdToExpandedRowMapValues[resource.ontologyId];
     } else {
+      let homepage = null;
+      let licenseUrl = "";
+      let licenseLabel = "";
 
-      let homepage = null
-      let licenseUrl = ""
-      let licenseLabel = ""
-
-      resource.config.homepage ? homepage = resource.config.homepage : null
+      resource.config.homepage ? (homepage = resource.config.homepage) : null;
 
       if (resource?.config?.annotations?.license) {
         const license = resource.config.annotations.license;
@@ -318,21 +332,24 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
       if (homepage) {
         listItems.push({
-            title: "Homepage",
-            description: <EuiLink
-              href={`${homepage ? homepage : "-"}`}>{`${homepage ? homepage : "-"}`}</EuiLink>
-          }
-        );
+          title: "Homepage",
+          description: (
+            <EuiLink href={`${homepage ? homepage : "-"}`}>{`${
+              homepage ? homepage : "-"
+            }`}</EuiLink>
+          ),
+        });
       }
       if (licenseLabel !== "") {
         listItems.push({
-            title: "License",
-            description: <EuiLink
-              href={`${licenseUrl !== "" ? licenseUrl : null}`}>{`${licenseLabel}`}</EuiLink>
-          }
-        );
+          title: "License",
+          description: (
+            <EuiLink
+              href={`${licenseUrl !== "" ? licenseUrl : null}`}
+            >{`${licenseLabel}`}</EuiLink>
+          ),
+        });
       }
-
 
       itemIdToExpandedRowMapValues[resource.ontologyId] = (
         <EuiDescriptionList listItems={listItems} />
@@ -342,7 +359,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues);
   };
 
-  const columnsWithExpandingRowToggle: Array<EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }> = [
+  const columnsWithExpandingRowToggle: Array<
+    EuiBasicTableColumn<OlsResource> & { css?: SerializedStyles }
+  > = [
     ...columns,
     {
       align: "right",
@@ -363,29 +382,36 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
               toggleDetails(resource);
             }}
             iconType={
-              itemIdToExpandedRowMapValues[resource.ontologyId] ? "arrowDown" : "arrowRight"
+              itemIdToExpandedRowMapValues[resource.ontologyId]
+                ? "arrowDown"
+                : "arrowRight"
             }
             aria-label={
-              itemIdToExpandedRowMapValues[resource.ontologyId] ? "Collapse" : "Expand"
+              itemIdToExpandedRowMapValues[resource.ontologyId]
+                ? "Collapse"
+                : "Expand"
             }
           />
         );
-      }
-    }
+      },
+    },
   ];
-
+// @ts-ignore
   return (
-    <>
-      {isSuccess &&
+    <div className={finalClassName}>
+      {isSuccess && (
         <>
           <EuiCallOut
             title={"Licenses"}
             iconType="magnifyWithExclamation"
             color={"warning"}
           >
-            <p>The use and distribution of the terminologies beyond this service is only permitted in compliance with
-              the license conditions of the respective terminology, also in compliance with the license conditions in
-              the respective countries.</p>
+            <p>
+              The use and distribution of the terminologies beyond this service
+              is only permitted in compliance with the license conditions of the
+              respective terminology, also in compliance with the license
+              conditions in the respective countries.
+            </p>
           </EuiCallOut>
           <EuiSpacer size="s" />
           <EuiText size="xs">
@@ -403,10 +429,11 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             isExpandable={true}
             itemId={"ontologyId"}
+            {...rest}
           />
         </>
-      }
-      {isLoading &&
+      )}
+      {isLoading && (
         <EuiBasicTable
           columns={columnsWithExpandingRowToggle}
           items={pageOfItems}
@@ -414,26 +441,31 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           pagination={pagination}
           sorting={sorting}
           loading
+          {...rest}
         />
-
-      }
-      {isError &&
+      )}
+      {isError && (
         <EuiBasicTable
           columns={columns}
           items={pageOfItems}
           onChange={onTableChange}
           pagination={pagination}
           sorting={sorting}
+          {...rest}
           /*
                           error={getErrorMessageToDisplay(error, "resources")}
           */
         />
-      }
-    </>
+      )}
+    </div>
   );
 }
 
-function createResources(props: ResourcesWidgetProps, container: Element, callback?: () => void) {
+function createResources(
+  props: ResourcesWidgetProps,
+  container: Element,
+  callback?: () => void
+) {
   ReactDOM.render(WrappedResourcesWidget(props), container, callback);
 }
 

@@ -1,11 +1,11 @@
-import {Ontology} from "../interfaces";
-import {OLS4Thing} from "./OLS4Thing";
+import { Ontology } from "../interfaces";
+import { OLS4Thing } from "./OLS4Thing";
 
 import Reified from "../Reified";
 
 import { asArray } from "../../app/util";
 
-export class OLS4Ontology extends OLS4Thing implements Ontology{
+export class OLS4Ontology extends OLS4Thing implements Ontology {
   getOntologyId(): string {
     return this.properties["ontologyId"];
   }

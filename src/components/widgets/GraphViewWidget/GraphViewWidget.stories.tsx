@@ -1,25 +1,28 @@
 import { GraphViewWidget } from "./GraphViewWidget";
-import { GraphViewWidgetStoryArgTypes, GraphViewWidgetStoryArgs } from "./GraphViewWidgetStories";
-import {GraphViewDescription} from "../../../app/widgetDescriptions";
+import {
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+} from "./GraphViewWidgetStories";
+import { GraphViewDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Ontology Information/GraphViewWidget",
+  title: "Hierarchy and Graph/GraphViewWidget",
   component: GraphViewWidget,
   parameters: {
     layout: "centered",
     docs: {
       description: {
-        component: GraphViewDescription
-      }
-    }
+        component: GraphViewDescription,
+      },
+    },
   },
   argTypes: GraphViewWidgetStoryArgTypes,
-  args: GraphViewWidgetStoryArgs
+  args: GraphViewWidgetStoryArgs,
 };
 
 export {
   GraphViewWidgetExample,
   RootWalkGraphExample,
   ChebiWater,
-  ChebiWaterRootWalk
-} from './GraphViewWidgetStories';
+  ChebiWaterRootWalk,
+} from "./GraphViewWidgetStories";

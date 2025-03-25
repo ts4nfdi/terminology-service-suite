@@ -1,24 +1,27 @@
 import { EntityInfoWidget } from "./EntityInfoWidget";
-import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
-import {manuallyEmbedOnNavigate} from "../../../app/util";
-import {EntityInfoDescription} from "../../../app/widgetDescriptions";
+import {
+  EntityInfoWidgetStoryArgs,
+  EntityInfoWidgetStoryArgTypes,
+} from "./EntityInfoWidgetStories";
+import { manuallyEmbedOnNavigate } from "../../../app/util";
+import { EntityInfoDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Entity Information/EntityInfoWidget",
+  title: "Additional Entity Metadata/EntityInfoWidget",
   component: EntityInfoWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-        component: EntityInfoDescription
-      }
+        component: EntityInfoDescription,
+      },
     },
   },
   argTypes: EntityInfoWidgetStoryArgTypes,
-  args: EntityInfoWidgetStoryArgs
+  args: EntityInfoWidgetStoryArgs,
 };
 
 export {
@@ -31,5 +34,5 @@ export {
   InfoWidgetPropertyCharacteristics,
   InfoWidgetRange,
   OptionalEntityTypeLegacyAPI,
-  NavigateToEBIPage
-} from "./EntityInfoWidgetStories"
+  NavigateToEBIPage,
+} from "./EntityInfoWidgetStories";

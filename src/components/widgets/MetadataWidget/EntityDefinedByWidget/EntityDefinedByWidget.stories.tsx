@@ -1,31 +1,31 @@
-import {EntityDefinedByWidget} from "./EntityDefinedByWidget";
+import { EntityDefinedByWidget } from "./EntityDefinedByWidget";
 import {
-    EntityDefinedByWidgetStoryArgs,
-    EntityDefinedByWidgetStoryArgTypes
+  EntityDefinedByWidgetStoryArgs,
+  EntityDefinedByWidgetStoryArgTypes,
 } from "./EntityDefinedByWidgetStories";
-import {manuallyEmbedOnNavigate} from "../../../../app/util";
-import {EntityDefinedByDescription} from "../../../../app/widgetDescriptions";
+import { manuallyEmbedOnNavigate } from "../../../../app/util";
+import { EntityDefinedByDescription } from "../../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/EntityDefinedByWidget",
+  title: "Additional Entity Metadata/EntityDefinedByWidget",
   component: EntityDefinedByWidget,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: manuallyEmbedOnNavigate
+        transform: manuallyEmbedOnNavigate,
       },
       description: {
-          component: EntityDefinedByDescription
-      }
+        component: EntityDefinedByDescription,
+      },
     },
   },
   argTypes: EntityDefinedByWidgetStoryArgTypes,
-  args: EntityDefinedByWidgetStoryArgs
+  args: EntityDefinedByWidgetStoryArgs,
 };
 
 export {
-    v2ApiONS,
-    emptyInDefiningOntology,
-    legacyApi
-} from "./EntityDefinedByWidgetStories"
+  v2ApiONS,
+  emptyInDefiningOntology,
+  legacyApi,
+} from "./EntityDefinedByWidgetStories";

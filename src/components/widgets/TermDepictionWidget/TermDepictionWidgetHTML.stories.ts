@@ -1,33 +1,36 @@
-import 'semlookp-widgets';
-import { TermDepictionWidgetProps } from '../../../app/types';
-import { TermDepictionWidgetStoryArgs, TermDepictionWidgetStoryArgTypes } from './TermDepictionWidgetStories';
-import {TermDepictionDescription} from "../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import { TermDepictionWidgetProps } from "../../../app/types";
+import {
+  TermDepictionWidgetStoryArgs,
+  TermDepictionWidgetStoryArgTypes,
+} from "./TermDepictionWidgetStories";
+import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'TermDepictionWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: TermDepictionDescription
-            }
-        }
+  title: "Additional Entity Metadata/TermDepictionWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: TermDepictionDescription,
+      },
     },
-    render: (args: TermDepictionWidgetProps) => {      
-        const num = getIncNum();
+  },
+  render: (args: TermDepictionWidgetProps) => {
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="term_depiction_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createDepiction(
+window['ts4nfdiWidgets'].createDepiction(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -37,10 +40,10 @@ window['SemLookPWidgets'].createDepiction(
     document.querySelector('#term_depiction_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: TermDepictionWidgetStoryArgTypes,
-    args: TermDepictionWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: TermDepictionWidgetStoryArgTypes,
+  args: TermDepictionWidgetStoryArgs,
+};
 
-export {TermDepictionWidgetExample} from "./TermDepictionWidgetStories"
+export { TermDepictionWidgetExample } from "./TermDepictionWidgetStories";

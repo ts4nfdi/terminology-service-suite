@@ -8,6 +8,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,25 +19,38 @@ jobs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
       srrelease: ${{ steps.setoutput.outputs.srrelease }}
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false # Make sure the release step uses its own credentials.
-      - name: Use Node.js ${{ matrix.node-version }}
+          persist-credentials: false # Make sure semantic-release uses its own credentials
+
+      - name: Set up Node.js (GitHub registry)
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
           registry-url: 'https://npm.pkg.github.com/'
-          scope: '@zbmed'
-      - name: Run npm clean install
+          scope: '@ts4nfdi'
+
+      - name: Set up Node.js (npm registry)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@ts4nfdi'
+
+      - name: Install dependencies
         run: npm ci
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
+
+      - name: Run style formatting
+        run: npm run style:format
+        env:
+          CI: false
+
       - name: Run npm build
         run: npm run build --if-present
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.TREEVIEW_SECRET }}
+
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
@@ -45,34 +59,31 @@ jobs:
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Capture version number
+          GITHUB_TOKEN: ${{ secrets.KM }} # for release creation
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for NPM registry publishing
+
+      - name: Extract newly published version number
         run: |
           echo "SRVERSION=$(echo "${{ steps.semantic_release.outputs.release_output }}" | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Capture semantic-release
+
+      - name: Capture semantic-release status
         run: |
           if echo "${{ steps.semantic_release.outputs.release_output }}" | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_TO_PUSH }}
-          SCOPE: '@ts4nfdi'
-      - name: Set output
+
+      - name: Save extracted version and release status as workflow outputs
         id: setoutput
         run: |
           echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
           echo "srrelease=$SRRELEASE" >> "$GITHUB_OUTPUT"
-      - name: Debug SRVERSION
+
+      - name: Print SRVERSION for debugging
         run: echo "SRVERSION is $SRVERSION"
-      - name: Debug SRRELEASE
+
+      - name: Print SRRELEASE for debugging
         run: echo "SRRELEASE is $SRRELEASE"
+
       - name: Run npm build:plainJS
         run: npm run build:plainJS
       - name: Set Git Author Identity

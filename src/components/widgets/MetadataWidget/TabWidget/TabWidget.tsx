@@ -1,34 +1,47 @@
 import React from "react";
-import {EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
-import {QueryClient, QueryClientProvider, useQuery} from "react-query";
-import {OlsApi} from "../../../../api/OlsApi";
-import {TabWidgetProps} from "../../../../app/types";
+import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsApi } from "../../../../api/OlsApi";
+import { TabWidgetProps } from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import { TabPresentation } from "./TabPresentation";
 import { getErrorMessageToDisplay } from "../../../../app/util";
-import {EntityTypeName, isEntity} from "../../../../model/ModelTypeCheck";
+import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
 
 function TabWidget(props: TabWidgetProps) {
-  const { iri, api, ontologyId, entityType, parameter, useLegacy, hierarchyTab, crossRefTab, terminologyInfoTab, altNamesTab, ...rest } = props;
+  const {
+    iri,
+    api,
+    ontologyId,
+    entityType,
+    parameter,
+    useLegacy,
+    hierarchyTab,
+    crossRefTab,
+    terminologyInfoTab,
+    altNamesTab,
+    ...rest
+  } = props;
   const olsApi = new OlsApi(api);
 
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  } = useQuery<Entity>(
+  const { data, isLoading, isSuccess, isError, error } = useQuery<Entity>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getEntityObject(iri, entityType, ontologyId, parameter, useLegacy);
+      return olsApi.getEntityObject(
+        iri,
+        entityType,
+        ontologyId,
+        parameter,
+        useLegacy
+      );
     }
   );
 
   function render(data: Entity) {
     return (
-      <TabPresentation {...rest}
+      <TabPresentation
+        {...rest}
         data={data}
         iri={iri}
         api={api}
@@ -52,46 +65,48 @@ function TabWidget(props: TabWidgetProps) {
   return (
     <>
       {isLoading && <EuiLoadingSpinner />}
-      {isError && <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>}
-      {isSuccess && data &&
-        <>
-          {isEntity(data) ? render(data) : null}
-        </>
-      }
+      {isError && (
+        <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>
+      )}
+      {isSuccess && data && <>{isEntity(data) ? render(data) : null}</>}
     </>
   );
 }
 
-function createTab(props: TabWidgetProps, container: Element, callback?: ()=>void) {
+function createTab(
+  props: TabWidgetProps,
+  container: Element,
+  callback?: () => void
+) {
   ReactDOM.render(WrappedTabWidget(props), container, callback);
 }
 
 function WrappedTabWidget(props: TabWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light">
-        <QueryClientProvider client={queryClient}>
-          <TabWidget
-              iri={props.iri}
-              api={props.api}
-              ontologyId={props.ontologyId}
-              entityType={props.entityType}
-              parameter={props.parameter}
-              useLegacy={props.useLegacy}
-              altNamesTab={props.altNamesTab}
-              hierarchyTab={props.hierarchyTab}
-              crossRefTab={props.crossRefTab}
-              terminologyInfoTab={props.terminologyInfoTab}
-              onNavigateToEntity={props.onNavigateToEntity}
-              onNavigateToOntology={props.onNavigateToOntology}
-              onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-              hierarchyPreferredRoots={props.hierarchyPreferredRoots}
-              hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
-              hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-          />
-        </QueryClientProvider>
-      </EuiProvider>
-  )
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <TabWidget
+          iri={props.iri}
+          api={props.api}
+          ontologyId={props.ontologyId}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          altNamesTab={props.altNamesTab}
+          hierarchyTab={props.hierarchyTab}
+          crossRefTab={props.crossRefTab}
+          terminologyInfoTab={props.terminologyInfoTab}
+          onNavigateToEntity={props.onNavigateToEntity}
+          onNavigateToOntology={props.onNavigateToOntology}
+          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+          hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+          hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+          hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { TabWidget, createTab };

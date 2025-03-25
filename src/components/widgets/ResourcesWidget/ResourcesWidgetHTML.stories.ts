@@ -1,35 +1,38 @@
-import 'semlookp-widgets';
-import {ResourcesWidgetStoryArgs, ResourcesWidgetStoryArgTypes} from "./ResourcesWidgetStories";
-import {ResourcesWidgetProps} from "../../../app/types";
-import {ResourcesDescription} from "../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import {
+  ResourcesWidgetStoryArgs,
+  ResourcesWidgetStoryArgTypes,
+} from "./ResourcesWidgetStories";
+import { ResourcesWidgetProps } from "../../../app/types";
+import { ResourcesDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'ResourcesWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: ResourcesDescription
-            }
-        }
+  title: "Ontology Metadata/ResourcesWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: ResourcesDescription,
+      },
     },
-    render: (args: ResourcesWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: ResourcesWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="resources_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createResources(
+window['ts4nfdiWidgets'].createResources(
     {
         api:"${args.api}",
         initialEntriesPerPage:${args.initialEntriesPerPage},
@@ -43,16 +46,16 @@ window['SemLookPWidgets'].createResources(
     document.querySelector('#resources_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: ResourcesWidgetStoryArgTypes,
-    args: ResourcesWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: ResourcesWidgetStoryArgTypes,
+  args: ResourcesWidgetStoryArgs,
+};
 
 export {
-    ResourcesWidget1,
-    // TODO: currently don't work because actions uses Eui React components.
-    //       Usage of react components inside args should be avoided
-    // WithActions,
-    // WithActionsAndSafety
-} from "./ResourcesWidgetStories"
+  ResourcesWidget1,
+  // TODO: currently don't work because actions uses Eui React components.
+  //       Usage of react components inside args should be avoided
+  // WithActions,
+  // WithActionsAndSafety
+} from "./ResourcesWidgetStories";

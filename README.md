@@ -33,8 +33,8 @@ Click [here](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/) f
 This project is developed by the Terminology Services for NFDI (TS4NFDI) project (as part of the [Base4NFDI
 consortium](https://base4nfdi.de/)), and the [NFDI4Health Consortium](https://www.nfdi4health.de).
 
-The NFDI4Health Consortium gratefully acknowledges the financial support of the Deutsche Forschungsgemeinschaft 
+The NFDI4Health Consortium gratefully acknowledges the financial support of the Deutsche Forschungsgemeinschaft
 (DFG, German Research Foundation) – project number 442326535.
 
-The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part 
+The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part
 by [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).

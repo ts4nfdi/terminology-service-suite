@@ -6,7 +6,12 @@ export interface SelectResult {
   getLabel(): string | undefined;
   getIri(): string;
   getType(): ThingTypeName;
-  getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals";
+  getTypePlural():
+    | "ontologies"
+    | "classes"
+    | "terms"
+    | "properties"
+    | "individuals";
   getDescription(): string;
   getOntologyId(): string;
   getShortForm(): string;

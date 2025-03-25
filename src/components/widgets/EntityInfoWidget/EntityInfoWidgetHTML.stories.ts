@@ -1,37 +1,40 @@
-import 'semlookp-widgets';
-import {EntityInfoWidgetStoryArgs, EntityInfoWidgetStoryArgTypes} from "./EntityInfoWidgetStories";
-import {EntityInfoWidgetProps} from "../../../app/types";
+import "ts4nfdi-widgets";
+import {
+  EntityInfoWidgetStoryArgs,
+  EntityInfoWidgetStoryArgTypes,
+} from "./EntityInfoWidgetStories";
+import { EntityInfoWidgetProps } from "../../../app/types";
 import "../../../style/tssStyles.css";
-import {EntityInfoDescription} from "../../../app/widgetDescriptions";
+import { EntityInfoDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 // More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
 export default {
-    title: 'EntityInfoWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: EntityInfoDescription
-            }
-        }
+  title: "Additional Entity Metadata/EntityInfoWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: EntityInfoDescription,
+      },
     },
-    render: (args: EntityInfoWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: EntityInfoWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `        
+    return `        
 <div id="entity_info_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createEntityInfo(
+window['ts4nfdiWidgets'].createEntityInfo(
     {
         api:"${args.api}",
         iri:"${args.iri}",
@@ -47,21 +50,21 @@ window['SemLookPWidgets'].createEntityInfo(
     document.querySelector('#entity_info_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: EntityInfoWidgetStoryArgTypes,
-    args: EntityInfoWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: EntityInfoWidgetStoryArgTypes,
+  args: EntityInfoWidgetStoryArgs,
+};
 
 export {
-    TermInfoWidget,
-    PropertyInfoWidget,
-    IndividualInfoWidget,
-    InfoWidgetBadges,
-    InfoWidgetDomain,
-    InfoWidgetPropertyAssertion,
-    InfoWidgetPropertyCharacteristics,
-    InfoWidgetRange,
-    OptionalEntityTypeLegacyAPI,
-    NavigateToEBIPage
-} from "./EntityInfoWidgetStories"
+  TermInfoWidget,
+  PropertyInfoWidget,
+  IndividualInfoWidget,
+  InfoWidgetBadges,
+  InfoWidgetDomain,
+  InfoWidgetPropertyAssertion,
+  InfoWidgetPropertyCharacteristics,
+  InfoWidgetRange,
+  OptionalEntityTypeLegacyAPI,
+  NavigateToEBIPage,
+} from "./EntityInfoWidgetStories";

@@ -1,34 +1,34 @@
-import * as globals from '../../../app/globals';
+import * as globals from "../../../app/globals";
 
 import { apiArgType, parameterArgType } from "../../../stories/storyArgs";
 
 export const DataContentWidgetStoryArgTypes = {
   ...apiArgType,
-  ...parameterArgType
+  ...parameterArgType,
 };
 
 export const DataContentWidgetStoryArgs = {
   api: "",
-  parameter: ""
+  parameter: "",
 };
 
 export const NFDI4HealthDataContentWidget = {
-    args: {
-        api: globals.ZBMED_API_ENDPOINT,
-        parameter: "collection=nfdi4health",
-    }
+  args: {
+    api: globals.ZBMED_OLS4_API,
+    parameter: "collection=nfdi4health",
+  },
 };
 
 export const SafetyDataContentWidget = {
-    args: {
-        api: globals.ZBMED_API_ENDPOINT,
-        parameter: "collection=safety",
-    }
+  args: {
+    api: globals.ZBMED_OLS4_API,
+    parameter: "collection=safety",
+  },
 };
 
 export const ErrorDataContentWidget = {
-    args: {
-        api: globals.ZBMED_API_ENDPOINT,
-        parameter: "collection=safety",
-    }
+  args: {
+    api: globals.ZBMED_OLS4_API,
+    parameter: "collection=safety",
+  },
 };

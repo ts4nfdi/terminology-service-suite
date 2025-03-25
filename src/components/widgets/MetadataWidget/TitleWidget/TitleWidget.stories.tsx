@@ -1,28 +1,32 @@
-import {TitleWidget} from "./TitleWidget";
-import {TitleWidgetStoryArgs, TitleWidgetStoryArgTypes} from "./TitleWidgetStories";
-import {TitleDescription} from "../../../../app/widgetDescriptions";
+import { TitleWidget } from "./TitleWidget";
+import {
+  TitleWidgetStoryArgs,
+  TitleWidgetStoryArgTypes,
+} from "./TitleWidgetStories";
+import { TitleDescription } from "../../../../app/widgetDescriptions";
 
 export default {
-    title: "Metadata/Entity Information/TitleWidget",
-    component: TitleWidget,
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: TitleDescription
-            }
-        }
+  title: "Entity Metadata/TitleWidget",
+  component: TitleWidget,
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: TitleDescription,
+      },
     },
-    argTypes: TitleWidgetStoryArgTypes,
-    args: TitleWidgetStoryArgs
+  },
+  argTypes: TitleWidgetStoryArgTypes,
+  args: TitleWidgetStoryArgs,
 };
 
 export {
-    TitleWidgetDefault,
-    TitleWidgetWithTitleText,
-    IncorrectIriWithDefaultValue,
-    IncorrectIriWithoutDefaultValue,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    TitleWidgetWithStyles
+  TitleWidgetDefault,
+  TitleWidgetWithTitleText,
+  IncorrectIriWithDefaultValue,
+  IncorrectIriWithoutDefaultValue,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  WithStyles,
+  WithoutStyles,
 } from "./TitleWidgetStories";

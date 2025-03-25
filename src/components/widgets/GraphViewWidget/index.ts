@@ -1,1 +1,1 @@
-export {GraphViewWidget} from "./GraphViewWidget";
+export { GraphViewWidget } from "./GraphViewWidget";

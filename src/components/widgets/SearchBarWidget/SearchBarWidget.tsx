@@ -7,12 +7,7 @@ import ReactDOM from "react-dom";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
-  const {
-    api,
-    query,
-    selectionChangedEvent,
-    ...rest
-  } = props;
+  const { api, query, selectionChangedEvent, ...rest } = props;
   const olsApi = new OlsApi(api);
 
   /**
@@ -23,7 +18,9 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   /**
    * selected suggestion (on click)
    */
-  const [selectedOptions, setSelected] = useState<Array<EuiComboBoxOptionOption<any>>>([]);
+  const [selectedOptions, setSelected] = useState<
+    Array<EuiComboBoxOptionOption<any>>
+  >([]);
 
   /**
    * current search value
@@ -41,47 +38,42 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
       return;
     }
 
-    const newOption: Array<EuiComboBoxOptionOption<any>> = [{
-      label: searchValue
-    }];
+    const newOption: Array<EuiComboBoxOptionOption<any>> = [
+      {
+        label: searchValue,
+      },
+    ];
 
     setSelected(newOption);
   };
 
-
   /**
    * fetches suggestions when searchValue changes
    */
-  const {
-    isLoading
-  } = useQuery(
-    [
-      "suggestions",
-      searchValue
-    ],
-    async () => {
-      if (!searchValue.trim()) {
-        return; // Exit early if searchValue is empty
-      }
-      return olsApi.suggest(
+  const { isLoading } = useQuery(["suggestions", searchValue], async () => {
+    if (!searchValue.trim()) {
+      return; // Exit early if searchValue is empty
+    }
+    return olsApi
+      .suggest(
         {
-          query: searchValue
+          query: searchValue,
         },
         undefined,
         undefined,
         props.parameter
-      ).then((response) => {
+      )
+      .then((response) => {
         if (response.response && response.response.docs) {
-          setOptions(response.response.docs.map((suggestion: any) => (
-            {
+          setOptions(
+            response.response.docs.map((suggestion: any) => ({
               label: suggestion.autosuggest,
-              type: { color: "tint1", iconType: "" }
-            }
-          )));
+              type: { color: "tint1", iconType: "" },
+            }))
+          );
         }
       });
-    }
-  );
+  });
 
   /**
    * Once the selected option changes, pass the event by invoking the passed function.
@@ -90,7 +82,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
     selectionChangedEvent(
       selectedOptions.map((selectedOption) => {
         return {
-          label: selectedOption.label
+          label: selectedOption.label,
         };
       })
     );
@@ -120,7 +112,11 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   );
 }
 
-function createSearchBar(props: SearchBarWidgetProps, container: any, callback?: () => void) {
+function createSearchBar(
+  props: SearchBarWidgetProps,
+  container: any,
+  callback?: () => void
+) {
   ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
 }
 

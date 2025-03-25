@@ -1,36 +1,39 @@
-import 'semlookp-widgets';
-import 'semlookp-widgets/terminology-service-suite.css'
-import {MetadataWidgetProps} from "../../../app/types";
-import {MetadataWidgetStoryArgs, MetadataWidgetStoryArgTypes} from "./MetadataWidgetStories"
-import {MetadataDescription} from "../../../app/widgetDescriptions";
+import "ts4nfdi-widgets";
+import "ts4nfdi-widgets/terminology-service-suite.css";
+import { MetadataWidgetProps } from "../../../app/types";
+import {
+  MetadataWidgetStoryArgs,
+  MetadataWidgetStoryArgTypes,
+} from "./MetadataWidgetStories";
+import { MetadataDescription } from "../../../app/widgetDescriptions";
 
 let counter = 0;
 
 function getIncNum() {
-    return counter++;
+  return counter++;
 }
 
 export default {
-    title: 'MetadataWidget',
-    tags: ['autodocs'],
-    parameters: {
-        layout: "centered",
-        docs: {
-            description: {
-                component: MetadataDescription
-            }
-        }
+  title: "Entity Metadata/MetadataWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: MetadataDescription,
+      },
     },
-    render: (args: MetadataWidgetProps) => {
-        // You can either use a function to create DOM elements or use a plain html string!
-        // return `<div>${label}</div>`;
-        const num = getIncNum();
+  },
+  render: (args: MetadataWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
 
-        return `
+    return `
 <div id="metadata_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['SemLookPWidgets'].createMetadata(
+window['ts4nfdiWidgets'].createMetadata(
     {
         iri:"${args.iri}",
         ontologyId:"${args.ontologyId}",
@@ -43,30 +46,33 @@ window['SemLookPWidgets'].createMetadata(
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
         terminologyInfoTab: ${args.terminologyInfoTab},
+        graphViewTab: ${args.graphViewTab},
+        termDepictionTab: ${args.termDepictionTab},
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:${args.className}
     },
     document.querySelector('#metadata_widget_container_${num}')
 )
 </script>
-        `
-    },
-    argTypes: MetadataWidgetStoryArgTypes,
-    args: MetadataWidgetStoryArgs
-}
+        `;
+  },
+  argTypes: MetadataWidgetStoryArgTypes,
+  args: MetadataWidgetStoryArgs,
+};
 
 export {
-    MetadataWidget1,
-    OLS3,
-    OLS4V1,
-    OLS4V2,
-    SelectingDefiningOntology,
-    DefiningOntologyUnavailable,
-    DefinedByAlsoAppearsInWidgets,
-    HiddenTabs,
-    TermAsLink
-} from "./MetadataWidgetStories"
+  MetadataWidget1,
+  OLS3,
+  OLS4V1,
+  OLS4V2,
+  SelectingDefiningOntology,
+  DefiningOntologyUnavailable,
+  DefinedByAlsoAppearsInWidgets,
+  HiddenTabs,
+  TermAsLink,
+} from "./MetadataWidgetStories";

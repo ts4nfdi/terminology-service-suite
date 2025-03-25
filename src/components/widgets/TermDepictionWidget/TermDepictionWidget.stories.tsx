@@ -1,23 +1,23 @@
-import {TermDepictionWidget} from "./TermDepictionWidget";
-import {     
-    TermDepictionWidgetStoryArgs, 
-    TermDepictionWidgetStoryArgTypes
+import { TermDepictionWidget } from "./TermDepictionWidget";
+import {
+  TermDepictionWidgetStoryArgs,
+  TermDepictionWidgetStoryArgTypes,
 } from "./TermDepictionWidgetStories";
-import {TermDepictionDescription} from "../../../app/widgetDescriptions";
+import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 
 export default {
-  title: "Metadata/Entity Information/TermDepictionWidget",
+  title: "Additional Entity Metadata/TermDepictionWidget",
   component: TermDepictionWidget,
   parameters: {
     layout: "centered",
     docs: {
-        description: {
-            component: TermDepictionDescription
-        }
-    }
+      description: {
+        component: TermDepictionDescription,
+      },
+    },
   },
   argTypes: TermDepictionWidgetStoryArgTypes,
-  args: TermDepictionWidgetStoryArgs
+  args: TermDepictionWidgetStoryArgs,
 };
 
-export {TermDepictionWidgetExample} from "./TermDepictionWidgetStories"
+export { TermDepictionWidgetExample } from "./TermDepictionWidgetStories";

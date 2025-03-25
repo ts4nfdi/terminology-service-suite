@@ -1,12 +1,12 @@
-import {Entity} from "../interfaces";
-import {OLS3Thing} from "./OLS3Thing";
+import { Entity } from "../interfaces";
+import { OLS3Thing } from "./OLS3Thing";
 
 import Reified from "../Reified";
 
-import {asArray, deUnderscore} from "../../app/util";
-import {EntityTypeName} from "../ModelTypeCheck";
+import { asArray, deUnderscore } from "../../app/util";
+import { EntityTypeName } from "../ModelTypeCheck";
 
-export abstract class OLS3Entity extends OLS3Thing implements Entity{
+export abstract class OLS3Entity extends OLS3Thing implements Entity {
   abstract getParents(): Reified<any>[];
   abstract getSuperEntities(): Reified<any>[];
   abstract getEquivalents(): Reified<any>[];
@@ -63,7 +63,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
   }
 
   hasChildren(): boolean {
-    return this.properties["has_children"]
+    return this.properties["has_children"];
   }
 
   // TODO: could not find examples of ancestors in new api so far
@@ -96,7 +96,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
   }
 
   getIsDefiningOntology(): boolean {
-    return (this.properties["is_defining_ontology"] || undefined ) as boolean;
+    return (this.properties["is_defining_ontology"] || undefined) as boolean;
   }
 
   getShortForm(): string {
@@ -105,17 +105,21 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
 
   // TODO: are the following 3 needed?
   getDepictedBy(): Reified<string>[] {
-    return Reified.fromJson<string>(
-      [ ...asArray(this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || []),
-        ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []) ]
-    );
+    return Reified.fromJson<string>([
+      ...asArray(
+        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || []
+      ),
+      ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []),
+    ]);
   }
 
   isPredicateFromInformalVocabulary(predicate: string): boolean {
-    return predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||
-        predicate.startsWith("http://purl.org/dc/terms/") ||
-        predicate.startsWith("http://purl.org/dc/elements/1.1/") ||
-        predicate.startsWith("http://schema.org/")
+    return (
+      predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||
+      predicate.startsWith("http://purl.org/dc/terms/") ||
+      predicate.startsWith("http://purl.org/dc/elements/1.1/") ||
+      predicate.startsWith("http://schema.org/")
+    );
   }
 
   /** Can be just found under `properties["annotation"]`.
@@ -133,8 +137,8 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity{
     return deUnderscore(id);
   }
 
-  getAnnotationById(id: string):Reified<any>[] {
-    return Reified.fromJson(asArray(this.properties["annotation"][id]))
+  getAnnotationById(id: string): Reified<any>[] {
+    return Reified.fromJson(asArray(this.properties["annotation"][id]));
   }
 
   // TODO: Can be inferred via "links"->"hierarchicalDescendants"

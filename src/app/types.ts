@@ -10,29 +10,6 @@ import Reified from "../model/Reified";
 import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
-  /**
-   * Additional parameters to pass to the API.
-   *
-   * This parameters can be used to filter the search results. Each parameter can be combined via
-   * the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
-   * <i><b>,</b></i>. The following keys could be used:<br/> <br/>
-   *  <table>
-   *  <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-   *  <tr><td>ontology</td><td>Restrict a search to a set of ontologies e.g. ontology=uberon,mesh</td></tr>
-   *  <tr><td>type</td><td>Restrict a search to an entity type, one of {class,property,individual,ontology}</td></tr>
-   *  <tr><td>slim</td><td>Restrict a search to a particular set of slims by name</td></tr>
-   *  <tr><td>fieldList</td><td>Specify the fields to return. Defaults are <b>{iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}</b></td></tr>
-   *  <tr><td>obsoletes</td><td>Set to true to include obsolete terms in the results</td></tr>
-   *  <tr><td>local</td><td>Set to true to only return terms that are in a defining ontology, e.g. only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced</td></tr>
-   *  <tr><td>childrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only)</td></tr>
-   *  <tr><td>allChildrenOf</td><td>You can restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a plus any hierarchical/transitive properties like 'part of' or 'develops from')</td></tr>
-   *  <tr><td>rows</td><td>Set results per page</td></tr>
-   *  <tr><td>start</td><td>Set the results page number</td></tr>
-   *  <tr><td>lang</td><td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b>.</td></tr>
-   *  <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td></tr>
-   *  <tr><td>database</td><td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td></tr>
-   * </table>
-   */
   parameter?: string;
 };
 
@@ -56,13 +33,6 @@ type TermParameterObj = {
 type ApiObj = {
   /**
    * The API instance for the API call.
-   * - **Official OLS4 API of EMBL-EBI**: [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)
-   * - **Official SemLookP API (based on OLS3)**: [https://semanticlookup.zbmed.de/ols/api/](https://semanticlookup.zbmed.de/ols/api/)
-   * - **Improved SemLookP API (beta version)**: [https://semanticlookup.zbmed.de/api/](https://semanticlookup.zbmed.de/api/)
-   * - **OLS4 API NFDI4Health collection**: [https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/](https://ols4-nfdi4health.prod.km.k8s.zbmed.de/ols4/api/)
-   * - **TIB Terminology Service (OLS3)**: [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)
-   * - **TIB Terminology Service (OLS4)**: [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)
-   * - **TS4NFDI Gateway**: [https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)
    */
   api: string;
 };
@@ -93,42 +63,42 @@ type OptionalOntologyIdObj = {
    * Select a specific ontology by id
    */
   ontologyId?: string;
-}
+};
 
 type ForcedOntologyIdObj = {
   /**
    * Select a specific ontology by id
    */
   ontologyId: string;
-}
+};
 
 type OptionalIriObj = {
   /**
    * Entity IRI whose information you want to fetch.
    */
   iri?: string;
-}
+};
 
 type ForcedIriObj = {
   /**
    * Entity IRI whose information you want to fetch.
    */
   iri: string;
-}
+};
 
 type HasTitleObj = {
   /**
    * Show title, default is true
    */
   hasTitle?: boolean;
-}
+};
 
 type ShowBadgesObj = {
   /**
    * If true (default), entity badges linking to their defining ontologies are shown.
    */
   showBadges?: boolean;
-}
+};
 
 type TargetLinkObj = {
   /**
@@ -137,14 +107,21 @@ type TargetLinkObj = {
    * isn't a terminology service.
    */
   targetLink?: string;
-}
+};
 
 type ContainerWidthObj = {
   /**
    * The container width for a target widget render function. Example: EuiCard for OntologyInfoWidget
    */
-  width?: number
-}
+  width?: number;
+};
+
+type CssClassNameObj = {
+  /**
+   * CSS class for styling
+   */
+  className?: string;
+};
 
 type TabList = {
   /**
@@ -163,57 +140,94 @@ type TabList = {
    * It is possible to show and hide the About Terminology Info tab. **True** shows the tab. **False** hides the tab.
    */
   terminologyInfoTab?: boolean;
-}
-
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & {
   /**
-   * A method that is called once the set of selection changes
-   */
-  selectionChangedEvent: (selectedOptions: {
-    label: string;
-    iri?: string;
-    ontology_name?: string;
-    type?: string;
-  }[]) => void;
+   * It is possible to show and hide the Graph view tab. **True** shows the tab. **False** hides the tab.
+   * */
+  graphViewTab?: boolean;
   /**
-   * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
-   */
-  preselected?: { label?: string; iri?: string }[];
-  /**
-   * Placeholder to show if no user input nor selection is performed.
-   */
-  placeholder?: string;
-  /**
-   * If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.
-   */
-  hasShortSelectedLabel?: boolean;
-  /**
-   * If true, custom terms that are not found in any ontology can be added.
-   */
-  allowCustomTerms?: boolean;
-  /**
-   * If true, only one concept can be selected at once.
-   */
-  singleSelection?: boolean;
-  /**
-   * Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.
-   */
-  singleSuggestionRow?: boolean;
-  /**
-   * Use the TS4NFDI Gateway API
-   */
-  ts4nfdiGateway?: boolean;
-  /**
-   * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
-   */
-  showApiSource?: boolean;
+  * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
+  * */
+  termDepictionTab?: boolean;
 };
+
+export type AutocompleteWidgetSelectedOptions = {
+  /**
+   * The terms metadata that autocomplete selection change event returns to the client.
+   */
+  iri?: string;
+  description?: string;
+  label: string;
+  ontology_name?: string;
+  short_form?: string;
+  source?: string;
+  type?: string;
+};
+
+export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
+  ParameterObj &
+  ApiObj &
+  CssClassNameObj &
+  UseLegacyObj & {
+    /**
+     * A method that is called once the set of selection changes
+     */
+    selectionChangedEvent: (
+      selectedOptions: AutocompleteWidgetSelectedOptions[]
+    ) => void;
+    /**
+     * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
+     */
+    preselected?: { label?: string; iri?: string }[];
+    /**
+     * Placeholder to show if no user input nor selection is performed.
+     */
+    placeholder?: string;
+    /**
+     * If true, only the selected label of the entity is displayed. If false, the ontology and the entity short form is displayed behind the label. Default is true.
+     */
+    hasShortSelectedLabel?: boolean;
+    /**
+     * If true, custom terms that are not found in any ontology can be added.
+     */
+    allowCustomTerms?: boolean;
+    /**
+     * If true, only one concept can be selected at once.
+     */
+    singleSelection?: boolean;
+    /**
+     * Display options in a compact format without descriptions - when this mode is activated, not all information is shown in order to save space.
+     */
+    singleSuggestionRow?: boolean;
+    /**
+     * Use the TS4NFDI Gateway API
+     */
+    ts4nfdiGateway?: boolean;
+    /**
+     * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
+     */
+    showApiSource?: boolean;
+  };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
 
-export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & OnNavigates;
+export type EntityInfoWidgetProps = ApiObj &
+  OptionalEntityTypeObj &
+  OptionalOntologyIdObj &
+  ForcedIriObj &
+  HasTitleObj &
+  ShowBadgesObj &
+  ParameterObj &
+  UseLegacyObj &
+  OnNavigates;
 
-export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & OnNavigates;
+export type EntityRelationsWidgetProps = ApiObj &
+  OptionalEntityTypeObj &
+  OptionalOntologyIdObj &
+  ForcedIriObj &
+  HasTitleObj &
+  ShowBadgesObj &
+  ParameterObj &
+  OnNavigates;
 
 export type JsonApiWidgetProps = {
   /**
@@ -230,109 +244,154 @@ export type JsonApiWidgetProps = {
    * Size of the button.
    */
   buttonSize?: "s" | "m";
-}
+};
 
 export type ColorFirstObj = {
   /**
    * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
    */
   colorFirst?: EuiLinkColor | string;
-}
+};
 
 export type ColorSecondObj = {
   /**
    * Color of the second badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
    */
   colorSecond?: EuiLinkColor | string;
-}
+};
 
+export type BreadcrumbWidgetProps = ApiObj &
+  OptionalEntityTypeObj &
+  OptionalOntologyIdObj &
+  ForcedIriObj &
+  ParameterObj &
+  UseLegacyObj &
+  ColorFirstObj &
+  ColorSecondObj &
+  OnNavigateToOntology &
+  CssClassNameObj;
 
-export type BreadcrumbWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & ParameterObj & UseLegacyObj & ColorFirstObj & ColorSecondObj & OnNavigateToOntology;
-
-export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj & ColorSecondObj & {
-  ontologyName: string,
-  shortForm: string,
-} & OnNavigateToOntology;
+export type BreadcrumbPresentationProps = OptionalOntologyIdObj &
+  ColorFirstObj &
+  ColorSecondObj &
+  CssClassNameObj & {
+    ontologyName: string;
+    shortForm: string;
+  } & OnNavigateToOntology;
 
 export type DescTextObj = {
   /**
    * Set your own text manually that overwrites the text fetched from the API
    */
   descText?: string;
-}
-
-export type DescriptionWidgetProps = EuiTextProps & ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & DescTextObj & {
-  /**
-   * Color of the text, names, hex or rgb
-   */
-  color?: EuiLinkColor | string;
-}
-
-export type DescriptionPresentationProps = DescTextObj & {
-  description: string,
-}
-
-export type IriWidgetProps = ForcedIriObj & {
-  /**
-   * Set your own text manually, which will show as a clickable link instead of the IRI.
-   */
-  iriText?: string;
-  /**
-   * Color of the text: "text", "accent", "primary", "success", "warning", "danger"
-   */
-  color?: EuiButtonColor;
-
-  /**
-   * Indicates that the target is external and needs an icon.
-   */
-  externalIcon?: boolean;
-
-  /**
-   * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
-   */
-  urlPrefix?: string;
-
-  /**
-   * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
-   * left/right means showing the button on the left or right side of the iri link.
-  */
-
-  copyButton?: 'right' | 'left' | 'none';
-}
-
-export type TabSubwidgetsProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & TermParameterObj & UseLegacyObj;
-
-export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & {
-    hierarchyPreferredRoots?: boolean
-    hierarchyKeepExpansionStates?: boolean
-    hierarchyShowSiblingsOnInit?: boolean
 };
 
-export type TabPresentationProps = TabWidgetProps & {
-  data: Thing;
-}
+export type DescriptionWidgetProps = EuiTextProps &
+  ApiObj &
+  OptionalThingTypeObj &
+  OptionalOntologyIdObj &
+  OptionalIriObj &
+  ParameterObj &
+  UseLegacyObj &
+  DescTextObj &
+  CssClassNameObj & {
+    /**
+     * Color of the text, names, hex or rgb
+     */
+    color?: EuiLinkColor | string;
+  };
 
-export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology;
+export type DescriptionPresentationProps = DescTextObj &
+  CssClassNameObj & {
+    description: string;
+    isLoading?: boolean;
+    error?: string | unknown;
+  };
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj & ForcedIriObj & OnNavigateToOntology & {
-  ontolist: any[];
-  label: string;
-}
+export type IriWidgetProps = ForcedIriObj &
+  CssClassNameObj & {
+    /**
+     * Set your own text manually, which will show as a clickable link instead of the IRI.
+     */
+    iriText?: string;
+    /**
+     * Color of the text: "text", "accent", "primary", "success", "warning", "danger"
+     */
+    color?: EuiButtonColor;
+
+    /**
+     * Indicates that the target is external and needs an icon.
+     */
+    externalIcon?: boolean;
+
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
+
+    /**
+     * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+     * left/right means showing the button on the left or right side of the iri link.
+     */
+
+    copyButton?: "right" | "left" | "none";
+  };
+
+export type TabSubwidgetsProps = ApiObj &
+  OptionalEntityTypeObj &
+  OptionalOntologyIdObj &
+  ForcedIriObj &
+  TermParameterObj &
+  UseLegacyObj &
+  CssClassNameObj;
+
+export type TabWidgetProps = TabSubwidgetsProps &
+  TabList &
+  OnNavigates &
+  CssClassNameObj & {
+    hierarchyPreferredRoots?: boolean;
+    hierarchyKeepExpansionStates?: boolean;
+    hierarchyShowSiblingsOnInit?: boolean;
+  };
+
+export type TabPresentationProps = TabWidgetProps &
+  CssClassNameObj & {
+    data: Thing;
+    isLoading?: boolean;
+    error?: string | unknown;
+  };
+
+export type EntityOntoListWidgetProps = TabSubwidgetsProps &
+  ForcedOntologyIdObj &
+  OnNavigateToOntology &
+  CssClassNameObj;
+
+export type EntityOntoListPresentationProps = OptionalEntityTypeObj &
+  ForcedIriObj &
+  OnNavigateToOntology &
+  CssClassNameObj & {
+    ontolist: any[];
+    label: string;
+  };
 
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
 export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
-export type AlternativeNameTabWidgetPresentationProps = {
+export type AlternativeNameTabWidgetPresentationProps = CssClassNameObj & {
   synonyms: any[];
-}
+  isLoading?: boolean;
+  error?: string | unknown;
+};
 
 export type CrossRefWidgetProps = TabSubwidgetsProps;
 
-export type CrossRefPresentationProps = {
+export type CrossRefPresentationProps = CssClassNameObj & {
   crossrefs: any[];
-}
+  isLoading?: boolean;
+  error?: string | unknown;
+};
 
 // Is mainly used for Hierarchy
 export type EntityData = {
@@ -348,7 +407,7 @@ export type EntityData = {
    * should be present for use with hierarchy
    */
   parents?: Reified<string>[];
-}
+};
 
 export type OnNavigateToEntity = {
   /**
@@ -362,8 +421,12 @@ export type OnNavigateToEntity = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToEntity?: (ontologyId: string, entityType?: string, entity?: EntityData) => void;
-}
+  onNavigateToEntity?: (
+    ontologyId: string,
+    entityType?: string,
+    entity?: EntityData
+  ) => void;
+};
 
 export type OnNavigateToOntology = {
   /**
@@ -377,8 +440,12 @@ export type OnNavigateToOntology = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToOntology?: (ontologyId: string, entityType?: string, entity?: EntityData) => void,
-}
+  onNavigateToOntology?: (
+    ontologyId: string,
+    entityType?: string,
+    entity?: EntityData
+  ) => void;
+};
 
 export type OnNavigateToDisambiguate = {
   /**
@@ -391,101 +458,116 @@ export type OnNavigateToDisambiguate = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToDisambiguate?: (entityType: string, entity?: EntityData) => void
+  onNavigateToDisambiguate?: (entityType: string, entity?: EntityData) => void;
+};
 
-}
+export type OnNavigates = OnNavigateToEntity &
+  OnNavigateToOntology &
+  OnNavigateToDisambiguate;
 
-export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
-
-export type HierarchyWidgetProps = {
+export type HierarchyWidgetProps = CssClassNameObj & {
   /**
    * The API URL for the API call.
    */
-  apiUrl: string
+  apiUrl: string;
   /**
    * **Only required for OntoPortal hierarchies**
    * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
    */
-  apiKey?: string
+  apiKey?: string;
   /**
    * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
    */
-  backendType?: string
-} & BuildHierarchyProps & HierarchyIriProp & OnNavigateToEntity & OnNavigateToOntology;
+  backendType?: string;
+} & BuildHierarchyProps &
+  HierarchyIriProp &
+  OnNavigateToEntity &
+  OnNavigateToOntology;
 
 export type TitleTextObj = {
   /**
    * Set your own text manually that overwrites the text fetched from the API
    */
   titleText?: string;
-}
+};
 
-export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & {
-  /**
-   * Set the default text shown if the API fails to retrieve one.
-   */
-  defaultValue?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
-}
+export type TitleWidgetProps = ApiObj &
+  OptionalThingTypeObj &
+  OptionalOntologyIdObj &
+  OptionalIriObj &
+  ParameterObj &
+  UseLegacyObj &
+  TitleTextObj &
+  CssClassNameObj & {
+    /**
+     * Set the default text shown if the API fails to retrieve one.
+     */
+    defaultValue?: string;
+  };
 
-export type TitlePresentationProps = TitleTextObj & {
-  title?: string;
-  /**
-   * CSS class for styling
-   */
-  className?: string;
-  /**
-   * Set the default text shown if the API fails to retrieve one.
-   */
-  defaultValue?: string
-}
+export type TitlePresentationProps = TitleTextObj &
+  CssClassNameObj & {
+    title?: string;
+    /**
+     * Set the default text shown if the API fails to retrieve one.
+     */
+    defaultValue?: string;
+    isLoading?: boolean;
+    error?: string | unknown;
+  };
 
-export type MetadataWidgetProps =
-    TabWidgetProps & {
+export type MetadataWidgetProps = TabWidgetProps &
+  CssClassNameObj & {
     /**
      * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
      */
     termLink?: string;
-};
+  };
 
-export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates;
+export type OntologyInfoWidgetProps = ApiObj &
+  ForcedOntologyIdObj &
+  HasTitleObj &
+  ShowBadgesObj &
+  ParameterObj &
+  UseLegacyObj &
+  ContainerWidthObj &
+  OnNavigates &
+  CssClassNameObj;
 
+export type ResourcesWidgetProps = ApiObj &
+  ParameterObj &
+  UseLegacyObj &
+  CssClassNameObj & {
+    /**
+     * Initial number of entries displayed per page.
+     */
+    initialEntriesPerPage?: number;
 
-export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & {
+    /**
+     * Possible values for number of entries displayed per page.
+     */
+    pageSizeOptions?: number[];
 
-  /**
-   * Initial number of entries displayed per page.
-   */
-  initialEntriesPerPage?: number;
+    /**
+     * Column the table is sorted by initially.
+     */
+    initialSortField?: string;
 
-  /**
-   * Possible values for number of entries displayed per page.
-   */
-  pageSizeOptions?: number[];
+    /**
+     * Initial sorting direction.
+     */
+    initialSortDir?: "asc" | "desc";
 
-  /**
-   * Column the table is sorted by initially.
-   */
-  initialSortField?: string;
+    /**
+     * Pass actions to each item in the table.
+     */
+    actions?: Array<Action<OlsResource>>;
 
-  /**
-   * Initial sorting direction.
-   */
-  initialSortDir?: "asc" | "desc";
-
-  /**
-   * Pass actions to each item in the table.
-   */
-  actions?: Array<Action<OlsResource>>;
-
-  /**
-   * This function is called every time an ontology link is clicked.
-   */
-  onNavigate?: (ontologyId: string) => void;
-}
+    /**
+     * This function is called every time an ontology link is clicked.
+     */
+    onNavigate?: (ontologyId: string) => void;
+  };
 
 export type OlsResource = ForcedOntologyIdObj & {
   loaded: string;
@@ -493,57 +575,67 @@ export type OlsResource = ForcedOntologyIdObj & {
   numberOfProperties: number;
   numberOfIndividuals: number;
   config: {
-      logo?: string;
-      title: string;
-      description: string;
-      preferredPrefix: string;
-      allowDownload: boolean;
-      fileLocation: string;
-      version?: string;
-      [otherFields: string]: unknown;
-    };
+    logo?: string;
+    title: string;
+    description: string;
+    preferredPrefix: string;
+    allowDownload: boolean;
+    fileLocation: string;
+    version?: string;
     [otherFields: string]: unknown;
-}
-
-export type SearchBarWidgetProps = ApiObj & ParameterObj & {
-  /**
-   * The search term to receive suggestions for.
-   */
-  query: string;
-
-  /**
-   * A method that is called once the set of selection changes
-   * @param selectedOptions  The selected items
-   */
-  selectionChangedEvent: (selectedOptions: {
-    label: string;
-    iri?: string;
-    ontology_name?: string;
-    type?: string;
-  }[]) => void;
+  };
+  [otherFields: string]: unknown;
 };
 
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj & {
-  /**
-   * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
-   */
-  query: string;
+export type SearchBarWidgetProps = ApiObj &
+  ParameterObj & {
+    /**
+     * The search term to receive suggestions for.
+     */
+    query: string;
 
-  /**
-   * Initial number of items displayed per page.
-   */
-  initialItemsPerPage?: number;
+    /**
+     * A method that is called once the set of selection changes
+     * @param selectedOptions  The selected items
+     */
+    selectionChangedEvent: (
+      selectedOptions: {
+        label: string;
+        iri?: string;
+        ontology_name?: string;
+        type?: string;
+      }[]
+    ) => void;
+  };
 
-  /**
-   * Possible values for number of items displayed per page.
-   */
-  itemsPerPageOptions?: number[];
+export type SearchResultsListWidgetProps = Partial<
+  Omit<EuiCardProps, "layout">
+> &
+  ApiObj &
+  TargetLinkObj &
+  ParameterObj &
+  UseLegacyObj &
+  CssClassNameObj & {
+    /**
+     * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
+     */
+    query: string;
 
-  /**
-   * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
-   */
-  preselected?: { label?: string; iri?: string }[];
-};
+    /**
+     * Initial number of items displayed per page.
+     */
+    initialItemsPerPage?: number;
+
+    /**
+     * Possible values for number of items displayed per page.
+     */
+    itemsPerPageOptions?: number[];
+
+    /**
+     * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
+     */
+    preselected?: { label?: string; iri?: string }[];
+  };
 
 export type SearchResultProps = {
   description: string[];
@@ -555,40 +647,49 @@ export type SearchResultProps = {
   ontology_prefix: string;
   short_form: string;
   type: ThingTypeName;
-}
-
-export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & {
-  result: SearchResultProps;
 };
 
-export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
+export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
+  ApiObj &
+  TargetLinkObj &
+  ParameterObj &
+  CssClassNameObj & {
+    result: SearchResultProps;
+  };
 
-export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
-{
-  /**
-   * When true, the graph will show the tree hierarchy for the target node in form of a graph.
-   */
-  rootWalk?: boolean;
-};
+export type TermDepictionWidgetProps = ApiObj &
+  ForcedIriObj &
+  ForcedOntologyIdObj &
+  UseLegacyObj;
+
+export type GraphViewWidgetProps = ApiObj &
+  ForcedIriObj &
+  ForcedOntologyIdObj &
+  CssClassNameObj & {
+    /**
+     * When true, the graph will show the tree hierarchy for the target node in form of a graph.
+     */
+    rootWalk?: boolean;
+  };
 
 export type OlsGraphNode = {
   /**
    * Used in the GraphView widget for rendering a graph's node
    */
   node: {
-    iri?: string,
-    label?: string
-  }
-}
+    iri?: string;
+    label?: string;
+  };
+};
 
 export type OlsGraphEdge = {
   /**
    * Used in the GraphView widget for rendering a graph's edge
    */
   edge: {
-    uri?: string,
-    label?: string,
-    source?: string,
-    target?: string
-  }
-}
+    uri?: string;
+    label?: string;
+    source?: string;
+    target?: string;
+  };
+};
