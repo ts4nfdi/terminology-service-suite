@@ -20,4 +20,4 @@ export default {
   args: TermDepictionWidgetStoryArgs,
 };
 
-export { TermDepictionWidgetExample } from "./TermDepictionWidgetStories";
+export { TermDepictionWidgetExample, TermDepictionWidget3D } from "./TermDepictionWidgetStories";

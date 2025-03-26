@@ -11,6 +11,8 @@ import {
   EuiImage,
 } from "@elastic/eui";
 import { getErrorMessageToDisplay } from "../../../app/util";
+import "@google/model-viewer";
+
 
 function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { api, iri, ontologyId, useLegacy } = props;
@@ -26,18 +28,36 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   return (
     <>
       {isLoading && <EuiLoadingSpinner size="s" />}
-      {isSuccess && data && data.getDepictionUrl() && (
+      {isSuccess && data && data.getDepictionUrl().length !== 0 && (
         <>
-          <EuiImage
-            size="m"
-            hasShadow
-            allowFullScreen
-            alt={data.getDepictionUrl()}
-            src={data.getDepictionUrl()}
-          />
-          <p>
-            <small>Click to expand.</small>
-          </p>
+          {data.getDepictionUrl().map((url: string) => {
+            if (url.includes(".glb")) {
+              return (
+                <model-viewer
+                  style={{ width: '300px', height: '300px', display: 'inline-block' }}
+                  src={url}
+                  shadow-intensity="1"
+                  camera-controls
+                  touch-action="pan-y"
+                />
+              )
+            }
+            return (
+              <>
+                <EuiImage
+                  size="m"
+                  hasShadow
+                  allowFullScreen
+                  alt={url}
+                  src={url}
+                />
+                <p>
+                  <small>Click to expand.</small>
+                </p>
+              </>
+            )
+
+          })}
         </>
       )}
       {isError && (
@@ -70,5 +90,6 @@ function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
     </EuiProvider>
   );
 }
+
 
 export { createDepiction, TermDepictionWidget };

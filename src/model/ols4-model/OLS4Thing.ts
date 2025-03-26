@@ -119,10 +119,13 @@ export abstract class OLS4Thing implements Thing {
     return new LinkedEntities(this.properties["linkedEntities"] || {});
   }
 
-  getDepictionUrl(): string {
-    if (this.properties["http://xmlns.com/foaf/0.1/depiction"]) {
+  getDepictionUrl(): string[] {
+    let depictionUri = "http://xmlns.com/foaf/0.1/depiction";
+    if (this.properties[depictionUri] && typeof (this.properties[depictionUri]) === "string") {
+      return [this.properties["http://xmlns.com/foaf/0.1/depiction"]];
+    } else if (this.properties[depictionUri]) {
       return this.properties["http://xmlns.com/foaf/0.1/depiction"];
     }
-    return "";
+    return [];
   }
 }
