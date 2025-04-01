@@ -4,6 +4,8 @@ import {
   classNameArgType,
   defaultValueArgType,
   iriArgType,
+  navigateToIriArgType,
+  onNavigateToArgType,
   ontologyIdArgType,
   parameterArgType,
   thingTypeArgType,
@@ -22,6 +24,8 @@ export const TitleWidgetStoryArgTypes = {
   ...defaultValueArgType,
   ...useLegacyArgType,
   ...classNameArgType,
+  ...onNavigateToArgType,
+  ...navigateToIriArgType,
 };
 
 export const TitleWidgetStoryArgs = {
@@ -34,6 +38,7 @@ export const TitleWidgetStoryArgs = {
   defaultValue: "",
   className: "",
   parameter: "collection=nfdi4health",
+  navigateToIri: false,
 };
 
 export const TitleWidgetDefault = {
@@ -42,6 +47,15 @@ export const TitleWidgetDefault = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
+  },
+};
+
+export const OntologyTitle = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    thingType: "ontology",
   },
 };
 
@@ -109,5 +123,25 @@ export const WithoutStyles = {
     ontologyId: "ncit",
     thingType: "term",
     className: "none",
+  },
+};
+
+export const EntityTitleLinkToIri = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    thingType: "term",
+    navigateToIri: true,
+  },
+};
+
+export const OntologyTitleCustomLink = {
+  args: {
+    iri: "http://purl.obolibrary.org/obo/NCIT",
+    api: globals.ZBMED_OLS4_API,
+    ontologyId: "ncit",
+    thingType: "ontology",
+    onNavigateTo: (iri, ontologyId, thingType) => {console.log("Navigation with IRI, ontologyId and thingType.", iri, ontologyId, thingType)}
   },
 };

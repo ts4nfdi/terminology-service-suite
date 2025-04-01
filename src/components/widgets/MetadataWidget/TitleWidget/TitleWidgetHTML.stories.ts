@@ -56,10 +56,13 @@ window['ts4nfdiWidgets'].createTitle(
 
 export {
   TitleWidgetDefault,
+  OntologyTitle,
   TitleWidgetWithTitleText,
   IncorrectIriWithDefaultValue,
   IncorrectIriWithoutDefaultValue,
   SelectingDefiningOntology,
   DefiningOntologyUnavailable,
   WithStyles,
+  EntityTitleLinkToIri,
+  OntologyTitleCustomLink,
 } from "./TitleWidgetStories";
