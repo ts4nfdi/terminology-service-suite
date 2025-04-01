@@ -137,7 +137,7 @@ These parameters can be used to filter the search results. Each parameter can be
 | **lang**      | Set the language for the response, e.g., **\`en\`**, **\`de\`**, **\`fr\`**. The default value is **\`en\`**. |
 | **collection** | Restrict a search to a terminology subset, e.g., \`collection=nfdi4health\`. |
 | **database**  | Restrict a search via the API Gateway to specific terminology software stacks. Choose from **\`ols\`**, **\`ontoportal\`**, or **\`skosmos\`**. |
-    `
+    `,
   },
 };
 export const hasShortSelectedLabelArgType = {
@@ -664,6 +664,23 @@ export const onNavigateArgType = {
         }
       },
     },
+  },
+};
+export const onNavigateToArgType = {
+  onNavigateTo: {
+    required: false,
+    description:
+      "This function is called if the title is clicked. Cannot be combined with `navigateToIri`. Either use this custom function `onNavigateTo` (e.g. for navigation to the source terminology service) OR the automatic navigation to the IRI URL with `navigateToIri`",
+    type: { summary: "void" },
+    control: "text",
+  },
+};
+export const navigateToIriArgType = {
+  navigateToIri: {
+    required: false,
+    description: "Navigation to the IRI URL.",
+    type: { summary: "boolean" },
+    defaultValue: { summary: false },
   },
 };
 export const ArgType = {};

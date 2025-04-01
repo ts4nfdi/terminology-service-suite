@@ -47,7 +47,7 @@
   border: 2px solid rgba(0, 0, 0, 0);
 }
 
-.ts4nfdi-searchResult-style-metadata-compact-breadcrumb .clickable-breadcrumb:hover {
+.ts4nfdi-searchResult-style-metadata-compact-breadcrumb
+  .clickable-breadcrumb:hover {
   border: 2px solid black;
 }
-
