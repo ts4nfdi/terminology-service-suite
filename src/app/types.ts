@@ -145,8 +145,8 @@ type TabList = {
    * */
   graphViewTab?: boolean;
   /**
-  * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
-  * */
+   * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
+   * */
   termDepictionTab?: boolean;
 };
 
@@ -503,17 +503,21 @@ export type TitleWidgetProps = ApiObj &
      * Set the default text shown if the API fails to retrieve one.
      */
     defaultValue?: string;
+    navigateToIri?: boolean;
+    onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
   };
 
 export type TitlePresentationProps = TitleTextObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  OptionalThingTypeObj &
+  OptionalIriObj &
+  OptionalOntologyIdObj & {
     title?: string;
-    /**
-     * Set the default text shown if the API fails to retrieve one.
-     */
     defaultValue?: string;
     isLoading?: boolean;
     error?: string | unknown;
+    navigateToIri?: boolean;
+    onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
   };
 
 export type MetadataWidgetProps = TabWidgetProps &

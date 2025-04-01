@@ -19,6 +19,8 @@ function TitleWidget(props: TitleWidgetProps) {
     useLegacy,
     defaultValue,
     className,
+    navigateToIri,
+    onNavigateTo,
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -45,6 +47,11 @@ function TitleWidget(props: TitleWidgetProps) {
       className={className}
       isLoading={isLoading}
       error={isError ? error : null}
+      iri={iri ? iri : data ? data.getIri() : null}
+      onNavigateTo={onNavigateTo}
+      navigateToIri={navigateToIri}
+      ontologyId={ontologyId ? ontologyId : data ? data.getOntologyId() : null}
+      thingType={thingType ? thingType : data ? data.getType() : null}
     />
   );
 }

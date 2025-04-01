@@ -244,8 +244,8 @@ export class OlsApi implements HierarchyBuilder {
         const value: string = param.split("=")[1];
         const finalKey = key === "ontology" ? "ontologyId" : key;
         if (finalKey === "ontologyId" || finalKey === "type") {
-                result[finalKey] = value;
-            }
+          result[finalKey] = value;
+        }
       });
     }
     return result;

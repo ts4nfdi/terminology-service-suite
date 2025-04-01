@@ -1,11 +1,28 @@
 import React from "react";
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
+import { EuiLink, EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { TitlePresentationProps } from "../../../../app/types";
-import { getErrorMessageToDisplay } from "../../../../app/util";
+import {
+  getErrorMessageToDisplay,
+  isEuiLinkColor,
+  isHexColor,
+  isRgbColor,
+} from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTitleStyle.css";
 
 function TitlePresentation(props: TitlePresentationProps) {
-  const { title, titleText, isLoading, error, defaultValue, className } = props;
+  const {
+    title,
+    titleText,
+    isLoading,
+    error,
+    defaultValue,
+    className,
+    navigateToIri,
+    onNavigateTo,
+    iri,
+    ontologyId,
+    thingType,
+  } = props;
   const finalClassName = className || "ts4nfdi-title-style";
 
   const renderContent = () => {
@@ -27,6 +44,32 @@ function TitlePresentation(props: TitlePresentationProps) {
       ) : (
         <EuiText>{getErrorMessageToDisplay(error, "title")}</EuiText>
       );
+    }
+
+    if (navigateToIri) {
+      return (
+        <EuiLink href={iri} external={true}>
+          <EuiText>{title}</EuiText>
+        </EuiLink>
+      );
+    }
+
+    if (typeof onNavigateTo === "function") {
+      if (!onNavigateTo.name.includes("mockConstructor")) {
+        return (
+          <EuiLink
+            href={""}
+            external={true}
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigateTo)
+                onNavigateTo(iri || "", ontologyId || "", thingType || "");
+            }}
+          >
+            <EuiText>{title}</EuiText>
+          </EuiLink>
+        );
+      }
     }
 
     return <EuiText>{title}</EuiText>;

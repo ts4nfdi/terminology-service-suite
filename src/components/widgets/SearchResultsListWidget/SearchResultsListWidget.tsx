@@ -277,154 +277,156 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   return (
     <>
       <div className={finalClassName}>
-      <SearchBarWidget
-        api={api}
-        query={""}
-        selectionChangedEvent={(selectedOption) => {
-          transform_to_searchValue(selectedOption);
-        }}
-      />
-      <EuiSpacer size="xl" />
-      <EuiSpacer size="s" />
+        <SearchBarWidget
+          api={api}
+          query={""}
+          selectionChangedEvent={(selectedOption) => {
+            transform_to_searchValue(selectedOption);
+          }}
+        />
+        <EuiSpacer size="xl" />
+        <EuiSpacer size="s" />
 
-      <EuiFlexGroup>
-        <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
-          <EuiPanel>
-            {isSuccess && (
-              <EuiFormRow label="Filter by type">
-                <EuiSelectable
-                  options={filterByTypeOptions}
-                  onChange={setFilterByTypeOptions}
-                  listProps={{ bordered: true }}
-                >
-                  {(list) => list}
-                </EuiSelectable>
-              </EuiFormRow>
-            )}
-            {isLoading && (
-              <EuiFormRow label="Filter by type">
-                <EuiLoadingSpinner size="s" />
-              </EuiFormRow>
-            )}
-            {isError && (
-              <EuiFormRow label="Filter by type">
-                <EuiSelectable
-                  options={[]}
-                  onChange={setFilterByTypeOptions}
-                  listProps={{ bordered: true }}
-                >
-                  {(list) => list}
-                </EuiSelectable>
-              </EuiFormRow>
-            )}
+        <EuiFlexGroup>
+          <EuiFlexItem grow={3} style={{ minWidth: 250 }}>
+            <EuiPanel>
+              {isSuccess && (
+                <EuiFormRow label="Filter by type">
+                  <EuiSelectable
+                    options={filterByTypeOptions}
+                    onChange={setFilterByTypeOptions}
+                    listProps={{ bordered: true }}
+                  >
+                    {(list) => list}
+                  </EuiSelectable>
+                </EuiFormRow>
+              )}
+              {isLoading && (
+                <EuiFormRow label="Filter by type">
+                  <EuiLoadingSpinner size="s" />
+                </EuiFormRow>
+              )}
+              {isError && (
+                <EuiFormRow label="Filter by type">
+                  <EuiSelectable
+                    options={[]}
+                    onChange={setFilterByTypeOptions}
+                    listProps={{ bordered: true }}
+                  >
+                    {(list) => list}
+                  </EuiSelectable>
+                </EuiFormRow>
+              )}
 
-            {isSuccess && (
-              <EuiFormRow label="Filter by ontology">
-                <EuiSelectable
-                  options={filterByOntologyOptions}
-                  onChange={setFilterByOntologyOptions}
-                  listProps={{ bordered: true }}
-                  searchable
-                >
-                  {(list, search) => (
-                    <>
-                      {search}
-                      {list}
-                    </>
-                  )}
-                </EuiSelectable>
-              </EuiFormRow>
-            )}
-            {isLoading && (
-              <EuiFormRow label="Filter by ontology">
-                <EuiLoadingSpinner size="s" />
-              </EuiFormRow>
-            )}
-            {isError && (
-              <EuiFormRow label="Filter by ontology">
-                <EuiSelectable
-                  options={[]}
-                  onChange={setFilterByOntologyOptions}
-                  listProps={{ bordered: true }}
-                  searchable
-                >
-                  {(list, search) => (
-                    <>
-                      {search}
-                      {list}
-                    </>
-                  )}
-                </EuiSelectable>
-              </EuiFormRow>
-            )}
+              {isSuccess && (
+                <EuiFormRow label="Filter by ontology">
+                  <EuiSelectable
+                    options={filterByOntologyOptions}
+                    onChange={setFilterByOntologyOptions}
+                    listProps={{ bordered: true }}
+                    searchable
+                  >
+                    {(list, search) => (
+                      <>
+                        {search}
+                        {list}
+                      </>
+                    )}
+                  </EuiSelectable>
+                </EuiFormRow>
+              )}
+              {isLoading && (
+                <EuiFormRow label="Filter by ontology">
+                  <EuiLoadingSpinner size="s" />
+                </EuiFormRow>
+              )}
+              {isError && (
+                <EuiFormRow label="Filter by ontology">
+                  <EuiSelectable
+                    options={[]}
+                    onChange={setFilterByOntologyOptions}
+                    listProps={{ bordered: true }}
+                    searchable
+                  >
+                    {(list, search) => (
+                      <>
+                        {search}
+                        {list}
+                      </>
+                    )}
+                  </EuiSelectable>
+                </EuiFormRow>
+              )}
 
-            <EuiButtonEmpty onClick={clearAllFilters}>
-              Clear all filters
-            </EuiButtonEmpty>
-          </EuiPanel>
-        </EuiFlexItem>
+              <EuiButtonEmpty onClick={clearAllFilters}>
+                Clear all filters
+              </EuiButtonEmpty>
+            </EuiPanel>
+          </EuiFlexItem>
 
-        <EuiFlexItem grow={7}>
-          <EuiPanel color="transparent" grow={false}>
-            <EuiFlexGroup>
-              <EuiFlexItem grow={false}>
-                <EuiSwitch
-                  label="Exact match"
-                  checked={exactMatch}
-                  onChange={toggleExactMatch}
-                />
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiSwitch
-                  label="Show only obsolete terms"
-                  checked={showObsoleteTerms}
-                  onChange={toggleShowObsoleteTerms}
-                />
-              </EuiFlexItem>
-            </EuiFlexGroup>
-
-            <EuiSpacer size="m" />
-
-            <EuiText size="xs" style={{ padding: "0 8px" }}>
-              Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
-              {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
-              {totalItems} results
-            </EuiText>
-
-            <EuiSpacer size="s" />
-
-            <EuiHorizontalRule margin="none" style={{ height: 2 }} />
-
-            <EuiSpacer size="s" />
-
-            <EuiTablePagination
-              aria-label="Search result pagination"
-              pageCount={pageCount}
-              activePage={activePage}
-              onChangePage={setActivePage}
-              itemsPerPage={itemsPerPage}
-              onChangeItemsPerPage={onChangeItemsPerPage}
-              itemsPerPageOptions={itemsPerPageOptions}
-            />
-
-            <EuiSpacer size="s" />
-
-            {searchResults &&
-              searchResults.map((result: any) => (
-                <React.Fragment key={result.iri+result.ontology_name+result.type}>
-                  <MetadataCompact
-                    api={api}
-                    result={result}
-                    targetLink={targetLink}
-                    className={`${finalClassName}-metadata-compact`}
+          <EuiFlexItem grow={7}>
+            <EuiPanel color="transparent" grow={false}>
+              <EuiFlexGroup>
+                <EuiFlexItem grow={false}>
+                  <EuiSwitch
+                    label="Exact match"
+                    checked={exactMatch}
+                    onChange={toggleExactMatch}
                   />
-                  <EuiSpacer />
-                </React.Fragment>
-              ))}
-          </EuiPanel>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-        </div>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <EuiSwitch
+                    label="Show only obsolete terms"
+                    checked={showObsoleteTerms}
+                    onChange={toggleShowObsoleteTerms}
+                  />
+                </EuiFlexItem>
+              </EuiFlexGroup>
+
+              <EuiSpacer size="m" />
+
+              <EuiText size="xs" style={{ padding: "0 8px" }}>
+                Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
+                {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
+                {totalItems} results
+              </EuiText>
+
+              <EuiSpacer size="s" />
+
+              <EuiHorizontalRule margin="none" style={{ height: 2 }} />
+
+              <EuiSpacer size="s" />
+
+              <EuiTablePagination
+                aria-label="Search result pagination"
+                pageCount={pageCount}
+                activePage={activePage}
+                onChangePage={setActivePage}
+                itemsPerPage={itemsPerPage}
+                onChangeItemsPerPage={onChangeItemsPerPage}
+                itemsPerPageOptions={itemsPerPageOptions}
+              />
+
+              <EuiSpacer size="s" />
+
+              {searchResults &&
+                searchResults.map((result: any) => (
+                  <React.Fragment
+                    key={result.iri + result.ontology_name + result.type}
+                  >
+                    <MetadataCompact
+                      api={api}
+                      result={result}
+                      targetLink={targetLink}
+                      className={`${finalClassName}-metadata-compact`}
+                    />
+                    <EuiSpacer />
+                  </React.Fragment>
+                ))}
+            </EuiPanel>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </div>
     </>
   );
 }
