@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { EuiBadge, EuiIcon } from "@elastic/eui";
 import { BreadcrumbPresentationProps } from "../../../../app/types";
@@ -5,19 +6,20 @@ import "../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
+  const clickable = !!props.onNavigateToOntology;
   return (
     <>
       <span className={finalClassName}>
         <span
           onClick={() => {
-            if (props.onNavigateToOntology)
+            if (clickable)
               props.onNavigateToOntology(
                 props.ontologyId || "",
                 undefined,
                 undefined
               );
           }}
-          role="button" // Improve accessibility
+          role={clickable ? "button" : undefined} // Improve accessibility
           tabIndex={0} // Make it focusable
           onKeyDown={(e) => {
             if (e.key === "Enter") e.currentTarget.click();
@@ -25,9 +27,7 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
         >
           <EuiBadge
             className={
-              props.ontologyId
-                ? "breadcrumb clickable-breadcrumb"
-                : "breadcrumb"
+              clickable ? "breadcrumb clickable-breadcrumb" : "breadcrumb"
             }
             color={props.colorFirst || "primary"}
           >
