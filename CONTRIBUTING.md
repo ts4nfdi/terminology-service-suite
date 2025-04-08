@@ -25,6 +25,7 @@ Here are some quick links to essential project resources:
 Bugs are tracked via GitHub issues. If you encounter a bug, please create an issue in the repository and provide as much detail as possible. This helps us to reproduce and fix the issue efficiently.
 
 ### What to Include in a Bug Report:
+
 - **A clear, descriptive title** that summarizes the problem
 - **Steps to reproduce** the issue with as much detail as possible
 - **Expected behavior** versus **actual behavior** and why the observed behavior is problematic
@@ -36,6 +37,7 @@ Bugs are tracked via GitHub issues. If you encounter a bug, please create an iss
 Enhancements can include new features or minor improvements to existing functionality. If you have an idea, open an issue on GitHub and provide as much detail as possible.
 
 ### What to Include in an Enhancement Request:
+
 - **A clear and descriptive title** summarizing the suggestion
 - **A step-by-step explanation** of the suggested enhancement
 - **Examples or use cases** demonstrating how it would be beneficial
@@ -52,7 +54,8 @@ You can develop and test the widgets locally. For setup and development instruct
 To ensure an efficient review process, please follow these guidelines:
 
 ### Guidelines for Pull Requests:
-- **Provide all requested details**: 
+
+- **Provide all requested details**:
   - Link to the issue describing the bug that you're fixing
   - Description of the change
   - Screenshot of before and after the change
@@ -62,6 +65,7 @@ To ensure an efficient review process, please follow these guidelines:
 - **Ensure all status checks pass** before submitting - if a status check fails but seems unrelated to your changes, leave a comment explaining why
 
 ### Style Guides
+
 WIP
 
 ## Git Commit Messages

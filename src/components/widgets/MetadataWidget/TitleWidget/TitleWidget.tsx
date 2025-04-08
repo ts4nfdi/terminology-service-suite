@@ -19,6 +19,8 @@ function TitleWidget(props: TitleWidgetProps) {
     useLegacy,
     defaultValue,
     className,
+    onNavigateTo,
+    href,
   } = props;
   const olsApi = new OlsApi(api);
 
@@ -45,6 +47,11 @@ function TitleWidget(props: TitleWidgetProps) {
       className={className}
       isLoading={isLoading}
       error={isError ? error : null}
+      iri={iri ? iri : data ? data.getIri() : null}
+      onNavigateTo={onNavigateTo}
+      ontologyId={ontologyId ? ontologyId : data ? data.getOntologyId() : null}
+      thingType={thingType ? thingType : data ? data.getType() : null}
+      href={href}
     />
   );
 }
@@ -72,6 +79,8 @@ function WrappedTitleWidget(props: TitleWidgetProps) {
           useLegacy={props.useLegacy}
           defaultValue={props.defaultValue}
           className={props.className}
+          onNavigateTo={props.onNavigateTo}
+          href={props.href}
         />
       </QueryClientProvider>
     </EuiProvider>

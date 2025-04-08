@@ -80,8 +80,8 @@ function TabPresentation(props: TabPresentationProps) {
             crossrefs={
               data
                 ? Reified.fromJson(data.getCrossReferences()).map((value) => {
-                  return value.value;
-                })
+                    return value.value;
+                  })
                 : []
             }
             isLoading={props.isLoading}
@@ -159,8 +159,8 @@ function TabPresentation(props: TabPresentationProps) {
   return (
     <>
       {isEntity(props.data) ||
-        isProperty(props.data) ||
-        isIndividual(props.data)
+      isProperty(props.data) ||
+      isIndividual(props.data)
         ? render(props.data)
         : null}
     </>

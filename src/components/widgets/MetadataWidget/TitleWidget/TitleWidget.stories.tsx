@@ -22,6 +22,7 @@ export default {
 
 export {
   TitleWidgetDefault,
+  OntologyTitle,
   TitleWidgetWithTitleText,
   IncorrectIriWithDefaultValue,
   IncorrectIriWithoutDefaultValue,
@@ -29,4 +30,6 @@ export {
   DefiningOntologyUnavailable,
   WithStyles,
   WithoutStyles,
+  OntologyTitleCustomLink,
+  OntologyTitleCustomOnNavigate,
 } from "./TitleWidgetStories";

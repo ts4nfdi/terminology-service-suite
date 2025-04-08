@@ -162,7 +162,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * Creates option from preselected label and iri
    * @param preselectedElement
    */
-  function createCustomTermOption(preselectedElement: any): EuiComboBoxOptionOption<any> {
+  function createCustomTermOption(
+    preselectedElement: any
+  ): EuiComboBoxOptionOption<any> {
     return {
       label: preselectedElement.label,
       key: preselectedElement.label,
@@ -253,7 +255,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       if (singleSelection && preselectedOptions.length > 1) {
         preselectedOptions.length = 1;
       }
-      console.error("Error fetching data for option:", preselectedElement, error);
+      console.error(
+        "Error fetching data for option:",
+        preselectedElement,
+        error
+      );
     }
   }
 
@@ -297,7 +303,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       if (singleSelection && preselectedOptions.length > 1) {
         preselectedOptions.length = 1;
       }
-      console.error("Error fetching data for option:", preselectedElement, error);
+      console.error(
+        "Error fetching data for option:",
+        preselectedElement,
+        error
+      );
     }
   }
 
@@ -347,13 +357,19 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       for (const preselectedElement of uniqueValues) {
         if (useLegacy) {
           if (preselectedElement?.iri?.startsWith("http")) {
-            await fetchAndProcessSelectOption(preselectedElement, preselectedOptions);
+            await fetchAndProcessSelectOption(
+              preselectedElement,
+              preselectedOptions
+            );
           } else if (preselectedElement?.label && allowCustomTerms) {
             preselectedOptions.push(createCustomTermOption(preselectedElement));
           }
         } else {
           if (preselectedElement?.iri?.startsWith("http")) {
-            await fetchAndProcessEntityOption(preselectedElement, preselectedOptions);
+            await fetchAndProcessEntityOption(
+              preselectedElement,
+              preselectedOptions
+            );
           } else if (preselectedElement?.label && allowCustomTerms) {
             preselectedOptions.push(createCustomTermOption(preselectedElement));
           }

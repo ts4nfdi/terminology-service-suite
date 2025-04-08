@@ -137,7 +137,7 @@ These parameters can be used to filter the search results. Each parameter can be
 | **lang**      | Set the language for the response, e.g., **\`en\`**, **\`de\`**, **\`fr\`**. The default value is **\`en\`**. |
 | **collection** | Restrict a search to a terminology subset, e.g., \`collection=nfdi4health\`. |
 | **database**  | Restrict a search via the API Gateway to specific terminology software stacks. Choose from **\`ols\`**, **\`ontoportal\`**, or **\`skosmos\`**. |
-    `
+    `,
   },
 };
 export const hasShortSelectedLabelArgType = {
@@ -664,6 +664,24 @@ export const onNavigateArgType = {
         }
       },
     },
+  },
+};
+export const onNavigateToArgType = {
+  onNavigateTo: {
+    required: false,
+    description:
+      "This function is called if the title is clicked. Cannot be combined with `href`. Either use this custom function `onNavigateTo` (e.g. for navigation to the source terminology service) OR directly provide a link with `href`",
+    type: { summary: "void" },
+    control: "text",
+  },
+};
+export const hrefArgType = {
+  href: {
+    required: false,
+    description:
+      "Creates a hyperlink. Specify the URL of the page to which the link will go.",
+    type: { summary: `string` },
+    control: "text",
   },
 };
 export const ArgType = {};

@@ -22,7 +22,7 @@ import { Ontologies } from "../../../model/interfaces";
 import ReactDOM from "react-dom";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
-import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css"
+import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -396,7 +396,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       },
     },
   ];
-// @ts-ignore
+  // @ts-ignore
   return (
     <div className={finalClassName}>
       {isSuccess && (

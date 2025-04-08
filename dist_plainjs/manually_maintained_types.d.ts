@@ -196,6 +196,8 @@ declare global {
       className?: string;
       useLegacy?: boolean;
       defaultValue?: string;
+      onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
+      href?: string;
     }
     ) => void,
     createEntityOntoList: (props: {
