@@ -46,4 +46,4 @@ window['ts4nfdiWidgets'].createDepiction(
   args: TermDepictionWidgetStoryArgs,
 };
 
-export { TermDepictionWidgetExample } from "./TermDepictionWidgetStories";
+export { TermDepictionWidgetExample, TermDepictionWidget3D } from "./TermDepictionWidgetStories";
