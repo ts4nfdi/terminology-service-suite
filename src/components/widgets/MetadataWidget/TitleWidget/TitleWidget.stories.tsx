@@ -30,6 +30,6 @@ export {
   DefiningOntologyUnavailable,
   WithStyles,
   WithoutStyles,
-  EntityTitleLinkToIri,
   OntologyTitleCustomLink,
+  OntologyTitleCustomOnNavigate,
 } from "./TitleWidgetStories";

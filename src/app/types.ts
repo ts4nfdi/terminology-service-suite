@@ -503,8 +503,14 @@ export type TitleWidgetProps = ApiObj &
      * Set the default text shown if the API fails to retrieve one.
      */
     defaultValue?: string;
-    navigateToIri?: boolean;
+    /**
+     * If this function is defined, the title becomes a link. The function is called every time the link is clicked.
+     */
     onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
+    /**
+     * A hyperlink directly passed to the component.
+     */
+    href?: string;
   };
 
 export type TitlePresentationProps = TitleTextObj &
@@ -516,8 +522,8 @@ export type TitlePresentationProps = TitleTextObj &
     defaultValue?: string;
     isLoading?: boolean;
     error?: string | unknown;
-    navigateToIri?: boolean;
     onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
+    href?: string;
   };
 
 export type MetadataWidgetProps = TabWidgetProps &

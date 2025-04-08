@@ -17,11 +17,11 @@ function TitlePresentation(props: TitlePresentationProps) {
     error,
     defaultValue,
     className,
-    navigateToIri,
     onNavigateTo,
     iri,
     ontologyId,
     thingType,
+    href,
   } = props;
   const finalClassName = className || "ts4nfdi-title-style";
 
@@ -46,9 +46,9 @@ function TitlePresentation(props: TitlePresentationProps) {
       );
     }
 
-    if (navigateToIri) {
+    if (href) {
       return (
-        <EuiLink href={iri} external={true}>
+        <EuiLink href={href}>
           <EuiText>{title}</EuiText>
         </EuiLink>
       );
@@ -59,7 +59,6 @@ function TitlePresentation(props: TitlePresentationProps) {
         return (
           <EuiLink
             href={""}
-            external={true}
             onClick={(e) => {
               e.preventDefault();
               if (onNavigateTo)

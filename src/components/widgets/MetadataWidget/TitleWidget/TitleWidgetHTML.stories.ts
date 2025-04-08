@@ -44,6 +44,8 @@ window['ts4nfdiWidgets'].createTitle(
         useLegacy:"${args.useLegacy}",
         defaultValue:"${args.defaultValue}",
         className:"${args.className}"
+        onNavigateTo:"${args.onNavigateTo}"
+        href:"${args.href}"
     },
     document.querySelector('#title_widget_container_${num}')
 )
@@ -63,6 +65,6 @@ export {
   SelectingDefiningOntology,
   DefiningOntologyUnavailable,
   WithStyles,
-  EntityTitleLinkToIri,
   OntologyTitleCustomLink,
+  OntologyTitleCustomOnNavigate,
 } from "./TitleWidgetStories";

@@ -26,7 +26,7 @@ Click [here](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/) f
 [Development instructions](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development)  
 [Developing with Storybook](https://github.com/ts4nfdi/terminology-service-suite/wiki/Developing-with-Storybook)  
 [Commit message formatting](https://github.com/ts4nfdi/terminology-service-suite/wiki/Commit-Message-Formatting)  
-[Run Storybook with Docker](https://github.com/ts4nfdi/terminology-service-suite/wiki/Run-Storybook-with-Docker-(WIP!))  
+[Run Storybook with Docker](<https://github.com/ts4nfdi/terminology-service-suite/wiki/Run-Storybook-with-Docker-(WIP!)>)
 
 ## Funding
 

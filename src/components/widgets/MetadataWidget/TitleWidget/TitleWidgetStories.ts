@@ -4,13 +4,13 @@ import {
   classNameArgType,
   defaultValueArgType,
   iriArgType,
-  navigateToIriArgType,
   onNavigateToArgType,
   ontologyIdArgType,
   parameterArgType,
   thingTypeArgType,
   titleTextArgType,
   useLegacyArgType,
+  hrefArgType,
 } from "../../../../stories/storyArgs";
 import "../../../../style/customTitleStyle.css";
 
@@ -25,7 +25,7 @@ export const TitleWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...classNameArgType,
   ...onNavigateToArgType,
-  ...navigateToIriArgType,
+  ...hrefArgType,
 };
 
 export const TitleWidgetStoryArgs = {
@@ -38,7 +38,6 @@ export const TitleWidgetStoryArgs = {
   defaultValue: "",
   className: "",
   parameter: "collection=nfdi4health",
-  navigateToIri: false,
 };
 
 export const TitleWidgetDefault = {
@@ -126,13 +125,20 @@ export const WithoutStyles = {
   },
 };
 
-export const EntityTitleLinkToIri = {
+export const OntologyTitleCustomOnNavigate = {
   args: {
-    iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+    iri: "http://purl.obolibrary.org/obo/NCIT",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
-    thingType: "term",
-    navigateToIri: true,
+    thingType: "ontology",
+    onNavigateTo: (iri, ontologyId, thingType) => {
+      console.log(
+        "Navigation with IRI, ontologyId and thingType.",
+        iri,
+        ontologyId,
+        thingType
+      );
+    },
   },
 };
 
@@ -142,6 +148,6 @@ export const OntologyTitleCustomLink = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "ontology",
-    onNavigateTo: (iri, ontologyId, thingType) => {console.log("Navigation with IRI, ontologyId and thingType.", iri, ontologyId, thingType)}
+    href: "/",
   },
 };

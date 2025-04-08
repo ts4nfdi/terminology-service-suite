@@ -670,17 +670,18 @@ export const onNavigateToArgType = {
   onNavigateTo: {
     required: false,
     description:
-      "This function is called if the title is clicked. Cannot be combined with `navigateToIri`. Either use this custom function `onNavigateTo` (e.g. for navigation to the source terminology service) OR the automatic navigation to the IRI URL with `navigateToIri`",
+      "This function is called if the title is clicked. Cannot be combined with `href`. Either use this custom function `onNavigateTo` (e.g. for navigation to the source terminology service) OR directly provide a link with `href`",
     type: { summary: "void" },
     control: "text",
   },
 };
-export const navigateToIriArgType = {
-  navigateToIri: {
+export const hrefArgType = {
+  href: {
     required: false,
-    description: "Navigation to the IRI URL.",
-    type: { summary: "boolean" },
-    defaultValue: { summary: false },
+    description:
+      "Creates a hyperlink. Specify the URL of the page to which the link will go.",
+    type: { summary: `string` },
+    control: "text",
   },
 };
 export const ArgType = {};
