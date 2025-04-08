@@ -38,6 +38,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
           scope: '@ts4nfdi'
 
+      - name: Configure .npmrc for GitHub dependencies
+        run: |
+          echo "@ts4nfdi:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.KM }}" >> ~/.npmrc
+
       - name: Install dependencies
         run: npm ci
         env:
