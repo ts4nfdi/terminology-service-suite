@@ -53,6 +53,7 @@ jobs:
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.KM }}
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Extract newly published version number
         run: |
