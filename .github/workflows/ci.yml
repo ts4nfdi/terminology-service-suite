@@ -31,9 +31,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Debug .npmrc
-        run: cat ~/.npmrc
-
       - name: Install dependencies
         run: npm ci
         env:
@@ -47,22 +44,6 @@ jobs:
       - name: Run npm build
         run: npm run build --if-present
 
-      - name: Set up Node.js (npm registry)
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@ts4nfdi'
-
-      - name: Debug .npmrc
-        run: cat ~/.npmrc
-
-      - name: Configure npm for GitHub Packages
-        run: echo "@ts4nfdi:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
-      - name: Debug .npmrc
-        run: cat ~/.npmrc
-
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
@@ -71,8 +52,7 @@ jobs:
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.KM }} # for release creation
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for NPM registry publishing
+          GITHUB_TOKEN: ${{ secrets.KM }}
 
       - name: Extract newly published version number
         run: |
@@ -125,6 +105,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
+  publish:
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js (npm registry)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@ts4nfdi'
+      - name: Publish to npm registry
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
   documentation:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
     needs: build
