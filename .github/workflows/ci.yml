@@ -124,9 +124,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Checkout semantic-release commit
-        run: git checkout ${{ needs.build.outputs.release_commit_hash }}
+        with:
+          ref: ${{ needs.build.outputs.release_commit_hash }}
 
       - name: Set up Node.js (npm registry)
         uses: actions/setup-node@v3
@@ -139,6 +138,7 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
+          SRVERSION: ${{ needs.build.outputs.srversion }}
 
 #  documentation:
 #    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
