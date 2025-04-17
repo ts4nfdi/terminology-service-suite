@@ -118,7 +118,7 @@ jobs:
 #          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
 
   publish:
-    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release' && startsWith(github.event.head_commit.message, 'chore(release):') && contains(github.event.head_commit.message, env.SRVERSION)
     needs: build
     runs-on: ubuntu-latest
     steps:
