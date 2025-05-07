@@ -37,7 +37,9 @@ window['ts4nfdiWidgets'].createGraphView(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
-        className:${args.className}
+        className:${args.className},
+        hierarchy: ${args.hierarchy},
+        edgeLabel: "${args.edgeLabel}"
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
@@ -53,4 +55,5 @@ export {
   RootWalkGraphExample,
   ChebiWater,
   ChebiWaterRootWalk,
+  ChebiCaffeineHierarchy
 } from "./GraphViewWidgetStories";

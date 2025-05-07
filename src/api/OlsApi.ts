@@ -112,6 +112,8 @@ export type JSTreeNode = {
     opened: boolean;
   };
   children: boolean;
+  childrenList?: JSTreeNode[];
+  parentList?: JSTreeNode[];
   a_attr: {
     iri: string;
     ontology_name: string;
@@ -293,14 +295,14 @@ export class OlsApi implements HierarchyBuilder {
     if (response["error"]) {
       throw Error(
         response["status"] +
-          " " +
-          response["error"] +
-          " - " +
-          response["message"] +
-          " - " +
-          response["exception"] +
-          " at " +
-          response["path"]
+        " " +
+        response["error"] +
+        " - " +
+        response["message"] +
+        " - " +
+        response["exception"] +
+        " at " +
+        response["path"]
       );
     }
     // empty response - can be caught if this is expected, e.g. for fetching instances
@@ -1007,10 +1009,10 @@ export class OlsApi implements HierarchyBuilder {
       default:
         throw Error(
           'Invalid entity type "' +
-            entityType +
-            `". Must be one of {${entityTypeNames
-              .map((elem) => `"${elem}"`)
-              .join(", ")}}.`
+          entityType +
+          `". Must be one of {${entityTypeNames
+            .map((elem) => `"${elem}"`)
+            .join(", ")}}.`
         );
     }
   }
@@ -1595,8 +1597,8 @@ export class OlsApi implements HierarchyBuilder {
                         childRelationToParent:
                           parRelation.length > 0 && parRelation[0].getMetadata()
                             ? parRelation[0].getMetadata()[
-                                "childRelationToParent"
-                              ]
+                            "childRelationToParent"
+                            ]
                             : undefined,
                       });
                     } // should have exactly one element

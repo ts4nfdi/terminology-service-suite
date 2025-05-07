@@ -62,3 +62,13 @@ export const ChebiWaterRootWalk = {
     rootWalk: true,
   },
 };
+
+export const ChebiCaffeineHierarchy = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
+    ontologyId: "chebi",
+    rootWalk: true,
+    hierarchy: true
+  },
+};
