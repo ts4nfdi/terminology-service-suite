@@ -22,7 +22,7 @@ import { JSTreeNode } from "../../../api/OlsApi";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
-  const { api, iri, ontologyId, rootWalk, className } = props;
+  const { api, iri, ontologyId, rootWalk, className, hierarchy, edgeLabel } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -30,6 +30,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [rootWalkIsSelected, setRootWalkIsSelected] = useState(
     rootWalk ? rootWalk : false
   );
+  const [hierarchicalView, setHierarchicalView] = useState<boolean>(hierarchy ? true : false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
@@ -37,6 +38,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   const olsApi = new OlsApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
+  const subClassEdgeLabel = edgeLabel ?? "is a";
 
   const { data, isLoading, isError, error } = useQuery(
     [
@@ -71,6 +73,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const graphNetwork = useRef({});
   const container = useRef(null);
 
+  const hierarchicalConfig = {
+    enabled: true,
+    //@ts-ignore
+    direction: "DU",
+    //@ts-ignore
+    sortMethod: 'directed'
+  }
+
+
   const graphNetworkConfig = {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/#options
@@ -83,6 +94,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       randomSeed: 1,
       improvedLayout: true,
       clusterThreshold: 150,
+      hierarchical: {
+        enabled: false,
+      }
     },
     physics: {
       enabled: true,
@@ -94,8 +108,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         damping: 0.09,
         avoidOverlap: 0,
       },
+      hierarchicalRepulsion: {
+        damping: 0.09,
+        avoidOverlap: 0.9,
+      }
     },
   };
+
+  if (hierarchicalView) {
+    graphNetworkConfig['layout']['hierarchical'] = hierarchicalConfig;
+  }
+
 
   class GraphNode {
     id?: string;
@@ -172,37 +195,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<JSTreeNode>) {
-    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
-    // currently used in showing ancestors. Equivalent to is-a relation.
-    let data: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
-    listOfJsTreeNodes.map((treeNode: JSTreeNode) => {
-      if (!data.nodes.find((obj) => obj.iri === treeNode.iri)) {
-        let node = { iri: treeNode.iri, label: treeNode.text };
-        data.nodes.push(node);
-      }
-      let parentNode = listOfJsTreeNodes.find(
-        (obj: JSTreeNode) => obj.id === treeNode.parent
-      );
-      if (parentNode) {
-        // parent does not exists --> '#' id that indicates a node is a root.
-        let edge = {
-          source: treeNode.iri,
-          target: parentNode.iri,
-          label: "subClassOf",
-          uri: "http://www.w3.org/2000/01/rdf-schema#subClassOf",
-        };
-        if (
-          !data.edges.find(
-            (obj) => obj.source === edge.source && obj.target === edge.target
-          )
-        ) {
-          data.edges.push(edge);
-        }
-      }
-    });
-    return data;
-  }
+
+
 
   if (data && (firstLoad || dbclicked)) {
     let gData = data;
@@ -225,7 +219,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       let gEdge = new GraphEdge({ edge: edge });
       let dashed =
         edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
-        rootWalkIsSelected
+          rootWalkIsSelected
           ? false
           : true;
       gEdge.dashes = dashed;
@@ -247,6 +241,81 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
+
+  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<JSTreeNode>) {
+    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
+    // currently used in showing ancestors. Equivalent to is-a relation.
+
+    // first, the flat array of nodes should turn to a tree.
+    let treeData: JSTreeNode[] = [];
+    for (let node of listOfJsTreeNodes) {
+      if (node.parent === "#") {
+        treeData.push(node);
+        continue;
+      }
+      for (let pn of listOfJsTreeNodes) {
+        if (pn.id === node.parent) {
+          if ("childrenList" in pn) {
+            pn.childrenList!.push(node);
+          } else {
+            pn.childrenList = [node];
+          }
+          if ("parentList" in node) {
+            //@ts-ignore
+            node.parentList.push(pn);
+          } else {
+            node.parentList = [pn];
+          }
+        }
+      }
+    }
+
+    let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+    let q = [...treeData];
+    let layerq = [];
+    let height = 0;
+    while (true) {
+      let node = q[0];
+      q = q.slice(1);
+      if (!graphData.nodes.find((obj) => obj.iri === node.iri)) {
+        let gnode = { iri: node.iri, label: node.text, level: height };
+        graphData.nodes.push(gnode);
+      }
+
+      if (node.parentList && node.parentList.length !== 0) {
+        node.parentList.forEach((pn) => {
+          let edge = {
+            source: node.iri,
+            target: pn.iri,
+            label: subClassEdgeLabel,
+            uri: "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+          };
+          if (
+            !graphData.edges.find(
+              (obj) => obj.source === edge.source && obj.target === edge.target
+            )
+          ) {
+            graphData.edges.push(edge);
+          }
+
+        })
+      }
+
+      if (node.childrenList && node.childrenList.length !== 0) {
+        layerq.push(...node.childrenList);
+      }
+      if (q.length === 0) {
+        if (layerq.length === 0) {
+          break;
+        }
+        height += 1;
+        q.push(...layerq);
+        layerq = [];
+      }
+    }
+    return graphData;
+  }
+
   function reset() {
     nodes.current.clear();
     edges.current.clear();
@@ -254,12 +323,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setFirstLoad(true);
     setDbclicked(false);
     setCounter(counter + 1);
+    console.log(graphNetworkConfig)
   }
 
   useEffect(() => {
     let graphData = { nodes: nodes.current, edges: edges.current };
-    //@ts-ignore
     graphNetwork.current = new Network(
+      //@ts-ignore
       container.current,
       graphData,
       graphNetworkConfig
@@ -288,6 +358,27 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     // when user change the storybook rootWalk value
     setRootWalkIsSelected(rootWalk ? rootWalk : false);
   }, [rootWalk]);
+
+  useEffect(() => {
+    // when user change the storybook hierarchy value
+    setHierarchicalView(hierarchy ? hierarchy : false);
+  }, [hierarchy]);
+
+  useEffect(() => {
+    if (hierarchicalView) {
+      graphNetworkConfig['layout']['hierarchical'] = hierarchicalConfig;
+    } else {
+      //@ts-ignore
+      delete graphNetworkConfig['layout']['hierarchical']
+    }
+    let graphData = { nodes: nodes.current, edges: edges.current };
+    graphNetwork.current = new Network(
+      //@ts-ignore
+      container.current,
+      graphData,
+      graphNetworkConfig
+    );
+  }, [hierarchicalView]);
 
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
@@ -340,6 +431,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             }}
             title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
           />
+          <EuiSwitch
+            label="hierarchy"
+            checked={hierarchicalView}
+            onChange={() => {
+              setHierarchicalView(!hierarchicalView);
+            }}
+            title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
+          />
         </div>
       </EuiPanel>
 
@@ -378,6 +477,8 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           iri={props.iri}
           ontologyId={props.ontologyId}
           rootWalk={props.rootWalk}
+          hierarchy={props.hierarchy}
+          edgeLabel={props.edgeLabel}
         />
       </QueryClientProvider>
     </EuiProvider>

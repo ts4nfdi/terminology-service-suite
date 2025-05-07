@@ -680,6 +680,14 @@ export type GraphViewWidgetProps = ApiObj &
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
     rootWalk?: boolean;
+    /**
+     * When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.
+     */
+    hierarchy?: boolean;
+    /**
+     * The edge label in the graph. Default is "is a". Only for sub-class predicators. 
+     */
+    edgeLabel?: string;
   };
 
 export type OlsGraphNode = {
