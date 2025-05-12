@@ -4,6 +4,7 @@ import {
   getEntityInOntologySuffix,
   getUseLegacy,
   pluralizeType,
+  removeDuplicateEntities,
 } from "../app/util";
 import { createModelObject } from "../model/ModelObjectCreator";
 import {
@@ -1115,8 +1116,10 @@ export class OlsApi implements HierarchyBuilder {
         useLegacy
       );
     }
+
+    let listOfAncestorObj: Entity[] = [];
+
     if (useLegacy) {
-      let listOfAncestorObj: Array<Entity> = [];
       let extractKey = "";
       switch (entityType) {
         case "class":
@@ -1139,11 +1142,14 @@ export class OlsApi implements HierarchyBuilder {
           createModelObject({ _embedded: { [extractKey]: [obj] } }) as Entity
         );
       });
-      return listOfAncestorObj;
     }
-    return ancestors["elements"].map(
+
+    listOfAncestorObj = ancestors["elements"].map(
       (obj: any) => createModelObject({ elements: [obj] }) as Entity
     );
+    listOfAncestorObj = removeDuplicateEntities(listOfAncestorObj, (elem: Entity) => elem.getIri());
+
+    return listOfAncestorObj as Entity[];
   }
 
   public async getJSTree(
@@ -1427,17 +1433,20 @@ export class OlsApi implements HierarchyBuilder {
     } = props;
 
     /* QUERY root entities */
-    const rootEntitiesData = (
-      await this.getRootEntities(
-        entityType,
-        ontologyId,
-        preferredRoots,
-        includeObsoleteEntities,
-        useLegacy
+    const rootEntitiesData = removeDuplicateEntities(
+        (
+        await this.getRootEntities(
+          entityType,
+          ontologyId,
+          preferredRoots,
+          includeObsoleteEntities,
+          useLegacy
+        )
       )
-    )
-      .map((entity) => this.entityToEntityData(entity))
-      .filter((root) => !isTop(root.iri));
+        .map((entity) => this.entityToEntityData(entity))
+        .filter((root) => !isTop(root.iri)),
+        (elem: EntityData) => elem.iri
+    );
     /* --- */
 
     /* INITIALIZE entitiesData, parentChildRelations */
@@ -1545,6 +1554,8 @@ export class OlsApi implements HierarchyBuilder {
 
     // filter top entities
     entities = entities.filter((e) => !isTop(e.iri));
+    // remove duplicates
+    entities = removeDuplicateEntities(entities, (elem: EntityData) => elem.iri);
     /* --- */
 
     /* BUILD parentChildRelations */

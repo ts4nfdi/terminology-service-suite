@@ -71,4 +71,5 @@ export {
   SagePubHierarchy,
   OntoportalHierarchy,
   OLS3Hierarchy,
+  DuplicateRemoval
 } from "./HierarchyWidgetStories";

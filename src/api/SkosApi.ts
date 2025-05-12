@@ -12,6 +12,7 @@ import {
 } from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import { EntityData } from "../app/types";
+import {removeDuplicateEntities} from "../app/util";
 
 type TopConcept = {
   uri: string;
@@ -115,7 +116,7 @@ export class SkosApi implements HierarchyBuilder {
     if (!ontologyId)
       throw Error("ontologyId has to be specified for SKOS API.");
 
-    const rootEntities: string[] = [];
+    let rootEntities: string[] = [];
     const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<
       string,
       ParentChildRelation[]
@@ -148,7 +149,7 @@ export class SkosApi implements HierarchyBuilder {
       }
       for (const node of broaderTransitive) {
         if (node.narrower != undefined) {
-          const children: EntityData[] = [];
+          let children: EntityData[] = [];
 
           for (const childNode of node.narrower) {
             let childNodeData = entitiesData.get(childNode.uri);
@@ -173,6 +174,11 @@ export class SkosApi implements HierarchyBuilder {
 
           children.sort((a, b) =>
             (a.label || a.iri).localeCompare(b.label || b.iri)
+          );
+
+          children = removeDuplicateEntities(
+              children,
+              (elem: EntityData) => elem.iri
           );
 
           parentChildRelations.set(
@@ -239,6 +245,13 @@ export class SkosApi implements HierarchyBuilder {
 
     const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
+    // remove duplicates
+    rootEntities = removeDuplicateEntities(
+        rootEntities,
+        (elem: string) => elem
+    )
+
     const rootNodes: TreeNode[] = rootEntities
       .map((rootEntity) =>
         createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)

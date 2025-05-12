@@ -10,7 +10,7 @@ import {
   ParentChildRelation,
   TreeNode,
 } from "../model/interfaces/Hierarchy";
-import { pluralizeType } from "../app/util";
+import {pluralizeType, removeDuplicateEntities} from "../app/util";
 import { EntityData } from "../app/types";
 
 type HierarchyNode = {
@@ -76,7 +76,7 @@ export class OntoPortalApi implements HierarchyBuilder {
     if (!entityType)
       throw Error("entityType has to be specified for OntoPortal API.");
 
-    const rootEntities: string[] = [];
+    let rootEntities: string[] = [];
     const entitiesData: Map<string, EntityData> = new Map<string, EntityData>();
     const parentChildRelations: Map<string, ParentChildRelation[]> = new Map<
       string,
@@ -181,6 +181,13 @@ export class OntoPortalApi implements HierarchyBuilder {
 
     const cycleCheck: Set<string> = new Set<string>(); // Contains iris of all entities that have occurred within the current recursion branch. Is used to check for cycles.
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
+    // remove duplicates
+    rootEntities = removeDuplicateEntities(
+        rootEntities,
+        (elem: string) => elem
+    );
+
     const rootNodes: TreeNode[] = rootEntities
       .map((rootEntity) =>
         createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)

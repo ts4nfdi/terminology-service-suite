@@ -229,3 +229,14 @@ export const OLS3Hierarchy = {
     useLegacy: true,
   },
 };
+
+export const DuplicateRemoval = {
+  args: {
+    apiUrl: globals.ZBMED_OLS4_API,
+    backendType: "ols",
+    iri: "http://purl.bioontology.org/ontology/ICD10/D73",
+    entityType: "class",
+    ontologyId: "icd10",
+    useLegacy: false,
+  }
+};

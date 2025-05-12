@@ -248,3 +248,20 @@ export function manuallyEmbedOnNavigate(
 
   return code;
 }
+
+/**
+ * Removes duplicates in `list` such that `func(e)` is unique for all elements `e` in the filtered list, which is returned by the function.
+ * @param list the list of elements
+ * @param func the function to map elements to their value which should be unique in the returned list
+ * @return the filtered list
+ */
+export function removeDuplicateEntities(list: any[], func: (elem: any) => any): any[] {
+  const result: any[] = [];
+  for(let i = 0; i < list.length; i++) {
+    const idx = result.findIndex(other => func(other) == func(list[i]));
+    if(idx == -1) {
+      result.push(list[i]);
+    }
+  }
+  return result;
+}
