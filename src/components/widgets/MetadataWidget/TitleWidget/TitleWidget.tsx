@@ -32,9 +32,9 @@ function TitleWidget(props: TitleWidgetProps) {
         thingType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   return (
@@ -49,8 +49,10 @@ function TitleWidget(props: TitleWidgetProps) {
       error={isError ? error : null}
       iri={iri ? iri : data ? data.getIri() : null}
       onNavigateTo={onNavigateTo}
-      ontologyId={ontologyId ? ontologyId : data ? data.getOntologyId() : null}
-      thingType={thingType ? thingType : data ? data.getType() : null}
+      ontologyId={
+        ontologyId ? ontologyId : data ? data.getOntologyId() : undefined
+      }
+      thingType={thingType ? thingType : data ? data.getType() : undefined}
       href={href}
     />
   );
@@ -59,7 +61,7 @@ function TitleWidget(props: TitleWidgetProps) {
 function createTitle(
   props: TitleWidgetProps,
   container: Element,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedTitleWidget(props), container, callback);
 }

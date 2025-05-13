@@ -61,7 +61,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         },
         undefined,
         undefined,
-        props.parameter
+        props.parameter,
       )
       .then((response) => {
         if (response.response && response.response.docs) {
@@ -69,7 +69,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
             response.response.docs.map((suggestion: any) => ({
               label: suggestion.autosuggest,
               type: { color: "tint1", iconType: "" },
-            }))
+            })),
           );
         }
       });
@@ -84,7 +84,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         return {
           label: selectedOption.label,
         };
-      })
+      }),
     );
   }, [selectedOptions]);
 
@@ -97,7 +97,6 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
         fullWidth={true}
         async={true}
         placeholder={"Search"}
-        autoFocus
         singleSelection={true}
         isLoading={isLoading}
         options={options}
@@ -115,7 +114,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
 function createSearchBar(
   props: SearchBarWidgetProps,
   container: any,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
 }

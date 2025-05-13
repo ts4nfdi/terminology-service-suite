@@ -198,7 +198,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     ["ontologiesData", api, parameter, useLegacy],
     async () => {
       return olsApi.getOntologiesData(props.parameter, useLegacy);
-    }
+    },
   );
 
   function v2toOlsResource(ontology: OLS4Ontology): OlsResource {
@@ -237,7 +237,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageIndex: number,
     pageSize: number,
     sortField: any,
-    sortDirection: "asc" | "desc"
+    sortDirection: "asc" | "desc",
   ) => {
     let items;
 
@@ -245,7 +245,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       items = ontologies
         .slice(0)
         .sort(
-          Comparators.property(sortField, Comparators.default(sortDirection))
+          Comparators.property(sortField, Comparators.default(sortDirection)),
         );
     } else {
       items = ontologies;
@@ -259,7 +259,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       const startIndex = pageIndex * pageSize;
       pageOfItems = items.slice(
         startIndex,
-        Math.min(startIndex + pageSize, ontologies.length)
+        Math.min(startIndex + pageSize, ontologies.length),
       );
     }
 
@@ -274,7 +274,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     pageIndex,
     pageSize,
     sortField,
-    sortDirection
+    sortDirection,
   );
 
   const pagination = {
@@ -313,7 +313,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       let licenseUrl = "";
       let licenseLabel = "";
 
-      resource.config.homepage ? (homepage = resource.config.homepage) : null;
+      if (resource.config.homepage) {
+        homepage = resource.config.homepage;
+      }
 
       if (resource?.config?.annotations?.license) {
         const license = resource.config.annotations.license;
@@ -427,7 +429,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             pagination={pagination}
             sorting={sorting}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-            isExpandable={true}
             itemId={"ontologyId"}
             {...rest}
           />
@@ -464,7 +465,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 function createResources(
   props: ResourcesWidgetProps,
   container: Element,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedResourcesWidget(props), container, callback);
 }
