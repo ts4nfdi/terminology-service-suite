@@ -1,9 +1,12 @@
 import { build } from "esbuild";
 import DynamicImport from "@ts4nfdi/esbuild-dynamic-import";
 
+const allowedEnvVars = ['REACT_APP_API_URL', 'NODE_ENV'];
 let define = {};
-for (const k in process.env) {
-  define[`process.env.${k}`] = JSON.stringify(process.env[k]);
+for (const k in allowedEnvVars) {
+  if (process.env[k]) {
+    define[`process.env.${k}`] = JSON.stringify(process.env[k]);
+  }
 }
 
 console.log("### Building terminology-service-suite.js");
