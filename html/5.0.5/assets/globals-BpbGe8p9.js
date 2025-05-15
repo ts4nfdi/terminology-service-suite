@@ -1,0 +1,1 @@
+const t="https://api.terminology.tib.eu/api/",s="https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/",a="https://semanticlookup.zbmed.de/ols/api/",o="https://ols3-semanticlookup.zbmed.de/ols/api/",p="https://www.ebi.ac.uk/ols4/api/",i="https://api.finto.fi/rest/v1";export{p as E,i as F,s as G,t as T,a as Z,o as a};
