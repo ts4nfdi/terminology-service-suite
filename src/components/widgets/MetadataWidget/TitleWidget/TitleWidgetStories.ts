@@ -131,12 +131,12 @@ export const OntologyTitleCustomOnNavigate = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "ontology",
-    onNavigateTo: (iri, ontologyId, thingType) => {
+    onNavigateTo: (iri: string, ontologyId: string, thingType: any) => {
       console.log(
         "Navigation with IRI, ontologyId and thingType.",
         iri,
         ontologyId,
-        thingType
+        thingType,
       );
     },
   },

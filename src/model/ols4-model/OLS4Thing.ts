@@ -13,7 +13,7 @@ export abstract class OLS4Thing implements Thing {
     this.properties = properties;
   }
 
-  getLabel(): string | undefined {
+  getLabel(): string {
     return Reified.fromJson<string>(this.properties["label"])[0].value;
   }
 
@@ -65,7 +65,7 @@ export abstract class OLS4Thing implements Thing {
 
   getRdfTypes(): string[] {
     return asArray(
-      this.properties["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
+      this.properties["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
     );
   }
 
@@ -97,7 +97,7 @@ export abstract class OLS4Thing implements Thing {
     const linkedEntities = this.properties["linkedEntities"];
     if (linkedEntities) {
       const label: Reified<string>[] = Reified.fromJson<string>(
-        linkedEntities[id]?.label
+        linkedEntities[id]?.label,
       );
       return label[0]?.value || id;
     } else {
@@ -121,7 +121,10 @@ export abstract class OLS4Thing implements Thing {
 
   getDepictionUrl(): string[] {
     let depictionUri = "http://xmlns.com/foaf/0.1/depiction";
-    if (this.properties[depictionUri] && typeof (this.properties[depictionUri]) === "string") {
+    if (
+      this.properties[depictionUri] &&
+      typeof this.properties[depictionUri] === "string"
+    ) {
       return [this.properties["http://xmlns.com/foaf/0.1/depiction"]];
     } else if (this.properties[depictionUri]) {
       return this.properties["http://xmlns.com/foaf/0.1/depiction"];
