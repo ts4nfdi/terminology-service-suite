@@ -42,7 +42,7 @@ window['ts4nfdiWidgets'].createAutocomplete(
           .replace(/(\r\n|\n|\r)/gm, "")},
         preselected:${JSON.stringify(args.preselected).replace(
           /"([^"]+)":/g,
-          "$1:"
+          "$1:",
         )},
         placeholder:"${args.placeholder}",
         hasShortSelectedLabel:${args.hasShortSelectedLabel},

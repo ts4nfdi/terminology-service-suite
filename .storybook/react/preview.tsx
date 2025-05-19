@@ -1,3 +1,6 @@
+import React from "react";
+import { Preview } from "@storybook/react";
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -22,19 +25,28 @@ export const parameters = {
   },
 };
 
+import registerDefaultIcons from '../../src/components/euiicons'
 import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+registerDefaultIcons();
+
 const queryClient = new QueryClient();
 
-export const decorators = [
-  (Story) => (
+const decorators = [
+  (story: any) => (
     <>
       <EuiProvider colorMode="light">
         <QueryClientProvider client={queryClient}>
-          {Story()}
+          {story()}
         </QueryClientProvider>
       </EuiProvider>
     </>
   ),
 ];
+
+const preview: Preview = {
+  decorators: decorators,
+};
+
+export default preview;

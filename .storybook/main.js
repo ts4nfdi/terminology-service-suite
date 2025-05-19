@@ -5,6 +5,7 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "@storybook/addon-docgen",
+    "@storybook/experimental-addon-test"
   ],
   framework: {
     name: "@storybook/html-vite",
