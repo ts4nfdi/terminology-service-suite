@@ -51,19 +51,36 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       counter,
     ],
     async () => {
-      if (rootWalkIsSelected && firstLoad) {
+      if (rootWalkIsSelected && firstLoad && !hierarchicalView) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return olsApi.getTermTree(
+        return {
+          "treeData": await olsApi.getTermTree(
+            { ontologyId: ontologyId, termIri: iri },
+            { viewMode: "All", siblings: false },
+            undefined,
+            undefined
+          )
+        };
+      } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
+        let termTree = await olsApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
           undefined,
           undefined
         );
-      } else if (firstLoad || dbclicked) {
-        return olsApi.getTermRelations({
+
+        let termRelation = await olsApi.getTermRelations({
           ontologyId: ontologyId,
           termIri: selectedIri,
         });
+        return { "treeData": termTree, "termRelations": termRelation };
+      } else if (firstLoad || dbclicked) {
+        return {
+          "termRelations": await olsApi.getTermRelations({
+            ontologyId: ontologyId,
+            termIri: selectedIri,
+          })
+        };
       }
     }
   );
@@ -199,9 +216,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   if (data && (firstLoad || dbclicked)) {
-    let gData = data;
-    if (rootWalkIsSelected && firstLoad) {
-      gData = convertToOlsGraphFormat(data);
+    //let gData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+    let gData = data.termRelations;
+    if (data.treeData && rootWalkIsSelected && firstLoad && !hierarchicalView) {
+      gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined);
+    } else if (data.termRelations && data.treeData && rootWalkIsSelected && firstLoad && hierarchicalView) {
+      gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], data.termRelations);
     }
     for (let node of gData["nodes"]) {
       let gNode = new GraphNode({ node: node });
@@ -242,7 +262,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<JSTreeNode>) {
+  function convertToOlsGraphFormat(listOfJsTreeNodes: Array<JSTreeNode>, nodeRelations?: { nodes: any[]; edges: any[] }) {
     // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
     // currently used in showing ancestors. Equivalent to is-a relation.
 
@@ -273,7 +293,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
     let q = [...treeData];
     let layerq = [];
-    let height = 0;
+    let height = 1;
     while (true) {
       let node = q[0];
       q = q.slice(1);
@@ -313,6 +333,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         layerq = [];
       }
     }
+    if (nodeRelations) {
+      let onlyHasPartRelations: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+      for (let edge of nodeRelations["edges"]) {
+        if (edge["label"] === "has part") {
+          onlyHasPartRelations.edges.push(edge);
+          onlyHasPartRelations.nodes.push(nodeRelations.nodes.filter((node) => node.iri === edge.source)[0]);
+          onlyHasPartRelations.nodes.push(nodeRelations.nodes.filter((node) => node.iri === edge.target)[0]);
+        }
+      }
+      graphData["nodes"] = graphData["nodes"].concat(onlyHasPartRelations["nodes"])
+      graphData["edges"] = graphData["edges"].concat(onlyHasPartRelations["edges"])
+    }
     return graphData;
   }
 
@@ -323,7 +355,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setFirstLoad(true);
     setDbclicked(false);
     setCounter(counter + 1);
-    console.log(graphNetworkConfig)
   }
 
   useEffect(() => {
@@ -378,6 +409,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphData,
       graphNetworkConfig
     );
+
+    //@ts-ignore
+    graphNetwork.current.on("doubleClick", function (params) {
+      if (params.nodes.length > 0) {
+        let nodeIri = params.nodes[0];
+        setSelectedIri(nodeIri);
+        setDbclicked(true);
+      }
+    });
   }, [hierarchicalView]);
 
   const onButtonClick = () =>
