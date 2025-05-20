@@ -54,7 +54,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * The set of available options.s
    */
   const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>(
-    []
+    [],
   );
 
   /**
@@ -74,10 +74,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       value.type === "class"
         ? visColorsBehindText[5]
         : value.type === "individual"
-        ? visColorsBehindText[3]
-        : value.type === "property"
-        ? visColorsBehindText[1]
-        : ""
+          ? visColorsBehindText[3]
+          : value.type === "property"
+            ? visColorsBehindText[1]
+            : "",
     );
     const dotColor = visColors[dotColorIndex];
 
@@ -86,7 +86,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return label;
     }
 
-    let prefix =
+    const prefix =
       value.type === "ontology"
         ? "Prefix: " + value.ontology_name
         : "Prefix > Short form: " +
@@ -163,7 +163,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * @param preselectedElement
    */
   function createCustomTermOption(
-    preselectedElement: any
+    preselectedElement: any,
   ): EuiComboBoxOptionOption<any> {
     return {
       label: preselectedElement.label,
@@ -233,7 +233,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    */
   async function fetchAndProcessEntityOption(
     preselectedElement: any,
-    preselectedOptions: EuiComboBoxOptionOption<any>[]
+    preselectedOptions: EuiComboBoxOptionOption<any>[],
   ) {
     try {
       const response = await olsApi.getEntityObject(
@@ -241,7 +241,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         undefined,
         undefined,
         parameter,
-        useLegacy
+        useLegacy,
       );
 
       preselectedOptions.push(createEntityOption(response));
@@ -258,7 +258,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       console.error(
         "Error fetching data for option:",
         preselectedElement,
-        error
+        error,
       );
     }
   }
@@ -271,7 +271,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    */
   async function fetchAndProcessSelectOption(
     preselectedElement: any,
-    preselectedOptions: EuiComboBoxOptionOption<any>[]
+    preselectedOptions: EuiComboBoxOptionOption<any>[],
   ) {
     try {
       const response = await olsApi.getSelectData(
@@ -279,7 +279,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         undefined,
         undefined,
         parameter,
-        ts4nfdiGateway
+        ts4nfdiGateway,
       );
 
       if (!response) return;
@@ -287,7 +287,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       const matchFound = processSelectResponse(
         response,
         preselectedElement,
-        preselectedOptions
+        preselectedOptions,
       );
 
       if (!matchFound && preselectedElement.label && allowCustomTerms) {
@@ -306,7 +306,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       console.error(
         "Error fetching data for option:",
         preselectedElement,
-        error
+        error,
       );
     }
   }
@@ -322,7 +322,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   function processSelectResponse(
     response: any,
     preselectedElement: any,
-    preselectedOptions: EuiComboBoxOptionOption<any>[]
+    preselectedOptions: EuiComboBoxOptionOption<any>[],
   ): boolean {
     let matchFound = false;
 
@@ -347,7 +347,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       let preselectedOptions: EuiComboBoxOptionOption<any>[] = [];
 
       let uniqueValues = [...new Set(preselected ?? [])].filter(
-        (option) => (allowCustomTerms && option.label) || option.iri
+        (option) => (allowCustomTerms && option.label) || option.iri,
       );
 
       if (uniqueValues.length === 0) return;
@@ -359,7 +359,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           if (preselectedElement?.iri?.startsWith("http")) {
             await fetchAndProcessSelectOption(
               preselectedElement,
-              preselectedOptions
+              preselectedOptions,
             );
           } else if (preselectedElement?.label && allowCustomTerms) {
             preselectedOptions.push(createCustomTermOption(preselectedElement));
@@ -368,7 +368,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           if (preselectedElement?.iri?.startsWith("http")) {
             await fetchAndProcessEntityOption(
               preselectedElement,
-              preselectedOptions
+              preselectedOptions,
             );
           } else if (preselectedElement?.label && allowCustomTerms) {
             preselectedOptions.push(createCustomTermOption(preselectedElement));
@@ -377,7 +377,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       }
       setOptions(preselectedOptions);
       setSelectedOptions(preselectedOptions);
-    }
+    },
   );
 
   /**
@@ -393,7 +393,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             undefined,
             undefined,
             parameter,
-            ts4nfdiGateway
+            ts4nfdiGateway,
           )
           .then((response) => {
             if (response) {
@@ -417,12 +417,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                     source: selection.getApiSourceName(),
                     source_url: selection.getApiSourceEndpoint(),
                   },
-                }))
+                })),
               );
             }
           });
       }
-    }
+    },
   );
 
   /**
@@ -465,7 +465,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               source: x.value.source,
             };
           }
-        })
+        }),
       );
     }
     return () => {
@@ -503,7 +503,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     setOptions([...options, newOption]);
     setSelectedOptions(
-      singleSelection ? [newOption] : [...selectedOptions, newOption]
+      singleSelection ? [newOption] : [...selectedOptions, newOption],
     );
   }
 
@@ -533,7 +533,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 function createAutocomplete(
   props: AutocompleteWidgetProps,
   container: any,
-  callback?: () => void
+  callback?: () => void,
 ) {
   // @ts-ignore
   ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);

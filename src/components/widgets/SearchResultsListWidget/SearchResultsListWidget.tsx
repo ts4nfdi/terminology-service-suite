@@ -64,8 +64,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   function updateFilterOptions(
     currentOptions: EuiSelectableOption[],
     optionCounts: any[],
-    setOptions: Function,
-    render?: (value: string) => string
+    setOptions: (options: EuiSelectableOption[]) => void,
+    render?: (value: string) => string,
   ) {
     if (currentOptions.length == 0) {
       setOptions(
@@ -74,7 +74,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             accumulator: any[],
             currentValue: string,
             currentIndex: number,
-            array: any[]
+            array: any[],
           ) => {
             if (currentIndex % 2 === 0) {
               accumulator.push({
@@ -87,8 +87,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             }
             return accumulator;
           },
-          []
-        )
+          [],
+        ),
       );
     } else {
       const newOptions: EuiSelectableOption[] = [];
@@ -100,7 +100,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
         (currentValue: string, currentIndex: number, array: any[]) => {
           if (currentIndex % 2 === 0) {
             const option = newOptions.find(
-              (option: EuiSelectableOption) => option.key == currentValue
+              (option: EuiSelectableOption) => option.key == currentValue,
             );
             if (option) {
               option.append = "(" + array[currentIndex + 1];
@@ -113,7 +113,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               option.append += ")";
             }
           }
-        }
+        },
       );
       setOptions(newOptions);
     }
@@ -168,7 +168,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           },
           undefined,
           props.parameter,
-          signal
+          signal,
         )
         .then((response) => {
           if (
@@ -186,7 +186,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                   response["facet_counts"]["facet_fields"]["type"],
                   setFilterByTypeOptions,
                   (currentValue: string) =>
-                    `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`
+                    `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`,
                 );
               }
               if (useLegacy) {
@@ -195,7 +195,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     filterByOntologyOptions,
                     response["facet_counts"]["facet_fields"]["ontology_name"],
                     setFilterByOntologyOptions,
-                    (currentValue: string) => currentValue.toUpperCase()
+                    (currentValue: string) => currentValue.toUpperCase(),
                   );
                 }
               } else {
@@ -204,7 +204,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     filterByOntologyOptions,
                     response["facet_counts"]["facet_fields"]["ontologyId"],
                     setFilterByOntologyOptions,
-                    (currentValue: string) => currentValue.toUpperCase()
+                    (currentValue: string) => currentValue.toUpperCase(),
                   );
                 }
               }
@@ -212,7 +212,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
             setTotalItems(response["response"]["numFound"]);
             const newPageCount = Math.ceil(
-              response["response"]["numFound"] / itemsPerPage
+              response["response"]["numFound"] / itemsPerPage,
             );
             setPageCount(newPageCount);
             if (activePage >= newPageCount) {
@@ -227,12 +227,12 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     },
     {
       keepPreviousData: true,
-    } // See: https://react-query-v3.tanstack.com/guides/paginated-queries
+    }, // See: https://react-query-v3.tanstack.com/guides/paginated-queries
   );
 
   function onChangeItemsPerPage(newItemsPerPage: number) {
     setActivePage(
-      Math.floor((activePage * itemsPerPage + 1) / newItemsPerPage)
+      Math.floor((activePage * itemsPerPage + 1) / newItemsPerPage),
     );
     setItemsPerPage(newItemsPerPage);
   }
@@ -247,14 +247,14 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 
   function clearFilter(
     currentOptions: EuiSelectableOption[],
-    setOptions: Function
+    setOptions: (options: EuiSelectableOption[]) => void,
   ) {
     const newOptions = [...currentOptions];
     setOptions(
       newOptions.map((option: EuiSelectableOption) => ({
         ...option,
         checked: undefined,
-      }))
+      })),
     );
   }
 
@@ -269,7 +269,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
       iri?: string;
       ontology_name?: string;
       type?: string;
-    }[]
+    }[],
   ) {
     setSearchValue(selectedOption[0] ? selectedOption[0].label : "");
   }
@@ -434,7 +434,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
 function createSearchResultsList(
   props: SearchResultsListWidgetProps,
   container: any,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedSearchResultsListWidget(props), container, callback);
 }

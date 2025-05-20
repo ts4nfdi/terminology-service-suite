@@ -64,7 +64,7 @@ abstract class SkosEntityDataBuilder {
 
   static fromPrefAndUriAndChildren(
     obj: PrefAndUriAndChildren,
-    parents?: string[]
+    parents?: string[],
   ): EntityData {
     return {
       iri: obj.uri,
@@ -76,7 +76,7 @@ abstract class SkosEntityDataBuilder {
 
   static fromLabelAndUriAndChildren(
     obj: LabelAndUriAndChildren,
-    parents?: string[]
+    parents?: string[],
   ): EntityData {
     return {
       iri: obj.uri,
@@ -102,13 +102,13 @@ export class SkosApi implements HierarchyBuilder {
 
   private async makeCall(
     url: string,
-    config: AxiosRequestConfig<never> | undefined
+    config: AxiosRequestConfig<never> | undefined,
   ) {
     return (await this.axiosInstance.get(url, config)).data;
   }
 
   public async buildHierarchyWithIri(
-    props: BuildHierarchyProps & HierarchyIriProp
+    props: BuildHierarchyProps & HierarchyIriProp,
   ): Promise<Hierarchy> {
     const { iri, ontologyId, showSiblingsOnInit } = props;
 
@@ -127,11 +127,11 @@ export class SkosApi implements HierarchyBuilder {
     if (iri) {
       const broaderTransitive: HierarchyResult[] = await this.makeCall(
         `/${ontologyId}/hierarchy`,
-        { params: { uri: iri, lang: "en", format: "application/json" } }
+        { params: { uri: iri, lang: "en", format: "application/json" } },
       ).then((obj) =>
         Object.keys(obj["broaderTransitive"]).map(
-          (key) => obj["broaderTransitive"][key]
-        )
+          (key) => obj["broaderTransitive"][key],
+        ),
       );
 
       // stores all entities appearing in broaderTransitive
@@ -155,16 +155,17 @@ export class SkosApi implements HierarchyBuilder {
             if (childNodeData == undefined) {
               childNodeData = SkosEntityDataBuilder.fromLabelAndUriAndChildren(
                 childNode,
-                [node.uri]
+                [node.uri],
               );
 
               entitiesData.set(childNodeData.iri, childNodeData);
             } else {
-              // @ts-ignore
-              if (!childNodeData.parents.map((r) => r.value).includes(node.uri))
-                if (childNodeData.parents) {
-                  childNodeData.parents.push(
-                    ...Reified.fromJson<string>(node.uri)
+              if (
+                !childNodeData?.parents?.map((r) => r.value).includes(node.uri)
+              )
+                if (childNodeData?.parents) {
+                  childNodeData?.parents?.push(
+                    ...Reified.fromJson<string>(node.uri),
                   );
                 }
             }
@@ -172,14 +173,14 @@ export class SkosApi implements HierarchyBuilder {
           }
 
           children.sort((a, b) =>
-            (a.label || a.iri).localeCompare(b.label || b.iri)
+            (a.label || a.iri).localeCompare(b.label || b.iri),
           );
 
           parentChildRelations.set(
             node.uri,
             children.map((c) => {
               return { childIri: c.iri };
-            })
+            }),
           );
           allChildrenPresent.add(node.uri); // in skos, all children are loaded if any are
         }
@@ -187,7 +188,7 @@ export class SkosApi implements HierarchyBuilder {
     } else {
       const topconcepts: TopConcept[] = await this.makeCall(
         `/${ontologyId}/topConcepts`,
-        { params: { lang: "en", format: "application/json" } }
+        { params: { lang: "en", format: "application/json" } },
       ).then((obj) => obj["topconcepts"]);
 
       for (const concept of topconcepts) {
@@ -197,7 +198,7 @@ export class SkosApi implements HierarchyBuilder {
 
     function createTreeNode(
       entityData: EntityData,
-      cycleCheck: Set<string>
+      cycleCheck: Set<string>,
     ): TreeNode {
       cycleCheck.add(entityData.iri); // add current entity to cycle check set
 
@@ -241,12 +242,12 @@ export class SkosApi implements HierarchyBuilder {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const rootNodes: TreeNode[] = rootEntities
       .map((rootEntity) =>
-        createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)
+        createTreeNode(entitiesData.get(rootEntity)!, cycleCheck),
       )
       .sort((a, b) =>
         (a.entityData.label || a.entityData.iri).localeCompare(
-          b.entityData.label || b.entityData.iri
-        )
+          b.entityData.label || b.entityData.iri,
+        ),
       );
 
     return new Hierarchy({
@@ -262,7 +263,7 @@ export class SkosApi implements HierarchyBuilder {
   }
 
   public async loadHierarchyChildren(
-    props: LoadHierarchyChildrenProps
+    props: LoadHierarchyChildrenProps,
   ): Promise<EntityData[]> {
     const { nodeToExpand, ontologyId } = props;
 
@@ -279,7 +280,7 @@ export class SkosApi implements HierarchyBuilder {
     return narrower.map((obj) =>
       SkosEntityDataBuilder.fromPrefAndUriAndChildren(obj, [
         nodeToExpand.entityData.iri,
-      ])
+      ]),
     );
   }
 }

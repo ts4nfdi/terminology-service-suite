@@ -172,7 +172,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
      * A method that is called once the set of selection changes
      */
     selectionChangedEvent: (
-      selectedOptions: AutocompleteWidgetSelectedOptions[]
+      selectedOptions: AutocompleteWidgetSelectedOptions[],
     ) => void;
     /**
      * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
@@ -424,7 +424,7 @@ export type OnNavigateToEntity = {
   onNavigateToEntity?: (
     ontologyId: string,
     entityType?: string,
-    entity?: EntityData
+    entity?: EntityData,
   ) => void;
 };
 
@@ -443,7 +443,7 @@ export type OnNavigateToOntology = {
   onNavigateToOntology?: (
     ontologyId: string,
     entityType?: string,
-    entity?: EntityData
+    entity?: EntityData,
   ) => void;
 };
 
@@ -516,9 +516,9 @@ export type TitleWidgetProps = ApiObj &
 export type TitlePresentationProps = TitleTextObj &
   CssClassNameObj &
   OptionalThingTypeObj &
-  OptionalIriObj &
   OptionalOntologyIdObj & {
-    title?: string;
+    iri?: string | null;
+    title?: string | null;
     defaultValue?: string;
     isLoading?: boolean;
     error?: string | unknown;
@@ -614,7 +614,7 @@ export type SearchBarWidgetProps = ApiObj &
         iri?: string;
         ontology_name?: string;
         type?: string;
-      }[]
+      }[],
     ) => void;
   };
 

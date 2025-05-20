@@ -28,7 +28,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
   const [rootWalkIsSelected, setRootWalkIsSelected] = useState(
-    rootWalk ? rootWalk : false
+    rootWalk ? rootWalk : false,
   );
   const [hierarchicalView, setHierarchicalView] = useState<boolean>(hierarchy ? true : false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -57,16 +57,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           "treeData": await olsApi.getTermTree(
             { ontologyId: ontologyId, termIri: iri },
             { viewMode: "All", siblings: false },
-            undefined,
-            undefined
           )
         };
       } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
         let termTree = await olsApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
-          undefined,
-          undefined
         );
 
         let termRelation = await olsApi.getTermRelations({
@@ -82,7 +78,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           })
         };
       }
-    }
+    },
   );
 
   const nodes = useRef(new DataSet([]));
@@ -211,8 +207,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
   }
-
-
 
 
   if (data && (firstLoad || dbclicked)) {
@@ -363,7 +357,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       container.current,
       graphData,
-      graphNetworkConfig
+      graphNetworkConfig,
     );
   }, []);
 
@@ -502,7 +496,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 function createGraphView(
   props: GraphViewWidgetProps,
   container: Element,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedGraphViewWidget(props), container, callback);
 }

@@ -13,7 +13,7 @@ import {
   Thing,
   Individual,
 } from "../model/interfaces";
-import { OLS3Ontologies, OLS3Ontology } from "../model/ols3-model";
+import { OLS3Ontologies } from "../model/ols3-model";
 import {
   classTypeNames,
   entityTypeNames,
@@ -77,7 +77,7 @@ export type apiCallFn = (
   contentParams?: ContentParams,
   parameter?: string,
   useLegacy?: boolean,
-  abortSignal?: AbortSignal
+  abortSignal?: AbortSignal,
 ) => Promise<any>;
 
 interface SearchQueryParams {
@@ -142,7 +142,7 @@ export class OlsApi implements HierarchyBuilder {
     paginationParams?: PaginationParams,
     sortingParams?: SortingParams,
     contentParams?: ContentParams,
-    parameter?: string
+    parameter?: string,
   ) {
     if (sortingParams) {
       return {
@@ -184,7 +184,7 @@ export class OlsApi implements HierarchyBuilder {
     paginationParams?: PaginationParams,
     contentParams?: ContentParams,
     parameter?: string,
-    ts4nfdiGateway?: boolean
+    ts4nfdiGateway?: boolean,
   ) {
     const params: any = {
       exact: queryParams.exactMatch,
@@ -257,7 +257,7 @@ export class OlsApi implements HierarchyBuilder {
     queryParams: SuggestQueryParams,
     paginationParams?: PaginationParams,
     contentParams?: ContentParams,
-    parameters?: string
+    parameters?: string,
   ) {
     const params: any = {
       q: queryParams.query,
@@ -275,7 +275,7 @@ export class OlsApi implements HierarchyBuilder {
     queryParams: SuggestQueryParams,
     paginationParams?: PaginationParams,
     contentParams?: ContentParams,
-    parameters?: string
+    parameters?: string,
   ) {
     const params: any = {
       q: queryParams.query,
@@ -295,14 +295,14 @@ export class OlsApi implements HierarchyBuilder {
     if (response["error"]) {
       throw Error(
         response["status"] +
-        " " +
-        response["error"] +
-        " - " +
-        response["message"] +
-        " - " +
-        response["exception"] +
-        " at " +
-        response["path"]
+          " " +
+          response["error"] +
+          " - " +
+          response["message"] +
+          " - " +
+          response["exception"] +
+          " at " +
+          response["path"],
       );
     }
     // empty response - can be caught if this is expected, e.g. for fetching instances
@@ -318,7 +318,7 @@ export class OlsApi implements HierarchyBuilder {
   private async makeCall(
     url: string,
     config: AxiosRequestConfig<any> | undefined,
-    useLegacy: boolean
+    useLegacy: boolean,
   ) {
     const apiVersionPrefix = getUseLegacy(useLegacy) ? "" : "v2/";
     const response = (
@@ -332,7 +332,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy = true
+    useLegacy = true,
   ) => {
     return this.makeCall(
       "ontologies",
@@ -341,10 +341,10 @@ export class OlsApi implements HierarchyBuilder {
           paginationParams,
           sortingParams,
           contentParams,
-          parameter
+          parameter,
         ),
       },
-      useLegacy
+      useLegacy,
     );
   };
 
@@ -355,7 +355,7 @@ export class OlsApi implements HierarchyBuilder {
    */
   public async getOntologiesData(
     parameter?: string,
-    useLegacy = true
+    useLegacy = true,
   ): Promise<Ontologies> {
     let response;
     let ontologiesData: Ontology[] = [];
@@ -370,7 +370,7 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           undefined,
           parameter,
-          useLegacy
+          useLegacy,
         ); // assuming there are no more than 500 ontologies
 
         if (
@@ -383,7 +383,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologiesData = ontologiesData.concat(
             response["_embedded"]["ontologies"].map((ontologyData: any) => {
               return createModelObject(ontologyData);
-            })
+            }),
           );
         }
 
@@ -398,7 +398,7 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           undefined,
           parameter,
-          useLegacy
+          useLegacy,
         ); // assuming there are no more than 500 ontologies
 
         if (!response || !response["elements"]) {
@@ -407,7 +407,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologiesData = ontologiesData.concat(
             response["elements"].map((ontologyData: any) => {
               return createModelObject(ontologyData);
-            })
+            }),
           );
         }
 
@@ -431,7 +431,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ) => {
     const typePrefix = getUseLegacy(useLegacy) ? "terms" : "classes";
     return this.makeCall(
@@ -440,10 +440,10 @@ export class OlsApi implements HierarchyBuilder {
         params: this.buildParamsForGet(
           paginationParams,
           sortingParams,
-          contentParams
+          contentParams,
         ),
       },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -452,7 +452,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ) => {
     return this.makeCall(
       "properties",
@@ -460,10 +460,10 @@ export class OlsApi implements HierarchyBuilder {
         params: this.buildParamsForGet(
           paginationParams,
           sortingParams,
-          contentParams
+          contentParams,
         ),
       },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -472,7 +472,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ) => {
     return this.makeCall(
       "individuals",
@@ -480,10 +480,10 @@ export class OlsApi implements HierarchyBuilder {
         params: this.buildParamsForGet(
           paginationParams,
           sortingParams,
-          contentParams
+          contentParams,
         ),
       },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -492,7 +492,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ) => {
     const params = {
       ...this.buildOtherParams(parameter),
@@ -500,7 +500,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(
       "ontologies/" + contentParams?.ontologyId,
       params,
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -515,7 +515,7 @@ export class OlsApi implements HierarchyBuilder {
     sortingParams,
     contentParams,
     parameter,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ) => {
     const queryPrefix = contentParams?.ontologyId
       ? "ontologies/" + contentParams?.ontologyId + "/"
@@ -527,7 +527,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(
       queryPrefix + "entities",
       { params: params },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -548,7 +548,7 @@ export class OlsApi implements HierarchyBuilder {
     contentParams,
     parameter,
     useLegacy?: boolean,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
   ) => {
     const ontologyPrefix = contentParams?.ontologyId
       ? "ontologies/" + contentParams?.ontologyId + "/"
@@ -561,7 +561,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(
       ontologyPrefix + typePrefix,
       { params: params, signal: abortSignal },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -577,7 +577,7 @@ export class OlsApi implements HierarchyBuilder {
     contentParams,
     parameter,
     useLegacy?: boolean,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
   ) => {
     const queryPrefix = contentParams?.ontologyId
       ? "ontologies/" + contentParams?.ontologyId + "/"
@@ -589,7 +589,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(
       queryPrefix + "properties",
       { params: params, signal: abortSignal },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -605,7 +605,7 @@ export class OlsApi implements HierarchyBuilder {
     contentParams,
     parameter,
     useLegacy?: boolean,
-    abortSignal?: AbortSignal
+    abortSignal?: AbortSignal,
   ) => {
     const queryPrefix = contentParams?.ontologyId
       ? "ontologies/" + contentParams?.ontologyId + "/"
@@ -617,7 +617,7 @@ export class OlsApi implements HierarchyBuilder {
     return this.makeCall(
       queryPrefix + "individuals",
       { params: params, signal: abortSignal },
-      getUseLegacy(useLegacy)
+      getUseLegacy(useLegacy),
     );
   };
 
@@ -626,49 +626,7 @@ export class OlsApi implements HierarchyBuilder {
     paginationParams: PaginationParams,
     contentParams?: ContentParams,
     parameter?: string,
-    abortSignal?: AbortSignal
-  ): Promise<any> => {
-    return this.makeCall(
-      "search",
-      {
-        params: this.buildParamsForSearch(
-          queryParams,
-          paginationParams,
-          contentParams,
-          parameter
-        ),
-        signal: abortSignal,
-      },
-      true
-    );
-  };
-
-  public select = async (
-    queryParams: SelectQueryParams,
-    paginationParams?: PaginationParams,
-    contentParams?: ContentParams,
-    parameter?: string
-  ): Promise<any> => {
-    return this.makeCall(
-      "select",
-      {
-        params: this.buildParamsForSelect(
-          queryParams,
-          paginationParams,
-          contentParams,
-          parameter
-        ),
-      },
-      true
-    );
-  };
-
-  public searchTs4nfdiGateway = async (
-    queryParams: SelectQueryParams,
-    paginationParams?: PaginationParams,
-    contentParams?: ContentParams,
-    parameter?: string,
-    ts4nfdiGateway?: boolean
+    abortSignal?: AbortSignal,
   ): Promise<any> => {
     return this.makeCall(
       "search",
@@ -678,10 +636,52 @@ export class OlsApi implements HierarchyBuilder {
           paginationParams,
           contentParams,
           parameter,
-          ts4nfdiGateway
+        ),
+        signal: abortSignal,
+      },
+      true,
+    );
+  };
+
+  public select = async (
+    queryParams: SelectQueryParams,
+    paginationParams?: PaginationParams,
+    contentParams?: ContentParams,
+    parameter?: string,
+  ): Promise<any> => {
+    return this.makeCall(
+      "select",
+      {
+        params: this.buildParamsForSelect(
+          queryParams,
+          paginationParams,
+          contentParams,
+          parameter,
         ),
       },
-      true
+      true,
+    );
+  };
+
+  public searchTs4nfdiGateway = async (
+    queryParams: SelectQueryParams,
+    paginationParams?: PaginationParams,
+    contentParams?: ContentParams,
+    parameter?: string,
+    ts4nfdiGateway?: boolean,
+  ): Promise<any> => {
+    return this.makeCall(
+      "search",
+      {
+        params: this.buildParamsForSearch(
+          queryParams,
+          paginationParams,
+          contentParams,
+          parameter,
+          ts4nfdiGateway,
+        ),
+      },
+      true,
     );
   };
 
@@ -697,11 +697,10 @@ export class OlsApi implements HierarchyBuilder {
     paginationParams?: PaginationParams,
     contentParams?: ContentParams,
     parameter?: string,
-    ts4nfdiGateway?: boolean
+    ts4nfdiGateway?: boolean,
   ): Promise<Select> {
     let response;
     let selectData: OLSSelectResult[] = [];
-    let resultNum = 0;
 
     if (ts4nfdiGateway) {
       response = await this.searchTs4nfdiGateway(
@@ -709,7 +708,7 @@ export class OlsApi implements HierarchyBuilder {
         paginationParams,
         contentParams,
         parameter,
-        ts4nfdiGateway
+        ts4nfdiGateway,
       );
       if (!response) {
         throw new Error("Select data not found");
@@ -717,7 +716,7 @@ export class OlsApi implements HierarchyBuilder {
         selectData = selectData.concat(
           response.map((data: any) => {
             return new Ts4nfdiSearchResult(data);
-          })
+          }),
         );
       }
     } else {
@@ -725,7 +724,7 @@ export class OlsApi implements HierarchyBuilder {
         queryParams,
         paginationParams,
         contentParams,
-        parameter
+        parameter,
       );
       if (!response || !response["response"]["docs"]) {
         throw new Error("Select data not found");
@@ -733,7 +732,7 @@ export class OlsApi implements HierarchyBuilder {
         selectData = selectData.concat(
           response["response"]["docs"].map((data: any) => {
             return new OLSSelectResult(data);
-          })
+          }),
         );
       }
     }
@@ -745,7 +744,7 @@ export class OlsApi implements HierarchyBuilder {
     queryParams: SuggestQueryParams,
     paginationParams?: PaginationParams,
     contentParams?: ContentParams,
-    parameter?: string
+    parameter?: string,
   ): Promise<any> => {
     return this.makeCall(
       "suggest",
@@ -754,10 +753,10 @@ export class OlsApi implements HierarchyBuilder {
           queryParams,
           paginationParams,
           contentParams,
-          parameter
+          parameter,
         ),
       },
-      true
+      true,
     );
   };
 
@@ -771,13 +770,10 @@ export class OlsApi implements HierarchyBuilder {
   public getTermTree = async (
     contentParams: ContentParams,
     treeParams: JsTreeParams,
-    paginationParams?: PaginationParams,
-    sortingParams?: SortingParams
   ) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
       return (await this.axiosInstance.get(baseRequest + "/roots")).data; //1)
-    // @ts-ignore
     baseRequest =
       baseRequest +
       "/" +
@@ -786,7 +782,7 @@ export class OlsApi implements HierarchyBuilder {
     if (treeParams.child)
       return (
         await this.axiosInstance.get(
-          baseRequest + "/children/" + treeParams.child
+          baseRequest + "/children/" + treeParams.child,
         )
       ).data;
     //3)
@@ -795,15 +791,10 @@ export class OlsApi implements HierarchyBuilder {
         .data; //2)
   };
 
-  public getTermRelations = async (
-    contentParams: ContentParams,
-    paginationParams?: PaginationParams,
-    sortingParams?: SortingParams
-  ) => {
+  public getTermRelations = async (contentParams: ContentParams) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
       return (await this.axiosInstance.get(baseRequest + "/roots")).data; //1)
-    // @ts-ignore
     baseRequest =
       baseRequest +
       "/" +
@@ -825,7 +816,7 @@ export class OlsApi implements HierarchyBuilder {
     entityType?: EntityTypeName,
     ontologyId?: string,
     parameter?: string,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ): Promise<any> {
     let response;
     if (!iri) throw Error("No IRI provided");
@@ -836,14 +827,14 @@ export class OlsApi implements HierarchyBuilder {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
     } else {
       if (getUseLegacy(useLegacy)) {
         response = await this.getEntityWithInferredEntityType(
           iri,
           ontologyId,
-          parameter
+          parameter,
         );
       } else {
         response = await this.getEntity(
@@ -851,7 +842,7 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           { ontologyId: ontologyId, termIri: iri },
           parameter,
-          useLegacy
+          useLegacy,
         );
       }
     }
@@ -874,7 +865,7 @@ export class OlsApi implements HierarchyBuilder {
     entityType?: EntityTypeName,
     ontologyId?: string,
     parameter?: string,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ): Promise<Entity> {
     return createModelObject(
       await this.getEntityResponse(
@@ -882,8 +873,8 @@ export class OlsApi implements HierarchyBuilder {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
-      )
+        useLegacy,
+      ),
     ) as Entity;
   }
 
@@ -898,14 +889,14 @@ export class OlsApi implements HierarchyBuilder {
   public async getOntologyObject(
     ontologyId: string,
     parameter?: string,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ): Promise<Ontology> {
     const response = await this.getOntology(
       undefined,
       undefined,
       { ontologyId: ontologyId },
       parameter,
-      useLegacy
+      useLegacy,
     );
 
     return createModelObject(response) as Ontology;
@@ -916,15 +907,15 @@ export class OlsApi implements HierarchyBuilder {
     thingType?: ThingTypeName,
     ontologyId?: string,
     parameter?: string,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ): Promise<Thing> {
     if (thingType) {
       if (isOntologyTypeName(thingType)) {
         if (!ontologyId)
           throw new Error(
             `ontologyId has to be provided if thingType in {"${ontologyTypeNames.join(
-              '", "'
-            )}"}.`
+              '", "',
+            )}"}.`,
           );
         else
           return await this.getOntologyObject(ontologyId, parameter, useLegacy);
@@ -932,8 +923,8 @@ export class OlsApi implements HierarchyBuilder {
         if (!iri)
           throw new Error(
             `iri has to be provided if thingType in {"${entityTypeNames.join(
-              '", "'
-            )}"}.`
+              '", "',
+            )}"}.`,
           );
         else
           return await this.getEntityObject(
@@ -941,13 +932,13 @@ export class OlsApi implements HierarchyBuilder {
             thingType,
             ontologyId,
             parameter,
-            useLegacy
+            useLegacy,
           );
       } else
         throw new Error(
           `Unsupported thingType "${thingType}" provided. Must be in {"${thingTypeNames.join(
-            '", "'
-          )}"}.`
+            '", "',
+          )}"}.`,
         );
     } else {
       if (!iri && ontologyId) {
@@ -958,11 +949,11 @@ export class OlsApi implements HierarchyBuilder {
           thingType,
           ontologyId,
           parameter,
-          useLegacy
+          useLegacy,
         );
       } else
         throw new Error(
-          `iri or ontologyId has to be provided if thingType is not provided.`
+          `iri or ontologyId has to be provided if thingType is not provided.`,
         );
     }
   }
@@ -972,7 +963,7 @@ export class OlsApi implements HierarchyBuilder {
     entityType: EntityTypeName,
     ontologyId?: string,
     parameter?: string,
-    useLegacy?: boolean
+    useLegacy?: boolean,
   ): Promise<any> {
     switch (entityType) {
       case "term":
@@ -982,7 +973,7 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           { ontologyId: ontologyId, termIri: iri },
           parameter,
-          useLegacy
+          useLegacy,
         );
 
       case "property":
@@ -994,7 +985,7 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           { ontologyId: ontologyId, propertyIri: iri },
           parameter,
-          useLegacy
+          useLegacy,
         );
 
       case "individual":
@@ -1003,16 +994,16 @@ export class OlsApi implements HierarchyBuilder {
           undefined,
           { ontologyId: ontologyId, individualIri: iri },
           parameter,
-          useLegacy
+          useLegacy,
         );
 
       default:
         throw Error(
           'Invalid entity type "' +
-          entityType +
-          `". Must be one of {${entityTypeNames
-            .map((elem) => `"${elem}"`)
-            .join(", ")}}.`
+            entityType +
+            `". Must be one of {${entityTypeNames
+              .map((elem) => `"${elem}"`)
+              .join(", ")}}.`,
         );
     }
   }
@@ -1020,7 +1011,7 @@ export class OlsApi implements HierarchyBuilder {
   private async getEntityWithInferredEntityType(
     iri: string,
     ontologyId?: string,
-    parameter?: string
+    parameter?: string,
   ): Promise<any> {
     /*
             Test all types of entities (term, property, individual) manually with separate queries (as /entities does not exist for legacy API)
@@ -1046,7 +1037,7 @@ export class OlsApi implements HierarchyBuilder {
         { ontologyId: ontologyId, termIri: iri },
         parameter,
         true,
-        signal
+        signal,
       ).then((res: any) => {
         setAndStop(res);
       }),
@@ -1056,7 +1047,7 @@ export class OlsApi implements HierarchyBuilder {
         { ontologyId: ontologyId, propertyIri: iri },
         parameter,
         true,
-        signal
+        signal,
       ).then((res: any) => {
         setAndStop(res);
       }),
@@ -1066,7 +1057,7 @@ export class OlsApi implements HierarchyBuilder {
         { ontologyId: ontologyId, individualIri: iri },
         parameter,
         true,
-        signal
+        signal,
       ).then((res: any) => {
         setAndStop(res);
       }),
@@ -1081,7 +1072,7 @@ export class OlsApi implements HierarchyBuilder {
     entityType: EntityTypeName,
     ontologyId: string,
     useLegacy = false,
-    includeObsoleteEntities = false
+    includeObsoleteEntities = false,
   ): Promise<Entity[]> {
     let ancestors: any;
     if (isClassTypeName(entityType)) {
@@ -1090,7 +1081,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologyId,
           entityType,
           iri,
-          useLegacy
+          useLegacy,
         )}/hierarchicalAncestors`,
         {
           params: {
@@ -1098,7 +1089,7 @@ export class OlsApi implements HierarchyBuilder {
             includeObsoleteEntities: includeObsoleteEntities,
           },
         },
-        useLegacy
+        useLegacy,
       );
     } else {
       ancestors = await this.makeCall(
@@ -1106,7 +1097,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologyId,
           entityType,
           iri,
-          useLegacy
+          useLegacy,
         )}/ancestors`,
         {
           params: {
@@ -1114,11 +1105,11 @@ export class OlsApi implements HierarchyBuilder {
             includeObsoleteEntities: includeObsoleteEntities,
           },
         },
-        useLegacy
+        useLegacy,
       );
     }
     if (useLegacy) {
-      let listOfAncestorObj: Array<Entity> = [];
+      const listOfAncestorObj: Array<Entity> = [];
       let extractKey = "";
       switch (entityType) {
         case "class":
@@ -1138,25 +1129,25 @@ export class OlsApi implements HierarchyBuilder {
       }
       ancestors["_embedded"][extractKey].map((obj: any) => {
         listOfAncestorObj.push(
-          createModelObject({ _embedded: { [extractKey]: [obj] } }) as Entity
+          createModelObject({ _embedded: { [extractKey]: [obj] } }) as Entity,
         );
       });
       return listOfAncestorObj;
     }
     return ancestors["elements"].map(
-      (obj: any) => createModelObject({ elements: [obj] }) as Entity
+      (obj: any) => createModelObject({ elements: [obj] }) as Entity,
     );
   }
 
   public async getJSTree(
     iri: string,
     entityType: EntityTypeName,
-    ontologyId: string
+    ontologyId: string,
   ): Promise<JSTreeNode[]> {
     return await this.makeCall(
       `${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`,
       { params: { size: "1000", viewMode: "All" } },
-      true
+      true,
     );
   }
 
@@ -1166,7 +1157,7 @@ export class OlsApi implements HierarchyBuilder {
     entityType: EntityTypeName,
     ontologyId: string,
     includeObsoleteEntities = false,
-    useLegacy = false
+    useLegacy = false,
   ): Promise<Entity[]> {
     let children: any;
     if (isClassTypeName(entityType)) {
@@ -1175,7 +1166,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologyId,
           classTypeNames[0],
           iri,
-          useLegacy
+          useLegacy,
         )}/hierarchicalChildren`,
         {
           params: {
@@ -1183,7 +1174,7 @@ export class OlsApi implements HierarchyBuilder {
             includeObsoleteEntities: includeObsoleteEntities,
           },
         },
-        useLegacy
+        useLegacy,
       );
     } else if (isIndividualTypeName(entityType)) {
       // entityType does NOT indicate which type the entity of the provided iri has, but which type of hierarchy is desired
@@ -1195,10 +1186,10 @@ export class OlsApi implements HierarchyBuilder {
             ontologyId,
             classTypeNames[0],
             iri,
-            useLegacy
+            useLegacy,
           )}/descendants`,
           { params: { size: "1000" } },
-          useLegacy
+          useLegacy,
         );
       } else {
         children = await this.makeCall(
@@ -1206,7 +1197,7 @@ export class OlsApi implements HierarchyBuilder {
             ontologyId,
             classTypeNames[0],
             iri,
-            useLegacy
+            useLegacy,
           )}/instances`,
           {
             params: {
@@ -1214,7 +1205,7 @@ export class OlsApi implements HierarchyBuilder {
               includeObsoleteEntities: includeObsoleteEntities,
             },
           },
-          useLegacy
+          useLegacy,
         );
       }
     } else {
@@ -1223,7 +1214,7 @@ export class OlsApi implements HierarchyBuilder {
           ontologyId,
           entityType,
           iri,
-          useLegacy
+          useLegacy,
         )}/children`,
         {
           params: {
@@ -1231,7 +1222,7 @@ export class OlsApi implements HierarchyBuilder {
             includeObsoleteEntities: includeObsoleteEntities,
           },
         },
-        useLegacy
+        useLegacy,
       );
     }
 
@@ -1248,11 +1239,11 @@ export class OlsApi implements HierarchyBuilder {
                 ? pluralizeType(classTypeNames[0], useLegacy)
                 : pluralizeType(entityType)]: [obj],
             },
-          }) as Entity
+          }) as Entity,
       );
     } else {
       return children["elements"].map(
-        (obj: any) => createModelObject({ elements: [obj] }) as Entity
+        (obj: any) => createModelObject({ elements: [obj] }) as Entity,
       );
     }
   }
@@ -1262,7 +1253,7 @@ export class OlsApi implements HierarchyBuilder {
     ontologyId: string,
     preferredRoots = false,
     includeObsoleteEntities = false,
-    useLegacy = false
+    useLegacy = false,
   ): Promise<Entity[]> {
     if (useLegacy) {
       if (isIndividualTypeName(entityType)) {
@@ -1275,7 +1266,7 @@ export class OlsApi implements HierarchyBuilder {
             ontologyId,
             entityType,
             undefined,
-            useLegacy
+            useLegacy,
           )}/roots`,
           {
             params: {
@@ -1283,14 +1274,14 @@ export class OlsApi implements HierarchyBuilder {
               includeObsoleteEntities: includeObsoleteEntities,
             },
           },
-          useLegacy
+          useLegacy,
         );
 
         return roots["_embedded"][pluralizeType(entityType, useLegacy)].map(
           (obj: any) =>
             createModelObject({
               ["_embedded"]: { [pluralizeType(entityType, useLegacy)]: [obj] },
-            }) as Entity
+            }) as Entity,
         );
       }
     } else {
@@ -1303,7 +1294,7 @@ export class OlsApi implements HierarchyBuilder {
             ontologyId,
             entityType,
             undefined,
-            useLegacy
+            useLegacy,
           )}`,
           {
             params: {
@@ -1313,11 +1304,11 @@ export class OlsApi implements HierarchyBuilder {
               isPreferredRoot: preferredRoots ? "true" : undefined,
             },
           },
-          useLegacy
+          useLegacy,
         );
 
         return roots["elements"].map(
-          (obj: any) => createModelObject({ elements: [obj] }) as Entity
+          (obj: any) => createModelObject({ elements: [obj] }) as Entity,
         );
       }
     }
@@ -1325,26 +1316,26 @@ export class OlsApi implements HierarchyBuilder {
 
   public async getClassInstances(
     iri: string,
-    ontologyId: string
+    ontologyId: string,
   ): Promise<Individual[]> {
     const instances = await this.makeCall(
       `${getEntityInOntologySuffix(
         ontologyId,
         classTypeNames[0],
         iri,
-        false
+        false,
       )}/individuals`,
       { params: { size: "1000" } },
-      false
+      false,
     );
 
     return instances["elements"].map(
-      (obj: any) => createModelObject({ elements: [obj] }) as Individual
+      (obj: any) => createModelObject({ elements: [obj] }) as Individual,
     );
   }
 
   public async buildHierarchyWithIri(
-    props: BuildHierarchyProps & HierarchyIriProp
+    props: BuildHierarchyProps & HierarchyIriProp,
   ): Promise<Hierarchy> {
     const {
       iri,
@@ -1363,7 +1354,7 @@ export class OlsApi implements HierarchyBuilder {
         entityType,
         ontologyId,
         "",
-        useLegacy
+        useLegacy,
       ).then((entity) =>
         this.buildHierarchyWithEntity({
           entityType: entityType || (entity.getType() as EntityTypeName),
@@ -1374,12 +1365,12 @@ export class OlsApi implements HierarchyBuilder {
           keepExpansionStates: keepExpansionStates,
           showSiblingsOnInit: showSiblingsOnInit,
           useLegacy: useLegacy,
-        })
+        }),
       );
     } else {
       if (entityType == undefined || ontologyId == undefined)
         throw Error(
-          "Either iri or ontologyId and entityType have to be provided."
+          "Either iri or ontologyId and entityType have to be provided.",
         );
       return await this.buildRootHierarchy({
         entityType: entityType,
@@ -1418,7 +1409,7 @@ export class OlsApi implements HierarchyBuilder {
     props: {
       ontologyId: string;
       entityType: EntityTypeName;
-    } & BuildHierarchyProps
+    } & BuildHierarchyProps,
   ): Promise<Hierarchy> {
     const {
       ontologyId,
@@ -1435,7 +1426,7 @@ export class OlsApi implements HierarchyBuilder {
         ontologyId,
         preferredRoots,
         includeObsoleteEntities,
-        useLegacy
+        useLegacy,
       )
     )
       .map((entity) => this.entityToEntityData(entity))
@@ -1462,8 +1453,8 @@ export class OlsApi implements HierarchyBuilder {
         .map((root) => new TreeNode(root))
         .sort((a, b) =>
           (a.entityData.label || a.entityData.iri).localeCompare(
-            b.entityData.label || b.entityData.iri
-          )
+            b.entityData.label || b.entityData.iri,
+          ),
         ),
       api: new OlsApi(this.axiosInstance.getUri()),
       ontologyId: ontologyId,
@@ -1479,7 +1470,7 @@ export class OlsApi implements HierarchyBuilder {
       mainEntity: Entity;
       ontologyId: string;
       entityType: EntityTypeName;
-    } & BuildHierarchyProps
+    } & BuildHierarchyProps,
   ): Promise<Hierarchy> {
     const {
       mainEntity,
@@ -1500,7 +1491,7 @@ export class OlsApi implements HierarchyBuilder {
       const jsTree = await this.getJSTree(
         mainEntity.getIri(),
         entityType,
-        ontologyId
+        ontologyId,
       );
       const idToIri: Map<string, string> = new Map<string, string>();
       const parents: Map<string, Set<string>> = new Map<string, Set<string>>();
@@ -1537,7 +1528,7 @@ export class OlsApi implements HierarchyBuilder {
         mainEntity.getIri(),
         entityType,
         ontologyId || mainEntity.getOntologyId(),
-        includeObsoleteEntities
+        includeObsoleteEntities,
       );
       entities = [
         this.entityToEntityData(mainEntity),
@@ -1579,10 +1570,10 @@ export class OlsApi implements HierarchyBuilder {
                 entityTypeForQuery,
                 ontologyId,
                 includeObsoleteEntities,
-                useLegacy
+                useLegacy,
               )
                 .then((children) =>
-                  children.map((child) => this.entityToEntityData(child))
+                  children.map((child) => this.entityToEntityData(child)),
                 )
                 .then((children) => {
                   const parChildRel: ParentChildRelation[] = [];
@@ -1590,7 +1581,7 @@ export class OlsApi implements HierarchyBuilder {
                     entitiesData.set(child.iri, child);
                     if (child.parents) {
                       const parRelation = child.parents.filter(
-                        (par) => par.value == entityData.iri
+                        (par) => par.value == entityData.iri,
                       );
                       parChildRel.push({
                         childIri: child.iri,
@@ -1607,8 +1598,8 @@ export class OlsApi implements HierarchyBuilder {
                   parentChildRelations.set(entityData.iri, parChildRel);
                   allChildrenPresent.add(entityData.iri);
                 })
-                .then(resolve)
-            )
+                .then(resolve),
+            ),
           );
         }
       }
@@ -1623,7 +1614,7 @@ export class OlsApi implements HierarchyBuilder {
               parentReified.value,
               realEntityType,
               ontologyId,
-              includeObsoleteEntities
+              includeObsoleteEntities,
             )
           ).map((child) => this.entityToEntityData(child));
 
@@ -1642,7 +1633,7 @@ export class OlsApi implements HierarchyBuilder {
       for (const entityData of entities) {
         if (entityData.parents) {
           const parents = entityData.parents.filter(
-            (parentReified: Reified<string>) => !isTop(parentReified.value)
+            (parentReified: Reified<string>) => !isTop(parentReified.value),
           );
           if (
             entityData.iri == mainEntity?.getIri() &&
@@ -1677,8 +1668,8 @@ export class OlsApi implements HierarchyBuilder {
     for (const rel of parentChildRelations.values())
       rel.sort((a, b) =>
         (entitiesData.get(a.childIri)?.label || a.childIri).localeCompare(
-          entitiesData.get(b.childIri)?.label || b.childIri
-        )
+          entitiesData.get(b.childIri)?.label || b.childIri,
+        ),
       );
     /* --- */
 
@@ -1695,7 +1686,7 @@ export class OlsApi implements HierarchyBuilder {
       for (const entityData of entities) {
         if (entityData.parents) {
           const parents = entityData.parents.filter(
-            (parentReified: Reified<string>) => !isTop(parentReified.value)
+            (parentReified: Reified<string>) => !isTop(parentReified.value),
           );
           if (parents.length == 0) rootEntities.push(entityData.iri);
         }
@@ -1706,7 +1697,7 @@ export class OlsApi implements HierarchyBuilder {
     function createTreeNode(
       entityData: EntityData,
       cycleCheck: Set<string>,
-      childRelationToParent?: string
+      childRelationToParent?: string,
     ): TreeNode {
       cycleCheck.add(entityData.iri); // add current entity to cycle check set
 
@@ -1724,7 +1715,7 @@ export class OlsApi implements HierarchyBuilder {
         const childData = entitiesData.get(child.childIri);
         if (childData != undefined)
           node.addChild(
-            createTreeNode(childData, cycleCheck, child.childRelationToParent)
+            createTreeNode(childData, cycleCheck, child.childRelationToParent),
           );
       }
 
@@ -1743,12 +1734,12 @@ export class OlsApi implements HierarchyBuilder {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       roots: rootEntities
         .map((rootEntity) =>
-          createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)
+          createTreeNode(entitiesData.get(rootEntity)!, cycleCheck),
         )
         .sort((a, b) =>
           (a.entityData.label || a.entityData.iri).localeCompare(
-            b.entityData.label || b.entityData.iri
-          )
+            b.entityData.label || b.entityData.iri,
+          ),
         ),
       api: new OlsApi(this.axiosInstance.getUri()),
       ontologyId: ontologyId,
@@ -1761,7 +1752,7 @@ export class OlsApi implements HierarchyBuilder {
   }
 
   public async loadHierarchyChildren(
-    props: LoadHierarchyChildrenProps
+    props: LoadHierarchyChildrenProps,
   ): Promise<EntityData[]> {
     if (props.entityType == undefined)
       throw Error("EntityType has to be provided to load children in OLS.");
@@ -1772,7 +1763,7 @@ export class OlsApi implements HierarchyBuilder {
         props.entityType,
         props.ontologyId,
         props.includeObsoleteEntities,
-        props.useLegacy
+        props.useLegacy,
       )
     ).map((entity) => this.entityToEntityData(entity));
   }
