@@ -4,6 +4,7 @@
   "description": "This project includes a widget component library derived from the semantic lookup service SemLookP. The Terminology Service is a repository for biomedical resources that aims to provide a single point of access to the latest ontology and terminology versions. User interface (UI) functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, thus simplifying the development of user interfaces and the visualization of semantic information. The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are based on the Ontology Lookup Service (OLS), software developed by EBI.",
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "package.json"
@@ -14,7 +15,7 @@
   },
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "npx vite build",
     "semantic-release": "npx semantic-release",
     "storybook:react": "storybook dev -p 6006 -c .storybook/react",
     "storybook:html": "storybook dev -p 6007 -c .storybook/html",
@@ -33,7 +34,6 @@
     "test": "vitest",
     "test:storybook": "vitest --project=storybook"
   },
-  "types": "dist/esm/types/index.d.ts",
   "author": "TS4NFDI",
   "license": "MIT",
   "devDependencies": {

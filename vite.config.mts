@@ -32,13 +32,13 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [
-        '@elastic/eui',
-        'react',
-        'react-query',
-        '@emotion/react',
-        'react-dom',
-      ]
+      // external: [
+      //   '@elastic/eui',
+      //   'react',
+      //   'react-query',
+      //   '@emotion/react',
+      //   'react-dom',
+      // ]
     },
     sourcemap: true,
   },

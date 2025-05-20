@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SearchBarWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import registerDefaultIcons from "../../euiicons";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const { api, query, selectionChangedEvent, ...rest } = props;
@@ -116,6 +117,7 @@ function createSearchBar(
   container: any,
   callback?: () => void,
 ) {
+  registerDefaultIcons();
   ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
 }
 
