@@ -216,7 +216,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   if (data && (firstLoad || dbclicked)) {
-    //let gData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
     let gData = data.termRelations;
     if (data.treeData && rootWalkIsSelected && firstLoad && !hierarchicalView) {
       gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined);
@@ -334,12 +333,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
     if (nodeRelations) {
+      // add the "has part" relation to the hierarchy
       let onlyHasPartRelations: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
       for (let edge of nodeRelations["edges"]) {
         if (edge["label"] === "has part") {
           onlyHasPartRelations.edges.push(edge);
-          onlyHasPartRelations.nodes.push(nodeRelations.nodes.filter((node) => node.iri === edge.source)[0]);
-          onlyHasPartRelations.nodes.push(nodeRelations.nodes.filter((node) => node.iri === edge.target)[0]);
+          onlyHasPartRelations.nodes.push(nodeRelations.nodes.find((node) => node.iri === edge.source));
+          onlyHasPartRelations.nodes.push(nodeRelations.nodes.find((node) => node.iri === edge.target));
         }
       }
       graphData["nodes"] = graphData["nodes"].concat(onlyHasPartRelations["nodes"])
