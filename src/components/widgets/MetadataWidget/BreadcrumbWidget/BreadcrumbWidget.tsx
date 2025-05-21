@@ -12,6 +12,7 @@ import { isEntity } from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {
@@ -119,13 +120,17 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createBreadcrumb(
   props: BreadcrumbWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedBreadcrumbWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedBreadcrumbWidget {...props} />);
 }
 
 function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {

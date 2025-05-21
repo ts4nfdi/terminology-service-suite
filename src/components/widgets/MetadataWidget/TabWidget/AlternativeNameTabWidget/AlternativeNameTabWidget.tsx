@@ -8,6 +8,7 @@ import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -50,13 +51,17 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
     />
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createAlternativeNameTab(
   props: AlternativeNameTabWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedAlternativeNameTabWidget {...props} />);
 }
 
 function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {

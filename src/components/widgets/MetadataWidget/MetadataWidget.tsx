@@ -27,6 +27,7 @@ import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoLis
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/tssStyles.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 type MetadataInfo = {
   entity: Entity;
@@ -237,13 +238,17 @@ function MetadataWidget(props: MetadataWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createMetadata(
   props: MetadataWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedMetadataWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedMetadataWidget {...props} />);
 }
 
 function WrappedMetadataWidget(props: MetadataWidgetProps) {

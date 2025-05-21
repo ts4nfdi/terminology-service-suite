@@ -23,6 +23,7 @@ import { AutocompleteWidget } from "../AutocompleteWidget";
 import ReactDOM from "react-dom";
 import { SearchBarWidget } from "../SearchBarWidget";
 import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -430,13 +431,17 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createSearchResultsList(
   props: SearchResultsListWidgetProps,
   container: any,
-  callback?: () => void,
 ) {
-  ReactDOM.render(WrappedSearchResultsListWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedSearchResultsListWidget {...props} />);
 }
 
 function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {

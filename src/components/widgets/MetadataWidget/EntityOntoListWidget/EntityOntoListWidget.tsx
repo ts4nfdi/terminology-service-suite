@@ -11,6 +11,7 @@ import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
+import { createRoot, Root } from "react-dom/client";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
@@ -91,13 +92,17 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createEntityOntoList(
   props: EntityOntoListWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedEntityOntoListWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedEntityOntoListWidget {...props} />);
 }
 
 function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {

@@ -38,6 +38,7 @@ import {
 } from "../../../model/ModelTypeCheck";
 import { EntityInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -710,13 +711,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createEntityInfo(
   props: EntityInfoWidgetProps,
   container: any,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedEntitiyInfoWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedEntitiyInfoWidget {...props} />);
 }
 
 function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {

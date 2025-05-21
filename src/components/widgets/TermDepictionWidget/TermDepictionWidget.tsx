@@ -12,6 +12,7 @@ import {
 } from "@elastic/eui";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "@google/model-viewer";
+import { createRoot, Root } from "react-dom/client";
 
 
 function TermDepictionWidget(props: TermDepictionWidgetProps) {
@@ -66,13 +67,17 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createDepiction(
   props: TermDepictionWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedTermDepictionWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedTermDepictionWidget {...props} />);
 }
 
 function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {

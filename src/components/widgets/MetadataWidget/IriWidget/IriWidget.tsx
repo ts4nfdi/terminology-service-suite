@@ -10,6 +10,7 @@ import {
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 function IriWidget(props: IriWidgetProps) {
   const {
@@ -91,13 +92,17 @@ function IriWidget(props: IriWidgetProps) {
     </EuiFlexItem>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createIri(
   props: IriWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedIriWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedIriWidget {...props} />);
 }
 
 function WrappedIriWidget(props: IriWidgetProps) {

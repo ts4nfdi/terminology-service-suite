@@ -24,6 +24,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import { OntologyInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -274,13 +275,17 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     </div>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createOntologyInfo(
   props: OntologyInfoWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedOntologyInfoWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedOntologyInfoWidget {...props} />);
 }
 
 function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {

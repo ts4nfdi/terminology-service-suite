@@ -11,6 +11,7 @@ import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
+import { createRoot, Root } from "react-dom/client";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -84,13 +85,17 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createEntityDefinedBy(
   props: EntityDefinedByWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedEntityDefinedByWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedEntityDefinedByWidget {...props} />);
 }
 
 function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
