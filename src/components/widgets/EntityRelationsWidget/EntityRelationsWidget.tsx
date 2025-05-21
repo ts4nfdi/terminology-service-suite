@@ -36,6 +36,7 @@ import {
 } from "../../../app/util";
 import { EntityRelationsWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -660,13 +661,17 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createEntityRelations(
   props: EntityRelationsWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedEntityRelationsWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedEntityRelationsWidget {...props} />);
 }
 
 function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps) {

@@ -20,6 +20,7 @@ import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { JSTreeNode } from "../../../api/OlsApi";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const { api, iri, ontologyId, rootWalk, className } = props;
@@ -357,13 +358,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     </div>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createGraphView(
   props: GraphViewWidgetProps,
   container: Element,
-  callback?: () => void,
 ) {
-  ReactDOM.render(WrappedGraphViewWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedGraphViewWidget {...props} />);
 }
 
 function WrappedGraphViewWidget(props: GraphViewWidgetProps) {

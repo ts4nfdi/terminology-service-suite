@@ -18,6 +18,7 @@ import { randomString } from "../../../../../app/util";
 import { HierarchyWidgetProps, EntityData } from "../../../../../app/types";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
+import { createRoot, Root } from "react-dom/client";
 
 export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
   INCLUDE_OBSOLETE_ENTITIES: false,
@@ -336,13 +337,17 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     </div>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createHierarchy(
   props: HierarchyWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedHierarchyWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedHierarchyWidget {...props} />);
 }
 
 function WrappedHierarchyWidget(props: HierarchyWidgetProps) {

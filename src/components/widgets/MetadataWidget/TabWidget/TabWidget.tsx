@@ -8,6 +8,7 @@ import { TabPresentation } from "./TabPresentation";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function TabWidget(props: TabWidgetProps) {
   const {
@@ -72,13 +73,17 @@ function TabWidget(props: TabWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createTab(
   props: TabWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedTabWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedTabWidget {...props} />);
 }
 
 function WrappedTabWidget(props: TabWidgetProps) {

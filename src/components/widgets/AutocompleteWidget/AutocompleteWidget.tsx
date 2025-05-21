@@ -18,6 +18,7 @@ import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/Bread
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
+import { createRoot, Root } from "react-dom/client";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -530,13 +531,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 }
 
+const roots = new WeakMap<Element, Root>();
+
 function createAutocomplete(
   props: AutocompleteWidgetProps,
   container: any,
-  callback?: () => void,
 ) {
-  // @ts-ignore
-  ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedAutocompleteWidget {...props} />);
 }
 
 function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {

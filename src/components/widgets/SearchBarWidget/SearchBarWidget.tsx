@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SearchBarWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import { createRoot, Root } from "react-dom/client";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const { api, query, selectionChangedEvent, ...rest } = props;
@@ -110,13 +111,17 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createSearchBar(
   props: SearchBarWidgetProps,
   container: any,
-  callback?: () => void,
 ) {
-  ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedSearchBarWidget {...props} />);
 }
 
 function WrappedSearchBarWidget(props: SearchBarWidgetProps) {

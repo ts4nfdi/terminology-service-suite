@@ -3,6 +3,7 @@ import { EuiButton, EuiProvider } from "@elastic/eui";
 import { JsonApiWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { createRoot, Root } from "react-dom/client";
 
 function JsonApiWidget(props: JsonApiWidgetProps) {
   const { apiQuery, buttonText, buttonSize } = props;
@@ -13,13 +14,17 @@ function JsonApiWidget(props: JsonApiWidgetProps) {
     </EuiButton>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createJsonApi(
   props: JsonApiWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedJsonApiWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedJsonApiWidget {...props} />);
 }
 
 function WrappedJsonApiWidget(props: JsonApiWidgetProps) {

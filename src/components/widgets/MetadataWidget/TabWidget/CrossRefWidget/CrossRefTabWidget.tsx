@@ -9,6 +9,7 @@ import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 import Reified from "../../../../../model/Reified";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -45,13 +46,17 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
     />
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createCrossRefTab(
   props: CrossRefWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedCrossRefTabWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedCrossRefTabWidget {...props} />);
 }
 
 function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {

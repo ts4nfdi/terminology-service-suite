@@ -3,8 +3,9 @@ import { EuiCard, EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { Ontologies } from "../../../model/interfaces";
-import { DataContentWidgetProps } from "../../../app/types";
+import { AutocompleteWidgetProps, DataContentWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
@@ -84,14 +85,19 @@ function DataContentWidget(props: DataContentWidgetProps) {
     </>
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createDataContent(
   props: DataContentWidgetProps,
   container: any,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedDataContentWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedDataContentWidget {...props} />);
 }
+
 
 function WrappedDataContentWidget(props: DataContentWidgetProps) {
   const queryClient = new QueryClient();

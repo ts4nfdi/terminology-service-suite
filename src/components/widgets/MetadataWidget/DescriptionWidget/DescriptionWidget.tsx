@@ -7,6 +7,7 @@ import { DescriptionWidgetProps } from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 const NO_DESCRIPTION = "No description available.";
 
@@ -49,12 +50,18 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   );
 }
 
+const roots = new WeakMap<Element, Root>();
+
 function createDescription(
   props: DescriptionWidgetProps,
   container: Element,
-  callback?: () => void
 ) {
-  ReactDOM.render(WrappedDescriptionWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedDescriptionWidget {...props} />);
 }
 
 function WrappedDescriptionWidget(props: DescriptionWidgetProps) {

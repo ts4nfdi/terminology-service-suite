@@ -7,6 +7,7 @@ import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {
@@ -57,13 +58,17 @@ function TitleWidget(props: TitleWidgetProps) {
     />
   );
 }
-
+const roots = new WeakMap<Element, Root>();
 function createTitle(
   props: TitleWidgetProps,
   container: Element,
-  callback?: () => void,
 ) {
-  ReactDOM.render(WrappedTitleWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedTitleWidget {...props} />);
 }
 
 function WrappedTitleWidget(props: TitleWidgetProps) {
