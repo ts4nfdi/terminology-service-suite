@@ -3,22 +3,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import path from 'path'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
   plugins: [
     react(),
     dts({
       include: ['src'],
-      tsconfigPath: 'tsconfig.json',
-    }),
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'src/style/32px.png',
-          dest: '', // copies to dist root
-        },
-      ],
+      tsconfigPath: '../../tsconfig.json',
     }),
   ],
   esbuild: {
@@ -32,14 +23,14 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      // external: [
-      //   '@elastic/eui',
-      //   'react',
-      //   'react-query',
-      //   '@emotion/react',
-      //   'react-dom',
-      // ]
-    },
+        external: [
+          '@elastic/eui',
+          'react',
+          'react-query',
+          '@emotion/react',
+          'react-dom',
+        ]
+     },
     sourcemap: true,
   },
 })

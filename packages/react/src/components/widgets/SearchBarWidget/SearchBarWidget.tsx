@@ -112,29 +112,5 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   );
 }
 
-function createSearchBar(
-  props: SearchBarWidgetProps,
-  container: any,
-  callback?: () => void,
-) {
-  registerDefaultIcons();
-  ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
-}
 
-function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <SearchBarWidget
-          api={props.api}
-          query={props.query}
-          selectionChangedEvent={props.selectionChangedEvent}
-          parameter={props.parameter}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { SearchBarWidget, createSearchBar };
+export { SearchBarWidget };

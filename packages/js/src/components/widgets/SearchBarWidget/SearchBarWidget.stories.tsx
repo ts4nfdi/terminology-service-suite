@@ -1,10 +1,10 @@
 import "ts4nfdi-widgets";
-import { SearchBarWidgetProps } from "../../../app/types";
+import { SearchBarWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
 import {
   SearchBarWidgetStoryArgs,
   SearchBarWidgetStoryArgTypes,
-} from "./SearchBarWidgetStories";
-import { SearchBarDescription } from "../../../app/widgetDescriptions";
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";
+import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 
 let counter = 0;
 
@@ -54,4 +54,4 @@ export {
   SearchBarWidgetDefault,
   TibNFDI4CHEM,
   TibDataPlant,
-} from "./SearchBarWidgetStories";
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";

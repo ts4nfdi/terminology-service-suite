@@ -9,9 +9,8 @@
     "typeRoots": ["node_modules/@types/"],
     "jsx": "react-jsx",
     "declaration": true,
-    "declarationDir": "dist/esm/types",
     "module": "ESNext",
   },
   "exclude": ["dist"],
-  "include": ["./src/**/*", ".storybook/**/*"],
+  "include": ["./packages/**/*", ".storybook/**/*", "packages/react/.storybook/main.ts", "packages/react/.storybook/preview.tsx", "packages/react/.storybook/vitest.setup.ts"],
 }

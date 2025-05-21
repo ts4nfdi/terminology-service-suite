@@ -1,4 +1,4 @@
-import { Entity } from "./";
+import { Entity } from ".";
 
 export interface Class extends Entity {
   getDisjointWith(): any[];

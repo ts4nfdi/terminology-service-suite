@@ -1,4 +1,4 @@
-import { Entity } from "./";
+import { Entity } from ".";
 import Reified from "../Reified";
 
 export interface Property extends Entity {

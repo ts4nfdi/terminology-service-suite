@@ -13,7 +13,6 @@ import { createTitle } from "./MetadataWidget/TitleWidget/TitleWidget";
 import { createMetadata } from "./MetadataWidget/MetadataWidget";
 import { createOntologyInfo } from "./OntologyInfoWidget/OntologyInfoWidget";
 import { createResources } from "./ResourcesWidget/ResourcesWidget";
-import { createSearchBar } from "./SearchBarWidget/SearchBarWidget";
 import { createSearchResultsList } from "./SearchResultsListWidget/SearchResultsListWidget";
 import { createEntityRelations } from "./EntityRelationsWidget/EntityRelationsWidget";
 import { createDepiction } from "./TermDepictionWidget/TermDepictionWidget";
@@ -37,7 +36,6 @@ import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
   createTitle,
   createOntologyInfo,
   createResources,
-  createSearchBar,
   createSearchResultsList,
   createMetadata,
   createDepiction,
@@ -61,7 +59,6 @@ export {
   createTitle,
   createOntologyInfo,
   createResources,
-  createSearchBar,
   createSearchResultsList,
   createMetadata,
   createDepiction,

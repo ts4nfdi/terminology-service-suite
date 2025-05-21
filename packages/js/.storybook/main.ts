@@ -1,6 +1,9 @@
 module.exports = {
   // no tsx files included here to not include react stories
-  stories: ["../../src/**/*.mdx", "../../src/**/*.stories.@(js|jsx|mjs|ts)"],
+  stories: [
+    "../src/**/*.stories.mdx",
+    "../src/**/*.stories.@(js|jsx|tsx)",
+  ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
