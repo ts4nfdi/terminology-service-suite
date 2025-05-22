@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ts4nfdi/terminology-service-suite",
+  "name": "@ts4nfdi/terminology-service-suite-workspace",
   "version": "0.0.0",
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
   "workspaces": [

@@ -24,10 +24,19 @@ export default defineConfig({
     },
     rollupOptions: {
         external: [
+          "axios",
+          "@elastic/datemath",
           '@elastic/eui',
+          "@emotion/css",
+          '@emotion/react',
+          "@google/model-viewer",
+          "moment",
+          "three",
+          "vis-data",
+          "vis-network",
+          "react-router",
           'react',
           'react-query',
-          '@emotion/react',
           'react-dom',
         ]
      },

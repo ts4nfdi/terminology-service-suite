@@ -1,4 +1,3 @@
-import "ts4nfdi-widgets";
 import { SearchBarWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
 import {
   SearchBarWidgetStoryArgs,

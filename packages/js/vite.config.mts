@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      include: ['src'],
+      include: ['src', "../react/src"],
       tsconfigPath: '../../tsconfig.json',
     }),
   ],
@@ -20,9 +20,10 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: '@ts4nfdi/terminology-service-suite-js',
       fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'umd'],
+      formats: ['es'],
     },
-    rollupOptions: { },
+    rollupOptions: { 
+    },
     sourcemap: true,
   },
 })
