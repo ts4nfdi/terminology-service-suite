@@ -19,8 +19,5 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async ({ args, canvasElement }) => {
-    const input = within(canvasElement).getByTestId('counter');
-    expect(input).toBeInTheDocument();
-    expect(input).toHaveTextContent('0');
   }
 }

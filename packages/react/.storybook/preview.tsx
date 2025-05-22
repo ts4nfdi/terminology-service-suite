@@ -25,11 +25,11 @@ export const parameters = {
   },
 };
 
-import registerDefaultIcons from '../../js/src/components/euiicons'
+// import registerDefaultIcons from '../../js/src/components/euiicons'
 import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-registerDefaultIcons();
+// registerDefaultIcons();
 
 const queryClient = new QueryClient();
 

@@ -15,7 +15,7 @@ export default defineWorkspace([
     plugins: [
       // The plugin will run tests for the stories defined in your Storybook config
       // See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
-      storybookTest({ configDir: path.join(dirname, '.storybook/react') })
+      storybookTest({ configDir: path.join(dirname, '.storybook') })
     ],
     test: {
       name: 'storybook',
@@ -25,7 +25,7 @@ export default defineWorkspace([
         name: 'chromium',
         provider: 'playwright',
       },
-      setupFiles: ['.storybook/react/vitest.setup.ts'],
+      setupFiles: ['.storybook/vitest.setup.ts'],
     },
   },
 ]);

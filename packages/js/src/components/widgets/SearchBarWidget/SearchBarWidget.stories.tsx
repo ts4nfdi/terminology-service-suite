@@ -4,6 +4,7 @@ import {
   SearchBarWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";
 import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import './index'
 
 let counter = 0;
 
@@ -26,7 +27,6 @@ export default {
     // You can either use a function to create DOM elements or use a plain html string!
     // return `<div>${label}</div>`;
     const num = getIncNum();
-
     return `
 <div id="search_bar_widget_container_${num}"></div>
 
