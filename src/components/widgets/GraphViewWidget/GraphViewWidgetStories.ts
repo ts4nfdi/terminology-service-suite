@@ -72,3 +72,18 @@ export const ChebiCaffeineHierarchy = {
     hierarchy: true
   },
 };
+
+
+export const WithOnNodeDoubleClickCallback = {
+  args: {
+    api: globals.EBI_API_ENDPOINT,
+    iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
+    ontologyId: "chebi",
+    rootWalk: true,
+    hierarchy: true,
+    onNodeClick: (iri: string) => {
+      let url = `${globals.EBI_API_ENDPOINT}v2/ontologies/chebi/classes/${encodeURIComponent(encodeURIComponent(iri))}?includeObsoleteEntities=true`;
+      window.open(url, "_blank")?.focus();
+    }
+  },
+};

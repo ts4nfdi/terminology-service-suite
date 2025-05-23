@@ -688,6 +688,11 @@ export type GraphViewWidgetProps = ApiObj &
      * The edge label in the graph. Default is "is a". Only for sub-class predicators. 
      */
     edgeLabel?: string;
+
+    /**
+     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * */
+    onNodeClick?: (iri: string) => void;
   };
 
 export type OlsGraphNode = {

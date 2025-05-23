@@ -22,7 +22,7 @@ import { JSTreeNode } from "../../../api/OlsApi";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
-  const { api, iri, ontologyId, rootWalk, className, hierarchy, edgeLabel } = props;
+  const { api, iri, ontologyId, rootWalk, className, hierarchy, edgeLabel, onNodeClick } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -39,6 +39,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const olsApi = new OlsApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel = edgeLabel ?? "is a";
+  const onNodeClickCallbackIdProvided = typeof onNodeClick === "function" && !onNodeClick.name.includes("mockConstructor");
 
   const { data, isLoading, isError, error } = useQuery(
     [
@@ -359,6 +360,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphData,
       graphNetworkConfig,
     );
+
   }, []);
 
   useEffect(() => {
@@ -368,7 +370,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setSelectedIri(nodeIri);
-          setDbclicked(true);
+          if (onNodeClickCallbackIdProvided) {
+            onNodeClick(nodeIri);
+          } else {
+            setDbclicked(true);
+          }
         }
       });
     }
@@ -409,7 +415,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (params.nodes.length > 0) {
         let nodeIri = params.nodes[0];
         setSelectedIri(nodeIri);
-        setDbclicked(true);
+        if (onNodeClickCallbackIdProvided) {
+          onNodeClick(nodeIri);
+        } else {
+          setDbclicked(true);
+        }
       }
     });
   }, [hierarchicalView]);
@@ -429,7 +439,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   );
 
   return (
-    <div className={finalClassName}>
+    <div className={finalClassName} >
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
       <EuiPanel style={{ fontSize: 12 }} paddingSize="s" borderRadius="none">
         <EuiButton size="s" onClick={reset}>
@@ -513,6 +523,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           rootWalk={props.rootWalk}
           hierarchy={props.hierarchy}
           edgeLabel={props.edgeLabel}
+          onNodeClick={props.onNodeClick}
         />
       </QueryClientProvider>
     </EuiProvider>
