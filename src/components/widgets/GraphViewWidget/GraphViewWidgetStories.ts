@@ -82,7 +82,7 @@ export const WithOnNodeDoubleClickCallback = {
     rootWalk: true,
     hierarchy: true,
     onNodeClick: (iri: string) => {
-      let url = `${globals.EBI_API_ENDPOINT}v2/ontologies/chebi/classes/${encodeURIComponent(encodeURIComponent(iri))}?includeObsoleteEntities=true`;
+      let url = `https://www.ebi.ac.uk/ols4/api/v2/ontologies/chebi/classes/${encodeURIComponent(encodeURIComponent(iri))}?includeObsoleteEntities=true`;
       window.open(url, "_blank")?.focus();
     }
   },

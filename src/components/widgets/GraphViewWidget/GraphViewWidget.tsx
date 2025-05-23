@@ -38,7 +38,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   const olsApi = new OlsApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
-  const subClassEdgeLabel = edgeLabel ?? "is a";
+  const subClassEdgeLabel = !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
   const onNodeClickCallbackIdProvided = typeof onNodeClick === "function" && !onNodeClick.name.includes("mockConstructor");
 
   const { data, isLoading, isError, error } = useQuery(
