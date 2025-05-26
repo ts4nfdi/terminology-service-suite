@@ -34,7 +34,7 @@ export default {
 <div id="entity_onto_list_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['Ts4nfdiWidgets'].createEntityOntoList(
+window['ts4nfdiWidgets'].createEntityOntoList(
     {
         iri:"${args.iri}",
         api:"${args.api}",
@@ -43,7 +43,7 @@ window['Ts4nfdiWidgets'].createEntityOntoList(
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
         onNavigateToOntology:${args.onNavigateToOntology},
-        className:${args.className}
+        className:"${args.className}"
     },
     document.querySelector('#entity_onto_list_widget_container_${num}')
 )
