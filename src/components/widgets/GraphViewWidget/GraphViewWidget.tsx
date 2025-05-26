@@ -28,7 +28,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
   const [rootWalkIsSelected, setRootWalkIsSelected] = useState(
-    rootWalk ? rootWalk : false
+    rootWalk ? rootWalk : false,
   );
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -54,8 +54,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         return olsApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
-          undefined,
-          undefined
         );
       } else if (firstLoad || dbclicked) {
         return olsApi.getTermRelations({
@@ -63,7 +61,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           termIri: selectedIri,
         });
       }
-    }
+    },
   );
 
   const nodes = useRef(new DataSet([]));
@@ -182,7 +180,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         data.nodes.push(node);
       }
       let parentNode = listOfJsTreeNodes.find(
-        (obj: JSTreeNode) => obj.id === treeNode.parent
+        (obj: JSTreeNode) => obj.id === treeNode.parent,
       );
       if (parentNode) {
         // parent does not exists --> '#' id that indicates a node is a root.
@@ -194,7 +192,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         };
         if (
           !data.edges.find(
-            (obj) => obj.source === edge.source && obj.target === edge.target
+            (obj) => obj.source === edge.source && obj.target === edge.target,
           )
         ) {
           data.edges.push(edge);
@@ -258,11 +256,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   useEffect(() => {
     let graphData = { nodes: nodes.current, edges: edges.current };
-    //@ts-ignore
     graphNetwork.current = new Network(
+      //@ts-ignore
       container.current,
       graphData,
-      graphNetworkConfig
+      graphNetworkConfig,
     );
   }, []);
 
@@ -363,7 +361,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 function createGraphView(
   props: GraphViewWidgetProps,
   container: Element,
-  callback?: () => void
+  callback?: () => void,
 ) {
   ReactDOM.render(WrappedGraphViewWidget(props), container, callback);
 }

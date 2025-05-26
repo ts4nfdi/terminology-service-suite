@@ -12,7 +12,7 @@ export abstract class OLS3Thing implements Thing {
     this.properties = properties;
   }
 
-  getLabel(): string | undefined {
+  getLabel(): string {
     return this.properties["label"];
   }
 
@@ -72,7 +72,7 @@ export abstract class OLS3Thing implements Thing {
     const linkedEntities = this.properties["linkedEntities"];
     if (linkedEntities) {
       const label: Reified<string>[] = Reified.fromJson<string>(
-        linkedEntities[id]?.label
+        linkedEntities[id]?.label,
       );
       return label[0]?.value || id;
     } else {
