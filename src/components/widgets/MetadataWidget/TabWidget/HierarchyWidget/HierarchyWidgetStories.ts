@@ -251,7 +251,6 @@ export const SkosmosGerman = {
     backendType: "skosmos",
     iri: "http://aims.fao.org/aos/agrovoc/c_1731",
     ontologyId: "agrovoc",
-    showSiblingsOnInit: true,
     parameter: "lang=de"
   }
 };
