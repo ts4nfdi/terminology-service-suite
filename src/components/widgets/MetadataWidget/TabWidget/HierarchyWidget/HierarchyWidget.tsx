@@ -177,6 +177,9 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         showSiblingsOnInit: showSiblingsOnInit,
         useLegacy: useLegacy,
       });
+    },
+    {
+        refetchOnWindowFocus: false
     }
   );
 
