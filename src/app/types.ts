@@ -482,7 +482,8 @@ export type HierarchyWidgetProps = CssClassNameObj & {
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
-  OnNavigateToOntology;
+  OnNavigateToOntology &
+  ParameterObj;
 
 export type TitleTextObj = {
   /**

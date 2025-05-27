@@ -12,6 +12,7 @@ import {
 } from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import { EntityData } from "../app/types";
+import {dictFromParamString} from "../app/util";
 
 type TopConcept = {
   uri: string;
@@ -110,7 +111,7 @@ export class SkosApi implements HierarchyBuilder {
   public async buildHierarchyWithIri(
     props: BuildHierarchyProps & HierarchyIriProp,
   ): Promise<Hierarchy> {
-    const { iri, ontologyId, showSiblingsOnInit } = props;
+    const { iri, ontologyId, showSiblingsOnInit, parameter } = props;
 
     if (!ontologyId)
       throw Error("ontologyId has to be specified for SKOS API.");
@@ -127,7 +128,14 @@ export class SkosApi implements HierarchyBuilder {
     if (iri) {
       const broaderTransitive: HierarchyResult[] = await this.makeCall(
         `/${ontologyId}/hierarchy`,
-        { params: { uri: iri, lang: "en", format: "application/json" } },
+        {
+          params: {
+            uri: iri,
+            lang: "en",
+            format: "application/json",
+            ...dictFromParamString(parameter)
+          }
+        },
       ).then((obj) =>
         Object.keys(obj["broaderTransitive"]).map(
           (key) => obj["broaderTransitive"][key],
@@ -188,7 +196,13 @@ export class SkosApi implements HierarchyBuilder {
     } else {
       const topconcepts: TopConcept[] = await this.makeCall(
         `/${ontologyId}/topConcepts`,
-        { params: { lang: "en", format: "application/json" } },
+        {
+          params: {
+            lang: "en",
+            format: "application/json",
+            ...dictFromParamString(parameter)
+          }
+        },
       ).then((obj) => obj["topconcepts"]);
 
       for (const concept of topconcepts) {
@@ -259,13 +273,14 @@ export class SkosApi implements HierarchyBuilder {
       ontologyId: ontologyId,
       mainEntityIri: iri,
       keepExpansionStates: props.keepExpansionStates,
+      parameter: parameter
     });
   }
 
   public async loadHierarchyChildren(
     props: LoadHierarchyChildrenProps,
   ): Promise<EntityData[]> {
-    const { nodeToExpand, ontologyId } = props;
+    const { nodeToExpand, ontologyId, parameter } = props;
 
     const narrower: PrefAndUriAndChildren[] = (
       await this.makeCall(`/${ontologyId}/children`, {
@@ -273,6 +288,7 @@ export class SkosApi implements HierarchyBuilder {
           uri: nodeToExpand.entityData.iri,
           lang: "en",
           format: "application/json",
+          ...dictFromParamString(parameter)
         },
       })
     )["narrower"];

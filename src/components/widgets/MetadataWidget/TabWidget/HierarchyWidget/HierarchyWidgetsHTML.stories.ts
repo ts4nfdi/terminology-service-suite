@@ -71,4 +71,6 @@ export {
   SagePubHierarchy,
   OntoportalHierarchy,
   OLS3Hierarchy,
+  OLSGerman,
+  SkosmosGerman,
 } from "./HierarchyWidgetStories";

@@ -132,6 +132,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     showSiblingsOnInit = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
     useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
     className,
+    parameter,
   } = props;
   const finalClassName = className || "ts4nfdi-hierarchy-style";
 
@@ -165,6 +166,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       keepExpansionStates,
       showSiblingsOnInit,
       useLegacy,
+      parameter,
     ],
     async function getNewHierarchy() {
       return await api.buildHierarchyWithIri({
@@ -176,6 +178,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         keepExpansionStates: keepExpansionStates,
         showSiblingsOnInit: showSiblingsOnInit,
         useLegacy: useLegacy,
+        parameter: parameter,
       });
     }
   );
@@ -256,10 +259,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       type={node.expanded ? "arrowDown" : "arrowRight"}
                       size={"s"}
                     />
+                    &nbsp;
                   </button>
                 )}
               </span>
-              &nbsp;
               <TreeLink
                 entityData={node.entityData}
                 childRelationToParent={node.childRelationToParent}
