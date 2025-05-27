@@ -4,6 +4,7 @@ import * as globals from "../../../../../app/globals";
 import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
+  parameterArgType,
 } from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
@@ -97,6 +98,7 @@ export const HierarchyWidgetStoryArgTypes = {
       },
     },
   },
+  ...parameterArgType
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -114,6 +116,7 @@ export const HierarchyWidgetStoryArgs = {
   keepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
   showSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+  parameter: "",
 };
 
 export const ClassHierarchy = {
@@ -228,4 +231,27 @@ export const OLS3Hierarchy = {
     ontologyId: "efo",
     useLegacy: true,
   },
+};
+
+export const OLSGerman = {
+  args: {
+    apiUrl: globals.EBI_API_ENDPOINT,
+    backendType: "ols",
+    iri: "http://purl.obolibrary.org/obo/HP_0003502",
+    entityType: "class",
+    ontologyId: "hp",
+    useLegacy: false,
+    parameter: "lang=de"
+  }
+};
+
+export const SkosmosGerman = {
+  args: {
+    apiUrl: "https://agrovoc.fao.org/browse/rest/v1/",
+    backendType: "skosmos",
+    iri: "http://aims.fao.org/aos/agrovoc/c_1731",
+    ontologyId: "agrovoc",
+    showSiblingsOnInit: true,
+    parameter: "lang=de"
+  }
 };

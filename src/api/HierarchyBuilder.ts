@@ -28,6 +28,13 @@ export type HierarchyQueryProps = {
    * Toggle between OLS3 (legacy) and OLS4 API versions.
    */
   useLegacy?: boolean;
+
+  /**
+   * **TODO: Does not affect OntoPortal yet**
+   * Provide additional parameters in url format.
+   * These are directly applied to the hierarchies queries.
+   */
+  parameter?: string;
 };
 
 export type HierarchyIriProp = {
