@@ -33,7 +33,7 @@ export default {
 <div id="cross_ref_tab_widget_container_${num}"></div>
 
 <script type="text/javascript">
-window['Ts4nfdiWidgets'].createCrossRefTab(
+window['ts4nfdiWidgets'].createCrossRefTab(
     {
         iri:"${args.iri}",
         api:"${args.api}",
@@ -41,7 +41,7 @@ window['Ts4nfdiWidgets'].createCrossRefTab(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        className:${args.className}
+        className:"${args.className}"
     },
     document.querySelector('#cross_ref_tab_widget_container_${num}')
 )

@@ -38,7 +38,7 @@ window['ts4nfdiWidgets'].createIri(
         externalIcon: ${args.externalIcon},
         urlPrefix:"${args.urlPrefix}",
         copyButton: "${args.copyButton}",
-        className:${args.className}
+        className:"${args.className}"
     },
     document.querySelector('#iri_widget_container_${num}')
 )

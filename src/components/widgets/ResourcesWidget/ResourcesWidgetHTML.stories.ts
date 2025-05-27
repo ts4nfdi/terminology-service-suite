@@ -39,7 +39,7 @@ window['ts4nfdiWidgets'].createResources(
         pageSizeOptions:[${args.pageSizeOptions}],
         initialSortField:"${args.initialSortField}",
         initialSortDir:"${args.initialSortDir}",
-        onNavigate:"${args.onNavigate}",
+        onNavigate:${args.onNavigate},
         actions:[${args.actions}],
         parameter:"${args.parameter}",
     },
