@@ -245,11 +245,12 @@ export const OLSGerman = {
   }
 };
 
-export const SkosmosGerman = {
+export const SkosmosAgrovocGerman = {
   args: {
     apiUrl: "https://agrovoc.fao.org/browse/rest/v1/",
     backendType: "skosmos",
     iri: "http://aims.fao.org/aos/agrovoc/c_1731",
+    showSiblingsOnInit: true,
     ontologyId: "agrovoc",
     parameter: "lang=de"
   }

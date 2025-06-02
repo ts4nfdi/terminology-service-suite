@@ -72,5 +72,5 @@ export {
   OntoportalHierarchy,
   OLS3Hierarchy,
   OLSGerman,
-  SkosmosGerman,
+  SkosmosAgrovocGerman,
 } from "./HierarchyWidgetStories";
