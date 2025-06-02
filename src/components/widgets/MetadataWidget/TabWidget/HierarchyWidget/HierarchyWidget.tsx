@@ -180,6 +180,9 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         useLegacy: useLegacy,
         parameter: parameter,
       });
+    },
+    {
+        refetchOnWindowFocus: false
     }
   );
 
