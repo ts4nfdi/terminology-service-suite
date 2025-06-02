@@ -370,6 +370,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           showSiblingsOnInit={props.showSiblingsOnInit}
           onNavigateToEntity={props.onNavigateToEntity}
           onNavigateToOntology={props.onNavigateToOntology}
+          parameter={props.parameter}
         />
       </QueryClientProvider>
     </EuiProvider>
