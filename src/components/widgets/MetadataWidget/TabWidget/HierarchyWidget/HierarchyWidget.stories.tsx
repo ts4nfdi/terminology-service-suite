@@ -36,4 +36,6 @@ export {
   SagePubHierarchy,
   OntoportalHierarchy,
   OLS3Hierarchy,
+  OLSGerman,
+  SkosmosAgrovocGerman
 } from "./HierarchyWidgetStories";

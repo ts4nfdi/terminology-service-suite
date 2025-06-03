@@ -466,23 +466,14 @@ export type OnNavigates = OnNavigateToEntity &
   OnNavigateToDisambiguate;
 
 export type HierarchyWidgetProps = CssClassNameObj & {
-  /**
-   * The API URL for the API call.
-   */
   apiUrl: string;
-  /**
-   * **Only required for OntoPortal hierarchies**
-   * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
-   */
   apiKey?: string;
-  /**
-   * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
-   */
   backendType?: string;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
-  OnNavigateToOntology;
+  OnNavigateToOntology &
+  ParameterObj;
 
 export type TitleTextObj = {
   /**

@@ -111,7 +111,12 @@ export class OntoPortalApi implements HierarchyBuilder {
           entityType,
           false
         )}/${encodeURIComponent(iri)}/tree`,
-        { params: { include: "@id,prefLabel,hasChildren,children" } }
+        {
+          params: {
+            include: "@id,prefLabel,hasChildren,children",
+            language: "EN"
+          }
+        }
       );
 
       for (const rootNode of api_tree) {
@@ -126,7 +131,12 @@ export class OntoPortalApi implements HierarchyBuilder {
           entityType,
           false
         )}/roots`,
-        { params: { include: "@id,prefLabel,hasChildren" } }
+        {
+          params: {
+            include: "@id,prefLabel,hasChildren",
+            language: "EN"
+          }
+        }
       );
 
       for (const rootNode of roots) {
@@ -220,7 +230,12 @@ export class OntoPortalApi implements HierarchyBuilder {
           entityType,
           false
         )}/${encodeURIComponent(nodeToExpand.entityData.iri)}/children`,
-        { params: { include: "@id,prefLabel,hasChildren" } }
+        {
+          params: {
+            include: "@id,prefLabel,hasChildren",
+            language: "EN"
+          }
+        }
       )
     )["collection"];
 
