@@ -194,7 +194,7 @@ jobs:
 
   documentation-versioned:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
-    needs: build
+    needs: documentation-latest
     runs-on: ubuntu-latest
     permissions:
       pages: write      # to deploy to Pages
@@ -210,37 +210,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install dependencies # for Storybook
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
-
-      - name: Build all Storybooks
-        run: |
-          npm run build:plainJS
-          npm run build-storybook-html -- -o html
-          npm run build-storybook-react -- -o react
-          npm run build-storybook -- -o public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
-
-      - name: Upload html artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: html-widgets
-          path: 'html'
-
-      - name: Upload react artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: react-widgets
-          path: 'react'
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'public'
-
       - name: Set Git Author Identity
         run: |
           git config --global user.name "GitHub Actions"
@@ -249,11 +218,6 @@ jobs:
       - name: Configure Git to Use PAT for Authentication
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
-
-      - name: Use SRVERSION
-        env:
-          SRVERSION: ${{ needs.build.outputs.srversion }}
-        run: echo "SRVERSION is $SRVERSION"
 
       - name: Deploy Version to GitHub Pages
         if: env.SRVERSION != ''
