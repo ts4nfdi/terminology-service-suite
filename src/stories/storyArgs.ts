@@ -140,6 +140,23 @@ These parameters can be used to filter the search results. Each parameter can be
     `,
   },
 };
+export const parameterArgTypeHierarchy = {
+  parameter: {
+    required: false,
+    type: { summary: "string" },
+    defaultValue: { summary: undefined },
+    description: `
+
+Additional parameters to pass to the API.
+
+These parameters can be used to filter the search results. Each parameter can be combined with the special character **&**. The values of a parameter key can be combined with a comma (**,**). The following keys can be used:
+
+| Parameter      | Description |
+|---------------|------------|
+| **lang**      | Set the language for the response, e.g., **\`en\`**, **\`de\`**, **\`fr\`**. The default value is **\`en\`**. |
+    `,
+  },
+};
 export const hasShortSelectedLabelArgType = {
   hasShortSelectedLabel: {
     required: false,

@@ -472,7 +472,7 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiUrl: string;
   /**
    * **Only required for OntoPortal hierarchies**
-   * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
+   * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see `https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key`
    */
   apiKey?: string;
   /**

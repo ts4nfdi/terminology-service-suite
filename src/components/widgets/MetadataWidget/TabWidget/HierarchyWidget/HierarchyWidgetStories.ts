@@ -4,7 +4,7 @@ import * as globals from "../../../../../app/globals";
 import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
-  parameterArgType,
+  parameterArgTypeHierarchy,
 } from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
@@ -98,7 +98,7 @@ export const HierarchyWidgetStoryArgTypes = {
       },
     },
   },
-  ...parameterArgType
+  ...parameterArgTypeHierarchy
 };
 
 export const HierarchyWidgetStoryArgs = {
