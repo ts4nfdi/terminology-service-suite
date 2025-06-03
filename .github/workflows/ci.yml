@@ -119,7 +119,7 @@ jobs:
         run: |
           npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
 
-  documentation:
+  documentation-latest:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
     needs: build
     runs-on: ubuntu-latest
@@ -142,13 +142,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
 
-      - name: Build plain JavaScript widgets # for Storybook
-        run: npm run build:plainJS
-
-      - name: Install and Build HTML Storybook
+      - name: Build all Storybooks
         run: |
-          npm install
+          npm run build:plainJS
           npm run build-storybook-html -- -o html
+          npm run build-storybook-react -- -o react
+          npm run build-storybook -- -o public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
@@ -158,25 +157,11 @@ jobs:
           name: html-widgets
           path: 'html'
 
-      - name: Install and Build React Storybook
-        run: |
-          npm install
-          npm run build-storybook-react -- -o react
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
-
       - name: Upload react artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: react-widgets
           path: 'react'
-
-      - name: Install and Build Composed Storybook
-        run: |
-          npm install
-          npm run build-storybook -- -o public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -206,6 +191,69 @@ jobs:
           npx gh-pages-multi deploy -s react --no-history -t react/latest
           npx gh-pages-multi deploy -s html --no-history -t html/latest
           npx gh-pages-multi deploy -s public --no-history -t comp/latest
+
+  documentation-versioned:
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (GitHub registry)
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@ts4nfdi'
+
+      - name: Install dependencies # for Storybook
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
+
+      - name: Build all Storybooks
+        run: |
+          npm run build:plainJS
+          npm run build-storybook-html -- -o html
+          npm run build-storybook-react -- -o react
+          npm run build-storybook -- -o public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+
+      - name: Upload html artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: html-widgets
+          path: 'html'
+
+      - name: Upload react artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: react-widgets
+          path: 'react'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: Set Git Author Identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Configure Git to Use PAT for Authentication
+        run: |
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+
+      - name: Use SRVERSION
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
 
       - name: Deploy Version to GitHub Pages
         if: env.SRVERSION != ''
