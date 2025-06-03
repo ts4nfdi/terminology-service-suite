@@ -192,8 +192,8 @@ export const parameterArgTypeHierarchy = {
     description: `
 **Only affecting OLS and Skosmos hierarchies** 
 <br>
-Provide additional parameters in url format.
-These are directly applied to the hierarchies queries.
+Additional parameters can be provided in URL format.
+These are applied directly to the hierarchy queries.
 
 | Parameter      | Description |
 |---------------|------------|
