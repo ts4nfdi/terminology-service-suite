@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useReducer } from "react";
 import {
-  EuiLoadingSpinner,
-  EuiText,
-  EuiIcon,
-  EuiProvider,
-  EuiCard,
+    EuiLoadingSpinner,
+    EuiText,
+    EuiIcon,
+    EuiProvider,
+    EuiCard, EuiPanel,
 } from "@elastic/eui";
 import { OlsApi } from "../../../../../api/OlsApi";
 import { Hierarchy, TreeNode } from "../../../../../model/interfaces/Hierarchy";
@@ -318,8 +318,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
 
   return (
     <div className={finalClassName}>
-      <EuiCard
-        title={""}
+      <EuiPanel
         layout={"horizontal"}
         style={{ overflowX: "auto", overflowY: "hidden" }}
       >
@@ -338,7 +337,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         ) : (
           <EuiLoadingSpinner />
         )}
-      </EuiCard>
+      </EuiPanel>
     </div>
   );
 }

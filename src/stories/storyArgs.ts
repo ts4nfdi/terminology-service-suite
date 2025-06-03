@@ -1,5 +1,8 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 import { pluralizeType } from "../app/util";
+import {
+  HIERARCHY_WIDGET_DEFAULT_VALUES
+} from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
 
 export const apiArgType = {
   api: {
@@ -38,6 +41,18 @@ export const useLegacyArgType = {
     control: { type: "boolean" },
   },
 };
+export const useLegacyArgTypeHierarchy = {
+  useLegacy: {
+    required: false,
+    description: `
+**Only affecting OLS hierarchies**
+<br>
+Toggle between OLS3 (legacy) and OLS4 API versions.
+    `,
+    defaultValue: { summary: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY },
+    control: { type: "boolean" },
+  },
+};
 export const iriArgType = {
   iri: {
     required: true,
@@ -45,6 +60,16 @@ export const iriArgType = {
     type: { summary: "string" },
   },
 };
+export const iriArgTypeHierarchy = {
+  iri: {
+    required: false,
+    description: `
+If provided, a hierarchy for the corresponding entity will be displayed, in which this entity is highlighted.
+Otherwise, the root entities for the specified ontology and entityType will be displayed.
+    `,
+    type: { summary: "string" },
+  }
+}
 export const ontologyIdArgType = {
   ontologyId: {
     required: false,
@@ -65,6 +90,15 @@ export const ontologyIdReqArgType = {
     type: { summary: "string" },
   },
 };
+export const ontologyIdArgTypeHierarchy = {
+  ontologyId: {
+    ...ontologyIdArgType.ontologyId,
+    description: `
+**Mandatory:** OntoPortal, Skosmos <br>
+**Optional:** OLS (however, it is still strongly recommended to provide)
+    `,
+  }
+}
 export const entityTypeArgType = {
   entityType: {
     required: false,
@@ -78,6 +112,16 @@ export const entityTypeArgType = {
     },
     options: ["term", "class", "property", "individual", "INVALID STRING", ""],
   },
+};
+export const entityTypeArgTypeHierarchy = {
+  entityType: {
+    ...entityTypeArgType.entityType,
+    description: `
+**Mandatory:** OntoPortal <br>
+**Optional:** OLS <br>
+**Unused:** Skosmos <br>
+    `,
+  }
 };
 export const selectionChangedEventArgType = {
   selectionChangedEvent: {
@@ -146,10 +190,10 @@ export const parameterArgTypeHierarchy = {
     type: { summary: "string" },
     defaultValue: { summary: undefined },
     description: `
-
-Additional parameters to pass to the API.
-
-These parameters can be used to filter the search results. Each parameter can be combined with the special character **&**. The values of a parameter key can be combined with a comma (**,**). The following keys can be used:
+**Only affecting OLS and Skosmos hierarchies** 
+<br>
+Provide additional parameters in url format.
+These are directly applied to the hierarchies queries.
 
 | Parameter      | Description |
 |---------------|------------|
@@ -699,6 +743,103 @@ export const hrefArgType = {
       "Creates a hyperlink. Specify the URL of the page to which the link will go.",
     type: { summary: `string` },
     control: "text",
+  },
+};
+export const apiKeyArgType = {
+  apiKey: {
+    required: false,
+    description: `
+Only required for OntoPortal hierarchies.
+An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see its [wiki page](https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key).
+    `,
+    type: { summary: `string` },
+    control: "text",
+  },
+};
+export const apiUrlArgType = {
+  apiUrl: {
+    required: true,
+    description: `
+The API URL for the API call.
+    `,
+    type: { summary: `string` },
+    control: "text",
+  },
+};
+export const backendTypeArgType = {
+  backendType: {
+    required: false,
+    description: `
+The backend key from which to request \`{ols, ontoportal, skosmos}\`. Default is \`ols\`
+    `,
+    control: {
+      type: "radio",
+    },
+    options: ["ols", "skosmos", "ontoportal"],
+    table: {
+      defaultValue: {
+        summary: "ols",
+      },
+    },
+  },
+};
+export const includeObsoleteEntitiesArgType = {
+  includeObsoleteEntities: {
+    required: false,
+    description: `
+**Only affecting OLS hierarchies**
+<br>
+Toggle whether to include entities marked as obsolete by the API.
+    `,
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
+      },
+    },
+  },
+};
+export const preferredRootsArgType = {
+  preferredRoots: {
+    required: false,
+    description: `
+**Only affecting OLS hierarchies**
+<br>
+When displaying an ontology's root hierarchy (i.e. no iri provided), all entities without parent entities are displayed by default.
+If \`preferredRoots==true\`, only the entities specifically marked as preferred root entity by the API are shown.
+    `,
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
+      },
+    },
+  },
+};
+export const keepExpansionStatesArgType = {
+  keepExpansionStates: {
+    required: false,
+    description: `
+If true, the expanded subtree of a node which gets closed stays expanded on re-expansion of this node.
+Otherwise, if a node is closed, only the direct children will be shown on re-expansion.
+    `,
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
+      },
+    },
+  },
+};
+export const showSiblingsOnInitArgType = {
+  showSiblingsOnInit: {
+    required: false,
+    description: `
+If false, only the entity with specified iri and its ancestors are displayed in a hierarchy.
+If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API).
+    `,
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
+      },
+    },
   },
 };
 export const ArgType = {};
