@@ -151,22 +151,14 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
-      - name: Upload html artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: html-widgets
-          path: 'html'
-
-      - name: Upload react artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: react-widgets
-          path: 'react'
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'public'
+          name: docs-artifacts
+          path: |
+            react
+            html
+            public
 
       - name: Set Git Author Identity
         run: |
@@ -210,6 +202,12 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-artifacts
+          path: ./artifacts
+
       - name: Set Git Author Identity
         run: |
           git config --global user.name "GitHub Actions"
@@ -225,6 +223,6 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s react --no-history -t react/"$SRVERSION"
-          npx gh-pages-multi deploy -s html --no-history -t html/"$SRVERSION"
-          npx gh-pages-multi deploy -s public --no-history -t comp/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/react --no-history -t react/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/html --no-history -t html/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/public --no-history -t comp/"$SRVERSION"
