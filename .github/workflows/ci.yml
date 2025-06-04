@@ -202,6 +202,11 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
+      - name: Install dependencies # for Storybook
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
