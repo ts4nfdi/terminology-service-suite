@@ -186,7 +186,7 @@ jobs:
 
   documentation-versioned:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
-    needs: documentation-latest
+    needs: [build, documentation-latest]
     runs-on: ubuntu-latest
     permissions:
       pages: write      # to deploy to Pages
