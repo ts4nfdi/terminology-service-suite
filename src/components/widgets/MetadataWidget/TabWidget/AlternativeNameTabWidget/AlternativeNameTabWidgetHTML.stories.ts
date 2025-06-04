@@ -41,7 +41,7 @@ window['ts4nfdiWidgets'].createAlternativeNameTab(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
-        className:${args.className}
+        className:"${args.className}"
     },
     document.querySelector('#alternative_name_tab_widget_container_${num}')
 )

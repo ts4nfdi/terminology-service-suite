@@ -206,7 +206,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docs-artifacts
-          path: ./artifacts
+          path: artifacts
+
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
 
       - name: Set Git Author Identity
         run: |

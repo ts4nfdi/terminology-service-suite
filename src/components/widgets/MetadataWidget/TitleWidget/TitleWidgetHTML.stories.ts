@@ -43,9 +43,9 @@ window['ts4nfdiWidgets'].createTitle(
         parameter:"${args.parameter}",
         useLegacy:"${args.useLegacy}",
         defaultValue:"${args.defaultValue}",
-        className:"${args.className}"
-        onNavigateTo:"${args.onNavigateTo}"
-        href:"${args.href}"
+        className:"${args.className}",
+        onNavigateTo:${args.onNavigateTo},
+        href:"${args.href}",
     },
     document.querySelector('#title_widget_container_${num}')
 )
