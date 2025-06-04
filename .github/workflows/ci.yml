@@ -220,8 +220,13 @@ jobs:
         run: |
           git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
 
+      - name: Use SRVERSION
+        env:
+          SRVERSION: ${{ needs.build.outputs.srversion }}
+        run: echo "SRVERSION is $SRVERSION"
+
       - name: Deploy Version to GitHub Pages
-        if: env.SRVERSION != ''
+        if: needs.build.outputs.srversion != ''
         env:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
