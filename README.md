@@ -1,8 +1,8 @@
 # Terminology Service Suite (TSS) Widgets
 
-Documentation: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
-React package: [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)<br>
-JavaScript modules: [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)<br>
+Documentation: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
+React package: [Latest](https://www.npmjs.com/package/@ts4nfdi/terminology-service-suite?activeTab=readme), [All versions up to 4.8.4](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)<br>
+JavaScript modules: [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest), [All versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)<br>
 
 ## About The Project
 

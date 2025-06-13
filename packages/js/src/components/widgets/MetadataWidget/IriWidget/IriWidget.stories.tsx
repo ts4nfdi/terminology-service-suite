@@ -1,0 +1,60 @@
+import {
+  IriWidgetStoryArgs,
+  IriWidgetStoryArgTypes,
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
+import './index'
+import { IriDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import { IriWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+
+
+let counter = 0;
+
+function getIncNum() {
+  return counter++;
+}
+
+export default {
+  title: "Entity Metadata/IriWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: IriDescription,
+      },
+    },
+  },
+  render: (args: IriWidgetProps) => {
+    // You can either use a function to create DOM elements or use a plain html string!
+    // return `<div>${label}</div>`;
+    const num = getIncNum();
+
+    return `
+<div id="iri_widget_container_${num}"></div>
+
+<script type="text/javascript">
+window['ts4nfdiWidgets'].createIri(
+    {
+        iri:"${args.iri}",
+        iriText:"${args.iriText}",
+        color:"${args.color}",
+        externalIcon: ${args.externalIcon},
+        urlPrefix:"${args.urlPrefix}",
+        copyButton:"${args.copyButton}",
+        className:"${args.className}",
+    },
+    document.querySelector('#iri_widget_container_${num}')
+)
+</script>
+        `;
+  },
+  argTypes: IriWidgetStoryArgTypes,
+  args: IriWidgetStoryArgs,
+};
+
+export {
+  IriWidget1,
+  withCopyButton,
+  withoutExternalIcon,
+  withUrlPrefix,
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
