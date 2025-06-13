@@ -1,4 +1,3 @@
-// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
@@ -18,12 +17,15 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: '@ts4nfdi/terminology-service-suite-js',
+      name: 'ts4nfdiWidgets',
       fileName: (format) => `index.${format}.js`,
-      formats: ['es'],
+      formats: ['es', 'iife'],
     },
-    rollupOptions: { 
+    rollupOptions: {
     },
     sourcemap: true,
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
   },
 })
