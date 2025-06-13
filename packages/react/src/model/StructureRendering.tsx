@@ -10,7 +10,7 @@ import { OnNavigates } from "../app/types";
 const DEFAULT_SHOW_BADGES = true;
 
 export function getTooltip(text: string): ReactElement {
-  return <EuiIconTip type={"iInCircle"} color={"subdued"} content={text} />;
+  return <EuiIconTip type="iInCircle" color={"subdued"} content={text} />;
 }
 
 /**
@@ -250,7 +250,7 @@ export function getEntityLinkJSX(
                 }}
               >
                 <span className="ontology-badge">
-                  <EuiIcon type={"search"} size={"s"} />
+                  <EuiIcon type="search" size={"s"} />
                   &nbsp;
                   {otherDefinedBy.length}
                   &nbsp;
@@ -307,7 +307,7 @@ export function getEntityLinkJSX(
                   }}
                 >
                   <span className="ontology-badge">
-                    <EuiIcon type={"search"} size={"s"} />
+                    <EuiIcon type="search" size={"s"} />
                     &nbsp;
                     {linkedEntity["numAppearsIn"]}
                     &nbsp;
