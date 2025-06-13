@@ -275,33 +275,4 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   );
 }
 
-function createOntologyInfo(
-  props: OntologyInfoWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedOntologyInfoWidget(props), container, callback);
-}
-
-function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <OntologyInfoWidget
-          ontologyId={props.ontologyId}
-          api={props.api}
-          parameter={props.parameter}
-          useLegacy={props.useLegacy}
-          showBadges={props.showBadges}
-          hasTitle={props.hasTitle}
-          onNavigateToEntity={props.onNavigateToEntity}
-          onNavigateToOntology={props.onNavigateToOntology}
-          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { OntologyInfoWidget, createOntologyInfo };
+export { OntologyInfoWidget };

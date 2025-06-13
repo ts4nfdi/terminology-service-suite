@@ -358,28 +358,4 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   );
 }
 
-function createGraphView(
-  props: GraphViewWidgetProps,
-  container: Element,
-  callback?: () => void,
-) {
-  ReactDOM.render(WrappedGraphViewWidget(props), container, callback);
-}
-
-function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <GraphViewWidget
-          api={props.api}
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          rootWalk={props.rootWalk}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { createGraphView, GraphViewWidget };
+export { GraphViewWidget };

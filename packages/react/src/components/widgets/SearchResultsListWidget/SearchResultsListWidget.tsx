@@ -431,30 +431,4 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   );
 }
 
-function createSearchResultsList(
-  props: SearchResultsListWidgetProps,
-  container: any,
-  callback?: () => void,
-) {
-  ReactDOM.render(WrappedSearchResultsListWidget(props), container, callback);
-}
-
-function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <SearchResultsListWidget
-          api={props.api}
-          query={props.query}
-          parameter={props.parameter}
-          initialItemsPerPage={props.initialItemsPerPage}
-          itemsPerPageOptions={props.itemsPerPageOptions}
-          targetLink={props.targetLink}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { SearchResultsListWidget, createSearchResultsList };
+export { SearchResultsListWidget };

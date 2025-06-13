@@ -1,15 +1,21 @@
 import { SearchBarWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget";
 import { SearchBarWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import ReactDOM from "react-dom";
 import { EuiProvider } from "@elastic/eui";
+import { createRoot, Root } from "react-dom/client";
+import React from "react";
 
+const roots = new WeakMap<Element, Root>();
 function createSearchBar(
   props: SearchBarWidgetProps,
   container: any,
-  callback?: () => void,
 ) {
-  ReactDOM.render(WrappedSearchBarWidget(props), container, callback);
+  let root = roots.get(container);
+  if (!root) {
+    root = createRoot(container);
+    roots.set(container, root);
+  }
+  root.render(<WrappedSearchBarWidget {...props} />);
 }
 
 function WrappedSearchBarWidget(props: SearchBarWidgetProps) {

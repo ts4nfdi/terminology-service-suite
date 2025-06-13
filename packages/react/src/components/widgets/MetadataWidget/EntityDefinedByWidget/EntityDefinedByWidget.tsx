@@ -85,31 +85,4 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   );
 }
 
-function createEntityDefinedBy(
-  props: EntityDefinedByWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedEntityDefinedByWidget(props), container, callback);
-}
-
-function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <EntityDefinedByWidget
-          iri={props.iri}
-          api={props.api}
-          ontologyId={props.ontologyId}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          useLegacy={props.useLegacy}
-          onNavigateToOntology={props.onNavigateToOntology}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { EntityDefinedByWidget, createEntityDefinedBy };
+export { EntityDefinedByWidget };

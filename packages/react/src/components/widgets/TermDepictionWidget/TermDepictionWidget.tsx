@@ -67,29 +67,4 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   );
 }
 
-function createDepiction(
-  props: TermDepictionWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedTermDepictionWidget(props), container, callback);
-}
-
-function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <TermDepictionWidget
-          api={props.api}
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          useLegacy={props.useLegacy}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-
-export { createDepiction, TermDepictionWidget };
+export { TermDepictionWidget };

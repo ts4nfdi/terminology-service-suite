@@ -92,31 +92,4 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-function createIri(
-  props: IriWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedIriWidget(props), container, callback);
-}
-
-function WrappedIriWidget(props: IriWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <IriWidget
-          iri={props.iri}
-          iriText={props.iriText}
-          color={props.color}
-          externalIcon={props.externalIcon}
-          urlPrefix={props.urlPrefix}
-          copyButton={props.copyButton}
-          className={props.className}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { IriWidget, createIri };
+export { IriWidget };

@@ -85,23 +85,4 @@ function DataContentWidget(props: DataContentWidgetProps) {
   );
 }
 
-function createDataContent(
-  props: DataContentWidgetProps,
-  container: any,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedDataContentWidget(props), container, callback);
-}
-
-function WrappedDataContentWidget(props: DataContentWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <DataContentWidget api={props.api} parameter={props.parameter} />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { DataContentWidget, createDataContent };
+export { DataContentWidget };

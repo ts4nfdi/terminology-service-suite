@@ -120,33 +120,4 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   );
 }
 
-function createBreadcrumb(
-  props: BreadcrumbWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedBreadcrumbWidget(props), container, callback);
-}
-
-function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <BreadcrumbWidget
-          api={props.api}
-          entityType={props.entityType}
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          colorFirst={props.colorFirst}
-          colorSecond={props.colorSecond}
-          parameter={props.parameter}
-          useLegacy={props.useLegacy}
-          onNavigateToOntology={props.onNavigateToOntology}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { BreadcrumbWidget, createBreadcrumb };
+export { BreadcrumbWidget };

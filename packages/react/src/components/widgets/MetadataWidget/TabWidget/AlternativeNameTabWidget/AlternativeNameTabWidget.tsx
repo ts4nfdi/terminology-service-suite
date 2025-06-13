@@ -51,30 +51,4 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-function createAlternativeNameTab(
-  props: AlternativeNameTabWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedAlternativeNameTabWidget(props), container, callback);
-}
-
-function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <AlternativeNameTabWidget
-          iri={props.iri}
-          api={props.api}
-          ontologyId={props.ontologyId}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          className={props.className}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { AlternativeNameTabWidget, createAlternativeNameTab };
+export { AlternativeNameTabWidget };

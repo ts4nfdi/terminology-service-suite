@@ -244,7 +244,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
             <div style={{ position: "relative", top: "-22px" }}>
               <span>
                 {!node.entityData.hasChildren ? (
-                  <EuiIcon type={"empty"} />
+                  <EuiIcon type="empty" />
                 ) : (
                   <button
                     style={{}}
@@ -337,37 +337,4 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   );
 }
 
-function createHierarchy(
-  props: HierarchyWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedHierarchyWidget(props), container, callback);
-}
-
-function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <HierarchyWidget
-          apiUrl={props.apiUrl}
-          apiKey={props.apiKey}
-          backendType={props.backendType}
-          iri={props.iri}
-          entityType={props.entityType}
-          ontologyId={props.ontologyId}
-          includeObsoleteEntities={props.includeObsoleteEntities}
-          useLegacy={props.useLegacy}
-          preferredRoots={props.preferredRoots}
-          keepExpansionStates={props.keepExpansionStates}
-          showSiblingsOnInit={props.showSiblingsOnInit}
-          onNavigateToEntity={props.onNavigateToEntity}
-          onNavigateToOntology={props.onNavigateToOntology}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { HierarchyWidget, createHierarchy };
+export { HierarchyWidget };

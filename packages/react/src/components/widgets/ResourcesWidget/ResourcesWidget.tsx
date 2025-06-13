@@ -5,7 +5,6 @@ import {
   EuiBasicTable,
   EuiButtonIcon,
   EuiHorizontalRule,
-  EuiProvider,
   EuiLink,
   EuiSpacer,
   EuiText,
@@ -13,13 +12,12 @@ import {
   EuiDescriptionList,
   EuiCallOut,
 } from "@elastic/eui";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
 import { Ontologies } from "../../../model/interfaces";
-import ReactDOM from "react-dom";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
@@ -405,7 +403,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         <>
           <EuiCallOut
             title={"Licenses"}
-            iconType="magnifyWithExclamation"
+            iconType="iInCircle"
             color={"warning"}
           >
             <p>
@@ -462,31 +460,5 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   );
 }
 
-function createResources(
-  props: ResourcesWidgetProps,
-  container: Element,
-  callback?: () => void,
-) {
-  ReactDOM.render(WrappedResourcesWidget(props), container, callback);
-}
 
-function WrappedResourcesWidget(props: ResourcesWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <ResourcesWidget
-          api={props.api}
-          initialEntriesPerPage={props.initialEntriesPerPage}
-          pageSizeOptions={props.pageSizeOptions}
-          initialSortField={props.initialSortField}
-          initialSortDir={props.initialSortDir}
-          actions={props.actions}
-          parameter={props.parameter}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { ResourcesWidget, createResources };
+export { ResourcesWidget };

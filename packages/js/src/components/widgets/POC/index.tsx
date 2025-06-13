@@ -1,1 +1,0 @@
-export { createEUIPoc } from "./POC";

@@ -661,34 +661,4 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
   );
 }
 
-function createEntityRelations(
-  props: EntityRelationsWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedEntityRelationsWidget(props), container, callback);
-}
-
-function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <EntityRelationsWidget
-          api={props.api}
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          hasTitle={props.hasTitle}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          showBadges={props.showBadges}
-          onNavigateToEntity={props.onNavigateToEntity}
-          onNavigateToOntology={props.onNavigateToOntology}
-          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { createEntityRelations, EntityRelationsWidget };
+export { EntityRelationsWidget };

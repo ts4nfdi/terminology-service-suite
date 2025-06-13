@@ -238,44 +238,4 @@ function MetadataWidget(props: MetadataWidgetProps) {
   );
 }
 
-function createMetadata(
-  props: MetadataWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedMetadataWidget(props), container, callback);
-}
-
-function WrappedMetadataWidget(props: MetadataWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <MetadataWidget
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          api={props.api}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          useLegacy={props.useLegacy}
-          termLink={props.termLink}
-          altNamesTab={props.altNamesTab}
-          hierarchyTab={props.hierarchyTab}
-          crossRefTab={props.crossRefTab}
-          terminologyInfoTab={props.terminologyInfoTab}
-          graphViewTab={props.graphViewTab}
-          termDepictionTab={props.termDepictionTab}
-          hierarchyPreferredRoots={props.hierarchyPreferredRoots}
-          hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-          hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
-          onNavigateToEntity={props.onNavigateToEntity}
-          onNavigateToOntology={props.onNavigateToOntology}
-          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-          className={props.className}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { MetadataWidget, createMetadata };
+export { MetadataWidget };

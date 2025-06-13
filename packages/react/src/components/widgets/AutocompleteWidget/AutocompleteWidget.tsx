@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 
 import { OlsApi } from "../../../api/OlsApi";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
@@ -9,10 +8,9 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiProvider,
   EuiIcon,
 } from "@elastic/eui";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
@@ -133,7 +131,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               className={`${finalClassName}-breadcrumb`}
             />
             <EuiIcon
-              type={"iInCircle"}
+              type="iInCircle"
               style={{ marginLeft: "5px" }}
               title={hoverText}
             />
@@ -510,6 +508,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   return (
     <div className={finalClassName}>
       <EuiComboBox
+        data-testid="autocomplete"
         isClearable
         aria-label="searchBar"
         fullWidth={true}
@@ -530,38 +529,4 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 }
 
-function createAutocomplete(
-  props: AutocompleteWidgetProps,
-  container: any,
-  callback?: () => void,
-) {
-  // @ts-ignore
-  ReactDOM.render(WrappedAutocompleteWidget(props), container, callback);
-}
-
-function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <AutocompleteWidget
-          api={props.api}
-          parameter={props.parameter}
-          selectionChangedEvent={props.selectionChangedEvent}
-          preselected={props.preselected}
-          singleSelection={props.singleSelection as boolean}
-          placeholder={props.placeholder}
-          hasShortSelectedLabel={props.hasShortSelectedLabel}
-          allowCustomTerms={props.allowCustomTerms}
-          ts4nfdiGateway={props.ts4nfdiGateway}
-          singleSuggestionRow={props.singleSuggestionRow}
-          showApiSource={props.showApiSource}
-          className={props.className}
-          useLegacy={props.useLegacy}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { AutocompleteWidget, createAutocomplete };
+export { AutocompleteWidget };

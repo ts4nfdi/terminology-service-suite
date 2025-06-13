@@ -92,31 +92,4 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   );
 }
 
-function createEntityOntoList(
-  props: EntityOntoListWidgetProps,
-  container: Element,
-  callback?: () => void
-) {
-  ReactDOM.render(WrappedEntityOntoListWidget(props), container, callback);
-}
-
-function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <EntityOntoListWidget
-          iri={props.iri}
-          api={props.api}
-          ontologyId={props.ontologyId}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          useLegacy={props.useLegacy}
-          onNavigateToOntology={props.onNavigateToOntology}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
-export { EntityOntoListWidget, createEntityOntoList };
+export { EntityOntoListWidget };
