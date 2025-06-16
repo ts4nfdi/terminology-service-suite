@@ -17,7 +17,6 @@ import {
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
-  argTypes: {
     ...apiArgType,
     ...selectionChangedEventArgType,
     ...placeholderArgType,
@@ -30,11 +29,9 @@ export const AutocompleteWidgetStoryArgTypes = {
     ...singleSuggestionRowArgType,
     ...showApiSourceArgType,
     ...classNameArgType,
-  },
 };
 
 export const AutocompleteWidgetStoryArgsReact = {
-  args: {
     api: globals.ZBMED_OLS4_API,
     ts4nfdiGateway: false,
     singleSelection: true,
@@ -49,11 +46,9 @@ export const AutocompleteWidgetStoryArgsReact = {
     useLegacy: true,
     parameter:
       "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
-  args: {
     api: globals.ZBMED_OLS4_API,
     ts4nfdiGateway: false,
     singleSelection: true,
@@ -69,58 +64,45 @@ export const AutocompleteWidgetStoryArgsHTML = {
     useLegacy: true,
     parameter:
       "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
 };
 
-export const WithDefaults = {
-  args: {},
+export const WithDefaultsArgs = {
 };
 
-export const UseAPIGatewayWithOLS = {
-  args: {
-    api: globals.GATEWAY_API_ENDPOINT,
-    ts4nfdiGateway: true,
-    parameter:
-      "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
+export const UseAPIGatewayWithOLSArgs = {
+  api: globals.GATEWAY_API_ENDPOINT,
+  ts4nfdiGateway: true,
+  parameter:
+    "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const UseAPIGatewayWithOntoPortal = {
-  args: {
-    api: globals.GATEWAY_API_ENDPOINT,
-    ts4nfdiGateway: true,
-    parameter:
-      "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
+export const UseAPIGatewayWithOntoPortalArgs = {
+  api: globals.GATEWAY_API_ENDPOINT,
+  ts4nfdiGateway: true,
+  parameter:
+    "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const UseAPIGatewayWithSkosmos = {
-  args: {
+export const UseAPIGatewayWithSkosmosArgs = {
     api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter:
       "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
 };
 
-export const HideApiSourceApiGateway = {
-  args: {
+export const HideApiSourceApiGatewayArgs = {
     api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     showApiSource: false,
     parameter:
       "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-  },
 };
 
-export const WithDefaultsCompact = {
-  args: {
+export const WithDefaultsCompactArgs = {
     singleSuggestionRow: true,
-  },
 };
 
-export const WithPreselectedValueOLS4v2 = {
-  args: {
+export const WithPreselectedValueOLS4v2Args = {
     api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
@@ -132,11 +114,9 @@ export const WithPreselectedValueOLS4v2 = {
     parameter:
       "ontology=snomed,mesh&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
     allowCustomTerms: true,
-  },
 };
 
-export const WithPreselectedValueAndUnresolvedIriOLS3 = {
-  args: {
+export const WithPreselectedValueAndUnresolvedIriOLS3Args = {
     api: globals.ZBMED_OLS3_API,
     useLegacy: true,
     preselected: [
@@ -146,11 +126,9 @@ export const WithPreselectedValueAndUnresolvedIriOLS3 = {
       },
     ],
     allowCustomTerms: true,
-  },
 };
 
-export const WithPreselectedMultipleValuesOLS4 = {
-  args: {
+export const WithPreselectedMultipleValuesOLS4Args = {
     api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
@@ -165,98 +143,73 @@ export const WithPreselectedMultipleValuesOLS4 = {
     ],
     singleSelection: false,
     parameter: "",
-  },
 };
 
-export const WithCustomValue = {
-  args: {
+export const WithCustomValueArgs = {
     allowCustomTerms: true,
     preselected: [{ label: "freetext" }],
-  },
 };
 
-export const WithInvalidValue = {
-  args: {
+export const WithInvalidValueArgs = {
     preselected: [
       {
         iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
-  },
 };
 
-export const WithGermanInput = {
-  args: {
+export const WithGermanInputArgs = {
     api: globals.ZBMED_OLS4_API,
     parameter: "collection=nfdi4health&lang=de&type=class",
-  },
 };
 
-export const WithDescriptionAndShortForm = {
-  args: {
+export const WithDescriptionAndShortFormArgs = {
     api: globals.ZBMED_OLS4_API,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
-  },
 };
 
-export const WithLongForm = {
-  args: {
+export const WithLongFormArgs = {
     hasShortSelectedLabel: false,
-  },
 };
 
-export const AllowAddingCustomTerms = {
-  args: {
+export const AllowAddingCustomTermsArgs = {
     allowCustomTerms: true,
-  },
 };
 
-export const AllowMultipleTerms = {
-  args: {
+export const AllowMultipleTermsArgs = {
     singleSelection: false,
-  },
 };
 
-export const WithMultipleValues = {
-  args: {
+export const WithMultipleValuesArgs = {
     preselected: [
       { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
       { iri: "http://purl.bioontology.org/ontology/MESH/D003920" },
     ],
     singleSelection: false,
-  },
 };
 
-export const TibNFDI4CHEM = {
-  args: {
+export const TibNFDI4CHEMArgs = {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection",
-  },
 };
 
-export const TibDataPlant = {
-  args: {
+export const TibDataPlantArgs = {
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
-  },
 };
 
-export const SubtreeDirectSubtypes = {
-  args: {
+export const SubtreeDirectSubtypesArgs = {
     api: globals.ZBMED_OLS4_API,
     allowCustomTerms: true,
     useLegacy: true,
     parameter:
       "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&childrenOf=http://snomed.info/id/22298006",
-  },
 };
 
-export const SubtreeDirectAndIndirectSubtypes = {
-  args: {
+export const SubtreeDirectAndIndirectSubtypesArgs = {
     api: globals.ZBMED_OLS4_API,
     allowCustomTerms: true,
     useLegacy: true,
     parameter:
       "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&AllChildrenOf=http://snomed.info/id/22298006",
-  },
 };

@@ -22,6 +22,7 @@ function DataContentWidget(props: DataContentWidgetProps) {
   return (
     <>
       <EuiCard
+        data-testid="data-content"
         title="Data Content"
         description={
           dataUpdatedAt

@@ -12,23 +12,17 @@ export const DataContentWidgetStoryArgs = {
   parameter: "",
 };
 
-export const NFDI4HealthDataContentWidget = {
-  args: {
+export const NFDI4HealthDataContentWidgetArgs = {
     api: globals.ZBMED_OLS4_API,
     parameter: "collection=nfdi4health",
-  },
 };
 
-export const SafetyDataContentWidget = {
-  args: {
+export const SafetyDataContentWidgetArgs = {
     api: globals.ZBMED_OLS4_API,
     parameter: "collection=safety",
-  },
 };
 
-export const ErrorDataContentWidget = {
-  args: {
+export const ErrorDataContentWidgetArgs = {
     api: globals.ZBMED_OLS4_API,
     parameter: "collection=safety",
-  },
 };
