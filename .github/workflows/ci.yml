@@ -54,7 +54,7 @@ jobs:
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
-          output=$(npx semantic-release)
+          output=$(npx semantic-release || true)
           echo "$output"
           version=$(echo "$output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
           echo "Detected version: $version"
