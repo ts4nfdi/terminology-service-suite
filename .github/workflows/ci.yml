@@ -54,9 +54,10 @@ jobs:
       - name: Run semantic release and capture output
         id: semantic_release
         run: |
-          output=$(npx semantic-release || true)
+          output=$(npx semantic-release)
           echo "$output"
-          version=$(echo "$output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
+          sanitized_output=$(echo "$output" | tr '\n' ' ' | tr -d '"\\@\/' | iconv -c -f utf-8 -t ascii)
+          version=$(echo "sanitized_output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
           echo "Detected version: $version"
           echo "SRVERSION=$version" >> $GITHUB_ENV
         env:
