@@ -57,7 +57,7 @@ jobs:
           output=$(npx semantic-release)
           echo "$output"
           sanitized_output=$(echo "$output" | tr '\n' ' ' | tr -d '"\\@\/' | iconv -c -f utf-8 -t ascii)
-          version=$(echo "sanitized_output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
+          version=$(echo "$sanitized_output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
           echo "Detected version: $version"
           echo "SRVERSION=$version" >> $GITHUB_ENV
         env:
