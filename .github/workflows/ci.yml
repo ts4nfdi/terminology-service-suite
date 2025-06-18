@@ -55,20 +55,13 @@ jobs:
         id: semantic_release
         run: |
           output=$(npx semantic-release)
-          sanitized_output=$(echo "$output" | tr '\n' ' ' | tr -d '"\\@\/' | iconv -c -f utf-8 -t ascii)
-          echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
+          version=$(echo "$output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
+          echo "Detected version: $version"
+          echo "SRVERSION=$version" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.KM }} # for GitHub release
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for publishing to NPM
-
-      - name: Extract newly published version number
-        run: |
-          release_output="${{ steps.semantic_release.outputs.release_output }}"
-          echo "Release output: $release_output"
-          version=$(echo "$release_output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
-          echo "Detected version: $version"
-          echo "SRVERSION=$version" >> $GITHUB_ENV
 
       - name: Capture semantic-release status
         run: |
