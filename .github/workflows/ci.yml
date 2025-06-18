@@ -62,13 +62,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.KM }} # for GitHub release
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for publishing to NPM
 
-      - name: Extract newly published version number
+      - name: Parse semantic-release output
         run: |
-          echo "SRVERSION=$(echo '${{ steps.semantic_release.outputs.release_output }}' | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
-
-      - name: Capture semantic-release status
-        run: |
-          if echo '${{ steps.semantic_release.outputs.release_output }}' | grep -q 'Published release'; then
+          echo "SRVERSION=$(echo "${{ steps.semantic_release.outputs.release_output }}" | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          if echo "${{ steps.semantic_release.outputs.release_output }}" | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
 

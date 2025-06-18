@@ -671,6 +671,19 @@ export type GraphViewWidgetProps = ApiObj &
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
     rootWalk?: boolean;
+    /**
+     * When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.
+     */
+    hierarchy?: boolean;
+    /**
+     * The edge label in the graph. Default is "is a". Only for sub-class predicators. 
+     */
+    edgeLabel?: string;
+
+    /**
+     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * */
+    onNodeClick?: (iri: string) => void;
   };
 
 export type OlsGraphNode = {

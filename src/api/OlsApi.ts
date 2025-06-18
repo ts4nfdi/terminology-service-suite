@@ -115,6 +115,8 @@ export type JSTreeNode = {
     opened: boolean;
   };
   children: boolean;
+  childrenList?: JSTreeNode[];
+  parentList?: JSTreeNode[];
   a_attr: {
     iri: string;
     ontology_name: string;
@@ -1621,8 +1623,8 @@ export class OlsApi implements HierarchyBuilder {
                         childRelationToParent:
                           parRelation.length > 0 && parRelation[0].getMetadata()
                             ? parRelation[0].getMetadata()[
-                                "childRelationToParent"
-                              ]
+                            "childRelationToParent"
+                            ]
                             : undefined,
                       });
                     } // should have exactly one element

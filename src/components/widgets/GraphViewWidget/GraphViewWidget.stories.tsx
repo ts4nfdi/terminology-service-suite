@@ -25,4 +25,6 @@ export {
   RootWalkGraphExample,
   ChebiWater,
   ChebiWaterRootWalk,
+  ChebiCaffeineHierarchy,
+  WithOnNodeDoubleClickCallback
 } from "./GraphViewWidgetStories";
