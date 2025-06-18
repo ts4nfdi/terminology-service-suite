@@ -43,6 +43,11 @@ export const RootWalkGraphExample = {
     ontologyId: "vibso",
     rootWalk: true,
   },
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  }
 };
 
 export const ChebiWater = {
@@ -52,6 +57,11 @@ export const ChebiWater = {
     ontologyId: "chebi",
     rootWalk: false,
   },
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  }
 };
 
 export const ChebiWaterRootWalk = {
@@ -61,6 +71,11 @@ export const ChebiWaterRootWalk = {
     ontologyId: "chebi",
     rootWalk: true,
   },
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  }
 };
 
 export const ChebiCaffeineHierarchy = {
@@ -71,6 +86,11 @@ export const ChebiCaffeineHierarchy = {
     rootWalk: true,
     hierarchy: true
   },
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  }
 };
 
 
@@ -86,4 +106,9 @@ export const WithOnNodeDoubleClickCallback = {
       window.open(url, "_blank")?.focus();
     }
   },
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  }
 };
