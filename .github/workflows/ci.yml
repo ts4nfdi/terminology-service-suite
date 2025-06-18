@@ -64,7 +64,7 @@ jobs:
 
       - name: Extract newly published version number
         run: |
-          release_output='${{ steps.semantic_release.outputs.release_output }}'
+          release_output="${{ steps.semantic_release.outputs.release_output }}"
           echo "Release output: $release_output"
           version=$(echo "$release_output" | grep -oP 'Published release \K\d+\.\d+\.\d+')
           echo "Detected version: $version"
