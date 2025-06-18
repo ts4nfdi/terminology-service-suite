@@ -247,7 +247,8 @@ declare global {
       }) => void
       onNavigateToOntology?: (ontologyId: string, entityType: string, entity: {
         iri: string, label?: string, definedBy?: string[], hasChildren: boolean, numDescendants?: number
-      }) => void
+      }) => void,
+      parameter?: string,
     }) => void,
     createMetadata: (props: {
       iri: string;

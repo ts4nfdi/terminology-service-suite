@@ -44,6 +44,9 @@ import { OLSSelectResult } from "../model/ols-model/OLSSelectResult";
 import { Ts4nfdiSearchResult } from "../model/ts4nfdi-model/Ts4nfdiSearchResult";
 import { EntityData } from "../app/types";
 import { OLS4Ontologies } from "../model/ols4-model";
+import {
+  HIERARCHY_WIDGET_DEFAULT_VALUES
+} from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
 
 // used to filter entities not be shown in hierarchy
 function isTop(iri: string): boolean {
@@ -1073,6 +1076,7 @@ export class OlsApi implements HierarchyBuilder {
     ontologyId: string,
     useLegacy = false,
     includeObsoleteEntities = false,
+    parameter: string | undefined,
   ): Promise<Entity[]> {
     let ancestors: any;
     if (isClassTypeName(entityType)) {
@@ -1087,6 +1091,7 @@ export class OlsApi implements HierarchyBuilder {
           params: {
             size: "1000",
             includeObsoleteEntities: includeObsoleteEntities,
+            ...this.buildOtherParams(parameter),
           },
         },
         useLegacy,
@@ -1103,6 +1108,7 @@ export class OlsApi implements HierarchyBuilder {
           params: {
             size: "1000",
             includeObsoleteEntities: includeObsoleteEntities,
+            ...this.buildOtherParams(parameter)
           },
         },
         useLegacy,
@@ -1143,10 +1149,17 @@ export class OlsApi implements HierarchyBuilder {
     iri: string,
     entityType: EntityTypeName,
     ontologyId: string,
+    parameter: string | undefined,
   ): Promise<JSTreeNode[]> {
     return await this.makeCall(
       `${getEntityInOntologySuffix(ontologyId, entityType, iri, true)}/jstree`,
-      { params: { size: "1000", viewMode: "All" } },
+      {
+        params: {
+          size: "1000",
+          viewMode: "All",
+          ...this.buildOtherParams(parameter)
+        }
+      },
       true,
     );
   }
@@ -1158,6 +1171,7 @@ export class OlsApi implements HierarchyBuilder {
     ontologyId: string,
     includeObsoleteEntities = false,
     useLegacy = false,
+    parameter
   ): Promise<Entity[]> {
     let children: any;
     if (isClassTypeName(entityType)) {
@@ -1172,6 +1186,7 @@ export class OlsApi implements HierarchyBuilder {
           params: {
             size: "1000",
             includeObsoleteEntities: includeObsoleteEntities,
+            ...this.buildOtherParams(parameter)
           },
         },
         useLegacy,
@@ -1188,7 +1203,12 @@ export class OlsApi implements HierarchyBuilder {
             iri,
             useLegacy,
           )}/descendants`,
-          { params: { size: "1000" } },
+          {
+            params: {
+              size: "1000",
+              ...this.buildOtherParams(parameter)
+            }
+          },
           useLegacy,
         );
       } else {
@@ -1203,6 +1223,7 @@ export class OlsApi implements HierarchyBuilder {
             params: {
               size: "1000",
               includeObsoleteEntities: includeObsoleteEntities,
+              ...this.buildOtherParams(parameter)
             },
           },
           useLegacy,
@@ -1220,6 +1241,7 @@ export class OlsApi implements HierarchyBuilder {
           params: {
             size: "1000",
             includeObsoleteEntities: includeObsoleteEntities,
+            ...this.buildOtherParams(parameter),
           },
         },
         useLegacy,
@@ -1254,6 +1276,7 @@ export class OlsApi implements HierarchyBuilder {
     preferredRoots = false,
     includeObsoleteEntities = false,
     useLegacy = false,
+    parameter = "",
   ): Promise<Entity[]> {
     if (useLegacy) {
       if (isIndividualTypeName(entityType)) {
@@ -1272,6 +1295,7 @@ export class OlsApi implements HierarchyBuilder {
             params: {
               size: "1000",
               includeObsoleteEntities: includeObsoleteEntities,
+              ...this.buildOtherParams(parameter),
             },
           },
           useLegacy,
@@ -1302,6 +1326,7 @@ export class OlsApi implements HierarchyBuilder {
               includeObsoleteEntities: includeObsoleteEntities,
               hasDirectParents: preferredRoots ? undefined : "false",
               isPreferredRoot: preferredRoots ? "true" : undefined,
+              ...this.buildOtherParams(parameter),
             },
           },
           useLegacy,
@@ -1346,6 +1371,7 @@ export class OlsApi implements HierarchyBuilder {
       keepExpansionStates = true,
       showSiblingsOnInit = false,
       useLegacy = false,
+      parameter ,
     } = props;
 
     if (iri) {
@@ -1353,7 +1379,7 @@ export class OlsApi implements HierarchyBuilder {
         iri,
         entityType,
         ontologyId,
-        "",
+        parameter,
         useLegacy,
       ).then((entity) =>
         this.buildHierarchyWithEntity({
@@ -1365,6 +1391,7 @@ export class OlsApi implements HierarchyBuilder {
           keepExpansionStates: keepExpansionStates,
           showSiblingsOnInit: showSiblingsOnInit,
           useLegacy: useLegacy,
+          parameter: parameter,
         }),
       );
     } else {
@@ -1380,6 +1407,7 @@ export class OlsApi implements HierarchyBuilder {
         keepExpansionStates: keepExpansionStates,
         showSiblingsOnInit: showSiblingsOnInit,
         useLegacy: useLegacy,
+        parameter: parameter,
       });
     }
   }
@@ -1416,7 +1444,8 @@ export class OlsApi implements HierarchyBuilder {
       entityType,
       preferredRoots,
       includeObsoleteEntities,
-      useLegacy,
+      useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+      parameter
     } = props;
 
     /* QUERY root entities */
@@ -1427,6 +1456,7 @@ export class OlsApi implements HierarchyBuilder {
         preferredRoots,
         includeObsoleteEntities,
         useLegacy,
+        parameter,
       )
     )
       .map((entity) => this.entityToEntityData(entity))
@@ -1462,6 +1492,7 @@ export class OlsApi implements HierarchyBuilder {
       entityType: entityType,
       keepExpansionStates: props.keepExpansionStates,
       useLegacy: useLegacy,
+      parameter: parameter,
     });
   }
 
@@ -1477,9 +1508,10 @@ export class OlsApi implements HierarchyBuilder {
       ontologyId,
       entityType,
       preferredRoots,
-      includeObsoleteEntities,
+      includeObsoleteEntities= HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
       showSiblingsOnInit,
-      useLegacy,
+      useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+      parameter ,
     } = props;
 
     /* LOAD ancestors */
@@ -1492,6 +1524,7 @@ export class OlsApi implements HierarchyBuilder {
         mainEntity.getIri(),
         entityType,
         ontologyId,
+        parameter,
       );
       const idToIri: Map<string, string> = new Map<string, string>();
       const parents: Map<string, Set<string>> = new Map<string, Set<string>>();
@@ -1528,7 +1561,9 @@ export class OlsApi implements HierarchyBuilder {
         mainEntity.getIri(),
         entityType,
         ontologyId || mainEntity.getOntologyId(),
+        useLegacy,
         includeObsoleteEntities,
+        parameter,
       );
       entities = [
         this.entityToEntityData(mainEntity),
@@ -1615,6 +1650,7 @@ export class OlsApi implements HierarchyBuilder {
               realEntityType,
               ontologyId,
               includeObsoleteEntities,
+              parameter
             )
           ).map((child) => this.entityToEntityData(child));
 
@@ -1748,6 +1784,7 @@ export class OlsApi implements HierarchyBuilder {
       mainEntityIri: mainEntity?.getIri(),
       keepExpansionStates: props.keepExpansionStates,
       useLegacy: useLegacy,
+      parameter: parameter,
     });
   }
 
@@ -1764,6 +1801,7 @@ export class OlsApi implements HierarchyBuilder {
         props.ontologyId,
         props.includeObsoleteEntities,
         props.useLegacy,
+        props.parameter,
       )
     ).map((entity) => this.entityToEntityData(entity));
   }
