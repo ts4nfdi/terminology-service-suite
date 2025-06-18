@@ -55,7 +55,7 @@ jobs:
         id: semantic_release
         run: |
           output=$(npx semantic-release)
-          sanitized_output=$(echo "$output" | tr '\n' ' ' | sed 's/"//g' )
+          sanitized_output=$(echo "$output" | tr '\n' ' ' | tr -d '"\\@\/' | iconv -c -f utf-8 -t ascii)
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
