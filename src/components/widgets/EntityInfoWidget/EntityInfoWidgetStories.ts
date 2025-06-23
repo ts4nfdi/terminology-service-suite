@@ -125,3 +125,11 @@ export const NavigateToEBIPage = {
     onNavigateToDisambiguate: "Navigate to EBI page",
   },
 };
+
+export const SkosmosImport = {
+  args: {
+    api: "http://ols4-health-test.qa.km.k8s.zbmed.de/ols4/api/",
+    useLegacy: true,
+    iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
+  },
+};
