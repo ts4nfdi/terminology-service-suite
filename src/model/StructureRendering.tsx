@@ -924,8 +924,27 @@ export function getReifiedJSX(
           showBadges,
           onNavigates
         );
-      } else {
+      }
+      else if (typeof value.value == "object" && value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] != undefined) {
+        // Is converted from Skosmos
+        switch (value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]) {
+          case "http://www.w3.org/2008/05/skos-xl#Label":
+            const label = value.value["http://www.w3.org/2008/05/skos-xl#literalForm"]["value"];
+
+            return <>{label}</>;
+          case "http://purl.org/vocab/changeset/schema#ChangeSet":
+            const changeReason = value.value["http://purl.org/vocab/changeset/schema#changeReason"]["value"];
+            const date = value.value["http://purl.org/vocab/changeset/schema#createdDate"]["value"]
+
+            return <>{date}: {changeReason}</>;
+          default:
+            console.error(`Unknown rdf syntax type: ${value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]}`);
+            return <>{JSON.stringify(value.value)}</>
+        }
+      }
+      else {
         // TODO: should not happen, prove that this is never the case
+        console.error(`Unknown entry information format: ${value}`)
         return <>{JSON.stringify(value.value)}</>;
       }
     } else {

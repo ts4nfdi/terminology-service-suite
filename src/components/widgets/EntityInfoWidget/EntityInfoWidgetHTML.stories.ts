@@ -67,4 +67,5 @@ export {
   InfoWidgetRange,
   OptionalEntityTypeLegacyAPI,
   NavigateToEBIPage,
+  SkosmosImport,
 } from "./EntityInfoWidgetStories";
