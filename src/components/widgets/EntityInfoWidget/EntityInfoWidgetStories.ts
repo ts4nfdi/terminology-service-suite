@@ -128,7 +128,7 @@ export const NavigateToEBIPage = {
 
 export const SkosmosImport = {
   args: {
-    api: "http://ols4-health-test.qa.km.k8s.zbmed.de/ols4/api/",
+    api: globals.ZBMED_OLS4_API,
     useLegacy: true,
     iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
   },
