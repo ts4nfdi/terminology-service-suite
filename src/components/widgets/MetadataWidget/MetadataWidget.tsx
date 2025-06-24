@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { MetadataWidgetProps } from "../../../app/types";
 import { Entity } from "../../../model/interfaces";
-import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
+import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
 import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";

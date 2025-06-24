@@ -99,6 +99,31 @@ declare global {
       className?: string;
     }
     ) => void,
+    createBreadcrumbPresentation: (props: {
+       ontologyId?: string;
+       shortForm?: string;
+       colorFirst?:
+           | "primary"
+           | "accent"
+           | "success"
+           | "warning"
+           | "danger"
+           | "ghost"
+           | "text"
+           | "subdued"
+           | string;
+       colorSecond?: string;
+       onNavigateToOntology?: (ontologyId: string, entity: { iri: string, label?: string, entityType: string }) => void
+       className?: string;
+       entity?: {
+        properties: {
+          ontologyId: string;
+          shortForm: string;
+          [key: string]: any;
+        };
+      };
+     }
+    ) => void,
     createDescription: (props: {
       iri?: string;
       ontologyId?: string;

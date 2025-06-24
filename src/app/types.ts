@@ -4,7 +4,7 @@ import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
-import { Thing } from "../model/interfaces";
+import {Entity, Thing} from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
 import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
@@ -274,10 +274,19 @@ export type BreadcrumbWidgetProps = ApiObj &
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj &
   ColorFirstObj &
   ColorSecondObj &
-  CssClassNameObj & {
-    ontologyName: string;
-    shortForm: string;
-  } & OnNavigateToOntology;
+  CssClassNameObj &
+  OnNavigateToOntology &
+    {
+    ontologyId?: string;
+    shortForm?: string;
+    entity?: {
+        properties: {
+            ontologyId: string;
+            shortForm: string;
+            [key: string]: any;
+        };
+    };
+    };
 
 export type DescTextObj = {
   /**

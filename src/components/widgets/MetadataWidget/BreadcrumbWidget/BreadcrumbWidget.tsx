@@ -9,7 +9,7 @@ import { OlsApi } from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { BreadcrumbWidgetProps } from "../../../../app/types";
 import { isEntity } from "../../../../model/ModelTypeCheck";
-import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
+import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import ReactDOM from "react-dom";
 
@@ -83,7 +83,6 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       )}
       {isSuccess && data && isEntity(data) && (
         <BreadcrumbPresentation
-          ontologyName={data.getOntologyId()}
           shortForm={data.getShortForm()}
           ontologyId={ontologyId || data.getOntologyId()}
           colorFirst={colorFirst}
@@ -94,11 +93,6 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       )}
       {isError && (
         <BreadcrumbPresentation
-          ontologyName={
-            props.ontologyId?.toUpperCase() ||
-            (data && data.getOntologyId().toUpperCase()) ||
-            getErrorMessageToDisplay(error, "ontology")
-          }
           shortForm={
             data && data.getShortForm() ? data.getShortForm().toUpperCase() : ""
           }

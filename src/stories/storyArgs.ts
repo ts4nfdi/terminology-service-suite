@@ -842,4 +842,10 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
     },
   },
 };
-export const ArgType = {};
+export const entityArgType = {
+  entity: {
+    required: false,
+    description:
+        "Input data object.",
+  },
+};
