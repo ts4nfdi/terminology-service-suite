@@ -64,7 +64,10 @@ jobs:
 
       - name: Parse semantic-release output
         run: |
-          echo "SRVERSION=$(echo "${{ steps.semantic_release.outputs.release_output }}" | grep -oP 'Published release \K\d+\.\d+\.\d+')" >> $GITHUB_ENV
+          printf "%s\n" "${{ steps.semantic_release.outputs.release_output }}" > release.log
+          grep -oP 'Published release \K\d+\.\d+\.\d+' release.log > version.txt
+          read SRVERSION < version.txt
+          echo "SRVERSION=$SRVERSION" >> $GITHUB_ENV
           if echo "${{ steps.semantic_release.outputs.release_output }}" | grep -q 'Published release'; then
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
