@@ -654,8 +654,12 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   ApiObj &
   TargetLinkObj &
   ParameterObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  OptionalEntityTypeObj &{
     result: SearchResultProps;
+    iri: string;
+    ontologyId: string;
+    useLegacy: boolean;
   };
 
 export type TermDepictionWidgetProps = ApiObj &
