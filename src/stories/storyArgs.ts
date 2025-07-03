@@ -1,5 +1,4 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
-import { pluralizeType } from "../app/util";
 import {
   HIERARCHY_WIDGET_DEFAULT_VALUES
 } from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
@@ -21,7 +20,7 @@ export const apiArgType = {
     description:
       "The API instance for the API call.<br><br> " +
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
-      "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/)<br><br> " +
+      "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
       "**[TIB:](https://www.tib.eu/de/)**<br> " +
       "TIB Terminology Service (OLS3): [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
