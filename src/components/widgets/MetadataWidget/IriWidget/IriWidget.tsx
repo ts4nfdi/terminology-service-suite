@@ -1,9 +1,9 @@
+"use client";
+
 import React, { useState } from "react";
 import { EuiFlexItem, EuiLink, EuiProvider, EuiButtonIcon } from "@elastic/eui";
 import { IriWidgetProps } from "../../../../app/types";
 import {
-  isEuiButtonColor,
-  isEuiLinkColor,
   isHexColor,
   isRgbColor,
 } from "../../../../app/util";
@@ -41,7 +41,7 @@ function IriWidget(props: IriWidgetProps) {
               color:
                 color && (isHexColor(color) || isRgbColor(color)) ? color : "",
             }}
-            color={color && isEuiButtonColor(color) ? color : undefined}
+            color={color && color}
             onClick={() => {
               navigator.clipboard.writeText(iriUrl);
               setCopied(true);
@@ -64,7 +64,7 @@ function IriWidget(props: IriWidgetProps) {
           display="base"
           iconType="check"
           key={"copy-btn"}
-          color={color && isEuiLinkColor(color) ? color : undefined}
+          color={color && color }
         ></EuiButtonIcon>
       </div>
     );
@@ -81,7 +81,7 @@ function IriWidget(props: IriWidgetProps) {
             color:
               color && (isHexColor(color) || isRgbColor(color)) ? color : "",
           }}
-          color={color && isEuiLinkColor(color) ? color : undefined}
+          color={color && color }
           external={externalIcon}
         >
           {iriText ? iriText : iri}

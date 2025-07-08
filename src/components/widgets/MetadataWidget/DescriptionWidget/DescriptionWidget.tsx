@@ -1,12 +1,14 @@
+"use client";
+
 import React from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
-import { OlsApi } from "../../../../api/OlsApi";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { DescriptionWidgetProps } from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
 import ReactDOM from "react-dom";
+import {OlsThingApi} from "../../../../api/ols/OlsThingApi";
 
 const NO_DESCRIPTION = "No description available.";
 
@@ -22,7 +24,7 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
     className,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsThingApi(api);
 
   const { data, isLoading, isError, error } = useQuery<Thing>(
     ["description", api, parameter, thingType, iri, ontologyId, useLegacy],

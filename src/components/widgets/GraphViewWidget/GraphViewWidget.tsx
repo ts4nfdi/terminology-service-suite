@@ -1,8 +1,9 @@
+"use client";
+
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
-import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
   EuiProvider,
@@ -18,8 +19,9 @@ import { Network } from "vis-network";
 import { DataSet } from "vis-data";
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
-import { JSTreeNode } from "../../../api/OlsApi";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import {JSTreeNode} from "../../../utils/olsApiTypes";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const { api, iri, ontologyId, rootWalk, className } = props;
@@ -35,7 +37,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(0);
 
-  const olsApi = new OlsApi(api);
+  const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
 
   const { data, isLoading, isError, error } = useQuery(
@@ -51,12 +53,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     async () => {
       if (rootWalkIsSelected && firstLoad) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return olsApi.getTermTree(
+        return olsEntityApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
         );
       } else if (firstLoad || dbclicked) {
-        return olsApi.getTermRelations({
+        return olsEntityApi.getTermRelations({
           ontologyId: ontologyId,
           termIri: selectedIri,
         });

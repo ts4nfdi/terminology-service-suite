@@ -5,7 +5,7 @@ import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
 } from "../../../../stories/storyArgs";
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../../../../api/ols/OlsHierarchyApi";
 
 export const TabWidgetStoryArgTypes = {
   api: {

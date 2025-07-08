@@ -1,4 +1,3 @@
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget";
 import * as globals from "../../../../../app/globals";
 import {
   apiKeyArgType,
@@ -15,6 +14,7 @@ import {
   preferredRootsArgType, showSiblingsOnInitArgType,
   useLegacyArgTypeHierarchy,
 } from "../../../../../stories/storyArgs";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../../../../../api/ols/OlsHierarchyApi";
 
 export const HierarchyWidgetStoryArgTypes = {
   ...apiUrlArgType,

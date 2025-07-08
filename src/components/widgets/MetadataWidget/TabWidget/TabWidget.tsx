@@ -1,13 +1,15 @@
+"use client";
+
 import React from "react";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../../api/OlsApi";
 import { TabWidgetProps } from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import { TabPresentation } from "./TabPresentation";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
+import {OlsEntityApi} from "../../../../api/ols/OlsEntityApi";
 
 function TabWidget(props: TabWidgetProps) {
   const {
@@ -23,7 +25,7 @@ function TabWidget(props: TabWidgetProps) {
     altNamesTab,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<Entity>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],

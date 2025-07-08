@@ -1,8 +1,6 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
-import { pluralizeType } from "../app/util";
-import {
-  HIERARCHY_WIDGET_DEFAULT_VALUES
-} from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../api/ols/OlsHierarchyApi";
+
 
 export const apiArgType = {
   api: {

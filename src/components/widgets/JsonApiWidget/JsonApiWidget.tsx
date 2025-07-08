@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { EuiButton, EuiProvider } from "@elastic/eui";
 import { JsonApiWidgetProps } from "../../../app/types";
