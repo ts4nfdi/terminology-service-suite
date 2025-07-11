@@ -420,6 +420,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                       result={result}
                       targetLink={targetLink}
                       className={`${finalClassName}-metadata-compact`}
+                      parameter={parameter}
+                      entityType={result.type}
+                      iri={result.iri}
+                      ontologyId={result.ontology_name}
+                      useLegacy={useLegacy}
                     />
                     <EuiSpacer />
                   </React.Fragment>

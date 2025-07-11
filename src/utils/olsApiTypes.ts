@@ -50,6 +50,8 @@ export type JSTreeNode = {
         opened: boolean;
     };
     children: boolean;
+    childrenList?: JSTreeNode[];
+    parentList?: JSTreeNode[];
     a_attr: {
         iri: string;
         ontology_name: string;
