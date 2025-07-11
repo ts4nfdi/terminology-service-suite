@@ -1,8 +1,9 @@
+"use client";
+
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
-import { OlsApi } from "../../../api/OlsApi";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
   EuiProvider,
@@ -18,8 +19,9 @@ import { Network } from "vis-network";
 import { DataSet } from "vis-data";
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
-import { JSTreeNode } from "../../../api/OlsApi";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import {JSTreeNode} from "../../../utils/olsApiTypes";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const { api, iri, ontologyId, rootWalk, className, hierarchy, edgeLabel, onNodeClick } = props;
@@ -36,7 +38,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(0);
 
-  const olsApi = new OlsApi(api);
+  const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel = !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
   const onNodeClickCallbackIdProvided = typeof onNodeClick === "function" && !onNodeClick.name.includes("mockConstructor");
@@ -55,25 +57,25 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (rootWalkIsSelected && firstLoad && !hierarchicalView) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         return {
-          "treeData": await olsApi.getTermTree(
+          "treeData": await olsEntityApi.getTermTree(
             { ontologyId: ontologyId, termIri: iri },
             { viewMode: "All", siblings: false },
           )
         };
       } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
-        let termTree = await olsApi.getTermTree(
+        let termTree = await olsEntityApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
         );
 
-        let termRelation = await olsApi.getTermRelations({
+        let termRelation = await olsEntityApi.getTermRelations({
           ontologyId: ontologyId,
           termIri: selectedIri,
         });
         return { "treeData": termTree, "termRelations": termRelation };
       } else if (firstLoad || dbclicked) {
         return {
-          "termRelations": await olsApi.getTermRelations({
+          "termRelations": await olsEntityApi.getTermRelations({
             ontologyId: ontologyId,
             termIri: selectedIri,
           })

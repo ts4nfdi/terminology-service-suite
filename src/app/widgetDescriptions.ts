@@ -124,6 +124,14 @@ Displays a clickable badge that allows users to navigate back to the parent onto
 Supports flexible customization of breadcrumb badge colors (\`colorFirst\` and \`colorSecond\`) to align with application themes.
 `.trim();
 
+export const BreadcrumbPresentationDescription = `
+The BreadcrumbPresentation is a presentational component for rendering the breadcrumb view.
+It is designed to handle display concerns only and does not include any logic for data fetching.
+Use this component when you need to separate concerns between presentation and data handling - for example, when fetching the data asynchronously. 
+To retrieve the required data, you can use the provided utility function getBreadcrumbData().
+This function can be called in your logic or container component, and the resulting data can be passed to BreadcrumbPresentation as props.
+`.trim();
+
 export const DescriptionDescription = `
 The DescriptionWidget displays the description of an entity retrieved from a terminology service.
 

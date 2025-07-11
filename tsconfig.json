@@ -9,8 +9,8 @@
     "typeRoots": ["node_modules/@types/"],
     "jsx": "react",
     "declaration": true,
-    "declarationDir": "dist/esm/types",
-    "module": "ESNext"
+    "module": "ESNext",
+    "outDir": "dist/types"
   },
   "exclude": ["dist"],
   "include": ["./src/**/*"]

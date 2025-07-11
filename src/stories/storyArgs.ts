@@ -1,7 +1,6 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
-import {
-  HIERARCHY_WIDGET_DEFAULT_VALUES
-} from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../api/ols/OlsHierarchyApi";
+
 
 export const apiArgType = {
   api: {
@@ -841,4 +840,10 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
     },
   },
 };
-export const ArgType = {};
+export const entityArgType = {
+  entity: {
+    required: false,
+    description:
+        "Input data object.",
+  },
+};

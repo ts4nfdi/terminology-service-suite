@@ -1,5 +1,6 @@
+"use client";
+
 import React, { ReactElement } from "react";
-import { OlsApi } from "../../../api/OlsApi";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
   EuiCard,
@@ -36,6 +37,7 @@ import {
 } from "../../../app/util";
 import { EntityRelationsWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -513,7 +515,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     ...rest
   } = props;
 
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
 
   /**
    * Used to fetch an entities' data to be shown in different sections

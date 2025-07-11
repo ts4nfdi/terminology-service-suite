@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { OlsApi } from "../../../api/OlsApi";
+import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import {
   EuiComboBox,
@@ -14,10 +16,11 @@ import {
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
-import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
+import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -40,7 +43,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     ...rest
   } = props;
 
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsSearchApi(api);
+  const olsEntityApi = new OlsEntityApi(api);
 
   const visColors = euiPaletteColorBlind();
   const visColorsBehindText = euiPaletteColorBlindBehindText();
@@ -126,7 +130,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             </EuiHealth>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <BreadcrumbPresentation
-              ontologyName={value.ontology_name}
               shortForm={value.short_form}
               colorFirst={"primary"}
               colorSecond={"success"}
@@ -236,7 +239,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     preselectedOptions: EuiComboBoxOptionOption<any>[],
   ) {
     try {
-      const response = await olsApi.getEntityObject(
+      const response = await olsEntityApi.getEntityObject(
         preselectedElement.iri,
         undefined,
         undefined,

@@ -1,14 +1,16 @@
+"use client";
+
 import { EuiComboBox, EuiProvider } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
-import { OlsApi } from "../../../api/OlsApi";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SearchBarWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import {OlsSearchApi} from "../../../api/ols/OlsSearchApi";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const { api, query, selectionChangedEvent, ...rest } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsSearchApi(api);
 
   /**
    * suggestions

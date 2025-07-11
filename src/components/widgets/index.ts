@@ -3,6 +3,7 @@ import { createDataContent } from "./DataContentWidget/DataContentWidget";
 import { createEntityInfo } from "./EntityInfoWidget/EntityInfoWidget";
 import { createJsonApi } from "./JsonApiWidget/JsonApiWidget";
 import { createBreadcrumb } from "./MetadataWidget/BreadcrumbWidget/BreadcrumbWidget";
+import { createBreadcrumbPresentation } from "./MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
 import { createDescription } from "./MetadataWidget/DescriptionWidget/DescriptionWidget";
 import { createIri } from "./MetadataWidget/IriWidget/IriWidget";
 import { createTab } from "./MetadataWidget/TabWidget/TabWidget";
@@ -28,6 +29,7 @@ import { createGraphView } from "./GraphViewWidget/GraphViewWidget";
   createEntityRelations,
   createJsonApi,
   createBreadcrumb,
+  createBreadcrumbPresentation,
   createDescription,
   createIri,
   createTab,
@@ -53,6 +55,7 @@ export {
   createEntityRelations,
   createJsonApi,
   createBreadcrumb,
+  createBreadcrumbPresentation,
   createDescription,
   createIri,
   createTab,

@@ -19,7 +19,7 @@ import {EntityDefinedByPresentation} from "../MetadataWidget/EntityDefinedByWidg
 import {useQuery} from "react-query";
 import {Entity} from "../../../model/interfaces";
 import {createModelObject, getPreferredOntologyJSON} from "../../../model/ModelObjectCreator";
-import {OlsApi} from "../../../api/OlsApi";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
 
 type MetadataInfo = {
   entity: Entity;
@@ -29,7 +29,7 @@ type MetadataInfo = {
 
 function MetadataCompact(props: MetadataCompactProps) {
   const { api, result, targetLink, className, parameter, entityType, iri, ontologyId, useLegacy, ...rest } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<MetadataInfo>(
       ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],

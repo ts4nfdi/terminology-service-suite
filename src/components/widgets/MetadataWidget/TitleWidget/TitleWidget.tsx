@@ -1,12 +1,14 @@
+"use client";
+
 import React from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { EuiProvider } from "@elastic/eui";
-import { OlsApi } from "../../../../api/OlsApi";
 import { TitleWidgetProps } from "../../../../app/types";
 import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
+import {OlsThingApi} from "../../../../api/ols/OlsThingApi";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {
@@ -22,7 +24,7 @@ function TitleWidget(props: TitleWidgetProps) {
     onNavigateTo,
     href,
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsThingApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<Thing>(
     ["titleData", api, parameter, thingType, iri, ontologyId, useLegacy],
