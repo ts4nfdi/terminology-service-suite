@@ -8,9 +8,9 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiIcon,
+  EuiIcon, EuiProvider
 } from "@elastic/eui";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
 import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
@@ -529,4 +529,29 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 }
 
-export { AutocompleteWidget };
+function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <AutocompleteWidget
+          api={props.api}
+          parameter={props.parameter}
+          selectionChangedEvent={props.selectionChangedEvent}
+          preselected={props.preselected}
+          singleSelection={props.singleSelection as boolean}
+          placeholder={props.placeholder}
+          hasShortSelectedLabel={props.hasShortSelectedLabel}
+          allowCustomTerms={props.allowCustomTerms}
+          ts4nfdiGateway={props.ts4nfdiGateway}
+          singleSuggestionRow={props.singleSuggestionRow}
+          showApiSource={props.showApiSource}
+          className={props.className}
+          useLegacy={props.useLegacy}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { AutocompleteWidget, WrappedAutocompleteWidget };

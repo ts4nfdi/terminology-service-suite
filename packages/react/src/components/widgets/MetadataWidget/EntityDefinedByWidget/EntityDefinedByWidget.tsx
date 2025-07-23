@@ -85,4 +85,23 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   );
 }
 
-export { EntityDefinedByWidget };
+function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <EntityDefinedByWidget
+          iri={props.iri}
+          api={props.api}
+          ontologyId={props.ontologyId}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          onNavigateToOntology={props.onNavigateToOntology}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { EntityDefinedByWidget, WrappedEntityDefinedByWidget };

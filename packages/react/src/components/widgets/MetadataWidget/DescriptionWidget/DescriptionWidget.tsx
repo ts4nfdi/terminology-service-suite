@@ -49,4 +49,25 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   );
 }
 
-export { DescriptionWidget };
+function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <DescriptionWidget
+          api={props.api}
+          ontologyId={props.ontologyId}
+          iri={props.iri}
+          descText={props.descText}
+          thingType={props.thingType}
+          parameter={props.parameter}
+          color={props.color}
+          useLegacy={props.useLegacy}
+          className={props.className}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { DescriptionWidget, WrappedDescriptionWidget };

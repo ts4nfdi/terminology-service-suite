@@ -1,9 +1,9 @@
-import { AlternativeNameTabWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget";
-import { AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider } from "@elastic/eui";
+import { AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
+import {
+  WrappedAlternativeNameTabWidget
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
 
 const roots = new WeakMap<Element, Root>();
 function createAlternativeNameTab(
@@ -16,24 +16,6 @@ function createAlternativeNameTab(
     roots.set(container, root);
   }
   root.render(<WrappedAlternativeNameTabWidget {...props} />);
-}
-
-function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light" globalStyles={false}>
-      <QueryClientProvider client={queryClient}>
-        <AlternativeNameTabWidget
-          iri={props.iri}
-          api={props.api}
-          ontologyId={props.ontologyId}
-          entityType={props.entityType}
-          parameter={props.parameter}
-          className={props.className}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
 }
 
 export { createAlternativeNameTab };

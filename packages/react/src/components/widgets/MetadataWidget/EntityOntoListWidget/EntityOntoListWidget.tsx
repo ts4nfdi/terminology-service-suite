@@ -92,4 +92,23 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   );
 }
 
-export { EntityOntoListWidget };
+function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <EntityOntoListWidget
+          iri={props.iri}
+          api={props.api}
+          ontologyId={props.ontologyId}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          onNavigateToOntology={props.onNavigateToOntology}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { EntityOntoListWidget, WrappedEntityOntoListWidget };

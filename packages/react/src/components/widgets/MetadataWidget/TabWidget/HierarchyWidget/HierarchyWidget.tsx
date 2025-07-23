@@ -337,4 +337,29 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   );
 }
 
-export { HierarchyWidget };
+function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <HierarchyWidget
+          apiUrl={props.apiUrl}
+          apiKey={props.apiKey}
+          backendType={props.backendType}
+          iri={props.iri}
+          entityType={props.entityType}
+          ontologyId={props.ontologyId}
+          includeObsoleteEntities={props.includeObsoleteEntities}
+          useLegacy={props.useLegacy}
+          preferredRoots={props.preferredRoots}
+          keepExpansionStates={props.keepExpansionStates}
+          showSiblingsOnInit={props.showSiblingsOnInit}
+          onNavigateToEntity={props.onNavigateToEntity}
+          onNavigateToOntology={props.onNavigateToOntology}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { HierarchyWidget, WrappedHierarchyWidget };

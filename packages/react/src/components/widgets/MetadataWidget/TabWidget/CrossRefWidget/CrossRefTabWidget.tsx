@@ -46,4 +46,23 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 }
 
-export { CrossRefTabWidget };
+function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <CrossRefTabWidget
+          iri={props.iri}
+          api={props.api}
+          ontologyId={props.ontologyId}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          className={props.className}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { CrossRefTabWidget, WrappedCrossRefTabWidget };

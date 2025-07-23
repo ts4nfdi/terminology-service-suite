@@ -86,4 +86,18 @@ function DataContentWidget(props: DataContentWidgetProps) {
   );
 }
 
-export { DataContentWidget };
+function WrappedDataContentWidget(props: DataContentWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <DataContentWidget
+          api={props.api}
+          parameter={props.parameter}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { DataContentWidget, WrappedDataContentWidget };

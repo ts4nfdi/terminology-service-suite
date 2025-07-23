@@ -711,4 +711,27 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   );
 }
 
-export { EntityInfoWidget };
+function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <EntityInfoWidget
+          api={props.api}
+          iri={props.iri}
+          ontologyId={props.ontologyId}
+          hasTitle={props.hasTitle}
+          entityType={props.entityType}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          showBadges={props.showBadges}
+          onNavigateToEntity={props.onNavigateToEntity}
+          onNavigateToOntology={props.onNavigateToOntology}
+          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { EntityInfoWidget, WrappedEntitiyInfoWidget };

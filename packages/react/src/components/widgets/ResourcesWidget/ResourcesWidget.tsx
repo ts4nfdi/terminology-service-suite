@@ -10,9 +10,9 @@ import {
   EuiText,
   EuiScreenReaderOnly,
   EuiDescriptionList,
-  EuiCallOut,
+  EuiCallOut, EuiProvider
 } from "@elastic/eui";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
@@ -460,5 +460,23 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   );
 }
 
+function WrappedResourcesWidget(props: ResourcesWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <ResourcesWidget
+          api={props.api}
+          initialEntriesPerPage={props.initialEntriesPerPage}
+          pageSizeOptions={props.pageSizeOptions}
+          initialSortField={props.initialSortField}
+          initialSortDir={props.initialSortDir}
+          actions={props.actions}
+          parameter={props.parameter}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
 
-export { ResourcesWidget };
+export { ResourcesWidget, WrappedResourcesWidget };

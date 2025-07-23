@@ -112,4 +112,20 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   );
 }
 
-export { SearchBarWidget };
+function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <SearchBarWidget
+          api={props.api}
+          query={props.query}
+          selectionChangedEvent={props.selectionChangedEvent}
+          parameter={props.parameter}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { SearchBarWidget, WrappedSearchBarWidget };

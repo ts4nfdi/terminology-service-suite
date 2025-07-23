@@ -92,4 +92,23 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-export { IriWidget };
+function WrappedIriWidget(props: IriWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <IriWidget
+          iri={props.iri}
+          iriText={props.iriText}
+          color={props.color}
+          externalIcon={props.externalIcon}
+          urlPrefix={props.urlPrefix}
+          copyButton={props.copyButton}
+          className={props.className}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { IriWidget, WrappedIriWidget };

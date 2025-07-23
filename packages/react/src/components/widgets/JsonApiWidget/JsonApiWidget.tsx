@@ -14,4 +14,19 @@ function JsonApiWidget(props: JsonApiWidgetProps) {
   );
 }
 
-export { JsonApiWidget };
+function WrappedJsonApiWidget(props: JsonApiWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <JsonApiWidget
+          apiQuery={props.apiQuery}
+          buttonText={props.buttonText}
+          buttonSize={props.buttonSize}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { JsonApiWidget, WrappedJsonApiWidget };

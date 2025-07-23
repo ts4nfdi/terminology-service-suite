@@ -10,7 +10,7 @@ import { getErrorMessageToDisplay } from "../../../../app/util";
 import { BreadcrumbWidgetProps } from "../../../../app/types";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from "react-query";
 import ReactDOM from "react-dom";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
@@ -27,6 +27,9 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     className,
   } = props;
   const olsApi = new OlsApi(api);
+
+  // const client = useQueryClient();
+  // console.log('React Query Client available:', !!client);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery(
     ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
@@ -120,4 +123,25 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   );
 }
 
-export { BreadcrumbWidget };
+function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+      <EuiProvider colorMode="light" globalStyles={false}>
+        <QueryClientProvider client={queryClient}>
+          <BreadcrumbWidget
+              api={props.api}
+              entityType={props.entityType}
+              iri={props.iri}
+              ontologyId={props.ontologyId}
+              colorFirst={props.colorFirst}
+              colorSecond={props.colorSecond}
+              parameter={props.parameter}
+              useLegacy={props.useLegacy}
+              onNavigateToOntology={props.onNavigateToOntology}
+          />
+        </QueryClientProvider>
+      </EuiProvider>
+  );
+}
+
+export { BreadcrumbWidget, WrappedBreadcrumbWidget };

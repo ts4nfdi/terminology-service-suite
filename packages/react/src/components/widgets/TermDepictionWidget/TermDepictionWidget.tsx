@@ -67,4 +67,20 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   );
 }
 
-export { TermDepictionWidget };
+function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <TermDepictionWidget
+          api={props.api}
+          iri={props.iri}
+          ontologyId={props.ontologyId}
+          useLegacy={props.useLegacy}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { TermDepictionWidget, WrappedTermDepictionWidget };

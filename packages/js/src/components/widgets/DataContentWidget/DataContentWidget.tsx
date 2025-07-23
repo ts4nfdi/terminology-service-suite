@@ -1,9 +1,9 @@
-import { DataContentWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget";
-import { DataContentWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider } from "@elastic/eui";
+import { DataContentWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
+import {
+  WrappedDataContentWidget
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidget";
 
 const roots = new WeakMap<Element, Root>();
 function createDataContent(
@@ -16,20 +16,6 @@ function createDataContent(
     roots.set(container, root);
   }
   root.render(<WrappedDataContentWidget {...props} />);
-}
-
-function WrappedDataContentWidget(props: DataContentWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <DataContentWidget
-          api={props.api}
-          parameter={props.parameter}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
 }
 
 export { createDataContent };

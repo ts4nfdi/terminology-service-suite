@@ -1,9 +1,9 @@
-import { TermDepictionWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget";
-import { TermDepictionWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { EuiProvider } from "@elastic/eui";
+import { TermDepictionWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
+import {
+  WrappedTermDepictionWidget
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidget";
 
 const roots = new WeakMap<Element, Root>();
 function createDepiction(
@@ -17,22 +17,5 @@ function createDepiction(
   }
   root.render(<WrappedTermDepictionWidget {...props} />);
 }
-
-function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
-  const queryClient = new QueryClient();
-  return (
-    <EuiProvider colorMode="light">
-      <QueryClientProvider client={queryClient}>
-        <TermDepictionWidget
-          api={props.api}
-          iri={props.iri}
-          ontologyId={props.ontologyId}
-          useLegacy={props.useLegacy}
-        />
-      </QueryClientProvider>
-    </EuiProvider>
-  );
-}
-
 
 export { createDepiction };

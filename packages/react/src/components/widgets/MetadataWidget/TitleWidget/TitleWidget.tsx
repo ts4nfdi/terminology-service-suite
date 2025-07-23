@@ -58,4 +58,27 @@ function TitleWidget(props: TitleWidgetProps) {
   );
 }
 
-export { TitleWidget };
+function WrappedTitleWidget(props: TitleWidgetProps) {
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <TitleWidget
+          api={props.api}
+          thingType={props.thingType}
+          iri={props.iri}
+          ontologyId={props.ontologyId}
+          titleText={props.titleText}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          defaultValue={props.defaultValue}
+          className={props.className}
+          onNavigateTo={props.onNavigateTo}
+          href={props.href}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { TitleWidget, WrappedTitleWidget };
