@@ -90,7 +90,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   }, [selectedOptions]);
 
   return (
-    <>
+    <div data-testid="search-bar">
       <EuiComboBox
         id={"suggest"}
         isClearable
@@ -108,7 +108,7 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
           setSearchValue(item);
         }}
       />
-    </>
+    </div>
   );
 }
 

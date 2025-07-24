@@ -45,7 +45,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   );
 
   return (
-    <>
+    <div data-testid="breadcrumb">
       {isLoading && (
         <span>
           <span
@@ -119,7 +119,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
           className={className}
         />
       )}
-    </>
+    </div>
   );
 }
 

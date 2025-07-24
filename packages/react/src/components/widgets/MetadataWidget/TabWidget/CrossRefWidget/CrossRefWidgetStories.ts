@@ -8,6 +8,7 @@ import {
   useLegacyArgType,
 } from "../../../../../stories/storyArgs";
 import * as globals from "../../../../../app/globals";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const CrossRefWidgetStoryArgTypes = {
   ...apiArgType,
@@ -27,30 +28,35 @@ export const CrossRefWidgetStoryArgs = {
   parameter: "collection=nfdi4health",
 };
 
-export const CrossRefTabWidget1 = {
-  args: {
+export const CrossRefTabWidget1Args = {
     iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "rxno",
     parameter: "",
-  },
 };
 
-export const SelectingDefiningOntology = {
-  args: {
+export const SelectingDefiningOntologyArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/IAO_0000631",
     entityType: "term",
     parameter: "",
-  },
 };
 
-export const DefiningOntologyUnavailable = {
-  args: {
+export const DefiningOntologyUnavailableArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://identifiers.org/uniprot/Q9VAM9",
     entityType: "term",
     parameter: "",
-  },
+};
+
+export const commonCrossRefWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('cross-ref');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

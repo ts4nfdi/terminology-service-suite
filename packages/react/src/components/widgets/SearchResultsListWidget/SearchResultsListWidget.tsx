@@ -275,7 +275,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   }
 
   return (
-    <>
+    <div data-testid="search-result">
       <div className={finalClassName}>
         <SearchBarWidget
           api={api}
@@ -427,7 +427,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>
-    </>
+    </div>
   );
 }
 

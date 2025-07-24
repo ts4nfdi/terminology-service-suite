@@ -40,6 +40,7 @@ function TabWidget(props: TabWidgetProps) {
 
   function render(data: Entity) {
     return (
+      <div data-testid="tab">
       <TabPresentation
         {...rest}
         data={data}
@@ -59,6 +60,7 @@ function TabWidget(props: TabWidgetProps) {
         hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
         hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
       />
+      </div>
     );
   }
 

@@ -36,6 +36,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 
   return (
+      <div data-testid="alternative-name">
     <AlternativeNameTabPresentation
       synonyms={
         data
@@ -48,6 +49,7 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
       error={error}
       className={className}
     />
+      </div>
   );
 }
 

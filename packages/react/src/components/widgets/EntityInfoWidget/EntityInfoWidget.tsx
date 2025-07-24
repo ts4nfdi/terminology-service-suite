@@ -664,6 +664,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   return (
     <>
       <EuiCard
+        data-testid="entity-info"
         title={
           hasTitle
             ? (entityType

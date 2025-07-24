@@ -26,7 +26,6 @@ import {
   WithPreselectedValueOLS4v2Args
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect, waitFor } from "@storybook/test";
 
 let counter = 0;
 
@@ -86,281 +85,81 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const UseAPIGatewayWithOLS: Story = {
-  ...UseAPIGatewayWithOLSArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: UseAPIGatewayWithOLSArgs,
 };
 
 export const UseAPIGatewayWithOntoPortal: Story = {
-  ...UseAPIGatewayWithOntoPortalArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: UseAPIGatewayWithOntoPortalArgs,
 };
 
 export const UseAPIGatewayWithSkosmos: Story = {
-  ...UseAPIGatewayWithSkosmosArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: UseAPIGatewayWithSkosmosArgs,
 };
 
 export const HideApiSourceApiGateway: Story = {
-  ...HideApiSourceApiGatewayArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: HideApiSourceApiGatewayArgs,
 };
 
 export const WithDefaultsCompact: Story = {
-  ...WithDefaultsCompactArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithDefaultsCompactArgs,
 };
 
 export const WithPreselectedValueOLS4v2: Story = {
-  ...WithPreselectedValueOLS4v2Args,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithPreselectedValueOLS4v2Args,
 };
 
 export const WithPreselectedValueAndUnresolvedIriOLS3: Story = {
-  ...WithPreselectedValueAndUnresolvedIriOLS3Args,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithPreselectedValueAndUnresolvedIriOLS3Args
 };
 
 export const WithPreselectedMultipleValuesOLS4: Story = {
-  ...WithPreselectedMultipleValuesOLS4Args,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithPreselectedMultipleValuesOLS4Args,
 };
 
 export const WithCustomValue: Story = {
-  ...WithCustomValueArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithCustomValueArgs,
 };
 
 export const WithInvalidValue: Story = {
-  ...WithInvalidValueArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithInvalidValueArgs,
 };
 
 export const WithGermanInput: Story = {
-  ...WithGermanInputArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithGermanInputArgs,
 };
 
 export const WithDescriptionAndShortForm: Story = {
-  ...WithDescriptionAndShortFormArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithDescriptionAndShortFormArgs,
 };
 
 export const WithLongForm: Story = {
-  ...WithLongFormArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithLongFormArgs,
 };
 
 export const AllowAddingCustomTerms: Story = {
-  ...AllowAddingCustomTermsArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: AllowAddingCustomTermsArgs,
 };
 
 export const AllowMultipleTerms: Story = {
-  ...AllowMultipleTermsArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: AllowMultipleTermsArgs,
 };
 
 export const WithMultipleValues: Story = {
-  ...WithMultipleValuesArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: WithMultipleValuesArgs,
 };
 
 export const TibNFDI4CHEM: Story = {
-  ...TibNFDI4CHEMArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: TibNFDI4CHEMArgs,
 };
 
 export const TibDataPlant: Story = {
-  ...TibDataPlantArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: TibDataPlantArgs,
 };
 
 export const SubtreeDirectSubtypes: Story = {
-  ...SubtreeDirectSubtypesArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: SubtreeDirectSubtypesArgs,
 };
 
 export const SubtreeDirectAndIndirectSubtypes: Story = {
-  ...SubtreeDirectAndIndirectSubtypesArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('autocomplete');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
+  args: SubtreeDirectAndIndirectSubtypesArgs,
 };

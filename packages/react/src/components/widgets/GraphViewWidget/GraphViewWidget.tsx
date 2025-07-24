@@ -304,7 +304,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   return (
     <div className={finalClassName}>
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
-      <EuiPanel style={{ fontSize: 12 }} paddingSize="s" borderRadius="none">
+      <EuiPanel style={{ fontSize: 12 }} paddingSize="s" borderRadius="none" data-testid="graph-view">
         <EuiButton size="s" onClick={reset}>
           Reset
         </EuiButton>

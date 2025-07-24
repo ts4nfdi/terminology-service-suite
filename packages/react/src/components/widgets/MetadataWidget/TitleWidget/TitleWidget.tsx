@@ -38,6 +38,7 @@ function TitleWidget(props: TitleWidgetProps) {
   );
 
   return (
+    <div data-testid="title">
     <TitlePresentation
       title={
         data ? (isOntology(data) ? data.getName() : data.getLabel()) : null
@@ -55,6 +56,7 @@ function TitleWidget(props: TitleWidgetProps) {
       thingType={thingType ? thingType : data ? data.getType() : undefined}
       href={href}
     />
+    </div>
   );
 }
 

@@ -313,6 +313,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   return (
     <div className={finalClassName}>
       <EuiCard
+        data-testid="hierarchy"
         title={""}
         layout={"horizontal"}
         style={{ overflowX: "auto", overflowY: "hidden" }}

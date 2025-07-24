@@ -1,8 +1,15 @@
 import { IriWidget } from "./IriWidget";
-import { IriWidgetStoryArgs, IriWidgetStoryArgTypes } from "./IriWidgetStories";
+import {
+  IriWidgetStoryArgs, IriWidgetStoryArgTypes,
+  IriWidget1Args,
+  withCopyButtonArgs,
+  withoutExternalIconArgs,
+  withUrlPrefixArgs, commonIriWidgetPlay
+} from "./IriWidgetStories";
 import { IriDescription } from "../../../../app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta = {
   title: "Entity Metadata/IriWidget",
   component: IriWidget,
   parameters: {
@@ -15,11 +22,28 @@ export default {
   },
   argTypes: IriWidgetStoryArgTypes,
   args: IriWidgetStoryArgs,
+} satisfies Meta<typeof IriWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const IriWidget1: Story = {
+  args: IriWidget1Args,
+  play: commonIriWidgetPlay
 };
 
-export {
-  IriWidget1,
-  withCopyButton,
-  withoutExternalIcon,
-  withUrlPrefix,
-} from "./IriWidgetStories";
+export const withoutExternalIcon: Story = {
+  args: withoutExternalIconArgs,
+  play: commonIriWidgetPlay
+};
+
+export const withCopyButton: Story = {
+  args: withCopyButtonArgs,
+  play: commonIriWidgetPlay
+};
+
+export const withUrlPrefix: Story = {
+  args: withUrlPrefixArgs,
+  play: commonIriWidgetPlay
+};

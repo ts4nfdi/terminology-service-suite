@@ -71,7 +71,7 @@ function IriWidget(props: IriWidgetProps) {
   };
 
   return (
-    <EuiFlexItem grow={false}>
+    <EuiFlexItem grow={false} data-testid="iri">
       <div className={finalClassName}>
         {copyButton === "left" && <CopyLinkButton />}
         <EuiLink

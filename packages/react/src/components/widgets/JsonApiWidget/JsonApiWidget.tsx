@@ -8,7 +8,7 @@ function JsonApiWidget(props: JsonApiWidgetProps) {
   const { apiQuery, buttonText, buttonSize } = props;
 
   return (
-    <EuiButton href={apiQuery} target="_blank" size={buttonSize || "m"}>
+    <EuiButton href={apiQuery} target="_blank" size={buttonSize || "m"} data-testid="json-api">
       {buttonText}
     </EuiButton>
   );

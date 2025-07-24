@@ -54,16 +54,3 @@ window['ts4nfdiWidgets'].createEntityInfo(
   argTypes: EntityInfoWidgetStoryArgTypes,
   args: EntityInfoWidgetStoryArgs,
 };
-
-export {
-  TermInfoWidget,
-  PropertyInfoWidget,
-  IndividualInfoWidget,
-  InfoWidgetBadges,
-  InfoWidgetDomain,
-  InfoWidgetPropertyAssertion,
-  InfoWidgetPropertyCharacteristics,
-  InfoWidgetRange,
-  OptionalEntityTypeLegacyAPI,
-  NavigateToEBIPage,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories";

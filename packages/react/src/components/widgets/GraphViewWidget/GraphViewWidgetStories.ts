@@ -4,6 +4,7 @@ import {
   iriArgType,
   ontologyIdReqArgType,
 } from "../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const GraphViewWidgetStoryArgTypes = {
   ...apiArgType,
@@ -27,38 +28,41 @@ export const GraphViewWidgetStoryArgs = {
   rootWalk: false,
 };
 
-export const GraphViewWidgetExample = {
-  args: {
+export const GraphViewWidgetExampleArgs = {
     api: globals.TIB_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",
     ontologyId: "vibso",
     rootWalk: false,
-  },
 };
 
-export const RootWalkGraphExample = {
-  args: {
+export const RootWalkGraphExampleArgs = {
     api: globals.TIB_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",
     ontologyId: "vibso",
     rootWalk: true,
-  },
 };
 
-export const ChebiWater = {
-  args: {
+export const ChebiWaterArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
     ontologyId: "chebi",
     rootWalk: false,
-  },
 };
 
-export const ChebiWaterRootWalk = {
-  args: {
+export const ChebiWaterRootWalkArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
     ontologyId: "chebi",
     rootWalk: true,
-  },
+};
+
+export const commonGraphViewWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('graph-view');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

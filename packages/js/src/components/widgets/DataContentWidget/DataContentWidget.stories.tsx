@@ -33,7 +33,7 @@ const meta: Meta<DataContentWidgetProps> = {
   render: (args: DataContentWidgetProps) => {
     const num = getIncNum();
     return `
-<div id="search_bar_widget_container_${num}"></div>
+<div id="data_content_widget_container_${num}"></div>
 
 <script type="text/javascript">
 window['ts4nfdiWidgets'].createDataContent(
@@ -41,7 +41,7 @@ window['ts4nfdiWidgets'].createDataContent(
       api:"${args.api}",
       parameter:"${args.parameter}",
     },
-    document.querySelector('#search_bar_widget_container_${num}')
+    document.querySelector('#data_content_widget_container_${num}')
 )
 </script>
         `;
@@ -56,42 +56,12 @@ type Story = StoryObj<typeof meta>;
 
 export const NFDI4HealthDataContentWidget: Story = {
   args: NFDI4HealthDataContentWidgetArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('data-content');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
 };
 
 export const SafetyDataContentWidget: Story = {
   args: SafetyDataContentWidgetArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('data-content');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
 };
 
 export const ErrorDataContentWidget: Story = {
   args: ErrorDataContentWidgetArgs,
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement);
-
-    await waitFor(async () => {
-      const content = canvas.getByTestId('data-content');
-      await expect(content).toBeInTheDocument();
-    }, {
-      timeout: 3000
-    })
-  }
 };

@@ -398,7 +398,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   ];
   // @ts-ignore
   return (
-    <div className={finalClassName}>
+    <div className={finalClassName} data-testid="resources">
       {isSuccess && (
         <>
           <EuiCallOut

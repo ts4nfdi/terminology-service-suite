@@ -11,6 +11,7 @@ import {
   parameterArgType,
   showBadgesArgType,
 } from "../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const EntityRelationsWidgetStoryArgTypes = {
   ...apiArgType,
@@ -38,98 +39,77 @@ export const EntityRelationsWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
 };
 
-export const SubEntityOf = {
-  args: {
+export const SubEntityOfArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "agro",
     iri: "http://purl.obolibrary.org/obo/AGRO_00000002",
-  },
 };
 
-export const AllValuesFrom = {
-  args: {
+export const AllValuesFromArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "go",
     iri: "http://purl.obolibrary.org/obo/BFO_0000004",
-  },
 };
 
-export const DifferentFrom = {
-  args: {
+export const DifferentFromArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "individual",
     ontologyId: "bco",
     iri: "http://purl.obolibrary.org/obo/IAO_0000120",
-  },
 };
 
-export const EquivalentTo = {
-  args: {
+export const EquivalentToArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "go",
     iri: "http://purl.obolibrary.org/obo/GO_0048021",
-  },
 };
 
-export const SingleValue = {
-  args: {
+export const SingleValueArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "bfo",
     iri: "http://purl.obolibrary.org/obo/BFO_0000001",
-  },
 };
 
-export const InverseOf = {
-  args: {
+export const InverseOfArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "property",
     ontologyId: "ro",
     iri: "http://purl.obolibrary.org/obo/RO_0000057",
-  },
 };
 
-export const PropertyChain = {
-  args: {
+export const PropertyChainArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "property",
     ontologyId: "ro",
     iri: "http://purl.obolibrary.org/obo/RO_0002170",
-  },
 };
 
-export const Instances = {
-  args: {
+export const InstancesArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "iao",
     iri: "http://purl.obolibrary.org/obo/IAO_0000078",
-  },
 };
 
-export const Axioms = {
-  args: {
+export const AxiomsArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "aism",
     iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
-  },
 };
 
-export const QualifiedCardinality = {
-  args: {
+export const QualifiedCardinalityArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "foodon",
     iri: "http://purl.obolibrary.org/obo/FOODON_00003382",
-  },
 };
 
-export const NavigateToEBIPage = {
-  args: {
+export const NavigateToEBIPageArgs = {
     api: globals.EBI_API_ENDPOINT,
     entityType: "individual",
     ontologyId: "bco",
@@ -137,5 +117,15 @@ export const NavigateToEBIPage = {
     onNavigateToEntity: "Navigate to EBI page",
     onNavigateToOntology: "Navigate to EBI page",
     onNavigateToDisambiguate: "Navigate to EBI page",
-  },
+};
+
+export const commonEntityRelationsWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('entity-relations');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

@@ -11,6 +11,7 @@ import {
   showBadgesArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const OntologyInfoWidgetStoryArgTypes = {
   ...apiArgType,
@@ -36,35 +37,38 @@ export const OntologyInfoWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
 };
 
-export const OntologyInfoWidget1 = {
-  args: {
+export const OntologyInfoWidget1Args = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "atc",
-  },
 };
 
-export const OntologyInfoWidget2 = {
-  args: {
+export const OntologyInfoWidget2Args = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
-  },
 };
 
-export const OntologyInfoWidgetOLS4API = {
-  args: {
+export const OntologyInfoWidgetOLS4APIArgs = {
     api: globals.EBI_API_ENDPOINT,
     useLegacy: false,
     ontologyId: "mp", // "uberon" is also good for demonstration
-  },
 };
 
-export const NavigateToEBIPage = {
-  args: {
+export const NavigateToEBIPageArgs = {
     api: globals.EBI_API_ENDPOINT,
     useLegacy: false,
     ontologyId: "afo",
     onNavigateToEntity: "Navigate to EBI page",
     onNavigateToOntology: "Navigate to EBI page",
     onNavigateToDisambiguate: "Navigate to EBI page",
-  },
+};
+
+export const commonOntologyInfoWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('ontology-info');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

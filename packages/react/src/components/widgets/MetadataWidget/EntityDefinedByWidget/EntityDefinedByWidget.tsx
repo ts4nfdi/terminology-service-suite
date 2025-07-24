@@ -66,7 +66,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   );
 
   return (
-    <>
+    <div data-testid="entity-defined-by">
       {isSuccess && data && (
         <EntityDefinedByPresentation
           ontolist={data.ontoList}
@@ -81,7 +81,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
       {isError && (
         <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>
       )}
-    </>
+    </div>
   );
 }
 

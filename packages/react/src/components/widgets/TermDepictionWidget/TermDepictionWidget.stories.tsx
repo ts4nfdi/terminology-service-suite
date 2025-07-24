@@ -2,10 +2,13 @@ import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
+  TermDepictionWidgetExampleArgs,
+  TermDepictionWidget3DArgs, commonTermDepictionWidgetPlay
 } from "./TermDepictionWidgetStories";
 import { TermDepictionDescription } from "../../../app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta = {
   title: "Additional Entity Metadata/TermDepictionWidget",
   component: TermDepictionWidget,
   parameters: {
@@ -18,9 +21,19 @@ export default {
   },
   argTypes: TermDepictionWidgetStoryArgTypes,
   args: TermDepictionWidgetStoryArgs,
+} satisfies Meta<typeof TermDepictionWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const TermDepictionWidgetExample = {
+  args: TermDepictionWidgetExampleArgs,
+  play: commonTermDepictionWidgetPlay
 };
 
-export {
-  TermDepictionWidgetExample,
-  TermDepictionWidget3D,
-} from "./TermDepictionWidgetStories";
+
+export const TermDepictionWidget3D = {
+  args: TermDepictionWidget3DArgs,
+  play: commonTermDepictionWidgetPlay
+};

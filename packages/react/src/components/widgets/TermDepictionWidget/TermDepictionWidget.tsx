@@ -26,7 +26,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   );
 
   return (
-    <>
+    <div data-testid="term-depiction">
       {isLoading && <EuiLoadingSpinner size="s" />}
       {isSuccess && data && data.getDepictionUrl().length !== 0 && (
         <>
@@ -63,7 +63,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
       {isError && (
         <EuiText>{getErrorMessageToDisplay(error, "depiction")}</EuiText>
       )}
-    </>
+    </div>
   );
 }
 

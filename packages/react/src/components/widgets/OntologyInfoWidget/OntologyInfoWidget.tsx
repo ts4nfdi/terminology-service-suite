@@ -238,7 +238,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   }
 
   return (
-    <div className={finalClassName}>
+    <div className={finalClassName} data-testid="ontology-info">
       <EuiCard
         title={hasTitle ? "Ontology Information" : ""}
         layout="horizontal"

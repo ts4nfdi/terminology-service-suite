@@ -5,6 +5,7 @@ import {
   ontologyIdReqArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const TermDepictionWidgetStoryArgTypes = {
   ...apiArgType,
@@ -20,21 +21,28 @@ export const TermDepictionWidgetStoryArgs = {
   useLegacy: false,
 };
 
-export const TermDepictionWidgetExample = {
-  args: {
+export const TermDepictionWidgetExampleArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
     ontologyId: "uberon",
     useLegacy: false,
-  },
 };
 
 
-export const TermDepictionWidget3D = {
-  args: {
+export const TermDepictionWidget3DArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/UBERON_0002048",
     ontologyId: "uberon",
     useLegacy: false,
-  },
+};
+
+export const commonTermDepictionWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('term-depiction');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

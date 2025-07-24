@@ -7,8 +7,8 @@ module.exports = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
     "@storybook/addon-docs",
+    "@storybook/experimental-addon-test",
   ],
   framework: {
     name: "@storybook/html-vite",

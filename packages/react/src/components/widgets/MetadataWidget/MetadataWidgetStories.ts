@@ -11,6 +11,7 @@ import {
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./TabWidget/HierarchyWidget/HierarchyWidget";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const MetadataWidgetStoryArgTypes = {
   ...apiArgType,
@@ -48,77 +49,57 @@ export const MetadataWidgetStoryArgs = {
   parameter: "",
 };
 
-export const MetadataWidget1 = {
-  storyName: "Metadata Widget",
-  args: {
+export const MetadataWidget1Args = {
     api: globals.ZBMED_OLS4_API,
     ontologyId: "uberon",
     iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
     entityType: "term",
-  },
 };
 
-export const OLS3 = {
-  storyName: "OLS3",
-  args: {
+export const OLS3Args = {
     api: globals.ZBMED_OLS3_API,
     ontologyId: "ncit",
     iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
     entityType: "term",
-  },
 };
 
-export const OLS4V1 = {
-  storyName: "OLS4 V1",
-  args: {
+export const OLS4V1Args = {
     api: globals.EBI_API_ENDPOINT,
     ontologyId: "ncit",
     iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
     entityType: "term",
-  },
 };
 
-export const OLS4V2 = {
-  storyName: "OLS4 V2",
-  args: {
+export const OLS4V2Args = {
     api: globals.EBI_API_ENDPOINT,
     ontologyId: "ncit",
     iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
     entityType: "term",
     useLegacy: false,
     parameter: "",
-  },
 };
 
-export const SelectingDefiningOntology = {
-  args: {
+export const SelectingDefiningOntologyArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/IAO_0000631",
     entityType: "term",
     parameter: "",
-  },
 };
 
-export const DefiningOntologyUnavailable = {
-  args: {
+export const DefiningOntologyUnavailableArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://identifiers.org/uniprot/Q9VAM9",
     entityType: "term",
     parameter: "",
-  },
 };
 
-export const DefinedByAlsoAppearsInWidgets = {
-  args: {
+export const DefinedByAlsoAppearsInWidgetsArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/HP_0000819",
     ontologyId: "efo",
-  },
 };
 
-export const HiddenTabs = {
-  storyName: "Hidden Tabs",
-  args: {
+export const HiddenTabsArgs = {
     api: globals.EBI_API_ENDPOINT,
     ontologyId: "uberon",
     iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
@@ -131,15 +112,23 @@ export const HiddenTabs = {
     terminologyInfoTab: false,
     graphViewTab: false,
     termDepictionTab: false,
-  },
 };
 
-export const TermAsLink = {
-  args: {
+export const TermAsLinkArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/HP_0000819",
     ontologyId: "efo",
     termLink:
       "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819",
-  },
+};
+
+export const commonMetadataWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('metadata');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

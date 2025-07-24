@@ -29,6 +29,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 
   return (
+    <div data-testid="cross-ref">
     <CrossRefTabPresentation
       crossrefs={
         data
@@ -43,6 +44,7 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
       error={error}
       className={className}
     />
+    </div>
   );
 }
 

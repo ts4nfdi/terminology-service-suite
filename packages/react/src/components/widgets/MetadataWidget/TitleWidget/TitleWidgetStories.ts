@@ -13,6 +13,7 @@ import {
   hrefArgType,
 } from "../../../../stories/storyArgs";
 import "../../../../style/customTitleStyle.css";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,
@@ -40,93 +41,74 @@ export const TitleWidgetStoryArgs = {
   parameter: "collection=nfdi4health",
 };
 
-export const TitleWidgetDefault = {
-  args: {
+export const TitleWidgetDefaultArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
-  },
 };
 
-export const OntologyTitle = {
-  args: {
+export const OntologyTitleArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "ontology",
-  },
 };
 
-export const SelectingDefiningOntology = {
-  args: {
+export const SelectingDefiningOntologyArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://purl.obolibrary.org/obo/IAO_0000631",
     thingType: "term",
     parameter: "",
-  },
 };
 
-export const TitleWidgetWithTitleText = {
-  args: {
+export const TitleWidgetWithTitleTextArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     titleText: "title text",
-  },
 };
 
-export const IncorrectIriWithDefaultValue = {
-  args: {
+export const IncorrectIriWithDefaultValueArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     defaultValue: "default value",
-  },
 };
 
-export const IncorrectIriWithoutDefaultValue = {
-  args: {
+export const IncorrectIriWithoutDefaultValueArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C29",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
-  },
 };
 
-export const DefiningOntologyUnavailable = {
-  args: {
+export const DefiningOntologyUnavailableArgs = {
     api: globals.EBI_API_ENDPOINT,
     iri: "http://identifiers.org/uniprot/Q9VAM9",
     thingType: "term",
     parameter: "",
-  },
 };
 
-export const WithStyles = {
-  args: {
+export const WithStylesArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     className: "custom-title-style",
-  },
 };
 
-export const WithoutStyles = {
-  args: {
+export const WithoutStylesArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "term",
     className: "none",
-  },
 };
 
-export const OntologyTitleCustomOnNavigate = {
-  args: {
+export const OntologyTitleCustomOnNavigateArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
@@ -139,15 +121,23 @@ export const OntologyTitleCustomOnNavigate = {
         thingType,
       );
     },
-  },
 };
 
-export const OntologyTitleCustomLink = {
-  args: {
+export const OntologyTitleCustomLinkArgs = {
     iri: "http://purl.obolibrary.org/obo/NCIT",
     api: globals.ZBMED_OLS4_API,
     ontologyId: "ncit",
     thingType: "ontology",
     href: "/",
-  },
+};
+
+export const commonTitleWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('title');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

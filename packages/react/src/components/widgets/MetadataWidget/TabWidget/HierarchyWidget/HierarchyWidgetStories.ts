@@ -5,6 +5,7 @@ import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
 } from "../../../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
 
 export const HierarchyWidgetStoryArgTypes = {
   apiUrl: {},
@@ -116,39 +117,32 @@ export const HierarchyWidgetStoryArgs = {
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
 };
 
-export const ClassHierarchy = {
-  args: {
+export const ClassHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     entityType: "class",
     ontologyId: "efo",
-  },
 };
 
-export const IndividualHierarchy = {
-  args: {
+export const IndividualHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/IAO_0000120",
     entityType: "individual",
     ontologyId: "bco",
-  },
 };
 
-export const PreferredRoots = {
-  args: {
+export const PreferredRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
     entityType: "class",
     ontologyId: "uberon",
     preferredRoots: true,
-  },
 };
 
-export const IncludeObsoleteEntities = {
-  args: {
+export const IncludeObsoleteEntitiesArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
@@ -156,76 +150,72 @@ export const IncludeObsoleteEntities = {
     ontologyId: "uberon",
     includeObsoleteEntities: true,
     useLegacy: true,
-  },
 };
 
-export const PropertyRoots = {
-  args: {
+export const PropertyRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
     entityType: "property",
     ontologyId: "bco",
     useLegacy: true,
-  },
 };
 
-export const IndividualRoots = {
-  args: {
+export const IndividualRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
     entityType: "individual",
     ontologyId: "bco",
-  },
 };
 
-export const LargeHierarchy = {
-  args: {
+export const LargeHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
     entityType: "class",
     ontologyId: "uberon",
-  },
 };
 
-export const SkosHierarchy = {
-  args: {
+export const SkosHierarchyArgs = {
     apiUrl: globals.FINTO_V1_API_ENDPOINT,
     backendType: "skosmos",
     iri: "http://www.yso.fi/onto/yso/p864",
     ontologyId: "yso",
-  },
 };
 
-export const SagePubHierarchy = {
-  args: {
+export const SagePubHierarchyArgs = {
     apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/",
     backendType: "skosmos",
     iri: "https://concepts.sagepub.com/social-science/concept/economic_forecasting",
     ontologyId: "social-science",
-  },
 };
 
-export const OntoportalHierarchy = {
-  args: {
+export const OntoportalHierarchyArgs = {
     apiUrl: "https://data.biodivportal.gfbio.org",
     backendType: "ontoportal",
     iri: "http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",
     ontologyId: "IOC",
     entityType: "class",
     apiKey: "",
-  },
 };
 
-export const OLS3Hierarchy = {
-  args: {
+export const OLS3HierarchyArgs = {
     apiUrl: globals.ZBMED_OLS3_API,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     entityType: "class",
     ontologyId: "efo",
     useLegacy: true,
-  },
+};
+
+export const commonHierarchyWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('hierarchy');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

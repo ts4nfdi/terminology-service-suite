@@ -1,38 +1,88 @@
 import { EntityInfoWidget } from "./EntityInfoWidget";
 import {
+  commonEntityInfoWidgetPlay,
   EntityInfoWidgetStoryArgs,
   EntityInfoWidgetStoryArgTypes,
+  TermInfoWidgetArgs,
+  PropertyInfoWidgetArgs,
+  IndividualInfoWidgetArgs,
+  InfoWidgetBadgesArgs,
+  OptionalEntityTypeLegacyAPIArgs,
+  InfoWidgetDomainArgs,
+  InfoWidgetRangeArgs,
+  InfoWidgetPropertyAssertionArgs,
+  InfoWidgetPropertyCharacteristicsArgs,
+  NavigateToEBIPageArgs
 } from "./EntityInfoWidgetStories";
-import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { EntityInfoDescription } from "../../../app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta = {
   title: "Additional Entity Metadata/EntityInfoWidget",
-  component: EntityInfoWidget,
+  tags: ["autodocs"],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
-      source: {
-        transform: manuallyEmbedOnNavigate,
-      },
       description: {
         component: EntityInfoDescription,
       },
     },
   },
+  component: EntityInfoWidget,
   argTypes: EntityInfoWidgetStoryArgTypes,
   args: EntityInfoWidgetStoryArgs,
+} satisfies Meta<typeof EntityInfoWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const TermInfoWidget: Story = {
+  args: TermInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
 };
 
-export {
-  TermInfoWidget,
-  PropertyInfoWidget,
-  IndividualInfoWidget,
-  InfoWidgetBadges,
-  InfoWidgetDomain,
-  InfoWidgetPropertyAssertion,
-  InfoWidgetPropertyCharacteristics,
-  InfoWidgetRange,
-  OptionalEntityTypeLegacyAPI,
-  NavigateToEBIPage,
-} from "./EntityInfoWidgetStories";
+export const PropertyInfoWidget: Story = {
+  args: PropertyInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const IndividualInfoWidget: Story = {
+  args: IndividualInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetBadges: Story = {
+  args: InfoWidgetBadgesArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const OptionalEntityTypeLegacyAPI: Story = {
+  args: OptionalEntityTypeLegacyAPIArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetDomain: Story = {
+  args: InfoWidgetDomainArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetRange: Story = {
+  args: InfoWidgetRangeArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetPropertyAssertion: Story = {
+  args: InfoWidgetPropertyAssertionArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetPropertyCharacteristics: Story = {
+  args: InfoWidgetPropertyCharacteristicsArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const NavigateToEBIPage: Story = {
+  args: NavigateToEBIPageArgs,
+  play: commonEntityInfoWidgetPlay
+};

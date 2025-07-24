@@ -15,6 +15,8 @@ import {
   singleSuggestionRowArgType,
   ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
+import { expect, waitFor, within } from "@storybook/test";
+import { AutocompleteWidgetProps } from "../../../app";
 
 export const AutocompleteWidgetStoryArgTypes = {
     ...apiArgType,
@@ -69,28 +71,32 @@ export const AutocompleteWidgetStoryArgsHTML = {
 export const WithDefaultsArgs = {
 };
 
-export const UseAPIGatewayWithOLSArgs = {
+export const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps = {
   api: globals.GATEWAY_API_ENDPOINT,
   ts4nfdiGateway: true,
   parameter:
     "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
+  selectionChangedEvent: () => {}
 };
 
-export const UseAPIGatewayWithOntoPortalArgs = {
+export const UseAPIGatewayWithOntoPortalArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
   api: globals.GATEWAY_API_ENDPOINT,
   ts4nfdiGateway: true,
   parameter:
     "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const UseAPIGatewayWithSkosmosArgs = {
+export const UseAPIGatewayWithSkosmosArgs: AutocompleteWidgetProps = {
+    ...AutocompleteWidgetStoryArgsReact,
     api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     parameter:
       "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const HideApiSourceApiGatewayArgs = {
+export const HideApiSourceApiGatewayArgs: AutocompleteWidgetProps = {
+    ...AutocompleteWidgetStoryArgsReact,
     api: globals.GATEWAY_API_ENDPOINT,
     ts4nfdiGateway: true,
     showApiSource: false,
@@ -98,11 +104,13 @@ export const HideApiSourceApiGatewayArgs = {
       "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const WithDefaultsCompactArgs = {
-    singleSuggestionRow: true,
+export const WithDefaultsCompactArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  singleSuggestionRow: true,
 };
 
-export const WithPreselectedValueOLS4v2Args = {
+export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
+    ...AutocompleteWidgetStoryArgsReact,
     api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
@@ -116,8 +124,9 @@ export const WithPreselectedValueOLS4v2Args = {
     allowCustomTerms: true,
 };
 
-export const WithPreselectedValueAndUnresolvedIriOLS3Args = {
-    api: globals.ZBMED_OLS3_API,
+export const WithPreselectedValueAndUnresolvedIriOLS3Args: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS3_API,
     useLegacy: true,
     preselected: [
       {
@@ -128,8 +137,9 @@ export const WithPreselectedValueAndUnresolvedIriOLS3Args = {
     allowCustomTerms: true,
 };
 
-export const WithPreselectedMultipleValuesOLS4Args = {
-    api: globals.ZBMED_OLS4_API,
+export const WithPreselectedMultipleValuesOLS4Args: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS4_API,
     useLegacy: false,
     preselected: [
       {
@@ -145,71 +155,94 @@ export const WithPreselectedMultipleValuesOLS4Args = {
     parameter: "",
 };
 
-export const WithCustomValueArgs = {
-    allowCustomTerms: true,
+export const WithCustomValueArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  allowCustomTerms: true,
     preselected: [{ label: "freetext" }],
 };
 
-export const WithInvalidValueArgs = {
-    preselected: [
+export const WithInvalidValueArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  preselected: [
       {
         iri: "ht3stp://purl.bioontology.org/ontology/MESH/D000086382",
       },
     ],
 };
 
-export const WithGermanInputArgs = {
-    api: globals.ZBMED_OLS4_API,
+export const WithGermanInputArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS4_API,
     parameter: "collection=nfdi4health&lang=de&type=class",
 };
 
-export const WithDescriptionAndShortFormArgs = {
-    api: globals.ZBMED_OLS4_API,
+export const WithDescriptionAndShortFormArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS4_API,
     parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
 };
 
-export const WithLongFormArgs = {
-    hasShortSelectedLabel: false,
+export const WithLongFormArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  hasShortSelectedLabel: false,
 };
 
-export const AllowAddingCustomTermsArgs = {
-    allowCustomTerms: true,
+export const AllowAddingCustomTermsArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  allowCustomTerms: true,
 };
 
-export const AllowMultipleTermsArgs = {
-    singleSelection: false,
+export const AllowMultipleTermsArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  singleSelection: false,
 };
 
-export const WithMultipleValuesArgs = {
-    preselected: [
+export const WithMultipleValuesArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  preselected: [
       { iri: "http://purl.bioontology.org/ontology/MESH/D000086382" },
       { iri: "http://purl.bioontology.org/ontology/MESH/D003920" },
     ],
     singleSelection: false,
 };
 
-export const TibNFDI4CHEMArgs = {
-    api: globals.TIB_API_ENDPOINT,
+export const TibNFDI4CHEMArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection",
 };
 
-export const TibDataPlantArgs = {
-    api: globals.TIB_API_ENDPOINT,
+export const TibDataPlantArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
 };
 
-export const SubtreeDirectSubtypesArgs = {
-    api: globals.ZBMED_OLS4_API,
+export const SubtreeDirectSubtypesArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS4_API,
     allowCustomTerms: true,
     useLegacy: true,
     parameter:
       "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&childrenOf=http://snomed.info/id/22298006",
 };
 
-export const SubtreeDirectAndIndirectSubtypesArgs = {
-    api: globals.ZBMED_OLS4_API,
+export const SubtreeDirectAndIndirectSubtypesArgs: AutocompleteWidgetProps = {
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS4_API,
     allowCustomTerms: true,
     useLegacy: true,
     parameter:
       "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&AllChildrenOf=http://snomed.info/id/22298006",
+};
+
+export const commonAutocompleteWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(async () => {
+    const content = canvas.getByTestId('autocomplete');
+    await expect(content).toBeInTheDocument();
+  }, {
+    timeout: 3000
+  })
 };

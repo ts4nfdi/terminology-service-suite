@@ -2,10 +2,14 @@ import { CrossRefTabWidget } from "./CrossRefTabWidget";
 import {
   CrossRefWidgetStoryArgs,
   CrossRefWidgetStoryArgTypes,
+  CrossRefTabWidget1Args,
+  SelectingDefiningOntologyArgs,
+  DefiningOntologyUnavailableArgs, commonCrossRefWidgetPlay
 } from "./CrossRefWidgetStories";
 import { CrossRefTabDescription } from "../../../../../app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
+const meta = {
   title: "Additional Entity Metadata/CrossRefTabWidget",
   component: CrossRefTabWidget,
   parameters: {
@@ -18,10 +22,23 @@ export default {
   },
   argTypes: CrossRefWidgetStoryArgTypes,
   args: CrossRefWidgetStoryArgs,
+} satisfies Meta<typeof CrossRefTabWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const CrossRefTabWidget1: Story = {
+  args: CrossRefTabWidget1Args,
+  play: commonCrossRefWidgetPlay
 };
 
-export {
-  CrossRefTabWidget1,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-} from "./CrossRefWidgetStories";
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonCrossRefWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonCrossRefWidgetPlay
+};

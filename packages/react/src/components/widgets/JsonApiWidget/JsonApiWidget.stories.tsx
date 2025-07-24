@@ -1,11 +1,16 @@
 import { JsonApiWidget } from "./JsonApiWidget";
 import {
+  commonJsonApiWidgetPlay,
+  JsonApiWidgetDefaultArgs,
   JsonApiWidgetStoryArgs,
-  JsonApiWidgetStoryArgTypes,
+  JsonApiWidgetStoryArgTypes
 } from "./JsonApiWidgetStories";
 import { JsonApiDescription } from "../../../app/widgetDescriptions";
+import * as globals from "../../../app/globals";
+import type { Meta, StoryObj } from "@storybook/react";
+import { DataContentWidget } from "../DataContentWidget";
 
-export default {
+const meta = {
   title: "API/JsonApiWidget",
   component: JsonApiWidget,
   parameters: {
@@ -18,6 +23,13 @@ export default {
   },
   argTypes: JsonApiWidgetStoryArgTypes,
   args: JsonApiWidgetStoryArgs,
-};
+} satisfies Meta<typeof JsonApiWidget>;
 
-export { JsonApiWidgetDefault } from "./JsonApiWidgetStories";
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const JsonApiWidgetDefault = {
+  args: JsonApiWidgetDefaultArgs,
+  play: commonJsonApiWidgetPlay
+};

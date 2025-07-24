@@ -73,7 +73,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   );
 
   return (
-    <>
+    <div data-testid="entity-onto-list">
       {isSuccess && data && (
         <EntityOntoListPresentation
           ontolist={data.ontoList}
@@ -88,7 +88,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
       {isError && (
         <EuiText>{getErrorMessageToDisplay(error, "ontology list")}</EuiText>
       )}
-    </>
+    </div>
   );
 }
 

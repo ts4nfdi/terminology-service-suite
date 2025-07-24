@@ -118,7 +118,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
 
   function render(data: MetadataInfo) {
     return (
-      <div className={finalClassName}>
+      <div className={finalClassName} data-testid="metadata">
         <EuiFlexGroup direction="column">
           <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
             {termLink ? (
