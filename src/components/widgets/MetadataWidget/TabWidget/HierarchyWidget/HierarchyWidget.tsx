@@ -6,7 +6,7 @@ import {
     EuiText,
     EuiIcon,
     EuiProvider,
-    EuiCard, EuiPanel,
+    EuiPanel,
 } from "@elastic/eui";
 import { Hierarchy, TreeNode } from "../../../../../model/interfaces/Hierarchy";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -16,7 +16,7 @@ import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
 import { OntoPortalApi } from "../../../../../api/OntoPortalApi";
 import "../../../../../style/tssStyles.css";
 import { randomString } from "../../../../../app/util";
-import { HierarchyWidgetProps, EntityData } from "../../../../../app/types";
+import { HierarchyWidgetProps, EntityData } from "../../../../../app";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
@@ -44,33 +44,23 @@ function TreeLink(props: {
   if (definedBy.includes(props.ontologyId)) definedBy = [];
 
   return (
-    <>
+    <span style={{position: "relative", left: "16px", lineHeight: "20px"}}>
       <span className={props.highlight ? "highlight" : undefined}>
         {props.childRelationToParent ==
           "http://purl.obolibrary.org/obo/BFO_0000050" && (
           <>
-            <span
-              style={{ marginInlineStart: "1.5px", marginTop: "2.5px" }}
-              className="surroundCircle"
-            >
-              &nbsp;P&nbsp;
-            </span>
-            &nbsp;
+            <span className="surroundCircle">&nbsp;P&nbsp;</span>
+            {" "}
           </>
         )}
         {props.childRelationToParent ==
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" && (
           <>
-            <span
-              style={{ marginInlineStart: "1.5px", marginTop: "2.5px" }}
-              className="surroundCircle"
-            >
-              I
-            </span>
-            &nbsp;
+            <span className="surroundCircle">I</span>
+            {" "}
           </>
         )}
-        <button
+        <a
           onClick={() => {
             if (props.onNavigateToEntity)
               props.onNavigateToEntity(
@@ -79,35 +69,53 @@ function TreeLink(props: {
                 props.entityData
               );
           }}
+          style={{
+              textAlign: "left",
+              color: "unset", // a little lighter than black
+              cursor: "pointer"
+          }}
         >
-          <span> {props.entityData.label || props.entityData.iri} </span>
-        </button>
+          <span>{props.entityData.label || props.entityData.iri}</span>
+        </a>
       </span>
-      {definedBy.length > 0 && (
-        <>
-          &nbsp;
-          {definedBy.map((definingOntology) => {
-            return (
-              <button
-                key={`${props.entityData.iri}:${definingOntology}`}
-                onClick={() => {
-                  if (props.onNavigateToOntology)
-                    props.onNavigateToOntology(
-                      definingOntology,
-                      props.entityType || "",
-                      props.entityData
-                    );
-                }}
-              >
-                <span className="ontology-badge">
-                  {definingOntology.toUpperCase()}
-                </span>
-              </button>
-            );
-          })}
-        </>
-      )}
-    </>
+      <span>
+          {definedBy.length > 0 && (
+              <>
+                  {definedBy.map((definingOntology) => {
+                      return (
+                          <span>
+                {" "}
+                              <button
+                                  key={`${props.entityData.iri}:${definingOntology}`}
+                                  onClick={() => {
+                                      if (props.onNavigateToOntology)
+                                          props.onNavigateToOntology(
+                                              definingOntology,
+                                              props.entityType || "",
+                                              props.entityData
+                                          );
+                                  }}
+                              >
+                  <span className="ontology-badge">
+                    {definingOntology.toUpperCase()}
+                  </span>
+                </button>
+              </span>
+                      );
+                  })}
+              </>
+          )}
+          {
+              // number of descendants
+              props.entityData.numDescendants != undefined &&
+              props.entityData.numDescendants > 0 && (
+                  <span style={{ color: "gray" }}>
+                {" "}({props.entityData.numDescendants.toLocaleString()})
+            </span>
+              )
+          }
+      </span>
+    </span>
   );
 }
 
@@ -218,70 +226,45 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     drawLine?: boolean
   ) {
     return (
-      <div key={randomString()}>
-        <EuiText>
-          <div style={{ height: "24px" }}>
-            <div
-              style={{
-                position: "relative",
-                borderLeft: "1px dotted black",
-                borderBottom: "1px dotted black",
-                width: "12px",
-                height: "16px",
-                left: "5.5px",
-                top: "-1px",
-              }}
-            ></div>
-            <div
-              style={{
-                position: "relative",
-                borderLeft: drawLine ? "1px dotted black" : "",
-                width: "12px",
-                height: "9px",
-                left: "5.5px",
-                top: "0px",
-              }}
-            ></div>
-            <div style={{ position: "relative", top: "-22px" }}>
-              <span>
-                {!node.entityData.hasChildren ? (
-                  <EuiIcon type={"empty"} />
-                ) : (
-                  <button
+      <div>
+        <div style={{ position: "relative" }}>
+          <div style={{ position: "absolute" }}>{
+            // arrows
+            !node.entityData.hasChildren ? (
+                <EuiIcon type={"empty"} />
+            ) : (
+                <button
                     style={{}}
                     onClick={() => {
-                      toggleNode(node);
+                        toggleNode(node);
                     }}
-                  >
+                >
                     <EuiIcon
-                      type={node.expanded ? "arrowDown" : "arrowRight"}
-                      size={"s"}
+                        type={node.expanded ? "arrowDown" : "arrowRight"}
+                        size={"s"}
                     />
                     &nbsp;
-                  </button>
-                )}
-              </span>
-              <TreeLink
-                entityData={node.entityData}
-                childRelationToParent={node.childRelationToParent}
-                ontologyId={hierarchy.ontologyId}
-                entityType={hierarchy.entityType}
-                onNavigateToEntity={onNavigateToEntity}
-                onNavigateToOntology={onNavigateToOntology}
-                highlight={node.entityData.iri == hierarchy?.mainEntityIri}
-              />
-              &nbsp;
-              {node.entityData.numDescendants != undefined &&
-                node.entityData.numDescendants > 0 && (
-                  <span style={{ color: "gray" }}>
-                    ({node.entityData.numDescendants.toLocaleString()})
-                  </span>
-                )}
-            </div>
-          </div>
-        </EuiText>
+                </button>
+            )
+          }</div>
+          <div // L-shaped inlet line to tree node
+              className="lineNodeInlet"
+          />
+          <div // vertical line directly after inlet to tree node
+              className={drawLine ? "lineAfterNodeInlet" : ""}
+          />
+          <TreeLink
+            entityData={node.entityData}
+            childRelationToParent={node.childRelationToParent}
+            ontologyId={hierarchy.ontologyId}
+            entityType={hierarchy.entityType}
+            onNavigateToEntity={onNavigateToEntity}
+            onNavigateToOntology={onNavigateToOntology}
+            highlight={node.entityData.iri == hierarchy?.mainEntityIri}
+          />
+        </div>
         {node.expanded && (
-          <ul style={{ marginBlockEnd: "0", marginInlineStart: "5.5px" }}>
+          <ul style={{ marginBlockEnd: "0", marginInlineStart: "5px" }}>
             {node.loading ? (
               <EuiLoadingSpinner
                 style={{ position: "relative", left: "13px", top: "5px" }}
@@ -291,10 +274,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 return (
                   <div
                     key={randomString()}
-                    style={{
-                      borderLeft: drawLine ? "1px dotted black" : "",
-                      paddingLeft: "1rem",
-                    }}
+                    className={drawLine ? "outerLine" : ""}
+                    style={{ paddingLeft: "1rem" }}
                   >
                     {renderTreeNode(
                       hierarchy,
@@ -317,9 +298,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         style={{ overflowX: "auto", overflowY: "hidden" }}
       >
         {isSuccessHierarchy && hierarchy != undefined ? (
-          <EuiText style={{ whiteSpace: "nowrap" }}>
-            {" "}
-            {/* // TODO: Does not get displayed correctly on storybook main page */}
+          <EuiText style={{ width: "350px" /*whiteSpace: "nowrap"*/ }}>
             {hierarchy.roots.map((rootNode, idx) =>
               renderTreeNode(
                 hierarchy,
