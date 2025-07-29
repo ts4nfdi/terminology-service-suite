@@ -21,7 +21,6 @@ import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
 
-
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
 function TreeLink(props: {
   entityData: EntityData;
@@ -134,6 +133,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     keepExpansionStates = HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
     showSiblingsOnInit = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
     useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+    wrap = HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
     className,
     parameter,
   } = props;
@@ -298,7 +298,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         style={{ overflowX: "auto", overflowY: "hidden" }}
       >
         {isSuccessHierarchy && hierarchy != undefined ? (
-          <EuiText style={{ width: "350px" /*whiteSpace: "nowrap"*/ }}>
+          <EuiText style={{ whiteSpace: wrap ? "wrap" : "nowrap" }}>
             {hierarchy.roots.map((rootNode, idx) =>
               renderTreeNode(
                 hierarchy,
@@ -343,6 +343,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           onNavigateToEntity={props.onNavigateToEntity}
           onNavigateToOntology={props.onNavigateToOntology}
           parameter={props.parameter}
+          wrap={props.wrap}
         />
       </QueryClientProvider>
     </EuiProvider>

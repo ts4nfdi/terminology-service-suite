@@ -4,7 +4,7 @@ import {
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
 } from "./HierarchyWidgetStories";
-import { HierarchyWidgetProps } from "../../../../../app/types";
+import { HierarchyWidgetProps } from "../../../../../app";
 import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
 
 let counter = 0;
@@ -49,7 +49,8 @@ window['ts4nfdiWidgets'].createHierarchy(
         showSiblingsOnInit:${args.showSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        parameter:"${args.parameter}"
+        parameter:"${args.parameter}",
+        wrap:${args.wrap}
     },
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )

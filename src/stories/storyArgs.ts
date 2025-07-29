@@ -199,6 +199,18 @@ These are applied directly to the hierarchy queries.
     `,
   },
 };
+export const hierarchyWrapArgType = {
+  wrap: {
+    required: false,
+    description:
+        "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
+      },
+    },
+  },
+};
 export const hasShortSelectedLabelArgType = {
   hasShortSelectedLabel: {
     required: false,
