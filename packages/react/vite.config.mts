@@ -42,4 +42,7 @@ export default defineConfig({
      },
     sourcemap: true,
   },
+  optimizeDeps: {
+    include: ['react/jsx-dev-runtime'],
+  }
 })
