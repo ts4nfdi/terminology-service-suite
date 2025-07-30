@@ -1,10 +1,13 @@
 import {
+  commonMetadataWidgetPlay, DefinedByAlsoAppearsInWidgetsArgs, DefiningOntologyUnavailableArgs, HiddenTabsArgs,
+  MetadataWidget1Args,
   MetadataWidgetStoryArgs,
-  MetadataWidgetStoryArgTypes,
+  MetadataWidgetStoryArgTypes, OLS3Args, OLS4V1Args, OLS4V2Args, SelectingDefiningOntologyArgs, TermAsLinkArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
 import './index'
 import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { MetadataWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { MetadataWidget, MetadataWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 let counter = 0;
@@ -12,8 +15,8 @@ let counter = 0;
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<MetadataWidgetProps> = {
   title: "Entity Metadata/MetadataWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,9 +27,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: MetadataWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -63,16 +65,58 @@ window['ts4nfdiWidgets'].createMetadata(
   },
   argTypes: MetadataWidgetStoryArgTypes,
   args: MetadataWidgetStoryArgs,
+} satisfies Meta<typeof MetadataWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const MetadataWidget1: Story = {
+  name: "Metadata Widget",
+  args: MetadataWidget1Args,
+  play: commonMetadataWidgetPlay
 };
 
-export {
-  MetadataWidget1,
-  OLS3,
-  OLS4V1,
-  OLS4V2,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-  DefinedByAlsoAppearsInWidgets,
-  HiddenTabs,
-  TermAsLink,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
+export const OLS3: Story = {
+  name: "OLS3",
+  args: OLS3Args,
+  play: commonMetadataWidgetPlay
+};
+
+export const OLS4V1: Story = {
+  name: "OLS4 V1",
+  args: OLS4V1Args,
+  play: commonMetadataWidgetPlay
+};
+
+export const OLS4V2: Story = {
+  name: "OLS4 V2",
+  args: OLS4V2Args,
+  play: commonMetadataWidgetPlay
+};
+
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonMetadataWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonMetadataWidgetPlay
+};
+
+export const DefinedByAlsoAppearsInWidgets: Story = {
+  args: DefinedByAlsoAppearsInWidgetsArgs,
+  play: commonMetadataWidgetPlay
+};
+
+export const HiddenTabs: Story = {
+  name: "Hidden Tabs",
+  args: HiddenTabsArgs,
+  play: commonMetadataWidgetPlay
+};
+
+export const TermAsLink: Story = {
+  args: TermAsLinkArgs,
+  play: commonMetadataWidgetPlay
+};

@@ -1,42 +1,22 @@
 import { EntityTypeName, entityTypeNames } from "../../../../model/ModelTypeCheck";
 import * as globals from "../../../../app/globals";
 import {
+  apiArgType,
+  entityTypeArgType,
+  iriArgType,
   onNavigateToDisambiguateArgType,
   onNavigateToEntityArgType,
-  onNavigateToOntologyArgType
+  onNavigateToOntologyArgType, ontologyIdArgType, parameterArgType
 } from "../../../../stories/storyArgs";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget/HierarchyWidget";
 import { expect, waitFor, within } from "@storybook/test";
 
 export const TabWidgetStoryArgTypes = {
-  api: {
-    control: {
-      type: "radio",
-    },
-    options: [
-      globals.EBI_API_ENDPOINT,
-      globals.ZBMED_OLS4_API,
-      globals.ZBMED_OLS4_API,
-      globals.TIB_API_ENDPOINT,
-    ],
-  },
-  ontologyId: {},
-  iri: {
-    description: "Iri of the term you want to fetch the tab information for.",
-  },
-  parameter: {
-    type: { required: false },
-  },
-  entityType: {
-    type: { required: false },
-    table: {
-      type: { summary: `${entityTypeNames.join(" | ")}` },
-    },
-    control: {
-      type: "radio",
-    },
-    options: ["term", "class", "property", "individual", "", "INVALID STRING"],
-  },
+  ...apiArgType,
+  ...ontologyIdArgType,
+  ...iriArgType,
+  ...parameterArgType,
+  ...entityTypeArgType,
   ...onNavigateToEntityArgType,
   ...onNavigateToOntologyArgType,
   ...onNavigateToDisambiguateArgType,

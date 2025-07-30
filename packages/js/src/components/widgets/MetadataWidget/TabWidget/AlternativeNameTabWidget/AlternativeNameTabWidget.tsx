@@ -1,9 +1,9 @@
-import { AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import {
   WrappedAlternativeNameTabWidget
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidget";
+import { AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
 
 const roots = new WeakMap<Element, Root>();
 function createAlternativeNameTab(

@@ -2,120 +2,45 @@ import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget";
 import { entityTypeNames } from "../../../../../model/ModelTypeCheck";
 import * as globals from "../../../../../app/globals";
 import {
+  apiArgType, apiKeyArgType, backendArgType,
+  entityTypeArgType, includeObsoleteEntitiesArgType, iriArgType, keepExpansionStatesArgType,
   onNavigateToEntityArgType,
-  onNavigateToOntologyArgType,
+  onNavigateToOntologyArgType, ontologyIdArgType, preferredRootsArgType, showSiblingsOnInitArgType, useLegacyArgType
 } from "../../../../../stories/storyArgs";
 import { expect, waitFor, within } from "@storybook/test";
 
 export const HierarchyWidgetStoryArgTypes = {
-  apiUrl: {},
-  backendType: {
-    control: {
-      type: "radio",
-    },
-    options: ["ols", "skosmos", "ontoportal"],
-    table: {
-      defaultValue: {
-        summary: "ols",
-      },
-    },
-  },
-  apiKey: {
-    table: {
-      defaultValue: {
-        summary: undefined,
-      },
-    },
-  },
+  ...apiArgType,
+  ...backendArgType,
+  ...apiKeyArgType,
   ...onNavigateToEntityArgType,
   ...onNavigateToOntologyArgType,
-  iri: {
-    table: {
-      defaultValue: {
-        summary: undefined,
-      },
-    },
-  },
-  ontologyId: {
-    table: {
-      defaultValue: {
-        summary: undefined,
-      },
-    },
-  },
-  entityType: {
-    table: {
-      type: { summary: `${entityTypeNames.join(" | ")}` },
-      defaultValue: {
-        summary: undefined,
-      },
-    },
-    control: {
-      type: "radio",
-    },
-    options: [
-      "ontology",
-      "term",
-      "class",
-      "property",
-      "individual",
-      undefined,
-      "INVALID STRING",
-    ],
-  },
-  includeObsoleteEntities: {
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
-      },
-    },
-  },
-  preferredRoots: {
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
-      },
-    },
-  },
-  keepExpansionStates: {
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
-      },
-    },
-  },
-  showSiblingsOnInit: {
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
-      },
-    },
-  },
-  useLegacy: {
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
-      },
-    },
-  },
+  ...iriArgType,
+  ...ontologyIdArgType,
+  ...entityTypeArgType,
+  ...includeObsoleteEntitiesArgType,
+  ...preferredRootsArgType,
+  ...keepExpansionStatesArgType,
+  ...showSiblingsOnInitArgType,
+  ...useLegacyArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
-  apiUrl: {},
-  backendType: {},
-  apiKey: {},
+  apiUrl: "",
+  backendType: "",
+  apiKey: "",
   onNavigateToEntity: "Console message",
   onNavigateToOntology: "Console message",
   iri: "",
   ontologyId: "",
-  entityType: "",
+  entityType: "term",
   includeObsoleteEntities:
     HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
   preferredRoots: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
   keepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
   showSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
-};
+} as const;
 
 export const ClassHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -123,7 +48,7 @@ export const ClassHierarchyArgs = {
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     entityType: "class",
     ontologyId: "efo",
-};
+} as const;
 
 export const IndividualHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -131,7 +56,7 @@ export const IndividualHierarchyArgs = {
     iri: "http://purl.obolibrary.org/obo/IAO_0000120",
     entityType: "individual",
     ontologyId: "bco",
-};
+} as const;
 
 export const PreferredRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -140,7 +65,7 @@ export const PreferredRootsArgs = {
     entityType: "class",
     ontologyId: "uberon",
     preferredRoots: true,
-};
+} as const;
 
 export const IncludeObsoleteEntitiesArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -150,7 +75,7 @@ export const IncludeObsoleteEntitiesArgs = {
     ontologyId: "uberon",
     includeObsoleteEntities: true,
     useLegacy: true,
-};
+} as const;
 
 export const PropertyRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -159,7 +84,7 @@ export const PropertyRootsArgs = {
     entityType: "property",
     ontologyId: "bco",
     useLegacy: true,
-};
+} as const;
 
 export const IndividualRootsArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -167,7 +92,7 @@ export const IndividualRootsArgs = {
     iri: "",
     entityType: "individual",
     ontologyId: "bco",
-};
+} as const;
 
 export const LargeHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -175,21 +100,21 @@ export const LargeHierarchyArgs = {
     iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
     entityType: "class",
     ontologyId: "uberon",
-};
+} as const;
 
 export const SkosHierarchyArgs = {
     apiUrl: globals.FINTO_V1_API_ENDPOINT,
     backendType: "skosmos",
     iri: "http://www.yso.fi/onto/yso/p864",
     ontologyId: "yso",
-};
+} as const;
 
 export const SagePubHierarchyArgs = {
     apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/",
     backendType: "skosmos",
     iri: "https://concepts.sagepub.com/social-science/concept/economic_forecasting",
     ontologyId: "social-science",
-};
+} as const;
 
 export const OntoportalHierarchyArgs = {
     apiUrl: "https://data.biodivportal.gfbio.org",
@@ -198,7 +123,7 @@ export const OntoportalHierarchyArgs = {
     ontologyId: "IOC",
     entityType: "class",
     apiKey: "",
-};
+} as const;
 
 export const OLS3HierarchyArgs = {
     apiUrl: globals.ZBMED_OLS3_API,
@@ -207,7 +132,7 @@ export const OLS3HierarchyArgs = {
     entityType: "class",
     ontologyId: "efo",
     useLegacy: true,
-};
+} as const;
 
 export const commonHierarchyWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);

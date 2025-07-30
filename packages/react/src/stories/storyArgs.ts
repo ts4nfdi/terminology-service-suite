@@ -1,6 +1,8 @@
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
-import { pluralizeType } from "../app/util";
 import { ArgTypes } from "@storybook/react";
+import {
+  HIERARCHY_WIDGET_DEFAULT_VALUES
+} from "../components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
 
 export const apiArgType: ArgTypes = {
   api: {
@@ -744,5 +746,75 @@ export const hrefArgType: ArgTypes = {
       type: { summary: `string` },
     },
     control: "text",
+  },
+};
+
+export const backendArgType: ArgTypes = {
+  backendType: {
+    control: {
+      type: "radio",
+    },
+    options: ["ols", "skosmos", "ontoportal"],
+    table: {
+      defaultValue: {
+        summary: "ols",
+      },
+    },
+  },
+};
+export const apiKeyArgType: ArgTypes = {
+  apiKey: {
+    table: {
+      defaultValue: {
+        summary: undefined,
+      },
+    },
+  }
+};
+export const includeObsoleteEntitiesArgType: ArgTypes = {
+  includeObsoleteEntities: {
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES.toString(),
+      },
+    },
+  },
+};
+export const preferredRootsArgType: ArgTypes = {
+  preferredRoots: {
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS.toString(),
+      },
+    },
+  },
+};
+export const keepExpansionStatesArgType: ArgTypes = {
+  keepExpansionStates: {
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES.toString(),
+      },
+    },
+  },
+};
+export const showSiblingsOnInitArgType: ArgTypes = {
+  showSiblingsOnInit: {
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT.toString(),
+      },
+    },
+  },
+};
+export const rootWalkArgType: ArgTypes = {
+  rootWalk: {
+    required: false,
+    description:
+      "When true, the graph will show the tree hierarchy for the target node in form of a graph.",
+    table: {
+      defaultValue: { summary: "false" },
+    },
+    type: "boolean",
   },
 };

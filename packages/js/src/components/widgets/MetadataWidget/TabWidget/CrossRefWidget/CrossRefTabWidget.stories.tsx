@@ -1,10 +1,13 @@
 import {
+  commonCrossRefWidgetPlay,
+  CrossRefTabWidget1Args,
   CrossRefWidgetStoryArgs,
-  CrossRefWidgetStoryArgTypes,
+  CrossRefWidgetStoryArgTypes, DefiningOntologyUnavailableArgs, SelectingDefiningOntologyArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
 import './index'
 import { CrossRefTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { CrossRefWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { CrossRefTabWidget, CrossRefWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 
@@ -13,8 +16,8 @@ let counter = 0;
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<CrossRefWidgetProps> = {
   title: "Additional Entity Metadata/CrossRefTabWidget",
   tags: ["autodocs"],
   parameters: {
@@ -25,9 +28,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: CrossRefWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -51,10 +53,23 @@ window['ts4nfdiWidgets'].createCrossRefTab(
   },
   argTypes: CrossRefWidgetStoryArgTypes,
   args: CrossRefWidgetStoryArgs,
+} satisfies Meta<typeof CrossRefTabWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const CrossRefTabWidget1: Story = {
+  args: CrossRefTabWidget1Args,
+  play: commonCrossRefWidgetPlay
 };
 
-export {
-  CrossRefTabWidget1,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonCrossRefWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonCrossRefWidgetPlay
+};

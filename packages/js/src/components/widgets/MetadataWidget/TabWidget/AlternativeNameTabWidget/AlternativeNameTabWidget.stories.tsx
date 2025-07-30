@@ -1,10 +1,15 @@
 import {
+  AlternativeNameTabWidget1Args,
   AlternativeNameTabWidgetStoryArgs,
   AlternativeNameTabWidgetStoryArgTypes,
+  commonAlternativeNameTabWidgetPlay,
+  DefiningOntologyUnavailableArgs,
+  SelectingDefiningOntologyArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
 import './index'
 import { AlternativeNameTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { AlternativeNameTabWidget, AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 let counter = 0;
@@ -12,8 +17,8 @@ let counter = 0;
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<AlternativeNameTabWidgetProps> = {
   title: "Entity Metadata/AlternativeNameTabWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,9 +29,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: AlternativeNameTabWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -50,10 +54,23 @@ window['ts4nfdiWidgets'].createAlternativeNameTab(
   },
   argTypes: AlternativeNameTabWidgetStoryArgTypes,
   args: AlternativeNameTabWidgetStoryArgs,
+} satisfies Meta<typeof AlternativeNameTabWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const AlternativeNameTabWidget1: Story = {
+  args: AlternativeNameTabWidget1Args,
+  play: commonAlternativeNameTabWidgetPlay
 };
 
-export {
-  AlternativeNameTabWidget1,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonAlternativeNameTabWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonAlternativeNameTabWidgetPlay
+};

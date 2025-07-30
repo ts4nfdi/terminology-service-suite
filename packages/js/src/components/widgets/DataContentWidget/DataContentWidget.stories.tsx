@@ -9,7 +9,6 @@ import {
 import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import './index'
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect, waitFor } from "@storybook/test";
 
 let counter = 0;
 

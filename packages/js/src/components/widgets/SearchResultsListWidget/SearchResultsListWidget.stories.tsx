@@ -1,18 +1,26 @@
-import { SearchResultsListWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { SearchResultsListWidget, SearchResultsListWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
 import {
+  commonSearchResultsListWidgetPlay,
+  ErrorSearchResultsListArgs,
+  SearchResultsListNFDI4HealthArgs,
+  SearchResultsListOls4Args,
+  SearchResultsListSafetyArgs,
   SearchResultsListWidgetStoryArgs,
   SearchResultsListWidgetStoryArgTypes,
+  TibDataPlantArgs,
+  TibNFDI4CHEMArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories";
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import './index'
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<SearchResultsListWidgetProps> = {
   title: "Search/SearchResultsListWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,9 +31,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: SearchResultsListWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -49,13 +56,38 @@ window['ts4nfdiWidgets'].createSearchResultsList(
   },
   argTypes: SearchResultsListWidgetStoryArgTypes,
   args: SearchResultsListWidgetStoryArgs,
+} satisfies Meta<typeof SearchResultsListWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const SearchResultsListSafety: Story = {
+  args: SearchResultsListSafetyArgs,
+  play: commonSearchResultsListWidgetPlay
 };
 
-export {
-  SearchResultsListSafety,
-  SearchResultsListNFDI4Health,
-  ErrorSearchResultsList,
-  TibNFDI4CHEM,
-  TibDataPlant,
-  SearchResultsListOls4,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories";
+export const SearchResultsListNFDI4Health: Story = {
+  args: SearchResultsListNFDI4HealthArgs,
+  play: commonSearchResultsListWidgetPlay
+};
+
+export const ErrorSearchResultsList: Story = {
+  args: ErrorSearchResultsListArgs,
+  play: commonSearchResultsListWidgetPlay
+};
+
+export const TibNFDI4CHEM: Story = {
+  args: TibNFDI4CHEMArgs,
+  play: commonSearchResultsListWidgetPlay
+};
+
+export const TibDataPlant: Story = {
+  args: TibDataPlantArgs,
+  play: commonSearchResultsListWidgetPlay
+};
+
+export const SearchResultsListOls4: Story = {
+  args: SearchResultsListOls4Args,
+  play: commonSearchResultsListWidgetPlay
+};

@@ -1,18 +1,23 @@
 import {
+  BreadcrumbWidgetDefaultArgs,
   BreadcrumbWidgetStoryArgs,
   BreadcrumbWidgetStoryArgTypes,
+  commonBreadcrumbWidgetPlay, CustomColorsArgs, CustomStyleArgs,
+  DefiningOntologyUnavailableArgs, ErrorBreadcrumbWidgetArgs,
+  SelectingDefiningOntologyArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
 import './index'
 import { BreadcrumbDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { BreadcrumbWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { BreadcrumbWidget, BreadcrumbWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<BreadcrumbWidgetProps> = {
   title: "Additional Entity Metadata/BreadcrumbWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,9 +28,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: BreadcrumbWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -51,10 +55,38 @@ window['ts4nfdiWidgets'].createBreadcrumb(
   },
   argTypes: BreadcrumbWidgetStoryArgTypes,
   args: BreadcrumbWidgetStoryArgs,
+} satisfies Meta<typeof BreadcrumbWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const BreadcrumbWidgetDefault: Story = {
+  args: BreadcrumbWidgetDefaultArgs,
+  play: commonBreadcrumbWidgetPlay
 };
 
-export {
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-  ErrorBreadcrumbWidget,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const ErrorBreadcrumbWidget: Story = {
+  args: ErrorBreadcrumbWidgetArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const CustomColors: Story = {
+  args: CustomColorsArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const CustomStyle: Story = {
+  args: CustomStyleArgs,
+  play: commonBreadcrumbWidgetPlay
+};

@@ -1,10 +1,13 @@
 import {
+  commonEntityDefinedByWidgetPlay,
+  emptyInDefiningOntologyArgs,
   EntityDefinedByWidgetStoryArgs,
-  EntityDefinedByWidgetStoryArgTypes,
+  EntityDefinedByWidgetStoryArgTypes, legacyApiArgs, v2ApiONSArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidgetStories";
 import './index'
 import { EntityDefinedByDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { EntityDefinedByWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { EntityDefinedByWidget, EntityDefinedByWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 let counter = 0;
@@ -12,8 +15,8 @@ let counter = 0;
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<EntityDefinedByWidgetProps> = {
   title: "Additional Entity Metadata/EntityDefinedByWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,9 +27,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: EntityDefinedByWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -51,10 +53,23 @@ window['ts4nfdiWidgets'].createEntityDefinedBy(
   },
   argTypes: EntityDefinedByWidgetStoryArgTypes,
   args: EntityDefinedByWidgetStoryArgs,
+} satisfies Meta<typeof EntityDefinedByWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const emptyInDefiningOntology: Story = {
+  args: emptyInDefiningOntologyArgs,
+  play: commonEntityDefinedByWidgetPlay
 };
 
-export {
-  v2ApiONS,
-  emptyInDefiningOntology,
-  legacyApi,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidgetStories";
+export const v2ApiONS: Story = {
+  args: v2ApiONSArgs,
+  play: commonEntityDefinedByWidgetPlay
+};
+
+export const legacyApi: Story = {
+  args: legacyApiArgs,
+  play: commonEntityDefinedByWidgetPlay
+};

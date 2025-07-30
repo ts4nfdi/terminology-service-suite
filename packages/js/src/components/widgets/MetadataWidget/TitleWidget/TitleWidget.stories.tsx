@@ -1,10 +1,18 @@
 import {
+  commonTitleWidgetPlay,
+  DefiningOntologyUnavailableArgs,
+  IncorrectIriWithoutDefaultValueArgs,
+  OntologyTitleArgs, OntologyTitleCustomLinkArgs, OntologyTitleCustomOnNavigateArgs,
+  SelectingDefiningOntologyArgs,
+  TitleWidgetDefaultArgs,
   TitleWidgetStoryArgs,
   TitleWidgetStoryArgTypes,
+  TitleWidgetWithTitleTextArgs, WithoutStylesArgs, WithStylesArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
 import './index'
 import { TitleDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { TitleWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { TitleWidget, TitleWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 let counter = 0;
@@ -12,8 +20,8 @@ let counter = 0;
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<TitleWidgetProps> = {
   title: "Entity Metadata/TitleWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,9 +32,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: TitleWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -54,17 +61,63 @@ window['ts4nfdiWidgets'].createTitle(
   },
   argTypes: TitleWidgetStoryArgTypes,
   args: TitleWidgetStoryArgs,
+} satisfies Meta<typeof TitleWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const TitleWidgetDefault: Story = {
+  args: TitleWidgetDefaultArgs,
+  play: commonTitleWidgetPlay
 };
 
-export {
-  TitleWidgetDefault,
-  OntologyTitle,
-  TitleWidgetWithTitleText,
-  IncorrectIriWithDefaultValue,
-  IncorrectIriWithoutDefaultValue,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-  WithStyles,
-  OntologyTitleCustomLink,
-  OntologyTitleCustomOnNavigate,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
+export const OntologyTitle: Story = {
+  args: OntologyTitleArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const TitleWidgetWithTitleText: Story = {
+  args: TitleWidgetWithTitleTextArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const IncorrectIriWithDefaultValue: Story = {
+  args: IncorrectIriWithoutDefaultValueArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const IncorrectIriWithoutDefaultValue: Story = {
+  args: IncorrectIriWithoutDefaultValueArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const WithStyles: Story = {
+  args: WithStylesArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const WithoutStyles: Story = {
+  args: WithoutStylesArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const OntologyTitleCustomOnNavigate: Story = {
+  args: OntologyTitleCustomOnNavigateArgs,
+  play: commonTitleWidgetPlay
+};
+
+export const OntologyTitleCustomLink: Story = {
+  args: OntologyTitleCustomLinkArgs,
+  play: commonTitleWidgetPlay
+};

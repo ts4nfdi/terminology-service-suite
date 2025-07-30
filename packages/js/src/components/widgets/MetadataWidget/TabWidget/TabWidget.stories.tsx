@@ -1,10 +1,18 @@
 import {
+  commonTabWidgetPlay,
+  DefaultArgs,
+  DefiningOntologyUnavailableArgs, HiddenTabsArgs,
+  SelectingDefiningOntologyArgs, TabWidgetLargeArgs,
+  TabWidgetOLS3Args,
+  TabWidgetOLS4V1Args,
+  TabWidgetOLS4V2Args,
   TabWidgetStoryArgs,
-  TabWidgetStoryArgTypes,
+  TabWidgetStoryArgTypes
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
 import './index'
 import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { TabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { TabWidget, TabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 
 let counter = 0;
@@ -13,8 +21,8 @@ function getIncNum() {
   return counter++;
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
-export default {
+// @ts-ignore
+const meta: Meta<TabWidgetProps> = {
   title: "Additional Entity Metadata/TabWidget",
   tags: ["autodocs"],
   parameters: {
@@ -25,9 +33,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: TabWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -60,15 +67,51 @@ window['ts4nfdiWidgets'].createTab(
   },
   argTypes: TabWidgetStoryArgTypes,
   args: TabWidgetStoryArgs,
+} satisfies Meta<typeof TabWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: DefaultArgs,
+  play: commonTabWidgetPlay
 };
 
-export {
-  Default,
-  TabWidgetOLS3,
-  TabWidgetOLS4V1,
-  TabWidgetOLS4V2,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-  TabWidgetLarge,
-  HiddenTabs,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
+export const TabWidgetOLS3: Story = {
+  name: "OLS3",
+  args: TabWidgetOLS3Args,
+  play: commonTabWidgetPlay
+};
+
+export const TabWidgetOLS4V1: Story = {
+  name: "OLS4 V1",
+  args: TabWidgetOLS4V1Args,
+  play: commonTabWidgetPlay
+};
+
+export const TabWidgetOLS4V2: Story = {
+  name: "OLS4 V2",
+  args: TabWidgetOLS4V2Args,
+  play: commonTabWidgetPlay
+};
+
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonTabWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonTabWidgetPlay
+};
+
+export const TabWidgetLarge: Story = {
+  args: TabWidgetLargeArgs,
+  play: commonTabWidgetPlay
+};
+
+export const HiddenTabs: Story = {
+  args: HiddenTabsArgs,
+  play: commonTabWidgetPlay
+};

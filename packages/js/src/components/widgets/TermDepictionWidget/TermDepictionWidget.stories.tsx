@@ -1,10 +1,13 @@
 import {
+  commonTermDepictionWidgetPlay, TermDepictionWidget3DArgs,
+  TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
-  TermDepictionWidgetStoryArgTypes,
+  TermDepictionWidgetStoryArgTypes
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
 import './index'
 import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { TermDepictionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { TermDepictionWidget, TermDepictionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
@@ -12,7 +15,7 @@ function getIncNum() {
   return counter++;
 }
 
-export default {
+const meta = {
   title: "Additional Entity Metadata/TermDepictionWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,6 +26,7 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: TermDepictionWidgetProps) => {
     const num = getIncNum();
 
@@ -44,9 +48,19 @@ window['ts4nfdiWidgets'].createDepiction(
   },
   argTypes: TermDepictionWidgetStoryArgTypes,
   args: TermDepictionWidgetStoryArgs,
+} satisfies Meta<typeof TermDepictionWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const TermDepictionWidgetExample = {
+  args: TermDepictionWidgetExampleArgs,
+  play: commonTermDepictionWidgetPlay
 };
 
-export {
-  TermDepictionWidgetExample,
-  TermDepictionWidget3D,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
+
+export const TermDepictionWidget3D = {
+  args: TermDepictionWidget3DArgs,
+  play: commonTermDepictionWidgetPlay
+};

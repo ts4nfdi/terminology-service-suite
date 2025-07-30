@@ -22,12 +22,12 @@ export const IriWidgetStoryArgTypes = {
 
 export const IriWidgetStoryArgs = {
   iri: "",
-  color: "",
+  color: "text",
   iriText: "",
   urlPrefix: "",
   externalIcon: true,
   className: "",
-};
+} as const;
 
 export const IriWidget1Args = {
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
@@ -39,9 +39,10 @@ export const withoutExternalIconArgs = {
 };
 
 export const withCopyButtonArgs = {
+    ...IriWidgetStoryArgs,
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
     copyButton: "left",
-};
+} as const;
 
 export const withUrlPrefixArgs = {
     iri: "http://purl.obolibrary.org/obo/OBI_0000070",

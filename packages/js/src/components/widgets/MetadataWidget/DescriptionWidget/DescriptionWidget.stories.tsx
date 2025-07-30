@@ -1,10 +1,13 @@
 import {
+  commonDescriptionWidgetPlay, DefiningOntologyUnavailableArgs,
+  DescriptionWidget1Args,
   DescriptionWidgetStoryArgs,
-  DescriptionWidgetStoryArgTypes,
+  DescriptionWidgetStoryArgTypes, ErrorFetchingDataArgs, SelectingDefiningOntologyArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories";
 import './index'
 import { DescriptionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { DescriptionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { DescriptionWidget, DescriptionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
@@ -12,8 +15,8 @@ function getIncNum() {
   return counter++;
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
-export default {
+// @ts-ignore
+const meta: Meta<DescriptionWidgetProps> = {
   title: "Entity Metadata/DescriptionWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,9 +27,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: DescriptionWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -53,10 +55,28 @@ window['ts4nfdiWidgets'].createDescription(
   },
   argTypes: DescriptionWidgetStoryArgTypes,
   args: DescriptionWidgetStoryArgs,
+} satisfies Meta<typeof DescriptionWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const DescriptionWidget1: Story = {
+  args: DescriptionWidget1Args,
+  play: commonDescriptionWidgetPlay
 };
 
-export {
-  DescriptionWidget1,
-  SelectingDefiningOntology,
-  DefiningOntologyUnavailable,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories";
+export const SelectingDefiningOntology: Story = {
+  args: SelectingDefiningOntologyArgs,
+  play: commonDescriptionWidgetPlay
+};
+
+export const DefiningOntologyUnavailable: Story = {
+  args: DefiningOntologyUnavailableArgs,
+  play: commonDescriptionWidgetPlay
+};
+
+export const ErrorFetchingData: Story = {
+  args: ErrorFetchingDataArgs,
+  play: commonDescriptionWidgetPlay
+};

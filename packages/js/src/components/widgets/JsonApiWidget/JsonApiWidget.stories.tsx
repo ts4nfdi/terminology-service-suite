@@ -1,10 +1,13 @@
 import {
+  commonJsonApiWidgetPlay,
+  JsonApiWidgetDefaultArgs,
   JsonApiWidgetStoryArgs,
   JsonApiWidgetStoryArgTypes
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
 import './index'
 import { JsonApiDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { JsonApiWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { JsonApiWidget, JsonApiWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
@@ -12,7 +15,8 @@ function getIncNum() {
   return counter++;
 }
 
-export default {
+// @ts-ignore
+const meta: Meta<JsonApiWidgetProps> = {
   title: "API/JsonApiWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,9 +27,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: JsonApiWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -45,7 +48,13 @@ window['ts4nfdiWidgets'].createJsonApi(
   },
   argTypes: JsonApiWidgetStoryArgTypes,
   args: JsonApiWidgetStoryArgs,
+} satisfies Meta<typeof JsonApiWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const JsonApiWidgetDefault = {
+  args: JsonApiWidgetDefaultArgs,
+  play: commonJsonApiWidgetPlay
 };
-
-export { JsonApiWidgetDefault } from "@ts4nfdi/terminology-service-suite/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
-

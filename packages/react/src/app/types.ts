@@ -421,11 +421,11 @@ export type OnNavigateToEntity = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToEntity?: (
+  onNavigateToEntity?: ((
     ontologyId: string,
     entityType?: string,
     entity?: EntityData,
-  ) => void;
+  ) => void) | string;
 };
 
 export type OnNavigateToOntology = {
@@ -440,11 +440,11 @@ export type OnNavigateToOntology = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToOntology?: (
+  onNavigateToOntology?: ((
     ontologyId: string,
     entityType?: string,
     entity?: EntityData,
-  ) => void;
+  ) => void) | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -458,7 +458,7 @@ export type OnNavigateToDisambiguate = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToDisambiguate?: (entityType: string, entity?: EntityData) => void;
+  onNavigateToDisambiguate?: ((entityType: string, entity?: EntityData) => void) | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -576,7 +576,7 @@ export type ResourcesWidgetProps = ApiObj &
     /**
      * This function is called every time an ontology link is clicked.
      */
-    onNavigate?: (ontologyId: string) => void;
+    onNavigate?: ((ontologyId: string) => void) | string;
   };
 
 export type OlsResource = ForcedOntologyIdObj & {

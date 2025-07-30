@@ -8,7 +8,6 @@ import {
   ChebiWaterRootWalkArgs, commonGraphViewWidgetPlay
 } from "./GraphViewWidgetStories";
 import { GraphViewDescription } from "../../../app/widgetDescriptions";
-import * as globals from "../../../app/globals";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

@@ -25,23 +25,23 @@ export const EntityDefinedByWidgetStoryArgs = {
   useLegacy: false,
   iri: "",
   ontologyId: "",
-  entityType: "",
+  entityType: "term",
   parameter: "",
   onNavigateToOntology: "Console message",
-};
+} as const;
 
 export const emptyInDefiningOntologyArgs = {
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     api: globals.EBI_API_ENDPOINT,
     entityType: "term",
     ontologyId: "efo",
-};
+} as const;
 
 export const v2ApiONSArgs = {
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
     api: globals.EBI_API_ENDPOINT,
     ontologyId: "ons",
-};
+} as const;
 
 export const legacyApiArgs = {
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
@@ -49,7 +49,7 @@ export const legacyApiArgs = {
     entityType: "term",
     ontologyId: "efo",
     useLegacy: true,
-};
+} as const;
 
 export const commonEntityDefinedByWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);

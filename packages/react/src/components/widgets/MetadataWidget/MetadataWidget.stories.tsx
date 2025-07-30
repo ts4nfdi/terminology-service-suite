@@ -78,7 +78,6 @@ export const DefinedByAlsoAppearsInWidgets: Story = {
 };
 
 export const HiddenTabs: Story = {
-  name: "Hidden Tabs",
   args: HiddenTabsArgs,
   play: commonMetadataWidgetPlay
 };

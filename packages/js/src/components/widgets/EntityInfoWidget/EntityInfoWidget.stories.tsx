@@ -1,10 +1,24 @@
 import {
+  commonEntityInfoWidgetPlay,
   EntityInfoWidgetStoryArgs,
   EntityInfoWidgetStoryArgTypes,
+  IndividualInfoWidgetArgs,
+  InfoWidgetBadgesArgs,
+  InfoWidgetDomainArgs,
+  InfoWidgetPropertyAssertionArgs, InfoWidgetPropertyCharacteristicsArgs,
+  InfoWidgetRangeArgs, NavigateToEBIPageArgs,
+  OptionalEntityTypeLegacyAPIArgs,
+  PropertyInfoWidgetArgs,
+  TermInfoWidgetArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories";
 import { EntityInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { EntityInfoWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  DataContentWidgetProps,
+  EntityInfoWidget,
+  EntityInfoWidgetProps
+} from "@ts4nfdi/terminology-service-suite/src";
 import './index'
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
@@ -12,8 +26,8 @@ function getIncNum() {
   return counter++;
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/html/writing-stories/introduction#default-export
-export default {
+// @ts-ignore
+const meta: Meta<EntityInfoWidgetProps> = {
   title: "Additional Entity Metadata/EntityInfoWidget",
   tags: ["autodocs"],
   parameters: {
@@ -24,8 +38,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: EntityInfoWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
     // return `<div>${label}</div>`;
     const num = getIncNum();
 
@@ -53,4 +67,58 @@ window['ts4nfdiWidgets'].createEntityInfo(
   },
   argTypes: EntityInfoWidgetStoryArgTypes,
   args: EntityInfoWidgetStoryArgs,
+} satisfies Meta<typeof EntityInfoWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const TermInfoWidget: Story = {
+  args: TermInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const PropertyInfoWidget: Story = {
+  args: PropertyInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const IndividualInfoWidget: Story = {
+  args: IndividualInfoWidgetArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetBadges: Story = {
+  args: InfoWidgetBadgesArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const OptionalEntityTypeLegacyAPI: Story = {
+  args: OptionalEntityTypeLegacyAPIArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetDomain: Story = {
+  args: InfoWidgetDomainArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetRange: Story = {
+  args: InfoWidgetRangeArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetPropertyAssertion: Story = {
+  args: InfoWidgetPropertyAssertionArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const InfoWidgetPropertyCharacteristics: Story = {
+  args: InfoWidgetPropertyCharacteristicsArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const NavigateToEBIPage: Story = {
+  args: NavigateToEBIPageArgs,
+  play: commonEntityInfoWidgetPlay
 };

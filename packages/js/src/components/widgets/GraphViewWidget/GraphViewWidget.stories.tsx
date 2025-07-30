@@ -1,18 +1,23 @@
 import {
   GraphViewWidgetStoryArgTypes,
   GraphViewWidgetStoryArgs,
+  GraphViewWidgetExampleArgs,
+  commonGraphViewWidgetPlay,
+  RootWalkGraphExampleArgs,
+  ChebiWaterArgs, ChebiWaterRootWalkArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import './index'
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { GraphViewWidget, GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<GraphViewWidgetProps> = {
   title: "Hierarchy and Graph/GraphViewWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,6 +28,7 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: GraphViewWidgetProps) => {
     const num = getIncNum();
 
@@ -45,11 +51,28 @@ window['ts4nfdiWidgets'].createGraphView(
   },
   argTypes: GraphViewWidgetStoryArgTypes,
   args: GraphViewWidgetStoryArgs,
+} satisfies Meta<typeof GraphViewWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const GraphViewWidgetExample: Story = {
+  args: GraphViewWidgetExampleArgs,
+  play: commonGraphViewWidgetPlay
 };
 
-export {
-  GraphViewWidgetExample,
-  RootWalkGraphExample,
-  ChebiWater,
-  ChebiWaterRootWalk,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
+export const RootWalkGraphExample: Story = {
+  args: RootWalkGraphExampleArgs,
+  play: commonGraphViewWidgetPlay
+};
+
+export const ChebiWater: Story = {
+  args: ChebiWaterArgs,
+  play: commonGraphViewWidgetPlay
+};
+
+export const ChebiWaterRootWalk: Story = {
+  args: ChebiWaterRootWalkArgs,
+  play: commonGraphViewWidgetPlay
+};

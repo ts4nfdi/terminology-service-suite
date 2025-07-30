@@ -2,7 +2,7 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   iriArgType,
-  ontologyIdReqArgType,
+  ontologyIdReqArgType, rootWalkArgType
 } from "../../../stories/storyArgs";
 import { expect, waitFor, within } from "@storybook/test";
 
@@ -10,15 +10,7 @@ export const GraphViewWidgetStoryArgTypes = {
   ...apiArgType,
   ...iriArgType,
   ...ontologyIdReqArgType,
-  rootWalk: {
-    required: false,
-    description:
-      "When true, the graph will show the tree hierarchy for the target node in form of a graph.",
-    table: {
-      defaultValue: { summary: false },
-    },
-    type: { summary: "boolean" },
-  },
+  ...rootWalkArgType,
 };
 
 export const GraphViewWidgetStoryArgs = {

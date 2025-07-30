@@ -46,7 +46,7 @@ export const EntityInfoWidgetStoryArgs = {
 export const TermInfoWidgetArgs = {
   ...EntityInfoWidgetStoryArgs,
     iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
-    entityType: "term",
+    entityType: "term" as EntityTypeName,
     ontologyId: "ncit",
     hasTitle: true,
 };
@@ -54,14 +54,14 @@ export const TermInfoWidgetArgs = {
 export const PropertyInfoWidgetArgs = {
   ...EntityInfoWidgetStoryArgs,
     iri: "http://www.w3.org/2004/02/skos/core#altLabel",
-    entityType: "property",
+    entityType: "property" as EntityTypeName,
     ontologyId: "mesh",
 };
 
 export const IndividualInfoWidgetArgs = {
   ...EntityInfoWidgetStoryArgs,
     iri: "http://purl.obolibrary.org/obo/IAO_0000423",
-    entityType: "individual",
+    entityType: "individual" as EntityTypeName,
     ontologyId: "clo",
 };
 
@@ -69,7 +69,7 @@ export const InfoWidgetBadgesArgs = {
   ...EntityInfoWidgetStoryArgs,
     api: globals.EBI_API_ENDPOINT,
     useLegacy: false,
-    entityType: "class",
+    entityType: "class" as EntityTypeName,
     iri: "http://purl.obolibrary.org/obo/UBERON_0000006",
     ontologyId: "uberon",
 };
@@ -89,9 +89,9 @@ export const InfoWidgetDomainArgs = {
 
 export const InfoWidgetRangeArgs = {
   ...EntityInfoWidgetStoryArgs,
-    api: globals.EBI_API_ENDPOINT,
-    useLegacy: false,
-    iri: "http://purl.obolibrary.org/obo/RO_0002029",
+  api: globals.EBI_API_ENDPOINT,
+  useLegacy: false,
+  iri: "http://purl.obolibrary.org/obo/RO_0002029"
 };
 
 export const InfoWidgetPropertyAssertionArgs = {

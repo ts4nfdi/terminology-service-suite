@@ -1,18 +1,21 @@
 import {
+  commonOntologyInfoWidgetPlay, NavigateToEBIPageArgs,
+  OntologyInfoWidget1Args, OntologyInfoWidget2Args, OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
-  OntologyInfoWidgetStoryArgTypes,
+  OntologyInfoWidgetStoryArgTypes
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories";
 import './index'
 import { OntologyInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { OntologyInfoWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { OntologyInfoWidget, OntologyInfoWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<OntologyInfoWidgetProps> = {
   title: "Ontology Metadata/OntologyInfoWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,9 +26,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: OntologyInfoWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -52,11 +54,28 @@ window['ts4nfdiWidgets'].createOntologyInfo(
   },
   argTypes: OntologyInfoWidgetStoryArgTypes,
   args: OntologyInfoWidgetStoryArgs,
+} satisfies Meta<typeof OntologyInfoWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const OntologyInfoWidget1: Story = {
+  args: OntologyInfoWidget1Args,
+  play: commonOntologyInfoWidgetPlay
 };
 
-export {
-  OntologyInfoWidget1,
-  OntologyInfoWidget2,
-  OntologyInfoWidgetOLS4API,
-  NavigateToEBIPage,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories";
+export const OntologyInfoWidget2: Story = {
+  args: OntologyInfoWidget2Args,
+  play: commonOntologyInfoWidgetPlay
+};
+
+export const OntologyInfoWidgetOLS4API: Story = {
+  args: OntologyInfoWidgetOLS4APIArgs,
+  play: commonOntologyInfoWidgetPlay
+};
+
+export const NavigateToEBIPage: Story = {
+  args: NavigateToEBIPageArgs,
+  play: commonOntologyInfoWidgetPlay
+};

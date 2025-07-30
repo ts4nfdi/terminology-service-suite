@@ -23,7 +23,7 @@ function DescriptionPresentation(props: DescriptionPresentationProps) {
 
     return <EuiText>{descText || description}</EuiText>;
   };
-  return <div className={finalClassName}>{renderContent()} data-testid={"dataTestId"} </div>;
+  return <div className={finalClassName} data-testid={"description"}>{renderContent()}</div>;
 }
 
 export { DescriptionPresentation };

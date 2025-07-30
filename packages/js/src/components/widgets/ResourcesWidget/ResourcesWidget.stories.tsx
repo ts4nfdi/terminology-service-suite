@@ -1,18 +1,21 @@
 import {
+  commonResourcesWidgetPlay,
+  ResourcesWidget1Args, ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
-  ResourcesWidgetStoryArgTypes,
+  ResourcesWidgetStoryArgTypes, WithActionsAndSafetyArgs, WithActionsArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
 import './index'
 import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { ResourcesWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { ResourcesWidget, ResourcesWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import type { Meta, StoryObj } from "@storybook/react";
 
 let counter = 0;
 
 function getIncNum() {
   return counter++;
 }
-
-export default {
+// @ts-ignore
+const meta: Meta<ResourcesWidgetProps> = {
   title: "Ontology Metadata/ResourcesWidget",
   tags: ["autodocs"],
   parameters: {
@@ -23,9 +26,8 @@ export default {
       },
     },
   },
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: ResourcesWidgetProps) => {
-    // You can either use a function to create DOM elements or use a plain html string!
-    // return `<div>${label}</div>`;
     const num = getIncNum();
 
     return `
@@ -50,12 +52,28 @@ window['ts4nfdiWidgets'].createResources(
   },
   argTypes: ResourcesWidgetStoryArgTypes,
   args: ResourcesWidgetStoryArgs,
+} satisfies Meta<typeof ResourcesWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const ResourcesWidget1 = {
+  args: ResourcesWidget1Args,
+  play: commonResourcesWidgetPlay
 };
 
-export {
-  ResourcesWidget1,
-  // TODO: currently don't work because actions uses Eui React components.
-  //       Usage of react components inside args should be avoided
-  // WithActions,
-  // WithActionsAndSafety
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
+export const WithActions = {
+  args: ResourcesWidget1Args, WithActionsArgs,
+  play: commonResourcesWidgetPlay
+};
+
+export const WithActionsAndSafety = {
+  args: WithActionsArgs, WithActionsAndSafetyArgs,
+  play: commonResourcesWidgetPlay
+};
+
+export const ResourcesWidgetLogos = {
+  args: ResourcesWidgetLogosArgs,
+  play: commonResourcesWidgetPlay
+};

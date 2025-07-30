@@ -16,8 +16,8 @@ export const JsonApiWidgetStoryArgTypes = {
 export const JsonApiWidgetStoryArgs = {
   apiQuery: "",
   buttonText: "",
-  buttonSize: "",
-};
+  buttonSize: "m",
+} as const;
 
 export const JsonApiWidgetDefaultArgs = {
     apiQuery: globals.ZBMED_OLS4_API + "ontologies/atc",
