@@ -11,7 +11,7 @@ import {
 } from "./BreadcrumbWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/BreadcrumbWidget",

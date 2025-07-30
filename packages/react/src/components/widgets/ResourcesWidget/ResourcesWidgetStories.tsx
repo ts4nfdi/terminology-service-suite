@@ -13,7 +13,7 @@ import {
   onNavigateArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 export const ResourcesWidgetStoryArgTypes = {
   ...apiArgType,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Preview } from "@storybook/react";
+import { Preview } from "@storybook/react-vite";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -47,6 +47,7 @@ const decorators = [
 
 const preview: Preview = {
   decorators: decorators,
+  tags: ["autodocs"]
 };
 
 export default preview;

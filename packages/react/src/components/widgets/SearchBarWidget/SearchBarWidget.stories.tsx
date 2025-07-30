@@ -7,7 +7,7 @@ import {
   TibDataPlantArgs, commonSearchBartWidgetPlay
 } from "./SearchBarWidgetStories";
 import { SearchBarDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Search/SearchBarWidget",

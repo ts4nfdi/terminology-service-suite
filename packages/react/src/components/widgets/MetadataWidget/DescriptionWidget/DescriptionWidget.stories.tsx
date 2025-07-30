@@ -8,7 +8,7 @@ import {
   ErrorFetchingDataArgs, commonDescriptionWidgetPlay
 } from "./DescriptionWidgetStories";
 import { DescriptionDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/DescriptionWidget",

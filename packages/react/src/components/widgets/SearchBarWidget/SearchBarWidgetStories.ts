@@ -6,8 +6,8 @@ import {
   queryArgType,
   selectionChangedEventArgType,
 } from "../../../stories/storyArgs";
-import { action } from "@storybook/addon-actions";
-import { expect, waitFor, within } from "@storybook/test";
+import { action } from "storybook/actions";;
+import { expect, waitFor, within } from "storybook/test";
 
 export const SearchBarWidgetStoryArgTypes = {
   ...apiArgType,

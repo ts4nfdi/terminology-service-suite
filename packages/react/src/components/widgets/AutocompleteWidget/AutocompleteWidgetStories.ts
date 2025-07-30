@@ -1,6 +1,5 @@
 import * as globals from "../../../app/globals";
 
-import { action } from "@storybook/addon-actions";
 import {
   allowCustomTermsArgType,
   apiArgType,
@@ -15,8 +14,9 @@ import {
   singleSuggestionRowArgType,
   ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "@storybook/test";
 import { AutocompleteWidgetProps } from "../../../app";
+import {action} from "storybook/actions";
+import {waitFor, within, expect} from "storybook/test";
 
 export const AutocompleteWidgetStoryArgTypes = {
     ...apiArgType,

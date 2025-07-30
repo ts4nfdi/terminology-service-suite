@@ -1,20 +1,27 @@
+const {
+  dirname,
+  join
+} = require("node:path");
+
 module.exports = {
   // no tsx files included here to not include react stories
   stories: [
     "../src/**/*.stories.mdx",
     "../src/**/*.stories.@(js|jsx|tsx)",
   ],
+
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-docs",
-    "@storybook/experimental-addon-test",
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook/addon-vitest")
   ],
+
   framework: {
-    name: "@storybook/html-vite",
+    name: getAbsolutePath("@storybook/html-vite"),
     options: {},
-  },
-  docs: {
-    autodocs: true,
-  },
+  }
 };
+
+function getAbsolutePath(value: string): any {
+  return dirname(require.resolve(join(value, "package.json")));
+}

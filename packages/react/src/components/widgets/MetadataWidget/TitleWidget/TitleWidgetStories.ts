@@ -13,7 +13,7 @@ import {
   hrefArgType,
 } from "../../../../stories/storyArgs";
 import "../../../../style/customTitleStyle.css";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,

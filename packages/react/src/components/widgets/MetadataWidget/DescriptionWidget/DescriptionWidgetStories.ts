@@ -10,7 +10,7 @@ import {
   useLegacyArgType,
 } from "../../../../stories/storyArgs";
 import * as globals from "../../../../app/globals";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import { ThingTypeName } from "../../../../model/ModelTypeCheck";
 
 export const DescriptionWidgetStoryArgTypes = {

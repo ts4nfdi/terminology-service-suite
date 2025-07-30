@@ -9,7 +9,7 @@ import {
 import './index'
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import { GraphViewWidget, GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

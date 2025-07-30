@@ -14,7 +14,7 @@ import {
 } from "./MetadataWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { MetadataDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/MetadataWidget",

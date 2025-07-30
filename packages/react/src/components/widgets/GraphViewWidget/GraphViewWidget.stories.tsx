@@ -8,7 +8,7 @@ import {
   ChebiWaterRootWalkArgs, commonGraphViewWidgetPlay
 } from "./GraphViewWidgetStories";
 import { GraphViewDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Hierarchy and Graph/GraphViewWidget",

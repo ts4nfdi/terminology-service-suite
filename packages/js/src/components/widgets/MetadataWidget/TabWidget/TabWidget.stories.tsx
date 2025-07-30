@@ -12,7 +12,7 @@ import {
 import './index'
 import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import { TabWidget, TabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 
 let counter = 0;

@@ -7,7 +7,7 @@ import {
   DefiningOntologyUnavailableArgs, commonAlternativeNameTabWidgetPlay
 } from "./AlternativeNameTabWidgetStories";
 import { AlternativeNameTabDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 const meta = {
   title: "Entity Metadata/AlternativeNameTabWidget",
   component: AlternativeNameTabWidget,

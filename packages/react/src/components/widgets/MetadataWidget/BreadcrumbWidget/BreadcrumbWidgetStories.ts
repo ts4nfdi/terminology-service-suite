@@ -11,7 +11,7 @@ import {
   useLegacyArgType
 } from "../../../../stories/storyArgs";
 import "../../../../style/customBreadcrumbStyle.css";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
 
 export const BreadcrumbWidgetStoryArgTypes = {

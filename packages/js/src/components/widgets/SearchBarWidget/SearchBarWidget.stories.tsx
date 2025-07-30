@@ -7,7 +7,7 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";
 import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import './index'
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchBarWidget } from "@ts4nfdi/terminology-service-suite/src";
 
 let counter = 0;

@@ -8,7 +8,7 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidgetStories";
 import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import './index'
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

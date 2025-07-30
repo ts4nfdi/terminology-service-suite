@@ -1,7 +1,7 @@
 import * as globals from "../../../app/globals";
 
 import { apiArgType, parameterArgType } from "../../../stories/storyArgs";
-import { within, expect, waitFor } from "@storybook/test";
+import { within, expect, waitFor } from "storybook/test";
 
 export const DataContentWidgetStoryArgTypes = {
   ...apiArgType,

@@ -9,7 +9,7 @@ import {
 } from "./EntityOntoListWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { EntityOntoListDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/EntityOntoListWidget",

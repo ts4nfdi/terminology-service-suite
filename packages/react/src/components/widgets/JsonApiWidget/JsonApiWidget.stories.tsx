@@ -7,7 +7,7 @@ import {
 } from "./JsonApiWidgetStories";
 import { JsonApiDescription } from "../../../app/widgetDescriptions";
 import * as globals from "../../../app/globals";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DataContentWidget } from "../DataContentWidget";
 
 const meta = {

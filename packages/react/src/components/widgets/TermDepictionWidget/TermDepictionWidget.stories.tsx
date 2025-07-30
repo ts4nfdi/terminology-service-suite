@@ -6,7 +6,7 @@ import {
   TermDepictionWidget3DArgs, commonTermDepictionWidgetPlay
 } from "./TermDepictionWidgetStories";
 import { TermDepictionDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/TermDepictionWidget",

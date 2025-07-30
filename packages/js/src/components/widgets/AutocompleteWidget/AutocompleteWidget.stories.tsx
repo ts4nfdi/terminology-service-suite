@@ -5,7 +5,7 @@ import {
   AllowAddingCustomTermsArgs,
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
-  AutocompleteWidgetStoryArgTypes,
+  AutocompleteWidgetStoryArgTypes, commonAutocompleteWidgetPlay,
   HideApiSourceApiGatewayArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
@@ -14,7 +14,7 @@ import {
   UseAPIGatewayWithOLSArgs,
   UseAPIGatewayWithOntoPortalArgs,
   UseAPIGatewayWithSkosmosArgs,
-  WithCustomValueArgs,
+  WithCustomValueArgs, WithDefaultsArgs,
   WithDefaultsCompactArgs,
   WithDescriptionAndShortFormArgs,
   WithGermanInputArgs,
@@ -25,7 +25,7 @@ import {
   WithPreselectedValueAndUnresolvedIriOLS3Args,
   WithPreselectedValueOLS4v2Args
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -83,6 +83,10 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export const WithDefaults: Story = {
+  args: WithDefaultsArgs,
+}
 
 export const UseAPIGatewayWithOLS: Story = {
   args: UseAPIGatewayWithOLSArgs,

@@ -11,7 +11,7 @@ import {
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./TabWidget/HierarchyWidget/HierarchyWidget";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 export const MetadataWidgetStoryArgTypes = {
   ...apiArgType,

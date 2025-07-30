@@ -6,7 +6,7 @@ import {
   NFDI4HealthDataContentWidgetArgs, SafetyDataContentWidgetArgs
 } from "./DataContentWidgetStories";
 import {  DataContentDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Terminology Service/DataContentWidget",

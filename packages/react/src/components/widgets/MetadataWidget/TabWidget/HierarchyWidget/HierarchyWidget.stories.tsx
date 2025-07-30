@@ -16,7 +16,7 @@ import {
 } from "./HierarchyWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../../app/util";
 import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Hierarchy and Graph/HierarchyWidget",

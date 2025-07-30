@@ -5,7 +5,7 @@ import {
   buttonSizeArgType,
   buttonTextArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "@storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 
 export const JsonApiWidgetStoryArgTypes = {
   ...apiQueryArgType,

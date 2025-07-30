@@ -16,7 +16,7 @@ import {
 } from "./EntityRelationsWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { EntityRelationsDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/EntityRelationsWidget",

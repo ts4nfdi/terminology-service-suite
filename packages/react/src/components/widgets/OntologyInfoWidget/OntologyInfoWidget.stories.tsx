@@ -9,7 +9,7 @@ import {
 } from "./OntologyInfoWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { OntologyInfoDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Ontology Metadata/OntologyInfoWidget",

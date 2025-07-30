@@ -10,7 +10,7 @@ import { TabWidgetStoryArgs, TabWidgetStoryArgTypes,
   HiddenTabsArgs,
 } from "./TabWidgetStories";
 import { TabDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { commonTabWidgetPlay } from "./TabWidgetStories";
 
 const meta = {

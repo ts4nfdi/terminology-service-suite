@@ -7,7 +7,7 @@ import {
 import './index'
 import { CrossRefTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import { CrossRefTabWidget, CrossRefWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 
 

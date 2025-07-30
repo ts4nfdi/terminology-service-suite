@@ -7,7 +7,7 @@ import {
 import './index'
 import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import { MetadataWidget, MetadataWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 
 let counter = 0;

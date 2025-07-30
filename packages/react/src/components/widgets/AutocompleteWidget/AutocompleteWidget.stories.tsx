@@ -25,7 +25,7 @@ import {
 } from "./AutocompleteWidgetStories";
 import "../../../style/tssStyles.css";
 import { AutocompleteDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Search/AutocompleteWidget",
