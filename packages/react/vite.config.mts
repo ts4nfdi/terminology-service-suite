@@ -26,7 +26,7 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ["axios", "@elastic/datemath", '@elastic/eui', "@emotion/css", '@emotion/react', "@google/model-viewer", "moment", "three", "vis-data", "vis-network", "react-router", 'react', 'react-query', 'react-dom']
+      external: ["axios", "@elastic/datemath", '@elastic/eui', "@emotion/css", '@emotion/react', "@google/model-viewer", "moment", "three", "vis-data", "vis-network", "react-router", 'react', 'react-query', 'react-dom', 'react/jsx-runtime']
     },
     sourcemap: true
   },

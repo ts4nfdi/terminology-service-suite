@@ -39,8 +39,8 @@
     "@storybook/html-vite": "^9.0.18",
     "@storybook/react-vite": "^9.0.18",
     "@types/node": "^20.17.48",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "18.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-react": "^4.4.1",
@@ -64,5 +64,9 @@
     "vite-plugin-static-copy": "^3.0.0",
     "vitest": "^3.2.4",
     "vitest-browser-react": "^0.2.0"
+  },
+  "dependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   }
 }
