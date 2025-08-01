@@ -1,8 +1,8 @@
 diff --git a/node_modules/@elastic/eui/es/components/icon/icon.js b/node_modules/@elastic/eui/es/components/icon/icon.js
-index 9b49830..25c0e93 100644
+index 9b49830..6c80431 100644
 --- a/node_modules/@elastic/eui/es/components/icon/icon.js
 +++ b/node_modules/@elastic/eui/es/components/icon/icon.js
-@@ -80,6 +80,434 @@ export var appendIconComponentCache = function appendIconComponentCache(iconType
+@@ -80,6 +80,435 @@ export var appendIconComponentCache = function appendIconComponentCache(iconType
      }
    }
  };
@@ -431,13 +431,14 @@ index 9b49830..25c0e93 100644
 +  tokenText: () => import('./assets/tokenText.js'),
 +  tokenTokenCount: () => import('./assets/tokenTokenCount.js'),
 +  tokenSearchType: () => import('./assets/tokenSearchType.js'),
-+  tokenHistogram: () => import('./assets/tokenHistogram.js')
++  tokenHistogram: () => import('./assets/tokenHistogram.js'),
++  warning: () => import('./assets/warning.js')
 +};
 +
  export var EuiIconClass = /*#__PURE__*/function (_PureComponent) {
    function EuiIconClass(props) {
      var _this;
-@@ -97,11 +525,7 @@ export var EuiIconClass = /*#__PURE__*/function (_PureComponent) {
+@@ -97,11 +526,28 @@ export var EuiIconClass = /*#__PURE__*/function (_PureComponent) {
          _this.onIconLoad();
          return;
        }
@@ -446,6 +447,27 @@ index 9b49830..25c0e93 100644
 -      // stops webpack from building a dynamic require context.
 -      // eslint-disable-next-line prefer-template
 -      './assets/' + typeToPathMap[iconType]).then(function (_ref) {
++      // --- START Fallback Logic ---
++      let iconModuleLoader = typeToModuleMap[iconType];
++
++      if (!iconModuleLoader) {
++        console.warn(`EuiIcon: Icon "${iconType}" not found in typeToModuleMap. Falling back to "questionInCircle".`);
++        iconModuleLoader = typeToModuleMap.questionInCircle; // Attempt to use the fallback icon
++
++        // If even the fallback is missing, we can't do anything further.
++        if (!iconModuleLoader) {
++          console.error(`EuiIcon: Fallback icon "questionInCircle" is also missing from typeToModuleMap. Cannot render icon for "${iconType}".`);
++          // Optionally, set state to a generic empty icon or null to prevent further errors
++          _this.setState({
++            isLoading: false,
++            neededLoading: false,
++            icon: null // Or a placeholder if you have one
++          });
++          _this.onIconLoad();
++          return; // Exit early
++        }
++      }
++      // --- END Fallback Logic ---
 +      typeToModuleMap[iconType]().then(function (_ref) {
          var icon = _ref.icon;
          iconComponentCache[iconType] = icon;
