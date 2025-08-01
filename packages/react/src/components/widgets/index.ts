@@ -10,4 +10,3 @@ export * from "./EntityInfoWidget";
 export * from "./EntityRelationsWidget";
 export * from "./TermDepictionWidget";
 export * from "./GraphViewWidget";
-export * from "./POC/EUIPOC";
