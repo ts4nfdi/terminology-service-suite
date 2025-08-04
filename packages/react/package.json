@@ -13,6 +13,10 @@
     "package.json"
   ],
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
   "scripts": {
     "prepare": "patch-package",
     "build": "npx vite build",
@@ -38,5 +42,8 @@
     "three": "^0.172.0",
     "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
+  },
+  "devDependencies": {
+    "semantic-release": "^24.2.3"
   }
 }
