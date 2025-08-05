@@ -15,11 +15,13 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/esm/index.js"
     },
     "./server": {
       "import": "./dist/server/index.js",
-      "types": "./dist/types/components/server/index.d.ts"
+      "types": "./dist/types/components/server/index.d.ts",
+      "default": "./dist/server/index.js"
     },
     "./dist/esm/index.css": {
       "default": "./dist/esm/index.css"
