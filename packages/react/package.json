@@ -22,7 +22,8 @@
     "build": "npx vite build",
     "test": "vitest",
     "test:storybook": "vitest --project=storybook",
-    "storybook": "storybook dev -p 6006 "
+    "storybook": "storybook dev -p 6006 ",
+    "build:storybook": "storybook build -c .storybook -o storybook-static"
   },
   "peerDependencies": {
     "@elastic/datemath": "^5.0.3",

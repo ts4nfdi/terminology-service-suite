@@ -8,7 +8,6 @@ module.exports = {
 
   addons: [
     getAbsolutePath("@storybook/addon-links"),
-    getAbsolutePath("@storybook/addon-docgen"),
     getAbsolutePath("@storybook/addon-docs")
   ],
 

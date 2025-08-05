@@ -22,7 +22,8 @@
     "build": "npx vite build",
     "test": "vitest",
     "test:storybook": "vitest --project=storybook",
-    "storybook": "storybook dev -p 6007"
+    "storybook": "storybook dev -p 6007",
+    "build:storybook": "storybook build -c .storybook -o storybook-static"
   },
   "devDependencies": {
     "@ts4nfdi/terminology-service-suite": "file:../react",
@@ -33,14 +34,15 @@
     "@google/model-viewer": "^4.0.0",
     "axios": "^1.1.2",
     "moment": "^2.30.1",
-    "patch-package": "^8.0.0",
     "react": "17.0.2 || ^18.3.1",
     "react-dom": "17.0.2 || ^18.3.1",
     "react-query": "^3.39.2",
     "react-router": "^6.3.0",
-    "semantic-release": "^24.2.3",
     "three": "^0.172.0",
     "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
+  },
+  "dependencies": {
+    "patch-package": "^8.0.0"
   }
 }
