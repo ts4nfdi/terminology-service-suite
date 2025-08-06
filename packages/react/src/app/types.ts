@@ -326,7 +326,7 @@ export type IriWidgetProps = ForcedIriObj &
     /**
      * Color of the text: "text", "accent", "primary", "success", "warning", "danger"
      */
-    color?: EuiButtonColor;
+    color?: EuiLinkColor;
 
     /**
      * Indicates that the target is external and needs an icon.

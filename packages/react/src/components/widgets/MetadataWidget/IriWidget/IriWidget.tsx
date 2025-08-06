@@ -10,6 +10,7 @@ import {
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css";
+import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 function IriWidget(props: IriWidgetProps) {
   const {
@@ -41,6 +42,7 @@ function IriWidget(props: IriWidgetProps) {
               color:
                 color && (isHexColor(color) || isRgbColor(color)) ? color : "",
             }}
+            // @ts-ignore
             color={color && color}
             onClick={() => {
               navigator.clipboard.writeText(iriUrl);
@@ -64,7 +66,8 @@ function IriWidget(props: IriWidgetProps) {
           display="base"
           iconType="check"
           key={"copy-btn"}
-          color={color && color }
+          // @ts-ignore
+          color={color && color}
         ></EuiButtonIcon>
       </div>
     );

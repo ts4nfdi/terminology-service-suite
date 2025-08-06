@@ -48,8 +48,8 @@ export const useLegacyArgTypeHierarchy = {
 <br>
 Toggle between OLS3 (legacy) and OLS4 API versions.
     `,
-    defaultValue: { summary: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY },
-    control: { type: "boolean" },
+    defaultValue: { summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY) },
+    control: { type: "boolean" } as const,
   },
 };
 export const iriArgType: ArgTypes = {
@@ -68,7 +68,9 @@ export const iriArgTypeHierarchy = {
 If provided, a hierarchy for the corresponding entity will be displayed, in which this entity is highlighted.
 Otherwise, the root entities for the specified ontology and entityType will be displayed.
     `,
-    type: { summary: "string" },
+    table: {
+      type: { summary: "string" },
+    }
   }
 }
 export const ontologyIdArgType = {
@@ -76,7 +78,7 @@ export const ontologyIdArgType = {
     required: false,
     description: "Select a specific ontology by ID.",
     table: {
-      defaultValue: { summary: undefined },
+      defaultValue: { summary: "-" },
       type: { summary: "string" },
     },
   },
@@ -86,7 +88,7 @@ export const ontologyIdReqArgType: ArgTypes = {
     required: true,
     description: "Select a specific ontology by ID.",
     table: {
-      defaultValue: { summary: undefined },
+      defaultValue: { summary: "-" },
       type: { summary: "string" },
     },
   },
@@ -140,7 +142,7 @@ export const selectionChangedEventArgType = {
           "    }[]) => void;",
       },
     },
-    control: "text",
+    control: "text" as const,
   },
 };
 export const placeholderArgType: ArgTypes = {
@@ -167,7 +169,7 @@ export const parameterArgType: ArgTypes = {
     required: false,
     table: {
       type: { summary: "string" },
-      defaultValue: { summary: undefined },
+      defaultValue: { summary: "-" },
     },
     description: `
 
@@ -196,8 +198,10 @@ These parameters can be used to filter the search results. Each parameter can be
 export const parameterArgTypeHierarchy = {
   parameter: {
     required: false,
-    type: { summary: "string" },
-    defaultValue: { summary: undefined },
+    table: {
+      type: { summary: "string" }
+    },
+    defaultValue: { summary: "-" },
     description: `
 **Only affecting OLS and Skosmos hierarchies** 
 <br>
@@ -812,8 +816,9 @@ export const rootWalkArgType: ArgTypes = {
       "When true, the graph will show the tree hierarchy for the target node in form of a graph.",
     table: {
       defaultValue: { summary: "false" },
+      type: { summary: "boolean" },
     },
-    type: "boolean",
+    control: { type: "boolean" },
   },
 };
 
@@ -824,8 +829,10 @@ export const apiKeyArgType = {
 Only required for OntoPortal hierarchies.
 An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see its [wiki page](https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key).
     `,
-    type: { summary: `string` },
-    control: "text",
+    table: {
+      type: { summary: "string" }
+    },
+    control: "text" as const,
   },
 };
 export const apiUrlArgType = {
@@ -834,8 +841,10 @@ export const apiUrlArgType = {
     description: `
 The API URL for the API call.
     `,
-    type: { summary: `string` },
-    control: "text",
+    table: {
+      type: { summary: "string" }
+    },
+    control: "text" as const,
   },
 };
 export const backendArgType = {
@@ -845,7 +854,7 @@ export const backendArgType = {
 The backend key from which to request \`{ols, ontoportal, skosmos}\`. Default is \`ols\`
     `,
     control: {
-      type: "radio",
+      type: "radio" as const,
     },
     options: ["ols", "skosmos", "ontoportal"],
     table: {
@@ -865,7 +874,7 @@ Toggle whether to include entities marked as obsolete by the API.
     `,
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
+        summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES),
       },
     },
   },
@@ -881,7 +890,7 @@ If \`preferredRoots==true\`, only the entities specifically marked as preferred 
     `,
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS,
+        summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.PREFERRED_ROOTS),
       },
     },
   },
@@ -895,7 +904,7 @@ Otherwise, if a node is closed, only the direct children will be shown on re-exp
     `,
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
+        summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES),
       },
     },
   },
@@ -909,7 +918,7 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
     `,
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
+        summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT),
       },
     },
   },

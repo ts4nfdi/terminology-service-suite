@@ -24,6 +24,7 @@ export const SearchBarWidgetStoryArgsReact = {
 };
 
 export const SearchBarWidgetStoryArgs = {
+  ...SearchBarWidgetStoryArgsReact,
   api: "",
   query: "",
   selectionChangedEvent: () => {
@@ -33,16 +34,19 @@ export const SearchBarWidgetStoryArgs = {
 };
 
 export const SearchBarWidgetDefaultArgs = {
+  ...SearchBarWidgetStoryArgsReact,
     api: globals.EBI_API_ENDPOINT,
     query: "*",
 };
 
 export const TibNFDI4CHEMArgs = {
+  ...SearchBarWidgetStoryArgsReact,
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=NFDI4CHEM&schema=collection",
 };
 
 export const TibDataPlantArgs = {
+  ...SearchBarWidgetStoryArgsReact,
     api: globals.TIB_API_ENDPOINT,
     parameter: "classification=DataPLANT&schema=collection",
 };

@@ -36,7 +36,7 @@ export const HierarchyWidgetStoryArgTypes = {
 
 export const HierarchyWidgetStoryArgs = {
   apiUrl: "",
-  backendType: "",
+  backendType: "ols",
   apiKey: "",
   onNavigateToEntity: "Console message",
   onNavigateToOntology: "Console message",
@@ -54,6 +54,7 @@ export const HierarchyWidgetStoryArgs = {
 
 
 export const ClassHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
@@ -62,6 +63,7 @@ export const ClassHierarchyArgs = {
 } as const;
 
 export const IndividualHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/IAO_0000120",
@@ -70,6 +72,7 @@ export const IndividualHierarchyArgs = {
 } as const;
 
 export const PreferredRootsArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
@@ -79,6 +82,7 @@ export const PreferredRootsArgs = {
 } as const;
 
 export const IncludeObsoleteEntitiesArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
@@ -89,6 +93,7 @@ export const IncludeObsoleteEntitiesArgs = {
 } as const;
 
 export const PropertyRootsArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
@@ -98,6 +103,7 @@ export const PropertyRootsArgs = {
 } as const;
 
 export const IndividualRootsArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "",
@@ -106,6 +112,7 @@ export const IndividualRootsArgs = {
 } as const;
 
 export const LargeHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/UBERON_2001747",
@@ -114,6 +121,7 @@ export const LargeHierarchyArgs = {
 } as const;
 
 export const SkosHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.FINTO_V1_API_ENDPOINT,
     backendType: "skosmos",
     iri: "http://www.yso.fi/onto/yso/p864",
@@ -121,6 +129,7 @@ export const SkosHierarchyArgs = {
 } as const;
 
 export const SagePubHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/",
     backendType: "skosmos",
     iri: "https://concepts.sagepub.com/social-science/concept/economic_forecasting",
@@ -128,6 +137,7 @@ export const SagePubHierarchyArgs = {
 } as const;
 
 export const OntoportalHierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: "https://data.biodivportal.gfbio.org",
     backendType: "ontoportal",
     iri: "http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",
@@ -137,6 +147,7 @@ export const OntoportalHierarchyArgs = {
 } as const;
 
 export const OLS3HierarchyArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.ZBMED_OLS3_API,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
@@ -146,6 +157,7 @@ export const OLS3HierarchyArgs = {
 } as const;
 
 export const OLSGermanArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/HP_0003502",
@@ -156,6 +168,7 @@ export const OLSGermanArgs = {
 } as const;
 
 export const SkosmosAgrovocGermanArgs = {
+  ...HierarchyWidgetStoryArgs,
     apiUrl: "https://agrovoc.fao.org/browse/rest/v1/",
     backendType: "skosmos",
     iri: "http://aims.fao.org/aos/agrovoc/c_1731",

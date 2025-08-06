@@ -264,8 +264,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 childRelationToParent={node.childRelationToParent}
                 ontologyId={hierarchy.ontologyId}
                 entityType={hierarchy.entityType}
-                onNavigateToEntity={onNavigateToEntity}
-                onNavigateToOntology={onNavigateToOntology}
+                onNavigateToEntity={typeof onNavigateToEntity === "function" ? onNavigateToEntity : () => {}}
+                onNavigateToOntology={typeof onNavigateToOntology === "function" ? onNavigateToOntology : () => {}}
                 highlight={node.entityData.iri == hierarchy?.mainEntityIri}
               />
               &nbsp;

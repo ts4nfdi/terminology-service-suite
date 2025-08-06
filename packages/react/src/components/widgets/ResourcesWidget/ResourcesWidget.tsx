@@ -97,7 +97,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           href={"#"}
           onClick={(e) => {
             e.preventDefault();
-            if (onNavigate) {
+            if (typeof onNavigate === "function") {
               onNavigate(ontologyId || "");
             }
           }}

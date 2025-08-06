@@ -99,7 +99,7 @@ export function getEntityLinkJSX(
           <button
             className="clickable"
             onClick={() => {
-              if (onNavigates.onNavigateToEntity)
+              if (typeof onNavigates.onNavigateToEntity === "function")
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
@@ -115,7 +115,7 @@ export function getEntityLinkJSX(
               <button
                 className="no-decoration"
                 onClick={() => {
-                  if (onNavigates.onNavigateToOntology)
+                  if (typeof onNavigates.onNavigateToOntology === "function")
                     onNavigates.onNavigateToOntology(
                       otherDefinedBy[0],
                       linkedEntityType,
@@ -142,7 +142,7 @@ export function getEntityLinkJSX(
           <button
             className="clickable"
             onClick={() => {
-              if (onNavigates.onNavigateToEntity)
+              if (typeof onNavigates.onNavigateToEntity === "function")
                 onNavigates.onNavigateToEntity(
                   otherDefinedBy[0],
                   linkedEntityType,
@@ -158,7 +158,7 @@ export function getEntityLinkJSX(
               <button
                 className="no-decoration"
                 onClick={() => {
-                  if (onNavigates.onNavigateToOntology)
+                  if (typeof onNavigates.onNavigateToOntology === "function")
                     onNavigates.onNavigateToOntology(
                       otherDefinedBy[0],
                       linkedEntityType,
@@ -187,7 +187,7 @@ export function getEntityLinkJSX(
           <button
             className="clickable"
             onClick={() => {
-              if (onNavigates.onNavigateToEntity)
+              if (typeof onNavigates.onNavigateToEntity === "function")
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
@@ -206,7 +206,7 @@ export function getEntityLinkJSX(
                     className="no-decoration"
                     key={randomString()}
                     onClick={() => {
-                      if (onNavigates.onNavigateToOntology)
+                      if (typeof onNavigates.onNavigateToOntology === "function")
                         onNavigates.onNavigateToOntology(
                           elem,
                           linkedEntityType,
@@ -242,7 +242,7 @@ export function getEntityLinkJSX(
                 className="no-decoration"
                 key={randomString()}
                 onClick={() => {
-                  if (onNavigates.onNavigateToDisambiguate)
+                  if (typeof onNavigates.onNavigateToDisambiguate === "function")
                     onNavigates.onNavigateToDisambiguate(linkedEntityType, {
                       iri,
                       label,
@@ -272,7 +272,7 @@ export function getEntityLinkJSX(
           <button
             className="clickable"
             onClick={() => {
-              if (onNavigates.onNavigateToEntity)
+              if (typeof onNavigates.onNavigateToEntity === "function")
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
@@ -299,7 +299,7 @@ export function getEntityLinkJSX(
                   className="no-decoration"
                   key={randomString()}
                   onClick={() => {
-                    if (onNavigates.onNavigateToDisambiguate)
+                    if (typeof onNavigates.onNavigateToDisambiguate  === "function")
                       onNavigates.onNavigateToDisambiguate(linkedEntityType, {
                         iri,
                         label,

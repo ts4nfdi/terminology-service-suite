@@ -15,7 +15,7 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
       <button
         key={randomString()}
         onClick={() => {
-          if (props.onNavigateToOntology)
+          if (typeof props.onNavigateToOntology === "function")
             props.onNavigateToOntology(ontology, props.entityType || "", {
               iri: props.iri,
               label: props.label,

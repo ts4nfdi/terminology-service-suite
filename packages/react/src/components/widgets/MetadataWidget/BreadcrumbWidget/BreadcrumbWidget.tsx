@@ -45,7 +45,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
         <span>
           <span
             onClick={() => {
-              if (props.onNavigateToOntology)
+              if (typeof props.onNavigateToOntology === "function")
                 props.onNavigateToOntology(
                   props.ontologyId || "",
                   undefined,

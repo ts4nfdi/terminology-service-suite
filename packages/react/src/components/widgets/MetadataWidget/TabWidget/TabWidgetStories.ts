@@ -10,6 +10,7 @@ import {
 } from "../../../../stories/storyArgs";
 
 import { expect, waitFor, within } from "storybook/test";
+import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../../api/ols/OlsHierarchyApi";
 export const TabWidgetStoryArgTypes = {
   ...apiArgType,
   ...ontologyIdArgType,

@@ -17,7 +17,7 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
       <span className={finalClassName}>
         <span
           onClick={() => {
-            if (clickable && props.onNavigateToOntology) {
+            if (clickable && typeof props.onNavigateToOntology === "function") {
               props.onNavigateToOntology(
                 ontologyId || "",
                 undefined,
