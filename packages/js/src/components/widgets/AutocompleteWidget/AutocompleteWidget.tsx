@@ -4,6 +4,7 @@ import React from "react";
 import {
   WrappedAutocompleteWidget
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/AutocompleteWidget/AutocompleteWidget";
+import "../../../../../react/src/style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css"
 
 const roots = new WeakMap<Element, Root>();
 
