@@ -8,7 +8,7 @@ import {
   InfoWidgetPropertyAssertionArgs, InfoWidgetPropertyCharacteristicsArgs,
   InfoWidgetRangeArgs, NavigateToEBIPageArgs,
   OptionalEntityTypeLegacyAPIArgs,
-  PropertyInfoWidgetArgs,
+  PropertyInfoWidgetArgs, SkosmosImportArgs,
   TermInfoWidgetArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories";
 import { EntityInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -120,5 +120,10 @@ export const InfoWidgetPropertyCharacteristics: Story = {
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const SkosmosImport: Story = {
+  args: SkosmosImportArgs,
   play: commonEntityInfoWidgetPlay
 };

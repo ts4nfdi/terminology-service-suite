@@ -3,7 +3,7 @@ import {
   BreadcrumbWidgetStoryArgs,
   BreadcrumbWidgetStoryArgTypes,
   commonBreadcrumbWidgetPlay, CustomColorsArgs, CustomStyleArgs,
-  DefiningOntologyUnavailableArgs, ErrorBreadcrumbWidgetArgs,
+  DefiningOntologyUnavailableArgs, EntityInputArgs, ErrorBreadcrumbWidgetArgs,
   SelectingDefiningOntologyArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
 import './index'
@@ -88,5 +88,10 @@ export const CustomColors: Story = {
 
 export const CustomStyle: Story = {
   args: CustomStyleArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const EntityInput: Story = {
+  args: EntityInputArgs,
   play: commonBreadcrumbWidgetPlay
 };

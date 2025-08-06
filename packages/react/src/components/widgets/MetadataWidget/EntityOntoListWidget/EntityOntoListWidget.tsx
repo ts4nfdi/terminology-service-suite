@@ -1,6 +1,7 @@
+"use client";
+
 import React from "react";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
-import { OlsApi } from "../../../../api/OlsApi";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
   getErrorMessageToDisplay,
@@ -11,12 +12,13 @@ import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
+import {OlsEntityApi} from "../../../../api/ols/OlsEntityApi";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
     props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<{
     ontoList: string[];

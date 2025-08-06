@@ -90,6 +90,21 @@ export const CustomStyleArgs = {
     className: "custom-breadcrumb-style",
 } as const;
 
+export const EntityInputArgs = {
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+  api: globals.ZBMED_OLS4_API,
+  ontologyId: "ncit",
+  entityType: "term",
+  parameter: "collection=nfdi4health",
+  entity: {
+    properties: {
+      "iri": "http://purl.obolibrary.org/obo/NCIT_C2985",
+      "ontologyId": "ncit",
+      "shortForm": "NCIT_C2985",
+    }
+  },
+} as const;
+
 export const commonBreadcrumbWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);
 

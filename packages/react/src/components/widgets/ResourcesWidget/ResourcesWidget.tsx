@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode, useState } from "react";
 import {
   Comparators,
@@ -13,7 +15,6 @@ import {
   EuiCallOut, EuiProvider
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../api/OlsApi";
 import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
@@ -21,6 +22,7 @@ import { Ontologies } from "../../../model/interfaces";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
+import {OlsOntologyApi} from "../../../api/ols/OlsOntologyApi";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -42,7 +44,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     className,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsOntologyApi(api);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(initialEntriesPerPage);

@@ -1,14 +1,16 @@
+"use client";
+
 import React from "react";
 import { EuiCard, EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../api/OlsApi";
 import { Ontologies } from "../../../model/interfaces";
 import { DataContentWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import {OlsOntologyApi} from "../../../api/ols/OlsOntologyApi";
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsOntologyApi(api);
 
   const {
     data: ontologiesData,

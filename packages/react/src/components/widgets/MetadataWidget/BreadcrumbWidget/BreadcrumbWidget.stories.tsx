@@ -7,7 +7,7 @@ import {
   DefiningOntologyUnavailableArgs,
   ErrorBreadcrumbWidgetArgs,
   CustomColorsArgs,
-  CustomStyleArgs, commonBreadcrumbWidgetPlay
+  CustomStyleArgs, commonBreadcrumbWidgetPlay, EntityInputArgs
 } from "./BreadcrumbWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
@@ -62,5 +62,10 @@ export const CustomColors: Story = {
 
 export const CustomStyle: Story = {
   args: CustomStyleArgs,
+  play: commonBreadcrumbWidgetPlay
+};
+
+export const EntityInput: Story = {
+  args: EntityInputArgs,
   play: commonBreadcrumbWidgetPlay
 };

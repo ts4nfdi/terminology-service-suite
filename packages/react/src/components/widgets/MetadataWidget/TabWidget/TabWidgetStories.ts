@@ -8,9 +8,8 @@ import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType, ontologyIdArgType, parameterArgType
 } from "../../../../stories/storyArgs";
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget/HierarchyWidget";
-import { expect, waitFor, within } from "storybook/test";
 
+import { expect, waitFor, within } from "storybook/test";
 export const TabWidgetStoryArgTypes = {
   ...apiArgType,
   ...ontologyIdArgType,

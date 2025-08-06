@@ -12,7 +12,7 @@ import {
   SkosHierarchyArgs,
   SagePubHierarchyArgs,
   OntoportalHierarchyArgs,
-  OLS3HierarchyArgs, commonHierarchyWidgetPlay
+  OLS3HierarchyArgs, commonHierarchyWidgetPlay, OLSGermanArgs, SkosmosAgrovocGermanArgs
 } from "./HierarchyWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../../app/util";
 import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
@@ -92,5 +92,15 @@ export const OntoportalHierarchy: Story = {
 
 export const OLS3Hierarchy: Story = {
   args: OLS3HierarchyArgs,
+  play: commonHierarchyWidgetPlay
+};
+
+export const OLSGerman: Story = {
+  args: OLSGermanArgs,
+  play: commonHierarchyWidgetPlay
+};
+
+export const SkosmosAgrovocGerman: Story = {
+  args: SkosmosAgrovocGermanArgs,
   play: commonHierarchyWidgetPlay
 };

@@ -117,6 +117,12 @@ export const NavigateToEBIPageArgs = {
     onNavigateToOntology: "Navigate to EBI page",
     onNavigateToDisambiguate: "Navigate to EBI page",
 };
+export const SkosmosImportArgs = {
+  ...EntityInfoWidgetStoryArgs,
+    api: globals.ZBMED_OLS4_API,
+    useLegacy: true,
+    iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
+};
 
 export const commonEntityInfoWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement);

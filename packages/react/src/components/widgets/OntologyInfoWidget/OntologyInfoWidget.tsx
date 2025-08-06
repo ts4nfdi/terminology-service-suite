@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactElement } from "react";
 import {
   EuiCard,
@@ -8,7 +10,6 @@ import {
   EuiText,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../api/OlsApi";
 import { Ontology, Thing } from "../../../model/interfaces";
 import {
   capitalize,
@@ -24,6 +25,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import { OntologyInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
+import {OlsOntologyApi} from "../../../api/ols/OlsOntologyApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -38,7 +40,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     className,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsOntologyApi(api);
   const onNavigates = {
     onNavigateToEntity: props.onNavigateToEntity,
     onNavigateToOntology: props.onNavigateToOntology,

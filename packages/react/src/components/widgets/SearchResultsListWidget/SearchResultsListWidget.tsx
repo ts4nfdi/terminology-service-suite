@@ -1,3 +1,5 @@
+"use client";
+
 import {
   EuiButtonEmpty,
   EuiFlexGroup,
@@ -16,13 +18,12 @@ import {
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../api/OlsApi";
 import { MetadataCompact } from "./MetadataCompact";
 import { SearchResultsListWidgetProps } from "../../../app/types";
-import { AutocompleteWidget } from "../AutocompleteWidget";
 import ReactDOM from "react-dom";
 import { SearchBarWidget } from "../SearchBarWidget";
 import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
+import {OlsSearchApi} from "../../../api/ols/OlsSearchApi";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -40,7 +41,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     className,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsSearchApi(api);
   const finalClassName = className || "ts4nfdi-searchResult-style";
 
   const [searchValue, setSearchValue] = useState(query);
@@ -419,6 +420,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                       result={result}
                       targetLink={targetLink}
                       className={`${finalClassName}-metadata-compact`}
+                      parameter={parameter}
+                      entityType={result.type}
+                      iri={result.iri}
+                      ontologyId={result.ontology_name}
+                      useLegacy={useLegacy}
                     />
                     <EuiSpacer />
                   </React.Fragment>

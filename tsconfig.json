@@ -10,6 +10,7 @@
     "jsx": "react-jsx",
     "declaration": true,
     "module": "ESNext",
+    "outDir": "dist/types"
   },
   "exclude": ["dist"],
   "include": ["./packages/**/*", ".storybook/**/*", "packages/react/.storybook/main.ts", "packages/react/.storybook/preview.tsx", "packages/react/.storybook/vitest.setup.ts"],

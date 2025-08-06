@@ -46,6 +46,7 @@ export class Hierarchy {
   entityType?: EntityTypeName;
   keepExpansionStates: boolean = DEFAULT_KEEP_EXPANSION_STATE;
   protected useLegacy?: boolean;
+  protected parameter?: string;
 
   mainEntityIri?: string; // to highlight it in the hierarchy
 
@@ -61,6 +62,7 @@ export class Hierarchy {
     mainEntityIri?: string;
     keepExpansionStates?: boolean;
     useLegacy?: boolean;
+    parameter?: string;
   }) {
     const {
       parentChildRelations,
@@ -74,6 +76,7 @@ export class Hierarchy {
       entityType,
       ontologyId,
       useLegacy,
+      parameter
     } = props;
 
     this.parentChildRelations = parentChildRelations;
@@ -89,6 +92,7 @@ export class Hierarchy {
     this.entityType = entityType;
     this.ontologyId = ontologyId;
     if (useLegacy != undefined) this.useLegacy = useLegacy;
+    this.parameter = parameter;
   }
 
   /**
@@ -202,6 +206,7 @@ export class Hierarchy {
             ontologyId: this.ontologyId,
             includeObsoleteEntities: this.includeObsoleteEntities,
             useLegacy: this.useLegacy,
+            parameter: this.parameter,
           })
         ).sort((a, b) => (a.label || a.iri).localeCompare(b.label || b.iri));
 

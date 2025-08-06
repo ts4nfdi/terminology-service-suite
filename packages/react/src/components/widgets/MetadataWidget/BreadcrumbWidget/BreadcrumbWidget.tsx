@@ -5,13 +5,11 @@ import {
   EuiBadge,
   EuiIcon,
 } from "@elastic/eui";
-import { OlsApi } from "../../../../api/OlsApi";
-import { getErrorMessageToDisplay } from "../../../../app/util";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 import { BreadcrumbWidgetProps } from "../../../../app/types";
 import { isEntity } from "../../../../model/ModelTypeCheck";
-import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
-import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from "react-query";
-import ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {
@@ -26,10 +24,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     onNavigateToOntology,
     className,
   } = props;
-  const olsApi = new OlsApi(api);
-
-  // const client = useQueryClient();
-  // console.log('React Query Client available:', !!client);
+  const olsApi = new OlsEntityApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery(
     ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
@@ -86,7 +81,6 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       )}
       {isSuccess && data && isEntity(data) && (
         <BreadcrumbPresentation
-          ontologyName={data.getOntologyId()}
           shortForm={data.getShortForm()}
           ontologyId={ontologyId || data.getOntologyId()}
           colorFirst={colorFirst}
@@ -97,11 +91,6 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
       )}
       {isError && (
         <BreadcrumbPresentation
-          ontologyName={
-            props.ontologyId?.toUpperCase() ||
-            (data && data.getOntologyId().toUpperCase()) ||
-            getErrorMessageToDisplay(error, "ontology")
-          }
           shortForm={
             data && data.getShortForm() ? data.getShortForm().toUpperCase() : ""
           }

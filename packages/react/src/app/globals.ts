@@ -4,7 +4,7 @@ export const TIB_API_ENDPOINT_OLS3 = "https://service.tib.eu/ts4tib/api/";
 
 // TS4NFDI
 export const GATEWAY_API_ENDPOINT =
-  "https://ts4nfdi-api-gateway.prod.km.k8s.zbmed.de/api-gateway/";
+  "https://terminology.services.base4nfdi.de/api-gateway/";
 
 // ZB MED
 export const ZBMED_OLS4_API = "https://semanticlookup.zbmed.de/ols/api/";

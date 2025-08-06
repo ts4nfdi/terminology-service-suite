@@ -64,15 +64,30 @@ export const GraphViewWidgetExample: Story = {
 
 export const RootWalkGraphExample: Story = {
   args: RootWalkGraphExampleArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };
 
 export const ChebiWater: Story = {
   args: ChebiWaterArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };
 
 export const ChebiWaterRootWalk: Story = {
   args: ChebiWaterRootWalkArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };

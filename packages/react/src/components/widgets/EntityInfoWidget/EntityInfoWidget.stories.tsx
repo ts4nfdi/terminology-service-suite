@@ -12,7 +12,7 @@ import {
   InfoWidgetRangeArgs,
   InfoWidgetPropertyAssertionArgs,
   InfoWidgetPropertyCharacteristicsArgs,
-  NavigateToEBIPageArgs
+  NavigateToEBIPageArgs, SkosmosImportArgs
 } from "./EntityInfoWidgetStories";
 import { EntityInfoDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -84,5 +84,10 @@ export const InfoWidgetPropertyCharacteristics: Story = {
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
+  play: commonEntityInfoWidgetPlay
+};
+
+export const SkosmosImport: Story = {
+  args: SkosmosImportArgs,
   play: commonEntityInfoWidgetPlay
 };

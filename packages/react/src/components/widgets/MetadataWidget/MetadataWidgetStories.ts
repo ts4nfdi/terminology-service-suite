@@ -10,7 +10,7 @@ import {
   parameterArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./TabWidget/HierarchyWidget/HierarchyWidget";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../../../api/ols/OlsHierarchyApi";
 import { expect, waitFor, within } from "storybook/test";
 
 export const MetadataWidgetStoryArgTypes = {

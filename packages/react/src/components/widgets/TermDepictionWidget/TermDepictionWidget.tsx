@@ -1,7 +1,8 @@
+"use client";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { TermDepictionWidgetProps } from "../../../app/types";
-import { OlsApi } from "../../../api/OlsApi";
 import { Thing } from "../../../model/interfaces";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -12,11 +13,12 @@ import {
 } from "@elastic/eui";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "@google/model-viewer";
+import {OlsThingApi} from "../../../api/ols/OlsThingApi";
 
 
 function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { api, iri, ontologyId, useLegacy } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsThingApi(api);
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<Thing>(
     ["termDepiction", api, iri, ontologyId, useLegacy],

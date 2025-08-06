@@ -4,9 +4,16 @@ import {
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
   IncludeObsoleteEntitiesArgs,
-  IndividualHierarchyArgs, IndividualRootsArgs, LargeHierarchyArgs, OLS3HierarchyArgs, OntoportalHierarchyArgs,
+  IndividualHierarchyArgs,
+  IndividualRootsArgs,
+  LargeHierarchyArgs,
+  OLS3HierarchyArgs,
+  OLSGermanArgs,
+  OntoportalHierarchyArgs,
   PreferredRootsArgs,
-  PropertyRootsArgs, SagePubHierarchyArgs, SkosHierarchyArgs
+  PropertyRootsArgs,
+  SagePubHierarchyArgs,
+  SkosHierarchyArgs, SkosmosAgrovocGermanArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
 import './index'
 import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -121,5 +128,15 @@ export const OntoportalHierarchy: Story = {
 
 export const OLS3Hierarchy: Story = {
   args: OLS3HierarchyArgs,
+  play: commonHierarchyWidgetPlay
+};
+
+export const OLSGerman: Story = {
+  args: OLSGermanArgs,
+  play: commonHierarchyWidgetPlay
+};
+
+export const SkosmosAgrovocGerman: Story = {
+  args: SkosmosAgrovocGermanArgs,
   play: commonHierarchyWidgetPlay
 };

@@ -1,28 +1,37 @@
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "./HierarchyWidget";
-import { entityTypeNames } from "../../../../../model/ModelTypeCheck";
 import * as globals from "../../../../../app/globals";
 import {
-  apiArgType, apiKeyArgType, backendArgType,
-  entityTypeArgType, includeObsoleteEntitiesArgType, iriArgType, keepExpansionStatesArgType,
+  apiKeyArgType,
+  apiUrlArgType,
+  backendArgType,
+  entityTypeArgTypeHierarchy,
+  includeObsoleteEntitiesArgType,
+  iriArgTypeHierarchy,
+  keepExpansionStatesArgType,
   onNavigateToEntityArgType,
-  onNavigateToOntologyArgType, ontologyIdArgType, preferredRootsArgType, showSiblingsOnInitArgType, useLegacyArgType
+  onNavigateToOntologyArgType,
+  ontologyIdArgTypeHierarchy,
+  parameterArgTypeHierarchy,
+  preferredRootsArgType, showSiblingsOnInitArgType,
+  useLegacyArgTypeHierarchy,
 } from "../../../../../stories/storyArgs";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../../../../../api/ols/OlsHierarchyApi";
 import { expect, waitFor, within } from "storybook/test";
 
 export const HierarchyWidgetStoryArgTypes = {
-  ...apiArgType,
+  ...apiUrlArgType,
   ...backendArgType,
   ...apiKeyArgType,
   ...onNavigateToEntityArgType,
   ...onNavigateToOntologyArgType,
-  ...iriArgType,
-  ...ontologyIdArgType,
-  ...entityTypeArgType,
+  ...iriArgTypeHierarchy,
+  ...ontologyIdArgTypeHierarchy,
+  ...entityTypeArgTypeHierarchy,
   ...includeObsoleteEntitiesArgType,
   ...preferredRootsArgType,
   ...keepExpansionStatesArgType,
   ...showSiblingsOnInitArgType,
-  ...useLegacyArgType,
+  ...useLegacyArgTypeHierarchy,
+  ...parameterArgTypeHierarchy
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -40,7 +49,9 @@ export const HierarchyWidgetStoryArgs = {
   keepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
   showSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+  parameter: "",
 } as const;
+
 
 export const ClassHierarchyArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
@@ -132,6 +143,25 @@ export const OLS3HierarchyArgs = {
     entityType: "class",
     ontologyId: "efo",
     useLegacy: true,
+} as const;
+
+export const OLSGermanArgs = {
+    apiUrl: globals.EBI_API_ENDPOINT,
+    backendType: "ols",
+    iri: "http://purl.obolibrary.org/obo/HP_0003502",
+    entityType: "class",
+    ontologyId: "hp",
+    useLegacy: false,
+    parameter: "lang=de"
+} as const;
+
+export const SkosmosAgrovocGermanArgs = {
+    apiUrl: "https://agrovoc.fao.org/browse/rest/v1/",
+    backendType: "skosmos",
+    iri: "http://aims.fao.org/aos/agrovoc/c_1731",
+    showSiblingsOnInit: true,
+    ontologyId: "agrovoc",
+    parameter: "lang=de"
 } as const;
 
 export const commonHierarchyWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {

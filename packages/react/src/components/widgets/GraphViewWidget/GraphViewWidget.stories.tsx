@@ -5,7 +5,7 @@ import {
   GraphViewWidgetExampleArgs,
   RootWalkGraphExampleArgs,
   ChebiWaterArgs,
-  ChebiWaterRootWalkArgs, commonGraphViewWidgetPlay
+  ChebiWaterRootWalkArgs, commonGraphViewWidgetPlay, ChebiCaffeineHierarchyArgs, WithOnNodeDoubleClickCallbackArgs
 } from "./GraphViewWidgetStories";
 import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -36,15 +36,50 @@ export const GraphViewWidgetExample: Story = {
 
 export const RootWalkGraphExample: Story = {
   args: RootWalkGraphExampleArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };
 
 export const ChebiWater: Story = {
   args: ChebiWaterArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };
 
 export const ChebiWaterRootWalk: Story = {
   args: ChebiWaterRootWalkArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
+  play: commonGraphViewWidgetPlay
+};
+
+export const ChebiCaffeineHierarchy: Story = {
+  args: ChebiCaffeineHierarchyArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
+  play: commonGraphViewWidgetPlay
+};
+
+export const WithOnNodeDoubleClickCallback: Story = {
+  args: WithOnNodeDoubleClickCallbackArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    }
+  },
   play: commonGraphViewWidgetPlay
 };

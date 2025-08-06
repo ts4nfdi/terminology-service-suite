@@ -1,31 +1,24 @@
+"use client";
+
 import React, { useCallback, useMemo, useReducer } from "react";
 import {
-  EuiLoadingSpinner,
-  EuiText,
-  EuiIcon,
-  EuiProvider,
-  EuiCard,
+    EuiLoadingSpinner,
+    EuiText,
+    EuiIcon,
+    EuiProvider,
+    EuiPanel,
 } from "@elastic/eui";
-import { OlsApi } from "../../../../../api/OlsApi";
 import { Hierarchy, TreeNode } from "../../../../../model/interfaces/Hierarchy";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import ReactDOM from "react-dom";
-import { SkosApi } from "../../../../../api/SkosApi";
-import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
+import { SkosApi } from "../../../../../api/SkosApi";import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
 import { OntoPortalApi } from "../../../../../api/OntoPortalApi";
 import "../../../../../style/tssStyles.css";
 import { randomString } from "../../../../../app/util";
 import { HierarchyWidgetProps, EntityData } from "../../../../../app/types";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
 
-export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
-  INCLUDE_OBSOLETE_ENTITIES: false,
-  PREFERRED_ROOTS: false,
-  KEEP_EXPANSION_STATES: false,
-  SHOW_SIBLINGS_ON_INIT: false,
-  USE_LEGACY: false,
-} as const;
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
 function TreeLink(props: {
@@ -132,6 +125,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     showSiblingsOnInit = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
     useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
     className,
+    parameter,
   } = props;
   const finalClassName = className || "ts4nfdi-hierarchy-style";
 
@@ -144,13 +138,13 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   const api: HierarchyBuilder = useMemo(() => {
     switch (backendType) {
       case "ols":
-        return new OlsApi(apiUrl);
+        return new OlsHierarchyApi(apiUrl);
       case "skosmos":
         return new SkosApi(apiUrl);
       case "ontoportal":
         return new OntoPortalApi(apiUrl, apiKey || "");
       default:
-        return new OlsApi(apiUrl);
+        return new OlsHierarchyApi(apiUrl);
     }
   }, [apiUrl, backendType, apiKey]);
 
@@ -165,6 +159,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       keepExpansionStates,
       showSiblingsOnInit,
       useLegacy,
+      parameter,
     ],
     async function getNewHierarchy() {
       return await api.buildHierarchyWithIri({
@@ -176,7 +171,11 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         keepExpansionStates: keepExpansionStates,
         showSiblingsOnInit: showSiblingsOnInit,
         useLegacy: useLegacy,
+        parameter: parameter,
       });
+    },
+    {
+        refetchOnWindowFocus: false
     }
   );
 
@@ -256,10 +255,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       type={node.expanded ? "arrowDown" : "arrowRight"}
                       size={"s"}
                     />
+                    &nbsp;
                   </button>
                 )}
               </span>
-              &nbsp;
               <TreeLink
                 entityData={node.entityData}
                 childRelationToParent={node.childRelationToParent}
@@ -312,10 +311,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
 
   return (
     <div className={finalClassName}>
-      <EuiCard
+      <EuiPanel
         data-testid="hierarchy"
-        title={""}
-        layout={"horizontal"}
         style={{ overflowX: "auto", overflowY: "hidden" }}
       >
         {isSuccessHierarchy && hierarchy != undefined ? (
@@ -333,7 +330,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         ) : (
           <EuiLoadingSpinner />
         )}
-      </EuiCard>
+      </EuiPanel>
     </div>
   );
 }
@@ -357,6 +354,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           showSiblingsOnInit={props.showSiblingsOnInit}
           onNavigateToEntity={props.onNavigateToEntity}
           onNavigateToOntology={props.onNavigateToOntology}
+          parameter={props.parameter}
         />
       </QueryClientProvider>
     </EuiProvider>

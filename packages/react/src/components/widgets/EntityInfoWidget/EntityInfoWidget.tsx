@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactElement } from "react";
 import {
   EuiCard,
@@ -7,7 +9,6 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
-import { OlsApi } from "../../../api/OlsApi";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
   asArray,
@@ -38,6 +39,7 @@ import {
 } from "../../../model/ModelTypeCheck";
 import { EntityInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -57,7 +59,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     onNavigateToDisambiguate,
     ...rest
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
 
   const {
     data: entity,

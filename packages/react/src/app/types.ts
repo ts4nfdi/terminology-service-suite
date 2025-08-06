@@ -4,7 +4,7 @@ import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
-import { Thing } from "../model/interfaces";
+import {Entity, Thing} from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
 import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
@@ -274,10 +274,19 @@ export type BreadcrumbWidgetProps = ApiObj &
 export type BreadcrumbPresentationProps = OptionalOntologyIdObj &
   ColorFirstObj &
   ColorSecondObj &
-  CssClassNameObj & {
-    ontologyName: string;
-    shortForm: string;
-  } & OnNavigateToOntology;
+  CssClassNameObj &
+  OnNavigateToOntology &
+    {
+    ontologyId?: string;
+    shortForm?: string;
+    entity?: {
+        properties: {
+            ontologyId: string;
+            shortForm: string;
+            [key: string]: any;
+        };
+    };
+    };
 
 export type DescTextObj = {
   /**
@@ -466,23 +475,14 @@ export type OnNavigates = OnNavigateToEntity &
   OnNavigateToDisambiguate;
 
 export type HierarchyWidgetProps = CssClassNameObj & {
-  /**
-   * The API URL for the API call.
-   */
   apiUrl: string;
-  /**
-   * **Only required for OntoPortal hierarchies**
-   * An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key
-   */
   apiKey?: string;
-  /**
-   * The backend key from which to request `{ols, ontoportal, skosmos}`. Default is `ols`
-   */
   backendType?: string;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
-  OnNavigateToOntology;
+  OnNavigateToOntology &
+  ParameterObj;
 
 export type TitleTextObj = {
   /**
@@ -663,8 +663,12 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   ApiObj &
   TargetLinkObj &
   ParameterObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  OptionalEntityTypeObj &{
     result: SearchResultProps;
+    iri: string;
+    ontologyId: string;
+    useLegacy: boolean;
   };
 
 export type TermDepictionWidgetProps = ApiObj &
@@ -680,6 +684,19 @@ export type GraphViewWidgetProps = ApiObj &
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
     rootWalk?: boolean;
+    /**
+     * When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.
+     */
+    hierarchy?: boolean;
+    /**
+     * The edge label in the graph. Default is "is a". Only for sub-class predicators. 
+     */
+    edgeLabel?: string;
+
+    /**
+     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * */
+    onNodeClick?: (iri: string) => void;
   };
 
 export type OlsGraphNode = {

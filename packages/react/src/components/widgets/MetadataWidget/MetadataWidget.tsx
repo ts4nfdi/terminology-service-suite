@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   EuiFlexGroup,
@@ -9,10 +11,9 @@ import {
 } from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsApi } from "../../../api/OlsApi";
 import { MetadataWidgetProps } from "../../../app/types";
 import { Entity } from "../../../model/interfaces";
-import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation";
+import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
 import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
@@ -27,6 +28,7 @@ import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoLis
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/tssStyles.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
+import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
 
 type MetadataInfo = {
   entity: Entity;
@@ -52,7 +54,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     termLink,
     className,
   } = props;
-  const olsApi = new OlsApi(api);
+  const olsApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-metadata-style";
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<MetadataInfo>(
@@ -144,7 +146,6 @@ function MetadataWidget(props: MetadataWidgetProps) {
               <BreadcrumbPresentation
                 onNavigateToOntology={props.onNavigateToOntology}
                 ontologyId={ontologyId || data.entity.getOntologyId()}
-                ontologyName={data.entity.getOntologyId()}
                 shortForm={data.entity.getShortForm()}
                 className={`${finalClassName}-breadcrumb`}
               />

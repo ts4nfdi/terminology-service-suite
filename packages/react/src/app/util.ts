@@ -248,3 +248,17 @@ export function manuallyEmbedOnNavigate(
 
   return code;
 }
+
+export function dictFromParamString(parameter?: string) {
+  const result: any = {};
+  if (parameter) {
+    const paramsSplitted = parameter.split("&");
+
+    paramsSplitted.forEach((param: string) => {
+      const key: string = param.split("=")[0];
+      const value: string = param.split("=")[1];
+      result[key] = value;
+    });
+  }
+  return result;
+}
