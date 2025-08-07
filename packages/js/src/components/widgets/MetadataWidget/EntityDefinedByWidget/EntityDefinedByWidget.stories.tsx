@@ -2,13 +2,17 @@ import {
   commonEntityDefinedByWidgetPlay,
   emptyInDefiningOntologyArgs,
   EntityDefinedByWidgetStoryArgs,
-  EntityDefinedByWidgetStoryArgTypes, legacyApiArgs, v2ApiONSArgs
+  EntityDefinedByWidgetStoryArgTypes,
+  legacyApiArgs,
+  v2ApiONSArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidgetStories";
-import './index'
+import "./index";
 import { EntityDefinedByDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { EntityDefinedByWidget, EntityDefinedByWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  EntityDefinedByWidget,
+  EntityDefinedByWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -61,15 +65,15 @@ type Story = StoryObj<typeof meta>;
 
 export const emptyInDefiningOntology: Story = {
   args: emptyInDefiningOntologyArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };
 
 export const v2ApiONS: Story = {
   args: v2ApiONSArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };
 
 export const legacyApi: Story = {
   args: legacyApiArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };

@@ -14,30 +14,37 @@ export const DataContentWidgetStoryArgs = {
 };
 
 export const NFDI4HealthDataContentWidgetArgs = {
-    ...DataContentWidgetStoryArgs,
-    api: globals.ZBMED_OLS4_API,
-    parameter: "collection=nfdi4health",
+  ...DataContentWidgetStoryArgs,
+  api: globals.ZBMED_OLS4_API,
+  parameter: "collection=nfdi4health",
 };
 
 export const SafetyDataContentWidgetArgs = {
-    ...DataContentWidgetStoryArgs,
-    api: globals.ZBMED_OLS4_API,
-    parameter: "collection=safety",
+  ...DataContentWidgetStoryArgs,
+  api: globals.ZBMED_OLS4_API,
+  parameter: "collection=safety",
 };
 
 export const ErrorDataContentWidgetArgs = {
-    ...DataContentWidgetStoryArgs,
-    api: globals.ZBMED_OLS4_API,
-    parameter: "collection=safety",
+  ...DataContentWidgetStoryArgs,
+  api: globals.ZBMED_OLS4_API,
+  parameter: "collection=safety",
 };
 
-export const commonDataContentWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+export const commonDataContentWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
-  await waitFor(async () => {
-    const content = canvas.getByTestId('data-content');
-    await expect(content).toBeInTheDocument();
-  }, {
-    timeout: 3000
-  })
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("data-content");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
 };

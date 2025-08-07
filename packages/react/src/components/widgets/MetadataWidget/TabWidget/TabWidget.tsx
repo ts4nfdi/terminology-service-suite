@@ -9,7 +9,7 @@ import { TabPresentation } from "./TabPresentation";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 import ReactDOM from "react-dom";
-import {OlsEntityApi} from "../../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 
 function TabWidget(props: TabWidgetProps) {
   const {
@@ -35,33 +35,33 @@ function TabWidget(props: TabWidgetProps) {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   function render(data: Entity) {
     return (
       <div data-testid="tab">
-      <TabPresentation
-        {...rest}
-        data={data}
-        iri={iri}
-        api={api}
-        useLegacy={useLegacy}
-        entityType={data.getType() as EntityTypeName}
-        ontologyId={ontologyId ? ontologyId : data.getOntologyId()}
-        hierarchyTab={hierarchyTab}
-        crossRefTab={crossRefTab}
-        terminologyInfoTab={terminologyInfoTab}
-        altNamesTab={altNamesTab}
-        onNavigateToEntity={props.onNavigateToEntity}
-        onNavigateToOntology={props.onNavigateToOntology}
-        onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-        hierarchyPreferredRoots={props.hierarchyPreferredRoots}
-        hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
-        hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-      />
+        <TabPresentation
+          {...rest}
+          data={data}
+          iri={iri}
+          api={api}
+          useLegacy={useLegacy}
+          entityType={data.getType() as EntityTypeName}
+          ontologyId={ontologyId ? ontologyId : data.getOntologyId()}
+          hierarchyTab={hierarchyTab}
+          crossRefTab={crossRefTab}
+          terminologyInfoTab={terminologyInfoTab}
+          altNamesTab={altNamesTab}
+          onNavigateToEntity={props.onNavigateToEntity}
+          onNavigateToOntology={props.onNavigateToOntology}
+          onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+          hierarchyPreferredRoots={props.hierarchyPreferredRoots}
+          hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
+          hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+        />
       </div>
     );
   }

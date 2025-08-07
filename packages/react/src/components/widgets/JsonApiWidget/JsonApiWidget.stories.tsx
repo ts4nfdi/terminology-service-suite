@@ -3,7 +3,7 @@ import {
   commonJsonApiWidgetPlay,
   JsonApiWidgetDefaultArgs,
   JsonApiWidgetStoryArgs,
-  JsonApiWidgetStoryArgTypes
+  JsonApiWidgetStoryArgTypes,
 } from "./JsonApiWidgetStories";
 import { JsonApiDescription } from "../../../app/widgetDescriptions";
 import * as globals from "../../../app/globals";
@@ -31,5 +31,5 @@ type Story = StoryObj<typeof meta>;
 
 export const JsonApiWidgetDefault = {
   args: JsonApiWidgetDefaultArgs,
-  play: commonJsonApiWidgetPlay
+  play: commonJsonApiWidgetPlay,
 };

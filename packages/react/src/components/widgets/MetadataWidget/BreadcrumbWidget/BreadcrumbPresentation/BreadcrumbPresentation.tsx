@@ -1,16 +1,19 @@
 "use client";
 import React from "react";
-import {EuiBadge, EuiIcon, EuiProvider} from "@elastic/eui";
-import {BreadcrumbPresentationProps, BreadcrumbWidgetProps} from "../../../../../app/types";
+import { EuiBadge, EuiIcon, EuiProvider } from "@elastic/eui";
+import {
+  BreadcrumbPresentationProps,
+  BreadcrumbWidgetProps,
+} from "../../../../../app/types";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import ReactDOM from "react-dom";
-import {QueryClient, QueryClientProvider} from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
   const clickable = !!props.onNavigateToOntology;
-  const ontologyId = props.entity?.properties?.ontologyId || props.ontologyId
-  const shortForm = props.entity?.properties?.shortForm || props.shortForm
+  const ontologyId = props.entity?.properties?.ontologyId || props.ontologyId;
+  const shortForm = props.entity?.properties?.shortForm || props.shortForm;
 
   return (
     <>
@@ -21,7 +24,7 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
               props.onNavigateToOntology(
                 ontologyId || "",
                 undefined,
-                undefined
+                undefined,
               );
             }
           }}
@@ -46,9 +49,7 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
         <EuiIcon type="arrowRight" />
         &nbsp;
         <EuiBadge className="breadcrumb" color={props.colorSecond || "success"}>
-          {shortForm
-            ? shortForm.toUpperCase()
-            : "No short form available"}
+          {shortForm ? shortForm.toUpperCase() : "No short form available"}
         </EuiBadge>
       </span>
     </>

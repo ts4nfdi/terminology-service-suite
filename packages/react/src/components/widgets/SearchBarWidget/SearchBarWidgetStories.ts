@@ -6,7 +6,7 @@ import {
   queryArgType,
   selectionChangedEventArgType,
 } from "../../../stories/storyArgs";
-import { action } from "storybook/actions";;
+import { action } from "storybook/actions";
 import { expect, waitFor, within } from "storybook/test";
 
 export const SearchBarWidgetStoryArgTypes = {
@@ -35,29 +35,36 @@ export const SearchBarWidgetStoryArgs = {
 
 export const SearchBarWidgetDefaultArgs = {
   ...SearchBarWidgetStoryArgsReact,
-    api: globals.EBI_API_ENDPOINT,
-    query: "*",
+  api: globals.EBI_API_ENDPOINT,
+  query: "*",
 };
 
 export const TibNFDI4CHEMArgs = {
   ...SearchBarWidgetStoryArgsReact,
-    api: globals.TIB_API_ENDPOINT,
-    parameter: "classification=NFDI4CHEM&schema=collection",
+  api: globals.TIB_API_ENDPOINT,
+  parameter: "classification=NFDI4CHEM&schema=collection",
 };
 
 export const TibDataPlantArgs = {
   ...SearchBarWidgetStoryArgsReact,
-    api: globals.TIB_API_ENDPOINT,
-    parameter: "classification=DataPLANT&schema=collection",
+  api: globals.TIB_API_ENDPOINT,
+  parameter: "classification=DataPLANT&schema=collection",
 };
 
-export const commonSearchBartWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+export const commonSearchBartWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
-  await waitFor(async () => {
-    const content = canvas.getByTestId('search-bar');
-    await expect(content).toBeInTheDocument();
-  }, {
-    timeout: 3000
-  })
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("search-bar");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
 };

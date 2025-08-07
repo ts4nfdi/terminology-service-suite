@@ -2,14 +2,17 @@ import {
   commonCrossRefWidgetPlay,
   CrossRefTabWidget1Args,
   CrossRefWidgetStoryArgs,
-  CrossRefWidgetStoryArgTypes, DefiningOntologyUnavailableArgs, SelectingDefiningOntologyArgs
+  CrossRefWidgetStoryArgTypes,
+  DefiningOntologyUnavailableArgs,
+  SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
-import './index'
+import "./index";
 import { CrossRefTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { CrossRefTabWidget, CrossRefWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  CrossRefTabWidget,
+  CrossRefWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-
 
 let counter = 0;
 
@@ -61,15 +64,15 @@ type Story = StoryObj<typeof meta>;
 
 export const CrossRefTabWidget1: Story = {
   args: CrossRefTabWidget1Args,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };

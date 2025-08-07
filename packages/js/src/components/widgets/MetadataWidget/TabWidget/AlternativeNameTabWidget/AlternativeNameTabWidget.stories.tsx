@@ -4,13 +4,15 @@ import {
   AlternativeNameTabWidgetStoryArgTypes,
   commonAlternativeNameTabWidgetPlay,
   DefiningOntologyUnavailableArgs,
-  SelectingDefiningOntologyArgs
+  SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
-import './index'
+import "./index";
 import { AlternativeNameTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { AlternativeNameTabWidget, AlternativeNameTabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  AlternativeNameTabWidget,
+  AlternativeNameTabWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -62,15 +64,15 @@ type Story = StoryObj<typeof meta>;
 
 export const AlternativeNameTabWidget1: Story = {
   args: AlternativeNameTabWidget1Args,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };

@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Ontologies } from "../../../model/interfaces";
 import { DataContentWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
-import {OlsOntologyApi} from "../../../api/ols/OlsOntologyApi";
+import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 
 function DataContentWidget(props: DataContentWidgetProps) {
   const { api, parameter, ...rest } = props;
@@ -93,10 +93,7 @@ function WrappedDataContentWidget(props: DataContentWidgetProps) {
   return (
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
-        <DataContentWidget
-          api={props.api}
-          parameter={props.parameter}
-        />
+        <DataContentWidget api={props.api} parameter={props.parameter} />
       </QueryClientProvider>
     </EuiProvider>
   );

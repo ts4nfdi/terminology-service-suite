@@ -37,7 +37,7 @@ import {
 } from "../../../app/util";
 import { EntityRelationsWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
-import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -49,14 +49,14 @@ const DEFAULT_HAS_TITLE = true;
  */
 function getIndividualTypesSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const types = individual
     .getRdfTypes()
     .filter(
       (elem: string) =>
         elem !== "http://www.w3.org/2002/07/owl#NamedIndividual" &&
-        !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#")
+        !elem.startsWith("http://www.w3.org/2000/01/rdf-schema#"),
     );
 
   if (individual.getRdfTypes().length > 0) {
@@ -72,7 +72,7 @@ function getIndividualTypesSectionJSX(
             onNavigateToEntity: props.onNavigateToEntity,
             onNavigateToOntology: props.onNavigateToOntology,
             onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          }
+          },
         )}
       </EuiFlexItem>
     );
@@ -87,7 +87,7 @@ function getIndividualTypesSectionJSX(
  */
 function getIndividualSameAsSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const sameAs = individual.getSameAs();
 
@@ -104,7 +104,7 @@ function getIndividualSameAsSectionJSX(
             onNavigateToEntity: props.onNavigateToEntity,
             onNavigateToOntology: props.onNavigateToOntology,
             onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          }
+          },
         )}
       </EuiFlexItem>
     );
@@ -119,7 +119,7 @@ function getIndividualSameAsSectionJSX(
  */
 function getIndividualDifferentFromSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const differentFrom = individual.getDifferentFrom();
 
@@ -138,7 +138,7 @@ function getIndividualDifferentFromSectionJSX(
               onNavigateToEntity: props.onNavigateToEntity,
               onNavigateToOntology: props.onNavigateToOntology,
               onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            }
+            },
           )}
         </EuiFlexItem>
       </>
@@ -154,7 +154,7 @@ function getIndividualDifferentFromSectionJSX(
  */
 function getDisjointWithSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const disjointWith = entity.getDisjointWith();
 
@@ -171,7 +171,7 @@ function getDisjointWithSectionJSX(
             onNavigateToEntity: props.onNavigateToEntity,
             onNavigateToOntology: props.onNavigateToOntology,
             onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          }
+          },
         )}
       </EuiFlexItem>
     );
@@ -186,7 +186,7 @@ function getDisjointWithSectionJSX(
  */
 function getPropertyInverseOfSectionJSX(
   property: Property,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const inverseOfs = property.getInverseOf();
 
@@ -203,7 +203,7 @@ function getPropertyInverseOfSectionJSX(
             onNavigateToEntity: props.onNavigateToEntity,
             onNavigateToOntology: props.onNavigateToOntology,
             onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          }
+          },
         )}
       </EuiFlexItem>
     );
@@ -220,7 +220,7 @@ function getPropertyInverseOfSectionJSX(
 function getPropertyChainJSX(
   propertyChain: any[],
   property: Property,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement[] {
   return asArray(propertyChain)
     .slice()
@@ -238,7 +238,7 @@ function getPropertyChainJSX(
               onNavigateToEntity: props.onNavigateToEntity,
               onNavigateToOntology: props.onNavigateToOntology,
               onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            }
+            },
           )}
           <>
             {i < asArray(propertyChain).length - 1 && (
@@ -260,7 +260,7 @@ function getPropertyChainJSX(
  */
 function getPropertyChainSectionJSX(
   property: Property,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const propertyChains = property
     .getPropertyChains()
@@ -302,7 +302,7 @@ function getPropertyChainSectionJSX(
  */
 function getEntityEquivalentToSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const equivalents = entity.getEquivalents();
 
@@ -349,7 +349,7 @@ function getEntityEquivalentToSectionJSX(
  */
 function getSubEntityOfSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const superEntities = entity.getSuperEntities();
 
@@ -396,15 +396,15 @@ function getSubEntityOfSectionJSX(
  */
 function getEntityRelatedFromSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   const relatedFroms = entity.getRelatedFrom();
   const predicates: string[] = Array.from(
     new Set(
       relatedFroms.map((elem: any) => {
         return elem.value["property"];
-      })
-    )
+      }),
+    ),
   );
 
   if (relatedFroms.length > 0) {
@@ -439,7 +439,7 @@ function getEntityRelatedFromSectionJSX(
                               onNavigateToOntology: props.onNavigateToOntology,
                               onNavigateToDisambiguate:
                                 props.onNavigateToDisambiguate,
-                            }
+                            },
                           )}
                         </li>
                       );
@@ -466,7 +466,7 @@ function getEntityRelatedFromSectionJSX(
 function getClassInstancesSectionJSX(
   term: Class,
   instances: Thing[],
-  props: EntityRelationsWidgetProps
+  props: EntityRelationsWidgetProps,
 ): ReactElement | undefined {
   if (instances.length > 0) {
     return (
@@ -486,7 +486,7 @@ function getClassInstancesSectionJSX(
                       onNavigateToEntity: props.onNavigateToEntity,
                       onNavigateToOntology: props.onNavigateToOntology,
                       onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    }
+                    },
                   )}
                 </li>
               );
@@ -533,9 +533,9 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
         entityType,
         ontologyId,
         parameter,
-        false
+        false,
       ); // always use v2/ API
-    }
+    },
   );
 
   /**
@@ -557,21 +557,21 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
 
   function renderSections(
     entity: Entity,
-    instances: Individual[]
+    instances: Individual[],
   ): ReactElement {
     const sectionList: ReactElement[] = [];
 
     if (isIndividual(entity)) {
       const individualTypesSection = getIndividualTypesSectionJSX(
         entity,
-        props
+        props,
       );
       if (individualTypesSection != undefined)
         sectionList.push(individualTypesSection);
 
       const individualSameAsSection = getIndividualSameAsSectionJSX(
         entity,
-        props
+        props,
       );
       if (individualSameAsSection != undefined)
         sectionList.push(individualSameAsSection);
@@ -589,7 +589,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     if (isProperty(entity)) {
       const propertyInverseOfSection = getPropertyInverseOfSectionJSX(
         entity,
-        props
+        props,
       );
       if (propertyInverseOfSection != undefined)
         sectionList.push(propertyInverseOfSection);
@@ -601,7 +601,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     if (isProperty(entity) || isClass(entity)) {
       const entityEquivalentToSection = getEntityEquivalentToSectionJSX(
         entity,
-        props
+        props,
       );
       if (entityEquivalentToSection != undefined)
         sectionList.push(entityEquivalentToSection);
@@ -611,7 +611,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
 
       const entityRelatedFromSection = getEntityRelatedFromSectionJSX(
         entity,
-        props
+        props,
       );
       if (entityRelatedFromSection != undefined)
         sectionList.push(entityRelatedFromSection);
@@ -620,7 +620,7 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
       const classInstancesSection = getClassInstancesSectionJSX(
         entity,
         instances,
-        props
+        props,
       );
       if (classInstancesSection != undefined)
         sectionList.push(classInstancesSection);
@@ -642,8 +642,8 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
             ? (entityType
                 ? capitalize(getEntityTypeName(entityType))
                 : isSuccessEntityRelation && entity
-                ? capitalize(entity.getType())
-                : "") + " Relations"
+                  ? capitalize(entity.getType())
+                  : "") + " Relations"
             : ""
         }
         layout="horizontal"

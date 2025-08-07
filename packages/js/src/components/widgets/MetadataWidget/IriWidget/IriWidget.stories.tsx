@@ -2,13 +2,18 @@ import {
   commonIriWidgetPlay,
   IriWidget1Args,
   IriWidgetStoryArgs,
-  IriWidgetStoryArgTypes, withCopyButtonArgs, withoutExternalIconArgs, withUrlPrefixArgs
+  IriWidgetStoryArgTypes,
+  withCopyButtonArgs,
+  withoutExternalIconArgs,
+  withUrlPrefixArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
-import './index'
+import "./index";
 import { IriDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { IriWidget, IriWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  IriWidget,
+  IriWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -60,20 +65,20 @@ type Story = StoryObj<typeof meta>;
 
 export const IriWidget1: Story = {
   args: IriWidget1Args,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withoutExternalIcon: Story = {
   args: withoutExternalIconArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withCopyButton: Story = {
   args: withCopyButtonArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withUrlPrefix: Story = {
   args: withUrlPrefixArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };

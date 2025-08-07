@@ -7,7 +7,7 @@ import {
   EntityInputMissingValueArgs,
 } from "./BreadcrumbPresentationStories";
 import { manuallyEmbedOnNavigate } from "../../../../../app/util";
-import {BreadcrumbPresentationDescription} from "../../../../../app/widgetDescriptions";
+import { BreadcrumbPresentationDescription } from "../../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
@@ -34,13 +34,10 @@ type Story = StoryObj<typeof meta>;
 
 export const EntityInput: Story = {
   args: EntityInputArgs,
-  play: commonBreadcrumbPresentationPlay
+  play: commonBreadcrumbPresentationPlay,
 };
 
 export const EntityInputMissingValue: Story = {
   args: EntityInputMissingValueArgs,
-  play: commonBreadcrumbPresentationPlay
+  play: commonBreadcrumbPresentationPlay,
 };
-
-
-

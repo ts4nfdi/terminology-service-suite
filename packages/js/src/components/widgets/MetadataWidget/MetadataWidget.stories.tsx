@@ -1,14 +1,24 @@
 import {
-  commonMetadataWidgetPlay, DefinedByAlsoAppearsInWidgetsArgs, DefiningOntologyUnavailableArgs, HiddenTabsArgs,
+  commonMetadataWidgetPlay,
+  DefinedByAlsoAppearsInWidgetsArgs,
+  DefiningOntologyUnavailableArgs,
+  HiddenTabsArgs,
   MetadataWidget1Args,
   MetadataWidgetStoryArgs,
-  MetadataWidgetStoryArgTypes, OLS3Args, OLS4V1Args, OLS4V2Args, SelectingDefiningOntologyArgs, TermAsLinkArgs
+  MetadataWidgetStoryArgTypes,
+  OLS3Args,
+  OLS4V1Args,
+  OLS4V2Args,
+  SelectingDefiningOntologyArgs,
+  TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
-import './index'
+import "./index";
 import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { MetadataWidget, MetadataWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  MetadataWidget,
+  MetadataWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -74,49 +84,49 @@ type Story = StoryObj<typeof meta>;
 export const MetadataWidget1: Story = {
   name: "Metadata Widget",
   args: MetadataWidget1Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS3: Story = {
   name: "OLS3",
   args: OLS3Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V1: Story = {
   name: "OLS4 V1",
   args: OLS4V1Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V2: Story = {
   name: "OLS4 V2",
   args: OLS4V2Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const DefinedByAlsoAppearsInWidgets: Story = {
   args: DefinedByAlsoAppearsInWidgetsArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const HiddenTabs: Story = {
   name: "Hidden Tabs",
   args: HiddenTabsArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const TermAsLink: Story = {
   args: TermAsLinkArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };

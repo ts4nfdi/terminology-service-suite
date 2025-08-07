@@ -29,8 +29,8 @@ export function createModelObject(response: any) {
   else
     throw Error(
       `Response structure does not correlate to any of the featured response structures: \n ${JSON.stringify(
-        response
-      )}`
+        response,
+      )}`,
     );
 
   let entityType: ThingTypeName | undefined = undefined;
@@ -60,14 +60,14 @@ export function createModelObject(response: any) {
   return createModelObjectWithEntityTypeWithUseLegacy(
     response,
     entityType,
-    useLegacy
+    useLegacy,
   );
 }
 
 function createModelObjectWithEntityTypeWithUseLegacy(
   response: any,
   entityType: string,
-  useLegacy: boolean
+  useLegacy: boolean,
 ): Thing {
   switch (entityType) {
     case "ontology":
@@ -81,11 +81,11 @@ function createModelObjectWithEntityTypeWithUseLegacy(
         ? new OLS3Class(
             getPreferredOntologyJSON(
               asArray(response["_embedded"]["terms"]),
-              useLegacy
-            )
+              useLegacy,
+            ),
           )
         : new OLS4Class(
-            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy)
+            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy),
           );
 
     case "property":
@@ -93,11 +93,11 @@ function createModelObjectWithEntityTypeWithUseLegacy(
         ? new OLS3Property(
             getPreferredOntologyJSON(
               asArray(response["_embedded"]["properties"]),
-              useLegacy
-            )
+              useLegacy,
+            ),
           )
         : new OLS4Property(
-            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy)
+            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy),
           );
 
     case "individual":
@@ -105,18 +105,18 @@ function createModelObjectWithEntityTypeWithUseLegacy(
         ? new OLS3Individual(
             getPreferredOntologyJSON(
               asArray(response["_embedded"]["individuals"]),
-              useLegacy
-            )
+              useLegacy,
+            ),
           )
         : new OLS4Individual(
-            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy)
+            getPreferredOntologyJSON(asArray(response["elements"]), useLegacy),
           );
 
     default:
       throw Error(
         'Invalid entity type "' +
           entityType +
-          '". Must be one of {"term", "class", "ontology", "property", "individual"}'
+          '". Must be one of {"term", "class", "ontology", "property", "individual"}',
       );
   }
 }
@@ -131,23 +131,23 @@ function createModelObjectWithEntityTypeWithUseLegacy(
 export function getPreferredOntologyJSON(
   entityArrayResponse: any[],
   useLegacy: boolean,
-  ontologyId?: string
+  ontologyId?: string,
 ) {
   if (ontologyId) {
     const entityInOntology = asArray(entityArrayResponse).filter(
       (entity) =>
         (useLegacy ? entity["ontology_name"] : entity["ontologyId"]) ==
-        ontologyId
+        ontologyId,
     );
     if (entityInOntology.length > 0) return entityInOntology[0];
     else
       console.error(
-        `Invalid ontologyId ${ontologyId} for given entityArrayResponse.`
+        `Invalid ontologyId ${ontologyId} for given entityArrayResponse.`,
       );
   }
 
   const definingOntologyArr = asArray(entityArrayResponse).filter((entity) =>
-    useLegacy ? entity["is_defining_ontology"] : entity["isDefiningOntology"]
+    useLegacy ? entity["is_defining_ontology"] : entity["isDefiningOntology"],
   );
   if (definingOntologyArr.length > 0) return definingOntologyArr[0];
   else if (entityArrayResponse.length > 0) return entityArrayResponse[0];

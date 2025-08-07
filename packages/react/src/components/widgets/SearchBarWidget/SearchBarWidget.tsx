@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { SearchBarWidgetProps } from "../../../app/types";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
-import {OlsSearchApi} from "../../../api/ols/OlsSearchApi";
+import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const { api, query, selectionChangedEvent, ...rest } = props;

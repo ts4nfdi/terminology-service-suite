@@ -2,17 +2,19 @@ import { DataContentWidget } from "./DataContentWidget";
 import {
   commonDataContentWidgetPlay,
   DataContentWidgetStoryArgs,
-  DataContentWidgetStoryArgTypes, ErrorDataContentWidgetArgs,
-  NFDI4HealthDataContentWidgetArgs, SafetyDataContentWidgetArgs
+  DataContentWidgetStoryArgTypes,
+  ErrorDataContentWidgetArgs,
+  NFDI4HealthDataContentWidgetArgs,
+  SafetyDataContentWidgetArgs,
 } from "./DataContentWidgetStories";
-import {  DataContentDescription } from "../../../app/widgetDescriptions";
+import { DataContentDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Terminology Service/DataContentWidget",
   tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
         component: DataContentDescription,
@@ -30,15 +32,15 @@ type Story = StoryObj<typeof meta>;
 
 export const NFDI4HealthDataContentWidget: Story = {
   args: NFDI4HealthDataContentWidgetArgs,
-  play: commonDataContentWidgetPlay
+  play: commonDataContentWidgetPlay,
 };
 
 export const SafetyDataContentWidget: Story = {
   args: SafetyDataContentWidgetArgs,
-  play: commonDataContentWidgetPlay
+  play: commonDataContentWidgetPlay,
 };
 
 export const ErrorDataContentWidget: Story = {
   args: ErrorDataContentWidgetArgs,
-  play: commonDataContentWidgetPlay
+  play: commonDataContentWidgetPlay,
 };

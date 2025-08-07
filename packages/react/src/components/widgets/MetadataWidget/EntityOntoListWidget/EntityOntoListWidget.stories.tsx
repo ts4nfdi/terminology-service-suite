@@ -5,7 +5,8 @@ import {
   v2ApiEFOArgs,
   v2ApiONSArgs,
   legacyApiArgs,
-  exceedsMaxDisplayArgs, commonEntityOntoListWidgetPlay
+  exceedsMaxDisplayArgs,
+  commonEntityOntoListWidgetPlay,
 } from "./EntityOntoListWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { EntityOntoListDescription } from "../../../../app/widgetDescriptions";
@@ -35,20 +36,20 @@ type Story = StoryObj<typeof meta>;
 
 export const v2ApiEFO: Story = {
   args: v2ApiEFOArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const v2ApiONS: Story = {
   args: v2ApiONSArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const legacyApi: Story = {
   args: legacyApiArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const exceedsMaxDisplay: Story = {
   args: exceedsMaxDisplayArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };

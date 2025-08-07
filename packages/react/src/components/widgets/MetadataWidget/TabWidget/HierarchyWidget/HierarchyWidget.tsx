@@ -2,23 +2,26 @@
 
 import React, { useCallback, useMemo, useReducer } from "react";
 import {
-    EuiLoadingSpinner,
-    EuiText,
-    EuiIcon,
-    EuiProvider,
-    EuiPanel,
+  EuiLoadingSpinner,
+  EuiText,
+  EuiIcon,
+  EuiProvider,
+  EuiPanel,
 } from "@elastic/eui";
 import { Hierarchy, TreeNode } from "../../../../../model/interfaces/Hierarchy";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { SkosApi } from "../../../../../api/SkosApi";import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
+import { SkosApi } from "../../../../../api/SkosApi";
+import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
 import { OntoPortalApi } from "../../../../../api/OntoPortalApi";
 import "../../../../../style/tssStyles.css";
 import { randomString } from "../../../../../app/util";
 import { HierarchyWidgetProps, EntityData } from "../../../../../app/types";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
-import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
-
+import {
+  HIERARCHY_WIDGET_DEFAULT_VALUES,
+  OlsHierarchyApi,
+} from "../../../../../api/ols/OlsHierarchyApi";
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
 function TreeLink(props: {
@@ -29,12 +32,12 @@ function TreeLink(props: {
   onNavigateToEntity?: (
     ontologyId: string,
     entityType?: string,
-    entity?: EntityData
+    entity?: EntityData,
   ) => void;
   onNavigateToOntology?: (
     ontologyId: string,
     entityType?: string,
-    entity?: EntityData
+    entity?: EntityData,
   ) => void;
   highlight: boolean;
 }) {
@@ -74,7 +77,7 @@ function TreeLink(props: {
               props.onNavigateToEntity(
                 props.ontologyId,
                 props.entityType || "",
-                props.entityData
+                props.entityData,
               );
           }}
         >
@@ -93,7 +96,7 @@ function TreeLink(props: {
                     props.onNavigateToOntology(
                       definingOntology,
                       props.entityType || "",
-                      props.entityData
+                      props.entityData,
                     );
                 }}
               >
@@ -132,7 +135,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   // used to manually rerender the component on update of hierarchy (as hierarchy object is nested and cannot be used as state variable itself)
   const [, forceUpdate] = useReducer(
     (x) => x + (1 % Number.MAX_SAFE_INTEGER),
-    0
+    0,
   );
 
   const api: HierarchyBuilder = useMemo(() => {
@@ -175,15 +178,15 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       });
     },
     {
-        refetchOnWindowFocus: false
-    }
+      refetchOnWindowFocus: false,
+    },
   );
 
   const toggleNode = useCallback(
     (node: TreeNode) => {
       if (!(hierarchy instanceof Hierarchy))
         throw Error(
-          "Hierarchy object was undefined while trying to expand a tree node. This should never happen."
+          "Hierarchy object was undefined while trying to expand a tree node. This should never happen.",
         );
 
       // TODO: individual hierarchies are frozen for now (before undoing, correct child loading has to be implemented for individual hierarchies)
@@ -207,13 +210,13 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         hierarchy.closeNode(node);
       }
     },
-    [hierarchy]
+    [hierarchy],
   );
 
   function renderTreeNode(
     hierarchy: Hierarchy,
     node: TreeNode,
-    drawLine?: boolean
+    drawLine?: boolean,
   ) {
     return (
       <div key={randomString()}>
@@ -264,8 +267,16 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 childRelationToParent={node.childRelationToParent}
                 ontologyId={hierarchy.ontologyId}
                 entityType={hierarchy.entityType}
-                onNavigateToEntity={typeof onNavigateToEntity === "function" ? onNavigateToEntity : () => {}}
-                onNavigateToOntology={typeof onNavigateToOntology === "function" ? onNavigateToOntology : () => {}}
+                onNavigateToEntity={
+                  typeof onNavigateToEntity === "function"
+                    ? onNavigateToEntity
+                    : () => {}
+                }
+                onNavigateToOntology={
+                  typeof onNavigateToOntology === "function"
+                    ? onNavigateToOntology
+                    : () => {}
+                }
                 highlight={node.entityData.iri == hierarchy?.mainEntityIri}
               />
               &nbsp;
@@ -297,7 +308,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                     {renderTreeNode(
                       hierarchy,
                       child,
-                      idx < node.loadedChildren.length - 1
+                      idx < node.loadedChildren.length - 1,
                     )}
                   </div>
                 );
@@ -323,8 +334,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
               renderTreeNode(
                 hierarchy,
                 rootNode,
-                idx < hierarchy.roots.length - 1
-              )
+                idx < hierarchy.roots.length - 1,
+              ),
             )}
           </EuiText>
         ) : (

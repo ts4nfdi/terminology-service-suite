@@ -300,7 +300,10 @@
 }
 .jstree-proton .jstree-anchor,
 .jstree-proton .jstree-wholerow {
-  transition: background-color 0.15s, box-shadow 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s,
+    color 0.15s;
 }
 .jstree-proton .jstree-hovered {
   background: #bddefa;

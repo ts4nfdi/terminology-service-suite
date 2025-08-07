@@ -10,7 +10,8 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiIcon, EuiProvider
+  EuiIcon,
+  EuiProvider,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { AutocompleteWidgetProps } from "../../../app/types";
@@ -18,7 +19,7 @@ import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/Bread
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
-import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -479,12 +480,11 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (label) return label;
 
     const ontologyId = item?.getOntologyId()?.toUpperCase();
-    const shortForm = item?.getShortForm()
+    const shortForm = item?.getShortForm();
 
     return (
-        (ontologyId ? `- (${ontologyId}` : "") +
-        (shortForm ? `- (${shortForm}` : "") ||
-        "-"
+      (ontologyId ? `- (${ontologyId}` : "") +
+        (shortForm ? `- (${shortForm}` : "") || "-"
     );
   }
 

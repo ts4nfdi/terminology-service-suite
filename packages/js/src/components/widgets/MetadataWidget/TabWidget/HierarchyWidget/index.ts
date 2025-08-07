@@ -1,11 +1,8 @@
 import { createHierarchy } from "./HierarchyWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createHierarchy
+  createHierarchy,
 };
 
-export {
-  createHierarchy
-}
+export { createHierarchy };

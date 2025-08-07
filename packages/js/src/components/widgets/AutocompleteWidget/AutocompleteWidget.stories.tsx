@@ -1,11 +1,15 @@
-import './index'
+import "./index";
 import { AutocompleteDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { AutocompleteWidget, AutocompleteWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  AutocompleteWidget,
+  AutocompleteWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import {
   AllowAddingCustomTermsArgs,
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
-  AutocompleteWidgetStoryArgTypes, commonAutocompleteWidgetPlay,
+  AutocompleteWidgetStoryArgTypes,
+  commonAutocompleteWidgetPlay,
   HideApiSourceApiGatewayArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
@@ -14,7 +18,8 @@ import {
   UseAPIGatewayWithOLSArgs,
   UseAPIGatewayWithOntoPortalArgs,
   UseAPIGatewayWithSkosmosArgs,
-  WithCustomValueArgs, WithDefaultsArgs,
+  WithCustomValueArgs,
+  WithDefaultsArgs,
   WithDefaultsCompactArgs,
   WithDescriptionAndShortFormArgs,
   WithGermanInputArgs,
@@ -23,7 +28,7 @@ import {
   WithMultipleValuesArgs,
   WithPreselectedMultipleValuesOLS4Args,
   WithPreselectedValueAndUnresolvedIriOLS3Args,
-  WithPreselectedValueOLS4v2Args
+  WithPreselectedValueOLS4v2Args,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -37,7 +42,7 @@ const meta = {
   title: "Search/AutocompleteWidget",
   tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
         component: AutocompleteDescription,
@@ -56,12 +61,12 @@ const meta = {
         api:"${args.api}",
         parameter:"${args.parameter}",
         selectionChangedEvent:${args.selectionChangedEvent
-      .toString()
-      .replace(/(\r\n|\n|\r)/gm, "")},
+          .toString()
+          .replace(/(\r\n|\n|\r)/gm, "")},
         preselected:${JSON.stringify(args.preselected).replace(
-      /"([^"]+)":/g,
-      "$1:",
-    )},
+          /"([^"]+)":/g,
+          "$1:",
+        )},
         placeholder:"${args.placeholder}",
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
@@ -86,7 +91,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: WithDefaultsArgs,
-}
+};
 
 export const UseAPIGatewayWithOLS: Story = {
   args: UseAPIGatewayWithOLSArgs,
@@ -113,7 +118,7 @@ export const WithPreselectedValueOLS4v2: Story = {
 };
 
 export const WithPreselectedValueAndUnresolvedIriOLS3: Story = {
-  args: WithPreselectedValueAndUnresolvedIriOLS3Args
+  args: WithPreselectedValueAndUnresolvedIriOLS3Args,
 };
 
 export const WithPreselectedMultipleValuesOLS4: Story = {

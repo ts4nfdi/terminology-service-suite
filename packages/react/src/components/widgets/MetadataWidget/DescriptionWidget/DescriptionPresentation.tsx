@@ -10,20 +10,28 @@ function DescriptionPresentation(props: DescriptionPresentationProps) {
 
   const renderContent = () => {
     if (isLoading) {
-      return <div data-testid="description"><EuiLoadingSpinner size="s" /></div>;
+      return (
+        <div data-testid="description">
+          <EuiLoadingSpinner size="s" />
+        </div>
+      );
     }
 
     if (error) {
       return (
         <div data-testid="description">
-        <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>
+          <EuiText>{getErrorMessageToDisplay(error, "description")}</EuiText>
         </div>
       );
     }
 
     return <EuiText>{descText || description}</EuiText>;
   };
-  return <div className={finalClassName} data-testid={"description"}>{renderContent()}</div>;
+  return (
+    <div className={finalClassName} data-testid={"description"}>
+      {renderContent()}
+    </div>
+  );
 }
 
 export { DescriptionPresentation };

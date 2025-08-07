@@ -13,23 +13,23 @@ export class OLS3Property extends OLS3Entity implements Property {
 
   getParents(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2000/01/rdf-schema#subPropertyOf"]
+      this.properties["http://www.w3.org/2000/01/rdf-schema#subPropertyOf"],
     );
   }
   getSuperEntities(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2000/01/rdf-schema#subPropertyOf"]
+      this.properties["http://www.w3.org/2000/01/rdf-schema#subPropertyOf"],
     );
   }
   getEquivalents(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2002/07/owl#equivalentProperty"]
+      this.properties["http://www.w3.org/2002/07/owl#equivalentProperty"],
     );
   }
 
   getDisjointWith() {
     return asArray(
-      this.properties["http://www.w3.org/2002/07/owl#propertyDisjointWith"]
+      this.properties["http://www.w3.org/2002/07/owl#propertyDisjointWith"],
     );
   }
 
@@ -39,19 +39,19 @@ export class OLS3Property extends OLS3Entity implements Property {
 
   getDomain() {
     return asArray(
-      this.properties["http://www.w3.org/2000/01/rdf-schema#domain"]
+      this.properties["http://www.w3.org/2000/01/rdf-schema#domain"],
     );
   }
 
   getRange() {
     return asArray(
-      this.properties["http://www.w3.org/2000/01/rdf-schema#range"]
+      this.properties["http://www.w3.org/2000/01/rdf-schema#range"],
     );
   }
 
   getPropertyChains(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2002/07/owl#propertyChainAxiom"]
+      this.properties["http://www.w3.org/2002/07/owl#propertyChainAxiom"],
     );
   }
 }

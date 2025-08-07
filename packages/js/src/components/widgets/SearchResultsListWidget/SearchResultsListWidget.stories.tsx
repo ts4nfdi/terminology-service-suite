@@ -1,4 +1,7 @@
-import { SearchResultsListWidget, SearchResultsListWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  SearchResultsListWidget,
+  SearchResultsListWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import {
   commonSearchResultsListWidgetPlay,
   ErrorSearchResultsListArgs,
@@ -8,10 +11,10 @@ import {
   SearchResultsListWidgetStoryArgs,
   SearchResultsListWidgetStoryArgTypes,
   TibDataPlantArgs,
-  TibNFDI4CHEMArgs
+  TibNFDI4CHEMArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories";
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import './index'
+import "./index";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -64,30 +67,30 @@ type Story = StoryObj<typeof meta>;
 
 export const SearchResultsListSafety: Story = {
   args: SearchResultsListSafetyArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const SearchResultsListNFDI4Health: Story = {
   args: SearchResultsListNFDI4HealthArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const ErrorSearchResultsList: Story = {
   args: ErrorSearchResultsListArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const TibNFDI4CHEM: Story = {
   args: TibNFDI4CHEMArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const TibDataPlant: Story = {
   args: TibDataPlantArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const SearchResultsListOls4: Story = {
   args: SearchResultsListOls4Args,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };

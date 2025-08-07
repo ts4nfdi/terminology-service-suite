@@ -1,12 +1,18 @@
 import {
   commonResourcesWidgetPlay,
-  ResourcesWidget1Args, ResourcesWidgetLogosArgs,
+  ResourcesWidget1Args,
+  ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
-  ResourcesWidgetStoryArgTypes, WithActionsAndSafetyArgs, WithActionsArgs
+  ResourcesWidgetStoryArgTypes,
+  WithActionsAndSafetyArgs,
+  WithActionsArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
-import './index'
+import "./index";
 import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { ResourcesWidget, ResourcesWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  ResourcesWidget,
+  ResourcesWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -60,20 +66,22 @@ type Story = StoryObj<typeof meta>;
 
 export const ResourcesWidget1 = {
   args: ResourcesWidget1Args,
-  play: commonResourcesWidgetPlay
+  play: commonResourcesWidgetPlay,
 };
 
 export const WithActions = {
-  args: ResourcesWidget1Args, WithActionsArgs,
-  play: commonResourcesWidgetPlay
+  args: ResourcesWidget1Args,
+  WithActionsArgs,
+  play: commonResourcesWidgetPlay,
 };
 
 export const WithActionsAndSafety = {
-  args: WithActionsArgs, WithActionsAndSafetyArgs,
-  play: commonResourcesWidgetPlay
+  args: WithActionsArgs,
+  WithActionsAndSafetyArgs,
+  play: commonResourcesWidgetPlay,
 };
 
 export const ResourcesWidgetLogos = {
   args: ResourcesWidgetLogosArgs,
-  play: commonResourcesWidgetPlay
+  play: commonResourcesWidgetPlay,
 };

@@ -12,7 +12,8 @@ import {
   WithStylesArgs,
   WithoutStylesArgs,
   OntologyTitleCustomLinkArgs,
-  OntologyTitleCustomOnNavigateArgs, commonTitleWidgetPlay
+  OntologyTitleCustomOnNavigateArgs,
+  commonTitleWidgetPlay,
 } from "./TitleWidgetStories";
 import { TitleDescription } from "../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -38,55 +39,55 @@ type Story = StoryObj<typeof meta>;
 
 export const TitleWidgetDefault: Story = {
   args: TitleWidgetDefaultArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const OntologyTitle: Story = {
   args: OntologyTitleArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const TitleWidgetWithTitleText: Story = {
   args: TitleWidgetWithTitleTextArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const IncorrectIriWithDefaultValue: Story = {
   args: IncorrectIriWithoutDefaultValueArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const IncorrectIriWithoutDefaultValue: Story = {
   args: IncorrectIriWithoutDefaultValueArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const WithStyles: Story = {
   args: WithStylesArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const WithoutStyles: Story = {
   args: WithoutStylesArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const OntologyTitleCustomOnNavigate: Story = {
   args: OntologyTitleCustomOnNavigateArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };
 
 export const OntologyTitleCustomLink: Story = {
   args: OntologyTitleCustomLinkArgs,
-  play: commonTitleWidgetPlay
+  play: commonTitleWidgetPlay,
 };

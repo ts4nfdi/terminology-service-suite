@@ -1,21 +1,25 @@
 import {
-  AllValuesFromArgs, AxiomsArgs,
+  AllValuesFromArgs,
+  AxiomsArgs,
   commonEntityRelationsWidgetPlay,
   DifferentFromArgs,
   EntityRelationsWidgetStoryArgs,
   EntityRelationsWidgetStoryArgTypes,
-  EquivalentToArgs, InstancesArgs,
-  InverseOfArgs, NavigateToEBIPageArgs,
-  PropertyChainArgs, QualifiedCardinalityArgs,
+  EquivalentToArgs,
+  InstancesArgs,
+  InverseOfArgs,
+  NavigateToEBIPageArgs,
+  PropertyChainArgs,
+  QualifiedCardinalityArgs,
   SingleValueArgs,
-  SubEntityOfArgs
+  SubEntityOfArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories";
-import './index'
+import "./index";
 import { EntityRelationsDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   DataContentWidgetProps,
   EntityRelationsWidget,
-  EntityRelationsWidgetProps
+  EntityRelationsWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -72,55 +76,55 @@ type Story = StoryObj<typeof meta>;
 
 export const SubEntityOf: Story = {
   args: SubEntityOfArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const AllValuesFrom: Story = {
   args: AllValuesFromArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const DifferentFrom: Story = {
   args: DifferentFromArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const EquivalentTo: Story = {
   args: EquivalentToArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const SingleValue: Story = {
   args: SingleValueArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const InverseOf: Story = {
   args: InverseOfArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const PropertyChain: Story = {
   args: PropertyChainArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const Instances: Story = {
   args: InstancesArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const Axioms: Story = {
   args: AxiomsArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const QualifiedCardinality: Story = {
   args: QualifiedCardinalityArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };

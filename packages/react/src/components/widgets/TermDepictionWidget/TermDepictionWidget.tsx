@@ -13,8 +13,7 @@ import {
 } from "@elastic/eui";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "@google/model-viewer";
-import {OlsThingApi} from "../../../api/ols/OlsThingApi";
-
+import { OlsThingApi } from "../../../api/ols/OlsThingApi";
 
 function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { api, iri, ontologyId, useLegacy } = props;
@@ -24,7 +23,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
     ["termDepiction", api, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getThingObject(iri, "class", ontologyId, "", useLegacy);
-    }
+    },
   );
 
   return (
@@ -36,13 +35,17 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
             if (url.includes(".glb")) {
               return (
                 <model-viewer
-                  style={{ width: '300px', height: '300px', display: 'inline-block' }}
+                  style={{
+                    width: "300px",
+                    height: "300px",
+                    display: "inline-block",
+                  }}
                   src={url}
                   shadow-intensity="1"
                   camera-controls
                   touch-action="pan-y"
                 />
-              )
+              );
             }
             return (
               <>
@@ -57,8 +60,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
                   <small>Click to expand.</small>
                 </p>
               </>
-            )
-
+            );
           })}
         </>
       )}

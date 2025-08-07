@@ -25,7 +25,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import { OntologyInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
-import {OlsOntologyApi} from "../../../api/ols/OlsOntologyApi";
+import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -165,7 +165,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                             ontology.getLinkedEntities(),
                             creator,
                             showBadges,
-                            onNavigates
+                            onNavigates,
                           )}
                         </li>
                       );
@@ -180,7 +180,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                     ontology.getLinkedEntities(),
                     ontology.getCreators()[0],
                     showBadges,
-                    onNavigates
+                    onNavigates,
                   )}
                 </p>
               )}
@@ -204,8 +204,8 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
               <b>
                 {capitalize(
                   deUnderscore(
-                    deCamelCase(thing.getAnnotationTitleById(annoKey))
-                  )
+                    deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                  ),
                 )}
                 :
               </b>
@@ -219,7 +219,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                             thing,
                             annotation,
                             showBadges,
-                            onNavigates
+                            onNavigates,
                           )}
                         </li>
                       );

@@ -7,7 +7,8 @@ import {
   ErrorSearchResultsListArgs,
   TibNFDI4CHEMArgs,
   TibDataPlantArgs,
-  SearchResultsListOls4Args, commonSearchResultsListWidgetPlay
+  SearchResultsListOls4Args,
+  commonSearchResultsListWidgetPlay,
 } from "./SearchResultsListWidgetStories";
 import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -32,30 +33,30 @@ type Story = StoryObj<typeof meta>;
 
 export const SearchResultsListSafety: Story = {
   args: SearchResultsListSafetyArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const SearchResultsListNFDI4Health: Story = {
   args: SearchResultsListNFDI4HealthArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const ErrorSearchResultsList: Story = {
   args: ErrorSearchResultsListArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const TibNFDI4CHEM: Story = {
   args: TibNFDI4CHEMArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const TibDataPlant: Story = {
   args: TibDataPlantArgs,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };
 
 export const SearchResultsListOls4: Story = {
   args: SearchResultsListOls4Args,
-  play: commonSearchResultsListWidgetPlay
+  play: commonSearchResultsListWidgetPlay,
 };

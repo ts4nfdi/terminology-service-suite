@@ -12,7 +12,7 @@ import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
-import {OlsEntityApi} from "../../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -36,12 +36,12 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
             entityType,
             undefined,
             parameter,
-            useLegacy
+            useLegacy,
           )
         )["_embedded"];
         ontolist = embedded[Object.keys(embedded)[0]]
           .filter(
-            (entityInOntology: any) => entityInOntology["is_defining_ontology"]
+            (entityInOntology: any) => entityInOntology["is_defining_ontology"],
           )
           .map((entityInOntology: any) => entityInOntology["ontology_name"]);
         realEntityType =
@@ -54,7 +54,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
           entityType,
           ontologyId,
           parameter,
-          useLegacy
+          useLegacy,
         );
         ontolist = entity
           .getDefinedBy()
@@ -64,7 +64,7 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
       }
       ontolist = ontolist.sort();
       return { ontoList: ontolist, entityType: realEntityType, label: label };
-    }
+    },
   );
 
   return (

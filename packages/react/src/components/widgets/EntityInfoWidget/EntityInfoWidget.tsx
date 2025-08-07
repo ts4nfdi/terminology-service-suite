@@ -39,7 +39,7 @@ import {
 } from "../../../model/ModelTypeCheck";
 import { EntityInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
-import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -73,7 +73,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       entityType,
       ontologyId,
       parameter,
-      useLegacy
+      useLegacy,
     );
   });
 
@@ -158,7 +158,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               onNavigateToOntology: props.onNavigateToOntology,
                               onNavigateToDisambiguate:
                                 props.onNavigateToDisambiguate,
-                            }
+                            },
                           )}
                         </li>
                       );
@@ -177,7 +177,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       onNavigateToEntity: props.onNavigateToEntity,
                       onNavigateToOntology: props.onNavigateToOntology,
                       onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    }
+                    },
                   )}
                 </p>
               )}
@@ -211,7 +211,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               onNavigateToOntology: props.onNavigateToOntology,
                               onNavigateToDisambiguate:
                                 props.onNavigateToDisambiguate,
-                            }
+                            },
                           )}
                         </li>
                       );
@@ -230,7 +230,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       onNavigateToEntity: props.onNavigateToEntity,
                       onNavigateToOntology: props.onNavigateToOntology,
                       onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    }
+                    },
                   )}
                 </p>
               )}
@@ -309,7 +309,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               onNavigateToOntology: props.onNavigateToOntology,
                               onNavigateToDisambiguate:
                                 props.onNavigateToDisambiguate,
-                            }
+                            },
                           )}
                         </li>
                       );
@@ -328,7 +328,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       onNavigateToEntity: props.onNavigateToEntity,
                       onNavigateToOntology: props.onNavigateToOntology,
                       onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    }
+                    },
                   )}
                 </p>
               )}
@@ -362,7 +362,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                             onNavigateToOntology: props.onNavigateToOntology,
                             onNavigateToDisambiguate:
                               props.onNavigateToDisambiguate,
-                          }
+                          },
                         )}
                       </li>
                     );
@@ -381,7 +381,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     onNavigateToEntity: props.onNavigateToEntity,
                     onNavigateToOntology: props.onNavigateToOntology,
                     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }
+                  },
                 )}
               </p>
             )}
@@ -392,11 +392,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   }
 
   function getIndividualPropertyAssertionsSection(
-    individual: Individual
+    individual: Individual,
   ): ReactElement {
     const propertyIris = Object.keys(individual.properties);
     const negativeProperties = propertyIris.filter((key) =>
-      key.startsWith("negativePropertyAssertion+")
+      key.startsWith("negativePropertyAssertion+"),
     );
     const objectProperties = propertyIris.filter(
       (key) =>
@@ -404,7 +404,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         individual
           .getLinkedEntities()
           .get(key)
-          ?.type.indexOf("objectProperty") !== -1
+          ?.type.indexOf("objectProperty") !== -1,
     );
     const dataProperties = propertyIris.filter(
       (key) =>
@@ -412,7 +412,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         individual
           .getLinkedEntities()
           .get(key)
-          ?.type.indexOf("dataProperty") !== -1
+          ?.type.indexOf("dataProperty") !== -1,
     );
     const propertyAssertions: ReactElement[] = [];
 
@@ -430,7 +430,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 onNavigateToEntity: props.onNavigateToEntity,
                 onNavigateToOntology: props.onNavigateToOntology,
                 onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }
+              },
             )}
             {typeof v === "string" && v.includes("http") ? (
               <>
@@ -448,7 +448,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     onNavigateToEntity: props.onNavigateToEntity,
                     onNavigateToOntology: props.onNavigateToOntology,
                     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }
+                  },
                 )}
               </>
             ) : (
@@ -456,11 +456,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 typeof v === "string"
                   ? v
                   : typeof v === "object" && !Array.isArray(v) && v.value
-                  ? JSON.stringify(v.value)
-                  : JSON.stringify(v)
+                    ? JSON.stringify(v.value)
+                    : JSON.stringify(v),
               )
             )}
-          </>
+          </>,
         );
       }
     }
@@ -479,7 +479,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 onNavigateToEntity: props.onNavigateToEntity,
                 onNavigateToOntology: props.onNavigateToOntology,
                 onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }
+              },
             )}
             {
               <>
@@ -497,11 +497,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     onNavigateToEntity: props.onNavigateToEntity,
                     onNavigateToOntology: props.onNavigateToOntology,
                     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }
+                  },
                 )}
               </>
             }
-          </>
+          </>,
         );
       }
     }
@@ -527,7 +527,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 onNavigateToEntity: props.onNavigateToEntity,
                 onNavigateToOntology: props.onNavigateToOntology,
                 onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }
+              },
             )}
             {typeof v === "string" && v.includes("http") ? (
               <>
@@ -545,7 +545,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     onNavigateToEntity: props.onNavigateToEntity,
                     onNavigateToOntology: props.onNavigateToOntology,
                     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }
+                  },
                 )}
               </>
             ) : hasObjectProperty ? (
@@ -553,8 +553,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 typeof v === "string"
                   ? v
                   : typeof v === "object" && !Array.isArray(v) && v.value
-                  ? JSON.stringify(v.value)
-                  : JSON.stringify(v)
+                    ? JSON.stringify(v.value)
+                    : JSON.stringify(v),
               )
             ) : hasDataProperty ? (
               <>
@@ -572,13 +572,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     onNavigateToEntity: props.onNavigateToEntity,
                     onNavigateToOntology: props.onNavigateToOntology,
                     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }
+                  },
                 )}
               </>
             ) : (
               <></>
             )}
-          </>
+          </>,
         );
       }
     }
@@ -623,8 +623,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 <b>
                   {capitalize(
                     deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey))
-                    )
+                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                    ),
                   )}
                   :
                 </b>
@@ -672,8 +672,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             ? (entityType
                 ? capitalize(getEntityTypeName(entityType))
                 : isSuccessEntity && entity
-                ? capitalize(entity.getType())
-                : "") + " Information"
+                  ? capitalize(entity.getType())
+                  : "") + " Information"
             : ""
         }
         layout="horizontal"

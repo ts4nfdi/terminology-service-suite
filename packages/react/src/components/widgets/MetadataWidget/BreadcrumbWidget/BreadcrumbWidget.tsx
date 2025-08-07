@@ -34,9 +34,9 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   return (
@@ -49,7 +49,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
                 props.onNavigateToOntology(
                   props.ontologyId || "",
                   undefined,
-                  undefined
+                  undefined,
                 );
             }}
             role="button" // Improve accessibility
@@ -115,21 +115,21 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
 function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const queryClient = new QueryClient();
   return (
-      <EuiProvider colorMode="light" globalStyles={false}>
-        <QueryClientProvider client={queryClient}>
-          <BreadcrumbWidget
-              api={props.api}
-              entityType={props.entityType}
-              iri={props.iri}
-              ontologyId={props.ontologyId}
-              colorFirst={props.colorFirst}
-              colorSecond={props.colorSecond}
-              parameter={props.parameter}
-              useLegacy={props.useLegacy}
-              onNavigateToOntology={props.onNavigateToOntology}
-          />
-        </QueryClientProvider>
-      </EuiProvider>
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <BreadcrumbWidget
+          api={props.api}
+          entityType={props.entityType}
+          iri={props.iri}
+          ontologyId={props.ontologyId}
+          colorFirst={props.colorFirst}
+          colorSecond={props.colorSecond}
+          parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          onNavigateToOntology={props.onNavigateToOntology}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
   );
 }
 

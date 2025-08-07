@@ -6,16 +6,13 @@ const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   // no ts files included here to not include html stories
-  stories: [
-    "../src/**/*.stories.mdx",
-    "../src/**/*.stories.@(js|jsx|tsx)",
-  ],
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|tsx)"],
 
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-vitest"),
-    getAbsolutePath("@storybook/addon-vitest")
+    getAbsolutePath("@storybook/addon-vitest"),
   ],
 
   framework: {
@@ -25,7 +22,7 @@ const config: StorybookConfig = {
 
   typescript: {
     reactDocgen: "react-docgen",
-  }
+  },
 };
 export default config;
 

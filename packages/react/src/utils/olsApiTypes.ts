@@ -1,71 +1,69 @@
-
-
 export interface PaginationParams {
-    size?: string;
-    page?: string;
+  size?: string;
+  page?: string;
 }
 
 export interface SortingParams {
-    sortField: string | number;
-    sortDir?: "asc" | "desc";
+  sortField: string | number;
+  sortDir?: "asc" | "desc";
 }
 
 export interface ContentParams {
-    ontologyId?: string;
-    termIri?: string;
-    propertyIri?: string;
-    individualIri?: string;
-    queryString?: string;
+  ontologyId?: string;
+  termIri?: string;
+  propertyIri?: string;
+  individualIri?: string;
+  queryString?: string;
 }
 
 export interface SearchQueryParams {
-    query: string;
-    exactMatch?: boolean;
-    showObsoleteTerms?: boolean;
-    types?: string;
-    ontology?: string;
-    groupByIri?: boolean;
+  query: string;
+  exactMatch?: boolean;
+  showObsoleteTerms?: boolean;
+  types?: string;
+  ontology?: string;
+  groupByIri?: boolean;
 }
 
 export interface SelectQueryParams {
-    query: string;
+  query: string;
 }
 
 export interface SuggestQueryParams {
-    query: string;
+  query: string;
 }
 
 export interface JsTreeParams {
-    viewMode?: string;
-    siblings?: boolean;
-    child?: string;
+  viewMode?: string;
+  siblings?: boolean;
+  child?: string;
 }
 
 export type JSTreeNode = {
-    id: string;
-    parent: string;
+  id: string;
+  parent: string;
+  iri: string;
+  text: string;
+  state: {
+    opened: boolean;
+  };
+  children: boolean;
+  childrenList?: JSTreeNode[];
+  parentList?: JSTreeNode[];
+  a_attr: {
     iri: string;
-    text: string;
-    state: {
-        opened: boolean;
-    };
-    children: boolean;
-    childrenList?: JSTreeNode[];
-    parentList?: JSTreeNode[];
-    a_attr: {
-        iri: string;
-        ontology_name: string;
-        title: string;
-        class: string;
-    };
     ontology_name: string;
+    title: string;
+    class: string;
+  };
+  ontology_name: string;
 };
 
 export type apiCallFn = (
-    paginationParams?: PaginationParams,
-    sortingParams?: SortingParams,
-    contentParams?: ContentParams,
-    parameter?: string,
-    useLegacy?: boolean,
-    abortSignal?: AbortSignal,
+  paginationParams?: PaginationParams,
+  sortingParams?: SortingParams,
+  contentParams?: ContentParams,
+  parameter?: string,
+  useLegacy?: boolean,
+  abortSignal?: AbortSignal,
 ) => Promise<any>;

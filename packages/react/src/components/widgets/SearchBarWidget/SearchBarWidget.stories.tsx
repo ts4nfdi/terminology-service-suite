@@ -4,7 +4,8 @@ import {
   SearchBarWidgetStoryArgTypes,
   SearchBarWidgetDefaultArgs,
   TibNFDI4CHEMArgs,
-  TibDataPlantArgs, commonSearchBartWidgetPlay
+  TibDataPlantArgs,
+  commonSearchBartWidgetPlay,
 } from "./SearchBarWidgetStories";
 import { SearchBarDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -29,15 +30,15 @@ type Story = StoryObj<typeof meta>;
 
 export const SearchBarWidgetDefault: Story = {
   args: SearchBarWidgetDefaultArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };
 
 export const TibNFDI4CHEM: Story = {
   args: TibNFDI4CHEMArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };
 
 export const TibDataPlant: Story = {
   args: TibDataPlantArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };

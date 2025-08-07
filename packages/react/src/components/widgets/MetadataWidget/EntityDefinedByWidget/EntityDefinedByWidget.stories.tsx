@@ -4,7 +4,8 @@ import {
   EntityDefinedByWidgetStoryArgTypes,
   v2ApiONSArgs,
   emptyInDefiningOntologyArgs,
-  legacyApiArgs, commonEntityDefinedByWidgetPlay
+  legacyApiArgs,
+  commonEntityDefinedByWidgetPlay,
 } from "./EntityDefinedByWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { EntityDefinedByDescription } from "../../../../app/widgetDescriptions";
@@ -34,15 +35,15 @@ type Story = StoryObj<typeof meta>;
 
 export const emptyInDefiningOntology: Story = {
   args: emptyInDefiningOntologyArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };
 
 export const v2ApiONS: Story = {
   args: v2ApiONSArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };
 
 export const legacyApi: Story = {
   args: legacyApiArgs,
-  play: commonEntityDefinedByWidgetPlay
+  play: commonEntityDefinedByWidgetPlay,
 };

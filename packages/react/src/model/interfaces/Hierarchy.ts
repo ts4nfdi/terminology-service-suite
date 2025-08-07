@@ -76,7 +76,7 @@ export class Hierarchy {
       entityType,
       ontologyId,
       useLegacy,
-      parameter
+      parameter,
     } = props;
 
     this.parentChildRelations = parentChildRelations;
@@ -109,7 +109,7 @@ export class Hierarchy {
     const children = this.parentChildRelations.get(nodeToExpand.entityData.iri);
     if (children == undefined)
       throw Error(
-        `parentChildRelations has no entry for key "${nodeToExpand.entityData.iri}" although this should never happen.`
+        `parentChildRelations has no entry for key "${nodeToExpand.entityData.iri}" although this should never happen.`,
       );
 
     let iLoadedChildren = 0;
@@ -127,8 +127,8 @@ export class Hierarchy {
         nodeToExpand.addChild(
           new TreeNode(
             this.entitiesData.get(children[iChildren].childIri)!,
-            children[iChildren].childRelationToParent
-          )
+            children[iChildren].childRelationToParent,
+          ),
         );
       }
       iChildren++;
@@ -138,8 +138,8 @@ export class Hierarchy {
       nodeToExpand.addChild(
         new TreeNode(
           this.entitiesData.get(children[iChildren].childIri)!,
-          children[iChildren].childRelationToParent
-        )
+          children[iChildren].childRelationToParent,
+        ),
       );
       iChildren++;
     }
@@ -160,7 +160,7 @@ export class Hierarchy {
 
         if (
           (currNode.entityData.label || currNode.entityData.iri).localeCompare(
-            prevNode.entityData.label || prevNode.entityData.iri
+            prevNode.entityData.label || prevNode.entityData.iri,
           ) < 0
         ) {
           nodeToExpand.loadedChildren[currIdx] = prevNode;
@@ -185,11 +185,11 @@ export class Hierarchy {
   async fetchInformationForExpansion(nodeToExpand: TreeNode) {
     if (!nodeToExpand.entityData.hasChildren)
       throw Error(
-        `Node containing iri="${nodeToExpand.entityData.iri}" could not be expanded: Entity is not expandable.`
+        `Node containing iri="${nodeToExpand.entityData.iri}" could not be expanded: Entity is not expandable.`,
       );
 
     const allChildrenPresent = this.allChildrenPresent.has(
-      nodeToExpand.entityData.iri
+      nodeToExpand.entityData.iri,
     );
     const nodeParentChildRelations =
       this.parentChildRelations.get(nodeToExpand.entityData.iri) || [];
@@ -216,7 +216,7 @@ export class Hierarchy {
           this.entitiesData.set(child.iri, child);
           if (child.parents) {
             const parRelation = child.parents.filter(
-              (par) => par.value == nodeToExpand.entityData.iri
+              (par) => par.value == nodeToExpand.entityData.iri,
             );
             parChildRel.push({
               childIri: child.iri,

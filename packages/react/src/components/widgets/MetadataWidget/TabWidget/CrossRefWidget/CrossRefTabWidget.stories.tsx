@@ -4,7 +4,8 @@ import {
   CrossRefWidgetStoryArgTypes,
   CrossRefTabWidget1Args,
   SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs, commonCrossRefWidgetPlay
+  DefiningOntologyUnavailableArgs,
+  commonCrossRefWidgetPlay,
 } from "./CrossRefWidgetStories";
 import { CrossRefTabDescription } from "../../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -30,15 +31,15 @@ type Story = StoryObj<typeof meta>;
 
 export const CrossRefTabWidget1: Story = {
   args: CrossRefTabWidget1Args,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonCrossRefWidgetPlay
+  play: commonCrossRefWidgetPlay,
 };

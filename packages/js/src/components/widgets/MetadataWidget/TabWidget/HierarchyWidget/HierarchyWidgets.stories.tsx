@@ -13,13 +13,16 @@ import {
   PreferredRootsArgs,
   PropertyRootsArgs,
   SagePubHierarchyArgs,
-  SkosHierarchyArgs, SkosmosAgrovocGermanArgs
+  SkosHierarchyArgs,
+  SkosmosAgrovocGermanArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
-import './index'
+import "./index";
 import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { HierarchyWidget, HierarchyWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  HierarchyWidget,
+  HierarchyWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -78,65 +81,65 @@ type Story = StoryObj<typeof meta>;
 
 export const ClassHierarchy: Story = {
   args: ClassHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const IndividualHierarchy: Story = {
   args: IndividualHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const PreferredRoots: Story = {
   args: PreferredRootsArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const IncludeObsoleteEntities: Story = {
   args: IncludeObsoleteEntitiesArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const PropertyRoots: Story = {
   args: PropertyRootsArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const IndividualRoots: Story = {
   args: IndividualRootsArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const LargeHierarchy: Story = {
   args: LargeHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const SkosHierarchy: Story = {
   args: SkosHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const SagePubHierarchy: Story = {
   args: SagePubHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const OntoportalHierarchy: Story = {
-  args:OntoportalHierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  args: OntoportalHierarchyArgs,
+  play: commonHierarchyWidgetPlay,
 };
 
 export const OLS3Hierarchy: Story = {
   args: OLS3HierarchyArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const OLSGerman: Story = {
   args: OLSGermanArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };
 
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
-  play: commonHierarchyWidgetPlay
+  play: commonHierarchyWidgetPlay,
 };

@@ -4,11 +4,15 @@ import {
   GraphViewWidgetExampleArgs,
   commonGraphViewWidgetPlay,
   RootWalkGraphExampleArgs,
-  ChebiWaterArgs, ChebiWaterRootWalkArgs
+  ChebiWaterArgs,
+  ChebiWaterRootWalkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
-import './index'
+import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { GraphViewWidget, GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  GraphViewWidget,
+  GraphViewWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -59,7 +63,7 @@ type Story = StoryObj<typeof meta>;
 
 export const GraphViewWidgetExample: Story = {
   args: GraphViewWidgetExampleArgs,
-  play: commonGraphViewWidgetPlay
+  play: commonGraphViewWidgetPlay,
 };
 
 export const RootWalkGraphExample: Story = {
@@ -67,9 +71,9 @@ export const RootWalkGraphExample: Story = {
   parameters: {
     docs: {
       disable: true,
-    }
+    },
   },
-  play: commonGraphViewWidgetPlay
+  play: commonGraphViewWidgetPlay,
 };
 
 export const ChebiWater: Story = {
@@ -77,9 +81,9 @@ export const ChebiWater: Story = {
   parameters: {
     docs: {
       disable: true,
-    }
+    },
   },
-  play: commonGraphViewWidgetPlay
+  play: commonGraphViewWidgetPlay,
 };
 
 export const ChebiWaterRootWalk: Story = {
@@ -87,7 +91,7 @@ export const ChebiWaterRootWalk: Story = {
   parameters: {
     docs: {
       disable: true,
-    }
+    },
   },
-  play: commonGraphViewWidgetPlay
+  play: commonGraphViewWidgetPlay,
 };

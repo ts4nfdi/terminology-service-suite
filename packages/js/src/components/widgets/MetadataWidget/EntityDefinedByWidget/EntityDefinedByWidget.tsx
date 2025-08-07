@@ -1,9 +1,7 @@
 import { EntityDefinedByWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
-import {
-  WrappedEntityDefinedByWidget
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget";
+import { WrappedEntityDefinedByWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidget";
 
 const roots = new WeakMap<Element, Root>();
 function createEntityDefinedBy(

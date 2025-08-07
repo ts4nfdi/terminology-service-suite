@@ -1,11 +1,8 @@
 import { createOntologyInfo } from "./OntologyInfoWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createOntologyInfo
+  createOntologyInfo,
 };
 
-export {
-  createOntologyInfo
-}
+export { createOntologyInfo };

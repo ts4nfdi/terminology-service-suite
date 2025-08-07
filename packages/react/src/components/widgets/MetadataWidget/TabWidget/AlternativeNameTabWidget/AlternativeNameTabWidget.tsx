@@ -9,7 +9,7 @@ import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
 import ReactDOM from "react-dom";
-import {OlsEntityApi} from "../../../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -32,26 +32,26 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   return (
-      <div data-testid="alternative-name">
-    <AlternativeNameTabPresentation
-      synonyms={
-        data
-          ? isEntity(data)
-            ? data.getSynonyms().map((synonym) => synonym.value)
+    <div data-testid="alternative-name">
+      <AlternativeNameTabPresentation
+        synonyms={
+          data
+            ? isEntity(data)
+              ? data.getSynonyms().map((synonym) => synonym.value)
+              : []
             : []
-          : []
-      }
-      isLoading={isLoading}
-      error={error}
-      className={className}
-    />
-      </div>
+        }
+        isLoading={isLoading}
+        error={error}
+        className={className}
+      />
+    </div>
   );
 }
 

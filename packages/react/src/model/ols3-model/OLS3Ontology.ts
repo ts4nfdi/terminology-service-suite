@@ -25,13 +25,13 @@ export class OLS3Ontology extends OLS3Thing implements Ontology {
   }
   getName(): string {
     const names = Reified.fromJson<string>(
-      this.properties["config"]["title"] || ""
+      this.properties["config"]["title"] || "",
     );
     return (names[0] && names[0].value) || this.getOntologyId();
   }
   getDescription(): string {
     const descriptions = Reified.fromJson<string>(
-      this.properties["config"]["description"] || ""
+      this.properties["config"]["description"] || "",
     );
     return (descriptions[0] && descriptions[0].value) || "";
   }
@@ -107,7 +107,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology {
        properties without an IRI and anything in rdf, rdfs and owl namespaces,
        but this is not possible here as the labels are keys here, not the IRI's */
       return asArray<string>(
-        Object.keys(this.properties["config"]["annotations"])
+        Object.keys(this.properties["config"]["annotations"]),
       );
     } else {
       // "annotations" key is not present in ols4/api
@@ -123,7 +123,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology {
     return Reified.fromJson(
       asArray(this.properties["config"]["annotations"][id]).filter((elem) => {
         return typeof elem !== "string" || elem !== "";
-      })
+      }),
     );
   }
 

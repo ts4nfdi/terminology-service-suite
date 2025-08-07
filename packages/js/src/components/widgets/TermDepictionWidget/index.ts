@@ -1,11 +1,8 @@
 import { createDepiction } from "./TermDepictionWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createDepiction
+  createDepiction,
 };
 
-export {
-  createDepiction
-}
+export { createDepiction };

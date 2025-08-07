@@ -3,10 +3,12 @@ import {
   commonSearchBartWidgetPlay,
   SearchBarWidgetDefaultArgs,
   SearchBarWidgetStoryArgs,
-  SearchBarWidgetStoryArgTypes, TibDataPlantArgs, TibNFDI4CHEMArgs
+  SearchBarWidgetStoryArgTypes,
+  TibDataPlantArgs,
+  TibNFDI4CHEMArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";
 import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import './index'
+import "./index";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchBarWidget } from "@ts4nfdi/terminology-service-suite/src";
 
@@ -58,15 +60,15 @@ type Story = StoryObj<typeof meta>;
 
 export const SearchBarWidgetDefault: Story = {
   args: SearchBarWidgetDefaultArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };
 
 export const TibNFDI4CHEM: Story = {
   args: TibNFDI4CHEMArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };
 
 export const TibDataPlant: Story = {
   args: TibDataPlantArgs,
-  play: commonSearchBartWidgetPlay
+  play: commonSearchBartWidgetPlay,
 };

@@ -5,10 +5,7 @@ import { WrappedDescriptionWidget } from "@ts4nfdi/terminology-service-suite/src
 
 const roots = new WeakMap<Element, Root>();
 
-function createDescription(
-  props: DescriptionWidgetProps,
-  container: Element,
-) {
+function createDescription(props: DescriptionWidgetProps, container: Element) {
   let root = roots.get(container);
   if (!root) {
     root = createRoot(container);

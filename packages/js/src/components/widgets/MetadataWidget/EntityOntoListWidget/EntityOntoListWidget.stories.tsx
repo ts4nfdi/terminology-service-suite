@@ -1,13 +1,19 @@
 import {
   commonEntityOntoListWidgetPlay,
   EntityOntoListWidgetStoryArgs,
-  EntityOntoListWidgetStoryArgTypes, exceedsMaxDisplayArgs, legacyApiArgs, v2ApiEFOArgs, v2ApiONSArgs
+  EntityOntoListWidgetStoryArgTypes,
+  exceedsMaxDisplayArgs,
+  legacyApiArgs,
+  v2ApiEFOArgs,
+  v2ApiONSArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityOntoListWidget/EntityOntoListWidgetStories";
-import './index'
+import "./index";
 import { EntityOntoListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { EntityOntoListWidget, EntityOntoListWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  EntityOntoListWidget,
+  EntityOntoListWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -60,20 +66,20 @@ type Story = StoryObj<typeof meta>;
 
 export const v2ApiEFO: Story = {
   args: v2ApiEFOArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const v2ApiONS: Story = {
   args: v2ApiONSArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const legacyApi: Story = {
   args: legacyApiArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };
 
 export const exceedsMaxDisplay: Story = {
   args: exceedsMaxDisplayArgs,
-  play: commonEntityOntoListWidgetPlay
+  play: commonEntityOntoListWidgetPlay,
 };

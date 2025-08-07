@@ -11,7 +11,7 @@ import { getErrorMessageToDisplay } from "../../../../../app/util";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiAltNameTabStyle.css";
 
 function AlternativeNameTabPresentation(
-  props: AlternativeNameTabWidgetPresentationProps
+  props: AlternativeNameTabWidgetPresentationProps,
 ) {
   const finalClassName = props.className || "ts4nfdi-altNameTab-style";
 

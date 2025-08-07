@@ -21,7 +21,9 @@ import {
   WithPreselectedMultipleValuesOLS4Args,
   WithPreselectedValueAndUnresolvedIriOLS3Args,
   WithCustomValueArgs,
-  WithPreselectedValueOLS4v2Args, WithDefaultsCompactArgs, commonAutocompleteWidgetPlay
+  WithPreselectedValueOLS4v2Args,
+  WithDefaultsCompactArgs,
+  commonAutocompleteWidgetPlay,
 } from "./AutocompleteWidgetStories";
 import "../../../style/tssStyles.css";
 import { AutocompleteDescription } from "../../../app/widgetDescriptions";
@@ -48,108 +50,105 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: WithDefaultsArgs,
-  play: commonAutocompleteWidgetPlay
-}
+  play: commonAutocompleteWidgetPlay,
+};
 
 export const UseAPIGatewayWithOLS: Story = {
   args: UseAPIGatewayWithOLSArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const UseAPIGatewayWithOntoPortal: Story = {
   args: UseAPIGatewayWithOntoPortalArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const UseAPIGatewayWithSkosmos: Story = {
   args: UseAPIGatewayWithSkosmosArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const HideApiSourceApiGateway: Story = {
   args: HideApiSourceApiGatewayArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithDefaultsCompact: Story = {
   args: WithDefaultsCompactArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithPreselectedValueOLS4v2: Story = {
   args: WithPreselectedValueOLS4v2Args,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithPreselectedValueAndUnresolvedIriOLS3: Story = {
   args: WithPreselectedValueAndUnresolvedIriOLS3Args,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithPreselectedMultipleValuesOLS4: Story = {
   args: WithPreselectedMultipleValuesOLS4Args,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithCustomValue: Story = {
   args: WithCustomValueArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithInvalidValue: Story = {
   args: WithInvalidValueArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithGermanInput: Story = {
   args: WithGermanInputArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithDescriptionAndShortForm: Story = {
   args: WithDescriptionAndShortFormArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithLongForm: Story = {
   args: WithLongFormArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const AllowAddingCustomTerms: Story = {
   args: AllowAddingCustomTermsArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const AllowMultipleTerms: Story = {
   args: AllowMultipleTermsArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const WithMultipleValues: Story = {
   args: WithMultipleValuesArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const TibNFDI4CHEM: Story = {
   args: TibNFDI4CHEMArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const TibDataPlant: Story = {
   args: TibDataPlantArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const SubtreeDirectSubtypes: Story = {
   args: SubtreeDirectSubtypesArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
 
 export const SubtreeDirectAndIndirectSubtypes: Story = {
   args: SubtreeDirectAndIndirectSubtypesArgs,
-  play: commonAutocompleteWidgetPlay
+  play: commonAutocompleteWidgetPlay,
 };
-
-
-

@@ -28,12 +28,12 @@ export const thingTypeNames = [
 ] as const;
 
 // Type-creation out of READONLY arrays
-export type ClassTypeName = typeof classTypeNames[number];
-export type PropertyTypeName = typeof propertyTypeNames[number];
-export type IndividualTypeName = typeof individualTypeNames[number];
-export type OntologyTypeName = typeof ontologyTypeNames[number];
-export type EntityTypeName = typeof entityTypeNames[number];
-export type ThingTypeName = typeof thingTypeNames[number];
+export type ClassTypeName = (typeof classTypeNames)[number];
+export type PropertyTypeName = (typeof propertyTypeNames)[number];
+export type IndividualTypeName = (typeof individualTypeNames)[number];
+export type OntologyTypeName = (typeof ontologyTypeNames)[number];
+export type EntityTypeName = (typeof entityTypeNames)[number];
+export type ThingTypeName = (typeof thingTypeNames)[number];
 
 // Functions checking string against type names, returning string as type name if check passes
 export function isClassTypeName(type: string): type is ClassTypeName {

@@ -10,7 +10,8 @@ import {
   DefiningOntologyUnavailableArgs,
   DefinedByAlsoAppearsInWidgetsArgs,
   HiddenTabsArgs,
-  TermAsLinkArgs, commonMetadataWidgetPlay
+  TermAsLinkArgs,
+  commonMetadataWidgetPlay,
 } from "./MetadataWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { MetadataDescription } from "../../../app/widgetDescriptions";
@@ -41,48 +42,48 @@ type Story = StoryObj<typeof meta>;
 export const MetadataWidget1: Story = {
   name: "Metadata Widget",
   args: MetadataWidget1Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS3: Story = {
   name: "OLS3",
   args: OLS3Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V1: Story = {
   name: "OLS4 V1",
   args: OLS4V1Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V2: Story = {
   name: "OLS4 V2",
   args: OLS4V2Args,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const DefinedByAlsoAppearsInWidgets: Story = {
   args: DefinedByAlsoAppearsInWidgetsArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const HiddenTabs: Story = {
   args: HiddenTabsArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };
 
 export const TermAsLink: Story = {
   args: TermAsLinkArgs,
-  play: commonMetadataWidgetPlay
+  play: commonMetadataWidgetPlay,
 };

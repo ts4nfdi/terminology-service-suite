@@ -1,11 +1,8 @@
 import { createEntityInfo } from "./EntityInfoWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createEntityInfo
+  createEntityInfo,
 };
 
-export {
-  createEntityInfo
-}
+export { createEntityInfo };

@@ -1,14 +1,11 @@
-const {
-  dirname,
-  join
-} = require("node:path");
+const { dirname, join } = require("node:path");
 
 module.exports = {
   stories: ["./*.stories.mdx"],
 
   addons: [
     getAbsolutePath("@storybook/addon-links"),
-    getAbsolutePath("@storybook/addon-docs")
+    getAbsolutePath("@storybook/addon-docs"),
   ],
 
   framework: {
@@ -46,7 +43,7 @@ module.exports = {
         url: "https://ts4nfdi.github.io/terminology-service-suite/html/latest",
       },
     };
-  }
+  },
 };
 
 function getAbsolutePath(value) {

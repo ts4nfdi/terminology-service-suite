@@ -3,7 +3,8 @@ import {
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
   TermDepictionWidgetExampleArgs,
-  TermDepictionWidget3DArgs, commonTermDepictionWidgetPlay
+  TermDepictionWidget3DArgs,
+  commonTermDepictionWidgetPlay,
 } from "./TermDepictionWidgetStories";
 import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -29,11 +30,10 @@ type Story = StoryObj<typeof meta>;
 
 export const TermDepictionWidgetExample = {
   args: TermDepictionWidgetExampleArgs,
-  play: commonTermDepictionWidgetPlay
+  play: commonTermDepictionWidgetPlay,
 };
-
 
 export const TermDepictionWidget3D = {
   args: TermDepictionWidget3DArgs,
-  play: commonTermDepictionWidgetPlay
+  play: commonTermDepictionWidgetPlay,
 };

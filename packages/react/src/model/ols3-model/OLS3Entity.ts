@@ -30,11 +30,11 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
 
   getDeprecationReason(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://purl.obolibrary.org/obo/IAO_0000231"]
+      this.properties["http://purl.obolibrary.org/obo/IAO_0000231"],
     ).concat(
       Reified.fromJson<any>(
-        this.properties["http://www.ebi.ac.uk/efo/reason_for_obsolescence"]
-      )
+        this.properties["http://www.ebi.ac.uk/efo/reason_for_obsolescence"],
+      ),
     );
   }
 
@@ -107,7 +107,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
   getDepictedBy(): Reified<string>[] {
     return Reified.fromJson<string>([
       ...asArray(
-        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || []
+        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || [],
       ),
       ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []),
     ]);
@@ -158,7 +158,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
   // TODO: Can be inferred via "links"->"hierarchicalParents"
   getHierarchicalParentReificationAxioms(parentIri: string): any {
     const hierarchicalParents = Reified.fromJson<any>(
-      this.properties["hierarchicalParent"]
+      this.properties["hierarchicalParent"],
     );
 
     for (const p of hierarchicalParents) {

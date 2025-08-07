@@ -17,7 +17,7 @@ click "Show code" in the Storybook is different.
 
 ## Development
 
-[Development instructions](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development-instructions) 
+[Development instructions](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development-instructions)
 
 ## Funding
 

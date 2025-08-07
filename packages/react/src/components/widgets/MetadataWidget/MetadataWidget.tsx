@@ -28,7 +28,7 @@ import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoLis
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/tssStyles.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
-import {OlsEntityApi} from "../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 
 type MetadataInfo = {
   entity: Entity;
@@ -68,7 +68,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
             entityType,
             undefined,
             parameter,
-            useLegacy
+            useLegacy,
           )
         )["_embedded"];
         entity = createModelObject({
@@ -76,16 +76,16 @@ function MetadataWidget(props: MetadataWidgetProps) {
             [Object.keys(embedded)[0]]: getPreferredOntologyJSON(
               embedded[Object.keys(embedded)[0]],
               useLegacy,
-              ontologyId
+              ontologyId,
             ),
           },
         }) as Entity;
         ontoList = embedded[Object.keys(embedded)[0]].map(
-          (entityInOntology: any) => entityInOntology["ontology_name"]
+          (entityInOntology: any) => entityInOntology["ontology_name"],
         );
         definedBy = embedded[Object.keys(embedded)[0]]
           .filter(
-            (entityInOntology: any) => entityInOntology["is_defining_ontology"]
+            (entityInOntology: any) => entityInOntology["is_defining_ontology"],
           )
           .map((entityInOntology: any) => entityInOntology["ontology_name"]);
       } else {
@@ -94,7 +94,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
           entityType,
           ontologyId,
           parameter,
-          useLegacy
+          useLegacy,
         );
         ontoList = entity.getAppearsIn();
         definedBy = entity.getDefinedBy();
@@ -106,7 +106,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
       ontoList = ontoList
         .filter(
           (onto: string) =>
-            onto != entity.getOntologyId() && !definedBy.includes(onto)
+            onto != entity.getOntologyId() && !definedBy.includes(onto),
         )
         .sort();
 
@@ -115,7 +115,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
         ontoList: ontoList,
         definedBy: definedBy,
       } as MetadataInfo;
-    }
+    },
   );
 
   function render(data: MetadataInfo) {

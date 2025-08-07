@@ -5,7 +5,8 @@ import {
   OntologyInfoWidget1Args,
   OntologyInfoWidget2Args,
   OntologyInfoWidgetOLS4APIArgs,
-  NavigateToEBIPageArgs, commonOntologyInfoWidgetPlay
+  NavigateToEBIPageArgs,
+  commonOntologyInfoWidgetPlay,
 } from "./OntologyInfoWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { OntologyInfoDescription } from "../../../app/widgetDescriptions";
@@ -35,20 +36,20 @@ type Story = StoryObj<typeof meta>;
 
 export const OntologyInfoWidget1: Story = {
   args: OntologyInfoWidget1Args,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const OntologyInfoWidget2: Story = {
   args: OntologyInfoWidget2Args,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const OntologyInfoWidgetOLS4API: Story = {
   args: OntologyInfoWidgetOLS4APIArgs,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };

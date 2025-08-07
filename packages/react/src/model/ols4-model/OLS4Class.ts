@@ -11,18 +11,18 @@ export class OLS4Class extends OLS4Entity implements Class {
   }
   getSuperEntities(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2000/01/rdf-schema#subClassOf"]
+      this.properties["http://www.w3.org/2000/01/rdf-schema#subClassOf"],
     );
   }
   getEquivalents(): Reified<any>[] {
     return Reified.fromJson<any>(
-      this.properties["http://www.w3.org/2002/07/owl#equivalentClass"]
+      this.properties["http://www.w3.org/2002/07/owl#equivalentClass"],
     );
   }
 
   getDisjointWith() {
     return asArray(
-      this.properties["http://www.w3.org/2002/07/owl#disjointWith"]
+      this.properties["http://www.w3.org/2002/07/owl#disjointWith"],
     );
   }
 
@@ -33,7 +33,9 @@ export class OLS4Class extends OLS4Entity implements Class {
   getSubsets(): any[] {
     return (
       asArray(
-        this.properties["http://www.geneontology.org/formats/oboInOwl#inSubset"]
+        this.properties[
+          "http://www.geneontology.org/formats/oboInOwl#inSubset"
+        ],
       ) || []
     );
   }

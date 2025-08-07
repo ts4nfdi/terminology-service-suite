@@ -2,13 +2,20 @@ import {
   BreadcrumbWidgetDefaultArgs,
   BreadcrumbWidgetStoryArgs,
   BreadcrumbWidgetStoryArgTypes,
-  commonBreadcrumbWidgetPlay, CustomColorsArgs, CustomStyleArgs,
-  DefiningOntologyUnavailableArgs, EntityInputArgs, ErrorBreadcrumbWidgetArgs,
-  SelectingDefiningOntologyArgs
+  commonBreadcrumbWidgetPlay,
+  CustomColorsArgs,
+  CustomStyleArgs,
+  DefiningOntologyUnavailableArgs,
+  EntityInputArgs,
+  ErrorBreadcrumbWidgetArgs,
+  SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
-import './index'
+import "./index";
 import { BreadcrumbDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { BreadcrumbWidget, BreadcrumbWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  BreadcrumbWidget,
+  BreadcrumbWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -63,35 +70,35 @@ type Story = StoryObj<typeof meta>;
 
 export const BreadcrumbWidgetDefault: Story = {
   args: BreadcrumbWidgetDefaultArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const ErrorBreadcrumbWidget: Story = {
   args: ErrorBreadcrumbWidgetArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const CustomColors: Story = {
   args: CustomColorsArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const CustomStyle: Story = {
   args: CustomStyleArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const EntityInput: Story = {
   args: EntityInputArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };

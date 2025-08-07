@@ -1,11 +1,8 @@
 import { createAlternativeNameTab } from "./AlternativeNameTabWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createAlternativeNameTab
+  createAlternativeNameTab,
 };
 
-export {
-  createAlternativeNameTab
-}
+export { createAlternativeNameTab };

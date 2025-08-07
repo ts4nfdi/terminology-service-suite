@@ -1,9 +1,7 @@
 import { EntityRelationsWidgetProps } from "@ts4nfdi/terminology-service-suite";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
-import {
-  WrappedEntityRelationsWidget
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityRelationsWidget/EntityRelationsWidget";
+import { WrappedEntityRelationsWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityRelationsWidget/EntityRelationsWidget";
 
 const roots = new WeakMap<Element, Root>();
 function createEntityRelations(

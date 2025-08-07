@@ -1,11 +1,8 @@
 import { createResources } from "./ResourcesWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createResources
+  createResources,
 };
 
-export {
-  createResources
-}
+export { createResources };

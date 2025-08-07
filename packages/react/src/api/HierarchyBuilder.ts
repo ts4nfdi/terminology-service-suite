@@ -27,9 +27,9 @@ export type LoadHierarchyChildrenProps = HierarchyQueryProps & {
 
 export interface HierarchyBuilder {
   buildHierarchyWithIri(
-    props: BuildHierarchyProps & HierarchyIriProp
+    props: BuildHierarchyProps & HierarchyIriProp,
   ): Promise<Hierarchy>;
   loadHierarchyChildren(
-    props: LoadHierarchyChildrenProps
+    props: LoadHierarchyChildrenProps,
   ): Promise<EntityData[]>;
 }

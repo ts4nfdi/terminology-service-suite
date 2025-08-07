@@ -4,7 +4,7 @@ import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
-import {Entity, Thing} from "../model/interfaces";
+import { Entity, Thing } from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
 import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
@@ -275,18 +275,17 @@ export type BreadcrumbPresentationProps = OptionalOntologyIdObj &
   ColorFirstObj &
   ColorSecondObj &
   CssClassNameObj &
-  OnNavigateToOntology &
-    {
+  OnNavigateToOntology & {
     ontologyId?: string;
     shortForm?: string;
     entity?: {
-        properties: {
-            ontologyId: string;
-            shortForm: string;
-            [key: string]: any;
-        };
+      properties: {
+        ontologyId: string;
+        shortForm: string;
+        [key: string]: any;
+      };
     };
-    };
+  };
 
 export type DescTextObj = {
   /**
@@ -430,11 +429,9 @@ export type OnNavigateToEntity = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToEntity?: ((
-    ontologyId: string,
-    entityType?: string,
-    entity?: EntityData,
-  ) => void) | string;
+  onNavigateToEntity?:
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToOntology = {
@@ -449,11 +446,9 @@ export type OnNavigateToOntology = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToOntology?: ((
-    ontologyId: string,
-    entityType?: string,
-    entity?: EntityData,
-  ) => void) | string;
+  onNavigateToOntology?:
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -467,7 +462,9 @@ export type OnNavigateToDisambiguate = {
    * @param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
-  onNavigateToDisambiguate?: ((entityType: string, entity?: EntityData) => void) | string;
+  onNavigateToDisambiguate?:
+    | ((entityType: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -664,7 +661,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   TargetLinkObj &
   ParameterObj &
   CssClassNameObj &
-  OptionalEntityTypeObj &{
+  OptionalEntityTypeObj & {
     result: SearchResultProps;
     iri: string;
     ontologyId: string;
@@ -689,7 +686,7 @@ export type GraphViewWidgetProps = ApiObj &
      */
     hierarchy?: boolean;
     /**
-     * The edge label in the graph. Default is "is a". Only for sub-class predicators. 
+     * The edge label in the graph. Default is "is a". Only for sub-class predicators.
      */
     edgeLabel?: string;
 

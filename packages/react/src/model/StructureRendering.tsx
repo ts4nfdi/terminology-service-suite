@@ -23,7 +23,7 @@ export function getTooltip(text: string): ReactElement {
  */
 export function getAxiomsInformationJSX(
   parentEntity: Thing,
-  axiomsDict: any | null
+  axiomsDict: any | null,
 ): ReactElement {
   const axiomsText = Object.keys(axiomsDict)
     .map((key) => {
@@ -56,7 +56,7 @@ export function getEntityLinkJSX(
   linkedEntities: LinkedEntities,
   iri: string,
   showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
 ): ReactElement {
   const label =
     linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
@@ -103,7 +103,7 @@ export function getEntityLinkJSX(
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
-                  { iri, label }
+                  { iri, label },
                 );
             }}
           >
@@ -119,7 +119,7 @@ export function getEntityLinkJSX(
                     onNavigates.onNavigateToOntology(
                       otherDefinedBy[0],
                       linkedEntityType,
-                      { iri, label }
+                      { iri, label },
                     );
                 }}
               >
@@ -146,7 +146,7 @@ export function getEntityLinkJSX(
                 onNavigates.onNavigateToEntity(
                   otherDefinedBy[0],
                   linkedEntityType,
-                  { iri, label }
+                  { iri, label },
                 );
             }}
           >
@@ -162,7 +162,7 @@ export function getEntityLinkJSX(
                     onNavigates.onNavigateToOntology(
                       otherDefinedBy[0],
                       linkedEntityType,
-                      { iri, label }
+                      { iri, label },
                     );
                 }}
               >
@@ -191,7 +191,7 @@ export function getEntityLinkJSX(
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
-                  { iri, label }
+                  { iri, label },
                 );
             }}
           >
@@ -206,11 +206,13 @@ export function getEntityLinkJSX(
                     className="no-decoration"
                     key={randomString()}
                     onClick={() => {
-                      if (typeof onNavigates.onNavigateToOntology === "function")
+                      if (
+                        typeof onNavigates.onNavigateToOntology === "function"
+                      )
                         onNavigates.onNavigateToOntology(
                           elem,
                           linkedEntityType,
-                          { iri, label }
+                          { iri, label },
                         );
                     }}
                   >
@@ -242,7 +244,9 @@ export function getEntityLinkJSX(
                 className="no-decoration"
                 key={randomString()}
                 onClick={() => {
-                  if (typeof onNavigates.onNavigateToDisambiguate === "function")
+                  if (
+                    typeof onNavigates.onNavigateToDisambiguate === "function"
+                  )
                     onNavigates.onNavigateToDisambiguate(linkedEntityType, {
                       iri,
                       label,
@@ -276,7 +280,7 @@ export function getEntityLinkJSX(
                 onNavigates.onNavigateToEntity(
                   localOntology,
                   linkedEntityType,
-                  { iri, label }
+                  { iri, label },
                 );
             }}
           >
@@ -299,7 +303,9 @@ export function getEntityLinkJSX(
                   className="no-decoration"
                   key={randomString()}
                   onClick={() => {
-                    if (typeof onNavigates.onNavigateToDisambiguate  === "function")
+                    if (
+                      typeof onNavigates.onNavigateToDisambiguate === "function"
+                    )
                       onNavigates.onNavigateToDisambiguate(linkedEntityType, {
                         iri,
                         label,
@@ -355,7 +361,7 @@ export function getClassExpressionJSX(
   linkedEntities: LinkedEntities,
   currentResponsePath: any,
   showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
 ): ReactElement {
   let result = <></>;
 
@@ -368,7 +374,7 @@ export function getClassExpressionJSX(
       linkedEntities,
       currentResponsePath,
       showBadges,
-      onNavigates
+      onNavigates,
     );
   } else if (
     typeof currentResponsePath === "object" &&
@@ -382,7 +388,7 @@ export function getClassExpressionJSX(
       parentEntity,
       Reified.fromJson<any>(currentResponsePath)[0],
       showBadges,
-      onNavigates
+      onNavigates,
     );
   } else {
     // type === "object"
@@ -391,10 +397,10 @@ export function getClassExpressionJSX(
     const allValuesFrom =
       currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
     const intersectionOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"]
+      currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"],
     );
     const unionOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"]
+      currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"],
     );
     const hasValue =
       currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
@@ -416,7 +422,7 @@ export function getClassExpressionJSX(
     const complementOf =
       currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
     const oneOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"]
+      currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"],
     );
     const inverseOf =
       currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
@@ -432,12 +438,12 @@ export function getClassExpressionJSX(
           linkedEntities,
           onDataType,
           showBadges,
-          onNavigates
+          onNavigates,
         ),
       ];
 
       const withRestrictions = asArray(
-        currentResponsePath["http://www.w3.org/2002/07/owl#withRestrictions"]
+        currentResponsePath["http://www.w3.org/2002/07/owl#withRestrictions"],
       );
       if (withRestrictions.length > 0) {
         elements.push(<>[</>);
@@ -480,7 +486,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> some </i>
           {getClassExpressionJSX(
@@ -488,7 +494,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(someValuesFrom)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -500,7 +506,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> only </i>
           {getClassExpressionJSX(
@@ -508,7 +514,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(allValuesFrom)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -528,8 +534,8 @@ export function getClassExpressionJSX(
             linkedEntities,
             elem,
             showBadges,
-            onNavigates
-          )
+            onNavigates,
+          ),
         );
       }
       elements.push(<span className="text-neutral-default">&#41;</span>);
@@ -556,8 +562,8 @@ export function getClassExpressionJSX(
             linkedEntities,
             elem,
             showBadges,
-            onNavigates
-          )
+            onNavigates,
+          ),
         );
       }
       elements.push(<span className="text-neutral-default">&#41;</span>);
@@ -576,7 +582,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> value </i>
           {getClassExpressionJSX(
@@ -584,7 +590,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(hasValue)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -596,7 +602,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> min </i>
           {getClassExpressionJSX(
@@ -604,7 +610,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(minCardinality)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -616,7 +622,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> max </i>
           {getClassExpressionJSX(
@@ -624,7 +630,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(maxCardinality)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -636,7 +642,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> exactly </i>
           {getClassExpressionJSX(
@@ -644,7 +650,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(cardinality)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -656,7 +662,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             onProperty,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <i style={{ color: "purple" }}> Self </i>
           {getClassExpressionJSX(
@@ -664,7 +670,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(hasSelf)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -677,7 +683,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             asArray(complementOf)[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </>
       );
@@ -692,7 +698,7 @@ export function getClassExpressionJSX(
           elements.push(
             <span key={randomString()} className="text-neutral-default">
               &#44;&nbsp;
-            </span>
+            </span>,
           );
         }
         elements.push(
@@ -701,8 +707,8 @@ export function getClassExpressionJSX(
             linkedEntities,
             elem,
             showBadges,
-            onNavigates
-          )
+            onNavigates,
+          ),
         );
       }
       elements.push(<span className="text-neutral-default">&#125;</span>);
@@ -725,7 +731,7 @@ export function getClassExpressionJSX(
             linkedEntities,
             inverseOf,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
           <span key={randomString()} className="text-neutral-default">
             &#41;
@@ -754,7 +760,7 @@ export function getSectionListJSX(
   linkedEntities: LinkedEntities,
   array: any[],
   showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
 ): ReactElement {
   return (
     <>
@@ -765,7 +771,7 @@ export function getSectionListJSX(
             parentEntity.getLinkedEntities(),
             array[0],
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </p>
       ) : (
@@ -778,7 +784,7 @@ export function getSectionListJSX(
                   parentEntity.getLinkedEntities(),
                   item,
                   showBadges,
-                  onNavigates
+                  onNavigates,
                 )}
               </li>
             );
@@ -805,7 +811,7 @@ function addLinksToText(
   text: string,
   linkedEntities: LinkedEntities | undefined,
   showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
 ) {
   const linksToSplice: Array<{
     start: number;
@@ -828,7 +834,7 @@ function addLinksToText(
             linkedEntities,
             entityId,
             showBadges,
-            onNavigates
+            onNavigates,
           ),
         });
 
@@ -909,7 +915,7 @@ export function getReifiedJSX(
   entity: Thing,
   reified: Reified<any>,
   showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
 ): ReactElement {
   function getValueJSX(value: Reified<any>): ReactElement {
     const linkedEntities = entity.getLinkedEntities();
@@ -922,29 +928,48 @@ export function getReifiedJSX(
           value.value.toString(),
           undefined,
           showBadges,
-          onNavigates
+          onNavigates,
         );
-      }
-      else if (typeof value.value == "object" && value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] != undefined) {
+      } else if (
+        typeof value.value == "object" &&
+        value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !=
+          undefined
+      ) {
         // Is converted from Skosmos
-        switch (value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]) {
+        switch (
+          value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
+        ) {
           case "http://www.w3.org/2008/05/skos-xl#Label":
-            const label = value.value["http://www.w3.org/2008/05/skos-xl#literalForm"]["value"];
+            const label =
+              value.value["http://www.w3.org/2008/05/skos-xl#literalForm"][
+                "value"
+              ];
 
             return <>{label}</>;
           case "http://purl.org/vocab/changeset/schema#ChangeSet":
-            const changeReason = value.value["http://purl.org/vocab/changeset/schema#changeReason"]["value"];
-            const date = value.value["http://purl.org/vocab/changeset/schema#createdDate"]["value"]
+            const changeReason =
+              value.value[
+                "http://purl.org/vocab/changeset/schema#changeReason"
+              ]["value"];
+            const date =
+              value.value["http://purl.org/vocab/changeset/schema#createdDate"][
+                "value"
+              ];
 
-            return <>{date}: {changeReason}</>;
+            return (
+              <>
+                {date}: {changeReason}
+              </>
+            );
           default:
-            console.error(`Unknown rdf syntax type: ${value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]}`);
-            return <>{JSON.stringify(value.value)}</>
+            console.error(
+              `Unknown rdf syntax type: ${value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]}`,
+            );
+            return <>{JSON.stringify(value.value)}</>;
         }
-      }
-      else {
+      } else {
         // TODO: should not happen, prove that this is never the case
-        console.error(`Unknown entry information format: ${value}`)
+        console.error(`Unknown entry information format: ${value}`);
         return <>{JSON.stringify(value.value)}</>;
       }
     } else {
@@ -956,7 +981,7 @@ export function getReifiedJSX(
           linkedEntities,
           value.value,
           showBadges,
-          onNavigates
+          onNavigates,
         );
       } else {
         if (typeof value.value !== "string") {
@@ -968,7 +993,7 @@ export function getReifiedJSX(
               linkedEntities,
               value.value,
               showBadges,
-              onNavigates
+              onNavigates,
             );
           }
         } else {
@@ -977,7 +1002,7 @@ export function getReifiedJSX(
             value.value.toString(),
             linkedEntities,
             showBadges,
-            onNavigates
+            onNavigates,
           );
         }
       }

@@ -18,7 +18,9 @@ button {
   background: #8228cc;
   color: #ffffff;
   text-align: center;
-  font: 15px Arial, sans-serif;
+  font:
+    15px Arial,
+    sans-serif;
   font-weight: bold;
 }
 

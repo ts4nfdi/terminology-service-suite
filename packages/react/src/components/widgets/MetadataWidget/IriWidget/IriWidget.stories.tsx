@@ -1,10 +1,12 @@
 import { IriWidget } from "./IriWidget";
 import {
-  IriWidgetStoryArgs, IriWidgetStoryArgTypes,
+  IriWidgetStoryArgs,
+  IriWidgetStoryArgTypes,
   IriWidget1Args,
   withCopyButtonArgs,
   withoutExternalIconArgs,
-  withUrlPrefixArgs, commonIriWidgetPlay
+  withUrlPrefixArgs,
+  commonIriWidgetPlay,
 } from "./IriWidgetStories";
 import { IriDescription } from "../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -30,20 +32,20 @@ type Story = StoryObj<typeof meta>;
 
 export const IriWidget1: Story = {
   args: IriWidget1Args,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withoutExternalIcon: Story = {
   args: withoutExternalIconArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withCopyButton: Story = {
   args: withCopyButtonArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };
 
 export const withUrlPrefix: Story = {
   args: withUrlPrefixArgs,
-  play: commonIriWidgetPlay
+  play: commonIriWidgetPlay,
 };

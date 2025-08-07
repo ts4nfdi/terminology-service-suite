@@ -13,5 +13,11 @@
     "outDir": "dist/types"
   },
   "exclude": ["dist"],
-  "include": ["./packages/**/*", ".storybook/**/*", "packages/react/.storybook/main.ts", "packages/react/.storybook/preview.tsx", "packages/react/.storybook/vitest.setup.ts"],
+  "include": [
+    "./packages/**/*",
+    ".storybook/**/*",
+    "packages/react/.storybook/main.ts",
+    "packages/react/.storybook/preview.tsx",
+    "packages/react/.storybook/vitest.setup.ts"
+  ]
 }

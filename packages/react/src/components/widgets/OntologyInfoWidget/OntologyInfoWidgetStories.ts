@@ -38,37 +38,44 @@ export const OntologyInfoWidgetStoryArgs = {
 };
 
 export const OntologyInfoWidget1Args = {
-    api: globals.ZBMED_OLS4_API,
-    ontologyId: "atc",
+  api: globals.ZBMED_OLS4_API,
+  ontologyId: "atc",
 };
 
 export const OntologyInfoWidget2Args = {
-    api: globals.ZBMED_OLS4_API,
-    ontologyId: "ncit",
+  api: globals.ZBMED_OLS4_API,
+  ontologyId: "ncit",
 };
 
 export const OntologyInfoWidgetOLS4APIArgs = {
-    api: globals.EBI_API_ENDPOINT,
-    useLegacy: false,
-    ontologyId: "mp", // "uberon" is also good for demonstration
+  api: globals.EBI_API_ENDPOINT,
+  useLegacy: false,
+  ontologyId: "mp", // "uberon" is also good for demonstration
 };
 
 export const NavigateToEBIPageArgs = {
-    api: globals.EBI_API_ENDPOINT,
-    useLegacy: false,
-    ontologyId: "afo",
-    onNavigateToEntity: "Navigate to EBI page",
-    onNavigateToOntology: "Navigate to EBI page",
-    onNavigateToDisambiguate: "Navigate to EBI page",
+  api: globals.EBI_API_ENDPOINT,
+  useLegacy: false,
+  ontologyId: "afo",
+  onNavigateToEntity: "Navigate to EBI page",
+  onNavigateToOntology: "Navigate to EBI page",
+  onNavigateToDisambiguate: "Navigate to EBI page",
 };
 
-export const commonOntologyInfoWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+export const commonOntologyInfoWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
-  await waitFor(async () => {
-    const content = canvas.getByTestId('ontology-info');
-    await expect(content).toBeInTheDocument();
-  }, {
-    timeout: 3000
-  })
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("ontology-info");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
 };

@@ -16,4 +16,4 @@ export {
   createHierarchy,
   createCrossRefTab,
   createAlternativeNameTab,
-}
+};

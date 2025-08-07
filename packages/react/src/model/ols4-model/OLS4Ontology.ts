@@ -11,13 +11,13 @@ export class OLS4Ontology extends OLS4Thing implements Ontology {
   }
   getName(): string {
     const names = Reified.fromJson<string>(
-      this.properties["label"] || this.properties["title"] || ""
+      this.properties["label"] || this.properties["title"] || "",
     );
     return (names[0] && names[0].value) || this.getOntologyId();
   }
   getDescription(): string {
     const descriptions = Reified.fromJson<string>(
-      this.properties["description"] || this.properties["definition"] || ""
+      this.properties["description"] || this.properties["definition"] || "",
     );
     return (descriptions[0] && descriptions[0].value) || "";
   }

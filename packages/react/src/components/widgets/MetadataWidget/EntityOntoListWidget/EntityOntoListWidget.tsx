@@ -12,7 +12,7 @@ import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
 import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
-import {OlsEntityApi} from "../../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
@@ -37,14 +37,14 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
             entityType,
             undefined,
             parameter,
-            useLegacy
+            useLegacy,
           )
         )["_embedded"];
 
         // obtain definedBy to filter these out of ontolist
         const definedBy = embedded[Object.keys(embedded)[0]]
           .filter(
-            (entityInOntology: any) => entityInOntology["is_defining_ontology"]
+            (entityInOntology: any) => entityInOntology["is_defining_ontology"],
           )
           .map((entityInOntology: any) => entityInOntology["ontology_name"]);
 
@@ -61,7 +61,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
           entityType,
           ontologyId,
           parameter,
-          useLegacy
+          useLegacy,
         );
         ontolist = entity
           .getAppearsIn()
@@ -71,7 +71,7 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
       }
       ontolist = ontolist.filter((onto: string) => onto != ontologyId).sort();
       return { ontoList: ontolist, entityType: realEntityType, label: label };
-    }
+    },
   );
 
   return (

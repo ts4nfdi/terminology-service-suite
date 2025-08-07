@@ -1,7 +1,8 @@
 import {
   classNameArgType,
   colorFirstArgType,
-  colorSecondArgType, entityArgType,
+  colorSecondArgType,
+  entityArgType,
   onNavigateToOntologyArgType,
   ontologyIdArgType,
 } from "../../../../../stories/storyArgs";
@@ -28,42 +29,48 @@ export const BreadcrumbPresentationStoryArgs = {
     properties: {
       ontologyId: "",
       iri: "",
-      shortForm: ""
-    }
+      shortForm: "",
+    },
   },
 };
 
 export const EntityInputArgs = {
   ...BreadcrumbPresentationStoryArgs,
-    entity: {
-      properties: {
-        "iri": "http://purl.obolibrary.org/obo/NCIT_C2985",
-        "ontologyId": "ncit",
-        "shortForm": "NCIT_C2985",
-      }
+  entity: {
+    properties: {
+      iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+      ontologyId: "ncit",
+      shortForm: "NCIT_C2985",
     },
+  },
 };
 
 export const EntityInputMissingValueArgs = {
   ...BreadcrumbPresentationStoryArgs,
-    entity: {
-      properties: {
-        "iri": "http://purl.obolibrary.org/obo/NCIT_C2985",
-        "shortForm": "NCIT_C2985",
-        "ontologyId": ""
-      }
+  entity: {
+    properties: {
+      iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+      shortForm: "NCIT_C2985",
+      ontologyId: "",
     },
-    ontologyId: "NCIT"
+  },
+  ontologyId: "NCIT",
 };
 
-export const commonBreadcrumbPresentationPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+export const commonBreadcrumbPresentationPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
-  await waitFor(async () => {
-    const content = canvas.getByTestId('breadcrumb-pres');
-    await expect(content).toBeInTheDocument();
-  }, {
-    timeout: 3000
-  })
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("breadcrumb-pres");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
 };
-

@@ -1,11 +1,8 @@
 import { createCrossRefTab } from "./CrossRefTabWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createCrossRefTab
+  createCrossRefTab,
 };
 
-export {
-  createCrossRefTab
-}
+export { createCrossRefTab };

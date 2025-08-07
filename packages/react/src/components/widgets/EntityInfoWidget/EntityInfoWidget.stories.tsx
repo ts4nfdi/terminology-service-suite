@@ -12,7 +12,8 @@ import {
   InfoWidgetRangeArgs,
   InfoWidgetPropertyAssertionArgs,
   InfoWidgetPropertyCharacteristicsArgs,
-  NavigateToEBIPageArgs, SkosmosImportArgs
+  NavigateToEBIPageArgs,
+  SkosmosImportArgs,
 } from "./EntityInfoWidgetStories";
 import { EntityInfoDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -21,7 +22,7 @@ const meta = {
   title: "Additional Entity Metadata/EntityInfoWidget",
   tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
         component: EntityInfoDescription,
@@ -39,55 +40,55 @@ type Story = StoryObj<typeof meta>;
 
 export const TermInfoWidget: Story = {
   args: TermInfoWidgetArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const PropertyInfoWidget: Story = {
   args: PropertyInfoWidgetArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const IndividualInfoWidget: Story = {
   args: IndividualInfoWidgetArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const InfoWidgetBadges: Story = {
   args: InfoWidgetBadgesArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const OptionalEntityTypeLegacyAPI: Story = {
   args: OptionalEntityTypeLegacyAPIArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const InfoWidgetDomain: Story = {
   args: InfoWidgetDomainArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const InfoWidgetRange: Story = {
   args: InfoWidgetRangeArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const InfoWidgetPropertyAssertion: Story = {
   args: InfoWidgetPropertyAssertionArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const InfoWidgetPropertyCharacteristics: Story = {
   args: InfoWidgetPropertyCharacteristicsArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };
 
 export const SkosmosImport: Story = {
   args: SkosmosImportArgs,
-  play: commonEntityInfoWidgetPlay
+  play: commonEntityInfoWidgetPlay,
 };

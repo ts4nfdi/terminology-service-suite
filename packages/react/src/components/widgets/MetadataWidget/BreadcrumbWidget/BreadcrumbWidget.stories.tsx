@@ -7,7 +7,9 @@ import {
   DefiningOntologyUnavailableArgs,
   ErrorBreadcrumbWidgetArgs,
   CustomColorsArgs,
-  CustomStyleArgs, commonBreadcrumbWidgetPlay, EntityInputArgs
+  CustomStyleArgs,
+  commonBreadcrumbWidgetPlay,
+  EntityInputArgs,
 } from "./BreadcrumbWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
@@ -37,35 +39,35 @@ type Story = StoryObj<typeof meta>;
 
 export const BreadcrumbWidgetDefault: Story = {
   args: BreadcrumbWidgetDefaultArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const ErrorBreadcrumbWidget: Story = {
   args: ErrorBreadcrumbWidgetArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const CustomColors: Story = {
   args: CustomColorsArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const CustomStyle: Story = {
   args: CustomStyleArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };
 
 export const EntityInput: Story = {
   args: EntityInputArgs,
-  play: commonBreadcrumbWidgetPlay
+  play: commonBreadcrumbWidgetPlay,
 };

@@ -47,7 +47,7 @@ const decorators = [
 
 const preview: Preview = {
   decorators: decorators,
-  tags: ["autodocs"]
+  tags: ["autodocs"],
 };
 
 export default preview;

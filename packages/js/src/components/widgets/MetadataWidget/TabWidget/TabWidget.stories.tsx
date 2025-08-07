@@ -1,19 +1,23 @@
 import {
   commonTabWidgetPlay,
   DefaultArgs,
-  DefiningOntologyUnavailableArgs, HiddenTabsArgs,
-  SelectingDefiningOntologyArgs, TabWidgetLargeArgs,
+  DefiningOntologyUnavailableArgs,
+  HiddenTabsArgs,
+  SelectingDefiningOntologyArgs,
+  TabWidgetLargeArgs,
   TabWidgetOLS3Args,
   TabWidgetOLS4V1Args,
   TabWidgetOLS4V2Args,
   TabWidgetStoryArgs,
-  TabWidgetStoryArgTypes
+  TabWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
-import './index'
+import "./index";
 import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { TabWidget, TabWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  TabWidget,
+  TabWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 
 let counter = 0;
 
@@ -75,43 +79,43 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const TabWidgetOLS3: Story = {
   name: "OLS3",
   args: TabWidgetOLS3Args,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const TabWidgetOLS4V1: Story = {
   name: "OLS4 V1",
   args: TabWidgetOLS4V1Args,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const TabWidgetOLS4V2: Story = {
   name: "OLS4 V2",
   args: TabWidgetOLS4V2Args,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const TabWidgetLarge: Story = {
   args: TabWidgetLargeArgs,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };
 
 export const HiddenTabs: Story = {
   args: HiddenTabsArgs,
-  play: commonTabWidgetPlay
+  play: commonTabWidgetPlay,
 };

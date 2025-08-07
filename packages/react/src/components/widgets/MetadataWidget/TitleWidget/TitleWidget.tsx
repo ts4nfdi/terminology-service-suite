@@ -8,7 +8,7 @@ import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 import ReactDOM from "react-dom";
-import {OlsThingApi} from "../../../../api/ols/OlsThingApi";
+import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {
@@ -41,23 +41,23 @@ function TitleWidget(props: TitleWidgetProps) {
 
   return (
     <div data-testid="title">
-    <TitlePresentation
-      title={
-        data ? (isOntology(data) ? data.getName() : data.getLabel()) : null
-      }
-      titleText={titleText}
-      defaultValue={defaultValue}
-      className={className}
-      isLoading={isLoading}
-      error={isError ? error : null}
-      iri={iri ? iri : data ? data.getIri() : null}
-      onNavigateTo={onNavigateTo}
-      ontologyId={
-        ontologyId ? ontologyId : data ? data.getOntologyId() : undefined
-      }
-      thingType={thingType ? thingType : data ? data.getType() : undefined}
-      href={href}
-    />
+      <TitlePresentation
+        title={
+          data ? (isOntology(data) ? data.getName() : data.getLabel()) : null
+        }
+        titleText={titleText}
+        defaultValue={defaultValue}
+        className={className}
+        isLoading={isLoading}
+        error={isError ? error : null}
+        iri={iri ? iri : data ? data.getIri() : null}
+        onNavigateTo={onNavigateTo}
+        ontologyId={
+          ontologyId ? ontologyId : data ? data.getOntologyId() : undefined
+        }
+        thingType={thingType ? thingType : data ? data.getType() : undefined}
+        href={href}
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 import Reified from "../../../../../model/Reified";
 import ReactDOM from "react-dom";
-import {OlsEntityApi} from "../../../../../api/ols/OlsEntityApi";
+import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
@@ -25,27 +25,27 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
         entityType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   return (
     <div data-testid="cross-ref">
-    <CrossRefTabPresentation
-      crossrefs={
-        data
-          ? isEntity(data)
-            ? Reified.fromJson(data.getCrossReferences()).map((value) => {
-                return value.value;
-              })
+      <CrossRefTabPresentation
+        crossrefs={
+          data
+            ? isEntity(data)
+              ? Reified.fromJson(data.getCrossReferences()).map((value) => {
+                  return value.value;
+                })
+              : []
             : []
-          : []
-      }
-      isLoading={isLoading}
-      error={error}
-      className={className}
-    />
+        }
+        isLoading={isLoading}
+        error={error}
+        className={className}
+      />
     </div>
   );
 }

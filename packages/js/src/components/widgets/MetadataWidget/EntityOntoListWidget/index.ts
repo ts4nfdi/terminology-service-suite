@@ -1,11 +1,8 @@
 import { createEntityOntoList } from "./EntityOntoListWidget";
 
-
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
-  createEntityOntoList
+  createEntityOntoList,
 };
 
-export {
-  createEntityOntoList
-}
+export { createEntityOntoList };

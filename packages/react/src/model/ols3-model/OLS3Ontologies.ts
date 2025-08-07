@@ -15,28 +15,28 @@ export class OLS3Ontologies implements Ontologies {
   getNumEntities(): number {
     return this.properties.reduce(
       (total, ontology) => total + ontology.getNumEntities(),
-      0
+      0,
     );
   }
 
   getNumClasses(): number {
     return this.properties.reduce(
       (total, ontology) => total + ontology.getNumClasses(),
-      0
+      0,
     );
   }
 
   getNumProperties(): number {
     return this.properties.reduce(
       (total, ontology) => total + ontology.getNumProperties(),
-      0
+      0,
     );
   }
 
   getNumIndividuals(): number {
     return this.properties.reduce(
       (total, ontology) => total + ontology.getNumIndividuals(),
-      0
+      0,
     );
   }
 }

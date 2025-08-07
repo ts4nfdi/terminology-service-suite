@@ -1,12 +1,16 @@
 import {
-  commonTermDepictionWidgetPlay, TermDepictionWidget3DArgs,
+  commonTermDepictionWidgetPlay,
+  TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
-  TermDepictionWidgetStoryArgTypes
+  TermDepictionWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
-import './index'
+import "./index";
 import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { TermDepictionWidget, TermDepictionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  TermDepictionWidget,
+  TermDepictionWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -56,11 +60,10 @@ type Story = StoryObj<typeof meta>;
 
 export const TermDepictionWidgetExample = {
   args: TermDepictionWidgetExampleArgs,
-  play: commonTermDepictionWidgetPlay
+  play: commonTermDepictionWidgetPlay,
 };
-
 
 export const TermDepictionWidget3D = {
   args: TermDepictionWidget3DArgs,
-  play: commonTermDepictionWidgetPlay
+  play: commonTermDepictionWidgetPlay,
 };

@@ -4,7 +4,8 @@ import {
   AlternativeNameTabWidgetStoryArgTypes,
   AlternativeNameTabWidget1Args,
   SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs, commonAlternativeNameTabWidgetPlay
+  DefiningOntologyUnavailableArgs,
+  commonAlternativeNameTabWidgetPlay,
 } from "./AlternativeNameTabWidgetStories";
 import { AlternativeNameTabDescription } from "../../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -29,15 +30,15 @@ type Story = StoryObj<typeof meta>;
 
 export const AlternativeNameTabWidget1: Story = {
   args: AlternativeNameTabWidget1Args,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonAlternativeNameTabWidgetPlay
+  play: commonAlternativeNameTabWidgetPlay,
 };

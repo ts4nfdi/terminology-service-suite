@@ -2,5 +2,11 @@
 **/.github
 build
 dist
-dist_plainjs
-.storybook/overview.stories.mdx
+.storybook/overview.mdx
+packages/js/build
+packages/react/build
+packages/js/dist
+packages/react/dist
+packages/react/package-lock.json
+packages/js/package-lock.json
+package-lock.json

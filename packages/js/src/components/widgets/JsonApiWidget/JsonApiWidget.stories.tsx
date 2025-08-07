@@ -2,11 +2,14 @@ import {
   commonJsonApiWidgetPlay,
   JsonApiWidgetDefaultArgs,
   JsonApiWidgetStoryArgs,
-  JsonApiWidgetStoryArgTypes
+  JsonApiWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
-import './index'
+import "./index";
 import { JsonApiDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { JsonApiWidget, JsonApiWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  JsonApiWidget,
+  JsonApiWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -56,5 +59,5 @@ type Story = StoryObj<typeof meta>;
 
 export const JsonApiWidgetDefault = {
   args: JsonApiWidgetDefaultArgs,
-  play: commonJsonApiWidgetPlay
+  play: commonJsonApiWidgetPlay,
 };

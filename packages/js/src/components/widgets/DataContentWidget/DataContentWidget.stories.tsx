@@ -1,13 +1,16 @@
-import { DataContentWidget, DataContentWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  DataContentWidget,
+  DataContentWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import {
   DataContentWidgetStoryArgs,
   DataContentWidgetStoryArgTypes,
   ErrorDataContentWidgetArgs,
   NFDI4HealthDataContentWidgetArgs,
-  SafetyDataContentWidgetArgs
+  SafetyDataContentWidgetArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidgetStories";
 import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import './index'
+import "./index";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;

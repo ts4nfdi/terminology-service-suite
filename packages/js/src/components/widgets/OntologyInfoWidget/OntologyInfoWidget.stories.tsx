@@ -1,12 +1,18 @@
 import {
-  commonOntologyInfoWidgetPlay, NavigateToEBIPageArgs,
-  OntologyInfoWidget1Args, OntologyInfoWidget2Args, OntologyInfoWidgetOLS4APIArgs,
+  commonOntologyInfoWidgetPlay,
+  NavigateToEBIPageArgs,
+  OntologyInfoWidget1Args,
+  OntologyInfoWidget2Args,
+  OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
-  OntologyInfoWidgetStoryArgTypes
+  OntologyInfoWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories";
-import './index'
+import "./index";
 import { OntologyInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { OntologyInfoWidget, OntologyInfoWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  OntologyInfoWidget,
+  OntologyInfoWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -62,20 +68,20 @@ type Story = StoryObj<typeof meta>;
 
 export const OntologyInfoWidget1: Story = {
   args: OntologyInfoWidget1Args,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const OntologyInfoWidget2: Story = {
   args: OntologyInfoWidget2Args,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const OntologyInfoWidgetOLS4API: Story = {
   args: OntologyInfoWidgetOLS4APIArgs,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
-  play: commonOntologyInfoWidgetPlay
+  play: commonOntologyInfoWidgetPlay,
 };

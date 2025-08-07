@@ -12,7 +12,8 @@ import {
   InstancesArgs,
   AxiomsArgs,
   QualifiedCardinalityArgs,
-  NavigateToEBIPageArgs, commonEntityRelationsWidgetPlay
+  NavigateToEBIPageArgs,
+  commonEntityRelationsWidgetPlay,
 } from "./EntityRelationsWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { EntityRelationsDescription } from "../../../app/widgetDescriptions";
@@ -42,55 +43,55 @@ type Story = StoryObj<typeof meta>;
 
 export const SubEntityOf: Story = {
   args: SubEntityOfArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const AllValuesFrom: Story = {
   args: AllValuesFromArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const DifferentFrom: Story = {
   args: DifferentFromArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const EquivalentTo: Story = {
   args: EquivalentToArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const SingleValue: Story = {
   args: SingleValueArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const InverseOf: Story = {
   args: InverseOfArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const PropertyChain: Story = {
   args: PropertyChainArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const Instances: Story = {
   args: InstancesArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const Axioms: Story = {
   args: AxiomsArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const QualifiedCardinality: Story = {
   args: QualifiedCardinalityArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
-  play: commonEntityRelationsWidgetPlay
+  play: commonEntityRelationsWidgetPlay,
 };

@@ -29,34 +29,41 @@ export const CrossRefWidgetStoryArgs = {
 } as const;
 
 export const CrossRefTabWidget1Args = {
-    iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
-    api: globals.EBI_API_ENDPOINT,
-    entityType: "term",
-    ontologyId: "rxno",
-    parameter: "",
+  iri: "http://purl.obolibrary.org/obo/RXNO_0000138",
+  api: globals.EBI_API_ENDPOINT,
+  entityType: "term",
+  ontologyId: "rxno",
+  parameter: "",
 } as const;
 
 export const SelectingDefiningOntologyArgs = {
-    api: globals.EBI_API_ENDPOINT,
-    iri: "http://purl.obolibrary.org/obo/IAO_0000631",
-    entityType: "term",
-    parameter: "",
+  api: globals.EBI_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/IAO_0000631",
+  entityType: "term",
+  parameter: "",
 } as const;
 
 export const DefiningOntologyUnavailableArgs = {
-    api: globals.EBI_API_ENDPOINT,
-    iri: "http://identifiers.org/uniprot/Q9VAM9",
-    entityType: "term",
-    parameter: "",
+  api: globals.EBI_API_ENDPOINT,
+  iri: "http://identifiers.org/uniprot/Q9VAM9",
+  entityType: "term",
+  parameter: "",
 } as const;
 
-export const commonCrossRefWidgetPlay = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+export const commonCrossRefWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
   const canvas = within(canvasElement);
 
-  await waitFor(async () => {
-    const content = canvas.getByTestId('cross-ref');
-    await expect(content).toBeInTheDocument();
-  }, {
-    timeout: 3000
-  })
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("cross-ref");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
 };

@@ -8,7 +8,7 @@ import { DescriptionWidgetProps } from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
 import ReactDOM from "react-dom";
-import {OlsThingApi} from "../../../../api/ols/OlsThingApi";
+import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 
 const NO_DESCRIPTION = "No description available.";
 
@@ -34,9 +34,9 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
         thingType,
         ontologyId,
         parameter,
-        useLegacy
+        useLegacy,
       );
-    }
+    },
   );
 
   return (

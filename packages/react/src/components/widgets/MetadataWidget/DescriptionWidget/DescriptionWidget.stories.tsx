@@ -5,7 +5,8 @@ import {
   DescriptionWidget1Args,
   SelectingDefiningOntologyArgs,
   DefiningOntologyUnavailableArgs,
-  ErrorFetchingDataArgs, commonDescriptionWidgetPlay
+  ErrorFetchingDataArgs,
+  commonDescriptionWidgetPlay,
 } from "./DescriptionWidgetStories";
 import { DescriptionDescription } from "../../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -31,20 +32,20 @@ type Story = StoryObj<typeof meta>;
 
 export const DescriptionWidget1: Story = {
   args: DescriptionWidget1Args,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const ErrorFetchingData: Story = {
   args: ErrorFetchingDataArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };

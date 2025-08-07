@@ -67,7 +67,7 @@ export class OntoPortalApi implements HierarchyBuilder {
   }
 
   public async buildHierarchyWithIri(
-    props: BuildHierarchyProps & HierarchyIriProp
+    props: BuildHierarchyProps & HierarchyIriProp,
   ): Promise<Hierarchy> {
     const { iri, ontologyId, entityType, showSiblingsOnInit } = props;
 
@@ -92,7 +92,7 @@ export class OntoPortalApi implements HierarchyBuilder {
           currNode["@id"],
           currNode.children.map((c) => {
             return { childIri: c["@id"] };
-          })
+          }),
         );
 
         allChildrenPresent.add(currNode["@id"]);
@@ -109,14 +109,14 @@ export class OntoPortalApi implements HierarchyBuilder {
       const api_tree: HierarchyNode[] = await this.makeCall(
         `/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(
           entityType,
-          false
+          false,
         )}/${encodeURIComponent(iri)}/tree`,
         {
           params: {
             include: "@id,prefLabel,hasChildren,children",
-            language: "EN"
-          }
-        }
+            language: "EN",
+          },
+        },
       );
 
       for (const rootNode of api_tree) {
@@ -129,14 +129,14 @@ export class OntoPortalApi implements HierarchyBuilder {
       const roots: HierarchyNode[] = await this.makeCall(
         `/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(
           entityType,
-          false
+          false,
         )}/roots`,
         {
           params: {
             include: "@id,prefLabel,hasChildren",
-            language: "EN"
-          }
-        }
+            language: "EN",
+          },
+        },
       );
 
       for (const rootNode of roots) {
@@ -147,7 +147,7 @@ export class OntoPortalApi implements HierarchyBuilder {
 
     function createTreeNode(
       entityData: EntityData,
-      cycleCheck: Set<string>
+      cycleCheck: Set<string>,
     ): TreeNode {
       cycleCheck.add(entityData.iri); // add current entity to cycle check set
 
@@ -165,7 +165,7 @@ export class OntoPortalApi implements HierarchyBuilder {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           if (onInitialPath.has(child.childIri))
             node.addChild(
-              createTreeNode(entitiesData.get(child.childIri)!, cycleCheck)
+              createTreeNode(entitiesData.get(child.childIri)!, cycleCheck),
             );
         }
       } else {
@@ -178,7 +178,7 @@ export class OntoPortalApi implements HierarchyBuilder {
 
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           node.addChild(
-            createTreeNode(entitiesData.get(child.childIri)!, cycleCheck)
+            createTreeNode(entitiesData.get(child.childIri)!, cycleCheck),
           );
         }
       }
@@ -193,12 +193,12 @@ export class OntoPortalApi implements HierarchyBuilder {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const rootNodes: TreeNode[] = rootEntities
       .map((rootEntity) =>
-        createTreeNode(entitiesData.get(rootEntity)!, cycleCheck)
+        createTreeNode(entitiesData.get(rootEntity)!, cycleCheck),
       )
       .sort((a, b) =>
         (a.entityData.label || a.entityData.iri).localeCompare(
-          b.entityData.label || b.entityData.iri
-        )
+          b.entityData.label || b.entityData.iri,
+        ),
       );
 
     return new Hierarchy({
@@ -215,27 +215,27 @@ export class OntoPortalApi implements HierarchyBuilder {
   }
 
   public async loadHierarchyChildren(
-    props: LoadHierarchyChildrenProps
+    props: LoadHierarchyChildrenProps,
   ): Promise<EntityData[]> {
     const { nodeToExpand, ontologyId, entityType } = props;
 
     if (entityType == undefined)
       throw Error(
-        "entityType has to be provided to load children in an OntoPortal hierarchy."
+        "entityType has to be provided to load children in an OntoPortal hierarchy.",
       );
 
     const children: HierarchyNode[] = (
       await this.makeCall(
         `/ontologies/${ontologyId.toUpperCase()}/${pluralizeType(
           entityType,
-          false
+          false,
         )}/${encodeURIComponent(nodeToExpand.entityData.iri)}/children`,
         {
           params: {
             include: "@id,prefLabel,hasChildren",
-            language: "EN"
-          }
-        }
+            language: "EN",
+          },
+        },
       )
     )["collection"];
 

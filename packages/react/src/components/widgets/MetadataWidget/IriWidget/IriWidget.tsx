@@ -3,10 +3,7 @@
 import React, { useState } from "react";
 import { EuiFlexItem, EuiLink, EuiProvider, EuiButtonIcon } from "@elastic/eui";
 import { IriWidgetProps } from "../../../../app/types";
-import {
-  isHexColor,
-  isRgbColor,
-} from "../../../../app/util";
+import { isHexColor, isRgbColor } from "../../../../app/util";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css";
@@ -84,7 +81,7 @@ function IriWidget(props: IriWidgetProps) {
             color:
               color && (isHexColor(color) || isRgbColor(color)) ? color : "",
           }}
-          color={color && color }
+          color={color && color}
           external={externalIcon}
         >
           {iriText ? iriText : iri}

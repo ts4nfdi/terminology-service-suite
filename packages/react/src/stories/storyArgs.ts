@@ -29,7 +29,7 @@ export const apiArgType: ArgTypes = {
       "**Others:**<br> " +
       "EMBL-EBI API (OLS4): [https://www.ebi.ac.uk/ols4/api/](https://www.ebi.ac.uk/ols4/api/)<br><br> ",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 } as const;
@@ -48,7 +48,9 @@ export const useLegacyArgTypeHierarchy = {
 <br>
 Toggle between OLS3 (legacy) and OLS4 API versions.
     `,
-    defaultValue: { summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY) },
+    defaultValue: {
+      summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY),
+    },
     control: { type: "boolean" } as const,
   },
 };
@@ -57,7 +59,7 @@ export const iriArgType: ArgTypes = {
     required: true,
     description: "Entity IRI whose information you want to fetch.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -70,9 +72,9 @@ Otherwise, the root entities for the specified ontology and entityType will be d
     `,
     table: {
       type: { summary: "string" },
-    }
-  }
-}
+    },
+  },
+};
 export const ontologyIdArgType = {
   ontologyId: {
     required: false,
@@ -100,8 +102,8 @@ export const ontologyIdArgTypeHierarchy = {
 **Mandatory:** OntoPortal, Skosmos <br>
 **Optional:** OLS (however, it is still strongly recommended to provide)
     `,
-  }
-}
+  },
+};
 export const entityTypeArgType = {
   entityType: {
     required: false,
@@ -124,7 +126,7 @@ export const entityTypeArgTypeHierarchy = {
 **Optional:** OLS <br>
 **Unused:** Skosmos <br>
     `,
-  }
+  },
 };
 export const selectionChangedEventArgType = {
   selectionChangedEvent: {
@@ -151,7 +153,7 @@ export const placeholderArgType: ArgTypes = {
     description:
       "Placeholder to show if no user input nor selection is performed.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -199,7 +201,7 @@ export const parameterArgTypeHierarchy = {
   parameter: {
     required: false,
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     defaultValue: { summary: "-" },
     description: `
@@ -283,7 +285,6 @@ export const hasTitleArgType: ArgTypes = {
     table: {
       type: { summary: "boolean" },
     },
-
   },
 };
 export const showBadgesArgType: ArgTypes = {
@@ -293,7 +294,6 @@ export const showBadgesArgType: ArgTypes = {
     table: {
       type: { summary: "boolean" },
     },
-
   },
 };
 export const apiQueryArgType: ArgTypes = {
@@ -302,7 +302,7 @@ export const apiQueryArgType: ArgTypes = {
     description:
       "The API query whose response JSON should be displayed on click.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -311,7 +311,7 @@ export const buttonTextArgType: ArgTypes = {
     required: true,
     description: "The text displayed on the button.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -384,7 +384,7 @@ export const targetLinkArgType: ArgTypes = {
     description:
       "Possible hyperlink to a corresponding terminology in a Resource Name cell. Set this if you want a hyperlink to the terminology overview of your terminology service. Leave it blank if your application isn't a terminology service.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     control: "text",
   },
@@ -400,7 +400,7 @@ export const queryArgType: ArgTypes = {
     required: true,
     description: "The search query.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -502,7 +502,7 @@ export const descTextArgType: ArgTypes = {
     description:
       "Set your own text manually that overwrites the text fetched from the API.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -533,7 +533,7 @@ export const iriTextArgType: ArgTypes = {
     description:
       "Set your own text manually, which will show as a clickable link instead of the IRI.",
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
   },
 };
@@ -611,7 +611,7 @@ export const onNavigateToEntityArgType: ArgTypes = {
   onNavigateToEntity: {
     required: false,
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     action: "onNavigateToEntityArgType",
     description:
@@ -622,20 +622,20 @@ export const onNavigateToEntityArgType: ArgTypes = {
       "Console message": (
         ontologyId: string,
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         console.log(
           "Triggered onNavigateToEntity()" +
             (entityType ? ` for ${entityType || "entity"}` : "") +
             (entity && entity.label ? ` "${entity.label}"` : "") +
             (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            "."
+            ".",
         );
       },
       "Navigate to EBI page": (
         ontologyId: string,
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         if (entity && entity.iri && entityType) {
           window.open(
@@ -653,12 +653,12 @@ export const onNavigateToEntityArgType: ArgTypes = {
               ]).get(entityType) +
               "/" +
               encodeURIComponent(encodeURIComponent(entity.iri)),
-            "_top"
+            "_top",
           );
         } else {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" + ontologyId,
-            "_top"
+            "_top",
           );
         }
       },
@@ -680,20 +680,20 @@ export const onNavigateToOntologyArgType: ArgTypes = {
       "Console message": (
         ontologyId: string,
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         console.log(
           "Triggered onNavigateToOntology()" +
             (entityType ? ` for ${entityType || "entity"}` : "") +
             (entity && entity.label ? ` "${entity.label}"` : "") +
             (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ` for ontologyId "${ontologyId}".`
+            ` for ontologyId "${ontologyId}".`,
         );
       },
       "Navigate to EBI page": (
         ontologyId: string,
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         if (entity && entity.iri && entityType) {
           window.open(
@@ -711,12 +711,12 @@ export const onNavigateToOntologyArgType: ArgTypes = {
               ]).get(entityType) +
               "/" +
               encodeURIComponent(encodeURIComponent(entity.iri)),
-            "_top"
+            "_top",
           );
         } else {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" + ontologyId,
-            "_top"
+            "_top",
           );
         }
       },
@@ -737,25 +737,25 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
     mapping: {
       "Console message": (
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         console.log(
           "Triggered onNavigateToDisambiguate()" +
             (entityType ? ` for ${entityType || "entity"}` : "") +
             (entity && entity.label ? ` "${entity.label}"` : "") +
             (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            "."
+            ".",
         );
       },
       "Navigate to EBI page": (
         entityType?: string,
-        entity?: { iri: string; label?: string }
+        entity?: { iri: string; label?: string },
       ) => {
         window.open(
           `https://www.ebi.ac.uk/ols4/search?q=${
             entity && entity.label ? entity.label : ""
           }&exactMatch=true&lang=en`,
-          "_top"
+          "_top",
         );
       },
     },
@@ -765,7 +765,7 @@ export const onNavigateArgType: ArgTypes = {
   onNavigate: {
     required: false,
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     action: "onNavigateArgType",
     description:
@@ -830,7 +830,7 @@ Only required for OntoPortal hierarchies.
 An API key is required to access the OntoPortal API. To obtain an API key for the BioPortal REST API, see its [wiki page](https://www.bioontology.org/wiki/BioPortal_Help#Getting_an_API_key).
     `,
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     control: "text" as const,
   },
@@ -842,7 +842,7 @@ export const apiUrlArgType = {
 The API URL for the API call.
     `,
     table: {
-      type: { summary: "string" }
+      type: { summary: "string" },
     },
     control: "text" as const,
   },
@@ -874,7 +874,9 @@ Toggle whether to include entities marked as obsolete by the API.
     `,
     table: {
       defaultValue: {
-        summary: String(HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES),
+        summary: String(
+          HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
+        ),
       },
     },
   },
@@ -926,7 +928,6 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
 export const entityArgType = {
   entity: {
     required: false,
-    description:
-        "Input data object.",
+    description: "Input data object.",
   },
 };

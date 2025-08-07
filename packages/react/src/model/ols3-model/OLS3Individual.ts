@@ -23,7 +23,7 @@ export class OLS3Individual extends OLS3Entity implements Individual {
 
   getDifferentFrom() {
     return asArray(
-      this.properties["http://www.w3.org/2002/07/owl#differentFrom"]
+      this.properties["http://www.w3.org/2002/07/owl#differentFrom"],
     );
   }
 
@@ -42,7 +42,7 @@ export class OLS3Individual extends OLS3Entity implements Individual {
       (t: any) =>
         t !== "http://www.w3.org/2002/07/owl#NamedIndividual" &&
         (!(typeof t === "string") ||
-          !t.startsWith("http://www.w3.org/2000/01/rdf-schema#"))
+          !t.startsWith("http://www.w3.org/2000/01/rdf-schema#")),
     );
   }
 }

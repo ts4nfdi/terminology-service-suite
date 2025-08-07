@@ -1,12 +1,18 @@
 import {
-  commonDescriptionWidgetPlay, DefiningOntologyUnavailableArgs,
+  commonDescriptionWidgetPlay,
+  DefiningOntologyUnavailableArgs,
   DescriptionWidget1Args,
   DescriptionWidgetStoryArgs,
-  DescriptionWidgetStoryArgTypes, ErrorFetchingDataArgs, SelectingDefiningOntologyArgs
+  DescriptionWidgetStoryArgTypes,
+  ErrorFetchingDataArgs,
+  SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidgetStories";
-import './index'
+import "./index";
 import { DescriptionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import { DescriptionWidget, DescriptionWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import {
+  DescriptionWidget,
+  DescriptionWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
@@ -63,20 +69,20 @@ type Story = StoryObj<typeof meta>;
 
 export const DescriptionWidget1: Story = {
   args: DescriptionWidget1Args,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
   args: SelectingDefiningOntologyArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };
 
 export const ErrorFetchingData: Story = {
   args: ErrorFetchingDataArgs,
-  play: commonDescriptionWidgetPlay
+  play: commonDescriptionWidgetPlay,
 };

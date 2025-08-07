@@ -23,7 +23,7 @@ import { SearchResultsListWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { SearchBarWidget } from "../SearchBarWidget";
 import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
-import {OlsSearchApi} from "../../../api/ols/OlsSearchApi";
+import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];

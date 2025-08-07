@@ -12,7 +12,7 @@ import {
 } from "../model/interfaces/Hierarchy";
 import Reified from "../model/Reified";
 import { EntityData } from "../app/types";
-import {dictFromParamString} from "../app/util";
+import { dictFromParamString } from "../app/util";
 
 type TopConcept = {
   uri: string;
@@ -133,8 +133,8 @@ export class SkosApi implements HierarchyBuilder {
             uri: iri,
             lang: "en",
             format: "application/json",
-            ...dictFromParamString(parameter)
-          }
+            ...dictFromParamString(parameter),
+          },
         },
       ).then((obj) =>
         Object.keys(obj["broaderTransitive"]).map(
@@ -200,8 +200,8 @@ export class SkosApi implements HierarchyBuilder {
           params: {
             lang: "en",
             format: "application/json",
-            ...dictFromParamString(parameter)
-          }
+            ...dictFromParamString(parameter),
+          },
         },
       ).then((obj) => obj["topconcepts"]);
 
@@ -273,7 +273,7 @@ export class SkosApi implements HierarchyBuilder {
       ontologyId: ontologyId,
       mainEntityIri: iri,
       keepExpansionStates: props.keepExpansionStates,
-      parameter: parameter
+      parameter: parameter,
     });
   }
 
@@ -288,7 +288,7 @@ export class SkosApi implements HierarchyBuilder {
           uri: nodeToExpand.entityData.iri,
           lang: "en",
           format: "application/json",
-          ...dictFromParamString(parameter)
+          ...dictFromParamString(parameter),
         },
       })
     )["narrower"];
