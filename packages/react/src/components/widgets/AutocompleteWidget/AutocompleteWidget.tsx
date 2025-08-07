@@ -475,11 +475,16 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any): string {
+    const label = item?.getLabel();
+    if (label) return label;
+
+    const ontologyId = item?.getOntologyId()?.toUpperCase();
+    const shortForm = item?.getShortForm()
+
     return (
-      item?.getLabel() ??
-      "-" + " (" + item?.getOntologyId()?.toUpperCase() ??
-      "-" + " " + item?.getShortForm() ??
-      "-" + ")"
+        (ontologyId ? `- (${ontologyId}` : "") +
+        (shortForm ? `- (${shortForm}` : "") ||
+        "-"
     );
   }
 
