@@ -60,7 +60,7 @@ npm install @ts4nfdi/terminology-service-suite
 ```
 4. Install peer dependencies
 ```
-npm install @elastic/eui@102.1 @emotion/react@11.13.5 react@19.0 react-dom@19.0 react-query@3.39.2 axios@1.1.2
+npm install @elastic/eui@102.1 @emotion/react@11.13.5 @emotion/css@11.13.5 react@19.0 react-dom@19.0 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3
 ```
 5. Implement as described above.
 
