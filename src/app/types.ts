@@ -478,6 +478,7 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiUrl: string;
   apiKey?: string;
   backendType?: string;
+  wrap?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &

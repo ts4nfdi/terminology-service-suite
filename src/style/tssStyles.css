@@ -20,6 +20,8 @@ button {
   text-align: center;
   font: 15px Arial, sans-serif;
   font-weight: bold;
+
+  margin-top: 2px;
 }
 
 .ontology-badge {
@@ -50,9 +52,33 @@ button {
 }
 
 .highlight {
-  background-color: lightblue;
+  background: lightblue;
+  box-decoration-break: clone;
   padding: 4px 3px 1px;
   border-radius: 6px;
+}
+
+.lineNodeInlet {
+  position: absolute;
+  border-left: 1px dotted black;
+  border-bottom: 1px dotted black;
+  width: 12px;
+  height: 13px;
+  left: 5px;
+  top: -1px;
+}
+
+.lineAfterNodeInlet {
+  position: absolute;
+  border-left: 1px dotted black;
+  width: 12px;
+  height: calc(100% - 11px);
+  left: 5px;
+  top: 12px;
+}
+
+.outerLine {
+  border-left: 1px dotted black;
 }
 
 .clickable {

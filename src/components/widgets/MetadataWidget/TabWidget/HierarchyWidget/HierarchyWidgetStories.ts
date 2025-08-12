@@ -3,7 +3,7 @@ import {
   apiKeyArgType,
   apiUrlArgType,
   backendTypeArgType,
-  entityTypeArgTypeHierarchy,
+  entityTypeArgTypeHierarchy, hierarchyWrapArgType,
   includeObsoleteEntitiesArgType,
   iriArgTypeHierarchy,
   keepExpansionStatesArgType,
@@ -30,7 +30,8 @@ export const HierarchyWidgetStoryArgTypes = {
   ...keepExpansionStatesArgType,
   ...showSiblingsOnInitArgType,
   ...useLegacyArgTypeHierarchy,
-  ...parameterArgTypeHierarchy
+  ...parameterArgTypeHierarchy,
+  ...hierarchyWrapArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -48,6 +49,7 @@ export const HierarchyWidgetStoryArgs = {
   keepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
   showSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+  wrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
 };
 
