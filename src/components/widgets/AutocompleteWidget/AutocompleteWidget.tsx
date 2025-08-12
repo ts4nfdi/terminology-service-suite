@@ -131,6 +131,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <BreadcrumbPresentation
               shortForm={value.short_form}
+              ontologyId={value.ontology_name}
               colorFirst={"primary"}
               colorSecond={"success"}
               className={`${finalClassName}-breadcrumb`}
