@@ -199,6 +199,18 @@ These are applied directly to the hierarchy queries.
     `,
   },
 };
+export const hierarchyWrapArgType = {
+  hierarchyWrap: {
+    required: false,
+    description:
+        "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
+    table: {
+      defaultValue: {
+        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
+      },
+    },
+  },
+};
 export const hasShortSelectedLabelArgType = {
   hasShortSelectedLabel: {
     required: false,
@@ -812,6 +824,9 @@ If \`preferredRoots==true\`, only the entities specifically marked as preferred 
     },
   },
 };
+export const hierarchyPreferredRootsArgType = {
+  hierarchyPreferredRoots: preferredRootsArgType.preferredRoots
+}
 export const keepExpansionStatesArgType = {
   keepExpansionStates: {
     required: false,
@@ -826,6 +841,9 @@ Otherwise, if a node is closed, only the direct children will be shown on re-exp
     },
   },
 };
+export const hierarchyKeepExpansionStatesArgType = {
+  hierarchyKeepExpansionStates: keepExpansionStatesArgType.keepExpansionStates
+}
 export const showSiblingsOnInitArgType = {
   showSiblingsOnInit: {
     required: false,
@@ -840,6 +858,9 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
     },
   },
 };
+export const hierarchyShowSiblingsOnInitArgType = {
+  hierarchyShowSiblingsOnInit:  showSiblingsOnInitArgType.showSiblingsOnInit
+}
 export const entityArgType = {
   entity: {
     required: false,
