@@ -133,7 +133,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     keepExpansionStates = HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
     showSiblingsOnInit = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
     useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
-    wrap = HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
+    hierarchyWrap = HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
     className,
     parameter,
   } = props;
@@ -298,7 +298,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
         style={{ overflowX: "auto", overflowY: "hidden" }}
       >
         {isSuccessHierarchy && hierarchy != undefined ? (
-          <EuiText style={{ whiteSpace: wrap ? "wrap" : "nowrap" }}>
+          <EuiText style={{ whiteSpace: hierarchyWrap ? "wrap" : "nowrap" }}>
             {hierarchy.roots.map((rootNode, idx) =>
               renderTreeNode(
                 hierarchy,
@@ -343,7 +343,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           onNavigateToEntity={props.onNavigateToEntity}
           onNavigateToOntology={props.onNavigateToOntology}
           parameter={props.parameter}
-          wrap={props.wrap}
+          hierarchyWrap={props.hierarchyWrap}
         />
       </QueryClientProvider>
     </EuiProvider>

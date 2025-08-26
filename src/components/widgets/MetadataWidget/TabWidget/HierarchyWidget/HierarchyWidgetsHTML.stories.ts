@@ -50,7 +50,7 @@ window['ts4nfdiWidgets'].createHierarchy(
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         parameter:"${args.parameter}",
-        wrap:${args.wrap}
+        hierarchyWrap:${args.hierarchyWrap}
     },
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )
