@@ -52,6 +52,7 @@ window['ts4nfdiWidgets'].createAutocomplete(
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
         className: "${args.className}"
+        initialSearchQuery: "${args.initialSearchQuery}"
     },
     document.querySelector('#autocomplete_widget_container_${num}')
 )

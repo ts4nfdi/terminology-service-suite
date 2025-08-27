@@ -40,6 +40,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     showApiSource = true,
     className,
     useLegacy,
+    initialSearchQuery,
     ...rest
   } = props;
 
@@ -52,7 +53,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   /**
    * The current search value
    */
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>(initialSearchQuery ?? "");
 
   /**
    * The set of available options
@@ -497,11 +498,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   }, [selectedOptions]);
 
   function generateDisplayLabel(item: any): string {
+    const label = item?.getLabel();
+    if (label) return label;
+
+    const ontologyId = item?.getOntologyId()?.toUpperCase();
+    const shortForm = item?.getShortForm();
+
     return (
-      item?.getLabel() ??
-      "-" + " (" + item?.getOntologyId()?.toUpperCase() ??
-      "-" + " " + item?.getShortForm() ??
-      "-" + ")"
+        (ontologyId ? `- (${ontologyId}` : "") +
+        (shortForm ? `- (${shortForm}` : "") || "-"
     );
   }
 
