@@ -520,7 +520,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         async={true}
         isLoading={isLoadingTerms || isLoadingOnMount}
         singleSelection={singleSelection ? { asPlainText: true } : false}
-        placeholder={placeholder ? placeholder : "Search for a Concept"}
+        placeholder={placeholder ? placeholder : ""}
         options={options}
         selectedOptions={selectedOptions}
         onSearchChange={setSearchValue}

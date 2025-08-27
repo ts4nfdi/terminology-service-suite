@@ -41,7 +41,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     allowCustomTerms: false,
     selectionChangedEvent: action("selectionChangedEvent"),
     hasShortSelectedLabel: true,
-    placeholder: "Search for a Concept",
+    placeholder: "Type to search...",
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,
@@ -62,7 +62,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
       return;
     },
     hasShortSelectedLabel: true,
-    placeholder: "Search for a Concept",
+    placeholder: "Type to search...",
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,
