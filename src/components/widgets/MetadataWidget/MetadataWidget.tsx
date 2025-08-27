@@ -221,6 +221,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               onNavigateToOntology={props.onNavigateToOntology}
               onNavigateToDisambiguate={props.onNavigateToDisambiguate}
               className={className}
+              hierarchyWrap={props.hierarchyWrap}
             />
           </EuiFlexItem>
         </EuiFlexGroup>

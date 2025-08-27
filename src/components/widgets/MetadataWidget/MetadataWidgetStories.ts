@@ -2,6 +2,10 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
+  hierarchyKeepExpansionStatesArgType,
+  hierarchyPreferredRootsArgType,
+  hierarchyShowSiblingsOnInitArgType,
+  hierarchyWrapArgType,
   iriArgType,
   onNavigateToDisambiguateArgType,
   onNavigateToEntityArgType,
@@ -22,6 +26,10 @@ export const MetadataWidgetStoryArgTypes = {
   ...onNavigateToDisambiguateArgType,
   ...parameterArgType,
   ...useLegacyArgType,
+  ...hierarchyWrapArgType,
+  ...hierarchyPreferredRootsArgType,
+  ...hierarchyKeepExpansionStatesArgType,
+  ...hierarchyShowSiblingsOnInitArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -45,6 +53,7 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToEntity: "Console message",
   onNavigateToOntology: "Console message",
   onNavigateToDisambiguate: "Console message",
+  hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
 };
 
@@ -55,6 +64,7 @@ export const MetadataWidget1 = {
     ontologyId: "uberon",
     iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
     entityType: "term",
+    hierarchyWrap: true,
   },
 };
 

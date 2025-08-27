@@ -365,6 +365,7 @@ export type TabWidgetProps = TabSubwidgetsProps &
     hierarchyPreferredRoots?: boolean;
     hierarchyKeepExpansionStates?: boolean;
     hierarchyShowSiblingsOnInit?: boolean;
+    hierarchyWrap?: boolean;
   };
 
 export type TabPresentationProps = TabWidgetProps &
@@ -482,6 +483,7 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiUrl: string;
   apiKey?: string;
   backendType?: string;
+  hierarchyWrap?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
