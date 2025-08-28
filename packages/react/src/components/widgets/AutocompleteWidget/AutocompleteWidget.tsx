@@ -76,9 +76,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     // @ts-ignore
     const dotColorIndex : number = {
-      "class": 5, // yellow
-      "individual": 3, // purple
-      "property": 1, // blue
+      "class": 8,
+      "individual": 4,
+      "property": 2,
       "objectProperty": 1, // blue
       "dataProperty": 0, // green
       "annotationProperty": 7 // orange
