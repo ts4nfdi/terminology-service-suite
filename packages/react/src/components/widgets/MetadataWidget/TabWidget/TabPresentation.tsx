@@ -64,6 +64,7 @@ function TabPresentation(props: TabPresentationProps) {
                 showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
                 keepExpansionStates={props.hierarchyKeepExpansionStates}
                 className={`${finalClassName}-hierarchy`}
+                hierarchyWrap={props.hierarchyWrap}
               />
             </div>
           </>

@@ -2,13 +2,17 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
+  hierarchyKeepExpansionStatesArgType,
+  hierarchyPreferredRootsArgType,
+  hierarchyShowSiblingsOnInitArgType,
+  hierarchyWrapArgType,
   iriArgType,
   onNavigateToDisambiguateArgType,
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
-  useLegacyArgType,
+  useLegacyArgType
 } from "../../../stories/storyArgs";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../api/ols/OlsHierarchyApi";
 import { expect, waitFor, within } from "storybook/test";
@@ -23,6 +27,10 @@ export const MetadataWidgetStoryArgTypes = {
   ...onNavigateToDisambiguateArgType,
   ...parameterArgType,
   ...useLegacyArgType,
+  ...hierarchyWrapArgType,
+  ...hierarchyPreferredRootsArgType,
+  ...hierarchyKeepExpansionStatesArgType,
+  ...hierarchyShowSiblingsOnInitArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -46,6 +54,7 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToEntity: "Console message",
   onNavigateToOntology: "Console message",
   onNavigateToDisambiguate: "Console message",
+  hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
 } as const;
 
@@ -54,6 +63,7 @@ export const MetadataWidget1Args = {
   ontologyId: "uberon",
   iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
   entityType: "term",
+  hierarchyWrap: true,
 } as const;
 
 export const OLS3Args = {

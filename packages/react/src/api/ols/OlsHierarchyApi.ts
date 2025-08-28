@@ -41,6 +41,7 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
   KEEP_EXPANSION_STATES: false,
   SHOW_SIBLINGS_ON_INIT: false,
   USE_LEGACY: false,
+  WRAP: false,
 } as const;
 
 export class OlsHierarchyApi implements HierarchyBuilder {

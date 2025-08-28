@@ -3,7 +3,7 @@ import {
   apiKeyArgType,
   apiUrlArgType,
   backendArgType,
-  entityTypeArgTypeHierarchy,
+  entityTypeArgTypeHierarchy, hierarchyWrapArgType,
   includeObsoleteEntitiesArgType,
   iriArgTypeHierarchy,
   keepExpansionStatesArgType,
@@ -13,7 +13,7 @@ import {
   parameterArgTypeHierarchy,
   preferredRootsArgType,
   showSiblingsOnInitArgType,
-  useLegacyArgTypeHierarchy,
+  useLegacyArgTypeHierarchy
 } from "../../../../../stories/storyArgs";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../../../api/ols/OlsHierarchyApi";
 import { expect, waitFor, within } from "storybook/test";
@@ -33,6 +33,7 @@ export const HierarchyWidgetStoryArgTypes = {
   ...showSiblingsOnInitArgType,
   ...useLegacyArgTypeHierarchy,
   ...parameterArgTypeHierarchy,
+  ...hierarchyWrapArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -50,6 +51,7 @@ export const HierarchyWidgetStoryArgs = {
   keepExpansionStates: HIERARCHY_WIDGET_DEFAULT_VALUES.KEEP_EXPANSION_STATES,
   showSiblingsOnInit: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_SIBLINGS_ON_INIT,
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
+  hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
 } as const;
 

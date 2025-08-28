@@ -9,7 +9,6 @@ import {
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
   AutocompleteWidgetStoryArgTypes,
-  commonAutocompleteWidgetPlay,
   HideApiSourceApiGatewayArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
@@ -75,6 +74,7 @@ const meta = {
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
         className: "${args.className}"
+        initialSearchQuery: "${args.initialSearchQuery}"
     },
     document.querySelector('#autocomplete_widget_container_${num}')
   )

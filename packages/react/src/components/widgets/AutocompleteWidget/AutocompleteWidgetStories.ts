@@ -48,6 +48,7 @@ export const AutocompleteWidgetStoryArgsReact = {
   useLegacy: true,
   parameter:
     "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+  initialSearchQuery: "",
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
@@ -66,6 +67,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
   useLegacy: true,
   parameter:
     "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+  initialSearchQuery: "",
 };
 
 export const WithDefaultsArgs = {};

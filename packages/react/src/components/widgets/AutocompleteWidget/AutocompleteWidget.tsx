@@ -39,6 +39,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     showApiSource = true,
     className,
     useLegacy,
+    initialSearchQuery,
     ...rest
   } = props;
 
@@ -51,10 +52,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   /**
    * The current search value
    */
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>(initialSearchQuery ?? "");
 
   /**
-   * The set of available options.s
+   * The set of available options
    */
   const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>(
     [],
@@ -110,11 +111,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       return (
         <span className={finalClassName}>
           <EuiHealth color={dotColor}>
-            <span>
-              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-              <br />
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
+                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+
+                {value.description && (
+                <span style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    display: "block",
+                    marginTop: "2px",
+                    color: '#666',}}>
               {value.description}
-            </span>
+          </span>
+                )}
+        </div>
           </EuiHealth>
         </span>
       );
@@ -122,37 +133,47 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntity = () => {
       return (
-        <span title={hoverText} className={finalClassName}>
-          <span>
-            <EuiHealth color={dotColor}>
-              <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
-            </EuiHealth>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <BreadcrumbPresentation
-              shortForm={value.short_form}
-              colorFirst={"primary"}
-              colorSecond={"success"}
-              className={`${finalClassName}-breadcrumb`}
-            />
-            <EuiIcon
-              type="iInCircle"
-              style={{ marginLeft: "5px" }}
-              title={hoverText}
-            />
-          </span>
-          {!singleSuggestionRow && value.description && (
-            <span
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                display: "block",
-              }}
-            >
-              {value.description}
-            </span>
-          )}
+          <span title={hoverText} className={finalClassName}>
+      <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+      >
+        <EuiHealth color={dotColor}>
+          <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+        </EuiHealth>
+
+        <BreadcrumbPresentation
+            shortForm={value.short_form}
+            ontologyId={value.ontology_name}
+            colorFirst={"primary"}
+            colorSecond={"success"}
+            className={`${finalClassName}-breadcrumb`}
+        />
+
+        <EuiIcon
+            type={"iInCircle"}
+            title={hoverText}
+        />
+      </div>
+
+            {!singleSuggestionRow && value.description && (
+                <span
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      display: "block",
+                      marginTop: "4px",
+                      color: '#666'
+                    }}
+                >
+          {value.description}
         </span>
+            )}
+    </span>
       );
     };
 
@@ -524,7 +545,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         async={true}
         isLoading={isLoadingTerms || isLoadingOnMount}
         singleSelection={singleSelection ? { asPlainText: true } : false}
-        placeholder={placeholder ? placeholder : "Search for a Concept"}
+        placeholder={placeholder ? placeholder : ""}
         options={options}
         selectedOptions={selectedOptions}
         onSearchChange={setSearchValue}
