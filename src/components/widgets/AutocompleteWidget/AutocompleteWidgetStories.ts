@@ -41,7 +41,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     allowCustomTerms: false,
     selectionChangedEvent: action("selectionChangedEvent"),
     hasShortSelectedLabel: true,
-    placeholder: "Search for a Concept",
+    placeholder: "Type to search...",
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,
@@ -49,6 +49,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     useLegacy: true,
     parameter:
       "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    initialSearchQuery: "",
   },
 };
 
@@ -62,7 +63,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
       return;
     },
     hasShortSelectedLabel: true,
-    placeholder: "Search for a Concept",
+    placeholder: "Type to search...",
     preselected: [],
     showApiSource: true,
     singleSuggestionRow: false,

@@ -23,6 +23,7 @@ declare global {
       showApiSource?: boolean;
       className?: string;
       useLegacy?: string;
+      initialSearchQuery?: string;
     }
     ) => void,
     createDataContent: (props: {
