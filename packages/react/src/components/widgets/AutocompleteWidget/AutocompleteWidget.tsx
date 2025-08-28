@@ -47,7 +47,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const olsEntityApi = new OlsEntityApi(api);
 
   const visColors = euiPaletteColorBlind();
-  const visColorsBehindText = euiPaletteColorBlindBehindText();
 
   /**
    * The current search value
@@ -74,15 +73,17 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   // @ts-ignore
   const renderOption = (option, searchValue) => {
     const { label, value } = option;
-    const dotColorIndex = visColorsBehindText.indexOf(
-      value.type === "class"
-        ? visColorsBehindText[5]
-        : value.type === "individual"
-          ? visColorsBehindText[3]
-          : value.type === "property"
-            ? visColorsBehindText[1]
-            : "",
-    );
+
+    // @ts-ignore
+    const dotColorIndex : number = {
+      "class": 5, // yellow
+      "individual": 3, // purple
+      "property": 1, // blue
+      "objectProperty": 1, // blue
+      "dataProperty": 0, // green
+      "annotationProperty": 7 // orange
+    }[value.type] ?? -1;
+
     const dotColor = visColors[dotColorIndex];
 
     if (allowCustomTerms && value.iri == "") {

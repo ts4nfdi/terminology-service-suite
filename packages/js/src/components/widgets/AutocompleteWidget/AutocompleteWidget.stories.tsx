@@ -73,7 +73,7 @@ const meta = {
         ts4nfdiGateway:${args.ts4nfdiGateway},
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
-        className: "${args.className}"
+        className: "${args.className}",
         initialSearchQuery: "${args.initialSearchQuery}"
     },
     document.querySelector('#autocomplete_widget_container_${num}')
