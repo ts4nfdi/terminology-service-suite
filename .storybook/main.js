@@ -1,21 +1,22 @@
+const { dirname, join } = require("node:path");
+
 module.exports = {
   stories: ["./*.stories.mdx"],
+
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-docgen",
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-docs"),
   ],
+
   framework: {
-    name: "@storybook/html-vite",
+    name: getAbsolutePath("@storybook/html-vite"),
     options: {},
   },
-  docs: {
-    autodocs: true,
-  },
+
   typescript: {
     reactDocgen: "react-docgen",
   },
+
   refs: (config, { configType }) => {
     const envConfigType = process.env.CONFIG_TYPE || configType;
     if (envConfigType === "DEVELOPMENT") {
@@ -44,3 +45,7 @@ module.exports = {
     };
   },
 };
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
+}

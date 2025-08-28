@@ -17,14 +17,13 @@ Thank you for your interest in contributing! Your contributions help improve the
 Here are some quick links to essential project resources:
 
 - **Documentation:** [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/) | [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)
-- **React Package:** [Latest](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite) | [All Versions](https://github.com/ts4nfdi/terminology-service-suite/pkgs/npm/terminology-service-suite/versions)
-- **JavaScript Modules:** [Latest](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules/latest) | [All Versions](https://github.com/ts4nfdi/terminology-service-suite/tree/gh-pages/js-modules)
+- **Development instructions:** [Wiki](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development-instructions)
 
 ## Reporting Bugs
 
 Bugs are tracked via GitHub issues. If you encounter a bug, please create an issue in the repository and provide as much detail as possible. This helps us to reproduce and fix the issue efficiently.
 
-### What to Include in a Bug Report:
+### What to Include in a Bug Report (optionally):
 
 - **A clear, descriptive title** that summarizes the problem
 - **Steps to reproduce** the issue with as much detail as possible
@@ -36,7 +35,7 @@ Bugs are tracked via GitHub issues. If you encounter a bug, please create an iss
 
 Enhancements can include new features or minor improvements to existing functionality. If you have an idea, open an issue on GitHub and provide as much detail as possible.
 
-### What to Include in an Enhancement Request:
+### What to Include in an Enhancement Request (optionally):
 
 - **A clear and descriptive title** summarizing the suggestion
 - **A step-by-step explanation** of the suggested enhancement
@@ -66,7 +65,7 @@ To ensure an efficient review process, please follow these guidelines:
 
 ### Style Guides
 
-WIP
+Use Eslint and prettier.
 
 ## Git Commit Messages
 

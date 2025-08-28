@@ -1,1 +1,0 @@
-export { getBreadcrumbData, entityObject } from "./BreadcrumbData"
