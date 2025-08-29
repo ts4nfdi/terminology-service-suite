@@ -15,12 +15,12 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/esm/index.d.ts",
       "default": "./dist/esm/index.js"
     },
     "./server": {
       "import": "./dist/server/index.js",
-      "types": "./dist/types/components/server/index.d.ts",
+      "types": "./dist/esm/components/server/index.d.ts",
       "default": "./dist/server/index.js"
     },
     "./dist/esm/index.css": {
@@ -46,7 +46,7 @@
     "lint:check": "npx eslint ./src --ext js,jsx,ts,tsx",
     "lint:fix": "npx eslint ./src --ext js,jsx,ts,tsx --fix"
   },
-  "types": "dist/types/index.d.ts",
+  "types": "dist/esm/index.d.ts",
   "author": "TS4NFDI",
   "license": "MIT",
   "devDependencies": {
