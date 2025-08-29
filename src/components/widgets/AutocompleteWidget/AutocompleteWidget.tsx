@@ -71,6 +71,8 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
   const finalClassName = className || "ts4nfdi-autocomplete-style";
 
+  const [displayNoSuggestions, setDisplayNoSuggestions] = useState<boolean>(true);
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const renderOption = (option, searchValue) => {
@@ -449,6 +451,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     },
   );
 
+  useEffect(() => {
+    if (isLoadingTerms || (preselected !== undefined && preselected?.length > 0)) {
+      setDisplayNoSuggestions(false)
+    }
+  }, [isLoadingTerms, preselected])
+
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
    */
@@ -553,6 +561,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         renderOption={renderOption}
         onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
         rowHeight={singleSuggestionRow ? 30 : 50}
+        noSuggestions={displayNoSuggestions}
       />
     </div>
   );
