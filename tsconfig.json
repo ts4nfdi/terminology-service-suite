@@ -10,7 +10,7 @@
     "jsx": "react-jsx",
     "declaration": true,
     "module": "ESNext",
-    "outDir": "dist/types"
+    "outDir": "dist/esm"
   },
   "exclude": ["dist"],
   "include": [
