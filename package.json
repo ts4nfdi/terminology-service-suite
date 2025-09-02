@@ -17,21 +17,6 @@
     "src/react",
     "src/js"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "types": "./dist/esm/index.d.ts",
-      "default": "./dist/esm/index.js"
-    },
-    "./server": {
-      "import": "./dist/server/index.js",
-      "types": "./dist/esm/components/server/index.d.ts",
-      "default": "./dist/server/index.js"
-    },
-    "./dist/esm/index.css": {
-      "default": "./dist/esm/index.css"
-    }
-  },
   "scripts": {
     "build": "npx vite build",
     "semantic-release": "npx semantic-release",
@@ -95,6 +80,7 @@
   },
   "dependencies": {
     "react": "^18.3",
-    "react-dom": "^18.3"
+    "react-dom": "^18.3",
+    "rollup-plugin-preserve-directives": "^0.4.0"
   }
 }

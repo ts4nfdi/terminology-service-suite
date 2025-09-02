@@ -28,14 +28,14 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: path.resolve(__dirname, "src/components/server/index.ts"),
       name: "@ts4nfdi/terminology-service-suite",
       fileName: (format) => `index.${format}.js`,
       formats: ["es"],
     },
     rollupOptions: {
       output: {
-        dir: "dist/esm",
+        dir: "dist/server",
       },
       external: [
         "axios",

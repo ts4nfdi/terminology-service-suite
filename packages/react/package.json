@@ -5,8 +5,8 @@
   "author": "TS4NFDI",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.es.js",
-  "module": "./dist/index.es.js",
+  "main": "./dist/esm/index.es.js",
+  "module": "./dist/esm/index.es.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
@@ -19,11 +19,13 @@
   },
   "scripts": {
     "prepare": "patch-package",
-    "build": "npx vite build",
     "test": "vitest",
     "test:storybook": "vitest --project=storybook",
     "storybook": "storybook dev -p 6006 ",
-    "build:storybook": "storybook build -c .storybook -o storybook-static"
+    "build:storybook": "storybook build -c .storybook -o storybook-static",
+    "build:client": "vite build --config vite.config.mts",
+    "build:server": "vite build --config vite.config.server.mts",
+    "build": "npm run build:client && npm run build:server"
   },
   "peerDependencies": {
     "@elastic/datemath": "^5.0.3",
@@ -45,6 +47,7 @@
     "vis-network": "^9.1.9"
   },
   "devDependencies": {
-    "semantic-release": "^24.2.3"
+    "semantic-release": "^24.2.3",
+    "rollup-preserve-directives": "^1.1.3"
   }
 }
