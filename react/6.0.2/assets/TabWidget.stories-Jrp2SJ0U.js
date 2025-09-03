@@ -1,0 +1,28 @@
+import{T as U}from"./TabWidget-CJJFuLmY.js";import{Z as x,a as F,E as e}from"./globals-CvFyH82M.js";import{a8 as m,y as M,z as k,B as G,G as K,p as Z,C as Y,H as j,j as z,at as Q}from"./widgetDescriptions-BxPwfV77.js";import"./iframe-wk1mlfou.js";import"./preload-helper-Dp1pzeXC.js";import"./useQuery-wZqAoEXu.js";import"./TabPresentation-CDxm6mt8.js";import"./AlternativeNameTabPresentation-D91MvhG-.js";import"./flex_group-CxFDGnTe.js";import"./panel-ChRfI_wq.js";import"./shadow-DNHHyIR-.js";import"./loading_spinner-CozkQlPq.js";import"./text-KgSp1nfd.js";import"./link.styles-DwoewcHn.js";import"./flex_item-CycZ9ILc.js";import"./CrossRefTabPresentation-DewXJeE2.js";import"./OntologyInfoWidget-B-Qmyn1E.js";import"./StructureRendering-CvsXx69N.js";/* empty css                  */import"./icon_tip-BOTAgn0T.js";import"./tool_tip-DMmEcBE-.js";import"./icon-CHdTk0Cq.js";import"./observer-BHgA03Sq.js";import"./portal-BtL6o_g7.js";import"./card-K7hCx7j5.js";import"./href_validator-MsLfSFMZ.js";import"./_button-CJRpE5HU.js";import"./color_utils-D05n6xaO.js";import"./button-Dp4d-B9m.js";import"./_button_display-DG9W7CJY.js";import"./title-i2i_XC5f.js";import"./HierarchyWidget-6ziVORUl.js";import"./GraphViewWidget-Cfvau3dy.js";import"./popover-D3Y6PjJ3.js";import"./focus_trap-DSaroNAy.js";import"./screen_reader_only-Dg7545SJ.js";import"./button_empty-D1GxvFfF.js";import"./TermDepictionWidget-C92wtMk7.js";import"./OlsThingApi-BVYwTFYO.js";import"./inner_text-DrWiuds9.js";const{expect:X,waitFor:q,within:J}=__STORYBOOK_MODULE_TEST__,$={...z,...j,...Y,...Z,...K,...G,...k,...M},aa={api:"",parameter:"collection=nfdi4health",useLegacy:!0,ontologyId:"",entityType:"term",iri:"",altNamesTab:!0,hierarchyTab:!0,crossRefTab:!0,terminologyInfoTab:!0,hierarchyPreferredRoots:m.PREFERRED_ROOTS,hierarchyKeepExpansionStates:m.KEEP_EXPANSION_STATES,hierarchyShowSiblingsOnInit:m.SHOW_SIBLINGS_ON_INIT,onNavigateToEntity:"Console message",onNavigateToOntology:"Console message",onNavigateToDisambiguate:"Console message"},ea={api:x,ontologyId:"hp",iri:"http://purl.obolibrary.org/obo/HP_0000819",useLegacy:!0},ra={api:F,ontologyId:"efo",iri:"http://www.ebi.ac.uk/efo/EFO_0009644",useLegacy:!0},oa={api:e,ontologyId:"efo",iri:"http://www.ebi.ac.uk/efo/EFO_0009644",useLegacy:!0},ta={api:e,ontologyId:"efo",iri:"http://www.ebi.ac.uk/efo/EFO_0009644",useLegacy:!1,parameter:""},ia={api:e,iri:"http://purl.obolibrary.org/obo/IAO_0000631",entityType:"term",parameter:""},sa={api:e,iri:"http://identifiers.org/uniprot/Q9VAM9",entityType:"term",parameter:""},na={api:e,ontologyId:"ncbitaxon",iri:"http://purl.obolibrary.org/obo/NCBITaxon_2489341",useLegacy:!1,parameter:""},pa={api:e,ontologyId:"ncit",iri:"http://purl.obolibrary.org/obo/NCIT_C2984",entityType:"term",useLegacy:!1,parameter:"",altNamesTab:!0,hierarchyTab:!1,crossRefTab:!1,terminologyInfoTab:!1},a=async({canvasElement:B})=>{const H=J(B);await q(async()=>{const C=H.getByTestId("tab");await X(C).toBeInTheDocument()},{timeout:3e3})},Qa={title:"Additional Entity Metadata/TabWidget",component:U,parameters:{layout:"centered",docs:{description:{component:Q}}},argTypes:$,args:aa},r={args:ea,play:a},o={name:"OLS3",args:ra,play:a},t={name:"OLS4 V1",args:oa,play:a},i={name:"OLS4 V2",args:ta,play:a},s={args:ia,play:a},n={args:sa,play:a},p={args:na,play:a},g={args:pa,play:a};var c,l,y;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  args: DefaultArgs,
+  play: commonTabWidgetPlay
+}`,...(y=(l=r.parameters)==null?void 0:l.docs)==null?void 0:y.source}}};var d,T,b;o.parameters={...o.parameters,docs:{...(d=o.parameters)==null?void 0:d.docs,source:{originalSource:`{
+  name: "OLS3",
+  args: TabWidgetOLS3Args,
+  play: commonTabWidgetPlay
+}`,...(b=(T=o.parameters)==null?void 0:T.docs)==null?void 0:b.source}}};var u,S,O;t.parameters={...t.parameters,docs:{...(u=t.parameters)==null?void 0:u.docs,source:{originalSource:`{
+  name: "OLS4 V1",
+  args: TabWidgetOLS4V1Args,
+  play: commonTabWidgetPlay
+}`,...(O=(S=t.parameters)==null?void 0:S.docs)==null?void 0:O.source}}};var A,f,L;i.parameters={...i.parameters,docs:{...(A=i.parameters)==null?void 0:A.docs,source:{originalSource:`{
+  name: "OLS4 V2",
+  args: TabWidgetOLS4V2Args,
+  play: commonTabWidgetPlay
+}`,...(L=(f=i.parameters)==null?void 0:f.docs)==null?void 0:L.source}}};var W,_,I;s.parameters={...s.parameters,docs:{...(W=s.parameters)==null?void 0:W.docs,source:{originalSource:`{
+  args: SelectingDefiningOntologyArgs,
+  play: commonTabWidgetPlay
+}`,...(I=(_=s.parameters)==null?void 0:_.docs)==null?void 0:I.source}}};var E,h,D;n.parameters={...n.parameters,docs:{...(E=n.parameters)==null?void 0:E.docs,source:{originalSource:`{
+  args: DefiningOntologyUnavailableArgs,
+  play: commonTabWidgetPlay
+}`,...(D=(h=n.parameters)==null?void 0:h.docs)==null?void 0:D.source}}};var P,N,w;p.parameters={...p.parameters,docs:{...(P=p.parameters)==null?void 0:P.docs,source:{originalSource:`{
+  args: TabWidgetLargeArgs,
+  play: commonTabWidgetPlay
+}`,...(w=(N=p.parameters)==null?void 0:N.docs)==null?void 0:w.source}}};var V,v,R;g.parameters={...g.parameters,docs:{...(V=g.parameters)==null?void 0:V.docs,source:{originalSource:`{
+  args: HiddenTabsArgs,
+  play: commonTabWidgetPlay
+}`,...(R=(v=g.parameters)==null?void 0:v.docs)==null?void 0:R.source}}};const Xa=["Default","TabWidgetOLS3","TabWidgetOLS4V1","TabWidgetOLS4V2","SelectingDefiningOntology","DefiningOntologyUnavailable","TabWidgetLarge","HiddenTabs"];export{r as Default,n as DefiningOntologyUnavailable,g as HiddenTabs,s as SelectingDefiningOntology,p as TabWidgetLarge,o as TabWidgetOLS3,t as TabWidgetOLS4V1,i as TabWidgetOLS4V2,Xa as __namedExportsOrder,Qa as default};
