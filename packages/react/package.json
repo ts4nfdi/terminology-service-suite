@@ -13,6 +13,7 @@
     "package.json"
   ],
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
+  "homepage": "https://ts4nfdi.github.io/terminology-service-suite/comp/latest/?path=/docs/overview--docs",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
     "access": "public"

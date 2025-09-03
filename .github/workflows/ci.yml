@@ -134,7 +134,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.KM }}@github.com/${{ github.repository }}.git
           git add package.json
-          git commit -m 'chore(release): update js package version'
+          git commit -m 'chore(release): update js package version [skip ci]'
           git push
 
   documentation-latest:
@@ -213,7 +213,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s storybook-static/react --no-history -t react/latest
-          npx gh-pages-multi deploy -s storybook-static/js --no-history -t js/latest
+          npx gh-pages-multi deploy -s storybook-static/js --no-history -t html/latest
           npx gh-pages-multi deploy -s storybook-static/public --no-history -t comp/latest
 
   documentation-versioned:
@@ -269,5 +269,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s artifacts/react --no-history -t react/"$SRVERSION"
-          npx gh-pages-multi deploy -s artifacts/js --no-history -t js/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/js --no-history -t html/"$SRVERSION"
           npx gh-pages-multi deploy -s artifacts/public --no-history -t comp/"$SRVERSION"

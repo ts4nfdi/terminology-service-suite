@@ -1,7 +1,7 @@
 const { dirname, join } = require("node:path");
 
 module.exports = {
-  stories: ["./*.stories.mdx"],
+  stories: ["./*.mdx"],
 
   addons: [
     getAbsolutePath("@storybook/addon-links"),
@@ -27,7 +27,7 @@ module.exports = {
           url: "http://localhost:6006",
         },
         html: {
-          title: "HTML",
+          title: "Plain JavaScript",
           // this has to be the port on which storybook:html runs
           url: "http://localhost:6007",
         },
@@ -39,7 +39,7 @@ module.exports = {
         url: "https://ts4nfdi.github.io/terminology-service-suite/react/latest",
       },
       html: {
-        title: "HTML",
+        title: "Plain JavaScript",
         url: "https://ts4nfdi.github.io/terminology-service-suite/html/latest",
       },
     };
