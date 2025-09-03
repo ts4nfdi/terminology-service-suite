@@ -7,11 +7,17 @@
     "strict": true,
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types/"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "declaration": true,
     "module": "ESNext",
     "outDir": "dist/esm"
   },
   "exclude": ["dist"],
-  "include": ["./src/**/*"]
+  "include": [
+    "./packages/**/*",
+    ".storybook/**/*",
+    "packages/react/.storybook/main.ts",
+    "packages/react/.storybook/preview.tsx",
+    "packages/react/.storybook/vitest.setup.ts"
+  ]
 }

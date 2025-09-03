@@ -31,38 +31,40 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
+          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for gh-pages-multi
 
-      - name: Run style formatting
-        run: npm run style:format
-        env:
-          CI: false
+      - name: Install and build React package
+        working-directory: packages/react
+        run: |
+          npm ci
+          npm run build
 
-      - name: Run npm build
-        run: npm run build --if-present
-
-      - name: Set up Node.js (npm registry) # for publishing
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org/'
           scope: '@ts4nfdi'
 
-      - name: Run semantic release and capture output
+      - name: Run semantic release for React package and capture output
+        if: github.ref == 'refs/heads/main'
         id: semantic_release
+        continue-on-error: true
         run: |
           output=$(npx semantic-release)
           sanitized_output=$(echo "$output" | tr '\n' ' ')
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.KM }} # for GitHub release
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for publishing to NPM
+          GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for access to NPM
+        working-directory: packages/react
 
       - name: Parse semantic-release output
+        if: github.ref == 'refs/heads/main'
         run: |
           printf "%s\n" "${{ steps.semantic_release.outputs.release_output }}" > release.log
           grep -oP 'Published release \K\d+\.\d+\.\d+' release.log > version.txt
@@ -72,52 +74,68 @@ jobs:
             echo "SRRELEASE=release" >> $GITHUB_ENV
           fi
 
-      - name: Save extracted version and release status as workflow outputs
+      - name: Save outputs
+        if: github.ref == 'refs/heads/main'
         id: setoutput
         run: |
           echo "srversion=$SRVERSION" >> "$GITHUB_OUTPUT"
           echo "srrelease=$SRRELEASE" >> "$GITHUB_OUTPUT"
 
-      - name: Print SRVERSION for debugging
-        run: echo "SRVERSION is $SRVERSION"
-
-      - name: Print SRRELEASE for debugging
-        run: echo "SRRELEASE is $SRRELEASE"
-
-      - name: Build plain JavaScript widgets
-        run: npm run build:plainJS
-
-      - name: Set Git Author Identity
-        if: env.SRRELEASE == 'release'
+      - name: Print version info
+        if: github.ref == 'refs/heads/main'
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          echo "SRVERSION is $SRVERSION"
+          echo "SRRELEASE is $SRRELEASE"
 
-      - name: Configure Git to Use PAT for Authentication
-        if: env.SRRELEASE == 'release'
+      - name: Print conditions
+        if: github.ref == 'refs/heads/main'
         run: |
-          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n '${{ secrets.GH_PAT }}' | base64)"
+          echo "github.ref = ${{ github.ref }}"
+          echo "env.SRRELEASE = ${{ env.SRRELEASE }}"
 
-      - name: Upload artifact
-        if: env.SRRELEASE == 'release'
-        uses: actions/upload-pages-artifact@v3
+      - name: Install and build JS package
+        if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
+        working-directory: packages/js
+        run: |
+          npm ci
+          npm run build
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+
+      - name: Change version
+        if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
+        uses: reedyuk/npm-version@1.1.1
         with:
-          name: plainjs-widgets
-          path: dist_plainjs
+          version: "$SRVERSION"
+          package: packages/js
 
-      - name: Copy as Latest to gh-pages
-        if: env.SRRELEASE == 'release'
+      - name: Publish JS package
+        if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/latest
+          npm publish
+        working-directory: packages/js
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
 
-      - name: Copy Version to gh-pages
-        if: env.SRRELEASE == 'release'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update package.json with new version
+        if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
+        working-directory: packages/js
         run: |
-          npx gh-pages-multi deploy -s dist_plainjs --no-history -t js-modules/"$SRVERSION"
+          echo "$SRVERSION"
+          jq --arg version "$SRVERSION" '.version = $version' package.json > tmp.json && mv tmp.json package.json
+
+      - name: Commit and push updated package.json
+        if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
+        working-directory: packages/js
+        env:
+          GITHUB_TOKEN: ${{ secrets.KM }}
+        run: |
+          git config user.name ${{ github.actor }}
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.KM }}@github.com/${{ github.repository }}.git
+          git add package.json
+          git commit -m 'chore(release): update js package version'
+          git push
 
   documentation-latest:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
@@ -137,17 +155,31 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install dependencies # for Storybook
+      - name: Install root dependencies
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
 
-      - name: Build all Storybooks
+      - name: Install and Build React Storybook
+        working-directory: packages/react
         run: |
-          npm run build:plainJS
-          npm run build-storybook-html -- -o html
-          npm run build-storybook-react -- -o react
-          npm run build-storybook -- -o public
+          npm install
+          npm run build:storybook -- -o ../../storybook-static/react
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+
+      - name: Install and Build JS Storybook
+        working-directory: packages/js
+        run: |
+          npm install
+          npm run build:storybook -- -o ../../storybook-static/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+
+      - name: Install and Build Composed Storybook
+        run: |
+          npm install
+          npm run build:storybook -- -o storybook-static/public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
@@ -156,9 +188,9 @@ jobs:
         with:
           name: docs-artifacts
           path: |
-            react
-            html
-            public
+            storybook-static/react
+            storybook-static/js
+            storybook-static/public
 
       - name: Set Git Author Identity
         run: |
@@ -180,13 +212,13 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s react --no-history -t react/latest
-          npx gh-pages-multi deploy -s html --no-history -t html/latest
-          npx gh-pages-multi deploy -s public --no-history -t comp/latest
+          npx gh-pages-multi deploy -s storybook-static/react --no-history -t react/latest
+          npx gh-pages-multi deploy -s storybook-static/js --no-history -t js/latest
+          npx gh-pages-multi deploy -s storybook-static/public --no-history -t comp/latest
 
   documentation-versioned:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
-    needs: [build, documentation-latest]
+    needs: [ build, documentation-latest ]
     runs-on: ubuntu-latest
     permissions:
       pages: write      # to deploy to Pages
@@ -202,7 +234,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install dependencies # for Storybook
+      - name: Install root dependencies
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
@@ -237,5 +269,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx gh-pages-multi deploy -s artifacts/react --no-history -t react/"$SRVERSION"
-          npx gh-pages-multi deploy -s artifacts/html --no-history -t html/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/js --no-history -t js/"$SRVERSION"
           npx gh-pages-multi deploy -s artifacts/public --no-history -t comp/"$SRVERSION"

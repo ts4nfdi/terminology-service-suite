@@ -141,7 +141,7 @@ fabric.properties
 /.idea/modules.xml
 /.npmrc
 /.nvmrc
-/dist/
 /.idea/
 
 .vscode/
+dist/

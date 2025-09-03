@@ -1,0 +1,53 @@
+{
+  "name": "@ts4nfdi/terminology-service-suite",
+  "version": "5.7.0",
+  "description": "This project includes a widget component library derived from the semantic lookup service SemLookP. The Terminology Service is a repository for biomedical resources that aims to provide a single point of access to the latest ontology and terminology versions. User interface (UI) functionalities were extracted and implemented as separate widgets to allow integration into other 3rd party services, thus simplifying the development of user interfaces and the visualization of semantic information. The widgets are built with React and TypeScript and can be used in React applications. SemLookP and the widgets are based on the Ontology Lookup Service (OLS), software developed by EBI.",
+  "author": "TS4NFDI",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/esm/index.es.js",
+  "module": "./dist/esm/index.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "patch-package",
+    "test": "vitest",
+    "test:storybook": "vitest --project=storybook",
+    "storybook": "storybook dev -p 6006 ",
+    "build:storybook": "storybook build -c .storybook -o storybook-static",
+    "build:client": "vite build --config vite.config.mts",
+    "build:server": "vite build --config vite.config.server.mts",
+    "build": "npm run build:client && npm run build:server"
+  },
+  "peerDependencies": {
+    "@elastic/datemath": "^5.0.3",
+    "@elastic/eui": ">= 97.3.1 <102.1.0",
+    "@emotion/css": "^11.13.5",
+    "@emotion/react": "^11.13.5",
+    "axios": "^1.1.2",
+    "moment": "^2.30.1",
+    "react": "^18.3",
+    "react-dom": "^18.3",
+    "react-query": "^3.39.2"
+  },
+  "dependencies": {
+    "@google/model-viewer": "^4.0.0",
+    "patch-package": "^8.0.0",
+    "react-router": "^6.3.0",
+    "three": "^0.172.0",
+    "vis-data": "^7.1.9",
+    "vis-network": "^9.1.9"
+  },
+  "devDependencies": {
+    "semantic-release": "^24.2.3",
+    "rollup-preserve-directives": "^1.1.3"
+  }
+}

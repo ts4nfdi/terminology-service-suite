@@ -1,0 +1,46 @@
+import { DataContentWidget } from "./DataContentWidget";
+import {
+  commonDataContentWidgetPlay,
+  DataContentWidgetStoryArgs,
+  DataContentWidgetStoryArgTypes,
+  ErrorDataContentWidgetArgs,
+  NFDI4HealthDataContentWidgetArgs,
+  SafetyDataContentWidgetArgs,
+} from "./DataContentWidgetStories";
+import { DataContentDescription } from "../../../app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+const meta = {
+  title: "Terminology Service/DataContentWidget",
+  tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: DataContentDescription,
+      },
+    },
+  },
+  component: DataContentWidget,
+  argTypes: DataContentWidgetStoryArgTypes,
+  args: DataContentWidgetStoryArgs,
+} satisfies Meta<typeof DataContentWidget>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const NFDI4HealthDataContentWidget: Story = {
+  args: NFDI4HealthDataContentWidgetArgs,
+  play: commonDataContentWidgetPlay,
+};
+
+export const SafetyDataContentWidget: Story = {
+  args: SafetyDataContentWidgetArgs,
+  play: commonDataContentWidgetPlay,
+};
+
+export const ErrorDataContentWidget: Story = {
+  args: ErrorDataContentWidgetArgs,
+  play: commonDataContentWidgetPlay,
+};
