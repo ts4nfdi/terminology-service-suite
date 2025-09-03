@@ -1,0 +1,16 @@
+import { EntityInfoWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+import { Meta, StoryObj } from '@storybook/react-vite';
+declare const meta: Meta<EntityInfoWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const TermInfoWidget: Story;
+export declare const PropertyInfoWidget: Story;
+export declare const IndividualInfoWidget: Story;
+export declare const InfoWidgetBadges: Story;
+export declare const OptionalEntityTypeLegacyAPI: Story;
+export declare const InfoWidgetDomain: Story;
+export declare const InfoWidgetRange: Story;
+export declare const InfoWidgetPropertyAssertion: Story;
+export declare const InfoWidgetPropertyCharacteristics: Story;
+export declare const NavigateToEBIPage: Story;
+export declare const SkosmosImport: Story;
