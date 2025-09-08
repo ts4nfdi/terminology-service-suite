@@ -20,7 +20,6 @@ import {
   getErrorMessageToDisplay,
 } from "../../../app/util";
 import {
-  getEntityLinkJSX,
   getReifiedJSX,
   getTooltip,
 } from "../../../model/StructureRendering";
@@ -40,6 +39,7 @@ import {
 import { EntityInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import EntityLink from "../../../model/EntityLink";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -200,18 +200,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {term.getSubsets().map((subset) => {
                       return (
                         <li key={randomString()} id={subset + randomString()}>
-                          {getEntityLinkJSX(
-                            term,
-                            term.getLinkedEntities(),
-                            subset,
-                            showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                          <EntityLink
+                              parentEntity={term}
+                              linkedEntities={term.getLinkedEntities()}
+                              iri={subset}
+                              showBadges={showBadges}
+                              onNavigates={{
+                                  onNavigateToEntity: props.onNavigateToEntity,
+                                  onNavigateToOntology: props.onNavigateToOntology,
+                                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                              }}
+                          />
                         </li>
                       );
                     })}
@@ -220,17 +219,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getEntityLinkJSX(
-                    term,
-                    term.getLinkedEntities(),
-                    term.getSubsets()[0],
-                    showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                    <EntityLink
+                        parentEntity={term}
+                        linkedEntities={term.getLinkedEntities()}
+                        iri={term.getSubsets()[0]}
+                        showBadges={showBadges}
+                        onNavigates={{
+                            onNavigateToEntity: props.onNavigateToEntity,
+                            onNavigateToOntology: props.onNavigateToOntology,
+                            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                        }}
+                    />
                 </p>
               )}
             </EuiFlexItem>
@@ -436,17 +435,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+                />
               </>
             ) : (
               getTooltip(
@@ -485,17 +484,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+                />
               </>
             }
           </>,
@@ -533,17 +532,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+                />
               </>
             ) : hasObjectProperty ? (
               getTooltip(
@@ -560,17 +559,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+                />
               </>
             ) : (
               <></>

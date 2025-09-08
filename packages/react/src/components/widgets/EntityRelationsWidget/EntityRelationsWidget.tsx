@@ -18,7 +18,6 @@ import {
   Thing,
 } from "../../../model/interfaces";
 import {
-  getEntityLinkJSX,
   getReifiedJSX,
   getSectionListJSX,
 } from "../../../model/StructureRendering";
@@ -38,6 +37,7 @@ import {
 import { EntityRelationsWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import EntityLink from "../../../model/EntityLink";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -476,17 +476,17 @@ function getClassInstancesSectionJSX(
             {instances.map((instance) => {
               return (
                 <li key={randomString()}>
-                  {getEntityLinkJSX(
-                    term,
-                    term.getLinkedEntities(),
-                    instance.getIri(),
-                    props.showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                    <EntityLink
+                        parentEntity={term}
+                        linkedEntities={term.getLinkedEntities()}
+                        iri={instance.getIri()}
+                        showBadges={props.showBadges}
+                        onNavigates={{
+                            onNavigateToEntity: props.onNavigateToEntity,
+                            onNavigateToOntology: props.onNavigateToOntology,
+                            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                        }}
+                    />
                 </li>
               );
             })}

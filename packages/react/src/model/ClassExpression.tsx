@@ -4,9 +4,9 @@ import LinkedEntities from "./LinkedEntities";
 import {OnNavigates} from "../app";
 import Reified from "./Reified";
 import {asArray, randomString} from "../app/util";
-import {getEntityLinkJSX, getReifiedJSX} from "./StructureRendering";
-
-const DEFAULT_SHOW_BADGES = true; // TODO refactor
+import {getReifiedJSX} from "./StructureRendering";
+import {DEFAULT_SHOW_BADGES} from "../app/globals";
+import EntityLink from "./EntityLink";
 
 /**
  * ONLY USABLE WITH V2-API ENTITIES
@@ -43,13 +43,13 @@ export default function ClassExpression(
     linkedEntities = linkedEntities.mergeWith(currentResponsePath.linkedEntities);
 
     if (typeof currentResponsePath === "string") {
-        result = getEntityLinkJSX(
-            parentEntity,
-            linkedEntities,
-            currentResponsePath,
-            showBadges,
-            onNavigates,
-        );
+        result = <EntityLink
+                    parentEntity={parentEntity}
+                    linkedEntities={linkedEntities}
+                    iri={currentResponsePath}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                 />
     } else if (
         typeof currentResponsePath === "object" &&
         !Array.isArray(currentResponsePath) &&
