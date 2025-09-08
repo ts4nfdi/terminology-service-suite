@@ -46,8 +46,6 @@
     "@storybook/react-vite": "^9.0.18",
     "@ts4nfdi/gh-pages-multi": "^0.7.9",
     "@types/node": "^20.17.48",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "19.0.0",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-react": "^4.4.1",
