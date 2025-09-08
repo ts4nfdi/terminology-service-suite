@@ -2,7 +2,6 @@ import { Thing } from "./interfaces";
 import React, { ReactElement } from "react";
 import { randomString } from "../app/util";
 import LinkedEntities from "./LinkedEntities";
-import Reified from "./Reified";
 import "../style/tssStyles.css";
 import { OnNavigates } from "../app/types";
 import ClassExpression from "./ClassExpression";
@@ -97,7 +96,7 @@ export function getSectionListJSX(
  * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-function addLinksToText(
+export function addLinksToText(
   parentEntity: Thing,
   text: string,
   linkedEntities: LinkedEntities | undefined,
@@ -190,122 +189,4 @@ function addLinksToText(
   res.push(<span key={randomString()}>{text.slice(n)}</span>);
 
   return <>{res}</>;
-}
-
-/**
- * Renders a given Reified
- * @param entity the entity the Reified exists in
- * @param reified the Reified
- * @param showBadges boolean which indicates if badges should be shown
- * @param onNavigates functions defining the action when clicking clickable items
- * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
- * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
- * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
- */
-export function getReifiedJSX(
-  entity: Thing,
-  reified: Reified<any>,
-  showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
-): ReactElement {
-  function getValueJSX(value: Reified<any>): ReactElement {
-    const linkedEntities = entity.getLinkedEntities();
-
-    // linkedEntities not existent on entity (-> probably legacy api version)
-    if (Object.keys(linkedEntities.linkedEntities).length == 0) {
-      if (typeof value.value == "string") {
-        return addLinksToText(
-          entity,
-          value.value.toString(),
-          undefined,
-          showBadges,
-          onNavigates,
-        );
-      } else if (
-        typeof value.value == "object" &&
-        value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] !=
-          undefined
-      ) {
-        // Is converted from Skosmos
-        switch (
-          value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
-        ) {
-          case "http://www.w3.org/2008/05/skos-xl#Label":
-            const label =
-              value.value["http://www.w3.org/2008/05/skos-xl#literalForm"][
-                "value"
-              ];
-
-            return <>{label}</>;
-          case "http://purl.org/vocab/changeset/schema#ChangeSet":
-            const changeReason =
-              value.value[
-                "http://purl.org/vocab/changeset/schema#changeReason"
-              ]["value"];
-            const date =
-              value.value["http://purl.org/vocab/changeset/schema#createdDate"][
-                "value"
-              ];
-
-            return (
-              <>
-                {date}: {changeReason}
-              </>
-            );
-          default:
-            console.error(
-              `Unknown rdf syntax type: ${value.value["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]}`,
-            );
-            return <>{JSON.stringify(value.value)}</>;
-        }
-      } else {
-        // TODO: should not happen, prove that this is never the case
-        console.error(`Unknown entry information format: ${value}`);
-        return <>{JSON.stringify(value.value)}</>;
-      }
-    } else {
-      const linkedEntity = linkedEntities.get(value.value);
-
-      if (linkedEntity) {
-        return <EntityLink
-                    parentEntity={entity}
-                    linkedEntities={linkedEntities}
-                    iri={value.value}
-                    showBadges={showBadges}
-                    onNavigates={onNavigates}
-                />
-      } else {
-        if (typeof value.value !== "string") {
-          if (entity.getType() == "ontology") {
-            return <>{JSON.stringify(value.value)}</>;
-          } else {
-            return <ClassExpression
-                parentEntity={entity}
-                linkedEntities={linkedEntities}
-                currentResponsePath={value.value}
-                showBadges={showBadges}
-                onNavigates={onNavigates}
-            />
-          }
-        } else {
-          return addLinksToText(
-            entity,
-            value.value.toString(),
-            linkedEntities,
-            showBadges,
-            onNavigates,
-          );
-        }
-      }
-    }
-  }
-
-  return (
-    <>
-      {getValueJSX(reified)}
-      &nbsp;
-      {reified.hasMetadata() &&
-        getAxiomsInformationJSX(entity, reified.getMetadata())}
-    </>
-  );
 }

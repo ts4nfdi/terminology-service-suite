@@ -18,7 +18,6 @@ import {
   Thing,
 } from "../../../model/interfaces";
 import {
-  getReifiedJSX,
   getSectionListJSX,
 } from "../../../model/StructureRendering";
 import ClassExpression from "../../../model/ClassExpression";
@@ -35,9 +34,9 @@ import {
   randomString,
 } from "../../../app/util";
 import { EntityRelationsWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import EntityLink from "../../../model/EntityLink";
+import RenderedReified from "../../../model/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -312,11 +311,16 @@ function getEntityEquivalentToSectionJSX(
         <b>Equivalent to</b>
         {equivalents.length === 1 ? (
           <p>
-            {getReifiedJSX(entity, equivalents[0], props.showBadges, {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            })}
+              <RenderedReified
+                  parentEntity={entity}
+                  reified={equivalents[0]}
+                  showBadges={props.showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+              />
           </p>
         ) : (
           <>
@@ -324,11 +328,16 @@ function getEntityEquivalentToSectionJSX(
               {equivalents.map((item: any) => {
                 return (
                   <li key={randomString()}>
-                    {getReifiedJSX(entity, item, props.showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
+                      <RenderedReified
+                          parentEntity={entity}
+                          reified={item}
+                          showBadges={props.showBadges}
+                          onNavigates={{
+                              onNavigateToEntity: props.onNavigateToEntity,
+                              onNavigateToOntology: props.onNavigateToOntology,
+                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                          }}
+                      />
                   </li>
                 );
               })}
@@ -359,11 +368,16 @@ function getSubEntityOfSectionJSX(
         <b>Sub{entity.getType()} of</b>
         {superEntities.length === 1 ? (
           <p>
-            {getReifiedJSX(entity, superEntities[0], props.showBadges, {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            })}
+              <RenderedReified
+                  parentEntity={entity}
+                  reified={superEntities[0]}
+                  showBadges={props.showBadges}
+                  onNavigates={{
+                      onNavigateToEntity: props.onNavigateToEntity,
+                      onNavigateToOntology: props.onNavigateToOntology,
+                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                  }}
+              />
           </p>
         ) : (
           <>
@@ -371,11 +385,16 @@ function getSubEntityOfSectionJSX(
               {superEntities.map((item: any) => {
                 return (
                   <li key={randomString()}>
-                    {getReifiedJSX(entity, item, props.showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
+                      <RenderedReified
+                          parentEntity={entity}
+                          reified={item}
+                          showBadges={props.showBadges}
+                          onNavigates={{
+                              onNavigateToEntity: props.onNavigateToEntity,
+                              onNavigateToOntology: props.onNavigateToOntology,
+                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                          }}
+                      />
                   </li>
                 );
               })}

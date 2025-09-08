@@ -19,9 +19,6 @@ import {
   randomString,
   getErrorMessageToDisplay,
 } from "../../../app/util";
-import {
-  getReifiedJSX,
-} from "../../../model/StructureRendering";
 import ClassExpression from "../../../model/ClassExpression";
 import {
   Property,
@@ -36,10 +33,10 @@ import {
   isIndividual,
 } from "../../../model/ModelTypeCheck";
 import { EntityInfoWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import EntityLink from "../../../model/EntityLink";
 import Tooltip from "../../../model/Tooltip";
+import RenderedReified from "../../../model/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -106,12 +103,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {entity.getSynonyms().map((synonym) => {
                       return (
                         <li key={randomString()} id={synonym.value}>
-                          {getReifiedJSX(entity, synonym, showBadges, {
-                            onNavigateToEntity: props.onNavigateToEntity,
-                            onNavigateToOntology: props.onNavigateToOntology,
-                            onNavigateToDisambiguate:
-                              props.onNavigateToDisambiguate,
-                          })}
+                          <RenderedReified
+                              parentEntity={entity}
+                              reified={synonym}
+                              showBadges={showBadges}
+                              onNavigates={{
+                                onNavigateToEntity: props.onNavigateToEntity,
+                                onNavigateToOntology: props.onNavigateToOntology,
+                                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                              }}
+                          />
                         </li>
                       );
                     })}
@@ -120,11 +121,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getReifiedJSX(entity, entity.getSynonyms()[0], showBadges, {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  })}
+                    <RenderedReified
+                        parentEntity={entity}
+                        reified={entity.getSynonyms()[0]}
+                        showBadges={showBadges}
+                        onNavigates={{
+                            onNavigateToEntity: props.onNavigateToEntity,
+                            onNavigateToOntology: props.onNavigateToOntology,
+                            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                        }}
+                    />
                 </p>
               )}
             </EuiFlexItem>
@@ -630,12 +636,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                            {getReifiedJSX(thing, annotation, showBadges, {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            })}
+                              <RenderedReified
+                                  parentEntity={thing}
+                                  reified={annotation}
+                                  showBadges={showBadges}
+                                  onNavigates={{
+                                      onNavigateToEntity: props.onNavigateToEntity,
+                                      onNavigateToOntology: props.onNavigateToOntology,
+                                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                                  }}
+                              />
                           </li>
                         );
                       })}
@@ -644,11 +654,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   </>
                 ) : (
                   <p key={randomString()}>
-                    {getReifiedJSX(thing, annos[0], showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
+                      <RenderedReified
+                          parentEntity={thing}
+                          reified={annos[0]}
+                          showBadges={showBadges}
+                          onNavigates={{
+                              onNavigateToEntity: props.onNavigateToEntity,
+                              onNavigateToOntology: props.onNavigateToOntology,
+                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                          }}
+                      />
                   </p>
                 )}
               </EuiFlexItem>

@@ -4,9 +4,9 @@ import LinkedEntities from "./LinkedEntities";
 import {OnNavigates} from "../app";
 import Reified from "./Reified";
 import {asArray, randomString} from "../app/util";
-import {getReifiedJSX} from "./StructureRendering";
 import {DEFAULT_SHOW_BADGES} from "../app/globals";
 import EntityLink from "./EntityLink";
+import RenderedReified from "./RenderedReified";
 
 /**
  * ONLY USABLE WITH V2-API ENTITIES
@@ -58,12 +58,12 @@ export default function ClassExpression(
     ) {
         // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
         // current response path is reification
-        result = getReifiedJSX(
-            parentEntity,
-            Reified.fromJson<any>(currentResponsePath)[0],
-            showBadges,
-            onNavigates,
-        );
+        result = <RenderedReified
+                    parentEntity={parentEntity}
+                    reified={Reified.fromJson<any>(currentResponsePath)[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                 />
     } else {
         // type === "object"
         const someValuesFrom =
