@@ -18,11 +18,11 @@ import {
   Thing,
 } from "../../../model/interfaces";
 import {
-  getClassExpressionJSX,
   getEntityLinkJSX,
   getReifiedJSX,
   getSectionListJSX,
 } from "../../../model/StructureRendering";
+import ClassExpression from "../../../model/ClassExpression";
 import {
   isClass,
   isIndividual,
@@ -229,17 +229,17 @@ function getPropertyChainJSX(
       // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
       return (
         <span key={propertyExpr}>
-          {getClassExpressionJSX(
-            property,
-            property.getLinkedEntities(),
-            propertyExpr,
-            props.showBadges,
-            {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            },
-          )}
+          <ClassExpression
+              parentEntity={property}
+              linkedEntities={property.getLinkedEntities()}
+              currentResponsePath={propertyExpr}
+              showBadges={props.showBadges}
+              onNavigates={{
+                  onNavigateToEntity: props.onNavigateToEntity,
+                  onNavigateToOntology: props.onNavigateToOntology,
+                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+              }}
+          />
           <>
             {i < asArray(propertyChain).length - 1 && (
               <span style={{ fontSize: "medium", color: "gray" }}>
@@ -429,18 +429,17 @@ function getEntityRelatedFromSectionJSX(
                     .map((elem) => {
                       return (
                         <li key={randomString()}>
-                          {getClassExpressionJSX(
-                            entity,
-                            entity.getLinkedEntities(),
-                            elem.value["value"],
-                            props.showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                            <ClassExpression
+                                parentEntity={entity}
+                                linkedEntities={entity.getLinkedEntities()}
+                                currentResponsePath={elem.value["value"]}
+                                showBadges={props.showBadges}
+                                onNavigates={{
+                                    onNavigateToEntity: props.onNavigateToEntity,
+                                    onNavigateToOntology: props.onNavigateToOntology,
+                                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+                                }}
+                            />
                         </li>
                       );
                     })}

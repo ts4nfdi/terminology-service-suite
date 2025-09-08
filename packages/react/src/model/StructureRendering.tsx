@@ -6,6 +6,7 @@ import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 import "../style/tssStyles.css";
 import { OnNavigates } from "../app/types";
+import ClassExpression from "./ClassExpression";
 
 const DEFAULT_SHOW_BADGES = true;
 
@@ -343,408 +344,6 @@ export function getEntityLinkJSX(
 }
 
 /**
- * ONLY USABLE WITH V2-API ENTITIES
- *
- * Builds and returns one element of a sections' list, possibly in a recursive fashion by parsing the response object at the currentResponsePath to show Manchester syntax.
- * @param parentEntity the entity object possessing the whole response object
- * @param linkedEntities the linkedEntities object (exists as param because it is necessary that the entity has a linkedEntities block in properties)
- * @param currentResponsePath the current sub-object of the parentEntities response object parsed as class expression
- * @param showBadges boolean which indicates if badges should be shown
- * @param onNavigates functions defining the action when clicking clickable items
- * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
- * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
- * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
- * @returns ReactElement the class expression JSX
- */
-export function getClassExpressionJSX(
-  parentEntity: Thing,
-  linkedEntities: LinkedEntities,
-  currentResponsePath: any,
-  showBadges: boolean = DEFAULT_SHOW_BADGES,
-  /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
-): ReactElement {
-  let result = <></>;
-
-  // merge linkedEntities of currentResponsePath if currentResponsePath.linkedEntities is not undefined
-  linkedEntities = linkedEntities.mergeWith(currentResponsePath.linkedEntities);
-
-  if (typeof currentResponsePath === "string") {
-    result = getEntityLinkJSX(
-      parentEntity,
-      linkedEntities,
-      currentResponsePath,
-      showBadges,
-      onNavigates,
-    );
-  } else if (
-    typeof currentResponsePath === "object" &&
-    !Array.isArray(currentResponsePath) &&
-    Array.isArray(currentResponsePath["type"]) &&
-    currentResponsePath["type"].indexOf("reification") !== -1
-  ) {
-    // TODO: Concat with else part? See relatedFrom (Manchester syntax does not get displayed, but neither in ols4)
-    // current response path is reification
-    result = getReifiedJSX(
-      parentEntity,
-      Reified.fromJson<any>(currentResponsePath)[0],
-      showBadges,
-      onNavigates,
-    );
-  } else {
-    // type === "object"
-    const someValuesFrom =
-      currentResponsePath["http://www.w3.org/2002/07/owl#someValuesFrom"];
-    const allValuesFrom =
-      currentResponsePath["http://www.w3.org/2002/07/owl#allValuesFrom"];
-    const intersectionOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#intersectionOf"],
-    );
-    const unionOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#unionOf"],
-    );
-    const hasValue =
-      currentResponsePath["http://www.w3.org/2002/07/owl#hasValue"];
-    const minCardinality =
-      currentResponsePath["http://www.w3.org/2002/07/owl#minCardinality"] ||
-      currentResponsePath[
-        "http://www.w3.org/2002/07/owl#minQualifiedCardinality"
-      ];
-    const maxCardinality =
-      currentResponsePath["http://www.w3.org/2002/07/owl#maxCardinality"] ||
-      currentResponsePath[
-        "http://www.w3.org/2002/07/owl#maxQualifiedCardinality"
-      ];
-    const cardinality =
-      currentResponsePath["http://www.w3.org/2002/07/owl#cardinality"] ||
-      currentResponsePath["http://www.w3.org/2002/07/owl#qualifiedCardinality"];
-    const hasSelf =
-      currentResponsePath["http://www.w3.org/2002/07/owl#hasSelf"];
-    const complementOf =
-      currentResponsePath["http://www.w3.org/2002/07/owl#complementOf"];
-    const oneOf = asArray(
-      currentResponsePath["http://www.w3.org/2002/07/owl#oneOf"],
-    );
-    const inverseOf =
-      currentResponsePath["http://www.w3.org/2002/07/owl#inverseOf"];
-    const onProperty =
-      currentResponsePath["http://www.w3.org/2002/07/owl#onProperty"];
-    const onDataType =
-      currentResponsePath["http://www.w3.org/2002/07/owl#onDatatype"];
-
-    if (onDataType) {
-      const elements: ReactElement[] = [
-        getClassExpressionJSX(
-          parentEntity,
-          linkedEntities,
-          onDataType,
-          showBadges,
-          onNavigates,
-        ),
-      ];
-
-      const withRestrictions = asArray(
-        currentResponsePath["http://www.w3.org/2002/07/owl#withRestrictions"],
-      );
-      if (withRestrictions.length > 0) {
-        elements.push(<>[</>);
-
-        let isFirst = true;
-        for (const restriction of withRestrictions) {
-          if (isFirst) isFirst = false;
-          else elements.push(<>,&nbsp;</>);
-
-          const minExclusive =
-            restriction["http://www.w3.org/2001/XMLSchema#minExclusive"];
-          const minInclusive =
-            restriction["http://www.w3.org/2001/XMLSchema#minInclusive"];
-          const maxExclusive =
-            restriction["http://www.w3.org/2001/XMLSchema#maxExclusive"];
-          const maxInclusive =
-            restriction["http://www.w3.org/2001/XMLSchema#maxInclusive"];
-
-          if (minExclusive) elements.push(<>&gt; {minExclusive}</>);
-          else if (minInclusive) elements.push(<>&ge; {minInclusive}</>);
-          else if (maxExclusive) elements.push(<>&lt; {maxExclusive}</>);
-          else if (maxInclusive) elements.push(<>&le; {maxInclusive}</>);
-        }
-
-        elements.push(<>]</>);
-      }
-
-      result = (
-        <>
-          {elements.map((elem) => (
-            <span key={randomString()}>{elem}</span>
-          ))}
-        </>
-      );
-    } else if (someValuesFrom) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> some </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(someValuesFrom)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (allValuesFrom) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> only </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(allValuesFrom)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (intersectionOf.length > 0) {
-      const elements: ReactElement[] = [
-        <span key={randomString()} className="text-neutral-default">
-          &#40;
-        </span>,
-      ];
-      for (const elem of intersectionOf) {
-        if (elements.length > 1) {
-          elements.push(<i> and </i>);
-        }
-        elements.push(
-          getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            elem,
-            showBadges,
-            onNavigates,
-          ),
-        );
-      }
-      elements.push(<span className="text-neutral-default">&#41;</span>);
-      result = (
-        <span>
-          {elements.map((elem) => (
-            <span key={randomString()}>{elem}</span>
-          ))}
-        </span>
-      );
-    } else if (unionOf.length > 0) {
-      const elements: ReactElement[] = [
-        <span key={randomString()} className="text-neutral-default">
-          &#40;
-        </span>,
-      ];
-      for (const elem of unionOf) {
-        if (elements.length > 1) {
-          elements.push(<i> or </i>);
-        }
-        elements.push(
-          getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            elem,
-            showBadges,
-            onNavigates,
-          ),
-        );
-      }
-      elements.push(<span className="text-neutral-default">&#41;</span>);
-      result = (
-        <span>
-          {elements.map((elem) => (
-            <span key={randomString()}>{elem}</span>
-          ))}
-        </span>
-      );
-    } else if (hasValue) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> value </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(hasValue)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (minCardinality) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> min </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(minCardinality)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (maxCardinality) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> max </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(maxCardinality)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (cardinality) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> exactly </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(cardinality)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (hasSelf) {
-      result = (
-        <>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            onProperty,
-            showBadges,
-            onNavigates,
-          )}
-          <i style={{ color: "purple" }}> Self </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(hasSelf)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (complementOf) {
-      result = (
-        <>
-          <i>not </i>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            asArray(complementOf)[0],
-            showBadges,
-            onNavigates,
-          )}
-        </>
-      );
-    } else if (oneOf.length > 0) {
-      const elements: ReactElement[] = [
-        <span key={randomString()} className="text-neutral-default">
-          &#123;
-        </span>,
-      ];
-      for (const elem of oneOf) {
-        if (elements.length > 1) {
-          elements.push(
-            <span key={randomString()} className="text-neutral-default">
-              &#44;&nbsp;
-            </span>,
-          );
-        }
-        elements.push(
-          getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            elem,
-            showBadges,
-            onNavigates,
-          ),
-        );
-      }
-      elements.push(<span className="text-neutral-default">&#125;</span>);
-      result = (
-        <span>
-          {elements.map((elem) => (
-            <span key={randomString()}>{elem}</span>
-          ))}
-        </span>
-      );
-    } else if (inverseOf) {
-      result = (
-        <>
-          <i style={{ color: "purple" }}>inverse </i>
-          <span key={randomString()} className="text-neutral-default">
-            &#40;
-          </span>
-          {getClassExpressionJSX(
-            parentEntity,
-            linkedEntities,
-            inverseOf,
-            showBadges,
-            onNavigates,
-          )}
-          <span key={randomString()} className="text-neutral-default">
-            &#41;
-          </span>
-        </>
-      );
-    }
-  }
-
-  return result;
-}
-
-/**
  * Builds and returns an array of section list elements specified at `currentResponsePath`
  * @param parentEntity
  * @param linkedEntities
@@ -766,26 +365,26 @@ export function getSectionListJSX(
     <>
       {array.length === 1 ? (
         <p>
-          {getClassExpressionJSX(
-            parentEntity,
-            parentEntity.getLinkedEntities(),
-            array[0],
-            showBadges,
-            onNavigates,
-          )}
+            <ClassExpression
+                parentEntity={parentEntity}
+                linkedEntities={parentEntity.getLinkedEntities()}
+                currentResponsePath={array[0]}
+                showBadges={showBadges}
+                onNavigates={onNavigates}
+            />
         </p>
       ) : (
         <ul>
           {array.map((item: any) => {
             return (
               <li key={randomString()}>
-                {getClassExpressionJSX(
-                  parentEntity,
-                  parentEntity.getLinkedEntities(),
-                  item,
-                  showBadges,
-                  onNavigates,
-                )}
+                  <ClassExpression
+                      parentEntity={parentEntity}
+                      linkedEntities={parentEntity.getLinkedEntities()}
+                      currentResponsePath={item}
+                      showBadges={showBadges}
+                      onNavigates={onNavigates}
+                  />
               </li>
             );
           })}
@@ -988,13 +587,13 @@ export function getReifiedJSX(
           if (entity.getType() == "ontology") {
             return <>{JSON.stringify(value.value)}</>;
           } else {
-            return getClassExpressionJSX(
-              entity,
-              linkedEntities,
-              value.value,
-              showBadges,
-              onNavigates,
-            );
+            return <ClassExpression
+                parentEntity={entity}
+                linkedEntities={linkedEntities}
+                currentResponsePath={value.value}
+                showBadges={showBadges}
+                onNavigates={onNavigates}
+            />
           }
         } else {
           return addLinksToText(
