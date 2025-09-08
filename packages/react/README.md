@@ -19,7 +19,7 @@ npm install @ts4nfdi/terminology-service-suite
 2. Install peer dependencies
 
 ```
-npm install @elastic/eui@102.1 @emotion/react@11.13.5 react@19.0 react-dom@19.0 react-query@3.39.2 axios@1.1.2
+npm install @elastic/eui@102.0.0 @emotion/react@11.13.5 react@18.3 react-dom@18.3 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3
 ```
 
 3. In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters. See example below:
@@ -72,10 +72,10 @@ To install the GitHub package, you need to authenticate to GitHub.com. Detailed 
 npm install @ts4nfdi/terminology-service-suite
 ```
 
-4. Install peer dependencies
+4. Install peer dependencies (package versions depend on the respective widget version)
 
 ```
-npm install @elastic/eui@102.1 @emotion/react@11.13.5 @emotion/css@11.13.5 react@19.0 react-dom@19.0 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3
+npm install @elastic/eui@102.0.0 @emotion/react@11.13.5 react@18.3 react-dom@18.3 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3
 ```
 
 5. Implement as described above.
