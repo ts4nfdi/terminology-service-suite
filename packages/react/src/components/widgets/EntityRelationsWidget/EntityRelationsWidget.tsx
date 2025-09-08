@@ -7,7 +7,6 @@ import {
   EuiFlexItem,
   EuiLoadingSpinner,
   EuiProvider,
-  EuiSpacer,
   EuiText,
 } from "@elastic/eui";
 import {
@@ -17,9 +16,6 @@ import {
   Property,
   Thing,
 } from "../../../model/interfaces";
-import {
-  getSectionListJSX,
-} from "../../../model/StructureRendering";
 import ClassExpression from "../../../model/ClassExpression";
 import {
   isClass,
@@ -28,17 +24,71 @@ import {
 } from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {
-  asArray,
-  capitalize,
-  getEntityTypeName,
-  randomString,
+    asArray, asReified,
+    capitalize,
+    getEntityTypeName,
+    randomString,
 } from "../../../app/util";
-import { EntityRelationsWidgetProps } from "../../../app/types";
+import {EntityRelationsWidgetProps, OnNavigates} from "../../../app/types";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import EntityLink from "../../../model/EntityLink";
+import LinkedEntities from "../../../model/LinkedEntities";
+import {DEFAULT_SHOW_BADGES} from "../../../app/globals";
 import RenderedReified from "../../../model/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
+
+/**
+ * Builds and returns an array of section list elements specified at `currentResponsePath`
+ * @param parentEntity
+ * @param linkedEntities
+ * @param array
+ * @param showBadges
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
+ */
+export function getSectionListJSX(
+    parentEntity: Thing,
+    linkedEntities: LinkedEntities,
+    array: any[],
+    showBadges: boolean = DEFAULT_SHOW_BADGES,
+    /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
+): ReactElement {
+    return (
+        <>
+            {array.length === 1 ? (
+                <p>
+                    <RenderedReified
+                        parentEntity={parentEntity}
+                        reified={asReified(array[0])}
+                        showBadges={showBadges}
+                        onNavigates={onNavigates}
+                    />
+                </p>
+            ) : (
+                <>
+                    <ul>
+                        {array.map((item: any) => {
+                            return (
+                                <li key={randomString()}>
+                                    <RenderedReified
+                                        parentEntity={parentEntity}
+                                        reified={asReified(item)}
+                                        showBadges={showBadges}
+                                        onNavigates={onNavigates}
+                                    />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <p></p>
+                </>
+            )}
+        </>
+    );
+}
 
 /**
  * Builds and returns the type section JSX element.
@@ -125,7 +175,6 @@ function getIndividualDifferentFromSectionJSX(
   if (differentFrom.length > 0) {
     return (
       <>
-        <EuiSpacer />
         <EuiFlexItem>
           <b>Different from</b>
           {getSectionListJSX(
@@ -309,42 +358,11 @@ function getEntityEquivalentToSectionJSX(
     return (
       <EuiFlexItem>
         <b>Equivalent to</b>
-        {equivalents.length === 1 ? (
-          <p>
-              <RenderedReified
-                  parentEntity={entity}
-                  reified={equivalents[0]}
-                  showBadges={props.showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
-              />
-          </p>
-        ) : (
-          <>
-            <ul>
-              {equivalents.map((item: any) => {
-                return (
-                  <li key={randomString()}>
-                      <RenderedReified
-                          parentEntity={entity}
-                          reified={item}
-                          showBadges={props.showBadges}
-                          onNavigates={{
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                          }}
-                      />
-                  </li>
-                );
-              })}
-            </ul>
-            <p></p>
-          </>
-        )}
+          {getSectionListJSX(entity, entity.getLinkedEntities(), equivalents.map((item) => item.value), props.showBadges, {
+              onNavigateToEntity: props.onNavigateToEntity,
+              onNavigateToOntology: props.onNavigateToOntology,
+              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+          })}
       </EuiFlexItem>
     );
   }
@@ -366,42 +384,11 @@ function getSubEntityOfSectionJSX(
     return (
       <EuiFlexItem>
         <b>Sub{entity.getType()} of</b>
-        {superEntities.length === 1 ? (
-          <p>
-              <RenderedReified
-                  parentEntity={entity}
-                  reified={superEntities[0]}
-                  showBadges={props.showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
-              />
-          </p>
-        ) : (
-          <>
-            <ul>
-              {superEntities.map((item: any) => {
-                return (
-                  <li key={randomString()}>
-                      <RenderedReified
-                          parentEntity={entity}
-                          reified={item}
-                          showBadges={props.showBadges}
-                          onNavigates={{
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                          }}
-                      />
-                  </li>
-                );
-              })}
-            </ul>
-            <p></p>
-          </>
-        )}
+          {getSectionListJSX(entity, entity.getLinkedEntities(), superEntities, props.showBadges, {
+              onNavigateToEntity: props.onNavigateToEntity,
+              onNavigateToOntology: props.onNavigateToOntology,
+              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+          })}
       </EuiFlexItem>
     );
   }
