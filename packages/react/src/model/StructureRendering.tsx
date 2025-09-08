@@ -1,19 +1,15 @@
 import { Thing } from "./interfaces";
 import React, { ReactElement } from "react";
-import { EuiIconTip, EuiIcon } from "@elastic/eui";
-import { asArray, inferTypeFromTypeArray, randomString } from "../app/util";
+import { randomString } from "../app/util";
 import LinkedEntities from "./LinkedEntities";
 import Reified from "./Reified";
 import "../style/tssStyles.css";
 import { OnNavigates } from "../app/types";
 import ClassExpression from "./ClassExpression";
 import EntityLink from "./EntityLink";
+import Tooltip from "./Tooltip";
 
 const DEFAULT_SHOW_BADGES = true;
-
-export function getTooltip(text: string): ReactElement {
-  return <EuiIconTip type="iInCircle" color={"subdued"} content={text} />;
-}
 
 /**
  * ONLY USABLE WITH V2-API ENTITIES
@@ -36,7 +32,7 @@ export function getAxiomsInformationJSX(
     })
     .join("\n");
 
-  return getTooltip(axiomsText);
+  return <Tooltip text={axiomsText} />;
 }
 
 /**

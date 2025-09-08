@@ -21,7 +21,6 @@ import {
 } from "../../../app/util";
 import {
   getReifiedJSX,
-  getTooltip,
 } from "../../../model/StructureRendering";
 import ClassExpression from "../../../model/ClassExpression";
 import {
@@ -40,6 +39,7 @@ import { EntityInfoWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import EntityLink from "../../../model/EntityLink";
+import Tooltip from "../../../model/Tooltip";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -448,13 +448,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 />
               </>
             ) : (
-              getTooltip(
+              <Tooltip text={
                 typeof v === "string"
                   ? v
                   : typeof v === "object" && !Array.isArray(v) && v.value
                     ? JSON.stringify(v.value)
-                    : JSON.stringify(v),
-              )
+                    : JSON.stringify(v)
+              } />
             )}
           </>,
         );
@@ -545,13 +545,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 />
               </>
             ) : hasObjectProperty ? (
-              getTooltip(
+              <Tooltip text={
                 typeof v === "string"
                   ? v
                   : typeof v === "object" && !Array.isArray(v) && v.value
                     ? JSON.stringify(v.value)
-                    : JSON.stringify(v),
-              )
+                    : JSON.stringify(v)
+              } />
             ) : hasDataProperty ? (
               <>
                 &nbsp;
