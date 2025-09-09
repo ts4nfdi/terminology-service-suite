@@ -27,12 +27,12 @@
     "build:storybook": "storybook build -c .storybook -o storybook-static"
   },
   "devDependencies": {
-    "@ts4nfdi/terminology-service-suite": "file:../react",
     "@elastic/datemath": "^5.0.3",
     "@elastic/eui": "^102.1.0",
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.13.5",
     "@google/model-viewer": "^4.0.0",
+    "@ts4nfdi/terminology-service-suite": "file:../react",
     "axios": "^1.1.2",
     "moment": "^2.30.1",
     "react": "^18.3",
@@ -44,6 +44,12 @@
     "vis-network": "^9.1.9"
   },
   "dependencies": {
-    "patch-package": "^8.0.0"
+    "@react-sigma/core": "^5.0.4",
+    "dagre": "^0.8.5",
+    "graphology": "^0.26.0",
+    "graphology-layout": "^0.6.1",
+    "graphology-types": "^0.24.8",
+    "patch-package": "^8.0.0",
+    "sigma": "^3.0.2"
   }
 }

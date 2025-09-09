@@ -74,8 +74,22 @@
     "vitest-browser-react": "^0.2.0"
   },
   "dependencies": {
-    "react": "^18.3",
-    "react-dom": "^18.3",
-    "rollup-plugin-preserve-directives": "^0.4.0"
+    "@elastic/datemath": "^5.0.3",
+    "@elastic/eui": "^102.0.0",
+    "@elastic/eui-theme-borealis": "^3.3.2",
+    "@emotion/css": "^11.13.5",
+    "@emotion/react": "^11.13.5",
+    "@react-sigma/core": "^5.0.4",
+    "axios": "^1.1.2",
+    "dagre": "^0.8.5",
+    "graphology": "^0.26.0",
+    "graphology-layout": "^0.6.1",
+    "graphology-types": "^0.24.8",
+    "moment": "^2.30.1",
+    "react": "18.3",
+    "react-dom": "18.3",
+    "react-query": "^3.39.2",
+    "rollup-plugin-preserve-directives": "^0.4.0",
+    "sigma": "^3.0.2"
   }
 }
