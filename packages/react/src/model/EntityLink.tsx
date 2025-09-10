@@ -32,7 +32,7 @@ export default function EntityLink(
         linkedEntities: LinkedEntities,
         iri: string,
         showBadges?: boolean
-        /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates
+        onNavigates: OnNavigates
     }
 ): ReactElement {
     const label =

@@ -1,24 +1,12 @@
 "use client";
 
 import React, { ReactElement } from "react";
-import {
-  EuiCard,
-  EuiFlexItem,
-  EuiLoadingSpinner,
-  EuiProvider,
-  EuiSpacer,
-  EuiText,
-} from "@elastic/eui";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Ontology, Thing } from "../../../model/interfaces";
-import {
-  capitalize,
-  deCamelCase,
-  deUnderscore,
-  randomString,
-} from "../../../app/util";
+import {capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
 import { getErrorMessageToDisplay } from "../../../app/util";
-import { OntologyInfoWidgetProps } from "../../../app/types";
+import { OntologyInfoWidgetProps } from "../../../app";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import EntityLink from "../../../model/EntityLink";
@@ -38,11 +26,13 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     ...rest
   } = props;
   const olsApi = new OlsOntologyApi(api);
+
   const onNavigates = {
     onNavigateToEntity: props.onNavigateToEntity,
     onNavigateToOntology: props.onNavigateToOntology,
     onNavigateToDisambiguate: props.onNavigateToDisambiguate,
   };
+
   const finalClassName = className || "ts4nfdi-ontologyy-info-style";
 
   const {

@@ -1,38 +1,13 @@
 "use client";
 
 import React, { ReactElement } from "react";
-import {
-  EuiCard,
-  EuiFlexItem,
-  EuiLoadingSpinner,
-  EuiProvider,
-  EuiSpacer,
-  EuiText,
-} from "@elastic/eui";
+import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import {
-  asArray,
-  capitalize,
-  deCamelCase,
-  deUnderscore,
-  getEntityTypeName,
-  randomString,
-  getErrorMessageToDisplay,
-} from "../../../app/util";
+import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString, getErrorMessageToDisplay} from "../../../app/util";
 import ClassExpression from "../../../model/ClassExpression";
-import {
-  Property,
-  Thing,
-  Class,
-  Entity,
-  Individual,
-} from "../../../model/interfaces";
-import {
-  isClass,
-  isProperty,
-  isIndividual,
-} from "../../../model/ModelTypeCheck";
-import { EntityInfoWidgetProps } from "../../../app/types";
+import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
+import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
+import { EntityInfoWidgetProps } from "../../../app";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import EntityLink from "../../../model/EntityLink";
 import Tooltip from "../../../model/Tooltip";
@@ -51,11 +26,15 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     parameter,
     showBadges,
     useLegacy,
-    onNavigateToEntity,
-    onNavigateToOntology,
-    onNavigateToDisambiguate,
     ...rest
   } = props;
+
+  const onNavigates = {
+      onNavigateToEntity: props.onNavigateToEntity,
+      onNavigateToOntology: props.onNavigateToOntology,
+      onNavigateToDisambiguate: props.onNavigateToDisambiguate
+  }
+
   const olsApi = new OlsEntityApi(api);
 
   const {
@@ -107,11 +86,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               parentEntity={entity}
                               reified={synonym}
                               showBadges={showBadges}
-                              onNavigates={{
-                                onNavigateToEntity: props.onNavigateToEntity,
-                                onNavigateToOntology: props.onNavigateToOntology,
-                                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                              }}
+                              onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -125,11 +100,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         parentEntity={entity}
                         reified={entity.getSynonyms()[0]}
                         showBadges={showBadges}
-                        onNavigates={{
-                            onNavigateToEntity: props.onNavigateToEntity,
-                            onNavigateToOntology: props.onNavigateToOntology,
-                            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                        }}
+                        onNavigates={onNavigates}
                     />
                 </p>
               )}
@@ -159,11 +130,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               linkedEntities={term.getLinkedEntities()}
                               currentResponsePath={keys}
                               showBadges={showBadges}
-                              onNavigates={{
-                                  onNavigateToEntity: props.onNavigateToEntity,
-                                  onNavigateToOntology: props.onNavigateToOntology,
-                                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                              }}
+                              onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -178,11 +145,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       linkedEntities={term.getLinkedEntities()}
                       currentResponsePath={keys[0]}
                       showBadges={showBadges}
-                      onNavigates={{
-                          onNavigateToEntity: props.onNavigateToEntity,
-                          onNavigateToOntology: props.onNavigateToOntology,
-                          onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                      }}
+                      onNavigates={onNavigates}
                   />
                 </p>
               )}
@@ -211,11 +174,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               linkedEntities={term.getLinkedEntities()}
                               iri={subset}
                               showBadges={showBadges}
-                              onNavigates={{
-                                  onNavigateToEntity: props.onNavigateToEntity,
-                                  onNavigateToOntology: props.onNavigateToOntology,
-                                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                              }}
+                              onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -230,11 +189,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         linkedEntities={term.getLinkedEntities()}
                         iri={term.getSubsets()[0]}
                         showBadges={showBadges}
-                        onNavigates={{
-                            onNavigateToEntity: props.onNavigateToEntity,
-                            onNavigateToOntology: props.onNavigateToOntology,
-                            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                        }}
+                        onNavigates={onNavigates}
                     />
                 </p>
               )}
@@ -251,8 +206,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       .map((type) => {
         return {
           "http://www.w3.org/2002/07/owl#FunctionalProperty": "Functional",
-          "http://www.w3.org/2002/07/owl#InverseFunctionalProperty":
-            "Inverse Functional",
+          "http://www.w3.org/2002/07/owl#InverseFunctionalProperty": "Inverse Functional",
           "http://www.w3.org/2002/07/owl#TransitiveProperty": "Transitive",
           "http://www.w3.org/2002/07/owl#SymmetricProperty": "Symmetric",
           "http://www.w3.org/2002/07/owl#AsymmetricProperty": "Asymmetric",
@@ -308,11 +262,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               linkedEntities={property.getLinkedEntities()}
                               currentResponsePath={domains}
                               showBadges={showBadges}
-                              onNavigates={{
-                                  onNavigateToEntity: props.onNavigateToEntity,
-                                  onNavigateToOntology: props.onNavigateToOntology,
-                                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                              }}
+                              onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -327,11 +277,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       linkedEntities={property.getLinkedEntities()}
                       currentResponsePath={domains[0]}
                       showBadges={showBadges}
-                      onNavigates={{
-                          onNavigateToEntity: props.onNavigateToEntity,
-                          onNavigateToOntology: props.onNavigateToOntology,
-                          onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                      }}
+                      onNavigates={onNavigates}
                   />
                 </p>
               )}
@@ -360,11 +306,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                             linkedEntities={property.getLinkedEntities()}
                             currentResponsePath={ranges}
                             showBadges={showBadges}
-                            onNavigates={{
-                                onNavigateToEntity: props.onNavigateToEntity,
-                                onNavigateToOntology: props.onNavigateToOntology,
-                                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                            }}
+                            onNavigates={onNavigates}
                         />
                       </li>
                     );
@@ -379,11 +321,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   linkedEntities={property.getLinkedEntities()}
                   currentResponsePath={ranges[0]}
                   showBadges={showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
+                  onNavigates={onNavigates}
                 />
               </p>
             )}
@@ -428,11 +366,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               linkedEntities={individual.getLinkedEntities()}
               currentResponsePath={iri}
               showBadges={showBadges}
-              onNavigates={{
-                  onNavigateToEntity: props.onNavigateToEntity,
-                  onNavigateToOntology: props.onNavigateToOntology,
-                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }}
+              onNavigates={onNavigates}
             />
             {typeof v === "string" && v.includes("http") ? (
               <>
@@ -446,11 +380,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   linkedEntities={individual.getLinkedEntities()}
                   iri={v}
                   showBadges={showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
+                  onNavigates={onNavigates}
                 />
               </>
             ) : (
@@ -477,11 +407,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               linkedEntities={individual.getLinkedEntities()}
               currentResponsePath={iri}
               showBadges={showBadges}
-              onNavigates={{
-                  onNavigateToEntity: props.onNavigateToEntity,
-                  onNavigateToOntology: props.onNavigateToOntology,
-                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }}
+              onNavigates={onNavigates}
             />
             {
               <>
@@ -495,11 +421,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   linkedEntities={individual.getLinkedEntities()}
                   iri={v}
                   showBadges={showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
+                  onNavigates={onNavigates}
                 />
               </>
             }
@@ -525,11 +447,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               linkedEntities={individual.getLinkedEntities()}
               currentResponsePath={iri}
               showBadges={showBadges}
-              onNavigates={{
-                  onNavigateToEntity: props.onNavigateToEntity,
-                  onNavigateToOntology: props.onNavigateToOntology,
-                  onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              }}
+              onNavigates={onNavigates}
             />
             {typeof v === "string" && v.includes("http") ? (
               <>
@@ -543,11 +461,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   linkedEntities={individual.getLinkedEntities()}
                   iri={v}
                   showBadges={showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
+                  onNavigates={onNavigates}
                 />
               </>
             ) : hasObjectProperty ? (
@@ -570,11 +484,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   linkedEntities={individual.getLinkedEntities()}
                   iri={v}
                   showBadges={showBadges}
-                  onNavigates={{
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  }}
+                  onNavigates={onNavigates}
                 />
               </>
             ) : (
@@ -640,11 +550,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                                   parentEntity={thing}
                                   reified={annotation}
                                   showBadges={showBadges}
-                                  onNavigates={{
-                                      onNavigateToEntity: props.onNavigateToEntity,
-                                      onNavigateToOntology: props.onNavigateToOntology,
-                                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                                  }}
+                                  onNavigates={onNavigates}
                               />
                           </li>
                         );
@@ -658,11 +564,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                           parentEntity={thing}
                           reified={annos[0]}
                           showBadges={showBadges}
-                          onNavigates={{
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                          }}
+                          onNavigates={onNavigates}
                       />
                   </p>
                 )}

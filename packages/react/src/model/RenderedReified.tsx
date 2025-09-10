@@ -28,7 +28,7 @@ export default function RenderedReified(
         parentEntity: Thing,
         reified: Reified<any>,
         showBadges?: boolean,
-        /*TODO: change to using (entity : EntityData) later*/ onNavigates: OnNavigates,
+        onNavigates: OnNavigates,
     }
 ): ReactElement {
 

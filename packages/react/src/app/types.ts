@@ -4,10 +4,9 @@ import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
-import { Entity, Thing } from "../model/interfaces";
+import { Thing } from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
-import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
   parameter?: string;
@@ -472,9 +471,7 @@ export type OnNavigateToDisambiguate = {
     | string;
 };
 
-export type OnNavigates = OnNavigateToEntity &
-  OnNavigateToOntology &
-  OnNavigateToDisambiguate;
+export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
 
 export type HierarchyWidgetProps = CssClassNameObj & {
   apiUrl: string;
