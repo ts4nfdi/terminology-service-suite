@@ -389,6 +389,8 @@ export type EntityOntoListPresentationProps = OptionalEntityTypeObj &
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
 export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
+export type ExpandableOntologyBadgeListProps = EntityOntoListPresentationProps;
+
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
 export type AlternativeNameTabWidgetPresentationProps = CssClassNameObj & {

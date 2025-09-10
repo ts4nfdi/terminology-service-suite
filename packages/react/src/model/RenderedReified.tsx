@@ -226,8 +226,12 @@ export default function RenderedReified(
     return (
         <>
             <RenderedValue value={reified.value} />
-            &nbsp;
-            {reified.hasMetadata() && <RenderedAxioms axiomsDict={reified.getMetadata()}/>}
+            {reified.hasMetadata() &&
+                <>
+                    &nbsp;
+                    <RenderedAxioms axiomsDict={reified.getMetadata()}/>
+                </>
+            }
         </>
     );
 }

@@ -15,28 +15,20 @@ import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
 import { OntoPortalApi } from "../../../../../api/OntoPortalApi";
 import "../../../../../style/tssStyles.css";
 import { randomString } from "../../../../../app/util";
-import { HierarchyWidgetProps, EntityData } from "../../../../../app";
-import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
+import {HierarchyWidgetProps, EntityData, OnNavigateToOntology, OnNavigateToEntity} from "../../../../../app";
+import {EntityTypeName, isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
+import ExpandableOntologyBadgeList from "../../../../../model/ExpandableOntologyBadgeList";
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
 function TreeLink(props: {
-  entityData: EntityData;
-  childRelationToParent?: string;
-  ontologyId: string;
-  entityType?: string;
-  onNavigateToEntity?: (
-    ontologyId: string,
-    entityType?: string,
-    entity?: EntityData,
-  ) => void;
-  onNavigateToOntology?: (
-    ontologyId: string,
-    entityType?: string,
-    entity?: EntityData,
-  ) => void;
-  highlight: boolean;
+    entityData: EntityData;
+    childRelationToParent?: string;
+    ontologyId: string;
+    entityType?: EntityTypeName;
+    } & OnNavigateToOntology & OnNavigateToEntity & {
+    highlight: boolean;
 }) {
   let definedBy: string[] = props.entityData.definedBy || [];
   if (definedBy.includes(props.ontologyId)) definedBy = [];
@@ -60,7 +52,7 @@ function TreeLink(props: {
         )}
         <a
           onClick={() => {
-            if (props.onNavigateToEntity)
+            if (typeof props.onNavigateToEntity === "function")
               props.onNavigateToEntity(
                 props.ontologyId,
                 props.entityType || "",
@@ -77,32 +69,14 @@ function TreeLink(props: {
         </a>
       </span>
       <span>
-          {definedBy.length > 0 && (
-              <>
-                  {definedBy.map((definingOntology) => {
-                      return (
-                          <span>
-                {" "}
-                              <button
-                                  key={`${props.entityData.iri}:${definingOntology}`}
-                                  onClick={() => {
-                                      if (props.onNavigateToOntology)
-                                          props.onNavigateToOntology(
-                                              definingOntology,
-                                              props.entityType || "",
-                                              props.entityData
-                                          );
-                                  }}
-                              >
-                  <span className="ontology-badge">
-                    {definingOntology.toUpperCase()}
-                  </span>
-                </button>
-              </span>
-                      );
-                  })}
-              </>
-          )}
+          &nbsp;
+          <ExpandableOntologyBadgeList
+              iri={props.entityData.iri}
+              ontolist={definedBy}
+              label={props.entityData.label || ""}
+              entityType={props.entityType}
+              onNavigateToOntology={props.onNavigateToOntology}
+          />
           {
               // number of descendants
               props.entityData.numDescendants != undefined &&
@@ -274,7 +248,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
           <ul style={{ marginBlockEnd: "0", marginInlineStart: "5px" }}>
             {node.loading ? (
               <EuiLoadingSpinner
-                style={{ position: "relative", left: "13px", top: "5px" }}
+                  style={{ position: "relative", left: "13px", top: "5px" }}
               />
             ) : (
               node.loadedChildren.map((child, idx) => {

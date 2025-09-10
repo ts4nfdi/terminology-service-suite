@@ -5,6 +5,8 @@ import {OnNavigates} from "../app";
 import {inferTypeFromTypeArray, randomString} from "../app/util";
 import {EuiIcon} from "@elastic/eui";
 import {DEFAULT_SHOW_BADGES} from "../app/globals";
+import ExpandableOntologyBadgeList from "./ExpandableOntologyBadgeList";
+import {EntityTypeName} from "./ModelTypeCheck";
 
 /**
  * ONLY USABLE WITH V2-API ENTITIES
@@ -63,9 +65,9 @@ export default function EntityLink(
             return elem !== localOntology;
         })
         : [];
-    const linkedEntityType = linkedEntity["type"]
+    const linkedEntityType = (linkedEntity["type"]
         ? inferTypeFromTypeArray(linkedEntity["type"])
-        : parentEntity.getType();
+        : parentEntity.getType()) as EntityTypeName;
 
     // see https://gitlab.zbmed.de/km/semlookp/ols4/-/blob/dev/frontend/src/components/EntityLink.tsx for original reference
     if (otherDefinedBy.length === 1) {
@@ -89,23 +91,13 @@ export default function EntityLink(
                     {showBadges ? (
                         <>
                             &nbsp;
-                            <button
-                                className="no-decoration"
-                                onClick={() => {
-                                    if (typeof onNavigates.onNavigateToOntology === "function")
-                                        onNavigates.onNavigateToOntology(
-                                            otherDefinedBy[0],
-                                            linkedEntityType,
-                                            { iri, label },
-                                        );
-                                }}
-                            >
-                                {
-                                    <span className="ontology-badge">
-                    {otherDefinedBy[0].toUpperCase()}
-                  </span>
-                                }
-                            </button>
+                            <ExpandableOntologyBadgeList
+                                iri={iri}
+                                label={label}
+                                ontolist={otherDefinedBy}
+                                onNavigateToOntology={onNavigates.onNavigateToOntology}
+                                entityType={linkedEntityType}
+                            />
                         </>
                     ) : (
                         <></>
@@ -132,23 +124,13 @@ export default function EntityLink(
                     {showBadges ? (
                         <>
                             &nbsp;
-                            <button
-                                className="no-decoration"
-                                onClick={() => {
-                                    if (typeof onNavigates.onNavigateToOntology === "function")
-                                        onNavigates.onNavigateToOntology(
-                                            otherDefinedBy[0],
-                                            linkedEntityType,
-                                            { iri, label },
-                                        );
-                                }}
-                            >
-                                {
-                                    <span className="ontology-badge">
-                    {otherDefinedBy[0].toUpperCase()}
-                  </span>
-                                }
-                            </button>
+                            <ExpandableOntologyBadgeList
+                                iri={iri}
+                                label={label}
+                                ontolist={otherDefinedBy}
+                                onNavigateToOntology={onNavigates.onNavigateToOntology}
+                                entityType={linkedEntityType}
+                            />
                         </>
                     ) : (
                         <></>
@@ -177,30 +159,13 @@ export default function EntityLink(
                     {showBadges ? (
                         <>
                             &nbsp;
-                            {otherDefinedBy.map((elem: any) => {
-                                return (
-                                    <button
-                                        className="no-decoration"
-                                        key={randomString()}
-                                        onClick={() => {
-                                            if (
-                                                typeof onNavigates.onNavigateToOntology === "function"
-                                            )
-                                                onNavigates.onNavigateToOntology(
-                                                    elem,
-                                                    linkedEntityType,
-                                                    { iri, label },
-                                                );
-                                        }}
-                                    >
-                                        {
-                                            <span className="ontology-badge">
-                        {elem.toUpperCase()}
-                      </span>
-                                        }
-                                    </button>
-                                );
-                            })}
+                            <ExpandableOntologyBadgeList
+                                iri={iri}
+                                label={label}
+                                ontolist={otherDefinedBy}
+                                onNavigateToOntology={onNavigates.onNavigateToOntology}
+                                entityType={linkedEntityType}
+                            />
                         </>
                     ) : (
                         <></>

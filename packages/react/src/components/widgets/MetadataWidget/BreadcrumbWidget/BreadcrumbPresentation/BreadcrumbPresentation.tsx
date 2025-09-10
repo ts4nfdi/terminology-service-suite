@@ -1,12 +1,8 @@
 "use client";
 import React from "react";
 import { EuiBadge, EuiIcon, EuiProvider } from "@elastic/eui";
-import {
-  BreadcrumbPresentationProps,
-  BreadcrumbWidgetProps,
-} from "../../../../../app/types";
+import {BreadcrumbPresentationProps,} from "../../../../../app";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
-import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {

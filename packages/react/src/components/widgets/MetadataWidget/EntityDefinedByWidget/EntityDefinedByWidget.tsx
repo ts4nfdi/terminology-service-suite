@@ -9,7 +9,6 @@ import {
 } from "../../../../app/util";
 import { EntityDefinedByWidgetProps } from "../../../../app/types";
 import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
-import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
