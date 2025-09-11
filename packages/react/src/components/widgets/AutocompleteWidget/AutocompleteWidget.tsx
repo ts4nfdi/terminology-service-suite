@@ -6,7 +6,6 @@ import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import {
   EuiComboBox,
-  euiPaletteColorBlindBehindText,
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
@@ -14,8 +13,8 @@ import {
   EuiProvider,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { AutocompleteWidgetProps } from "../../../app/types";
-import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
+import { AutocompleteWidgetProps } from "../../../app";
+import { BreadcrumbPresentation } from "../MetadataWidget";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";

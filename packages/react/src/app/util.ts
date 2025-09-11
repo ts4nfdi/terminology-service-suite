@@ -211,7 +211,6 @@ export function inferTypeFromTypeArray(types: string[]) {
     );
 }
 
-/* TODO: pluralizeType not available in html version, replace with local functionality */
 export function manuallyEmbedOnNavigate(
   code: string,
   storyContext: StoryContext,
