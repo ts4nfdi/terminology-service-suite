@@ -1,52 +1,33 @@
 "use client";
 import React from "react";
-import { EuiBadge, EuiIcon, EuiProvider } from "@elastic/eui";
+import { EuiIcon, EuiProvider } from "@elastic/eui";
 import {BreadcrumbPresentationProps,} from "../../../../../app";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import OntologyBadge from "../../../../../model/OntologyBadge";
+import Badge from "../../../../../model/Badge";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
-  const clickable = !!props.onNavigateToOntology;
   const ontologyId = props.entity?.properties?.ontologyId || props.ontologyId;
   const shortForm = props.entity?.properties?.shortForm || props.shortForm;
 
   return (
     <>
       <span className={finalClassName}>
-        <span
-          onClick={() => {
-            if (clickable && typeof props.onNavigateToOntology === "function") {
-              props.onNavigateToOntology(
-                ontologyId || "",
-                undefined,
-                undefined,
-              );
-            }
-          }}
-          role={clickable ? "button" : undefined}
-          tabIndex={0} // Make it focusable
-          onKeyDown={(e) => {
-            if (e.key === "Enter") e.currentTarget.click();
-          }} // Handle keyboard navigation
-        >
-          <EuiBadge
-            className={
-              clickable ? "breadcrumb clickable-breadcrumb" : "breadcrumb"
-            }
+        <OntologyBadge
+            ontologyId={ontologyId}
+            onNavigateToOntology={props.onNavigateToOntology}
             color={props.colorFirst || "primary"}
-          >
-            {ontologyId
-              ? ontologyId.toUpperCase()
-              : "No ontology name available"}
-          </EuiBadge>
-        </span>
+        />
         &nbsp;
         <EuiIcon type="arrowRight" />
         &nbsp;
-        <EuiBadge className="breadcrumb" color={props.colorSecond || "success"}>
-          {shortForm ? shortForm.toUpperCase() : "No short form available"}
-        </EuiBadge>
+        <Badge
+            color={props.colorSecond || "success"}
+        >
+            {shortForm ? shortForm.toUpperCase() : "No short form available"}
+        </Badge>
       </span>
     </>
   );

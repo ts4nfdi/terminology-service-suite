@@ -115,7 +115,7 @@ type ContainerWidthObj = {
   width?: number;
 };
 
-type CssClassNameObj = {
+export type CssClassNameObj = {
   /**
    * CSS class for styling
    */
@@ -249,6 +249,13 @@ export type JsonApiWidgetProps = {
   buttonSize?: "s" | "m";
 };
 
+export type ColorObj = {
+    /**
+     * Color object, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+     */
+    color?: EuiLinkColor | string;
+}
+
 export type ColorFirstObj = {
   /**
    * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
@@ -378,18 +385,16 @@ export type EntityOntoListWidgetProps = TabSubwidgetsProps &
   OnNavigateToOntology &
   CssClassNameObj;
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj &
-  ForcedIriObj &
-  OnNavigateToOntology &
-  CssClassNameObj & {
-    ontolist: any[];
-    label: string;
-  };
+export type NavigateToOntologyProps = OnNavigateToOntology & OptionalEntityTypeObj & OptionalIriObj & { label?: string; };
+
+export type OntologyBadgeProps = NavigateToOntologyProps & OptionalOntologyIdObj & CssClassNameObj & ColorObj;
+
+export type ExpandableOntologyBadgeListProps = NavigateToOntologyProps & { ontolist: any[]; } & CssClassNameObj & ColorObj;
+
+export type EntityOntoListPresentationProps = ExpandableOntologyBadgeListProps;
+export type EntityDefinedByPresentationProps = ExpandableOntologyBadgeListProps;
 
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
-export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
-
-export type ExpandableOntologyBadgeListProps = EntityOntoListPresentationProps;
 
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
