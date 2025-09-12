@@ -1,0 +1,1 @@
+export { DescriptionWidget } from './DescriptionWidget';
