@@ -23,7 +23,7 @@ import { JSTreeNode } from "../../../utils/olsApiTypes";
 
 import {  useLoadGraph } from '@react-sigma/core';
 import '@react-sigma/core/lib/style.css';
-import { MultiDirectedGraph } from 'graphology';
+import { MultiDirectedGraph} from 'graphology';
 import {
   ControlsContainer,
   FullScreenControl,
@@ -32,7 +32,7 @@ import {
   useRegisterEvents,
   useSigma,
 } from '@react-sigma/core';
-import {dagre} from "graphology-layout/dagre";
+
 
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -75,7 +75,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //   <MyGraph />
       // </SigmaContainer>
   <SigmaContainer style={{ height: "600px", width: "600px" }} settings={{ allowInvalidContainer: true }}>
-    <MyGraph />
+    <MyGraph {...props}  />
     <GraphDragEvent />
     <ControlsContainer position={'bottom-right'}>
       <ZoomControl />
@@ -85,32 +85,136 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   );
 }
 
-function MyGraph(){
+
+
+
+function MyGraph(props: GraphViewWidgetProps){
+
+  const {
+    api,
+    iri,
+    ontologyId,
+    rootWalk,
+    className,
+    hierarchy,
+    edgeLabel,
+    onNodeClick,
+  } = props;
+
   const loadGraph = useLoadGraph();
+
+  const [selectedIri, setSelectedIri] = useState(iri);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [dbclicked, setDbclicked] = useState(false);
+  const [rootWalkIsSelected, setRootWalkIsSelected] = useState(
+    rootWalk ? rootWalk : false,
+  );
+  const [hierarchicalView, setHierarchicalView] = useState<boolean>(
+    hierarchy ? true : false,
+  );
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
+  const [counter, setCounter] = useState(0);
+
+  const olsEntityApi = new OlsEntityApi(api);
+  const finalClassName = className || "ts4nfdi-graph-style";
+  const subClassEdgeLabel =
+    !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
+  const onNodeClickCallbackIdProvided =
+    typeof onNodeClick === "function" &&
+    !onNodeClick.name.includes("mockConstructor");
+
+
+  const { data, isLoading, isError, error } = useQuery(
+    [
+      "termGraph",
+      api,
+      selectedIri,
+      ontologyId,
+      rootWalkIsSelected,
+      dbclicked,
+      counter,
+    ],
+    async () => {
+      if (rootWalkIsSelected && firstLoad && !hierarchicalView) {
+        // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
+        return {
+          treeData: await olsEntityApi.getTermTree(
+            { ontologyId: ontologyId, termIri: iri },
+            { viewMode: "All", siblings: false },
+          ),
+        };
+      } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
+        let termTree = await olsEntityApi.getTermTree(
+          { ontologyId: ontologyId, termIri: iri },
+          { viewMode: "All", siblings: false },
+        );
+
+        let termRelation = await olsEntityApi.getTermRelations({
+          ontologyId: ontologyId,
+          termIri: selectedIri,
+        });
+        return { treeData: termTree, termRelations: termRelation };
+      } else if (firstLoad || dbclicked) {
+        return {
+          termRelations: await olsEntityApi.getTermRelations({
+            ontologyId: ontologyId,
+            termIri: selectedIri,
+          }),
+        };
+      }
+    },
+  );
+
+
+
+
   useEffect(() => {
+    if(!data){
+      return;
+    }
     const graph = new MultiDirectedGraph();
-    graph.addNode('A', { x: 0, y: 0, label: 'Node A', size: 10, color: '#f00' });
-    graph.addNode('B', { x: 1, y: 0, label: 'Node B', size: 10, color: '#0f0' });
-    graph.addNode('C', { x: 0.5, y: 1, label: 'Node C', size: 10, color: '#00f' });
 
-    graph.addEdge('A', 'B', { label: 'REL_1', color: '#888'});
-    graph.addEdge('B', 'C', { label: 'REL_2', color: '#888'});
+    let i = 0;
+    const radius = 5; // distance from center
+    for(let node of data.termRelations["nodes"]){
+      graph.addNode(node.iri, { x: 0, y: 0, label: node.label, size: 10, color: '#f00' });
+      if(node.iri === selectedIri){
+        graph.setNodeAttribute(selectedIri, "x", 0);
+        graph.setNodeAttribute(selectedIri, "y", 0);
+      }else{
+        const angle = (2 * Math.PI * i) / data.termRelations["nodes"].length - 1;
+        graph.setNodeAttribute(node.iri, "x", radius * Math.cos(angle));
+        graph.setNodeAttribute(node.iri, "y", radius * Math.sin(angle));
+      }
+      i++;
+    }
 
-    dagre.assign(graph, {
-      rankdir: "TB", // top-to-bottom
-      ranksep: 50,
-      nodesep: 50
-    });
+    for(let edge of data.termRelations["edges"]){
+      graph.addEdge(edge.source, edge.target, { label: edge.label, color: '#888'});
+    }
+
+
+    //@ts-ignore
+    // graph.forEachNode((node, attrs, i) => {
+    //   const layer = node === "A" ? 1 : 0; // set layer for hierarchy layer
+    //   const index = node === "B" ? 1 : 0; // set order for nodes in each layer in heirarchy
+    //   graph.setNodeAttribute(node, "x", 200 + index * 200);
+    //   graph.setNodeAttribute(node, "y", 100 + layer * 200);
+    // });
+
+
 
     loadGraph(graph);
-  }, [loadGraph]);
+  }, [loadGraph, data]);
 
   return null;
 }
 
 function GraphDragEvent(){
 
-  const registerEvents = useRegisterEvents();
+ const registerEvents = useRegisterEvents();
   const sigma = useSigma();
   const [draggedNode, setDraggedNode] = useState<string | null>(null);
 
@@ -147,6 +251,7 @@ function GraphDragEvent(){
       },
     });
   }, [registerEvents, sigma, draggedNode]);
+
   return null;
 }
 
