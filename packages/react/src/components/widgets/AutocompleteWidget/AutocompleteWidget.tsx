@@ -6,7 +6,6 @@ import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import {
   EuiComboBox,
-  euiPaletteColorBlindBehindText,
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
@@ -115,9 +114,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         <span className={finalClassName}>
           <EuiHealth color={dotColor}>
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
-                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                <EuiHighlight search={searchValue}>{value.label || value.ontology_name}</EuiHighlight>
 
-                {value.description && (
+                {!singleSuggestionRow && value.description && (
                 <span style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -424,26 +423,48 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           .then((response) => {
             if (response) {
               setOptions(
-                response.properties.map((selection: any) => ({
-                  // label to display within the combobox either raw value or generated one
-                  // #renderOption() is used to display during selection.
-                  label: hasShortSelectedLabel
-                    ? selection.getLabel()
-                    : generateDisplayLabel(selection),
-                  // key to distinguish the options (especially those with same label)
-                  key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
-                  // values to pass to clients
-                  value: {
-                    iri: selection.getIri(),
-                    label: selection.getLabel(),
-                    ontology_name: selection.getOntologyId(),
-                    type: selection.getType(),
-                    short_form: selection.getShortForm(),
-                    description: selection.getDescription(),
-                    source: selection.getApiSourceName(),
-                    source_url: selection.getApiSourceEndpoint(),
-                  },
-                })),
+                response.properties
+                  .map((selection: any) => {
+                    const type = selection.getType();
+
+                    if (type === "ontology") {
+                      const label = (selection.getLabel && selection.getLabel()) ||
+                        (selection.getOntologyId && selection.getOntologyId()) ||
+                        "Unknown ontology name";
+
+                      return {
+                        label: hasShortSelectedLabel ? label : label,
+                        key: `${selection.getOntologyId ? selection.getOntologyId() : 'unknown'}::${selection.getIri ? selection.getIri() : 'unknown'}::unknown`,
+                        value: {
+                          iri: selection.getIri ? selection.getIri() : "",
+                          label: label,
+                          ontology_name: selection.getOntologyId ? selection.getOntologyId() : "",
+                          type: "ontology",
+                          short_form: "",
+                          description: selection.getDescription ? selection.getDescription() : "",
+                          source: selection.getApiSourceName ? selection.getApiSourceName() : "",
+                          source_url: selection.getApiSourceEndpoint ? selection.getApiSourceEndpoint() : "",
+                        },
+                      };
+                    } else {
+                      return {
+                        label: hasShortSelectedLabel
+                          ? selection.getLabel()
+                          : generateDisplayLabel(selection),
+                        key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
+                        value: {
+                          iri: selection.getIri(),
+                          label: selection.getLabel(),
+                          ontology_name: selection.getOntologyId(),
+                          type: selection.getType(),
+                          short_form: selection.getShortForm(),
+                          description: selection.getDescription(),
+                          source: selection.getApiSourceName(),
+                          source_url: selection.getApiSourceEndpoint(),
+                        },
+                      };
+                    }
+                  })
               );
             }
           });
@@ -452,10 +473,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 
   useEffect(() => {
-    if (isLoadingTerms || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery) {
+    if (isLoadingTerms || isLoadingOnMount || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery || searchValue.length > 0) {
       setDisplaySuggestions(true)
+    } else {
+      setDisplaySuggestions(false)
     }
-  }, [isLoadingTerms, preselected, initialSearchQuery])
+  }, [isLoadingTerms, isLoadingOnMount, preselected, initialSearchQuery])
 
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -514,7 +537,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     return (
       (ontologyId ? `- (${ontologyId}` : "") +
-        (shortForm ? `- (${shortForm}` : "") || "-"
+      (shortForm ? `- (${shortForm}` : "") || "-"
     );
   }
 
