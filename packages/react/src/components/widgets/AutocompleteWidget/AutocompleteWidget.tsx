@@ -19,6 +19,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import Tooltip from "../../../model/Tooltip";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -101,7 +102,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           value.short_form;
 
     let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
-    if (value.description != undefined) {
+    if (value.description) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
     if (showApiSource && value.source_url && value.source_url !== "") {
@@ -135,7 +136,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntity = () => {
       return (
-          <span title={hoverText} className={finalClassName}>
+          <span title={""} className={finalClassName}>
       <div
           style={{
             display: "flex",
@@ -154,11 +155,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             colorSecond={"success"}
             className={`${finalClassName}-breadcrumb`}
         />
-
-        <EuiIcon
-            type={"iInCircle"}
-            title={hoverText}
-        />
+        <Tooltip text={hoverText}/>
       </div>
 
             {!singleSuggestionRow && value.description && (
