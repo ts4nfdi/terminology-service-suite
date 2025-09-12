@@ -24,6 +24,7 @@ import {
   WithPreselectedValueOLS4v2Args,
   WithDefaultsCompactArgs,
   commonAutocompleteWidgetPlay,
+  InitialSearchQueryArgs,
 } from "./AutocompleteWidgetStories";
 import "../../../style/tssStyles.css";
 import { AutocompleteDescription } from "../../../app/widgetDescriptions";
@@ -150,5 +151,10 @@ export const SubtreeDirectSubtypes: Story = {
 
 export const SubtreeDirectAndIndirectSubtypes: Story = {
   args: SubtreeDirectAndIndirectSubtypesArgs,
+  play: commonAutocompleteWidgetPlay,
+};
+
+export const InitialSearchQuery: Story = {
+  args: InitialSearchQueryArgs,
   play: commonAutocompleteWidgetPlay,
 };
