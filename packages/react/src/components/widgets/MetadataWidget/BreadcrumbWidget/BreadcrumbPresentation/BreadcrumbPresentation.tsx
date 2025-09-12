@@ -20,9 +20,9 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
             onNavigateToOntology={props.onNavigateToOntology}
             color={props.colorFirst || "primary"}
         />
-        &nbsp;
-        <EuiIcon type="arrowRight" />
-        &nbsp;
+        <span style={{ margin: "0 0.1em" }} />
+        <EuiIcon type="arrowRight" color={"black"}/>
+        <span style={{ margin: "0 0.1em" }} />
         <Badge
             color={props.colorSecond || "success"}
         >
