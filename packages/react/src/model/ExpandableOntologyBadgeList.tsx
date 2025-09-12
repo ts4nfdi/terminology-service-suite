@@ -19,6 +19,7 @@ export default function ExpandableOntologyBadgeList(props: ExpandableOntologyBad
                           label={props.label}
                           color={props.color}
                           className={props.className}
+                          onNavigateToOntology={props.onNavigateToOntology}
                       />
                       {index < MAX_ONTOLOGIES_ON_DISPLAY - 1 && <>&nbsp;</>}
                     </span>
@@ -38,6 +39,7 @@ export default function ExpandableOntologyBadgeList(props: ExpandableOntologyBad
                       label={props.label}
                       color={props.color}
                       className={props.className}
+                      onNavigateToOntology={props.onNavigateToOntology}
                   />
                   {index < props.ontolist.length - 1 && <>&nbsp;</>}
                 </span>
