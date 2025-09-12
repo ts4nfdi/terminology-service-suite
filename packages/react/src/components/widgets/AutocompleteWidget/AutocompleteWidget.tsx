@@ -473,10 +473,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 
   useEffect(() => {
-    if (isLoadingTerms || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery) {
+    if (isLoadingTerms || isLoadingOnMount || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery || searchValue.length > 0) {
       setDisplaySuggestions(true)
+    } else {
+      setDisplaySuggestions(false)
     }
-  }, [isLoadingTerms, preselected, initialSearchQuery])
+  }, [isLoadingTerms, isLoadingOnMount, preselected, initialSearchQuery])
 
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
