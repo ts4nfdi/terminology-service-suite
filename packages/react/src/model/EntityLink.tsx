@@ -3,10 +3,13 @@ import {Thing} from "./interfaces";
 import LinkedEntities from "./LinkedEntities";
 import {OnNavigates} from "../app";
 import {inferTypeFromTypeArray, randomString} from "../app/util";
-import {EuiIcon} from "@elastic/eui";
+import {EuiIcon, EuiSpacer} from "@elastic/eui";
 import {DEFAULT_SHOW_BADGES} from "../app/globals";
 import ExpandableOntologyBadgeList from "./ExpandableOntologyBadgeList";
 import {EntityTypeName} from "./ModelTypeCheck";
+import "../style/ts4nfdiStyles/ts4nfdiBadgeStyle.css"
+import Badge from "./Badge";
+import Spacer from "./Spacer";
 
 /**
  * ONLY USABLE WITH V2-API ENTITIES
@@ -179,34 +182,26 @@ export default function EntityLink(
                     <a className="clickable" href={iri}>
                         {label}
                     </a>
-                    {showBadges ? (
+                    {showBadges &&
                         <>
-                            &nbsp;
-                            <button
-                                className="no-decoration"
-                                key={randomString()}
-                                onClick={() => {
-                                    if (
-                                        typeof onNavigates.onNavigateToDisambiguate === "function"
-                                    )
-                                        onNavigates.onNavigateToDisambiguate(linkedEntityType, {
-                                            iri,
-                                            label,
-                                        });
-                                }}
+                            <Spacer />
+                            <Badge
+                                onClick={
+                                    () => {
+                                        if(typeof onNavigates.onNavigateToDisambiguate === "function") {
+                                            onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label});
+                                        }
+                                    }
+                                }
                             >
-                <span className="ontology-badge">
-                  <EuiIcon type="search" size={"s"} />
-                    &nbsp;
-                    {otherDefinedBy.length}
-                    &nbsp;
-                    {"ontologies"}
-                </span>
-                            </button>
+                                <EuiIcon type="search" size={"s"} />
+                                &nbsp;
+                                {otherDefinedBy.length}
+                                &nbsp;
+                                {"ontologies"}
+                            </Badge>
                         </>
-                    ) : (
-                        <></>
-                    )}
+                    }
                 </>
             );
         }
@@ -238,36 +233,29 @@ export default function EntityLink(
                         <a className="clickable" href={iri}>
                             {label}
                         </a>
-                        {showBadges ? (
+                        {showBadges &&
                             <>
-                                &nbsp;
-                                <button
-                                    className="no-decoration"
-                                    key={randomString()}
-                                    onClick={() => {
-                                        if (
-                                            typeof onNavigates.onNavigateToDisambiguate === "function"
-                                        )
-                                            onNavigates.onNavigateToDisambiguate(linkedEntityType, {
-                                                iri,
-                                                label,
-                                            });
-                                    }}
+                                <Spacer />
+                                <Badge
+                                    onClick={
+                                        () => {
+                                            if(typeof onNavigates.onNavigateToDisambiguate === "function") {
+                                                onNavigates.onNavigateToDisambiguate(linkedEntityType, {iri, label});
+                                            }
+                                        }
+                                    }
                                 >
-                  <span className="ontology-badge">
-                    <EuiIcon type="search" size={"s"} />
-                      &nbsp;
-                      {linkedEntity["numAppearsIn"]}
-                      &nbsp;
-                      {parseInt(linkedEntity["numAppearsIn"]) > 1
-                          ? "ontologies"
-                          : "ontology"}
-                  </span>
-                                </button>
+                                    <EuiIcon type="search" size={"s"} />
+                                    &nbsp;
+                                    {linkedEntity["numAppearsIn"]}
+                                    &nbsp;
+                                    {parseInt(linkedEntity["numAppearsIn"]) > 1
+                                        ? "ontologies"
+                                        : "ontology"
+                                    }
+                                </Badge>
                             </>
-                        ) : (
-                            <></>
-                        )}
+                        }
                     </>
                 );
             } else {
