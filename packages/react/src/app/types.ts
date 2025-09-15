@@ -420,6 +420,7 @@ export type EntityData = {
    * should be present for use with hierarchy
    */
   parents?: Reified<string>[];
+  color?: string;
 };
 
 export type OnNavigateToEntity = {
@@ -481,6 +482,8 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiKey?: string;
   backendType?: string;
   hierarchyWrap?: boolean;
+  compareIri?: string;
+  showHeader?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &

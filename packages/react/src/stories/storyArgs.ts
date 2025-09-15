@@ -221,12 +221,19 @@ export const hierarchyWrapArgType = {
     required: false,
     description:
         "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
-    table: {
-      defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
-      },
-    },
   },
+};
+export const compareIriArgType = {
+    compareIri: {
+        required: false,
+        description:
+            "If provided, a view comparing the hierarchies of iri and compareIri is shown.",
+        table: {
+            defaultValue: {
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.COMPARE_IRI,
+            }
+        }
+    }
 };
 export const hasShortSelectedLabelArgType = {
   hasShortSelectedLabel: {

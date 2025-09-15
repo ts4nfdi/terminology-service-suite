@@ -150,6 +150,26 @@ export function isEuiLinkColor(str: string): str is EuiLinkColor {
   ].includes(str);
 }
 
+function hexToRgb(hex: string): number[] {
+    const bigint = parseInt(hex, 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+}
+
+export function withAlpha(color: string, alpha: number) {
+    // Create a dummy canvas to leverage the browser's color parsing
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx!.fillStyle = color; // browser resolves named/hex/rgb/hsl into rgb()
+    const computed = ctx!.fillStyle.slice(1); // e.g. "rgb(52, 152, 219)"
+
+    if (parseInt(computed, 16) == 0) // black
+        return "rgba(0,0,0,0)"
+
+    // Extract numbers
+    const [r, g, b] = hexToRgb(computed);
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 export function isEuiButtonColor(str: string): str is EuiLinkColor {
   return ["text", "accent", "primary", "success", "warning", "danger"].includes(
     str,

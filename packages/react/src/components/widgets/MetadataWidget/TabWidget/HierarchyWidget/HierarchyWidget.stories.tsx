@@ -1,21 +1,21 @@
 import { HierarchyWidget } from "./HierarchyWidget";
 import {
-  HierarchyWidgetStoryArgs,
-  HierarchyWidgetStoryArgTypes,
-  ClassHierarchyArgs,
-  IndividualHierarchyArgs,
-  PreferredRootsArgs,
-  IncludeObsoleteEntitiesArgs,
-  PropertyRootsArgs,
-  IndividualRootsArgs,
-  LargeHierarchyArgs,
-  SkosHierarchyArgs,
-  SagePubHierarchyArgs,
-  OntoportalHierarchyArgs,
-  OLS3HierarchyArgs,
-  commonHierarchyWidgetPlay,
-  OLSGermanArgs,
-  SkosmosAgrovocGermanArgs,
+    HierarchyWidgetStoryArgs,
+    HierarchyWidgetStoryArgTypes,
+    ClassHierarchyArgs,
+    IndividualHierarchyArgs,
+    PreferredRootsArgs,
+    IncludeObsoleteEntitiesArgs,
+    PropertyRootsArgs,
+    IndividualRootsArgs,
+    LargeHierarchyArgs,
+    SkosHierarchyArgs,
+    SagePubHierarchyArgs,
+    OntoportalHierarchyArgs,
+    OLS3HierarchyArgs,
+    commonHierarchyWidgetPlay,
+    OLSGermanArgs,
+    SkosmosAgrovocGermanArgs, CompareHierarchiesArgs, CompareHierarchiesSubEntityArgs,
 } from "./HierarchyWidgetStories";
 import { manuallyEmbedOnNavigate } from "../../../../../app/util";
 import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
@@ -106,4 +106,14 @@ export const OLSGerman: Story = {
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
   play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchies: Story = {
+    args: CompareHierarchiesArgs,
+    play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesSubEntity: Story = {
+    args: CompareHierarchiesSubEntityArgs,
+    play: commonHierarchyWidgetPlay,
 };

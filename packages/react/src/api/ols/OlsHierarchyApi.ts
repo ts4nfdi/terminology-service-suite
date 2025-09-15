@@ -42,6 +42,11 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
   SHOW_SIBLINGS_ON_INIT: false,
   USE_LEGACY: false,
   WRAP: false,
+  COMPARE_IRI: undefined,
+  SHOW_HEADER: true,
+  COLOR_UNION: "purple",
+  COLOR_A: "blue",
+  COLOR_B: "red"
 } as const;
 
 export class OlsHierarchyApi implements HierarchyBuilder {

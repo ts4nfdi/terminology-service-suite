@@ -54,7 +54,6 @@ button {
 }
 
 .highlight {
-  background: lightblue;
   box-decoration-break: clone;
   padding: 4px 3px 1px;
   border-radius: 6px;

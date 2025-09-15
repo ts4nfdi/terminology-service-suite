@@ -1,6 +1,7 @@
 import { EntityTypeName } from "../ModelTypeCheck";
 import { HierarchyBuilder } from "../../api/HierarchyBuilder";
-import { EntityData } from "../../app/types";
+import { EntityData } from "../../app";
+import {HIERARCHY_WIDGET_DEFAULT_VALUES} from "../../api/ols/OlsHierarchyApi";
 
 export type ParentChildRelation = {
   childIri: string;
@@ -213,7 +214,11 @@ export class Hierarchy {
         // add children to parentChildRelations for iri of nodeToExpand
         const parChildRel: ParentChildRelation[] = [];
         for (const child of children) {
-          this.entitiesData.set(child.iri, child);
+          if(this.entitiesData.get(child.iri) == undefined) {
+              console.log(this.entitiesData.get(child.iri));
+              this.entitiesData.set(child.iri, child);
+              console.log(`Set ${child.iri}`)
+          } // should not be updated as color could be overridden
           if (child.parents) {
             const parRelation = child.parents.filter(
               (par) => par.value == nodeToExpand.entityData.iri,
@@ -236,4 +241,98 @@ export class Hierarchy {
       return true;
     } else return false;
   }
+
+    colorEntity(node: TreeNode, color?: string) {
+        node.entityData.color = color;
+        this.entitiesData.set(node.entityData.iri, node.entityData);
+    }
+
+    colorSubtree(node: TreeNode, color?: string) {
+      this.colorEntity(node, color);
+
+      for (const child of node.loadedChildren) {
+          this.colorSubtree(child, color);
+      }
+    }
+}
+
+export function compareHierarchies(
+    hierarchyA: Hierarchy,
+    hierarchyB: Hierarchy
+): Hierarchy {
+
+    const stackA: (TreeNode[])[] = [hierarchyA.roots];
+    const stackB: (TreeNode[])[] = [hierarchyB.roots];
+
+    while (stackA.length > 0 && stackB.length > 0) {
+        const currA: TreeNode[] = stackA[stackA.length - 1];
+        stackA.pop();
+        const currB : TreeNode[] = stackB[stackB.length - 1];
+        stackB.pop();
+
+        // Assuming that TreeNode arrays are sorted alphabetically by entityData.label | entityData.iri
+        let iA = 0;
+        let iB = 0;
+        let nodeA: TreeNode;
+        let nodeB: TreeNode;
+
+        function onlyInAProcedure() {
+            // contained in A, but not in B
+            hierarchyA.colorSubtree(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A);
+            iA++;
+        }
+        function onlyInBProcedure() {
+            // contained in B, but not in A
+
+            // add node into A list -> gets injected into hierarchyA
+            iA++;
+            currA.splice(iA, 0, nodeB);
+
+            // add parentChildRelation
+            for (const parIri of (nodeB.entityData.parents || []).map((elem) => elem.value)) {
+                if (hierarchyA.entitiesData.get(parIri)) {
+                    const parChildRelB = hierarchyB.parentChildRelations.get(parIri)!.filter((elem) => elem.childIri == nodeB.entityData.iri)[0];
+
+                    const parChildRelsA = hierarchyA.parentChildRelations.get(parIri) || [];
+                    parChildRelsA.push(parChildRelB);
+
+                    hierarchyA.parentChildRelations.set(parIri, parChildRelsA);
+                }
+            }
+
+            hierarchyA.colorSubtree(nodeB, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B);
+            iB++;
+        }
+
+        while (iA < currA.length && iB < currB.length) {
+            nodeA = currA[iA];
+            nodeB = currB[iB];
+
+            const compareValue: number = (nodeA.entityData.label || nodeA.entityData.iri).localeCompare(nodeB.entityData.label || nodeB.entityData.iri)
+
+            if (compareValue == 0) {
+                // contained in union
+                hierarchyA.colorEntity(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION);
+
+                // children have to be compared further
+                stackA.push(nodeA.loadedChildren);
+                stackB.push(nodeB.loadedChildren);
+
+                iA++;
+                iB++;
+            }
+            else if (compareValue < 0) onlyInAProcedure();
+            else onlyInBProcedure();
+        }
+        while (iA < currA.length) {
+            nodeA = currA[iA];
+            onlyInAProcedure();
+        }
+        while (iB < currB.length) {
+            nodeB = currB[iB];
+            onlyInBProcedure();
+        }
+    }
+
+    return hierarchyA;
 }
