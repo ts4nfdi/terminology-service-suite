@@ -7,6 +7,7 @@ import {
     EuiIcon,
     EuiProvider,
     EuiPanel, EuiSpacer, EuiHealth, EuiButton,
+    EuiAccordion, EuiTitle, EuiFlexGroup, EuiFlexItem
 } from "@elastic/eui";
 import {compareHierarchies, Hierarchy, TreeNode} from "../../../../../model/interfaces/Hierarchy";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -38,6 +39,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     useLegacy = HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
     hierarchyWrap = HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
     showHeader = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER,
+    showComparisonTitleInHeader = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER,
     className,
     parameter,
   } = props;
@@ -149,6 +151,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   );
 
   const [resetToggle, setResetToggle] = React.useState(false);
+  const [legendToggle, setLegendToggle] = React.useState(false);
 
   const api: HierarchyBuilder = useMemo(() => {
     switch (backendType) {
@@ -263,7 +266,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     return (
       <div>
         <div style={{ position: "relative" }}>
-          <div style={{ position: "absolute" }}>{
+          <div style={{ position: "absolute", top: node.expanded ? "-2px" : "0", left: node.expanded ? "-1px" : "-3px" }}>{
             // arrows
             !node.entityData.hasChildren ? (
                 <EuiIcon type={"empty"} />
@@ -348,18 +351,18 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                     paddingSize="s"
                   >
                     <span>
-                      <EuiButton
-                          size="s"
-                          onClick={() => setResetToggle(!resetToggle)}
-                      >
-                          Reset
-                      </EuiButton>
-                      {iri && compareIri &&
-                          <span>
-                              <EuiSpacer size="m" />
-                              <EuiText>
-                                  Legend:
-                                  <br/>
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="flexStart">
+                          <EuiFlexItem>
+                              { iri && compareIri && showComparisonTitleInHeader &&
+                                  <EuiTitle size={"s"} >
+                                      <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(iri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(compareIri)?.label || compareIri}</i></h2>
+                                  </EuiTitle>
+                              }
+                              {iri && compareIri &&
+                                  <span>
+                              <EuiSpacer size="s" />
+                              <EuiAccordion buttonContent={legendToggle ? "Hide Legend" : "Show Legend"} id={""} onToggle={(isOpen) => setLegendToggle(isOpen)}>
+                                <EuiText style={{ paddingLeft: ".3em" }}>
                                   <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION}>
                                       Common subtree
                                   </EuiHealth>
@@ -376,8 +379,17 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                                       Subtree independent of both
                                   </EuiHealth>
                               </EuiText>
+                              </EuiAccordion>
                           </span>
-                      }
+                              }
+                          </EuiFlexItem>
+                          <EuiButton
+                              size="s"
+                              onClick={() => setResetToggle(!resetToggle)}
+                          >
+                              Reset
+                          </EuiButton>
+                      </EuiFlexGroup>
                     </span>
                   </EuiPanel>
               }
@@ -430,6 +442,10 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           onNavigateToOntology={props.onNavigateToOntology}
           parameter={props.parameter}
           hierarchyWrap={props.hierarchyWrap}
+          showHeader={props.showHeader}
+          showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+          className={props.className}
+          compareIri={props.compareIri}
         />
       </QueryClientProvider>
     </EuiProvider>

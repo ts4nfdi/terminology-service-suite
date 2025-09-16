@@ -56,7 +56,8 @@ export const HierarchyWidgetStoryArgs = {
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
   compareIri: "",
-  showHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER
+  showHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER,
+  showComparisonTitleInHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER
 } as const;
 
 export const ClassHierarchyArgs = {

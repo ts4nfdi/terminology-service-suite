@@ -44,6 +44,7 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
   WRAP: false,
   COMPARE_IRI: undefined,
   SHOW_HEADER: true,
+  SHOW_COMPARISON_TITLE_IN_HEADER: true,
   COLOR_UNION: "purple",
   COLOR_A: "blue",
   COLOR_B: "red"

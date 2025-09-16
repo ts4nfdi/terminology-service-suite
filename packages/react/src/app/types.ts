@@ -484,6 +484,7 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   hierarchyWrap?: boolean;
   compareIri?: string;
   showHeader?: boolean;
+  showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
