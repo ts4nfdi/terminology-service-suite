@@ -350,9 +350,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                     borderRadius="none"
                     paddingSize="s"
                   >
-                    <span>
-                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="flexStart">
-                          <EuiFlexItem>
+                      <span style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                          <span>
                               { iri && compareIri && showComparisonTitleInHeader &&
                                   <EuiTitle size={"s"} >
                                       <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(iri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(compareIri)?.label || compareIri}</i></h2>
@@ -360,37 +359,36 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                               }
                               {iri && compareIri &&
                                   <span>
-                              <EuiSpacer size="s" />
-                              <EuiAccordion buttonContent={legendToggle ? "Hide Legend" : "Show Legend"} id={""} onToggle={(isOpen) => setLegendToggle(isOpen)}>
-                                <EuiText style={{ paddingLeft: ".3em" }}>
-                                  <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION}>
-                                      Common subtree
-                                  </EuiHealth>
-                                  <br/>
-                                  <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A}>
-                                      Subtree exclusive to {'"'}{hierarchy.entitiesData.get(iri)?.label || iri}{'"'}
-                                  </EuiHealth>
-                                  <br/>
-                                  <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}>
-                                      Subtree exclusive to {'"'}{hierarchy.entitiesData.get(compareIri)?.label || compareIri}{'"'}
-                                  </EuiHealth>
-                                  <br/>
-                                  <EuiHealth>
-                                      Subtree independent of both
-                                  </EuiHealth>
-                              </EuiText>
-                              </EuiAccordion>
-                          </span>
+                                      <EuiSpacer size="s" />
+                                      <EuiAccordion buttonContent={legendToggle ? "Hide Legend" : "Show Legend"} id={""} onToggle={(isOpen) => setLegendToggle(isOpen)}>
+                                        <EuiText style={{ paddingLeft: ".3em" }}>
+                                          <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION}>
+                                              Common subtree
+                                          </EuiHealth>
+                                          <br/>
+                                          <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A}>
+                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(iri)?.label || iri}{'"'}
+                                          </EuiHealth>
+                                          <br/>
+                                          <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}>
+                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(compareIri)?.label || compareIri}{'"'}
+                                          </EuiHealth>
+                                          <br/>
+                                          <EuiHealth>
+                                              Subtree independent of both
+                                          </EuiHealth>
+                                      </EuiText>
+                                      </EuiAccordion>
+                                  </span>
                               }
-                          </EuiFlexItem>
+                          </span>
                           <EuiButton
                               size="s"
                               onClick={() => setResetToggle(!resetToggle)}
                           >
                               Reset
                           </EuiButton>
-                      </EuiFlexGroup>
-                    </span>
+                      </span>
                   </EuiPanel>
               }
               <EuiPanel
