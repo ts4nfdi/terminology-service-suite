@@ -1,12 +1,12 @@
-import {Thing} from "./interfaces";
-import Reified from "./Reified";
-import {OnNavigates} from "../app";
+import {Thing} from "../../model/interfaces";
+import Reified from "../../model/Reified";
+import {OnNavigates} from "../../app";
 import React, {ReactElement} from "react";
 import EntityLink from "./EntityLink";
 import ClassExpression from "./ClassExpression";
-import {DEFAULT_SHOW_BADGES} from "../app/globals";
+import {DEFAULT_SHOW_BADGES} from "../../app/globals";
 import Tooltip from "./Tooltip";
-import {randomString} from "../app/util";
+import {randomString} from "../../app/util";
 
 /**
  * Renders a given Reified

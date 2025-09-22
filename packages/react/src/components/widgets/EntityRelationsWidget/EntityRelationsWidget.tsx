@@ -4,15 +4,15 @@ import React, { ReactElement } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
 import {Class, Entity, Individual, Property, Thing} from "../../../model/interfaces";
-import ClassExpression from "../../../model/ClassExpression";
+import ClassExpression from "../../helperComponents/ClassExpression";
 import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
 import {asArray, asReified, capitalize, getEntityTypeName, randomString} from "../../../app/util";
 import {EntityRelationsWidgetProps, OnNavigates} from "../../../app";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
-import EntityLink from "../../../model/EntityLink";
+import EntityLink from "../../helperComponents/EntityLink";
 import {DEFAULT_SHOW_BADGES} from "../../../app/globals";
-import RenderedReified from "../../../model/RenderedReified";
+import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 

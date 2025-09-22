@@ -9,8 +9,8 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import { OntologyInfoWidgetProps } from "../../../app";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
-import EntityLink from "../../../model/EntityLink";
-import RenderedReified from "../../../model/RenderedReified";
+import EntityLink from "../../helperComponents/EntityLink";
+import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 

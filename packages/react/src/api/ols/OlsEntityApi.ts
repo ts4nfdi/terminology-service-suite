@@ -12,7 +12,7 @@ import {
   entityTypeNames,
 } from "../../model/ModelTypeCheck";
 import { Entity, Individual } from "../../model/interfaces";
-import { createModelObject } from "../../model/ModelObjectCreator";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import {
   apiCallFn,
   ContentParams,

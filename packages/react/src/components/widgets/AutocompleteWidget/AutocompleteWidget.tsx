@@ -19,7 +19,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
-import Tooltip from "../../../model/Tooltip";
+import Tooltip from "../../helperComponents/Tooltip";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.

@@ -4,8 +4,8 @@ import { EuiIcon, EuiProvider } from "@elastic/eui";
 import {BreadcrumbPresentationProps,} from "../../../../../app";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import OntologyBadge from "../../../../../model/OntologyBadge";
-import Badge from "../../../../../model/Badge";
+import OntologyBadge from "../../../../helperComponents/OntologyBadge";
+import Badge from "../../../../helperComponents/Badge";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";

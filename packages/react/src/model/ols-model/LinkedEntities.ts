@@ -1,14 +1,5 @@
-import Reified from "./Reified";
-
-export interface LinkedEntity {
-  definedBy?: string[];
-  iri?: string;
-  url?: string;
-  numAppearsIn: string;
-  hasLocalDefinition: boolean;
-  label: string | string[];
-  type: string[];
-}
+import Reified from "../Reified";
+import {LinkedEntity} from "./LinkedEntity";
 
 export default class LinkedEntities {
   linkedEntities: { [key: string]: LinkedEntity };

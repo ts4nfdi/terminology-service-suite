@@ -2,7 +2,7 @@ import { OlsBaseApi } from "./OlsBaseApi";
 import { apiCallFn } from "../../utils/olsApiTypes";
 import { buildOtherParams, buildParamsForGet } from "../../utils/olsApiUtils";
 import { Ontologies, Ontology } from "../../model/interfaces";
-import { createModelObject } from "../../model/ModelObjectCreator";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import { OLS3Ontologies } from "../../model/ols3-model";
 import { OLS4Ontologies } from "../../model/ols4-model";
 import { getUseLegacy } from "../../app/util";

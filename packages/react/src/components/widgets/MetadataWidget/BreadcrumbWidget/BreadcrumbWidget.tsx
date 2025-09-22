@@ -9,7 +9,7 @@ import { BreadcrumbWidgetProps } from "../../../../app";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
-import Badge from "../../../../model/Badge";
+import Badge from "../../../helperComponents/Badge";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {

@@ -1,10 +1,10 @@
 import React, {ReactElement} from "react";
-import {Thing} from "./interfaces";
-import LinkedEntities from "./LinkedEntities";
-import {OnNavigates} from "../app";
-import Reified from "./Reified";
-import {asArray, randomString} from "../app/util";
-import {DEFAULT_SHOW_BADGES} from "../app/globals";
+import {Thing} from "../../model/interfaces";
+import LinkedEntities from "../../model/ols-model/LinkedEntities";
+import {OnNavigates} from "../../app";
+import Reified from "../../model/Reified";
+import {asArray, randomString} from "../../app/util";
+import {DEFAULT_SHOW_BADGES} from "../../app/globals";
 import EntityLink from "./EntityLink";
 import RenderedReified from "./RenderedReified";
 

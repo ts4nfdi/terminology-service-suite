@@ -1,13 +1,13 @@
 import React, {ReactElement} from "react";
-import {Thing} from "./interfaces";
-import LinkedEntities from "./LinkedEntities";
-import {OnNavigates} from "../app";
-import {inferTypeFromTypeArray, randomString} from "../app/util";
-import {EuiIcon, EuiSpacer} from "@elastic/eui";
-import {DEFAULT_SHOW_BADGES} from "../app/globals";
+import {Thing} from "../../model/interfaces";
+import LinkedEntities from "../../model/ols-model/LinkedEntities";
+import {OnNavigates} from "../../app";
+import {inferTypeFromTypeArray} from "../../app/util";
+import {EuiIcon} from "@elastic/eui";
+import {DEFAULT_SHOW_BADGES} from "../../app/globals";
 import ExpandableOntologyBadgeList from "./ExpandableOntologyBadgeList";
-import {EntityTypeName} from "./ModelTypeCheck";
-import "../style/ts4nfdiStyles/ts4nfdiBadgeStyle.css"
+import {EntityTypeName} from "../../model/ModelTypeCheck";
+import "../../style/ts4nfdiStyles/ts4nfdiBadgeStyle.css"
 import Badge from "./Badge";
 import Spacer from "./Spacer";
 

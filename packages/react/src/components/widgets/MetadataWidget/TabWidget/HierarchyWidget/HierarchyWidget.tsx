@@ -10,16 +10,16 @@ import {
 } from "@elastic/eui";
 import { Hierarchy, TreeNode } from "../../../../../model/interfaces/Hierarchy";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { SkosApi } from "../../../../../api/SkosApi";
-import { HierarchyBuilder } from "../../../../../api/HierarchyBuilder";
-import { OntoPortalApi } from "../../../../../api/OntoPortalApi";
+import { SkosApi } from "../../../../../api/skosmos/SkosApi";
+import { HierarchyBuilder} from "../../../../../model/interfaces/HierarchyBuilder";
+import { OntoPortalApi } from "../../../../../api/ontoportal/OntoPortalApi";
 import "../../../../../style/tssStyles.css";
 import { randomString } from "../../../../../app/util";
 import {HierarchyWidgetProps, EntityData, OnNavigateToOntology, OnNavigateToEntity} from "../../../../../app";
 import {EntityTypeName, isIndividualTypeName} from "../../../../../model/ModelTypeCheck";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
 import {HIERARCHY_WIDGET_DEFAULT_VALUES, OlsHierarchyApi} from "../../../../../api/ols/OlsHierarchyApi";
-import ExpandableOntologyBadgeList from "../../../../../model/ExpandableOntologyBadgeList";
+import ExpandableOntologyBadgeList from "../../../../helperComponents/ExpandableOntologyBadgeList";
 
 // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
 function TreeLink(props: {

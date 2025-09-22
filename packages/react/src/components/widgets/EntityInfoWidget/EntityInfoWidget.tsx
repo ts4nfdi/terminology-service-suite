@@ -4,14 +4,14 @@ import React, { ReactElement } from "react";
 import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString, getErrorMessageToDisplay} from "../../../app/util";
-import ClassExpression from "../../../model/ClassExpression";
+import ClassExpression from "../../helperComponents/ClassExpression";
 import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
 import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
 import { EntityInfoWidgetProps } from "../../../app";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
-import EntityLink from "../../../model/EntityLink";
-import Tooltip from "../../../model/Tooltip";
-import RenderedReified from "../../../model/RenderedReified";
+import EntityLink from "../../helperComponents/EntityLink";
+import Tooltip from "../../helperComponents/Tooltip";
+import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 

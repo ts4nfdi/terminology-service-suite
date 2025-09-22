@@ -1,6 +1,6 @@
 import React, {ReactElement} from "react";
-import {ExpandableOntologyBadgeListProps} from "../app";
-import {randomString} from "../app/util";
+import {ExpandableOntologyBadgeListProps} from "../../app";
+import {randomString} from "../../app/util";
 import OntologyBadge from "./OntologyBadge";
 
 export default function ExpandableOntologyBadgeList(props: ExpandableOntologyBadgeListProps): ReactElement {

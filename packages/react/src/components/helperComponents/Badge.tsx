@@ -1,7 +1,7 @@
 import React, {ReactElement} from "react";
-import {ColorObj, CssClassNameObj} from "../app";
+import {ColorObj, CssClassNameObj} from "../../app";
 import {EuiBadge} from "@elastic/eui";
-import "../style/ts4nfdiStyles/ts4nfdiBadgeStyle.css";
+import "../../style/ts4nfdiStyles/ts4nfdiBadgeStyle.css";
 
 export default function Badge({
     children,

@@ -2,7 +2,7 @@ import React from "react";
 import { EuiText } from "@elastic/eui";
 import { EntityOntoListPresentationProps } from "../../../../app";
 import "../../../../style/ts4nfdiStyles/ts4nfdiEntityOntoListStyle.css";
-import ExpandableOntologyBadgeList from "../../../../model/ExpandableOntologyBadgeList";
+import ExpandableOntologyBadgeList from "../../../helperComponents/ExpandableOntologyBadgeList";
 
 function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-entity-onto-list-style";
