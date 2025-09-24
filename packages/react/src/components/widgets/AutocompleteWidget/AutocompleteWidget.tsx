@@ -9,7 +9,6 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiIcon,
   EuiProvider,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -40,6 +39,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     className,
     useLegacy,
     initialSearchQuery,
+    onNavigateToOntology,
     ...rest
   } = props;
 
@@ -154,6 +154,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             colorFirst={"primary"}
             colorSecond={"success"}
             className={`${finalClassName}-breadcrumb`}
+            onNavigateToOntology={onNavigateToOntology}
         />
         <Tooltip text={hoverText}/>
       </div>

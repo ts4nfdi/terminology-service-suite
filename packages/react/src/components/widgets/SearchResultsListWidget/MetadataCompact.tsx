@@ -1,7 +1,5 @@
 import {
   EuiCard,
-  EuiFlexGroup,
-  EuiFlexItem,
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
@@ -41,6 +39,7 @@ function MetadataCompact(props: MetadataCompactProps) {
     iri,
     ontologyId,
     useLegacy,
+    onNavigateToOntology,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
@@ -105,7 +104,6 @@ function MetadataCompact(props: MetadataCompactProps) {
       } as MetadataInfo;
     },
   );
-  console.log(data);
 
   return (
     <div className={className}>
@@ -142,6 +140,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             entityType={result.type}
             ontologyId={result.ontology_name}
             className={`${className}-breadcrumb`}
+            onNavigateToOntology={onNavigateToOntology}
           />
         )}
 
@@ -161,6 +160,7 @@ function MetadataCompact(props: MetadataCompactProps) {
               ontolist={data.ontoList}
               entityType={(result.type || "class") as EntityTypeName}
               className={`${className}-entity-onto-list`}
+              onNavigateToOntology={onNavigateToOntology}
             />
             <EntityDefinedByPresentation
               iri={result.iri}
@@ -168,6 +168,7 @@ function MetadataCompact(props: MetadataCompactProps) {
               label={result.label || ""}
               entityType={(result.type || "class") as EntityTypeName}
               className={`${className}-entity-defined-by`}
+              onNavigateToOntology={onNavigateToOntology}
             />
           </div>
         )}

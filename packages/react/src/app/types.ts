@@ -5,7 +5,7 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { Thing } from "../model/interfaces";
-import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
+import { BuildHierarchyProps, HierarchyIriProp } from "../model/interfaces/HierarchyBuilder";
 import Reified from "../model/Reified";
 
 type ParameterObj = {
@@ -166,7 +166,9 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
   ParameterObj &
   ApiObj &
   CssClassNameObj &
-  UseLegacyObj & {
+  UseLegacyObj &
+  OnNavigateToOntology &
+    {
     /**
      * A method that is called once the set of selection changes
      */
@@ -632,6 +634,7 @@ export type SearchResultsListWidgetProps = Partial<
   TargetLinkObj &
   ParameterObj &
   UseLegacyObj &
+  OnNavigateToOntology &
   CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
@@ -671,7 +674,8 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   TargetLinkObj &
   ParameterObj &
   CssClassNameObj &
-  OptionalEntityTypeObj & {
+  OptionalEntityTypeObj &
+  OnNavigateToOntology & {
     result: SearchResultProps;
     iri: string;
     ontologyId: string;

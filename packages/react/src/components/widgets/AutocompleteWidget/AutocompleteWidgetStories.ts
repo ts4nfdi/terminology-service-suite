@@ -1,18 +1,18 @@
 import * as globals from "../../../app/globals";
 
 import {
-  allowCustomTermsArgType,
-  apiArgType,
-  classNameArgType,
-  hasShortSelectedLabelArgType,
-  parameterArgType,
-  placeholderArgType,
-  preselectedArgType,
-  selectionChangedEventArgType,
-  showApiSourceArgType,
-  singleSelectionArgType,
-  singleSuggestionRowArgType,
-  ts4nfdiGatewayArgType,
+    allowCustomTermsArgType,
+    apiArgType,
+    classNameArgType,
+    hasShortSelectedLabelArgType, onNavigateToOntologyArgType,
+    parameterArgType,
+    placeholderArgType,
+    preselectedArgType,
+    selectionChangedEventArgType,
+    showApiSourceArgType,
+    singleSelectionArgType,
+    singleSuggestionRowArgType,
+    ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
 import { AutocompleteWidgetProps } from "../../../app";
 import { action } from "storybook/actions";
@@ -31,6 +31,7 @@ export const AutocompleteWidgetStoryArgTypes = {
   ...singleSuggestionRowArgType,
   ...showApiSourceArgType,
   ...classNameArgType,
+  ...onNavigateToOntologyArgType
 };
 
 export const AutocompleteWidgetStoryArgsReact = {
@@ -49,6 +50,7 @@ export const AutocompleteWidgetStoryArgsReact = {
   parameter:
     "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   initialSearchQuery: "",
+  onNavigateToOntology: "Console message"
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
@@ -68,6 +70,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
   parameter:
     "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
   initialSearchQuery: "",
+  onNavigateToOntology: "Console message"
 };
 
 export const WithDefaultsArgs = {};
