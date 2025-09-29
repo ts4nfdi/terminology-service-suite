@@ -17,7 +17,6 @@ import {
 import "./index";
 import { EntityRelationsDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
-  DataContentWidgetProps,
   EntityRelationsWidget,
   EntityRelationsWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";

@@ -50,6 +50,8 @@ window['ts4nfdiWidgets'].createResources(
         onNavigate:${args.onNavigate},
         actions:[${args.actions}],
         parameter:"${args.parameter}",
+        useLegacy:${args.useLegacy},
+        className:${args.className},
     },
     document.querySelector('#resources_widget_container_${num}')
 )
