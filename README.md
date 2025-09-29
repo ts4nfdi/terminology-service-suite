@@ -1,6 +1,6 @@
 # Terminology Service Suite (TSS) Widgets
 
-Documentation and using this package: [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), [All versions](https://ts4nfdi.github.io/terminology-service-suite/)<br>
+Documentation and using this package: [Latest](https://terminology.services.base4nfdi.de/tss/comp/latest/), [All versions](https://terminology.services.base4nfdi.de/tss/)<br>
 
 ## About The Project
 
@@ -8,7 +8,7 @@ The TSS Widgets project, derived from the [SemLookP](https://semanticlookup.zbme
 GitHub under the [TS4NFDI](https://github.com/ts4nfdi) repository, is a collection of interactive widgets designed to
 ease the integration of terminology service functions into third-party applications.
 
-In [this Storybook](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/), you will find an interactive documentation of the
+In [this Storybook](https://terminology.services.base4nfdi.de/tss/comp/latest/), you will find an interactive documentation of the
 widget component library.
 
 The widgets are built using React and TypeScript and can be used in both React and plain HTML applications. The
