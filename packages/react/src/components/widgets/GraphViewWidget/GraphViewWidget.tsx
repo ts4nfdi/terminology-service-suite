@@ -21,18 +21,18 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 
 
-import {  useLoadGraph } from '@react-sigma/core';
+import { useLoadGraph } from '@react-sigma/core';
 import '@react-sigma/core/lib/style.css';
-import { MultiDirectedGraph} from 'graphology';
+import { MultiDirectedGraph } from 'graphology';
 import {
   ControlsContainer,
   FullScreenControl,
   SigmaContainer,
   ZoomControl,
   useRegisterEvents,
-  useSigma,
+  useSigma
 } from '@react-sigma/core';
-
+import { useWorkerLayoutNoverlap } from "@react-sigma/layout-noverlap";
 
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -71,24 +71,24 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   return (
-      // <SigmaContainer style={{ height: "600px", width: "600px" }} graph={MultiDirectedGraph} settings={settings}>
-      //   <MyGraph />
-      // </SigmaContainer>
-  <SigmaContainer style={{ height: "600px", width: "600px" }} settings={{ allowInvalidContainer: true }}>
-    <MyGraph {...props}  />
-    <GraphDragEvent />
-    <ControlsContainer position={'bottom-right'}>
-      <ZoomControl />
-      <FullScreenControl />
-    </ControlsContainer>
-  </SigmaContainer>
+    // <SigmaContainer style={{ height: "600px", width: "600px" }} graph={MultiDirectedGraph} settings={settings}>
+    //   <MyGraph />
+    // </SigmaContainer>
+    <SigmaContainer style={{ height: "800px", width: "2000px" }} settings={settings} >
+      <MyGraph {...props} />
+      <GraphDragEvent />
+      <ControlsContainer position={'bottom-right'}>
+        <ZoomControl />
+        <FullScreenControl />
+      </ControlsContainer>
+    </ SigmaContainer>
   );
 }
 
 
 
 
-function MyGraph(props: GraphViewWidgetProps){
+function MyGraph(props: GraphViewWidgetProps) {
 
   const {
     api,
@@ -167,23 +167,150 @@ function MyGraph(props: GraphViewWidgetProps){
     },
   );
 
+  // if (data && (firstLoad || dbclicked)) {
+  //   let gData = data.termRelations;
+  //   if (data.treeData && rootWalkIsSelected && firstLoad && !hierarchicalView) {
+  //     gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined);
+  //   } else if (
+  //     data.termRelations &&
+  //     data.treeData &&
+  //     rootWalkIsSelected &&
+  //     firstLoad &&
+  //     hierarchicalView
+  //   ) {
+  //     gData = convertToOlsGraphFormat(
+  //       data.treeData as JSTreeNode[],
+  //       data.termRelations,
+  //     );
+  //   }
+  //
+  //   if (firstLoad) {
+  //     setFirstLoad(false);
+  //   }
+  //   if (dbclicked) {
+  //     setDbclicked(false);
+  //   }
+  // }
 
 
-
-  useEffect(() => {
-    if(!data){
-      return;
+  function converFlatlistToTree(listOfJsTreeNodes: Array<JSTreeNode>): JSTreeNode[] {
+    let treeData: JSTreeNode[] = [];
+    for (let node of listOfJsTreeNodes) {
+      if (node.parent === "#") {
+        treeData.push(node);
+        continue;
+      }
+      for (let pn of listOfJsTreeNodes) {
+        if (pn.id === node.parent) {
+          if ("childrenList" in pn) {
+            pn.childrenList!.push(node);
+          } else {
+            pn.childrenList = [node];
+          }
+          if ("parentList" in node) {
+            //@ts-ignore
+            node.parentList.push(pn);
+          } else {
+            node.parentList = [pn];
+          }
+        }
+      }
     }
+    return treeData;
+  }
+
+
+  function renderTreeAsGraph(
+    listOfJsTreeNodes: Array<JSTreeNode>,
+    nodeRelations?: { nodes: any[]; edges: any[] },
+  ) {
+    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
+    // currently used in showing ancestors. Equivalent to is-a relation.
+
+    let treeData = converFlatlistToTree(listOfJsTreeNodes);
+
     const graph = new MultiDirectedGraph();
+
+    // let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+    let q = [...treeData];
+    let nextLayerQ = [];
+    let height = 1;
+    let indexInLayer = -1;
+    let layerLength = q.length;
+    while (true) {
+      let node = q[0];
+      indexInLayer += 1;
+      q = q.slice(1);
+      let x = (indexInLayer - (layerLength - 1)) / 2 * 600;
+      let y = height * -800;
+      if (!graph.hasNode(node.iri)) {
+        graph.addNode(node.iri, { x: 0, y: 0, label: node.text, size: 10, color: '#f00' });
+      }
+      graph.setNodeAttribute(node.iri, "x", x);
+      graph.setNodeAttribute(node.iri, "y", y);
+      if (node.parentList && node.parentList.length !== 0) {
+        node.parentList.forEach((pn) => {
+          if (!graph.hasEdge(node.iri, pn.iri)) {
+            graph.addEdge(node.iri, pn.iri, { label: subClassEdgeLabel, color: '#888', size: 3 });
+          }
+        });
+      }
+
+      if (node.childrenList && node.childrenList.length !== 0) {
+        nextLayerQ.push(...node.childrenList);
+      }
+      if (q.length === 0 && nextLayerQ.length === 0) {
+        break;
+      } else if (q.length === 0) {
+        height += 1;
+        q.push(...nextLayerQ);
+        indexInLayer = -1;
+        nextLayerQ = [];
+        layerLength = q.length;
+      }
+    }
+    // if (nodeRelations) {
+    //   // add the "has part" relation to the hierarchy
+    //   let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
+    //     nodes: [],
+    //     edges: [],
+    //   };
+    //   for (let edge of nodeRelations["edges"]) {
+    //     if (edge["label"] === "has part") {
+    //       onlyHasPartRelations.edges.push(edge);
+    //       onlyHasPartRelations.nodes.push(
+    //         nodeRelations.nodes.find((node) => node.iri === edge.source),
+    //       );
+    //       onlyHasPartRelations.nodes.push(
+    //         nodeRelations.nodes.find((node) => node.iri === edge.target),
+    //       );
+    //     }
+    //   }
+    //   graphData["nodes"] = graphData["nodes"].concat(
+    //     onlyHasPartRelations["nodes"],
+    //   );
+    //   graphData["edges"] = graphData["edges"].concat(
+    //     onlyHasPartRelations["edges"],
+    //   );
+    // }
+    return graph;
+  }
+
+
+  function renderDefaultGraph() {
+    const graph = new MultiDirectedGraph();
+    if (!data) {
+      return graph;
+    }
 
     let i = 0;
     const radius = 5; // distance from center
-    for(let node of data.termRelations["nodes"]){
+    for (let node of data.termRelations["nodes"]) {
       graph.addNode(node.iri, { x: 0, y: 0, label: node.label, size: 10, color: '#f00' });
-      if(node.iri === selectedIri){
+      if (node.iri === selectedIri) {
         graph.setNodeAttribute(selectedIri, "x", 0);
         graph.setNodeAttribute(selectedIri, "y", 0);
-      }else{
+      } else {
         const angle = (2 * Math.PI * i) / data.termRelations["nodes"].length - 1;
         graph.setNodeAttribute(node.iri, "x", radius * Math.cos(angle));
         graph.setNodeAttribute(node.iri, "y", radius * Math.sin(angle));
@@ -191,30 +318,53 @@ function MyGraph(props: GraphViewWidgetProps){
       i++;
     }
 
-    for(let edge of data.termRelations["edges"]){
-      graph.addEdge(edge.source, edge.target, { label: edge.label, color: '#888'});
+    for (let edge of data.termRelations["edges"]) {
+      graph.addEdge(edge.source, edge.target, { label: subClassEdgeLabel, color: '#888', size: 3 });
+    }
+    return graph;
+  }
+
+
+  const { start, stop, kill } = useWorkerLayoutNoverlap({
+    nodeMargin: 5,
+    scaleNodes: 1.2,
+    gridSize: 20,
+    permittedExpansion: 1.1,
+    speed: 1,
+    maxIterations: 100,
+    easing: "ease-out",
+    duration: 2000,
+  });
+
+
+
+
+  useEffect(() => {
+    if (!data) {
+      return;
     }
 
+    if (!hierarchicalView) {
+      const graph = renderDefaultGraph();
+      loadGraph(graph);
+    } else {
+      const graph = renderTreeAsGraph(data.treeData, undefined);
+      loadGraph(graph);
+    }
+    start();
+    return () => {
+      stop();
+      // kill();
+    }
 
-    //@ts-ignore
-    // graph.forEachNode((node, attrs, i) => {
-    //   const layer = node === "A" ? 1 : 0; // set layer for hierarchy layer
-    //   const index = node === "B" ? 1 : 0; // set order for nodes in each layer in heirarchy
-    //   graph.setNodeAttribute(node, "x", 200 + index * 200);
-    //   graph.setNodeAttribute(node, "y", 100 + layer * 200);
-    // });
-
-
-
-    loadGraph(graph);
   }, [loadGraph, data]);
 
   return null;
 }
 
-function GraphDragEvent(){
+function GraphDragEvent() {
 
- const registerEvents = useRegisterEvents();
+  const registerEvents = useRegisterEvents();
   const sigma = useSigma();
   const [draggedNode, setDraggedNode] = useState<string | null>(null);
 

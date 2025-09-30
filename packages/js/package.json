@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@react-sigma/core": "^5.0.4",
+    "@react-sigma/layout-noverlap": "^5.0.4",
     "dagre": "^0.8.5",
     "graphology": "^0.26.0",
     "graphology-layout": "^0.6.1",

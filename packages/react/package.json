@@ -47,6 +47,7 @@
     "@emotion/react": "^11.13.5",
     "@google/model-viewer": "^4.0.0",
     "@react-sigma/core": "^5.0.4",
+    "@react-sigma/layout-noverlap": "^5.0.4",
     "axios": "^1.1.2",
     "graphology-layout": "^0.6.1",
     "graphology-types": "^0.24.8",
