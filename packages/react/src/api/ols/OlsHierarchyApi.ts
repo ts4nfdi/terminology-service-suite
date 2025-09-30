@@ -16,14 +16,14 @@ import {
   check_for_errors,
   isTop,
 } from "../../utils/olsApiUtils";
-import { createModelObject } from "../../model/ModelObjectCreator";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import { JSTreeNode } from "../../utils/olsApiTypes";
 import {
   BuildHierarchyProps,
   HierarchyBuilder,
   HierarchyIriProp,
   LoadHierarchyChildrenProps,
-} from "../HierarchyBuilder";
+} from "../../model/interfaces/HierarchyBuilder";
 import {
   Hierarchy,
   ParentChildRelation,

@@ -1,7 +1,5 @@
 import {
   EuiCard,
-  EuiFlexGroup,
-  EuiFlexItem,
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
@@ -11,7 +9,7 @@ import {
   DescriptionWidget,
   IriWidget,
 } from "../MetadataWidget";
-import { MetadataCompactProps } from "../../../app/types";
+import { MetadataCompactProps } from "../../../app";
 import { pluralizeType } from "../../../app/util";
 import { EntityOntoListPresentation } from "../MetadataWidget/EntityOntoListWidget/EntityOntoListPresentation";
 import { EntityTypeName } from "../../../model/ModelTypeCheck";
@@ -21,7 +19,7 @@ import { Entity } from "../../../model/interfaces";
 import {
   createModelObject,
   getPreferredOntologyJSON,
-} from "../../../model/ModelObjectCreator";
+} from "../../../model/ols-model/ModelObjectCreator";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 
 type MetadataInfo = {
@@ -41,6 +39,7 @@ function MetadataCompact(props: MetadataCompactProps) {
     iri,
     ontologyId,
     useLegacy,
+    onNavigateToOntology,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
@@ -105,7 +104,6 @@ function MetadataCompact(props: MetadataCompactProps) {
       } as MetadataInfo;
     },
   );
-  console.log(data);
 
   return (
     <div className={className}>
@@ -142,6 +140,7 @@ function MetadataCompact(props: MetadataCompactProps) {
             entityType={result.type}
             ontologyId={result.ontology_name}
             className={`${className}-breadcrumb`}
+            onNavigateToOntology={onNavigateToOntology}
           />
         )}
 
@@ -161,6 +160,7 @@ function MetadataCompact(props: MetadataCompactProps) {
               ontolist={data.ontoList}
               entityType={(result.type || "class") as EntityTypeName}
               className={`${className}-entity-onto-list`}
+              onNavigateToOntology={onNavigateToOntology}
             />
             <EntityDefinedByPresentation
               iri={result.iri}
@@ -168,6 +168,7 @@ function MetadataCompact(props: MetadataCompactProps) {
               label={result.label || ""}
               entityType={(result.type || "class") as EntityTypeName}
               className={`${className}-entity-defined-by`}
+              onNavigateToOntology={onNavigateToOntology}
             />
           </div>
         )}

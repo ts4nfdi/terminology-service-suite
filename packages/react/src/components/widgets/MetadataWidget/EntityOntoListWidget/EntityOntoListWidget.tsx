@@ -9,7 +9,6 @@ import {
 } from "../../../../app/util";
 import { EntityOntoListWidgetProps } from "../../../../app/types";
 import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
-import ReactDOM from "react-dom";
 import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";

@@ -74,7 +74,9 @@ const meta = {
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
         className: "${args.className}",
-        initialSearchQuery: "${args.initialSearchQuery}"
+        initialSearchQuery: "${args.initialSearchQuery}",
+        onNavigateToOntology:${args.onNavigateToOntology},
+        useLegacy:${args.useLegacy}
     },
     document.querySelector('#autocomplete_widget_container_${num}')
   )
