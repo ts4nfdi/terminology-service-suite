@@ -17,11 +17,11 @@ import {
 } from "@elastic/eui";
 import { Network } from "vis-network";
 import { DataSet } from "vis-data";
-import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
+import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const {
@@ -77,6 +77,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           ),
         };
       } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
+        // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
         let termTree = await olsEntityApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
           { viewMode: "All", siblings: false },
@@ -88,6 +89,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         });
         return { treeData: termTree, termRelations: termRelation };
       } else if (firstLoad || dbclicked) {
+        // when user double clicks a node --> fetch the clicked node relation
         return {
           termRelations: await olsEntityApi.getTermRelations({
             ontologyId: ontologyId,
@@ -103,125 +105,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const graphNetwork = useRef({});
   const container = useRef(null);
 
-  const hierarchicalConfig = {
-    enabled: true,
-    //@ts-ignore
-    direction: "DU",
-    //@ts-ignore
-    sortMethod: "directed",
-  };
 
-  const graphNetworkConfig = {
-    /**
-     * for more options have a look at: https://visjs.github.io/vis-network/docs/network/#options
-     */
-    autoResize: true,
-    height: "100%",
-    width: "100%",
-    locale: "en",
-    layout: {
-      randomSeed: 1,
-      improvedLayout: true,
-      clusterThreshold: 150,
-      hierarchical: {
-        enabled: false,
-      },
-    },
-    physics: {
-      enabled: true,
-      barnesHut: {
-        gravitationalConstant: -20000,
-        centralGravity: 0.3,
-        springLength: 10,
-        springConstant: 0.04,
-        damping: 0.09,
-        avoidOverlap: 0,
-      },
-      hierarchicalRepulsion: {
-        damping: 0.09,
-        avoidOverlap: 0.9,
-      },
-    },
-  };
 
   if (hierarchicalView) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
 
-  class GraphNode {
-    id?: string;
-    label?: string;
-    color: {
-      background: string;
-      highlight: {
-        border: string;
-        background: string;
-      };
-    };
-    shape: string;
-    font: {
-      color: string;
-    };
 
-    constructor({ node }: OlsGraphNode) {
-      /**
-       * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
-       */
-      this.id = node["iri"];
-      this.label = node["label"];
-      this.color = {
-        background: "#455469",
-        highlight: {
-          border: "#404040",
-          background: "#404040",
-        },
-      };
-      this.shape = "box";
-      this.font = {
-        color: "white",
-      };
-    }
-  }
-
-  class GraphEdge {
-    id?: string;
-    from?: string;
-    to?: string;
-    label?: string;
-    arrows?: {
-      to?: boolean;
-    };
-    width?: number;
-    color?: {
-      color?: string;
-      highlight?: string;
-    };
-    font?: {
-      size?: number;
-    };
-    dashes?: boolean;
-
-    constructor({ edge }: OlsGraphEdge) {
-      if (edge["source"] && edge["target"] && edge["uri"]) {
-        /**
-         * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html
-         */
-        this.id = edge["source"] + edge["target"] + "&uri=" + edge["uri"];
-        this.from = edge["source"];
-        this.to = edge["target"];
-        this.label = edge["label"];
-        this.arrows = { to: true };
-        this.width = 2;
-        this.color = {
-          color: "gray",
-          highlight: "#00617C",
-        };
-        this.font = {
-          size: 16,
-        };
-      }
-    }
-  }
 
   if (data && (firstLoad || dbclicked)) {
     let gData = data.termRelations;
@@ -255,7 +145,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       let gEdge = new GraphEdge({ edge: edge });
       let dashed =
         edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
-        rootWalkIsSelected
+          rootWalkIsSelected
           ? false
           : true;
       gEdge.dashes = dashed;
@@ -394,6 +284,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphData,
       graphNetworkConfig,
     );
+
+    // Stop physics after the initial layout so users can freely move nodes
+    //@ts-ignore
+    setTimeout(() => {
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: false });
+    }, 2000);
   }, []);
 
   useEffect(() => {
