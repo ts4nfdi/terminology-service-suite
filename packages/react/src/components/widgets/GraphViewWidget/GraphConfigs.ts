@@ -63,14 +63,14 @@ export class GraphNode {
     color: string;
   };
 
-  constructor({ node }: OlsGraphNode) {
+  constructor({ node }: OlsGraphNode, bgColor = "#455469", color = "white") {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */
     this.id = node["iri"];
     this.label = node["label"];
     this.color = {
-      background: "#455469",
+      background: bgColor,
       highlight: {
         border: "#404040",
         background: "#404040",
@@ -78,7 +78,7 @@ export class GraphNode {
     };
     this.shape = "box";
     this.font = {
-      color: "white",
+      color: color,
     };
   }
 }

@@ -69,6 +69,15 @@ export const WithOnNodeDoubleClickCallbackArgs = {
   },
 };
 
+export const ChebiCaffeineHierarchyWithComparisonArgs = {
+  api: globals.EBI_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
+  secondIri: "http://purl.obolibrary.org/obo/CHEBI_139388",
+  ontologyId: "chebi",
+  rootWalk: true,
+  hierarchy: true,
+};
+
 export const commonGraphViewWidgetPlay = async ({
   canvasElement,
 }: {

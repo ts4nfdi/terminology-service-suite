@@ -11,7 +11,6 @@ import {
   EuiText,
   EuiButton,
   EuiPanel,
-  EuiSwitch,
   EuiPopover,
   EuiButtonEmpty,
 } from "@elastic/eui";
@@ -32,6 +31,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     className,
     hierarchy,
     edgeLabel,
+    secondIri,
     onNodeClick,
   } = props;
 
@@ -57,6 +57,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("mockConstructor");
 
+  const mainNodeBgColor = "#0BBBEF";
+  const secondNodeBgColor = "red";
+  const mainNodeTextColor = "black";
+  const secondNodeTextColor = "white";
+
+
   const { data, isLoading, isError, error } = useQuery(
     [
       "termGraph",
@@ -70,6 +76,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     async () => {
       if (rootWalkIsSelected && firstLoad && !hierarchicalView) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
+        // this is for rootWalk mode wihtout hierarchy view
         return {
           treeData: await olsEntityApi.getTermTree(
             { ontologyId: ontologyId, termIri: iri },
@@ -85,10 +92,25 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
         let termRelation = await olsEntityApi.getTermRelations({
           ontologyId: ontologyId,
-          termIri: selectedIri,
+          termIri: iri,
         });
+
+        if (secondIri) {
+          let secondTermTree = await olsEntityApi.getTermTree(
+            { ontologyId: ontologyId, termIri: secondIri },
+            { viewMode: "All", siblings: false },
+          );
+
+          let secondTermRelation = await olsEntityApi.getTermRelations({
+            ontologyId: ontologyId,
+            termIri: selectedIri,
+          });
+          return { treeData: termTree, termRelations: termRelation, secondTreeData: secondTermTree, secondTermRelations: secondTermRelation };
+        }
+
         return { treeData: termTree, termRelations: termRelation };
       } else if (firstLoad || dbclicked) {
+        // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
         return {
           termRelations: await olsEntityApi.getTermRelations({
@@ -116,7 +138,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   if (data && (firstLoad || dbclicked)) {
     let gData = data.termRelations;
     if (data.treeData && rootWalkIsSelected && firstLoad && !hierarchicalView) {
-      gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined);
+      gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
     } else if (
       data.termRelations &&
       data.treeData &&
@@ -127,36 +149,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       gData = convertToOlsGraphFormat(
         data.treeData as JSTreeNode[],
         data.termRelations,
+        data?.secondTreeData,
+        data?.secondTermRelations
       );
     }
-    for (let node of gData["nodes"]) {
-      let gNode = new GraphNode({ node: node });
-      //@ts-ignore
-      if (!nodes.current.get(gNode.id)) {
-        if (gNode.id === iri && rootWalkIsSelected) {
-          gNode.color.background = "#0BBBEF";
-          gNode.font.color = "black";
-        }
-        //@ts-ignore
-        nodes.current.add(gNode);
+    if (!rootWalkIsSelected && !hierarchicalView) {
+      for (let node of gData["nodes"]) {
+        addNewNodeToGraph(node);
       }
-    }
-    for (let edge of gData["edges"]) {
-      let gEdge = new GraphEdge({ edge: edge });
-      let dashed =
-        edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
-          rootWalkIsSelected
-          ? false
-          : true;
-      gEdge.dashes = dashed;
-      //@ts-ignore
-      if (!edges.current.get(gEdge.id)) {
-        if (gEdge.id?.includes(iri) && rootWalkIsSelected) {
-          //@ts-ignore
-          gEdge.color.color = "black";
-        }
-        //@ts-ignore
-        edges.current.add(gEdge);
+      for (let edge of gData["edges"]) {
+        addNewEdgeToGraph(edge);
       }
     }
     if (firstLoad) {
@@ -167,14 +169,45 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function convertToOlsGraphFormat(
-    listOfJsTreeNodes: Array<JSTreeNode>,
-    nodeRelations?: { nodes: any[]; edges: any[] },
-  ) {
-    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
-    // currently used in showing ancestors. Equivalent to is-a relation.
 
-    // first, the flat array of nodes should turn to a tree.
+  function addNewNodeToGraph(node, bgColor = "", color = "") {
+    let gNode = new GraphNode({ node: node });
+    if (bgColor && color) {
+      // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
+      gNode = new GraphNode({ node: node }, secondNodeBgColor, secondNodeTextColor);
+    }
+    //@ts-ignore
+    if (!nodes.current.get(gNode.id)) {
+      if (gNode.id === iri && rootWalkIsSelected) {
+        gNode.color.background = mainNodeBgColor;
+        gNode.font.color = mainNodeTextColor;
+      }
+      //@ts-ignore
+      nodes.current.add(gNode);
+    }
+  }
+
+  function addNewEdgeToGraph(edge) {
+    let gEdge = new GraphEdge({ edge: edge });
+    let dashed =
+      edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
+        rootWalkIsSelected
+        ? false
+        : true;
+    gEdge.dashes = dashed;
+    //@ts-ignore
+    if (!edges.current.get(gEdge.id)) {
+      if (gEdge.id?.includes(iri) && rootWalkIsSelected) {
+        //@ts-ignore
+        gEdge.color.color = "black";
+      }
+      //@ts-ignore
+      edges.current.add(gEdge);
+    }
+  }
+
+
+  function convertFlatListToTreeStructure(listOfJsTreeNodes: Array<JSTreeNode>) {
     let treeData: JSTreeNode[] = [];
     for (let node of listOfJsTreeNodes) {
       if (node.parent === "#") {
@@ -197,8 +230,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
     }
+    return treeData;
+  }
 
-    let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+
+  function addTreeDataToGraphData(graphData, treeData, isSecondIri: boolean = false) {
     let q = [...treeData];
     let layerq = [];
     let height = 1;
@@ -208,6 +244,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (!graphData.nodes.find((obj) => obj.iri === node.iri)) {
         let gnode = { iri: node.iri, label: node.text, level: height };
         graphData.nodes.push(gnode);
+        if (!isSecondIri) {
+          addNewNodeToGraph(gnode);
+        } else {
+          addNewNodeToGraph(gnode, secondNodeBgColor, secondNodeTextColor);
+        }
       }
 
       if (node.parentList && node.parentList.length !== 0) {
@@ -224,6 +265,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             )
           ) {
             graphData.edges.push(edge);
+            addNewEdgeToGraph(edge);
           }
         });
       }
@@ -240,30 +282,68 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         layerq = [];
       }
     }
-    if (nodeRelations) {
-      // add the "has part" relation to the hierarchy
-      let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
-        nodes: [],
-        edges: [],
-      };
-      for (let edge of nodeRelations["edges"]) {
-        if (edge["label"] === "has part") {
-          onlyHasPartRelations.edges.push(edge);
-          onlyHasPartRelations.nodes.push(
-            nodeRelations.nodes.find((node) => node.iri === edge.source),
-          );
-          onlyHasPartRelations.nodes.push(
-            nodeRelations.nodes.find((node) => node.iri === edge.target),
-          );
-        }
-      }
-      graphData["nodes"] = graphData["nodes"].concat(
-        onlyHasPartRelations["nodes"],
-      );
-      graphData["edges"] = graphData["edges"].concat(
-        onlyHasPartRelations["edges"],
-      );
+    return graphData;
+  }
+
+
+  function addHasPartRelationsToGraphData(graphData, nodeRelations?: { nodes: any[]; edges: any[] }, isSecondNode: boolean = false) {
+    if (!nodeRelations) {
+      return;
     }
+    let bgColor = "";
+    let color = "";
+    if (isSecondNode) {
+      bgColor = secondNodeBgColor;
+      color = secondNodeTextColor;
+    }
+    let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
+      nodes: [],
+      edges: [],
+    };
+    for (let edge of nodeRelations["edges"]) {
+      if (edge["label"] === "has part") {
+        addNewEdgeToGraph(edge);
+        addNewNodeToGraph(
+          nodeRelations.nodes.find((node) => node.iri === edge.source),
+          bgColor, color
+        );
+        addNewNodeToGraph(
+          nodeRelations.nodes.find((node) => node.iri === edge.target),
+          bgColor, color
+        );
+      }
+    }
+    graphData["nodes"] = graphData["nodes"].concat(
+      onlyHasPartRelations["nodes"],
+    );
+    graphData["edges"] = graphData["edges"].concat(
+      onlyHasPartRelations["edges"],
+    );
+  }
+
+  function convertToOlsGraphFormat(
+    listOfJsTreeNodes: Array<JSTreeNode>,
+    nodeRelations?: { nodes: any[]; edges: any[] },
+    secondListOfJsTreeNodes: Array<JSTreeNode>,
+    secondNodeRelations?: { nodes: any[]; edges: any[] },
+  ) {
+    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
+    // currently used in showing ancestors. Equivalent to is-a relation.
+
+    // first, the flat array of nodes should turn to a tree.
+
+
+    let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+    let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
+    addTreeDataToGraphData(graphData, treeData);
+    addHasPartRelationsToGraphData(graphData, nodeRelations);
+
+    if (secondIri) {
+      let secondTreeData = convertFlatListToTreeStructure(secondListOfJsTreeNodes);
+      addTreeDataToGraphData(graphData, secondTreeData, true);
+      addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
+    }
+
     return graphData;
   }
 
@@ -310,49 +390,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }, [graphNetwork]);
 
-  useEffect(() => {
-    // load the graph data again when the user change the mode to rootWalk and vice versa OR input props changes.
-    reset();
-  }, [rootWalkIsSelected, api, ontologyId, iri]);
-
-  useEffect(() => {
-    // when user change the storybook rootWalk value
-    setRootWalkIsSelected(rootWalk ? rootWalk : false);
-  }, [rootWalk]);
-
-  useEffect(() => {
-    // when user change the storybook hierarchy value
-    setHierarchicalView(hierarchy ? hierarchy : false);
-  }, [hierarchy]);
-
-  useEffect(() => {
-    if (hierarchicalView) {
-      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
-    } else {
-      //@ts-ignore
-      delete graphNetworkConfig["layout"]["hierarchical"];
-    }
-    let graphData = { nodes: nodes.current, edges: edges.current };
-    graphNetwork.current = new Network(
-      //@ts-ignore
-      container.current,
-      graphData,
-      graphNetworkConfig,
-    );
-
-    //@ts-ignore
-    graphNetwork.current.on("doubleClick", function (params) {
-      if (params.nodes.length > 0) {
-        let nodeIri = params.nodes[0];
-        setSelectedIri(nodeIri);
-        if (onNodeClickCallbackIdProvided) {
-          onNodeClick(nodeIri);
-        } else {
-          setDbclicked(true);
-        }
-      }
-    });
-  }, [hierarchicalView]);
 
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
@@ -367,6 +404,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       Guide me
     </EuiButtonEmpty>
   );
+
+  const goFullScreen = () => {
+    if (container.current?.requestFullscreen) {
+      container.current.requestFullscreen();
+    }
+  };
 
   return (
     <div className={finalClassName}>
@@ -402,22 +445,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           style={{ display: "inline-block", float: "right", paddingTop: 10 }}
         >
-          <EuiSwitch
-            label="root walk"
-            checked={rootWalkIsSelected}
-            onChange={() => {
-              setRootWalkIsSelected(!rootWalkIsSelected);
-            }}
-            title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
-          />
-          <EuiSwitch
-            label="hierarchy"
-            checked={hierarchicalView}
-            onChange={() => {
-              setHierarchicalView(!hierarchicalView);
-            }}
-            title="Enable the root walk mode in the graph: You can see the path from roots to the target node"
-          />
+
+          <button onClick={goFullScreen}>Fullscreen</button>
         </div>
       </EuiPanel>
 
@@ -431,9 +460,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
+          id="graphContainer"
           style={{ width: "850px", height: "850px", margin: "auto" }}
         />
       </EuiPanel>
+
+      {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
+      <style>{`
+        .graph-container:fullscreen, 
+        .graph-container::backdrop {
+          background-color: rgba(255,255,255,0);
+        }
+      `}</style>
     </div>
   );
 }

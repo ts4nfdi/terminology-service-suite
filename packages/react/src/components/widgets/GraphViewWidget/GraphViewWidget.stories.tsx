@@ -9,6 +9,7 @@ import {
   commonGraphViewWidgetPlay,
   ChebiCaffeineHierarchyArgs,
   WithOnNodeDoubleClickCallbackArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs
 } from "./GraphViewWidgetStories";
 import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -79,6 +80,16 @@ export const ChebiCaffeineHierarchy: Story = {
 
 export const WithOnNodeDoubleClickCallback: Story = {
   args: WithOnNodeDoubleClickCallbackArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchyWithComparison: Story = {
+  args: ChebiCaffeineHierarchyWithComparisonArgs,
   parameters: {
     docs: {
       disable: true,
