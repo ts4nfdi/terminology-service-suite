@@ -412,7 +412,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
-  const button = (
+  const GuidmeBtn = (
     <EuiButtonEmpty
       iconType="iInCircle"
       iconSide="right"
@@ -448,22 +448,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           Reset
         </EuiButton>
         <EuiPopover
-          button={button}
+          button={GuidmeBtn}
           isOpen={isPopoverOpen}
           closePopover={closePopover}
         >
           <EuiText style={{ width: 300, padding: 10 }}>
-            <li>You can expand the nodes by double clicking on them</li>
-            <li>You can zoom out/in by scrolling on the graph.</li>
+            <li>Expand the nodes by double clicking on them</li>
+            <li>Zoom out/in by scrolling on the graph.</li>
+            <li>Go to fullscreen mode by clicking the fullscreen icon on the right corner.</li>
+            <li>Download the graph data as JSON by clicking the download icon on the right corner.</li>
             <li>
               You can go back to the initial graph by clicking on the Reset
               button.
             </li>
             <li>You can move the nodes and edges around by dragging.</li>
-            <li>
-              Rootwalk toggle enable the root walk mode in the graph, where you
-              can see the path from roots to the target node.
-            </li>
           </EuiText>
         </EuiPopover>
         <div
