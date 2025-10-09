@@ -320,12 +320,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     secondListOfJsTreeNodes: Array<JSTreeNode>,
     secondNodeRelations?: { nodes: any[]; edges: any[] },
   ) {
-    // used for converting the list of ancestors to the ols api graph endpoints format. to be consumed by GraphNode and GraphEdge classes constructor.
-    // currently used in showing ancestors. Equivalent to is-a relation.
-
-    // first, the flat array of nodes should turn to a tree.
-
-
     let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
     let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
     addTreeDataToGraphData(graphData, treeData);
@@ -393,6 +387,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       });
     }
   }, [graphNetwork]);
+
+
+  useEffect(() => {
+    //@ts-ignore
+    graphNetwork.current.setOptions({ physics: true });
+    // Stop physics after the initial layout so users can freely move nodes
+    //@ts-ignore
+    setTimeout(() => {
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: false });
+    }, 2000);
+  }, [counter]);
 
 
   const onButtonClick = () =>
@@ -483,7 +489,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
-          id="graphContainer"
           style={{ width: "95%", height: "95%", margin: "auto" }}
         />
       </EuiPanel>
