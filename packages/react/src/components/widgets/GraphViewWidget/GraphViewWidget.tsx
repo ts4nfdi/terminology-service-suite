@@ -451,7 +451,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       </EuiPanel>
 
       <EuiPanel
-        style={{ width: 900, height: 900 }}
+        style={{ width: 1200, height: 1200 }}
         hasShadow={false}
         hasBorder={true}
         borderRadius="none"
@@ -461,7 +461,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           ref={container}
           className="graph-container"
           id="graphContainer"
-          style={{ width: "850px", height: "850px", margin: "auto" }}
+          style={{ width: "1150px", height: "1150px", margin: "auto" }}
         />
       </EuiPanel>
 
@@ -469,7 +469,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       <style>{`
         .graph-container:fullscreen, 
         .graph-container::backdrop {
-          background-color: rgba(255,255,255,0);
+          background-color: white;
         }
       `}</style>
     </div>
