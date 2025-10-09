@@ -19,6 +19,7 @@ export const GraphViewWidgetStoryArgs = {
   iri: "",
   ontologyId: "",
   rootWalk: false,
+  hierarchy: false
 };
 
 export const GraphViewWidgetExampleArgs = {
@@ -26,6 +27,7 @@ export const GraphViewWidgetExampleArgs = {
   iri: "http://purl.obolibrary.org/obo/OBI_0000070",
   ontologyId: "vibso",
   rootWalk: false,
+  hierarchy: false
 };
 
 export const RootWalkGraphExampleArgs = {
@@ -33,6 +35,7 @@ export const RootWalkGraphExampleArgs = {
   iri: "http://purl.obolibrary.org/obo/OBI_0000070",
   ontologyId: "vibso",
   rootWalk: true,
+  hierarchy: false
 };
 
 export const ChebiWaterArgs = {
@@ -40,6 +43,7 @@ export const ChebiWaterArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
   rootWalk: false,
+  hierarchy: false
 };
 
 export const ChebiWaterRootWalkArgs = {
@@ -47,6 +51,7 @@ export const ChebiWaterRootWalkArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
   rootWalk: true,
+  hierarchy: false
 };
 
 export const ChebiCaffeineHierarchyArgs = {

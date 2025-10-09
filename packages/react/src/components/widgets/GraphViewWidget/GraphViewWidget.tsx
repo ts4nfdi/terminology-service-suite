@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
 import { useRef, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -39,12 +37,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
   const [dbclicked, setDbclicked] = useState(false);
-  const [rootWalkIsSelected, setRootWalkIsSelected] = useState(
-    rootWalk ? rootWalk : false,
-  );
-  const [hierarchicalView, setHierarchicalView] = useState<boolean>(
-    hierarchy ? true : false,
-  );
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
@@ -61,9 +53,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("mockConstructor");
 
-  const mainNodeBgColor = "#0BBBEF";
+  const targetNodeBgColor = "#0BBBEF";
   const secondNodeBgColor = "red";
-  const mainNodeTextColor = "black";
+  const targetNodeTextColor = "black";
   const secondNodeTextColor = "white";
 
 
@@ -73,12 +65,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       api,
       selectedIri,
       ontologyId,
-      rootWalkIsSelected,
+      rootWalk,
       dbclicked,
       counter,
     ],
     async () => {
-      if (rootWalkIsSelected && firstLoad && !hierarchicalView) {
+      if (rootWalk && firstLoad && !hierarchy) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         // this is for rootWalk mode wihtout hierarchy view
         return {
@@ -87,7 +79,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             { viewMode: "All", siblings: false },
           ),
         };
-      } else if (rootWalkIsSelected && firstLoad && hierarchicalView) {
+      } else if (rootWalk && firstLoad && hierarchy) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
         let termTree = await olsEntityApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
@@ -131,24 +123,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const graphNetwork = useRef({});
   const container = useRef(null);
 
-
-
-  if (hierarchicalView) {
+  if (hierarchy) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
 
-
-
   if (data && (firstLoad || dbclicked)) {
     let gData = data.termRelations;
-    if (data.treeData && rootWalkIsSelected && firstLoad && !hierarchicalView) {
+    if (data.treeData && rootWalk && firstLoad && !hierarchy) {
       gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
     } else if (
       data.termRelations &&
       data.treeData &&
-      rootWalkIsSelected &&
+      rootWalk &&
       firstLoad &&
-      hierarchicalView
+      hierarchy
     ) {
       gData = convertToOlsGraphFormat(
         data.treeData as JSTreeNode[],
@@ -157,7 +145,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         data?.secondTermRelations
       );
     }
-    if (!rootWalkIsSelected && !hierarchicalView) {
+    if (!rootWalk && !hierarchy) {
       for (let node of gData["nodes"]) {
         addNewNodeToGraph(node);
       }
@@ -183,9 +171,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
-      if (gNode.id === iri && rootWalkIsSelected) {
-        gNode.color.background = mainNodeBgColor;
-        gNode.font.color = mainNodeTextColor;
+      if (gNode.id === iri) {
+        gNode.color.background = targetNodeBgColor;
+        gNode.font.color = targetNodeTextColor;
       }
       //@ts-ignore
       nodes.current.add(gNode);
@@ -196,13 +184,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let gEdge = new GraphEdge({ edge: edge });
     let dashed =
       edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
-        rootWalkIsSelected
+        rootWalk
         ? false
         : true;
     gEdge.dashes = dashed;
     //@ts-ignore
     if (!edges.current.get(gEdge.id)) {
-      if (gEdge.id?.includes(iri) && rootWalkIsSelected) {
+      if (gEdge.id?.includes(iri) && rootWalk) {
         //@ts-ignore
         gEdge.color.color = "black";
       }
