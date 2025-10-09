@@ -50,6 +50,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(0);
 
+  // for downloading the graph data as json.
+  const [graphRawData, setGraphRawData] = useState();
+
   const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -168,6 +171,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       setDbclicked(false);
     }
+    setGraphRawData(gData);
   }
 
 
@@ -348,6 +352,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     return graphData;
   }
 
+  function downloadGraphData() {
+    const jsonString = JSON.stringify(graphRawData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `graphData_${ontologyId}_${iri}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   function reset() {
     nodes.current.clear();
     edges.current.clear();
@@ -421,7 +436,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         borderRadius="none"
         data-testid="graph-view"
       >
-        <EuiButton size="s" onClick={reset}>
+        <EuiButton
+          size="s"
+          onClick={reset}
+          aria-label="reset the graph to default view"
+          title="Reset the graph to the original state."
+          style={{ textDecoration: "none" }}
+        >
           Reset
         </EuiButton>
         <EuiPopover
@@ -446,8 +467,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           style={{ display: "inline-block", float: "right", paddingTop: 10 }}
         >
-
-          <button onClick={goFullScreen}>
+          <button
+            onClick={downloadGraphData}
+            title="Download graph data as json."
+            aria-label="download graph data as json"
+          >
+            <EuiIcon type="download" />
+          </button>
+          <button
+            onClick={goFullScreen}
+            style={{ marginLeft: "20px" }}
+            title="Fullscreen mode"
+            aria-label="go to fullscreen mode"
+          >
             <EuiIcon type="fullScreen" />
           </button>
         </div>
