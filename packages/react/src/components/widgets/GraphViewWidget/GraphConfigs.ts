@@ -63,7 +63,7 @@ export class GraphNode {
     color: string;
   };
 
-  constructor({ node }: OlsGraphNode, bgColor = "#455469", color = "white") {
+  constructor(node: OlsGraphNode, bgColor = "#455469", color = "white") {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */
@@ -101,7 +101,7 @@ export class GraphEdge {
   };
   dashes?: boolean;
 
-  constructor({ edge }: OlsGraphEdge) {
+  constructor(edge: OlsGraphEdge) {
     if (edge["source"] && edge["target"] && edge["uri"]) {
       /**
        * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html

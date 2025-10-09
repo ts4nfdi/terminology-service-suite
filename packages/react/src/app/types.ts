@@ -710,20 +710,16 @@ export type OlsGraphNode = {
   /**
    * Used in the GraphView widget for rendering a graph's node
    */
-  node: {
-    iri?: string;
-    label?: string;
-  };
+  iri?: string;
+  label?: string;
 };
 
 export type OlsGraphEdge = {
   /**
    * Used in the GraphView widget for rendering a graph's edge
    */
-  edge: {
-    uri?: string;
-    label?: string;
-    source?: string;
-    target?: string;
-  };
+  uri?: string;
+  label?: string;
+  source?: string;
+  target?: string;
 };

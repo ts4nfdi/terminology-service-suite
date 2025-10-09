@@ -20,6 +20,13 @@ import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
+import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
+
+
+type VisGraphData = {
+  nodes: any[];
+  edges: any[];
+}
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const {
@@ -163,11 +170,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function addNewNodeToGraph(node, bgColor = "", color = "") {
-    let gNode = new GraphNode({ node: node });
+  function addNewNodeToGraph(node: OlsGraphNode, bgColor = "", color = "") {
+    let gNode = new GraphNode(node = node);
     if (bgColor && color) {
       // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
-      gNode = new GraphNode({ node: node }, secondNodeBgColor, secondNodeTextColor);
+      gNode = new GraphNode(node = node, secondNodeBgColor, secondNodeTextColor);
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
@@ -180,8 +187,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function addNewEdgeToGraph(edge) {
-    let gEdge = new GraphEdge({ edge: edge });
+  function addNewEdgeToGraph(edge: OlsGraphEdge) {
+    let gEdge = new GraphEdge(edge = edge);
     let dashed =
       edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
         rootWalk
@@ -200,7 +207,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function convertFlatListToTreeStructure(listOfJsTreeNodes: Array<JSTreeNode>) {
+  function convertFlatListToTreeStructure(listOfJsTreeNodes: JSTreeNode[]): JSTreeNode[] {
     let treeData: JSTreeNode[] = [];
     for (let node of listOfJsTreeNodes) {
       if (node.parent === "#") {
@@ -227,7 +234,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function addTreeDataToGraphData(graphData, treeData, isSecondIri: boolean = false) {
+  function addTreeDataToGraphData(graphData: VisGraphData, treeData: JSTreeNode[], isSecondIri: boolean = false) {
     let q = [...treeData];
     let layerq = [];
     let height = 1;
@@ -279,7 +286,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function addHasPartRelationsToGraphData(graphData, nodeRelations?: { nodes: any[]; edges: any[] }, isSecondNode: boolean = false) {
+  function addHasPartRelationsToGraphData(graphData: VisGraphData, nodeRelations?: VisGraphData, isSecondNode: boolean = false) {
     if (!nodeRelations) {
       return;
     }
@@ -317,15 +324,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function convertToOlsGraphFormat(
     listOfJsTreeNodes: Array<JSTreeNode>,
     nodeRelations?: { nodes: any[]; edges: any[] },
-    secondListOfJsTreeNodes: Array<JSTreeNode>,
+    secondListOfJsTreeNodes?: Array<JSTreeNode>,
     secondNodeRelations?: { nodes: any[]; edges: any[] },
   ) {
-    let graphData: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] };
+    let graphData: VisGraphData = { nodes: [], edges: [] };
     let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
     addTreeDataToGraphData(graphData, treeData);
     addHasPartRelationsToGraphData(graphData, nodeRelations);
 
-    if (secondIri) {
+    if (secondIri && secondListOfJsTreeNodes) {
       let secondTreeData = convertFlatListToTreeStructure(secondListOfJsTreeNodes);
       addTreeDataToGraphData(graphData, secondTreeData, true);
       addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
@@ -416,8 +423,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   );
 
   const goFullScreen = () => {
-    if (container.current?.requestFullscreen) {
-      container.current.requestFullscreen();
+    if (container.current) {
+      let graphContainerDiv = container.current as HTMLDivElement;
+      graphContainerDiv.requestFullscreen();
     }
   };
 
