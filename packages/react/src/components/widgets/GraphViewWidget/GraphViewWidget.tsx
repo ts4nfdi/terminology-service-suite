@@ -13,6 +13,7 @@ import {
   EuiPanel,
   EuiPopover,
   EuiButtonEmpty,
+  EuiIcon
 } from "@elastic/eui";
 import { Network } from "vis-network";
 import { DataSet } from "vis-data";
@@ -446,7 +447,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           style={{ display: "inline-block", float: "right", paddingTop: 10 }}
         >
 
-          <button onClick={goFullScreen}>Fullscreen</button>
+          <button onClick={goFullScreen}>
+            <EuiIcon type="fullScreen" />
+          </button>
         </div>
       </EuiPanel>
 
