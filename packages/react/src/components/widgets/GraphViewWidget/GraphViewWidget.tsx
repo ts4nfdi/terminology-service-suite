@@ -58,7 +58,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
   const onNodeClickCallbackIdProvided =
     typeof onNodeClick === "function" &&
-    !onNodeClick.name.includes("mockConstructor");
+    !onNodeClick.name.includes("actionHandler");
 
   const targetNodeBgColor = "#0BBBEF";
   const secondNodeBgColor = "red";
@@ -77,7 +77,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       counter,
     ],
     async () => {
-      if (rootWalk && firstLoad && !hierarchy) {
+      if (rootWalk && firstLoad && !hierarchy && !dbclicked) {
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         // this is for rootWalk mode wihtout hierarchy view
         return {
@@ -86,7 +86,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             { viewMode: "All", siblings: false },
           ),
         };
-      } else if (rootWalk && firstLoad && hierarchy) {
+      } else if (rootWalk && firstLoad && hierarchy && !dbclicked) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
         let termTree = await olsEntityApi.getTermTree(
           { ontologyId: ontologyId, termIri: iri },
@@ -136,14 +136,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   if (data && (firstLoad || dbclicked)) {
     let gData = data.termRelations;
-    if (data.treeData && rootWalk && firstLoad && !hierarchy) {
+    if (data.treeData && rootWalk && firstLoad && !hierarchy && !dbclicked) {
       gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
     } else if (
       data.termRelations &&
       data.treeData &&
       rootWalk &&
       firstLoad &&
-      hierarchy
+      hierarchy &&
+      !dbclicked
     ) {
       gData = convertToOlsGraphFormat(
         data.treeData as JSTreeNode[],
@@ -152,13 +153,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         data?.secondTermRelations
       );
     }
-    if (!rootWalk && !hierarchy) {
-      for (let node of gData["nodes"]) {
-        addNewNodeToGraph(node);
-      }
-      for (let edge of gData["edges"]) {
-        addNewEdgeToGraph(edge);
-      }
+    if ((!rootWalk && !hierarchy) || dbclicked) {
+      addAllNewNodesToGraphAtOnce(gData);
+      addAllNewEdgesToGraphAtOnce(gData);
     }
     if (firstLoad) {
       setFirstLoad(false);
@@ -168,6 +165,55 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     setGraphRawData(gData);
   }
+
+  function addAllNewNodesToGraphAtOnce(graphData: VisGraphData, bgColor = "", color = "") {
+    let gNodes: GraphNode[] = [];
+    for (let node of graphData["nodes"]) {
+      let gNode = new GraphNode(node = node);
+      if (bgColor && color) {
+        // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
+        gNode = new GraphNode(node = node, secondNodeBgColor, secondNodeTextColor);
+      }
+      //@ts-ignore
+      if (!nodes.current.get(gNode.id)) {
+        if (gNode.id === iri) {
+          gNode.color.background = targetNodeBgColor;
+          gNode.font.color = targetNodeTextColor;
+        }
+        //@ts-ignore
+        gNodes.push(gNode);
+      }
+    }
+    //@ts-ignore
+    nodes.current.add(gNodes);
+
+  }
+
+
+  function addAllNewEdgesToGraphAtOnce(graphData: VisGraphData) {
+    let gEdges: OlsGraphEdge[] = [];
+    for (let edge of graphData["edges"]) {
+      let gEdge = new GraphEdge(edge = edge);
+      let dashed =
+        edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
+          rootWalk
+          ? false
+          : true;
+      gEdge.dashes = dashed;
+      //@ts-ignore
+      if (!edges.current.get(gEdge.id)) {
+        if (gEdge.id?.includes(iri) && rootWalk) {
+          //@ts-ignore
+          gEdge.color.color = "black";
+        }
+        gEdges.push(gEdge);
+      }
+    }
+    //@ts-ignore
+    edges.current.add(gEdges);
+
+  }
+
 
 
   function addNewNodeToGraph(node: OlsGraphNode, bgColor = "", color = "") {
@@ -406,6 +452,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphNetwork.current.setOptions({ physics: false });
     }, 2000);
   }, [counter]);
+
+  useEffect(() => {
+    if (!dbclicked) {
+      return;
+    }
+    //@ts-ignore
+    graphNetwork.current.setOptions({ physics: true });
+    // Stop physics after the initial layout so users can freely move nodes
+    //@ts-ignore
+    setTimeout(() => {
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: false });
+    }, 4000);
+  }, [dbclicked]);
 
 
   const onButtonClick = () =>
