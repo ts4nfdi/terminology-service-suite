@@ -31,6 +31,10 @@
     },
     "./dist/esm/index.css": {
       "default": "./dist/esm/index.css"
+    },
+    "./src/*": {
+      "import": "./src/*",
+      "default": "./src/*"
     }
   },
   "scripts": {
