@@ -1,0 +1,1 @@
+import{c as i,j as r}from"./index-ZCdkkhYt.js";import{W as p}from"./DescriptionWidget-D9kZVlcP.js";const o=new WeakMap;function d(s,e){let t=o.get(e);t||(t=i.createRoot(e),o.set(e,t)),t.render(r.jsx(p,{...s}))}window.ts4nfdiWidgets={...window.ts4nfdiWidgets,createDescription:d};export{d as c};
