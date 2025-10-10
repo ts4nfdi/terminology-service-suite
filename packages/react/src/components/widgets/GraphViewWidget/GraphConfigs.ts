@@ -101,7 +101,7 @@ export class GraphEdge {
   };
   dashes?: boolean;
 
-  constructor(edge: OlsGraphEdge) {
+  constructor(edge: OlsGraphEdge, edgeLabel = "is a") {
     if (edge["source"] && edge["target"] && edge["uri"]) {
       /**
        * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html
@@ -109,7 +109,7 @@ export class GraphEdge {
       this.id = edge["source"] + edge["target"] + "&uri=" + edge["uri"];
       this.from = edge["source"];
       this.to = edge["target"];
-      this.label = edge["label"];
+      this.label = edgeLabel;
       this.arrows = { to: true };
       this.width = 2;
       this.color = {

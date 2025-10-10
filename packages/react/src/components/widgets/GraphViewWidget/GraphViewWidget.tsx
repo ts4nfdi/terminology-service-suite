@@ -193,7 +193,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function addAllNewEdgesToGraphAtOnce(graphData: VisGraphData) {
     let gEdges: OlsGraphEdge[] = [];
     for (let edge of graphData["edges"]) {
-      let gEdge = new GraphEdge(edge = edge);
+      let gEdge = new GraphEdge(edge = edge, subClassEdgeLabel);
       let dashed =
         edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
           rootWalk
@@ -233,8 +233,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function addNewEdgeToGraph(edge: OlsGraphEdge) {
-    let gEdge = new GraphEdge(edge = edge);
+  function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
+    let gEdge = new GraphEdge(edge = edge, label);
     let dashed =
       edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
         rootWalk
@@ -348,7 +348,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     };
     for (let edge of nodeRelations["edges"]) {
       if (edge["label"] === "has part") {
-        addNewEdgeToGraph(edge);
+        addNewEdgeToGraph(edge, "has part");
         addNewNodeToGraph(
           nodeRelations.nodes.find((node) => node.iri === edge.source),
           bgColor, color
@@ -450,7 +450,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setTimeout(() => {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
-    }, 2000);
+    }, 4000);
   }, [counter]);
 
   useEffect(() => {
@@ -464,7 +464,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setTimeout(() => {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
+    }, 1000);
   }, [dbclicked]);
 
 

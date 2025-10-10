@@ -6,6 +6,7 @@ import {
   RootWalkGraphExampleArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -88,6 +89,16 @@ export const ChebiWater: Story = {
 
 export const ChebiWaterRootWalk: Story = {
   args: ChebiWaterRootWalkArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchyWithComparison: Story = {
+  args: ChebiCaffeineHierarchyWithComparisonArgs,
   parameters: {
     docs: {
       disable: true,
