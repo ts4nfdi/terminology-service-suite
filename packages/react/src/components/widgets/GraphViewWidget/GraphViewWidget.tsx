@@ -50,7 +50,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [counter, setCounter] = useState(0);
 
   // for downloading the graph data as json.
-  const [graphRawData, setGraphRawData] = useState();
+  const [graphRawData, setGraphRawData] = useState<VisGraphData>({ "nodes": [], "edges": [] });
 
   const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
@@ -163,7 +163,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       setDbclicked(false);
     }
-    setGraphRawData(gData);
+    setGraphRawData({ nodes: [...graphRawData.nodes, gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
   }
 
   function addAllNewNodesToGraphAtOnce(graphData: VisGraphData, bgColor = "", color = "") {
