@@ -6,6 +6,8 @@ import {
   RootWalkGraphExampleArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
+  ChebiCaffeineHierarchyArgs,
+  WithOnNodeDoubleClickCallbackArgs,
   ChebiCaffeineHierarchyWithComparisonArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
@@ -47,7 +49,11 @@ window['ts4nfdiWidgets'].createGraphView(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
-        className:${args.className}
+        className:${args.className},
+        hierarchy: ${args.hierarchy},
+        secondIri: "${args.secondIri}",
+        onNodeClick: ${args.onNodeClick},
+        edgeLabel: ${args.edgeLabel}
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
@@ -89,6 +95,26 @@ export const ChebiWater: Story = {
 
 export const ChebiWaterRootWalk: Story = {
   args: ChebiWaterRootWalkArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const WithOnNodeDoubleClickCallback: Story = {
+  args: WithOnNodeDoubleClickCallbackArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchy: Story = {
+  args: ChebiCaffeineHierarchyArgs,
   parameters: {
     docs: {
       disable: true,

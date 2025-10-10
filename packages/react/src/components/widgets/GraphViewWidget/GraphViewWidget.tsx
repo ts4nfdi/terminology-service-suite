@@ -582,6 +582,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           hierarchy={props.hierarchy}
           edgeLabel={props.edgeLabel}
           onNodeClick={props.onNodeClick}
+          secondIri={props.secondIri}
         />
       </QueryClientProvider>
     </EuiProvider>
