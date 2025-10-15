@@ -441,6 +441,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }, [graphNetwork]);
 
+  useEffect(() => {
+    if (secondIri) {
+      reset();
+    }
+  }, [secondIri]);
+
+
 
   useEffect(() => {
     //@ts-ignore
