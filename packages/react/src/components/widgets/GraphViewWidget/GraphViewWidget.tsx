@@ -11,7 +11,8 @@ import {
   EuiPanel,
   EuiPopover,
   EuiButtonEmpty,
-  EuiIcon
+  EuiIcon,
+  EuiTextColor
 } from "@elastic/eui";
 import { Network } from "vis-network";
 import { DataSet } from "vis-data";
@@ -27,6 +28,9 @@ type VisGraphData = {
   nodes: any[];
   edges: any[];
 }
+
+const SUBCLASS_OF_URI = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
+const HAS_PART_EDGE_LABEL = "has part";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const {
@@ -51,6 +55,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   // for downloading the graph data as json.
   const [graphRawData, setGraphRawData] = useState<VisGraphData>({ "nodes": [], "edges": [] });
+
+  // track the node that is clicked
+  const [clickedNodeIri, setClickedNodeIri] = useState<string>("");
+
+  const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
 
   const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
@@ -195,7 +204,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     for (let edge of graphData["edges"]) {
       let gEdge = new GraphEdge(edge = edge, subClassEdgeLabel);
       let dashed =
-        edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
+        edge.uri === SUBCLASS_OF_URI ||
           rootWalk
           ? false
           : true;
@@ -236,7 +245,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
     let gEdge = new GraphEdge(edge = edge, label);
     let dashed =
-      edge.uri === "http://www.w3.org/2000/01/rdf-schema#subClassOf" ||
+      edge.uri === SUBCLASS_OF_URI ||
         rootWalk
         ? false
         : true;
@@ -303,7 +312,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             source: node.iri,
             target: pn.iri,
             label: subClassEdgeLabel,
-            uri: "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+            uri: SUBCLASS_OF_URI,
           };
           if (
             !graphData.edges.find(
@@ -347,8 +356,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       edges: [],
     };
     for (let edge of nodeRelations["edges"]) {
-      if (edge["label"] === "has part") {
-        addNewEdgeToGraph(edge, "has part");
+      if (edge["label"] === HAS_PART_EDGE_LABEL) {
+        addNewEdgeToGraph(edge, HAS_PART_EDGE_LABEL);
         addNewNodeToGraph(
           nodeRelations.nodes.find((node) => node.iri === edge.source),
           bgColor, color
@@ -407,6 +416,49 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setCounter(counter + 1);
   }
 
+
+  function removeNodeFromGraph() {
+    if (!clickedNodeIri) {
+      setShowNodeNotSelectedMessage(true);
+      setTimeout(() => {
+        setShowNodeNotSelectedMessage(false);
+      }, 3000);
+    } else {
+      let incommingEdgesSources: string[] = [];
+      let outgoingEdgesSources: string[] = [];
+      edges.current.forEach((item: GraphEdge, _) => {
+        if (item.label === HAS_PART_EDGE_LABEL) {
+          return;
+        }
+        if (item.to === clickedNodeIri) {
+          incommingEdgesSources.push(item.from!);
+        } else if (item.from === clickedNodeIri) {
+          outgoingEdgesSources.push(item.to!);
+        }
+      });
+      for (let source of incommingEdgesSources) {
+        for (let target of outgoingEdgesSources) {
+          let newEdge = {
+            source: source,
+            target: target,
+            label: subClassEdgeLabel,
+            uri: SUBCLASS_OF_URI,
+          };
+          addNewEdgeToGraph(newEdge);
+        }
+      }
+      nodes.current.remove(clickedNodeIri);
+
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: true });
+      //@ts-ignore
+      setTimeout(() => {
+        //@ts-ignore
+        graphNetwork.current.setOptions({ physics: false });
+      }, 4000);
+    }
+  }
+
   useEffect(() => {
     let graphData = { nodes: nodes.current, edges: edges.current };
     graphNetwork.current = new Network(
@@ -421,11 +473,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setTimeout(() => {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
-    }, 2000);
+    }, 4000);
   }, []);
 
   useEffect(() => {
     if (graphNetwork.current) {
+      //@ts-ignore
+      graphNetwork.current.on("click", function (params) {
+        if (params.nodes.length > 0) {
+          setClickedNodeIri(params.nodes[0]);
+        } else {
+          setClickedNodeIri("");
+        }
+      });
       //@ts-ignore
       graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
@@ -532,8 +592,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           </EuiText>
         </EuiPopover>
         <div
-          style={{ display: "inline-block", float: "right", paddingTop: 10 }}
+          style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
         >
+          <button
+            onClick={removeNodeFromGraph}
+            style={{ marginRight: "20px", color: "red" }}
+            title="Remove node"
+            aria-label="remove the selected node from graph"
+          >
+            <EuiIcon type="cut" />
+          </button>
+          {showNodeNotSelectedMessage &&
+            <EuiTextColor color="red" style={{ marginTop: "10px", marginRight: "10px", marginLeft: "-10px" }}>Please select a node to remove</EuiTextColor>
+          }
           <button
             onClick={downloadGraphData}
             title="Download graph data as json."
@@ -550,7 +621,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             <EuiIcon type="fullScreen" />
           </button>
         </div>
-      </EuiPanel>
+      </EuiPanel >
 
       <EuiPanel
         style={{ width: 1000, height: 1000 }}
@@ -573,7 +644,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           background-color: white;
         }
       `}</style>
-    </div>
+    </div >
   );
 }
 function WrappedGraphViewWidget(props: GraphViewWidgetProps) {

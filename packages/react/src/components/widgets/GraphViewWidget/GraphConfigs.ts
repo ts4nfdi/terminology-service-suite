@@ -50,7 +50,6 @@ export const graphNetworkConfig = {
 
 export class GraphNode {
   id?: string;
-  label?: string;
   color: {
     background: string;
     highlight: {
@@ -62,13 +61,14 @@ export class GraphNode {
   font: {
     color: string;
   };
+  label?: string;
 
   constructor(node: OlsGraphNode, bgColor = "#455469", color = "white") {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */
     this.id = node["iri"];
-    this.label = node["label"];
+    this.label = node["label"]
     this.color = {
       background: bgColor,
       highlight: {
