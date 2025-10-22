@@ -712,6 +712,7 @@ export type OlsGraphNode = {
    */
   iri?: string;
   label?: string;
+  level?: number;
 };
 
 export type OlsGraphEdge = {

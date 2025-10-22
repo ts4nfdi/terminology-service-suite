@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { GraphViewWidgetProps } from "../../../app/types";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -24,8 +24,9 @@ import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 
 
+
 type VisGraphData = {
-  nodes: any[];
+  nodes: OlsGraphNode[];
   edges: any[];
 }
 
@@ -64,6 +65,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
 
+
   const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -76,6 +78,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const secondNodeBgColor = "red";
   const targetNodeTextColor = "black";
   const secondNodeTextColor = "white";
+  const commonNodesBgColor = "#800080";
 
 
   const { data, isLoading, isError, error } = useQuery(
@@ -146,37 +149,40 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
 
-  if (data && (firstLoad || dbclicked)) {
-    let gData = data.termRelations;
-    if (data.treeData && rootWalk && firstLoad && !hierarchy && !dbclicked) {
-      gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
-    } else if (
-      data.termRelations &&
-      data.treeData &&
-      rootWalk &&
-      firstLoad &&
-      hierarchy &&
-      !dbclicked
-    ) {
-      gData = convertToOlsGraphFormat(
-        data.treeData as JSTreeNode[],
-        data.termRelations,
-        data?.secondTreeData,
-        data?.secondTermRelations
-      );
+  useMemo(() => {
+    if (data && (firstLoad || dbclicked)) {
+      let gData = data.termRelations;
+      if (data.treeData && rootWalk && firstLoad && !hierarchy && !dbclicked) {
+        gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
+      } else if (
+        data.termRelations &&
+        data.treeData &&
+        rootWalk &&
+        firstLoad &&
+        hierarchy &&
+        !dbclicked
+      ) {
+        gData = convertToOlsGraphFormat(
+          data.treeData as JSTreeNode[],
+          data.termRelations,
+          data?.secondTreeData,
+          data?.secondTermRelations
+        );
+      }
+      if ((!rootWalk && !hierarchy) || dbclicked) {
+        addAllNewNodesToGraphAtOnce(gData);
+        addAllNewEdgesToGraphAtOnce(gData);
+      }
+      if (firstLoad) {
+        setFirstLoad(false);
+      }
+      if (dbclicked) {
+        setDbclicked(false);
+      }
+      setGraphRawData({ nodes: [...graphRawData.nodes, ...gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
     }
-    if ((!rootWalk && !hierarchy) || dbclicked) {
-      addAllNewNodesToGraphAtOnce(gData);
-      addAllNewEdgesToGraphAtOnce(gData);
-    }
-    if (firstLoad) {
-      setFirstLoad(false);
-    }
-    if (dbclicked) {
-      setDbclicked(false);
-    }
-    setGraphRawData({ nodes: [...graphRawData.nodes, ...gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
-  }
+  }, [data, firstLoad, dbclicked]);
+
 
   function addAllNewNodesToGraphAtOnce(graphData: VisGraphData, bgColor = "", color = "") {
     let gNodes: GraphNode[] = [];
@@ -230,7 +236,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
 
-  function addNewNodeToGraph(node: OlsGraphNode, bgColor = "", color = "") {
+  function addNewNodeToGraph(node: OlsGraphNode, isCommon = false, bgColor = "", color = "") {
     let gNode = new GraphNode(node = node);
     if (bgColor && color) {
       // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
@@ -242,6 +248,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = targetNodeTextColor;
       }
+      //@ts-ignore
+      nodes.current.add(gNode);
+    } else if (isCommon) {
+      gNode = new GraphNode(node = node, commonNodesBgColor);
+      //@ts-ignore
+      nodes.current.remove(gNode.id);
       //@ts-ignore
       nodes.current.add(gNode);
     }
@@ -298,16 +310,28 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let q = [...treeData];
     let layerq = [];
     let height = 1;
+    let leftOverNodesFromSecondIri: OlsGraphNode[] = [];
     while (true) {
       let node = q[0];
       q = q.slice(1);
-      if (!graphData.nodes.find((obj) => obj.iri === node.iri)) {
-        let gnode = { iri: node.iri, label: node.text, level: height };
-        graphData.nodes.push(gnode);
-        if (!isSecondIri) {
-          addNewNodeToGraph(gnode);
+      let gnode = { iri: node.iri, label: node.text, level: height };
+      if (!isSecondIri) {
+        if (!graphData.nodes.find(n => n.iri === gnode.iri)) {
+          graphData.nodes.push(gnode);
+        }
+        addNewNodeToGraph(gnode);
+      } else {
+        if (graphData.nodes.find(n => n.iri === gnode.iri)) {
+          // in this case, the node is a common node: needs a common node color
+          addNewNodeToGraph(gnode, true, secondNodeBgColor, secondNodeTextColor);
         } else {
-          addNewNodeToGraph(gnode, secondNodeBgColor, secondNodeTextColor);
+          // otherwise the node is exclusive to the second iri. we add it to the graph with it's own color but
+          // we do not add it to graph data (we do it in the end of this funciton). reason is:
+          // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in detecting the common nodes
+          addNewNodeToGraph(gnode, false, secondNodeBgColor, secondNodeTextColor);
+          if (!leftOverNodesFromSecondIri.find(n => n.iri === gnode.iri)) {
+            leftOverNodesFromSecondIri.push(gnode);
+          }
         }
       }
 
@@ -319,14 +343,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             label: subClassEdgeLabel,
             uri: SUBCLASS_OF_URI,
           };
-          if (
-            !graphData.edges.find(
-              (obj) => obj.source === edge.source && obj.target === edge.target,
-            )
-          ) {
+          if (!graphData.edges.find(e => e.source === edge.source && e.target === edge.target)) {
             graphData.edges.push(edge);
-            addNewEdgeToGraph(edge);
           }
+          addNewEdgeToGraph(edge);
         });
       }
 
@@ -342,6 +362,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         layerq = [];
       }
     }
+    graphData.nodes = [...graphData.nodes, ...leftOverNodesFromSecondIri];
     return graphData;
   }
 
@@ -364,12 +385,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (edge["label"] === HAS_PART_EDGE_LABEL) {
         addNewEdgeToGraph(edge, HAS_PART_EDGE_LABEL);
         addNewNodeToGraph(
-          nodeRelations.nodes.find((node) => node.iri === edge.source),
-          bgColor, color
+          nodeRelations.nodes.find((node) => node.iri === edge.source)!,
+          false, bgColor, color
         );
         addNewNodeToGraph(
-          nodeRelations.nodes.find((node) => node.iri === edge.target),
-          bgColor, color
+          nodeRelations.nodes.find((node) => node.iri === edge.target)!,
+          false, bgColor, color
         );
       }
     }
