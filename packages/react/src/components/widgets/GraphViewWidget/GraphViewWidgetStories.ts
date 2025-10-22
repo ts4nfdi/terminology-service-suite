@@ -4,6 +4,10 @@ import {
   iriArgType,
   ontologyIdReqArgType,
   rootWalkArgType,
+  hierarchyArgType,
+  secondIriArgType,
+  edgeLabelArgType,
+  onNodeClickArgType
 } from "../../../stories/storyArgs";
 import { expect, waitFor, within } from "storybook/test";
 
@@ -12,6 +16,10 @@ export const GraphViewWidgetStoryArgTypes = {
   ...iriArgType,
   ...ontologyIdReqArgType,
   ...rootWalkArgType,
+  ...hierarchyArgType,
+  ...secondIriArgType,
+  ...edgeLabelArgType,
+  ...onNodeClickArgType
 };
 
 export const GraphViewWidgetStoryArgs = {
