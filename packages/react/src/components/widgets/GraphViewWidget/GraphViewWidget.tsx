@@ -59,6 +59,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   // track the node that is clicked
   const [clickedNodeIri, setClickedNodeIri] = useState<string>("");
 
+  // track the doubleClicked node color to set for new expanded nodes
+  const [dbClickedColor, setDbClickedColor] = useState<{ bgColor: "", color: "" }>({ bgColor: "", color: "" });
+
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
 
   const olsEntityApi = new OlsEntityApi(api);
@@ -179,7 +182,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let gNodes: GraphNode[] = [];
     for (let node of graphData["nodes"]) {
       let gNode = new GraphNode(node = node);
-      if (bgColor && color) {
+      if (dbclicked && dbClickedColor.bgColor) {
+        gNode = new GraphNode(node = node, dbClickedColor.bgColor, dbClickedColor.color);
+      } else if (bgColor && color) {
         // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
         gNode = new GraphNode(node = node, secondNodeBgColor, secondNodeTextColor);
       }
@@ -490,6 +495,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
+          //@ts-ignore
+          setDbClickedColor({ bgColor: nodes.current.get(nodeIri)?.color?.background, color: nodes.current.get(nodeIri)?.font?.color })
           setSelectedIri(nodeIri);
           if (onNodeClickCallbackIdProvided) {
             onNodeClick(nodeIri);
@@ -531,7 +538,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setTimeout(() => {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
-    }, 1000);
+    }, 4000);
   }, [dbclicked]);
 
 
