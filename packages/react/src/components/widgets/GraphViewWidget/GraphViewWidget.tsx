@@ -172,7 +172,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       setDbclicked(false);
     }
-    setGraphRawData({ nodes: [...graphRawData.nodes, gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
+    setGraphRawData({ nodes: [...graphRawData.nodes, ...gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
   }
 
   function addAllNewNodesToGraphAtOnce(graphData: VisGraphData, bgColor = "", color = "") {
