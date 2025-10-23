@@ -30,18 +30,27 @@ export const GraphViewWidgetStoryArgs = {
   hierarchy: false
 };
 
-export const GraphViewWidgetExampleArgs = {
+export const ChebiIonArgs = {
   api: globals.TIB_API_ENDPOINT,
-  iri: "http://purl.obolibrary.org/obo/OBI_0000070",
-  ontologyId: "vibso",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
+  ontologyId: "chebi",
   rootWalk: false,
   hierarchy: false
 };
 
-export const RootWalkGraphExampleArgs = {
+export const ChebiIonComparisonArgs = {
   api: globals.TIB_API_ENDPOINT,
-  iri: "http://purl.obolibrary.org/obo/OBI_0000070",
-  ontologyId: "vibso",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
+  secondIri: "http://purl.obolibrary.org/obo/CHEBI_139544",
+  ontologyId: "chebi",
+  rootWalk: false,
+  hierarchy: false
+};
+
+export const ChebiIonRootWalkArgs = {
+  api: globals.TIB_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
+  ontologyId: "chebi",
   rootWalk: true,
   hierarchy: false
 };

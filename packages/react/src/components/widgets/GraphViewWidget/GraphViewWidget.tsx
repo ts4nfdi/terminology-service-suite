@@ -22,13 +22,11 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
+import { GraphFetchData, VisGraphData } from "./types";
 
 
 
-type VisGraphData = {
-  nodes: OlsGraphNode[];
-  edges: any[];
-}
+
 
 const SUBCLASS_OF_URI = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
 const HAS_PART_EDGE_LABEL = "has part";
@@ -93,14 +91,21 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     ],
     async () => {
       if (rootWalk && firstLoad && !hierarchy && !dbclicked) {
-        // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         // this is for rootWalk mode wihtout hierarchy view
-        return {
-          treeData: await olsEntityApi.getTermTree(
-            { ontologyId: ontologyId, termIri: iri },
+        // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
+        let termTree = await olsEntityApi.getTermTree(
+          { ontologyId: ontologyId, termIri: iri },
+          { viewMode: "All", siblings: false },
+        )
+        if (secondIri) {
+          let secondTermTree = await olsEntityApi.getTermTree(
+            { ontologyId: ontologyId, termIri: secondIri },
             { viewMode: "All", siblings: false },
-          ),
-        };
+          );
+          return { treeData: termTree, secondTreeData: secondTermTree } as GraphFetchData;
+        }
+
+        return { treeData: termTree } as GraphFetchData;
       } else if (rootWalk && firstLoad && hierarchy && !dbclicked) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
         let termTree = await olsEntityApi.getTermTree(
@@ -121,21 +126,34 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
           let secondTermRelation = await olsEntityApi.getTermRelations({
             ontologyId: ontologyId,
-            termIri: selectedIri,
+            termIri: secondIri,
           });
-          return { treeData: termTree, termRelations: termRelation, secondTreeData: secondTermTree, secondTermRelations: secondTermRelation };
+          return { treeData: termTree, termRelations: termRelation, secondTreeData: secondTermTree, secondTermRelations: secondTermRelation } as GraphFetchData;
         }
 
-        return { treeData: termTree, termRelations: termRelation };
-      } else if (firstLoad || dbclicked) {
+        return { treeData: termTree, termRelations: termRelation } as GraphFetchData;
+      } else if (firstLoad) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        return {
-          termRelations: await olsEntityApi.getTermRelations({
+        let termRelations = await olsEntityApi.getTermRelations({
+          ontologyId: ontologyId,
+          termIri: selectedIri,
+        });
+        if (secondIri) {
+          let secondTermRelation = await olsEntityApi.getTermRelations({
             ontologyId: ontologyId,
-            termIri: selectedIri,
-          }),
-        };
+            termIri: secondIri,
+          });
+          return { termRelations: termRelations, secondTermRelations: secondTermRelation } as GraphFetchData;
+        }
+
+        return { termRelations: termRelations } as GraphFetchData;
+      } else if (dbclicked) {
+        let termRelations = await olsEntityApi.getTermRelations({
+          ontologyId: ontologyId,
+          termIri: selectedIri,
+        });
+        return { termRelations: termRelations } as GraphFetchData;
       }
     },
   );
@@ -151,9 +169,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   useMemo(() => {
     if (data && (firstLoad || dbclicked)) {
-      let gData = data.termRelations;
+      let gDataForDownload: VisGraphData = { ...graphRawData };
+      let gData: VisGraphData = { nodes: [], edges: [] }
+      gData = data.termRelations ?? gData;
       if (data.treeData && rootWalk && firstLoad && !hierarchy && !dbclicked) {
-        gData = convertToOlsGraphFormat(data.treeData as JSTreeNode[], undefined, undefined, undefined);
+        gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.secondTreeData, data.secondTermRelations);
       } else if (
         data.termRelations &&
         data.treeData &&
@@ -163,28 +183,71 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         !dbclicked
       ) {
         gData = convertToOlsGraphFormat(
-          data.treeData as JSTreeNode[],
+          data.treeData,
           data.termRelations,
           data?.secondTreeData,
           data?.secondTermRelations
         );
       }
-      if ((!rootWalk && !hierarchy) || dbclicked) {
-        addAllNewNodesToGraphAtOnce(gData);
-        addAllNewEdgesToGraphAtOnce(gData);
+      if (!rootWalk && !hierarchy) {
+        gData.nodes = addTermRelationsNodesToGraph(data);
+        gData.edges = addTermRelationsEdgesToGraph(data);
+      }
+      if (dbclicked && data.termRelations) {
+        gData.nodes = addNodesOnDoubleClick(data.termRelations);
+        gData.edges = addEdgesOnDoubleClick(data.termRelations);
       }
       if (firstLoad) {
+        gDataForDownload = { nodes: [], edges: [] };
         setFirstLoad(false);
       }
       if (dbclicked) {
         setDbclicked(false);
       }
-      setGraphRawData({ nodes: [...graphRawData.nodes, ...gData.nodes], edges: [...graphRawData.edges, ...gData.edges] });
+      setGraphRawData({ nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])], edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])] });
     }
   }, [data, firstLoad, dbclicked]);
 
 
-  function addAllNewNodesToGraphAtOnce(graphData: VisGraphData, bgColor = "", color = "") {
+  function addTermRelationsNodesToGraph(graphData: GraphFetchData) {
+    for (let n of (graphData.termRelations?.nodes ?? [])) {
+      addNewNodeToGraph(n);
+    }
+    let exclusiveToSecondIriNodes = [];
+    if (graphData.secondTermRelations) {
+      for (let sn of graphData.secondTermRelations.nodes) {
+        if (graphData?.termRelations?.nodes.find((n: OlsGraphNode) => n.iri === sn.iri)) {
+          addNewNodeToGraph(sn, true);
+        } else {
+          exclusiveToSecondIriNodes.push(sn);
+        }
+      }
+      for (let n of exclusiveToSecondIriNodes) {
+        addNewNodeToGraph(n, false, secondNodeBgColor, secondNodeTextColor);
+      }
+    }
+    return [...(graphData.termRelations?.nodes ?? []), ...exclusiveToSecondIriNodes];
+  }
+
+
+  function addTermRelationsEdgesToGraph(graphData: GraphFetchData) {
+    for (let e of (graphData.termRelations?.edges ?? [])) {
+      addNewEdgeToGraph(e);
+    }
+    let secondEdges = [];
+    if (graphData.secondTermRelations?.edges) {
+      for (let se of graphData.secondTermRelations.edges) {
+        if (!graphData.termRelations?.edges.find((e: OlsGraphEdge) => e.source === se.source && e.target === se.target)) {
+          addNewEdgeToGraph(se);
+          secondEdges.push(se);
+        }
+      }
+    }
+    return [...(graphData.termRelations?.edges ?? []), ...secondEdges];
+  }
+
+
+  function addNodesOnDoubleClick(graphData: VisGraphData, bgColor = "", color = "") {
     let gNodes: GraphNode[] = [];
     for (let node of graphData["nodes"]) {
       let gNode = new GraphNode(node = node);
@@ -206,11 +269,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     //@ts-ignore
     nodes.current.add(gNodes);
-
+    return graphData.nodes;
   }
 
-
-  function addAllNewEdgesToGraphAtOnce(graphData: VisGraphData) {
+  function addEdgesOnDoubleClick(graphData: VisGraphData) {
     let gEdges: OlsGraphEdge[] = [];
     for (let edge of graphData["edges"]) {
       let gEdge = new GraphEdge(edge = edge, subClassEdgeLabel);
@@ -231,7 +293,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     //@ts-ignore
     edges.current.add(gEdges);
-
+    return graphData.edges;
   }
 
 

@@ -2,8 +2,9 @@ import { GraphViewWidget } from "./GraphViewWidget";
 import {
   GraphViewWidgetStoryArgTypes,
   GraphViewWidgetStoryArgs,
-  GraphViewWidgetExampleArgs,
-  RootWalkGraphExampleArgs,
+  ChebiIonArgs,
+  ChebiIonComparisonArgs,
+  ChebiIonRootWalkArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
   commonGraphViewWidgetPlay,
@@ -33,13 +34,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const GraphViewWidgetExample: Story = {
-  args: GraphViewWidgetExampleArgs,
+export const ChebiIon: Story = {
+  args: ChebiIonArgs,
   play: commonGraphViewWidgetPlay,
 };
 
-export const RootWalkGraphExample: Story = {
-  args: RootWalkGraphExampleArgs,
+export const ChebiIonComparison: Story = {
+  args: ChebiIonComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+export const ChebiIonRootWalk: Story = {
+  args: ChebiIonRootWalkArgs,
   parameters: {
     docs: {
       disable: true,
