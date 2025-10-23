@@ -18,13 +18,11 @@ import { Network } from "vis-network";
 import { DataSet } from "vis-data";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
-import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
 import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
 import { GraphFetchData, VisGraphData } from "./types";
-
-
+import { fetchRootWalkModeData, fetchHierarchyModeData, fetchNormalModeData, fetchDoubleClickModeData } from "./utils";
 
 
 
@@ -64,7 +62,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
 
 
-  const olsEntityApi = new OlsEntityApi(api);
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
     !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
@@ -93,67 +90,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (rootWalk && firstLoad && !hierarchy && !dbclicked) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        let termTree = await olsEntityApi.getTermTree(
-          { ontologyId: ontologyId, termIri: iri },
-          { viewMode: "All", siblings: false },
-        )
-        if (secondIri) {
-          let secondTermTree = await olsEntityApi.getTermTree(
-            { ontologyId: ontologyId, termIri: secondIri },
-            { viewMode: "All", siblings: false },
-          );
-          return { treeData: termTree, secondTreeData: secondTermTree } as GraphFetchData;
-        }
+        return await fetchRootWalkModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
 
-        return { treeData: termTree } as GraphFetchData;
       } else if (rootWalk && firstLoad && hierarchy && !dbclicked) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
-        let termTree = await olsEntityApi.getTermTree(
-          { ontologyId: ontologyId, termIri: iri },
-          { viewMode: "All", siblings: false },
-        );
-
-        let termRelation = await olsEntityApi.getTermRelations({
-          ontologyId: ontologyId,
-          termIri: iri,
-        });
-
-        if (secondIri) {
-          let secondTermTree = await olsEntityApi.getTermTree(
-            { ontologyId: ontologyId, termIri: secondIri },
-            { viewMode: "All", siblings: false },
-          );
-
-          let secondTermRelation = await olsEntityApi.getTermRelations({
-            ontologyId: ontologyId,
-            termIri: secondIri,
-          });
-          return { treeData: termTree, termRelations: termRelation, secondTreeData: secondTermTree, secondTermRelations: secondTermRelation } as GraphFetchData;
-        }
-
-        return { treeData: termTree, termRelations: termRelation } as GraphFetchData;
+        return await fetchHierarchyModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
       } else if (firstLoad) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        let termRelations = await olsEntityApi.getTermRelations({
-          ontologyId: ontologyId,
-          termIri: selectedIri,
-        });
-        if (secondIri) {
-          let secondTermRelation = await olsEntityApi.getTermRelations({
-            ontologyId: ontologyId,
-            termIri: secondIri,
-          });
-          return { termRelations: termRelations, secondTermRelations: secondTermRelation } as GraphFetchData;
-        }
-
-        return { termRelations: termRelations } as GraphFetchData;
+        return await fetchNormalModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
       } else if (dbclicked) {
-        let termRelations = await olsEntityApi.getTermRelations({
-          ontologyId: ontologyId,
-          termIri: selectedIri,
-        });
-        return { termRelations: termRelations } as GraphFetchData;
+        return await fetchDoubleClickModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
       }
     },
   );

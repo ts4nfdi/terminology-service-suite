@@ -12,3 +12,11 @@ export type VisGraphData = {
   nodes: OlsGraphNode[];
   edges: any[];
 }
+
+
+export type GraphFetchFunctionInput = {
+  api: string,
+  ontologyId: string,
+  iri: string,
+  secondIri?: string
+}
