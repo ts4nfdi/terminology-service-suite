@@ -11,7 +11,8 @@ import {
   EuiPopover,
   EuiButtonEmpty,
   EuiIcon,
-  EuiTextColor
+  EuiTextColor,
+  EuiCard
 } from "@elastic/eui";
 import { Network } from "vis-network";
 import { DataSet } from "vis-data";
@@ -66,7 +67,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
   const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
 
-
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
     !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
@@ -116,6 +116,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const edges = useRef(new DataSet([]));
   const graphNetwork = useRef({});
   const container = useRef(null);
+  // kep a map between a node iri and it's color to avoid recalculating the color in case the node is removed and added again by the user
+  const nodeColorMap = useRef<Map<string, string>>(new Map())
+
 
   if (hierarchy) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
@@ -216,16 +219,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = targetNodeTextColor;
       }
-      if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== targetNodeBgColor) {
+      if (nodeColorMap.current.get(gNode.id!)) {
+        gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
+      } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== targetNodeBgColor) {
         gNode.color.background = dbClickedColor.bgColor;
         gNode.font.color = "white";
       }
+      nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
     } else if (isCommon) {
       gNode = new GraphNode(node = node, commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
+      nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
     }
@@ -549,7 +556,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   return (
-    <div className={finalClassName}>
+    <div className={finalClassName} style={{ width: "1000px", height: "1000px" }}>
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
       <EuiPanel
         style={{ fontSize: 12 }}
@@ -624,19 +631,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         </div>
       </EuiPanel >
 
-      <EuiPanel
-        style={{ width: 1000, height: 1000 }}
-        hasShadow={false}
-        hasBorder={true}
-        borderRadius="none"
-      >
-        {isLoading && <EuiLoadingSpinner size="m" />}
-        <div
-          ref={container}
-          className="graph-container"
-          style={{ width: "95%", height: "95%", margin: "auto" }}
-        />
-      </EuiPanel>
+
+      {isLoading && <EuiLoadingSpinner size="m" />}
+      <div
+        ref={container}
+        className="graph-container"
+        style={{ width: "95%", height: "95%", margin: "auto", backgroundColor: "white" }}
+      />
 
       {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
       <style>{`
