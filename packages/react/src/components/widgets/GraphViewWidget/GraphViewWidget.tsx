@@ -64,6 +64,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [dbClickedColor, setDbClickedColor] = useState<{ bgColor: "", color: "" }>({ bgColor: "", color: "" });
 
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
+  const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
 
 
   const finalClassName = className || "ts4nfdi-graph-style";
@@ -157,6 +158,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   function addTermRelationsNodesToGraph(graphData: GraphFetchData) {
+    let originalNodeCount = nodes.current.length;
     for (let n of (graphData.termRelations?.nodes ?? [])) {
       addNewNodeToGraph(n);
     }
@@ -172,6 +174,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       for (let n of exclusiveToSecondIriNodes) {
         addNewNodeToGraph(n, false, secondNodeBgColor, secondNodeTextColor);
       }
+    }
+    if (originalNodeCount === nodes.current.length) {
+      setShowNothingToAddMessage(true);
     }
     return [...(graphData.termRelations?.nodes ?? []), ...exclusiveToSecondIriNodes];
   }
@@ -227,7 +232,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
-    // console.log(edge)
     let gEdge = new GraphEdge(edge = edge, label);
     let dashed =
       SUBCLASS_OF_URIS.includes(edge.uri ?? "") ||
@@ -252,6 +256,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let layerq = [];
     let height = 1;
     let leftOverNodesFromSecondIri: OlsGraphNode[] = [];
+    let originalGraphNodesCount = nodes.current.length;
     while (true) {
       let node = q[0];
       q = q.slice(1);
@@ -303,7 +308,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         layerq = [];
       }
     }
+
     graphData.nodes = [...graphData.nodes, ...leftOverNodesFromSecondIri];
+    if (originalGraphNodesCount === nodes.current.length) {
+      setShowNothingToAddMessage(true);
+    }
     return graphData;
   }
 
@@ -507,6 +516,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }, 4000);
   }, [dbclicked]);
 
+  useEffect(() => {
+    if (!showNothingToAddMessage) {
+      return;
+    }
+    setTimeout(() => {
+      setShowNothingToAddMessage(false);
+    }, 3000)
+  }, [showNothingToAddMessage])
+
 
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
@@ -529,7 +547,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   };
 
-  const colorDotStyle = { backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" };
 
   return (
     <div className={finalClassName}>
@@ -570,6 +587,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
           </EuiText>
         </EuiPopover>
+
+        {showNothingToAddMessage &&
+          <div style={{ display: "inline-block", backgroundColor: "#FBCBC6", color: "red", padding: "5px", borderRadius: "10px" }}>nothing to add</div>
+        }
 
         <div
           style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
