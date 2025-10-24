@@ -211,6 +211,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = targetNodeTextColor;
       }
+      if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== targetNodeBgColor) {
+        gNode.color.background = dbClickedColor.bgColor;
+        gNode.font.color = "white";
+      }
       //@ts-ignore
       nodes.current.add(gNode);
     } else if (isCommon) {
@@ -525,6 +529,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   };
 
+  const colorDotStyle = { backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" };
+
   return (
     <div className={finalClassName}>
       {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
@@ -558,8 +564,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               button.
             </li>
             <li>You can move the nodes and edges around by dragging.</li>
+            <li><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Target iri color </li>
+            <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
+            <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
+            <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
           </EuiText>
         </EuiPopover>
+
         <div
           style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
         >
