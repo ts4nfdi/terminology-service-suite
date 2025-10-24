@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
-import { GraphViewWidgetProps } from "../../../app/types";
+import { useRef, useEffect, useState } from "react";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
   EuiProvider,
@@ -20,13 +19,18 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
-import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
+import { OlsGraphNode, OlsGraphEdge, GraphViewWidgetProps } from "../../../app/types";
 import { GraphFetchData, VisGraphData } from "./types";
-import { fetchRootWalkModeData, fetchHierarchyModeData, fetchNormalModeData, fetchDoubleClickModeData } from "./utils";
+import {
+  fetchRootWalkModeData,
+  fetchHierarchyModeData,
+  fetchNormalModeData,
+  convertFlatListToTreeStructure
+} from "./utils";
 
 
 
-const SUBCLASS_OF_URI = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
+const SUBCLASS_OF_URIS = ["http://www.w3.org/2000/01/rdf-schema#subClassOf", "hierarchicalParent", "directParent"];
 const HAS_PART_EDGE_LABEL = "has part";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -87,20 +91,22 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       counter,
     ],
     async () => {
-      if (rootWalk && firstLoad && !hierarchy && !dbclicked) {
+      let targetIri = iri;
+      if (dbclicked) {
+        targetIri = selectedIri;
+      }
+      if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return await fetchRootWalkModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
+        return await fetchRootWalkModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
 
-      } else if (rootWalk && firstLoad && hierarchy && !dbclicked) {
+      } else if (rootWalk && (firstLoad || dbclicked) && hierarchy) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
-        return await fetchHierarchyModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
-      } else if (firstLoad) {
+        return await fetchHierarchyModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
+      } else if (firstLoad || dbclicked) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        return await fetchNormalModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
-      } else if (dbclicked) {
-        return await fetchDoubleClickModeData({ api: api, iri: iri, ontologyId: ontologyId, secondIri: secondIri });
+        return await fetchNormalModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
       }
     },
   );
@@ -114,46 +120,40 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
 
-  useMemo(() => {
-    if (data && (firstLoad || dbclicked)) {
-      let gDataForDownload: VisGraphData = { ...graphRawData };
-      let gData: VisGraphData = { nodes: [], edges: [] }
-      gData = data.termRelations ?? gData;
-      if (data.treeData && rootWalk && firstLoad && !hierarchy && !dbclicked) {
-        gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.secondTreeData, data.secondTermRelations);
-      } else if (
-        data.termRelations &&
-        data.treeData &&
-        rootWalk &&
-        firstLoad &&
-        hierarchy &&
-        !dbclicked
-      ) {
-        gData = convertToOlsGraphFormat(
-          data.treeData,
-          data.termRelations,
-          data?.secondTreeData,
-          data?.secondTermRelations
-        );
-      }
-      if (!rootWalk && !hierarchy) {
-        gData.nodes = addTermRelationsNodesToGraph(data);
-        gData.edges = addTermRelationsEdgesToGraph(data);
-      }
-      if (dbclicked && data.termRelations) {
-        gData.nodes = addNodesOnDoubleClick(data.termRelations);
-        gData.edges = addEdgesOnDoubleClick(data.termRelations);
-      }
-      if (firstLoad) {
-        gDataForDownload = { nodes: [], edges: [] };
-        setFirstLoad(false);
-      }
-      if (dbclicked) {
-        setDbclicked(false);
-      }
-      setGraphRawData({ nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])], edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])] });
+  if (data && (firstLoad || dbclicked)) {
+    let gDataForDownload: VisGraphData = { ...graphRawData };
+    let gData: VisGraphData = { nodes: [], edges: [] }
+    gData = data.termRelations ?? gData;
+    if (data.treeData && rootWalk && (firstLoad || dbclicked) && !hierarchy) {
+      gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.secondTreeData, data.secondTermRelations);
+    } else if (
+      data.termRelations &&
+      data.treeData &&
+      rootWalk &&
+      (firstLoad || dbclicked) &&
+      hierarchy
+    ) {
+      gData = convertToOlsGraphFormat(
+        data.treeData,
+        data.termRelations,
+        data?.secondTreeData,
+        data?.secondTermRelations
+      );
     }
-  }, [data, firstLoad, dbclicked]);
+    if (!rootWalk && !hierarchy) {
+      gData.nodes = addTermRelationsNodesToGraph(data);
+      gData.edges = addTermRelationsEdgesToGraph(data);
+    }
+
+    if (firstLoad) {
+      gDataForDownload = { nodes: [], edges: [] };
+      setFirstLoad(false);
+    }
+    if (dbclicked) {
+      setDbclicked(false);
+    }
+    setGraphRawData({ nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])], edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])] });
+  }
 
 
   function addTermRelationsNodesToGraph(graphData: GraphFetchData) {
@@ -179,6 +179,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   function addTermRelationsEdgesToGraph(graphData: GraphFetchData) {
     for (let e of (graphData.termRelations?.edges ?? [])) {
+      if (!SUBCLASS_OF_URIS.includes(e.uri)) {
+        addNewEdgeToGraph(e, e.label);
+        continue;
+      }
       addNewEdgeToGraph(e);
     }
     let secondEdges = [];
@@ -191,56 +195,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
     return [...(graphData.termRelations?.edges ?? []), ...secondEdges];
-  }
-
-
-  function addNodesOnDoubleClick(graphData: VisGraphData, bgColor = "", color = "") {
-    let gNodes: GraphNode[] = [];
-    for (let node of graphData["nodes"]) {
-      let gNode = new GraphNode(node = node);
-      if (dbclicked && dbClickedColor.bgColor) {
-        gNode = new GraphNode(node = node, dbClickedColor.bgColor, dbClickedColor.color);
-      } else if (bgColor && color) {
-        // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
-        gNode = new GraphNode(node = node, secondNodeBgColor, secondNodeTextColor);
-      }
-      //@ts-ignore
-      if (!nodes.current.get(gNode.id)) {
-        if (gNode.id === iri) {
-          gNode.color.background = targetNodeBgColor;
-          gNode.font.color = targetNodeTextColor;
-        }
-        //@ts-ignore
-        gNodes.push(gNode);
-      }
-    }
-    //@ts-ignore
-    nodes.current.add(gNodes);
-    return graphData.nodes;
-  }
-
-  function addEdgesOnDoubleClick(graphData: VisGraphData) {
-    let gEdges: OlsGraphEdge[] = [];
-    for (let edge of graphData["edges"]) {
-      let gEdge = new GraphEdge(edge = edge, subClassEdgeLabel);
-      let dashed =
-        edge.uri === SUBCLASS_OF_URI ||
-          rootWalk
-          ? false
-          : true;
-      gEdge.dashes = dashed;
-      //@ts-ignore
-      if (!edges.current.get(gEdge.id)) {
-        if (gEdge.id?.includes(iri) && rootWalk) {
-          //@ts-ignore
-          gEdge.color.color = "black";
-        }
-        gEdges.push(gEdge);
-      }
-    }
-    //@ts-ignore
-    edges.current.add(gEdges);
-    return graphData.edges;
   }
 
 
@@ -269,9 +223,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
+    // console.log(edge)
     let gEdge = new GraphEdge(edge = edge, label);
     let dashed =
-      edge.uri === SUBCLASS_OF_URI ||
+      SUBCLASS_OF_URIS.includes(edge.uri ?? "") ||
         rootWalk
         ? false
         : true;
@@ -285,33 +240,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       edges.current.add(gEdge);
     }
-  }
-
-
-  function convertFlatListToTreeStructure(listOfJsTreeNodes: JSTreeNode[]): JSTreeNode[] {
-    let treeData: JSTreeNode[] = [];
-    for (let node of listOfJsTreeNodes) {
-      if (node.parent === "#") {
-        treeData.push(node);
-        continue;
-      }
-      for (let pn of listOfJsTreeNodes) {
-        if (pn.id === node.parent) {
-          if ("childrenList" in pn) {
-            pn.childrenList!.push(node);
-          } else {
-            pn.childrenList = [node];
-          }
-          if ("parentList" in node) {
-            //@ts-ignore
-            node.parentList.push(pn);
-          } else {
-            node.parentList = [pn];
-          }
-        }
-      }
-    }
-    return treeData;
   }
 
 
@@ -335,7 +263,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           addNewNodeToGraph(gnode, true, secondNodeBgColor, secondNodeTextColor);
         } else {
           // otherwise the node is exclusive to the second iri. we add it to the graph with it's own color but
-          // we do not add it to graph data (we do it in the end of this funciton). reason is:
+          // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
           // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in detecting the common nodes
           addNewNodeToGraph(gnode, false, secondNodeBgColor, secondNodeTextColor);
           if (!leftOverNodesFromSecondIri.find(n => n.iri === gnode.iri)) {
@@ -350,7 +278,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             source: node.iri,
             target: pn.iri,
             label: subClassEdgeLabel,
-            uri: SUBCLASS_OF_URI,
+            uri: SUBCLASS_OF_URIS[0],
           };
           if (!graphData.edges.find(e => e.source === edge.source && e.target === edge.target)) {
             graphData.edges.push(edge);
@@ -420,12 +348,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let graphData: VisGraphData = { nodes: [], edges: [] };
     let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
     addTreeDataToGraphData(graphData, treeData);
-    addHasPartRelationsToGraphData(graphData, nodeRelations);
+    if (!dbclicked) {
+      addHasPartRelationsToGraphData(graphData, nodeRelations);
+    }
 
     if (secondIri && secondListOfJsTreeNodes) {
       let secondTreeData = convertFlatListToTreeStructure(secondListOfJsTreeNodes);
       addTreeDataToGraphData(graphData, secondTreeData, true);
-      addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
+      if (!dbclicked) {
+        addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
+      }
     }
 
     return graphData;
@@ -477,7 +409,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             source: source,
             target: target,
             label: subClassEdgeLabel,
-            uri: SUBCLASS_OF_URI,
+            uri: SUBCLASS_OF_URIS[0],
           };
           addNewEdgeToGraph(newEdge);
         }

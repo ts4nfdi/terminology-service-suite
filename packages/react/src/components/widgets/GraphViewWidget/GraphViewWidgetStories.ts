@@ -94,7 +94,7 @@ export const WithOnNodeDoubleClickCallbackArgs = {
 export const ChebiCaffeineHierarchyWithComparisonArgs = {
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
-  secondIri: "http://purl.obolibrary.org/obo/CHEBI_139388",
+  secondIri: "http://purl.obolibrary.org/obo/CHEBI_30151",
   ontologyId: "chebi",
   rootWalk: true,
   hierarchy: true,
