@@ -556,8 +556,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   return (
-    <div className={finalClassName} data-testid="graph-widget" style={{ width: '1000px', height: '100vh' }}>
-      <EuiPanel style={{ height: "100vh" }} >
+    <div className={finalClassName} style={{ width: '1000px', height: '100vh' }}>
+      <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
         {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
         <EuiPanel
           style={{ fontSize: 12 }}

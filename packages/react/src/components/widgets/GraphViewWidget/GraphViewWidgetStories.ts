@@ -7,7 +7,7 @@ import {
   hierarchyArgType,
   secondIriArgType,
   edgeLabelArgType,
-  onNodeClickArgType
+  onNodeClickArgType, hrefArgType, onNavigateToArgType, classNameArgType
 } from "../../../stories/storyArgs";
 import { expect, waitFor, within } from "storybook/test";
 
@@ -17,15 +17,18 @@ export const GraphViewWidgetStoryArgTypes = {
   ...ontologyIdReqArgType,
   ...rootWalkArgType,
   ...hierarchyArgType,
+  ...classNameArgType,
   ...secondIriArgType,
   ...edgeLabelArgType,
-  ...onNodeClickArgType
+  ...onNodeClickArgType,
+  ...hrefArgType,
+  ...onNavigateToArgType
 };
 
 export const GraphViewWidgetStoryArgs = {
   api: globals.EBI_API_ENDPOINT,
-  iri: "",
-  ontologyId: "",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
+  ontologyId: "chebi",
   rootWalk: false,
   hierarchy: false
 };
@@ -35,10 +38,12 @@ export const ChebiIonArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
   ontologyId: "chebi",
   rootWalk: false,
-  hierarchy: false
+  hierarchy: false,
+  secondIri: "",
 };
 
 export const ChebiIonComparisonArgs = {
+  ...ChebiIonArgs,
   api: globals.TIB_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
   secondIri: "http://purl.obolibrary.org/obo/CHEBI_139544",
@@ -48,6 +53,7 @@ export const ChebiIonComparisonArgs = {
 };
 
 export const ChebiIonRootWalkArgs = {
+  ...ChebiIonArgs,
   api: globals.TIB_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
   ontologyId: "chebi",
@@ -56,6 +62,7 @@ export const ChebiIonRootWalkArgs = {
 };
 
 export const ChebiWaterArgs = {
+  ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
@@ -64,6 +71,7 @@ export const ChebiWaterArgs = {
 };
 
 export const ChebiWaterRootWalkArgs = {
+  ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
@@ -72,6 +80,7 @@ export const ChebiWaterRootWalkArgs = {
 };
 
 export const ChebiCaffeineHierarchyArgs = {
+  ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
   ontologyId: "chebi",
@@ -80,6 +89,7 @@ export const ChebiCaffeineHierarchyArgs = {
 };
 
 export const WithOnNodeDoubleClickCallbackArgs = {
+  ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
   ontologyId: "chebi",
@@ -92,6 +102,7 @@ export const WithOnNodeDoubleClickCallbackArgs = {
 };
 
 export const ChebiCaffeineHierarchyWithComparisonArgs = {
+  ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
   secondIri: "http://purl.obolibrary.org/obo/CHEBI_30151",
@@ -109,7 +120,7 @@ export const commonGraphViewWidgetPlay = async ({
 
   await waitFor(
     async () => {
-      const content = canvas.getByTestId("graph-view");
+      const content = canvas.getByTestId("graph-widget");
       await expect(content).toBeInTheDocument();
     },
     {

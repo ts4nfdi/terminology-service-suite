@@ -1,14 +1,12 @@
 import {
   GraphViewWidgetStoryArgTypes,
   GraphViewWidgetStoryArgs,
-  GraphViewWidgetExampleArgs,
   commonGraphViewWidgetPlay,
-  RootWalkGraphExampleArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
   ChebiCaffeineHierarchyArgs,
   WithOnNodeDoubleClickCallbackArgs,
-  ChebiCaffeineHierarchyWithComparisonArgs
+  ChebiCaffeineHierarchyWithComparisonArgs, ChebiIonArgs, ChebiIonComparisonArgs, ChebiIonRootWalkArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -68,13 +66,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const GraphViewWidgetExample: Story = {
-  args: GraphViewWidgetExampleArgs,
+export const ChebiIon: Story = {
+  args: ChebiIonArgs,
   play: commonGraphViewWidgetPlay,
 };
 
-export const RootWalkGraphExample: Story = {
-  args: RootWalkGraphExampleArgs,
+export const ChebiIonComparison: Story = {
+  args: ChebiIonComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+export const ChebiIonRootWalk: Story = {
+  args: ChebiIonRootWalkArgs,
   parameters: {
     docs: {
       disable: true,
@@ -103,8 +110,8 @@ export const ChebiWaterRootWalk: Story = {
   play: commonGraphViewWidgetPlay,
 };
 
-export const WithOnNodeDoubleClickCallback: Story = {
-  args: WithOnNodeDoubleClickCallbackArgs,
+export const ChebiCaffeineHierarchy: Story = {
+  args: ChebiCaffeineHierarchyArgs,
   parameters: {
     docs: {
       disable: true,
@@ -113,8 +120,8 @@ export const WithOnNodeDoubleClickCallback: Story = {
   play: commonGraphViewWidgetPlay,
 };
 
-export const ChebiCaffeineHierarchy: Story = {
-  args: ChebiCaffeineHierarchyArgs,
+export const WithOnNodeDoubleClickCallback: Story = {
+  args: WithOnNodeDoubleClickCallbackArgs,
   parameters: {
     docs: {
       disable: true,
@@ -132,3 +139,4 @@ export const ChebiCaffeineHierarchyWithComparison: Story = {
   },
   play: commonGraphViewWidgetPlay,
 };
+
