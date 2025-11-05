@@ -1,0 +1,14 @@
+import { MetadataWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+import { Meta, StoryObj } from '@storybook/react-vite';
+declare const meta: Meta<MetadataWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const MetadataWidget1: Story;
+export declare const OLS3: Story;
+export declare const OLS4V1: Story;
+export declare const OLS4V2: Story;
+export declare const SelectingDefiningOntology: Story;
+export declare const DefiningOntologyUnavailable: Story;
+export declare const DefinedByAlsoAppearsInWidgets: Story;
+export declare const HiddenTabs: Story;
+export declare const TermAsLink: Story;
