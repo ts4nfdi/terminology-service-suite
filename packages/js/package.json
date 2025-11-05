@@ -45,6 +45,6 @@
   },
   "dependencies": {
     "patch-package": "^8.0.0",
-    "storybook-addon-matomo": "^1.0.2"
+    "@storybook-community/storybook-addon-matomo": "^3.0.0"
   }
 }
