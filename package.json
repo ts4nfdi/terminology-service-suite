@@ -44,6 +44,7 @@
     "@storybook/addon-vitest": "^9.0.18",
     "@storybook/html-vite": "^9.0.18",
     "@storybook/react-vite": "^9.0.18",
+    "@storybook-community/storybook-addon-matomo": "^2.0.0",
     "@ts4nfdi/gh-pages-multi": "^0.7.9",
     "@types/node": "^20.17.48",
     "@types/react": "^18.0",

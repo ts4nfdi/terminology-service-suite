@@ -8,6 +8,7 @@ module.exports = {
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-vitest"),
+    getAbsolutePath("@storybook-community/storybook-addon-matomo"),
   ],
 
   framework: {
