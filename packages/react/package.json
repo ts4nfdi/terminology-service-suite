@@ -62,7 +62,6 @@
     "@google/model-viewer": "^4.0.0",
     "patch-package": "^8.0.0",
     "react-router": "^6.3.0",
-    "@storybook-community/storybook-addon-matomo": "^3.0.0",
     "three": "^0.172.0",
     "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
