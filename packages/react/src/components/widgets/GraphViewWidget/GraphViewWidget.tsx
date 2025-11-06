@@ -42,7 +42,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     className,
     hierarchy,
     edgeLabel,
-    secondIri,
     onNodeClick,
   } = props;
 
@@ -67,6 +66,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
+  const [secondIri, setSecondIri] = useState<string>(props.secondIri ?? "");
+
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
     !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
@@ -85,10 +86,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     [
       "termGraph",
       api,
-      selectedIri,
       ontologyId,
       rootWalk,
+      hierarchy,
       dbclicked,
+      secondIri,
       counter,
     ],
     async () => {
@@ -452,11 +454,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   useEffect(() => {
     let graphData = { nodes: nodes.current, edges: edges.current };
+    let config = JSON.parse(JSON.stringify(graphNetworkConfig));
     graphNetwork.current = new Network(
       //@ts-ignore
       container.current,
       graphData,
-      graphNetworkConfig,
+      config,
     );
 
     // Stop physics after the initial layout so users can freely move nodes
@@ -465,7 +468,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
     }, 4000);
-  }, []);
+
+  }, [counter]);
 
   useEffect(() => {
     if (graphNetwork.current) {
@@ -482,7 +486,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           //@ts-ignore
-          setDbClickedColor({ bgColor: nodes.current.get(nodeIri)?.color?.background, color: nodes.current.get(nodeIri)?.font?.color })
+          setDbClickedColor({ bgColor: nodes.current.get(nodeIri)?.color?.background, color: nodes.current.get(nodeIri)?.font?.color });
           setSelectedIri(nodeIri);
           if (onNodeClickCallbackIdProvided) {
             onNodeClick(nodeIri);
@@ -492,26 +496,24 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
     }
-  }, [graphNetwork]);
+  }, [graphNetwork.current]);
 
   useEffect(() => {
-    if (secondIri) {
-      reset();
+    if (props.secondIri) {
+      setSecondIri(props.secondIri);
+      setCounter(counter + 1);
     }
-  }, [secondIri]);
-
-
+  }, [props.secondIri]);
 
   useEffect(() => {
-    //@ts-ignore
-    graphNetwork.current.setOptions({ physics: true });
-    // Stop physics after the initial layout so users can freely move nodes
-    //@ts-ignore
-    setTimeout(() => {
-      //@ts-ignore
-      graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
-  }, [counter]);
+    if (hierarchy) {
+      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
+    } else {
+      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
+    }
+    setCounter(counter + 1);
+  }, [hierarchy]);
+
 
   useEffect(() => {
     if (!dbclicked) {
@@ -534,7 +536,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setTimeout(() => {
       setShowNothingToAddMessage(false);
     }, 3000)
-  }, [showNothingToAddMessage])
+  }, [showNothingToAddMessage]);
 
 
   const onButtonClick = () =>
