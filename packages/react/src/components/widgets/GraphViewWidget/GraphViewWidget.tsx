@@ -47,6 +47,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   const [selectedIri, setSelectedIri] = useState(iri);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [graphDataIsCalculated, setGraphDataIsCalculated] = useState(false);
   const [dbclicked, setDbclicked] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -150,6 +151,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (!rootWalk && !hierarchy) {
       gData.nodes = addTermRelationsNodesToGraph(data);
       gData.edges = addTermRelationsEdgesToGraph(data);
+      setGraphDataIsCalculated(true);
     }
 
     if (firstLoad) {
@@ -160,6 +162,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       setDbclicked(false);
     }
     setGraphRawData({ nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])], edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])] });
+    setGraphDataIsCalculated(true);
   }
 
 
@@ -385,7 +388,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
       }
     }
-
     return graphData;
   }
 
@@ -453,6 +455,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   useEffect(() => {
+    if (!graphDataIsCalculated) {
+      return;
+    }
     let graphData = { nodes: nodes.current, edges: edges.current };
     let config = JSON.parse(JSON.stringify(graphNetworkConfig));
     graphNetwork.current = new Network(
@@ -469,10 +474,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphNetwork.current.setOptions({ physics: false });
     }, 4000);
 
-  }, [counter]);
+  }, [counter, graphDataIsCalculated]);
 
   useEffect(() => {
-    if (graphNetwork.current) {
+    if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
       graphNetwork.current.on("click", function (params) {
         if (params.nodes.length > 0) {
@@ -499,8 +504,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [graphNetwork.current]);
 
   useEffect(() => {
-    if (props.secondIri) {
+    if (props.secondIri && secondIri !== props.secondIri) {
+      setGraphDataIsCalculated(false);
+      //@ts-ignore
+      graphNetwork.current.destroy();
+      nodes.current.clear();
+      edges.current.clear();
       setSecondIri(props.secondIri);
+      setFirstLoad(true);
       setCounter(counter + 1);
     }
   }, [props.secondIri]);
