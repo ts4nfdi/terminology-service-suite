@@ -12,7 +12,6 @@ import {
   EuiButtonEmpty,
   EuiIcon,
   EuiTextColor,
-  EuiCard
 } from "@elastic/eui";
 import { Network } from "vis-network";
 import { DataSet } from "vis-data";
@@ -66,6 +65,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
   const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -116,6 +116,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const edges = useRef(new DataSet([]));
   const graphNetwork = useRef({});
   const container = useRef(null);
+  const fullScreenContainerRef = useRef(null);
   // kep a map between a node iri and it's color to avoid recalculating the color in case the node is removed and added again by the user
   const nodeColorMap = useRef<Map<string, string>>(new Map())
 
@@ -547,16 +548,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     </EuiButtonEmpty>
   );
 
-  const goFullScreen = () => {
-    if (container.current) {
-      let graphContainerDiv = container.current as HTMLDivElement;
+  const runFullScreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    } else if (fullScreenContainerRef.current) {
+      let graphContainerDiv = fullScreenContainerRef.current as HTMLDivElement;
       graphContainerDiv.requestFullscreen();
+      setIsFullScreen(true);
     }
   };
 
 
   return (
-    <div className={finalClassName} style={{ width: '1000px', height: '100vh' }}>
+    <div className={finalClassName} style={{ width: '1000px', height: '100vh' }} ref={fullScreenContainerRef}>
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
         {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
         <EuiPanel
@@ -574,27 +579,25 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           >
             Reset
           </EuiButton>
-          <EuiPopover
-            button={GuidmeBtn}
-            isOpen={isPopoverOpen}
-            closePopover={closePopover}
-          >
-            <EuiText style={{ width: 300, padding: 10 }}>
-              <li>Expand the nodes by double clicking on them</li>
-              <li>Zoom out/in by scrolling on the graph.</li>
-              <li>Go to fullscreen mode by clicking the fullscreen icon on the right corner.</li>
-              <li>Download the graph data as JSON by clicking the download icon on the right corner.</li>
-              <li>
-                You can go back to the initial graph by clicking on the Reset
-                button.
-              </li>
-              <li>You can move the nodes and edges around by dragging.</li>
-              <li><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Target iri color </li>
-              <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
-              <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
-              <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
-            </EuiText>
-          </EuiPopover>
+          {!isFullScreen &&
+            <EuiPopover
+              button={GuidmeBtn}
+              isOpen={isPopoverOpen}
+              closePopover={closePopover}
+            >
+              <EuiText style={{ width: 300, padding: 10 }}>
+                <li>Expand the nodes by double clicking on them</li>
+                <li>Zoom out/in by scrolling on the graph.</li>
+                <li>Go to fullscreen mode by clicking the fullscreen icon on the right corner.</li>
+                <li>Download the graph data as JSON by clicking the download icon on the right corner.</li>
+                <li>
+                  You can go back to the initial graph by clicking on the Reset
+                  button.
+                </li>
+                <li>You can move the nodes and edges around by dragging.</li>
+              </EuiText>
+            </EuiPopover>
+          }
 
           {showNothingToAddMessage &&
             <div style={{ display: "inline-block", backgroundColor: "#FBCBC6", color: "red", padding: "5px", borderRadius: "10px" }}>nothing to add</div>
@@ -622,12 +625,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               <EuiIcon type="download" />
             </button>
             <button
-              onClick={goFullScreen}
+              onClick={runFullScreen}
               style={{ marginLeft: "20px" }}
-              title="Fullscreen mode"
-              aria-label="go to fullscreen mode"
+              title={!isFullScreen ? "Fullscreen mode" : "Exit fullscreen mode"}
+              aria-label={!isFullScreen ? "go to fullscreen mode" : "exit fullscreen mode"}
             >
-              <EuiIcon type="fullScreen" />
+              {!isFullScreen ? <EuiIcon type="fullScreen" /> : <EuiIcon type="fullScreenExit" />}
             </button>
           </div>
         </EuiPanel >
@@ -639,6 +642,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           className="graph-container"
           style={{ width: "100%", height: "100vh", margin: "auto" }}
         />
+
+        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", bottom: "20px", right: "20px" }}>
+          <ul>
+            <li><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Target iri color </li>
+            <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
+            <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
+            <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
+
+          </ul>
+        </div>
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
         <style>{`
