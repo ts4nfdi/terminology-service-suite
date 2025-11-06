@@ -74,11 +74,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("actionHandler");
 
-  const targetNodeBgColor = "#0BBBEF";
-  const secondNodeBgColor = "red";
-  const targetNodeTextColor = "black";
-  const secondNodeTextColor = "white";
+  const targetNodeBgColor = "#139ec4";
+  const exclusiveToSecondIriColor = "#d15e5e";
+  const secondNodeBgColor = "#489e21";
   const commonNodesBgColor = "#800080";
+  const nodeTextColor = "white";
 
 
   const { data, isLoading, isError, error } = useQuery(
@@ -176,7 +176,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
       for (let n of exclusiveToSecondIriNodes) {
-        addNewNodeToGraph(n, false, secondNodeBgColor, secondNodeTextColor);
+        addNewNodeToGraph(n, false, exclusiveToSecondIriColor, nodeTextColor);
       }
     }
     if (originalNodeCount === nodes.current.length) {
@@ -212,19 +212,22 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let gNode = new GraphNode(node = node);
     if (bgColor && color) {
       // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
-      gNode = new GraphNode(node = node, secondNodeBgColor, secondNodeTextColor);
+      gNode = new GraphNode(node = node, exclusiveToSecondIriColor, nodeTextColor);
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
       if (gNode.id === iri) {
         gNode.color.background = targetNodeBgColor;
-        gNode.font.color = targetNodeTextColor;
+        gNode.font.color = nodeTextColor;
+      } else if (secondIri && gNode.id === secondIri) {
+        gNode.color.background = secondNodeBgColor;
+        gNode.font.color = nodeTextColor;
       }
       if (nodeColorMap.current.get(gNode.id!)) {
         gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
       } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== targetNodeBgColor) {
         gNode.color.background = dbClickedColor.bgColor;
-        gNode.font.color = "white";
+        gNode.font.color = nodeTextColor;
       }
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
@@ -277,12 +280,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       } else {
         if (graphData.nodes.find(n => n.iri === gnode.iri)) {
           // in this case, the node is a common node: needs a common node color
-          addNewNodeToGraph(gnode, true, secondNodeBgColor, secondNodeTextColor);
+          addNewNodeToGraph(gnode, true, exclusiveToSecondIriColor, nodeTextColor);
         } else {
           // otherwise the node is exclusive to the second iri. we add it to the graph with it's own color but
           // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
           // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in detecting the common nodes
-          addNewNodeToGraph(gnode, false, secondNodeBgColor, secondNodeTextColor);
+          addNewNodeToGraph(gnode, false, exclusiveToSecondIriColor, nodeTextColor);
           if (!leftOverNodesFromSecondIri.find(n => n.iri === gnode.iri)) {
             leftOverNodesFromSecondIri.push(gnode);
           }
@@ -332,8 +335,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let bgColor = "";
     let color = "";
     if (isSecondNode) {
-      bgColor = secondNodeBgColor;
-      color = secondNodeTextColor;
+      bgColor = exclusiveToSecondIriColor;
+      color = nodeTextColor;
     }
     let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
       nodes: [],
@@ -561,7 +564,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
 
   return (
-    <div className={finalClassName} style={{ width: '1000px', height: '100vh' }} ref={fullScreenContainerRef}>
+    <div className={finalClassName} style={{ width: '1000px', height: '100vh', overflow: "hidden" }} ref={fullScreenContainerRef}>
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
         {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
         <EuiPanel
@@ -646,10 +649,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", bottom: "20px", right: "20px" }}>
           <ul>
             <li><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Target iri color </li>
-            <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
-            <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
-            <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
-
+            {secondIri &&
+              <>
+                <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Second iri color </li>
+                <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
+                <li><div style={{ backgroundColor: exclusiveToSecondIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
+                <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
+              </>
+            }
           </ul>
         </div>
 
