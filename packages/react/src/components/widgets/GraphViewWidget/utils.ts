@@ -4,18 +4,18 @@ import { JSTreeNode } from "../../../utils/olsApiTypes";
 
 
 export async function fetchRootWalkModeData(props: GraphFetchFunctionInput): Promise<GraphFetchData> {
-  const { api, ontologyId, iri, secondIri, dbClicked } = props;
+  const { api, ontologyId, iri, targetIri, dbClicked } = props;
   const olsEntityApi = new OlsEntityApi(api);
   let termTree = await olsEntityApi.getTermTree(
     { ontologyId: ontologyId, termIri: iri },
     { viewMode: "All", siblings: false },
   )
-  if (secondIri && !dbClicked) {
-    let secondTermTree = await olsEntityApi.getTermTree(
-      { ontologyId: ontologyId, termIri: secondIri },
+  if (targetIri && !dbClicked) {
+    let targetTermTree = await olsEntityApi.getTermTree(
+      { ontologyId: ontologyId, termIri: targetIri },
       { viewMode: "All", siblings: false },
     );
-    return { treeData: termTree, secondTreeData: secondTermTree };
+    return { treeData: termTree, targetTreeData: targetTermTree };
   }
 
   return { treeData: termTree };
@@ -24,7 +24,7 @@ export async function fetchRootWalkModeData(props: GraphFetchFunctionInput): Pro
 
 
 export async function fetchHierarchyModeData(props: GraphFetchFunctionInput): Promise<GraphFetchData> {
-  const { api, ontologyId, iri, secondIri, dbClicked } = props;
+  const { api, ontologyId, iri, targetIri, dbClicked } = props;
   const olsEntityApi = new OlsEntityApi(api);
   let termTree = await olsEntityApi.getTermTree(
     { ontologyId: ontologyId, termIri: iri },
@@ -36,17 +36,17 @@ export async function fetchHierarchyModeData(props: GraphFetchFunctionInput): Pr
     termIri: iri,
   });
 
-  if (secondIri && !dbClicked) {
-    let secondTermTree = await olsEntityApi.getTermTree(
-      { ontologyId: ontologyId, termIri: secondIri },
+  if (targetIri && !dbClicked) {
+    let targetTermTree = await olsEntityApi.getTermTree(
+      { ontologyId: ontologyId, termIri: targetIri },
       { viewMode: "All", siblings: false },
     );
 
-    let secondTermRelation = await olsEntityApi.getTermRelations({
+    let targetTermRelation = await olsEntityApi.getTermRelations({
       ontologyId: ontologyId,
-      termIri: secondIri,
+      termIri: targetIri,
     });
-    return { treeData: termTree, termRelations: termRelation, secondTreeData: secondTermTree, secondTermRelations: secondTermRelation } as GraphFetchData;
+    return { treeData: termTree, termRelations: termRelation, targetTreeData: targetTermTree, targetTermRelations: targetTermRelation } as GraphFetchData;
   }
 
   return { treeData: termTree, termRelations: termRelation } as GraphFetchData;
@@ -54,18 +54,18 @@ export async function fetchHierarchyModeData(props: GraphFetchFunctionInput): Pr
 
 
 export async function fetchNormalModeData(props: GraphFetchFunctionInput): Promise<GraphFetchData> {
-  const { api, ontologyId, iri, secondIri, dbClicked } = props;
+  const { api, ontologyId, iri, targetIri, dbClicked } = props;
   const olsEntityApi = new OlsEntityApi(api);
   let termRelations = await olsEntityApi.getTermRelations({
     ontologyId: ontologyId,
     termIri: iri,
   });
-  if (secondIri && !dbClicked) {
-    let secondTermRelation = await olsEntityApi.getTermRelations({
+  if (targetIri && !dbClicked) {
+    let targetTermRelation = await olsEntityApi.getTermRelations({
       ontologyId: ontologyId,
-      termIri: secondIri,
+      termIri: targetIri,
     });
-    return { termRelations: termRelations, secondTermRelations: secondTermRelation } as GraphFetchData;
+    return { termRelations: termRelations, targetTermRelations: targetTermRelation } as GraphFetchData;
   }
   return { termRelations: termRelations } as GraphFetchData;
 }

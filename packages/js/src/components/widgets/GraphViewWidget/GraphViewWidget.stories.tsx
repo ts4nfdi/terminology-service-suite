@@ -49,7 +49,7 @@ window['ts4nfdiWidgets'].createGraphView(
         rootWalk: ${args.rootWalk},
         className:${args.className},
         hierarchy: ${args.hierarchy},
-        secondIri: "${args.secondIri}",
+        targetIri: "${args.targetIri}",
         onNodeClick: ${args.onNodeClick},
         edgeLabel: ${args.edgeLabel}
     },

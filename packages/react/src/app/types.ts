@@ -684,9 +684,9 @@ export type GraphViewWidgetProps = ApiObj &
   ForcedOntologyIdObj &
   CssClassNameObj & {
     /**
-     * The second iri. used in the hierarchy mode to compare two terms in one graph.
+     * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */
-    secondIri?: string;
+    targetIri?: string;
     /**
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */

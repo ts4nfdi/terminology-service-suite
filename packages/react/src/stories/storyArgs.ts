@@ -847,11 +847,11 @@ export const hierarchyArgType: ArgTypes = {
   },
 };
 
-export const secondIriArgType: ArgTypes = {
+export const targetIriArgType: ArgTypes = {
   href: {
     required: false,
     description:
-      "The second iri. used in the hierarchy mode to compare two terms in one graph.",
+      "The target iri. used in the hierarchy mode to compare two terms in one graph.",
     table: {
       type: { summary: `string` },
     },

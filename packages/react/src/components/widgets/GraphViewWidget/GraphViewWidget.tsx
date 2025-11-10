@@ -67,7 +67,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
-  const [secondIri, setSecondIri] = useState<string>(props.secondIri ?? "");
+  const [targetIri, setTargetIri] = useState<string>(props.targetIri ?? "");
 
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -76,10 +76,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("actionHandler");
 
-  const targetNodeBgColor = "#139ec4";
-  const exclusiveToSecondIriColor = "#d15e5e";
-  const secondNodeBgColor = "#489e21";
-  const commonNodesBgColor = "#800080";
+  const sourceNodeBgColor = "#139ec4";
+  const exclusiveToTargetIriColor = "#708238";
+  const targetNodeBgColor = "#00a86b";
+  const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
 
 
@@ -91,26 +91,26 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       rootWalk,
       hierarchy,
       dbclicked,
-      secondIri,
+      targetIri,
       counter,
     ],
     async () => {
-      let targetIri = iri;
+      let sourceIri = iri;
       if (dbclicked) {
-        targetIri = selectedIri;
+        sourceIri = selectedIri;
       }
       if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return await fetchRootWalkModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
+        return await fetchRootWalkModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
 
       } else if (rootWalk && (firstLoad || dbclicked) && hierarchy) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
-        return await fetchHierarchyModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
+        return await fetchHierarchyModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
       } else if (firstLoad || dbclicked) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        return await fetchNormalModeData({ api: api, iri: targetIri, ontologyId: ontologyId, secondIri: secondIri, dbClicked: dbclicked });
+        return await fetchNormalModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
       }
     },
   );
@@ -133,7 +133,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let gData: VisGraphData = { nodes: [], edges: [] }
     gData = data.termRelations ?? gData;
     if (data.treeData && rootWalk && (firstLoad || dbclicked) && !hierarchy) {
-      gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.secondTreeData, data.secondTermRelations);
+      gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.targetTreeData, data.targetTermRelations);
     } else if (
       data.termRelations &&
       data.treeData &&
@@ -144,8 +144,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       gData = convertToOlsGraphFormat(
         data.treeData,
         data.termRelations,
-        data?.secondTreeData,
-        data?.secondTermRelations
+        data?.targetTreeData,
+        data?.targetTermRelations
       );
     }
     if (!rootWalk && !hierarchy) {
@@ -171,23 +171,23 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     for (let n of (graphData.termRelations?.nodes ?? [])) {
       addNewNodeToGraph(n);
     }
-    let exclusiveToSecondIriNodes = [];
-    if (graphData.secondTermRelations) {
-      for (let sn of graphData.secondTermRelations.nodes) {
+    let exclusiveTotargetIriNodes = [];
+    if (graphData.targetTermRelations) {
+      for (let sn of graphData.targetTermRelations.nodes) {
         if (graphData?.termRelations?.nodes.find((n: OlsGraphNode) => n.iri === sn.iri)) {
           addNewNodeToGraph(sn, true);
         } else {
-          exclusiveToSecondIriNodes.push(sn);
+          exclusiveTotargetIriNodes.push(sn);
         }
       }
-      for (let n of exclusiveToSecondIriNodes) {
-        addNewNodeToGraph(n, false, exclusiveToSecondIriColor, nodeTextColor);
+      for (let n of exclusiveTotargetIriNodes) {
+        addNewNodeToGraph(n, false, exclusiveToTargetIriColor, nodeTextColor);
       }
     }
     if (originalNodeCount === nodes.current.length) {
       setShowNothingToAddMessage(true);
     }
-    return [...(graphData.termRelations?.nodes ?? []), ...exclusiveToSecondIriNodes];
+    return [...(graphData.termRelations?.nodes ?? []), ...exclusiveTotargetIriNodes];
   }
 
 
@@ -199,16 +199,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
       addNewEdgeToGraph(e);
     }
-    let secondEdges = [];
-    if (graphData.secondTermRelations?.edges) {
-      for (let se of graphData.secondTermRelations.edges) {
+    let targetEdges = [];
+    if (graphData.targetTermRelations?.edges) {
+      for (let se of graphData.targetTermRelations.edges) {
         if (!graphData.termRelations?.edges.find((e: OlsGraphEdge) => e.source === se.source && e.target === se.target)) {
           addNewEdgeToGraph(se);
-          secondEdges.push(se);
+          targetEdges.push(se);
         }
       }
     }
-    return [...(graphData.termRelations?.edges ?? []), ...secondEdges];
+    return [...(graphData.termRelations?.edges ?? []), ...targetEdges];
   }
 
 
@@ -216,21 +216,22 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function addNewNodeToGraph(node: OlsGraphNode, isCommon = false, bgColor = "", color = "") {
     let gNode = new GraphNode(node = node);
     if (bgColor && color) {
-      // if these colors exist, we are rendering the second iri for comparison. so color has to  be different from the default node color.
-      gNode = new GraphNode(node = node, exclusiveToSecondIriColor, nodeTextColor);
+      // if these colors exist, we are rendering the target iri for comparison. so color has to be different from the
+      // default node color.
+      gNode = new GraphNode(node = node, exclusiveToTargetIriColor, nodeTextColor);
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
       if (gNode.id === iri) {
-        gNode.color.background = targetNodeBgColor;
+        gNode.color.background = sourceNodeBgColor;
         gNode.font.color = nodeTextColor;
-      } else if (secondIri && gNode.id === secondIri) {
-        gNode.color.background = secondNodeBgColor;
+      } else if (targetIri && gNode.id === targetIri) {
+        gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
       }
       if (nodeColorMap.current.get(gNode.id!)) {
         gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
-      } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== targetNodeBgColor) {
+      } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== sourceNodeBgColor) {
         gNode.color.background = dbClickedColor.bgColor;
         gNode.font.color = nodeTextColor;
       }
@@ -267,17 +268,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function addTreeDataToGraphData(graphData: VisGraphData, treeData: JSTreeNode[], isSecondIri: boolean = false) {
+  function addTreeDataToGraphData(graphData: VisGraphData, treeData: JSTreeNode[], istargetIri: boolean = false) {
     let q = [...treeData];
     let layerq = [];
     let height = 1;
-    let leftOverNodesFromSecondIri: OlsGraphNode[] = [];
+    let leftOverNodesFromtargetIri: OlsGraphNode[] = [];
     let originalGraphNodesCount = nodes.current.length;
     while (true) {
       let node = q[0];
       q = q.slice(1);
       let gnode = { iri: node.iri, label: node.text, level: height };
-      if (!isSecondIri) {
+      if (!istargetIri) {
         if (!graphData.nodes.find(n => n.iri === gnode.iri)) {
           graphData.nodes.push(gnode);
         }
@@ -285,14 +286,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       } else {
         if (graphData.nodes.find(n => n.iri === gnode.iri)) {
           // in this case, the node is a common node: needs a common node color
-          addNewNodeToGraph(gnode, true, exclusiveToSecondIriColor, nodeTextColor);
+          addNewNodeToGraph(gnode, true, exclusiveToTargetIriColor, nodeTextColor);
         } else {
-          // otherwise the node is exclusive to the second iri. we add it to the graph with it's own color but
+          // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
           // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
-          // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in detecting the common nodes
-          addNewNodeToGraph(gnode, false, exclusiveToSecondIriColor, nodeTextColor);
-          if (!leftOverNodesFromSecondIri.find(n => n.iri === gnode.iri)) {
-            leftOverNodesFromSecondIri.push(gnode);
+          // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in
+          // detecting the common nodes
+          addNewNodeToGraph(gnode, false, exclusiveToTargetIriColor, nodeTextColor);
+          if (!leftOverNodesFromtargetIri.find(n => n.iri === gnode.iri)) {
+            leftOverNodesFromtargetIri.push(gnode);
           }
         }
       }
@@ -325,7 +327,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
 
-    graphData.nodes = [...graphData.nodes, ...leftOverNodesFromSecondIri];
+    graphData.nodes = [...graphData.nodes, ...leftOverNodesFromtargetIri];
     if (originalGraphNodesCount === nodes.current.length) {
       setShowNothingToAddMessage(true);
     }
@@ -333,14 +335,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
 
-  function addHasPartRelationsToGraphData(graphData: VisGraphData, nodeRelations?: VisGraphData, isSecondNode: boolean = false) {
+  function addHasPartRelationsToGraphData(graphData: VisGraphData, nodeRelations?: VisGraphData, isTargetNode: boolean = false) {
     if (!nodeRelations) {
       return;
     }
     let bgColor = "";
     let color = "";
-    if (isSecondNode) {
-      bgColor = exclusiveToSecondIriColor;
+    if (isTargetNode) {
+      bgColor = exclusiveToTargetIriColor;
       color = nodeTextColor;
     }
     let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
@@ -371,8 +373,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function convertToOlsGraphFormat(
     listOfJsTreeNodes: Array<JSTreeNode>,
     nodeRelations?: { nodes: any[]; edges: any[] },
-    secondListOfJsTreeNodes?: Array<JSTreeNode>,
-    secondNodeRelations?: { nodes: any[]; edges: any[] },
+    targetListOfJsTreeNodes?: Array<JSTreeNode>,
+    targetNodeRelations?: { nodes: any[]; edges: any[] },
   ) {
     let graphData: VisGraphData = { nodes: [], edges: [] };
     let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
@@ -381,11 +383,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       addHasPartRelationsToGraphData(graphData, nodeRelations);
     }
 
-    if (secondIri && secondListOfJsTreeNodes) {
-      let secondTreeData = convertFlatListToTreeStructure(secondListOfJsTreeNodes);
-      addTreeDataToGraphData(graphData, secondTreeData, true);
+    if (targetIri && targetListOfJsTreeNodes) {
+      let targetTreeData = convertFlatListToTreeStructure(targetListOfJsTreeNodes);
+      addTreeDataToGraphData(graphData, targetTreeData, true);
       if (!dbclicked) {
-        addHasPartRelationsToGraphData(graphData, secondNodeRelations, true);
+        addHasPartRelationsToGraphData(graphData, targetNodeRelations, true);
       }
     }
     return graphData;
@@ -504,17 +506,17 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [graphNetwork.current]);
 
   useEffect(() => {
-    if (props.secondIri && secondIri !== props.secondIri) {
+    if (props.targetIri && targetIri !== props.targetIri) {
       setGraphDataIsCalculated(false);
       //@ts-ignore
       graphNetwork.current.destroy();
       nodes.current.clear();
       edges.current.clear();
-      setSecondIri(props.secondIri);
+      setTargetIri(props.targetIri);
       setFirstLoad(true);
       setCounter(counter + 1);
     }
-  }, [props.secondIri]);
+  }, [props.targetIri]);
 
   useEffect(() => {
     if (hierarchy) {
@@ -554,7 +556,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
-  const GuidmeBtn = (
+  const GuideMeBtn = (
     <EuiButtonEmpty
       iconType="iInCircle"
       iconSide="right"
@@ -597,7 +599,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           </EuiButton>
           {!isFullScreen &&
             <EuiPopover
-              button={GuidmeBtn}
+              button={GuideMeBtn}
               isOpen={isPopoverOpen}
               closePopover={closePopover}
             >
@@ -659,15 +661,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           style={{ width: "100%", height: "100vh", margin: "auto" }}
         />
 
-        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", bottom: "20px", right: "20px" }}>
-          <ul>
-            <li><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Target iri color </li>
-            {secondIri &&
+        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", paddingTop:"10px", bottom: "20px", right: "20px" }}>
+          <b>Legend:</b>
+          <ul style={{paddingTop:"15px"}}>
+            <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  {iri} </li>
+            {targetIri &&
               <>
-                <li><div style={{ backgroundColor: secondNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Second iri color </li>
-                <li><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to target iri node color </li>
-                <li><div style={{ backgroundColor: exclusiveToSecondIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Exclusive to second iri color </li>
-                <li><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common nodes color </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to {iri} </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common subtree </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> {targetIri} </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to {targetIri} </li>
               </>
             }
           </ul>
@@ -675,7 +678,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
         <style>{`
-        .graph-container:fullscreen, 
+        .graph-container:fullscreen,
         .graph-container::backdrop {
           background-color: white;
         }
@@ -697,7 +700,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           hierarchy={props.hierarchy}
           edgeLabel={props.edgeLabel}
           onNodeClick={props.onNodeClick}
-          secondIri={props.secondIri}
+          targetIri={props.targetIri}
         />
       </QueryClientProvider>
     </EuiProvider>

@@ -4,8 +4,8 @@ import { OlsGraphNode } from "../../../app"
 export type GraphFetchData = {
   treeData: JSTreeNode[],
   termRelations?: VisGraphData,
-  secondTreeData?: JSTreeNode[],
-  secondTermRelations?: VisGraphData
+  targetTreeData?: JSTreeNode[],
+  targetTermRelations?: VisGraphData
 }
 
 export type VisGraphData = {
@@ -18,6 +18,6 @@ export type GraphFetchFunctionInput = {
   api: string,
   ontologyId: string,
   iri: string,
-  secondIri?: string,
+  targetIri?: string,
   dbClicked?: boolean
 }

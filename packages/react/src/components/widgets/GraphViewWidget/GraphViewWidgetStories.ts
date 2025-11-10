@@ -5,7 +5,7 @@ import {
   ontologyIdReqArgType,
   rootWalkArgType,
   hierarchyArgType,
-  secondIriArgType,
+  targetIriArgType,
   edgeLabelArgType,
   onNodeClickArgType, hrefArgType, onNavigateToArgType, classNameArgType
 } from "../../../stories/storyArgs";
@@ -18,7 +18,7 @@ export const GraphViewWidgetStoryArgTypes = {
   ...rootWalkArgType,
   ...hierarchyArgType,
   ...classNameArgType,
-  ...secondIriArgType,
+  ...targetIriArgType,
   ...edgeLabelArgType,
   ...onNodeClickArgType,
   ...hrefArgType,
@@ -39,14 +39,14 @@ export const ChebiIonArgs = {
   ontologyId: "chebi",
   rootWalk: false,
   hierarchy: false,
-  secondIri: "",
+  targetIri: "",
 };
 
 export const ChebiIonComparisonArgs = {
   ...ChebiIonArgs,
   api: globals.TIB_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
-  secondIri: "http://purl.obolibrary.org/obo/CHEBI_139544",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_139544",
   ontologyId: "chebi",
   rootWalk: false,
   hierarchy: false
@@ -105,7 +105,7 @@ export const ChebiCaffeineHierarchyWithComparisonArgs = {
   ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
-  secondIri: "http://purl.obolibrary.org/obo/CHEBI_30151",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_30151",
   ontologyId: "chebi",
   rootWalk: true,
   hierarchy: true,
