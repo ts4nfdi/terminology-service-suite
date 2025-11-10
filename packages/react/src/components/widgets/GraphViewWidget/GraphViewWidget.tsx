@@ -664,13 +664,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", paddingTop:"10px", bottom: "20px", right: "20px" }}>
           <b>Legend:</b>
           <ul style={{paddingTop:"15px"}}>
-            <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  {iri} </li>
+            <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Source: <i>{iri}</i> </li>
             {targetIri &&
               <>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to {iri} </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{iri}</i> </li>
                 <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common subtree </li>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> {targetIri} </li>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to {targetIri} </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> Target: <i>{targetIri}</i> </li>
+                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{targetIri}</i> </li>
               </>
             }
           </ul>
