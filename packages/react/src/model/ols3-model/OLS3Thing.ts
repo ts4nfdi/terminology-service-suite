@@ -1,6 +1,6 @@
 import { Thing } from "../interfaces";
 
-import LinkedEntities from "../LinkedEntities";
+import LinkedEntities from "../ols-model/LinkedEntities";
 import Reified from "../Reified";
 import { ThingTypeName } from "../ModelTypeCheck";
 import { pluralizeType } from "../../app/util";

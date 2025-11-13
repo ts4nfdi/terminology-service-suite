@@ -12,7 +12,7 @@ import {
   entityTypeNames,
 } from "../../model/ModelTypeCheck";
 import { Entity, Individual } from "../../model/interfaces";
-import { createModelObject } from "../../model/ModelObjectCreator";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import {
   apiCallFn,
   ContentParams,
@@ -224,31 +224,33 @@ export class OlsEntityApi extends OlsBaseApi {
     let response;
     if (!iri) throw Error("No IRI provided");
 
-    if (entityType) {
-      response = await this.getEntityWithEntityTypeProvided(
-        iri,
-        entityType,
-        ontologyId,
-        parameter,
-        useLegacy,
-      );
-    } else {
-      if (getUseLegacy(useLegacy)) {
-        response = await this.getEntityWithInferredEntityType(
-          iri,
-          ontologyId,
-          parameter,
-        );
-      } else {
-        response = await this.getEntity(
-          undefined,
-          undefined,
-          { ontologyId: ontologyId, termIri: iri },
-          parameter,
-          useLegacy,
-        );
-      }
-    }
+        if (getUseLegacy(useLegacy)) {
+            if(entityType) {
+                response = await this.getEntityWithEntityTypeProvided(
+                    iri,
+                    entityType,
+                    ontologyId,
+                    parameter,
+                    useLegacy,
+                );
+            }
+            else {
+                response = await this.getEntityWithInferredEntityType(
+                    iri,
+                    ontologyId,
+                    parameter,
+                );
+            }
+        }
+        else {
+            response = await this.getEntity(
+                undefined,
+                undefined,
+                { ontologyId: ontologyId, termIri: iri },
+                parameter,
+                useLegacy,
+            );
+        }
 
     return response;
   }

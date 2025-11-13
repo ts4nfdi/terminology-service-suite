@@ -64,8 +64,10 @@ window['ts4nfdiWidgets'].createHierarchy(
         keepExpansionStates:${args.keepExpansionStates},
         showSiblingsOnInit:${args.showSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
-        onNavigateToOntology:${args.onNavigateToOntology}
-        hierarchyWrap:${args.hierarchyWrap}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        hierarchyWrap:${args.hierarchyWrap},
+        className:"${args.className}",
+        parameter:"${args.parameter}"
     },
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )

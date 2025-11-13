@@ -10,15 +10,15 @@
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.custom-breadcrumb-style .clickable-breadcrumb {
+.custom-breadcrumb-style .clickable-badge {
 }
 
-.custom-breadcrumb-style .breadcrumb {
+.custom-breadcrumb-style .badge {
   padding: 6px 6px 0;
   border-radius: 0;
   border: 10px solid rgba(0, 0, 0, 0);
 }
 
-.custom-breadcrumb-style .clickable-breadcrumb:hover {
+.custom-breadcrumb-style .clickable-badge:hover {
   border: 2px solid black;
 }
