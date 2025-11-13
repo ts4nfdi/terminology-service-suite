@@ -68,6 +68,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const [targetIri, setTargetIri] = useState<string>(props.targetIri ?? "");
+  const [sourceLabel, setSourceLabel] = useState<string>(""); // main node label
+  const [targetLabel, setTargetLabel] = useState<string>(""); // target node label (comparison)
 
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -223,9 +225,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
       if (gNode.id === iri) {
+        setSourceLabel(gNode.label ?? "");
         gNode.color.background = sourceNodeBgColor;
         gNode.font.color = nodeTextColor;
       } else if (targetIri && gNode.id === targetIri) {
+        setTargetLabel(gNode.label ?? "");
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
       }
@@ -661,16 +665,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           style={{ width: "100%", height: "100vh", margin: "auto" }}
         />
 
-        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", paddingTop:"10px", bottom: "20px", right: "20px" }}>
+        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", paddingTop: "10px", bottom: "20px", right: "20px" }}>
           <b>Legend:</b>
-          <ul style={{paddingTop:"15px"}}>
-            <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Source: <i>{iri}</i> </li>
+          <ul style={{ paddingTop: "15px" }}>
+            <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Source: <i>{sourceLabel}</i> </li>
             {targetIri &&
               <>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{iri}</i> </li>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common subtree </li>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> Target: <i>{targetIri}</i> </li>
-                <li style={{paddingTop: "5px"}}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{targetIri}</i> </li>
+                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{sourceLabel}</i> </li>
+                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common subtree </li>
+                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> Target: <i>{targetLabel}</i> </li>
+                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{targetLabel}</i> </li>
               </>
             }
           </ul>
