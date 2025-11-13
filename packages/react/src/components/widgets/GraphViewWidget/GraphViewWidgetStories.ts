@@ -111,6 +111,17 @@ export const ChebiCaffeineHierarchyWithComparisonArgs = {
   hierarchy: true,
 };
 
+
+export const ChebiIonAndIonRadicalWithComparisonArgs = {
+  ...ChebiIonArgs,
+  api: globals.EBI_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_36875",
+  ontologyId: "chebi",
+  rootWalk: true,
+  hierarchy: true,
+};
+
 export const commonGraphViewWidgetPlay = async ({
   canvasElement,
 }: {

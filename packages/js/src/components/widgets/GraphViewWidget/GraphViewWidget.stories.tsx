@@ -6,7 +6,11 @@ import {
   ChebiWaterRootWalkArgs,
   ChebiCaffeineHierarchyArgs,
   WithOnNodeDoubleClickCallbackArgs,
-  ChebiCaffeineHierarchyWithComparisonArgs, ChebiIonArgs, ChebiIonComparisonArgs, ChebiIonRootWalkArgs
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonArgs,
+  ChebiIonComparisonArgs,
+  ChebiIonRootWalkArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -132,6 +136,16 @@ export const WithOnNodeDoubleClickCallback: Story = {
 
 export const ChebiCaffeineHierarchyWithComparison: Story = {
   args: ChebiCaffeineHierarchyWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiIonAndIonRadicalWithComparison: Story = {
+  args: ChebiIonAndIonRadicalWithComparisonArgs,
   parameters: {
     docs: {
       disable: true,

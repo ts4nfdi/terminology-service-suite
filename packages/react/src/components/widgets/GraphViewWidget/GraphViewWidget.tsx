@@ -232,8 +232,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         setTargetLabel(gNode.label ?? "");
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
-      }
-      if (nodeColorMap.current.get(gNode.id!)) {
+      } else if (nodeColorMap.current.get(gNode.id!)) {
         gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
       } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== sourceNodeBgColor) {
         gNode.color.background = dbClickedColor.bgColor;
@@ -242,7 +241,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
-    } else if (isCommon) {
+    } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
       gNode = new GraphNode(node = node, commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
