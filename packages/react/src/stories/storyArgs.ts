@@ -220,7 +220,7 @@ export const hierarchyWrapArgType = {
   hierarchyWrap: {
     required: false,
     description:
-        "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
+      "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
     table: {
       defaultValue: {
         summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
@@ -638,10 +638,10 @@ export const onNavigateToEntityArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToEntity()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ".",
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ".",
         );
       },
       "Navigate to EBI page": (
@@ -652,19 +652,19 @@ export const onNavigateToEntityArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-              ontologyId +
-              "/" +
-              new Map([
-                ["term", "classes"],
-                ["class", "classes"],
-                ["individual", "individuals"],
-                ["property", "properties"],
-                ["dataProperty", "properties"],
-                ["objectProperty", "properties"],
-                ["annotationProperty", "properties"],
-              ]).get(entityType) +
-              "/" +
-              encodeURIComponent(encodeURIComponent(entity.iri)),
+            ontologyId +
+            "/" +
+            new Map([
+              ["term", "classes"],
+              ["class", "classes"],
+              ["individual", "individuals"],
+              ["property", "properties"],
+              ["dataProperty", "properties"],
+              ["objectProperty", "properties"],
+              ["annotationProperty", "properties"],
+            ]).get(entityType) +
+            "/" +
+            encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -696,10 +696,10 @@ export const onNavigateToOntologyArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToOntology()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ` for ontologyId "${ontologyId}".`,
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ` for ontologyId "${ontologyId}".`,
         );
       },
       "Navigate to EBI page": (
@@ -710,19 +710,19 @@ export const onNavigateToOntologyArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-              ontologyId +
-              "/" +
-              new Map([
-                ["term", "classes"],
-                ["class", "classes"],
-                ["individual", "individuals"],
-                ["property", "properties"],
-                ["dataProperty", "properties"],
-                ["objectProperty", "properties"],
-                ["annotationProperty", "properties"],
-              ]).get(entityType) +
-              "/" +
-              encodeURIComponent(encodeURIComponent(entity.iri)),
+            ontologyId +
+            "/" +
+            new Map([
+              ["term", "classes"],
+              ["class", "classes"],
+              ["individual", "individuals"],
+              ["property", "properties"],
+              ["dataProperty", "properties"],
+              ["objectProperty", "properties"],
+              ["annotationProperty", "properties"],
+            ]).get(entityType) +
+            "/" +
+            encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -753,10 +753,10 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToDisambiguate()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ".",
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ".",
         );
       },
       "Navigate to EBI page": (
@@ -764,8 +764,7 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
         entity?: { iri: string; label?: string },
       ) => {
         window.open(
-          `https://www.ebi.ac.uk/ols4/search?q=${
-            entity && entity.label ? entity.label : ""
+          `https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : ""
           }&exactMatch=true&lang=en`,
           "_top",
         );
@@ -831,6 +830,57 @@ export const rootWalkArgType: ArgTypes = {
       type: { summary: "boolean" },
     },
     control: { type: "boolean" },
+  },
+};
+
+
+export const hierarchyArgType: ArgTypes = {
+  rootWalk: {
+    required: false,
+    description:
+      "When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.",
+    table: {
+      defaultValue: { summary: "false" },
+      type: { summary: "boolean" },
+    },
+    control: { type: "boolean" },
+  },
+};
+
+export const targetIriArgType: ArgTypes = {
+  href: {
+    required: false,
+    description:
+      "The target iri. used in the hierarchy mode to compare two terms in one graph.",
+    table: {
+      type: { summary: `string` },
+    },
+    control: "text",
+  },
+};
+
+
+export const edgeLabelArgType: ArgTypes = {
+  href: {
+    required: false,
+    description:
+      `The edge label in the graph. Default is "is a". Only for sub-class predicators.`,
+    table: {
+      type: { summary: `string` },
+    },
+    control: "text",
+  },
+};
+
+export const onNodeClickArgType: ArgTypes = {
+  onNavigateTo: {
+    required: false,
+    description:
+      "Callback function for double clicking on a node in graph. The default behaviour is to expand the node.",
+    table: {
+      type: { summary: "void" },
+    },
+    control: "text",
   },
 };
 
@@ -944,7 +994,7 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
   },
 };
 export const hierarchyShowSiblingsOnInitArgType = {
-  hierarchyShowSiblingsOnInit:  showSiblingsOnInitArgType.showSiblingsOnInit
+  hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit
 }
 export const entityArgType = {
   entity: {
