@@ -65,7 +65,11 @@ window['ts4nfdiWidgets'].createHierarchy(
         showSiblingsOnInit:${args.showSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology}
-        hierarchyWrap:${args.hierarchyWrap}
+        hierarchyWrap:${args.hierarchyWrap},
+        showHeader:${args.showHeader},
+        showComparisonTitleInHeader:${args.showComparisonTitleInHeader},
+        compareIri:"${args.compareIri}",
+        className:"${args.className}"
     },
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )
