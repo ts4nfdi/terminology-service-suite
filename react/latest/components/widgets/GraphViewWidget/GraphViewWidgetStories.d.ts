@@ -6,30 +6,47 @@ export declare const GraphViewWidgetStoryArgs: {
     iri: string;
     ontologyId: string;
     rootWalk: boolean;
+    hierarchy: boolean;
 };
-export declare const GraphViewWidgetExampleArgs: {
+export declare const ChebiIonArgs: {
     api: string;
     iri: string;
     ontologyId: string;
     rootWalk: boolean;
+    hierarchy: boolean;
+    targetIri: string;
 };
-export declare const RootWalkGraphExampleArgs: {
+export declare const ChebiIonComparisonArgs: {
+    api: string;
+    iri: string;
+    targetIri: string;
+    ontologyId: string;
+    rootWalk: boolean;
+    hierarchy: boolean;
+};
+export declare const ChebiIonRootWalkArgs: {
     api: string;
     iri: string;
     ontologyId: string;
     rootWalk: boolean;
+    hierarchy: boolean;
+    targetIri: string;
 };
 export declare const ChebiWaterArgs: {
     api: string;
     iri: string;
     ontologyId: string;
     rootWalk: boolean;
+    hierarchy: boolean;
+    targetIri: string;
 };
 export declare const ChebiWaterRootWalkArgs: {
     api: string;
     iri: string;
     ontologyId: string;
     rootWalk: boolean;
+    hierarchy: boolean;
+    targetIri: string;
 };
 export declare const ChebiCaffeineHierarchyArgs: {
     api: string;
@@ -37,6 +54,7 @@ export declare const ChebiCaffeineHierarchyArgs: {
     ontologyId: string;
     rootWalk: boolean;
     hierarchy: boolean;
+    targetIri: string;
 };
 export declare const WithOnNodeDoubleClickCallbackArgs: {
     api: string;
@@ -45,6 +63,23 @@ export declare const WithOnNodeDoubleClickCallbackArgs: {
     rootWalk: boolean;
     hierarchy: boolean;
     onNodeClick: (iri: string) => void;
+    targetIri: string;
+};
+export declare const ChebiCaffeineHierarchyWithComparisonArgs: {
+    api: string;
+    iri: string;
+    targetIri: string;
+    ontologyId: string;
+    rootWalk: boolean;
+    hierarchy: boolean;
+};
+export declare const ChebiIonAndIonRadicalWithComparisonArgs: {
+    api: string;
+    iri: string;
+    targetIri: string;
+    ontologyId: string;
+    rootWalk: boolean;
+    hierarchy: boolean;
 };
 export declare const commonGraphViewWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
