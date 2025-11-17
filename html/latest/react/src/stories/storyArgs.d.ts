@@ -177,6 +177,10 @@ export declare const onNavigateArgType: ArgTypes;
 export declare const onNavigateToArgType: ArgTypes;
 export declare const hrefArgType: ArgTypes;
 export declare const rootWalkArgType: ArgTypes;
+export declare const hierarchyArgType: ArgTypes;
+export declare const targetIriArgType: ArgTypes;
+export declare const edgeLabelArgType: ArgTypes;
+export declare const onNodeClickArgType: ArgTypes;
 export declare const apiKeyArgType: {
     apiKey: {
         required: boolean;

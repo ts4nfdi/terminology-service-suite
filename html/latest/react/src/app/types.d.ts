@@ -499,6 +499,10 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
 export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & CssClassNameObj & {
     /**
+     * The target iri. used in the hierarchy mode to compare two terms in one graph.
+     */
+    targetIri?: string;
+    /**
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
     rootWalk?: boolean;
@@ -519,20 +523,17 @@ export type OlsGraphNode = {
     /**
      * Used in the GraphView widget for rendering a graph's node
      */
-    node: {
-        iri?: string;
-        label?: string;
-    };
+    iri?: string;
+    label?: string;
+    level?: number;
 };
 export type OlsGraphEdge = {
     /**
      * Used in the GraphView widget for rendering a graph's edge
      */
-    edge: {
-        uri?: string;
-        label?: string;
-        source?: string;
-        target?: string;
-    };
+    uri?: string;
+    label?: string;
+    source?: string;
+    target?: string;
 };
 export {};
