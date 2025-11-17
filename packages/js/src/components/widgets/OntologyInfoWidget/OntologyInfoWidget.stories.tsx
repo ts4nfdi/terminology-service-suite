@@ -48,6 +48,7 @@ window['ts4nfdiWidgets'].createOntologyInfo(
         useLegacy:${args.useLegacy},
         hasTitle:${args.hasTitle},
         showBadges:${args.showBadges},
+        width:${args.width},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate},

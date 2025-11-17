@@ -57,12 +57,16 @@ window['ts4nfdiWidgets'].createTab(
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
         terminologyInfoTab: ${args.terminologyInfoTab},
+        graphViewTab: ${args.graphViewTab},
+        termDepictionTab: ${args.termDepictionTab},
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        hierarchyWrap:${args.hierarchyWrap},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:"${args.className}"
     },
     document.querySelector('#tab_widget_container_${num}')
 )

@@ -49,6 +49,7 @@ window['ts4nfdiWidgets'].createBreadcrumb(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",
         entityType:"${args.entityType}",
+        useLegacy:${args.useLegacy},
         colorFirst:"${args.colorFirst}",
         colorSecond:"${args.colorSecond}",
         parameter:"${args.parameter}",

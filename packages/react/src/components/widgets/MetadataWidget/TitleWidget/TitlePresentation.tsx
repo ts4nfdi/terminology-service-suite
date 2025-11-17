@@ -1,11 +1,8 @@
 import React from "react";
 import { EuiLink, EuiLoadingSpinner, EuiText } from "@elastic/eui";
-import { TitlePresentationProps } from "../../../../app/types";
+import { TitlePresentationProps } from "../../../../app";
 import {
   getErrorMessageToDisplay,
-  isEuiLinkColor,
-  isHexColor,
-  isRgbColor,
 } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTitleStyle.css";
 
