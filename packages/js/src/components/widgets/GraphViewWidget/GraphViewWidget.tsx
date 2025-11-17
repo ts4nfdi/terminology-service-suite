@@ -1,4 +1,4 @@
-import { GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite";
+import { GraphViewWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import { WrappedGraphViewWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidget";
