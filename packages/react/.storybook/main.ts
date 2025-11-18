@@ -23,9 +23,9 @@ const config: StorybookConfig = {
   },
   env: (config) => ({
     ...config,
-    STORYBOOK_ENABLE_MATOMO: process.env.STORYBOOK_ENABLE_MATOMO ?? "false",
-    STORYBOOK_MATOMO_URL: process.env.STORYBOOK_MATOMO_URL ?? "",
-    STORYBOOK_MATOMO_SITE_ID: process.env.STORYBOOK_MATOMO_SITE_ID ?? "",
+    VITE_STORYBOOK_ENABLE_MATOMO: process.env.VITE_STORYBOOK_ENABLE_MATOMO ?? "false",
+    VITE_STORYBOOK_MATOMO_URL: process.env.VITE_STORYBOOK_MATOMO_URL ?? "",
+    VITE_STORYBOOK_MATOMO_SITE_ID: process.env.VITE_STORYBOOK_MATOMO_SITE_ID ?? "",
   }),
 };
 export default config;

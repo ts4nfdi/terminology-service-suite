@@ -15,6 +15,14 @@ module.exports = {
     name: getAbsolutePath("@storybook/html-vite"),
     options: {},
   },
+  env: (config: any) => ({
+    ...config,
+    VITE_STORYBOOK_ENABLE_MATOMO:
+      process.env.VITE_STORYBOOK_ENABLE_MATOMO ?? "false",
+    VITE_STORYBOOK_MATOMO_URL: process.env.VITE_STORYBOOK_MATOMO_URL ?? "",
+    VITE_STORYBOOK_MATOMO_SITE_ID:
+      process.env.VITE_STORYBOOK_MATOMO_SITE_ID ?? "",
+  }),
 };
 
 function getAbsolutePath(value: string): any {
