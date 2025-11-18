@@ -227,10 +227,6 @@ jobs:
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
-    env:
-      STORYBOOK_ENABLE_MATOMO: "true"
-      STORYBOOK_MATOMO_URL: ${{ secrets.STORYBOOK_MATOMO_URL }}
-      STORYBOOK_MATOMO_SITE_ID: ${{ secrets.STORYBOOK_MATOMO_SITE_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
