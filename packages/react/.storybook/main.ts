@@ -2,8 +2,6 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import type { StorybookConfig } from "@storybook/react-vite";
 
-const require = createRequire(import.meta.url);
-
 const config: StorybookConfig = {
   // no ts files included here to not include html stories
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|tsx)"],
@@ -23,6 +21,12 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: "react-docgen",
   },
+  env: (config) => ({
+    ...config,
+    STORYBOOK_ENABLE_MATOMO: process.env.STORYBOOK_ENABLE_MATOMO ?? "false",
+    STORYBOOK_MATOMO_URL: process.env.STORYBOOK_MATOMO_URL ?? "",
+    STORYBOOK_MATOMO_SITE_ID: process.env.STORYBOOK_MATOMO_SITE_ID ?? "",
+  }),
 };
 export default config;
 
