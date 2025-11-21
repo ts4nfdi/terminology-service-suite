@@ -6,3 +6,5 @@ if (process.env.VITE_STORYBOOK_ENABLE_MATOMO === 'true'){
 } else {
   window.STORYBOOK_MATOMO_OPTIONS = { disable: true };
 }
+
+console.log("Matomo enabled: ", process.env.VITE_STORYBOOK_ENABLE_MATOMO)
