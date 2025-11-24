@@ -54,3 +54,41 @@ export const getBestMatchingSynonym = (
 
   return bestMatch;
 };
+
+/**
+ * Selects a synonym based on strict searchValue inclusion rules for both the label and the synonym.
+ *
+ * Rules:
+ * 1. If the label contains the searchValue, return empty string.
+ * 2. Only consider synonyms that contain the searchValue.
+ *
+ * @param label - The original label to check against
+ * @param synonyms - The list of potential synonyms
+ * @param searchValue - The string that must/must not be present
+ * @returns The best matching valid synonym, or empty string
+ */
+export const getConstrainedSynonym = (
+  label: string,
+  synonyms: string[],
+  searchValue: string
+): string => {
+  if (!searchValue) {
+    return '';
+  }
+
+  const normalizedLabel = label.toLowerCase();
+  const normalizedsearchValue = searchValue.toLowerCase();
+
+  // Rule 1: Do not use synonym if label contains the searchValue
+  if (normalizedLabel.includes(normalizedsearchValue)) {
+    return '';
+  }
+
+  // Rule 2: Filter synonyms that MUST contain the searchValue
+  const validSynonyms = synonyms.filter((synonym) =>
+    synonym.toLowerCase().includes(normalizedsearchValue)
+  );
+
+  // Pick the best match from the valid list
+  return getBestMatchingSynonym(validSynonyms, searchValue);
+};

@@ -19,7 +19,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
-import { getBestMatchingSynonym } from "./utils";
+import { getConstrainedSynonym } from "./utils";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -139,7 +139,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     const renderEntity = () => {
       const allSynonyms = value.synonyms ?? [];
-      const bestSynonym = getBestMatchingSynonym(allSynonyms, searchValue);
+      const bestSynonym = getConstrainedSynonym(value.label, allSynonyms, searchValue);
 
       return (
           <span title={hoverText} className={finalClassName}>
