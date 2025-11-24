@@ -19,6 +19,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { getBestMatchingSynonym } from "./utils";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -108,6 +109,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       hoverText += "\n\nSource: " + value.source;
       hoverText += "\n\nSource URL: " + value.source_url;
     }
+    if (value.synonyms && value.synonyms.length > 1) {
+      hoverText += "\n\nSynonyms: " + value.synonyms.join(", ");
+    }
 
     const renderOntology = () => {
       return (
@@ -134,6 +138,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     };
 
     const renderEntity = () => {
+      const allSynonyms = value.synonyms ?? [];
+      const bestSynonym = getBestMatchingSynonym(allSynonyms, searchValue);
+
       return (
           <span title={hoverText} className={finalClassName}>
       <div
@@ -144,7 +151,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           }}
       >
         <EuiHealth color={dotColor}>
-          <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+          <span>
+            <EuiHighlight search={searchValue}>
+              {value.label}
+            </EuiHighlight>
+
+            {bestSynonym && (
+              <>
+                {" ("}
+                <EuiHighlight search={searchValue}>
+                  {`SYN: ${bestSynonym || ''}`}
+                </EuiHighlight>
+                {")"}
+              </>
+            )}
+          </span>
         </EuiHealth>
 
         <BreadcrumbPresentation
@@ -444,6 +465,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                           description: selection.getDescription ? selection.getDescription() : "",
                           source: selection.getApiSourceName ? selection.getApiSourceName() : "",
                           source_url: selection.getApiSourceEndpoint ? selection.getApiSourceEndpoint() : "",
+                          synonyms: selection.getSynonyms() ? selection.getSynonyms() : [],
                         },
                       };
                     } else {
@@ -461,6 +483,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
                           description: selection.getDescription(),
                           source: selection.getApiSourceName(),
                           source_url: selection.getApiSourceEndpoint(),
+                          synonyms: selection.getSynonyms() ? selection.getSynonyms() : [],
                         },
                       };
                     }
@@ -498,6 +521,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: x.value.short_form,
               description: x.value.description,
               source: x.value.source,
+              synonyms: x.value.synonyms,
             };
           } else if (x.value.iri == "") {
             return {
@@ -508,6 +532,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: "",
               description: "",
               source: "",
+              synonyms: [],
             };
           } else {
             return {
@@ -518,6 +543,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: x.value.short_form,
               description: x.value.description,
               source: x.value.source,
+              synonyms: x.value.synonyms,
             };
           }
         }),
@@ -557,6 +583,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         short_form: "",
         description: "",
         source: "",
+        synonyms: [],
       },
     };
 
