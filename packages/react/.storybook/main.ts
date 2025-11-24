@@ -23,9 +23,9 @@ const config: StorybookConfig = {
   },
   env: (config) => ({
     ...config,
-    VITE_STORYBOOK_ENABLE_MATOMO: process.env.VITE_STORYBOOK_ENABLE_MATOMO ?? "false",
-    VITE_STORYBOOK_MATOMO_URL: process.env.VITE_STORYBOOK_MATOMO_URL ?? "",
-    VITE_STORYBOOK_MATOMO_SITE_ID: process.env.VITE_STORYBOOK_MATOMO_SITE_ID ?? "",
+    VITE_STORYBOOK_ENABLE_MATOMO: "true",
+    VITE_STORYBOOK_MATOMO_URL: "https://piwik.cebitec.uni-bielefeld.de/",
+    VITE_STORYBOOK_MATOMO_SITE_ID: "36"
   }),
 };
 export default config;
