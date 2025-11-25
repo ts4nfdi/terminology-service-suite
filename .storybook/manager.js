@@ -6,7 +6,7 @@ addons.setConfig({
     base: 'light',
     brandTitle: 'TS4NFDI',
     brandUrl: 'https://terminology.services.base4nfdi.de/',
-    brandImage: '../img/TS4NFDI-small-white.svg',
+    brandImage: '../img/TS4NFDI-small-grey.svg',
     brandTarget: '_self',
     colorSecondary: '#45556a',
     colorPrimary: '#45556a',
