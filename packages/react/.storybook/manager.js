@@ -1,10 +1,10 @@
-if (process.env.VITE_STORYBOOK_ENABLE_MATOMO === 'true'){
+if ('true' === 'true'){
   window.STORYBOOK_MATOMO_OPTIONS = {
-    urlBase: process.env.VITE_STORYBOOK_MATOMO_URL,
-    siteId: process.env.VITE_STORYBOOK_MATOMO_SITE_ID,
+    urlBase: "https://piwik.cebitec.uni-bielefeld.de/",
+    siteId: 36,
   };
 } else {
   window.STORYBOOK_MATOMO_OPTIONS = { disable: true };
 }
 
-console.log("Matomo enabled: ", process.env.VITE_STORYBOOK_ENABLE_MATOMO)
+console.log("Matomo enabled: ", import.meta.env.STORYBOOK_ENABLE_MATOMO)

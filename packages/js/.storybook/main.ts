@@ -17,9 +17,9 @@ module.exports = {
   },
   env: (config: any) => ({
     ...config,
-    VITE_STORYBOOK_ENABLE_MATOMO: "true",
-    VITE_STORYBOOK_MATOMO_URL: "https://piwik.cebitec.uni-bielefeld.de/",
-    VITE_STORYBOOK_MATOMO_SITE_ID: "36"
+    STORYBOOK_ENABLE_MATOMO: "true",
+    STORYBOOK_MATOMO_URL: "https://piwik.cebitec.uni-bielefeld.de/",
+    STORYBOOK_MATOMO_SITE_ID: "36"
   }),
 };
 
