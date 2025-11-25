@@ -1,0 +1,32 @@
+import { Entity } from '../interfaces';
+import { OLS4Thing } from './OLS4Thing';
+import { default as Reified } from '../Reified';
+export declare abstract class OLS4Entity extends OLS4Thing implements Entity {
+    abstract getParents(): Reified<any>[];
+    abstract getSuperEntities(): Reified<any>[];
+    abstract getEquivalents(): Reified<any>[];
+    isCanonical(): boolean;
+    isDeprecated(): boolean;
+    getDeprecationVersion(): string;
+    getDeprecationReason(): Reified<any>[];
+    getDeprecationReplacement(): string;
+    getRelatedFrom(): Reified<any>[];
+    getDescriptionAsArray(): Reified<any>[];
+    hasDirectChildren(): boolean;
+    hasHierarchicalChildren(): boolean;
+    hasChildren(): boolean;
+    getAncestorIris(): string[];
+    getHierarchicalAncestorIris(): string[];
+    getSynonyms(): Reified<any>[];
+    getAppearsIn(): string[];
+    getCrossReferences(): any[];
+    getDefinedBy(): string[];
+    getIsDefiningOntology(): boolean;
+    getShortForm(): string;
+    getDepictedBy(): Reified<string>[];
+    isPredicateFromInformalVocabulary(predicate: string): boolean;
+    getAnnotationPredicates(): string[];
+    getNumHierarchicalDescendants(): number;
+    getNumDescendants(): number;
+    getHierarchicalParentReificationAxioms(parentIri: string): any;
+}
