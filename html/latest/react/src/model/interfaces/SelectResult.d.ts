@@ -10,4 +10,5 @@ export interface SelectResult {
     getShortForm(): string;
     getApiSourceName(): string;
     getApiSourceEndpoint(): string;
+    getSynonyms(): [];
 }
