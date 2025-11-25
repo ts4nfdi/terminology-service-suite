@@ -12,4 +12,5 @@ export declare class OLSSelectResult implements SelectResult {
     getShortForm(): string;
     getApiSourceName(): string;
     getApiSourceEndpoint(): string;
+    getSynonyms(): [];
 }
