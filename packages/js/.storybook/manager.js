@@ -1,8 +1,10 @@
-if (process.env.VITE_STORYBOOK_ENABLE_MATOMO === 'true'){
+if (import.meta.env.STORYBOOK_ENABLE_MATOMO === 'true'){
   window.STORYBOOK_MATOMO_OPTIONS = {
-    urlBase: process.env.VITE_STORYBOOK_MATOMO_URL,
-    siteId: process.env.VITE_STORYBOOK_MATOMO_SITE_ID,
+    urlBase: import.meta.env.STORYBOOK_MATOMO_URL,
+    siteId: import.meta.env.STORYBOOK_MATOMO_SITE_ID,
   };
 } else {
   window.STORYBOOK_MATOMO_OPTIONS = { disable: true };
 }
+
+console.log("Matomo enabled: ", import.meta.env.STORYBOOK_ENABLE_MATOMO)
