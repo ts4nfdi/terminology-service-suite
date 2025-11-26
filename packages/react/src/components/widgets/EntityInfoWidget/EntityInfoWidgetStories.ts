@@ -60,9 +60,10 @@ export const PropertyInfoWidgetArgs = {
 
 export const IndividualInfoWidgetArgs = {
   ...EntityInfoWidgetStoryArgs,
-  iri: "http://purl.obolibrary.org/obo/IAO_0000423",
+  iri: "https://openenergyplatform.org/ontology/oeo/OEO_00020163",
   entityType: "individual" as EntityTypeName,
-  ontologyId: "clo",
+  ontologyId: "oeo",
+  api: globals.TIB_API_ENDPOINT,
 };
 
 export const InfoWidgetBadgesArgs = {
@@ -85,6 +86,8 @@ export const InfoWidgetDomainArgs = {
   api: globals.EBI_API_ENDPOINT,
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/NCIT_R89",
+  entityType: "property" as EntityTypeName,
+  ontologyId: "ncit"
 };
 
 export const InfoWidgetRangeArgs = {
@@ -92,6 +95,8 @@ export const InfoWidgetRangeArgs = {
   api: globals.EBI_API_ENDPOINT,
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/RO_0002029",
+  entityType: "property" as EntityTypeName,
+  ontologyId: "ro"
 };
 
 export const InfoWidgetPropertyAssertionArgs = {
@@ -99,6 +104,8 @@ export const InfoWidgetPropertyAssertionArgs = {
   api: globals.EBI_API_ENDPOINT,
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
+  entityType: "individual" as EntityTypeName,
+  ontologyId: "envo"
 };
 
 export const InfoWidgetPropertyCharacteristicsArgs = {
@@ -106,6 +113,8 @@ export const InfoWidgetPropertyCharacteristicsArgs = {
   api: globals.EBI_API_ENDPOINT,
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
+  entityType: "property" as EntityTypeName,
+  ontologyId: "micro"
 };
 
 export const NavigateToEBIPageArgs = {
@@ -116,6 +125,8 @@ export const NavigateToEBIPageArgs = {
   onNavigateToEntity: "Navigate to EBI page",
   onNavigateToOntology: "Navigate to EBI page",
   onNavigateToDisambiguate: "Navigate to EBI page",
+  entityType: "individual" as EntityTypeName,
+  ontologyId: "envo"
 };
 export const SkosmosImportArgs = {
   ...EntityInfoWidgetStoryArgs,
