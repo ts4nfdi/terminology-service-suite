@@ -108,8 +108,8 @@ export declare const InfoWidgetDomainArgs: {
     api: string;
     useLegacy: boolean;
     iri: string;
-    ontologyId: string;
     entityType: EntityTypeName;
+    ontologyId: string;
     hasTitle: boolean;
     showBadges: boolean;
     parameter: string;
@@ -121,8 +121,8 @@ export declare const InfoWidgetRangeArgs: {
     api: string;
     useLegacy: boolean;
     iri: string;
-    ontologyId: string;
     entityType: EntityTypeName;
+    ontologyId: string;
     hasTitle: boolean;
     showBadges: boolean;
     parameter: string;
@@ -134,8 +134,8 @@ export declare const InfoWidgetPropertyAssertionArgs: {
     api: string;
     useLegacy: boolean;
     iri: string;
-    ontologyId: string;
     entityType: EntityTypeName;
+    ontologyId: string;
     hasTitle: boolean;
     showBadges: boolean;
     parameter: string;
@@ -147,8 +147,8 @@ export declare const InfoWidgetPropertyCharacteristicsArgs: {
     api: string;
     useLegacy: boolean;
     iri: string;
-    ontologyId: string;
     entityType: EntityTypeName;
+    ontologyId: string;
     hasTitle: boolean;
     showBadges: boolean;
     parameter: string;
@@ -163,8 +163,8 @@ export declare const NavigateToEBIPageArgs: {
     onNavigateToEntity: string;
     onNavigateToOntology: string;
     onNavigateToDisambiguate: string;
-    ontologyId: string;
     entityType: EntityTypeName;
+    ontologyId: string;
     hasTitle: boolean;
     showBadges: boolean;
     parameter: string;
