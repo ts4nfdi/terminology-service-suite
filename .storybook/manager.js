@@ -1,9 +1,14 @@
 import { addons } from 'storybook/manager-api'
 
-addons.setConfig({
-  matomo: {
-    baseUrl: "https://piwik.cebitec.uni-bielefeld.de/",
-    siteId: 36,
-    heartbeat: true,
-  },
-});
+const enableMatomo = process.env.STORYBOOK_ENABLE_MATOMO === "true"
+
+if (enableMatomo) {
+  addons.setConfig({
+    matomo: {
+      baseUrl: process.env.STORYBOOK_MATOMO_URL,
+      siteId: process.env.STORYBOOK_MATOMO_SITE_ID,
+      heartbeat: true,
+    },
+  });
+}
+
