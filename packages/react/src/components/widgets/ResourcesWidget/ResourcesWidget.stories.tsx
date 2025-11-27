@@ -4,7 +4,6 @@ import {
   ResourcesWidgetStoryArgTypes,
   ResourcesWidget1Args,
   WithActionsArgs,
-  WithActionsAndSafetyArgs,
   ResourcesWidgetLogosArgs,
   commonResourcesWidgetPlay,
 } from "./ResourcesWidgetStories";
@@ -36,14 +35,7 @@ export const ResourcesWidget1 = {
 };
 
 export const WithActions = {
-  args: ResourcesWidget1Args,
-  WithActionsArgs,
-  play: commonResourcesWidgetPlay,
-};
-
-export const WithActionsAndSafety = {
   args: WithActionsArgs,
-  WithActionsAndSafetyArgs,
   play: commonResourcesWidgetPlay,
 };
 

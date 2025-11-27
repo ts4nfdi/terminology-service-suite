@@ -47,7 +47,7 @@ export const AutocompleteWidgetStoryArgsReact = {
   className: "",
   useLegacy: true,
   parameter:
-    "fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
 };
 
@@ -66,7 +66,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
   singleSuggestionRow: false,
   useLegacy: true,
   parameter:
-    "fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
 };
 

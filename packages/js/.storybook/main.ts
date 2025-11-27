@@ -8,19 +8,12 @@ module.exports = {
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("@storybook/addon-vitest"),
-    getAbsolutePath("@storybook-community/storybook-addon-matomo"),
   ],
 
   framework: {
     name: getAbsolutePath("@storybook/html-vite"),
     options: {},
   },
-  env: (config: any) => ({
-    ...config,
-    VITE_STORYBOOK_ENABLE_MATOMO: "true",
-    VITE_STORYBOOK_MATOMO_URL: "https://piwik.cebitec.uni-bielefeld.de/",
-    VITE_STORYBOOK_MATOMO_SITE_ID: "36"
-  }),
 };
 
 function getAbsolutePath(value: string): any {

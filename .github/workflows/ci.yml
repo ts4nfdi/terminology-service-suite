@@ -145,9 +145,9 @@ jobs:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
     env:
-      VITE_STORYBOOK_ENABLE_MATOMO: "true"
-      VITE_STORYBOOK_MATOMO_URL: ${{ secrets.STORYBOOK_MATOMO_URL }}
-      VITE_STORYBOOK_MATOMO_SITE_ID: ${{ secrets.STORYBOOK_MATOMO_SITE_ID }}
+      STORYBOOK_ENABLE_MATOMO: "true"
+      STORYBOOK_MATOMO_URL: ${{ secrets.STORYBOOK_MATOMO_URL }}
+      STORYBOOK_MATOMO_SITE_ID: ${{ secrets.STORYBOOK_MATOMO_SITE_ID }}
       NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
     steps:
       - name: Checkout

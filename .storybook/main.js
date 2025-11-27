@@ -6,6 +6,7 @@ module.exports = {
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook-community/storybook-addon-matomo"),
   ],
 
   framework: {
@@ -15,6 +16,21 @@ module.exports = {
 
   typescript: {
     reactDocgen: "react-docgen",
+  },
+
+  // Define process.env for browser bundles (manager.js, preview.js)
+  async viteFinal(config, { configType }) {
+    return {
+      ...config,
+      define: {
+        ...config.define,
+        'process.env': {
+          STORYBOOK_ENABLE_MATOMO: JSON.stringify(process.env.STORYBOOK_ENABLE_MATOMO || 'false'),
+          STORYBOOK_MATOMO_URL: JSON.stringify(process.env.STORYBOOK_MATOMO_URL || ''),
+          STORYBOOK_MATOMO_SITE_ID: JSON.stringify(process.env.STORYBOOK_MATOMO_SITE_ID || ''),
+        },
+      },
+    };
   },
 
   refs: (config, { configType }) => {

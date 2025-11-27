@@ -184,7 +184,7 @@ These parameters can be used to filter the search results. Each parameter can be
 | **ontology**  | Restrict a search to a set of ontologies, e.g., \`ontology=uberon,mesh\`. |
 | **type**      | Restrict a search to an entity type, one of \`{class, property, individual, ontology}\`. |
 | **slim**      | Restrict a search to a particular set of slims by name. |
-| **fieldList** | Specify the fields to return. Defaults are **iri, label, short_form, obo_id, ontology_name, ontology_prefix, description, type**. |
+| **fieldList** | Specify the fields to return from the API. Set *fieldList=iri,label,short_form,obo_id,ontology_name,ontology_prefix, description,type,synonym* to get full details for each autocomplete term. |
 | **obsoletes** | Set to \`true\` to include obsolete terms in the results. |
 | **local**     | Set to \`true\` to only return terms that are in a defining ontology, e.g., only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced. |
 | **childrenOf** | Restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only). Example: \`childrenOf\` the Snomed CT term *Myocardial infarction (disorder)* (→ heart attack) results in returning direct subclasses such as *ST elevation myocardial infarction (STEMI)* or sub-subclasses such as *STEMI of anterior wall*. The search term *Coronary artery occlusion* will return, among other things, *Acute myocardial infarction due to left coronary artery occlusion* because it's a child of *Acute myocardial infarction*, which is a child of *Myocardial infarction*. |
