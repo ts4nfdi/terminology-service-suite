@@ -42,30 +42,15 @@ export declare const ResourcesWidget1: {
 };
 export declare const WithActions: {
     args: {
+        actions: {
+            render: (item: import('../../..').OlsResource) => import("react/jsx-runtime").JSX.Element;
+        }[];
         api: string;
         initialEntriesPerPage: number;
         pageSizeOptions: number[];
         initialSortField: string;
         initialSortDir: "asc";
         onNavigate: string;
-        parameter: string;
-    };
-    WithActionsArgs: {
-        actions: {
-            render: (item: import('../../..').OlsResource) => import("react/jsx-runtime").JSX.Element;
-        }[];
-    };
-    play: ({ canvasElement, }: {
-        canvasElement: HTMLElement;
-    }) => Promise<void>;
-};
-export declare const WithActionsAndSafety: {
-    args: {
-        actions: {
-            render: (item: import('../../..').OlsResource) => import("react/jsx-runtime").JSX.Element;
-        }[];
-    };
-    WithActionsAndSafetyArgs: {
         parameter: string;
     };
     play: ({ canvasElement, }: {

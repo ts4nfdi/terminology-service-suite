@@ -26,8 +26,12 @@ export declare const WithActionsArgs: {
     actions: {
         render: (item: OlsResource) => import("react/jsx-runtime").JSX.Element;
     }[];
-};
-export declare const WithActionsAndSafetyArgs: {
+    api: string;
+    initialEntriesPerPage: number;
+    pageSizeOptions: number[];
+    initialSortField: string;
+    initialSortDir: "asc";
+    onNavigate: string;
     parameter: string;
 };
 export declare const ResourcesWidgetLogosArgs: {

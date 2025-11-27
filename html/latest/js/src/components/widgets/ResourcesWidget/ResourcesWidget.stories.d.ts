@@ -30,18 +30,12 @@ export declare const WithActions: {
         actions: {
             render: (item: import('@ts4nfdi/terminology-service-suite/src').OlsResource) => import("react/jsx-runtime").JSX.Element;
         }[];
-    };
-    play: ({ canvasElement, }: {
-        canvasElement: HTMLElement;
-    }) => Promise<void>;
-};
-export declare const WithActionsAndSafety: {
-    args: {
-        actions: {
-            render: (item: import('@ts4nfdi/terminology-service-suite/src').OlsResource) => import("react/jsx-runtime").JSX.Element;
-        }[];
-    };
-    WithActionsAndSafetyArgs: {
+        api: string;
+        initialEntriesPerPage: number;
+        pageSizeOptions: number[];
+        initialSortField: string;
+        initialSortDir: "asc";
+        onNavigate: string;
         parameter: string;
     };
     play: ({ canvasElement, }: {
