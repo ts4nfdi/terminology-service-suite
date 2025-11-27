@@ -1,0 +1,14 @@
+import { GraphViewWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+import { Meta, StoryObj } from '@storybook/react-vite';
+declare const meta: Meta<GraphViewWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const ChebiIon: Story;
+export declare const ChebiIonComparison: Story;
+export declare const ChebiIonRootWalk: Story;
+export declare const ChebiWater: Story;
+export declare const ChebiWaterRootWalk: Story;
+export declare const ChebiCaffeineHierarchy: Story;
+export declare const WithOnNodeDoubleClickCallback: Story;
+export declare const ChebiCaffeineHierarchyWithComparison: Story;
+export declare const ChebiIonAndIonRadicalWithComparison: Story;
