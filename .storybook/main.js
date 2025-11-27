@@ -18,6 +18,13 @@ module.exports = {
     reactDocgen: "react-docgen",
   },
 
+  env: (config) => ({
+    ...config,
+    STORYBOOK_ENABLE_MATOMO: process.env.STORYBOOK_ENABLE_MATOMO || 'false',
+    STORYBOOK_MATOMO_URL: process.env.STORYBOOK_MATOMO_URL || '',
+    STORYBOOK_MATOMO_SITE_ID: process.env.STORYBOOK_MATOMO_SITE_ID || '',
+  }),
+
   refs: (config, { configType }) => {
     const envConfigType = process.env.CONFIG_TYPE || configType;
     if (envConfigType === "DEVELOPMENT") {

@@ -23,7 +23,7 @@
     "semantic-release": "npx semantic-release",
     "storybook:react": "storybook dev -p 6006 -c .storybook/react",
     "storybook:html": "storybook dev -p 6007 -c .storybook/html",
-    "storybook": "CONFIG_TYPE=DEVELOPMENT storybook dev -p 6008 -c .storybook",
+    "storybook": "storybook dev -p 6008 -c .storybook",
     "build:storybook": "storybook build",
     "style:format": "npx prettier --write .",
     "style:check": "npx prettier --check .",
