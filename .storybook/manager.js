@@ -1,5 +1,6 @@
 import { addons } from '@storybook/addons';
 import { create } from '@storybook/theming/create';
+import brandLogo from '../img/TS4NFDI-small-grey.svg';
 
 const enableMatomo = process.env.STORYBOOK_ENABLE_MATOMO === "true"
 
@@ -12,13 +13,14 @@ if (enableMatomo) {
     },
   });
 }
+console.log("Matomo enabled: ", enableMatomo)
 
 addons.setConfig({
   theme: create({
     base: 'light',
     brandTitle: 'TS4NFDI',
     brandUrl: 'https://terminology.services.base4nfdi.de/',
-    brandImage: '../img/TS4NFDI-small-grey.svg',
+    brandImage: brandLogo,
     brandTarget: '_self',
     colorSecondary: '#45556a',
     colorPrimary: '#45556a',
