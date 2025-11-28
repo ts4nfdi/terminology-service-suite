@@ -175,10 +175,14 @@ jobs:
           npm install
           npm run build:storybook -- -o ../../storybook-static/js
 
+      - name: Verify environment variables
+        run: |
+          echo "STORYBOOK_ENABLE_MATOMO=$STORYBOOK_ENABLE_MATOMO"
+
       - name: Install and Build Composed Storybook
         run: |
           npm install
-          npm run build:storybook -- -o storybook-static/public
+          STORYBOOK_ENABLE_MATOMO=true STORYBOOK_MATOMO_URL=${{ secrets.STORYBOOK_MATOMO_URL }} STORYBOOK_MATOMO_SITE_ID=${{ secrets.STORYBOOK_MATOMO_SITE_ID }} npm run build:storybook -- -o storybook-static/public
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
