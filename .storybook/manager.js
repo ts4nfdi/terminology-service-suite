@@ -1,6 +1,5 @@
 import { addons } from '@storybook/addons';
 import { create } from '@storybook/theming/create';
-import brandLogo from '../img/TS4NFDI-small-grey.svg';
 
 const enableMatomo = process.env.STORYBOOK_ENABLE_MATOMO === "true"
 
@@ -20,7 +19,7 @@ addons.setConfig({
     base: 'light',
     brandTitle: 'TS4NFDI',
     brandUrl: 'https://terminology.services.base4nfdi.de/',
-    brandImage: brandLogo,
+    brandImage: "https://raw.githubusercontent.com/nfdi4health/semlookp-widgets/main/img/TS4NFDI-small-grey.svg",
     brandTarget: '_self',
     colorSecondary: '#45556a',
     colorPrimary: '#45556a',
