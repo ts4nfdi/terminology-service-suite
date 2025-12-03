@@ -10,7 +10,6 @@ export const apiArgType: ArgTypes = {
     },
     options: [
       "https://terminology.services.base4nfdi.de/api-gateway/",
-      "https://service.tib.eu/ts4tib/api/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
@@ -21,7 +20,6 @@ export const apiArgType: ArgTypes = {
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
       "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
       "**[TIB:](https://www.tib.eu/de/)**<br> " +
-      "TIB Terminology Service (OLS3): [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
       "**[ZB MED:](https://www.zbmed.de/)**<br> " +
       "SemLookP API (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/ols/api/)<br> " +
