@@ -177,7 +177,7 @@ jobs:
           npm ci
           npm run build:storybook -- -o ../../storybook-static/react
           
-          cd packages/js
+          cd ../js
           npm ci
           npm run build:storybook -- -o ../../storybook-static/js
           
