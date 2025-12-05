@@ -1,5 +1,4 @@
 export declare const TIB_API_ENDPOINT = "https://api.terminology.tib.eu/api/";
-export declare const TIB_API_ENDPOINT_OLS3 = "https://service.tib.eu/ts4tib/api/";
 export declare const GATEWAY_API_ENDPOINT = "https://terminology.services.base4nfdi.de/api-gateway/";
 export declare const ZBMED_OLS4_API = "https://semanticlookup.zbmed.de/ols/api/";
 export declare const ZBMED_OLS3_API = "https://ols3-semanticlookup.zbmed.de/ols/api/";
