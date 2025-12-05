@@ -19,7 +19,7 @@ addons.setConfig({
     base: 'light',
     brandTitle: 'TS4NFDI',
     brandUrl: 'https://terminology.services.base4nfdi.de/',
-    brandImage: "https://raw.githubusercontent.com/nfdi4health/semlookp-widgets/main/img/TS4NFDI-small-grey.svg",
+    brandImage: "https://raw.githubusercontent.com/ts4nfdi/terminology-service-suite/refs/heads/main/img/TS4NFDI-small-grey.svg",
     brandTarget: '_self',
     colorSecondary: '#45556a',
     colorPrimary: '#45556a',
