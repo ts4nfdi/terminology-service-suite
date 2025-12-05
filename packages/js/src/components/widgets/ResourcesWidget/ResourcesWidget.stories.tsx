@@ -4,7 +4,6 @@ import {
   ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
   ResourcesWidgetStoryArgTypes,
-  WithActionsAndSafetyArgs,
   WithActionsArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
 import "./index";
@@ -74,12 +73,6 @@ export const ResourcesWidget1 = {
 export const WithActions = {
   args: ResourcesWidget1Args,
   WithActionsArgs,
-  play: commonResourcesWidgetPlay,
-};
-
-export const WithActionsAndSafety = {
-  args: WithActionsArgs,
-  WithActionsAndSafetyArgs,
   play: commonResourcesWidgetPlay,
 };
 

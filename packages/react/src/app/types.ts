@@ -443,8 +443,8 @@ export type OnNavigateToEntity = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToEntity?:
-    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-    | string;
+  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigateToOntology = {
@@ -460,8 +460,8 @@ export type OnNavigateToOntology = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToOntology?:
-    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-    | string;
+  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -476,8 +476,8 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+  | ((entityType: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigates = OnNavigateToEntity & OnNavigateToOntology & OnNavigateToDisambiguate;
@@ -692,6 +692,10 @@ export type GraphViewWidgetProps = ApiObj &
   ForcedOntologyIdObj &
   CssClassNameObj & {
     /**
+     * The target iri. used in the hierarchy mode to compare two terms in one graph.
+     */
+    targetIri?: string;
+    /**
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
     rootWalk?: boolean;
@@ -714,20 +718,17 @@ export type OlsGraphNode = {
   /**
    * Used in the GraphView widget for rendering a graph's node
    */
-  node: {
-    iri?: string;
-    label?: string;
-  };
+  iri?: string;
+  label?: string;
+  level?: number;
 };
 
 export type OlsGraphEdge = {
   /**
    * Used in the GraphView widget for rendering a graph's edge
    */
-  edge: {
-    uri?: string;
-    label?: string;
-    source?: string;
-    target?: string;
-  };
+  uri?: string;
+  label?: string;
+  source?: string;
+  target?: string;
 };

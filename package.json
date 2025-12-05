@@ -23,7 +23,7 @@
     "semantic-release": "npx semantic-release",
     "storybook:react": "storybook dev -p 6006 -c .storybook/react",
     "storybook:html": "storybook dev -p 6007 -c .storybook/html",
-    "storybook": "CONFIG_TYPE=DEVELOPMENT storybook dev -p 6008 -c .storybook",
+    "storybook": "storybook dev -p 6008 -c .storybook",
     "build:storybook": "storybook build",
     "style:format": "npx prettier --write .",
     "style:check": "npx prettier --check .",
@@ -39,6 +39,7 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.2",
     "@semantic-release/npm": "^12.0.1",
+    "@storybook-community/storybook-addon-matomo": "^2.0.0",
     "@storybook/addon-docs": "^9.0.18",
     "@storybook/addon-links": "^9.0.18",
     "@storybook/addon-vitest": "^9.0.18",
@@ -74,6 +75,7 @@
     "vitest-browser-react": "^0.2.0"
   },
   "dependencies": {
+    "@storybook/addons": "^7.6.17",
     "react": "^18.3",
     "react-dom": "^18.3",
     "rollup-plugin-preserve-directives": "^0.4.0"

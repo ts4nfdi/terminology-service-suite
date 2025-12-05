@@ -18,6 +18,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { getConstrainedSynonym } from "./utils";
 import Tooltip from "../../helperComponents/Tooltip";
 
 /**
@@ -109,15 +110,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       hoverText += "\n\nSource: " + value.source;
       hoverText += "\n\nSource URL: " + value.source_url;
     }
+    if (value.synonyms && value.synonyms.length > 1) {
+      hoverText += "\n\nSynonyms: " + value.synonyms.join(", ");
+    }
 
     const renderOntology = () => {
       return (
         <span className={finalClassName}>
           <EuiHealth color={dotColor}>
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
-                <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+                <EuiHighlight search={searchValue}>{value.label || value.ontology_name}</EuiHighlight>
 
-                {value.description && (
+                {!singleSuggestionRow && value.description && (
                 <span style={{
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -135,6 +139,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     };
 
     const renderEntity = () => {
+      const allSynonyms = value.synonyms ?? [];
+      const bestSynonym = getConstrainedSynonym(value.label, allSynonyms, searchValue);
+
       return (
           <span title={""} className={finalClassName}>
       <div
@@ -145,7 +152,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           }}
       >
         <EuiHealth color={dotColor}>
-          <EuiHighlight search={searchValue}>{value.label}</EuiHighlight>
+          <span>
+            <EuiHighlight search={searchValue}>
+              {value.label}
+            </EuiHighlight>
+
+            {bestSynonym && (
+              <>
+                {" ("}
+                <EuiHighlight search={searchValue}>
+                  {`SYN: ${bestSynonym || ''}`}
+                </EuiHighlight>
+                {")"}
+              </>
+            )}
+          </span>
         </EuiHealth>
 
         <BreadcrumbPresentation
@@ -421,26 +442,50 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
           .then((response) => {
             if (response) {
               setOptions(
-                response.properties.map((selection: any) => ({
-                  // label to display within the combobox either raw value or generated one
-                  // #renderOption() is used to display during selection.
-                  label: hasShortSelectedLabel
-                    ? selection.getLabel()
-                    : generateDisplayLabel(selection),
-                  // key to distinguish the options (especially those with same label)
-                  key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
-                  // values to pass to clients
-                  value: {
-                    iri: selection.getIri(),
-                    label: selection.getLabel(),
-                    ontology_name: selection.getOntologyId(),
-                    type: selection.getType(),
-                    short_form: selection.getShortForm(),
-                    description: selection.getDescription(),
-                    source: selection.getApiSourceName(),
-                    source_url: selection.getApiSourceEndpoint(),
-                  },
-                })),
+                response.properties
+                  .map((selection: any) => {
+                    const type = selection.getType();
+
+                    if (type === "ontology") {
+                      const label = (selection.getLabel && selection.getLabel()) ||
+                        (selection.getOntologyId && selection.getOntologyId()) ||
+                        "Unknown ontology name";
+
+                      return {
+                        label: hasShortSelectedLabel ? label : label,
+                        key: `${selection.getOntologyId ? selection.getOntologyId() : 'unknown'}::${selection.getIri ? selection.getIri() : 'unknown'}::unknown`,
+                        value: {
+                          iri: selection.getIri ? selection.getIri() : "",
+                          label: label,
+                          ontology_name: selection.getOntologyId ? selection.getOntologyId() : "",
+                          type: "ontology",
+                          short_form: "",
+                          description: selection.getDescription ? selection.getDescription() : "",
+                          source: selection.getApiSourceName ? selection.getApiSourceName() : "",
+                          source_url: selection.getApiSourceEndpoint ? selection.getApiSourceEndpoint() : "",
+                          synonyms: selection.getSynonyms() ? selection.getSynonyms() : [],
+                        },
+                      };
+                    } else {
+                      return {
+                        label: hasShortSelectedLabel
+                          ? selection.getLabel()
+                          : generateDisplayLabel(selection),
+                        key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
+                        value: {
+                          iri: selection.getIri(),
+                          label: selection.getLabel(),
+                          ontology_name: selection.getOntologyId(),
+                          type: selection.getType(),
+                          short_form: selection.getShortForm(),
+                          description: selection.getDescription(),
+                          source: selection.getApiSourceName(),
+                          source_url: selection.getApiSourceEndpoint(),
+                          synonyms: selection.getSynonyms() ? selection.getSynonyms() : [],
+                        },
+                      };
+                    }
+                  })
               );
             }
           });
@@ -449,10 +494,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 
   useEffect(() => {
-    if (isLoadingTerms || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery) {
+    if (isLoadingTerms || isLoadingOnMount || (preselected !== undefined && preselected?.length > 0) || initialSearchQuery || searchValue.length > 0) {
       setDisplaySuggestions(true)
+    } else {
+      setDisplaySuggestions(false)
     }
-  }, [isLoadingTerms, preselected, initialSearchQuery])
+  }, [isLoadingTerms, isLoadingOnMount, preselected, initialSearchQuery])
 
   /**
    * Once the set of selected options changes, pass the event by invoking the passed function.
@@ -472,6 +519,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: x.value.short_form,
               description: x.value.description,
               source: x.value.source,
+              synonyms: x.value.synonyms,
             };
           } else if (x.value.iri == "") {
             return {
@@ -482,6 +530,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: "",
               description: "",
               source: "",
+              synonyms: [],
             };
           } else {
             return {
@@ -492,6 +541,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               short_form: x.value.short_form,
               description: x.value.description,
               source: x.value.source,
+              synonyms: x.value.synonyms,
             };
           }
         }),
@@ -511,7 +561,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
 
     return (
       (ontologyId ? `- (${ontologyId}` : "") +
-        (shortForm ? `- (${shortForm}` : "") || "-"
+      (shortForm ? `- (${shortForm}` : "") || "-"
     );
   }
 
@@ -531,6 +581,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         short_form: "",
         description: "",
         source: "",
+        synonyms: [],
       },
     };
 

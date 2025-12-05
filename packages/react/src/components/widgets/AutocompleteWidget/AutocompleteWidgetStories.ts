@@ -48,7 +48,7 @@ export const AutocompleteWidgetStoryArgsReact = {
   className: "",
   useLegacy: true,
   parameter:
-    "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
   onNavigateToOntology: "Console message"
 };
@@ -68,7 +68,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
   singleSuggestionRow: false,
   useLegacy: true,
   parameter:
-    "ontology=mesh,efo&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
   onNavigateToOntology: "Console message"
 };
@@ -239,6 +239,15 @@ export const SubtreeDirectAndIndirectSubtypesArgs: AutocompleteWidgetProps = {
   useLegacy: true,
   parameter:
     "ontology=snomed&type=class&collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form&AllChildrenOf=http://snomed.info/id/22298006",
+};
+
+export const InitialSearchQueryArgs: AutocompleteWidgetProps = {
+  api: globals.ZBMED_OLS4_API,
+  parameter:
+    "ontology=iso3166&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
+  selectionChangedEvent: () => {},
+  initialSearchQuery: "spain/france/germany",
+  useLegacy: false,
 };
 
 export const commonAutocompleteWidgetPlay = async ({

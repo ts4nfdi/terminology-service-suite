@@ -1,6 +1,5 @@
 // TIB
 export const TIB_API_ENDPOINT = "https://api.terminology.tib.eu/api/";
-export const TIB_API_ENDPOINT_OLS3 = "https://service.tib.eu/ts4tib/api/";
 
 // TS4NFDI
 export const GATEWAY_API_ENDPOINT =
