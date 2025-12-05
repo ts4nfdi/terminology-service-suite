@@ -63,6 +63,7 @@ window['ts4nfdiWidgets'].createMetadata(
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        hierarchyWrap:${args.hierarchyWrap},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate},

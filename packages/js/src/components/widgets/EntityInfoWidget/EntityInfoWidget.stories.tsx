@@ -59,6 +59,7 @@ window['ts4nfdiWidgets'].createEntityInfo(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
+        showBadges:${args.showBadges},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate}

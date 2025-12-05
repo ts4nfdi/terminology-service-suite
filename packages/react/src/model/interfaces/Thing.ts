@@ -1,5 +1,5 @@
 import Reified from "../Reified";
-import LinkedEntities from "../LinkedEntities";
+import LinkedEntities from "../ols-model/LinkedEntities";
 import { ThingTypeName } from "../ModelTypeCheck";
 
 export interface Thing {

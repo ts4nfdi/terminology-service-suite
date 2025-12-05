@@ -11,19 +11,18 @@ import {
 } from "@elastic/eui";
 import { IriWidget } from "./IriWidget";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { MetadataWidgetProps } from "../../../app/types";
+import { MetadataWidgetProps } from "../../../app";
 import { Entity } from "../../../model/interfaces";
-import { BreadcrumbPresentation } from "./BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
+import { BreadcrumbPresentation } from "./BreadcrumbWidget";
 import { TabPresentation } from "./TabWidget/TabPresentation";
 import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { EntityTypeName, isEntity } from "../../../model/ModelTypeCheck";
-import ReactDOM from "react-dom";
 import {
   createModelObject,
   getPreferredOntologyJSON,
-} from "../../../model/ModelObjectCreator";
+} from "../../../model/ols-model/ModelObjectCreator";
 import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoListPresentation";
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import "../../../style/tssStyles.css";

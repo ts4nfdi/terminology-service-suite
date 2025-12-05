@@ -221,8 +221,9 @@ export const hierarchyWrapArgType = {
       "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
+        summary: `${HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP}`,
       },
+      type: { summary: "boolean" }
     },
   },
 };
