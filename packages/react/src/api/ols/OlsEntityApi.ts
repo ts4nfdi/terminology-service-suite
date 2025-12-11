@@ -295,10 +295,10 @@ export class OlsEntityApi extends OlsBaseApi {
       default:
         throw Error(
           'Invalid entity type "' +
-            entityType +
-            `". Must be one of {${entityTypeNames
-              .map((elem) => `"${elem}"`)
-              .join(", ")}}.`,
+          entityType +
+          `". Must be one of {${entityTypeNames
+            .map((elem) => `"${elem}"`)
+            .join(", ")}}.`,
         );
     }
   }
@@ -410,15 +410,15 @@ export class OlsEntityApi extends OlsBaseApi {
     );
   }
 
-  public getTermRelations = async (contentParams: ContentParams) => {
+  public getTermRelations = async (contentParams: ContentParams, parameter?: string) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
-      return (await this.axiosInstance.get(baseRequest + "/roots")).data; //1)
+      return (await this.axiosInstance.get(baseRequest + "/roots" + (parameter ? "?" + parameter : ""))).data; //1)
     baseRequest =
       baseRequest +
       "/" +
       encodeURIComponent(encodeURIComponent(contentParams?.termIri)) +
-      "/graph";
+      "/graph" + (parameter ? "?" + parameter : "");
     return (await this.axiosInstance.get(baseRequest)).data;
   };
 
@@ -432,6 +432,7 @@ export class OlsEntityApi extends OlsBaseApi {
   public getTermTree = async (
     contentParams: ContentParams,
     treeParams: JsTreeParams,
+    parameter?: string,
   ) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
@@ -440,11 +441,11 @@ export class OlsEntityApi extends OlsBaseApi {
       baseRequest +
       "/" +
       encodeURIComponent(encodeURIComponent(contentParams?.termIri)) +
-      "/jstree";
+      "/jstree" + (parameter ? "?" + parameter : "");
     if (treeParams.child)
       return (
         await this.axiosInstance.get(
-          baseRequest + "/children/" + treeParams.child,
+          baseRequest + "/children/" + treeParams.child + (parameter ? "?" + parameter : ""),
         )
       ).data;
     //3)

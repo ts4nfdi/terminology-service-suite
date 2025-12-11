@@ -9,11 +9,13 @@ export async function fetchRootWalkModeData(props: GraphFetchFunctionInput): Pro
   let termTree = await olsEntityApi.getTermTree(
     { ontologyId: ontologyId, termIri: iri },
     { viewMode: "All", siblings: false },
+    props.parameter,
   )
   if (targetIri && !dbClicked) {
     let targetTermTree = await olsEntityApi.getTermTree(
       { ontologyId: ontologyId, termIri: targetIri },
       { viewMode: "All", siblings: false },
+      props.parameter,
     );
     return { treeData: termTree, targetTreeData: targetTermTree };
   }
@@ -29,23 +31,25 @@ export async function fetchHierarchyModeData(props: GraphFetchFunctionInput): Pr
   let termTree = await olsEntityApi.getTermTree(
     { ontologyId: ontologyId, termIri: iri },
     { viewMode: "All", siblings: false },
+    props.parameter,
   );
 
   let termRelation = await olsEntityApi.getTermRelations({
     ontologyId: ontologyId,
     termIri: iri,
-  });
+  }, props.parameter);
 
   if (targetIri && !dbClicked) {
     let targetTermTree = await olsEntityApi.getTermTree(
       { ontologyId: ontologyId, termIri: targetIri },
       { viewMode: "All", siblings: false },
+      props.parameter,
     );
 
     let targetTermRelation = await olsEntityApi.getTermRelations({
       ontologyId: ontologyId,
       termIri: targetIri,
-    });
+    }, props.parameter);
     return { treeData: termTree, termRelations: termRelation, targetTreeData: targetTermTree, targetTermRelations: targetTermRelation } as GraphFetchData;
   }
 
@@ -59,12 +63,12 @@ export async function fetchNormalModeData(props: GraphFetchFunctionInput): Promi
   let termRelations = await olsEntityApi.getTermRelations({
     ontologyId: ontologyId,
     termIri: iri,
-  });
+  }, props.parameter);
   if (targetIri && !dbClicked) {
     let targetTermRelation = await olsEntityApi.getTermRelations({
       ontologyId: ontologyId,
       termIri: targetIri,
-    });
+    }, props.parameter);
     return { termRelations: termRelations, targetTermRelations: targetTermRelation } as GraphFetchData;
   }
   return { termRelations: termRelations } as GraphFetchData;
