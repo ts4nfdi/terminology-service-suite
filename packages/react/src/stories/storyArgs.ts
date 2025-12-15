@@ -341,6 +341,37 @@ export const buttonSizeArgType: ArgTypes = {
     options: ["s", "m"],
   },
 };
+export const thresholdArgType: ArgTypes = {
+  threshold: {
+    required: true,
+    description: "Threshold.",
+    control: {
+      type: 'number',
+      min: 0,
+      max: 1,
+      step: 0.1,
+  },
+  },
+};
+export const searchTermArgType: ArgTypes = {
+  searchTerm: {
+    required: true,
+    description: "The search term.",
+    table: {
+      type: { summary: "string" },
+    },
+  },
+};
+export const languageArgType: ArgTypes = {
+  language: {
+    required: false,
+    description: "Language for Antelope term search.",
+    table: {
+      type: { summary: "string[]" },
+      defaultValue: { summary: "['en']" },
+    },
+  },
+};
 export const initialEntriesPerPageArgType: ArgTypes = {
   initialEntriesPerPage: {
     required: false,
