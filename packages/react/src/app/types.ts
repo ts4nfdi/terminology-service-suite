@@ -235,16 +235,6 @@ export type EntityRelationsWidgetProps = ApiObj &
 
 export type AntelopeApiWidgetProps = {
   /**
-   * The API query whose response JSON should be displayed on click.
-   */
-  apiQuery: string;
-
-  /**
-   * The text displayed on the button.
-   */
-  buttonText: string;
-
-  /**
    * Threshold.
    */
   threshold: number;

@@ -6,7 +6,6 @@ import {
   AntelopeApiWidgetStoryArgTypes,
 } from "./AntelopeApiWidgetStories";
 import { JsonApiDescription } from "../../../app/widgetDescriptions";
-import * as globals from "../../../app/globals";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
