@@ -2,7 +2,6 @@ import * as globals from "../../../app/globals";
 
 import {
   apiQueryArgType,
-  buttonSizeArgType,
   buttonTextArgType,
   thresholdArgType,
   searchTermArgType,
@@ -12,7 +11,6 @@ import { expect, waitFor, within } from "storybook/test";
 
 export const AntelopeApiWidgetStoryArgTypes = {
   ...apiQueryArgType,
-  ...buttonSizeArgType,
   ...buttonTextArgType,
   ...thresholdArgType,
   ...searchTermArgType,
@@ -22,16 +20,14 @@ export const AntelopeApiWidgetStoryArgTypes = {
 export const AntelopeApiWidgetStoryArgs = {
   apiQuery: "",
   buttonText: "",
-  buttonSize: "m",
-  thresholdArgType: 0.8,
+  threshold: "",
   searchTerm: "",
-  language: ['en'] as string[],
+  language: "",
 } as const;
 
 export const AntelopeApiWidgetDefaultArgs = {
   apiQuery: globals.TIB_ANNOTATION_API_ENDPOINT + "annotation/status",
-  buttonText: "show JSON",
-  buttonSize: "m",
+  buttonText: "Annotate with Antelope",
   threshold: 0.8,
   searchTerm: "",
   language: "en",
