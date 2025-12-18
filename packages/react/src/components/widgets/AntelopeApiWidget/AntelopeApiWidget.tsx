@@ -5,15 +5,42 @@ import { EuiButton, EuiProvider } from "@elastic/eui";
 import { AntelopeApiWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import * as globals from "../../../app/globals";
 
 function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
-  const { apiQuery, buttonText, buttonSize, threshold } = props;
+  const { buttonText, threshold, searchTerm, language } = props;
+
+  const postData = async (data: any) => {
+    try {
+
+      // use proxy (defined in main.ts)
+      const response = await fetch('/antelope', { // Use the proxied path
+      //const response = await fetch(globals.TIB_ANNOTATION_API_ENDPOINT + 'annotation/entitylinking/text?iconclass=true', { // Use the proxied path
+        
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <EuiButton
-      href={apiQuery}
+      onClick={() => postData({ threshold, text: searchTerm, language })}
       target="_blank"
-      size={buttonSize || "m"}
+      size={"m"}
       data-testid="antelope-api"
     >
       {buttonText}
@@ -29,7 +56,6 @@ function WrappedAntelopeApiWidget(props: AntelopeApiWidgetProps) {
         <AntelopeApiWidget
           apiQuery={props.apiQuery}
           buttonText={props.buttonText}
-          buttonSize={props.buttonSize}
           threshold={props.threshold}
           searchTerm={props.searchTerm}
           language={props.language}

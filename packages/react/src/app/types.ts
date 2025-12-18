@@ -245,11 +245,6 @@ export type AntelopeApiWidgetProps = {
   buttonText: string;
 
   /**
-   * Size of the button.
-   */
-  buttonSize?: "s" | "m";
-
-  /**
    * Threshold.
    */
   threshold: number;
