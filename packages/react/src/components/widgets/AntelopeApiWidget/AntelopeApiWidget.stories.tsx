@@ -5,7 +5,7 @@ import {
   AntelopeApiWidgetStoryArgs,
   AntelopeApiWidgetStoryArgTypes,
 } from "./AntelopeApiWidgetStories";
-import { JsonApiDescription } from "../../../app/widgetDescriptions";
+import { AntelopeApiDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
@@ -15,7 +15,7 @@ const meta = {
     layout: "centered",
     docs: {
       description: {
-        component: JsonApiDescription,
+        component: AntelopeApiDescription,
       },
     },
   },

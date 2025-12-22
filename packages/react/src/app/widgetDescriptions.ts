@@ -112,6 +112,18 @@ Allows users to open API endpoints directly in a new browser tab, providing imme
 Supports user-defined button text and adjustable button sizes (\`small\`, \`medium\`, or \`large\`), ensuring it can blend seamlessly into various user interfaces.
 `.trim();
 
+export const AntelopeApiDescription = `
+The AntelopeApiWidget is a lightweight and efficient component designed to provide users with direct access to the Antelope API endpoint through a widget that directly renders the result given a "text" parameter. 
+
+#### Key Features:
+
+- **Direct API access**: 
+EDIT EDIT EDIT
+
+- **Customizable inputs**: 
+Supports user-defined parameters "text", "threshold" and "language" or the terminology search, ensuring it can be used with the user's own form and integrated into various user interfaces.
+`.trim();
+
 export const BreadcrumbDescription = `
 The BreadcrumbWidget to display the ontology and CURIE (compact URI) of an entity as badges to indicate the location of an entity within a terminology service. 
 
