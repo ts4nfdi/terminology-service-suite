@@ -1,7 +1,7 @@
 "use client";
 
-import React, {useState, useEffect } from "react";
-import { EuiProvider } from "@elastic/eui";
+import React, {useState, useEffect, useCallback } from "react";
+import { EuiProvider, EuiLoadingSpinner } from "@elastic/eui";
 import { AntelopeApiWidgetProps } from "../../../app/types";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -9,11 +9,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
   const { threshold, searchTerm, language } = props;
   const [ annotation, updateAnnotation ] = useState([])
+  const [ isLoading, updateIsLoading ] = useState(true)
 
   useEffect( () => {
+    
     const postData = async (data: any) => {
       try {
-
+        updateIsLoading(true);
         // use proxy (defined in main.ts)
         const response = await fetch('/antelope', { // Use the proxied path
         //const response = await fetch(globals.TIB_ANNOTATION_API_ENDPOINT + 'annotation/entitylinking/text?iconclass=true', { // Use the proxied path
@@ -32,6 +34,7 @@ function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
         const result = await response.json();
         console.log('Success:', result);
         updateAnnotation(result);
+        updateIsLoading(false);
         return result;
       } catch (error) {
         console.error('Error:', error);
@@ -40,9 +43,14 @@ function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
   postData({ threshold, text: searchTerm, language })
   }, [threshold, searchTerm, language])
 
-  return (
+  return ( <>
+    {
+      isLoading ? (
+                <EuiLoadingSpinner size="s" />
+              ) :
         <div dangerouslySetInnerHTML={{__html: annotation.html}}></div>
-
+    }
+     </>
     );
 }
 
