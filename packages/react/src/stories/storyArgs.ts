@@ -363,10 +363,15 @@ export const searchTermArgType: ArgTypes = {
 export const languageArgType: ArgTypes = {
   language: {
     required: false,
+    control: {
+      type: "radio",
+    },
+    options: [
+      "en",
+    ],
     description: "Language for Antelope term search.",
     table: {
-      type: { summary: "string[]" },
-      defaultValue: { summary: "['en']" },
+      type: { summary: "string" },
     },
   },
 };
