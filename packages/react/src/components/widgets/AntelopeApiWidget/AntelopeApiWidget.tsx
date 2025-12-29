@@ -10,6 +10,7 @@ function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
   const { threshold, searchTerm, language } = props;
   const [ annotation, updateAnnotation ] = useState([])
   const [ isLoading, updateIsLoading ] = useState(true)
+  const [debouncedQuery, setDebouncedQuery] = useState('')
 
   useEffect( () => {
     
@@ -41,14 +42,23 @@ function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
       }
   };
   postData({ threshold, text: searchTerm, language })
-  }, [threshold, searchTerm, language])
+  }, [threshold, debouncedQuery, language])
+
+   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchTerm)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
+
 
   return ( <>
     {
       isLoading ? (
-                <EuiLoadingSpinner size="s" />
-              ) :
-        <div dangerouslySetInnerHTML={{__html: annotation.html}}></div>
+        <EuiLoadingSpinner size="s" />
+      ) : 
+      <div dangerouslySetInnerHTML={{__html: annotation.html}}></div>
     }
      </>
     );
