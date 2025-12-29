@@ -118,7 +118,7 @@ The AntelopeApiWidget is a lightweight and efficient component designed to provi
 #### Key Features:
 
 - **Direct API access**: 
-EDIT EDIT EDIT
+You can find the full api configuration docs here: [https://service.tib.eu/annotation/api.htm](https://service.tib.eu/annotation/api.htm)
 
 - **Customizable inputs**: 
 Supports user-defined parameters "text", "threshold" and "language" or the terminology search, ensuring it can be used with the user's own form and integrated into various user interfaces.
