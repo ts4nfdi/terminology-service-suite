@@ -7,7 +7,6 @@ import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { Entity, Thing } from "../model/interfaces";
 import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
 import Reified from "../model/Reified";
-import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
   parameter?: string;
@@ -682,7 +681,8 @@ export type TermDepictionWidgetProps = ApiObj &
 export type GraphViewWidgetProps = ApiObj &
   ForcedIriObj &
   ForcedOntologyIdObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  ParameterObj & {
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */
@@ -704,6 +704,7 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+
   };
 
 export type OlsGraphNode = {
