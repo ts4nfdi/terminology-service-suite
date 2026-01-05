@@ -60,7 +60,6 @@ jobs:
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for access to NPM
         working-directory: packages/react
 
       - name: Parse semantic-release output
@@ -115,7 +114,6 @@ jobs:
           npm publish
         working-directory: packages/js
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
 
       - name: Update package.json with new version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
