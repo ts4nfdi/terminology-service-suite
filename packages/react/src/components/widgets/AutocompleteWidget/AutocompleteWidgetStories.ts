@@ -80,7 +80,7 @@ export const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps = {
   ts4nfdiGateway: true,
   parameter:
     "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => {},
+  selectionChangedEvent: () => { },
 };
 
 export const UseAPIGatewayWithOntoPortalArgs: AutocompleteWidgetProps = {
@@ -121,6 +121,7 @@ export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
     {
       label: "COVID-19",
       iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
+      source: "zbmed",
     },
   ],
   parameter:
@@ -129,18 +130,18 @@ export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
 };
 
 export const WithPreselectedValueAndUnresolvedIriOLS3Args: AutocompleteWidgetProps =
-  {
-    ...AutocompleteWidgetStoryArgsReact,
-    api: globals.ZBMED_OLS3_API,
-    useLegacy: true,
-    preselected: [
-      {
-        label: "COVID-19",
-        iri: "http://purl.bioontology.org/ontology/MESH/D00008",
-      },
-    ],
-    allowCustomTerms: true,
-  };
+{
+  ...AutocompleteWidgetStoryArgsReact,
+  api: globals.ZBMED_OLS3_API,
+  useLegacy: true,
+  preselected: [
+    {
+      label: "COVID-19",
+      iri: "http://purl.bioontology.org/ontology/MESH/D00008",
+    },
+  ],
+  allowCustomTerms: true,
+};
 
 export const WithPreselectedMultipleValuesOLS4Args: AutocompleteWidgetProps = {
   ...AutocompleteWidgetStoryArgsReact,
@@ -245,7 +246,7 @@ export const InitialSearchQueryArgs: AutocompleteWidgetProps = {
   api: globals.ZBMED_OLS4_API,
   parameter:
     "ontology=iso3166&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => {},
+  selectionChangedEvent: () => { },
   initialSearchQuery: "spain/france/germany",
   useLegacy: false,
 };

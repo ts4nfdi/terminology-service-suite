@@ -43,6 +43,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     hierarchy,
     edgeLabel,
     onNodeClick,
+    parameter,
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -104,15 +105,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return await fetchRootWalkModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
+        return await fetchRootWalkModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked, parameter: parameter });
 
       } else if (rootWalk && (firstLoad || dbclicked) && hierarchy) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
-        return await fetchHierarchyModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
+        return await fetchHierarchyModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked, parameter: parameter });
       } else if (firstLoad || dbclicked) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        return await fetchNormalModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
+        return await fetchNormalModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked, parameter: parameter });
       }
     },
   );
@@ -704,6 +705,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           edgeLabel={props.edgeLabel}
           onNodeClick={props.onNodeClick}
           targetIri={props.targetIri}
+          parameter={props.parameter}
         />
       </QueryClientProvider>
     </EuiProvider>

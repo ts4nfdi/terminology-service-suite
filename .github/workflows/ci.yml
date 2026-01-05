@@ -150,6 +150,11 @@ jobs:
       STORYBOOK_MATOMO_SITE_ID: ${{ secrets.STORYBOOK_MATOMO_SITE_ID }}
       NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
     steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -160,28 +165,23 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Install and Build React Storybook
-        working-directory: packages/react
-        run: |
-          npm install
-          npm run build:storybook -- -o ../../storybook-static/react
-
-      - name: Install and Build JS Storybook
-        working-directory: packages/js
-        run: |
-          npm install
-          npm run build:storybook -- -o ../../storybook-static/js
-
       - name: Verify environment variables
         run: |
           echo "STORYBOOK_ENABLE_MATOMO=$STORYBOOK_ENABLE_MATOMO"
 
-      - name: Install and Build Composed Storybook
+      - name: Install and Build all Storybooks
         run: |
-          npm install
+          npm ci
+          
+          cd packages/react
+          npm ci
+          npm run build:storybook -- -o ../../storybook-static/react
+          
+          cd ../js
+          npm ci
+          npm run build:storybook -- -o ../../storybook-static/js
+          
+          cd ../../
           STORYBOOK_ENABLE_MATOMO=true STORYBOOK_MATOMO_URL=${{ secrets.STORYBOOK_MATOMO_URL }} STORYBOOK_MATOMO_SITE_ID=${{ secrets.STORYBOOK_MATOMO_SITE_ID }} npm run build:storybook -- -o storybook-static/public
 
       - name: Upload artifacts

@@ -19,5 +19,6 @@ export type GraphFetchFunctionInput = {
   ontologyId: string,
   iri: string,
   targetIri?: string,
-  dbClicked?: boolean
+  dbClicked?: boolean,
+  parameter?: string,
 }

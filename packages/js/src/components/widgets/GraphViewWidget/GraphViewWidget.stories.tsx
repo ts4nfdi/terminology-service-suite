@@ -10,7 +10,8 @@ import {
   ChebiIonArgs,
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
-  ChebiIonAndIonRadicalWithComparisonArgs
+  ChebiIonAndIonRadicalWithComparisonArgs,
+  GraphWithGermanLabelArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -55,7 +56,8 @@ window['ts4nfdiWidgets'].createGraphView(
         hierarchy: ${args.hierarchy},
         targetIri: "${args.targetIri}",
         onNodeClick: ${args.onNodeClick},
-        edgeLabel: ${args.edgeLabel}
+        edgeLabel: ${args.edgeLabel},
+        parameter: "${args.parameter}",
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
@@ -146,6 +148,16 @@ export const ChebiCaffeineHierarchyWithComparison: Story = {
 
 export const ChebiIonAndIonRadicalWithComparison: Story = {
   args: ChebiIonAndIonRadicalWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLable: Story = {
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,

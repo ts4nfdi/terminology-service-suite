@@ -122,6 +122,16 @@ export const ChebiIonAndIonRadicalWithComparisonArgs = {
   hierarchy: true,
 };
 
+export const GraphWithGermanLabelArgs = {
+  api: globals.EBI_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/HP_0003502",
+  ontologyId: "hp",
+  rootWalk: true,
+  hierarchy: true,
+  targetIri: "",
+  parameter: "lang=de"
+};
+
 export const commonGraphViewWidgetPlay = async ({
   canvasElement,
 }: {

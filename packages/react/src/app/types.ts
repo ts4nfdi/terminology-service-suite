@@ -178,7 +178,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
     /**
      * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
      */
-    preselected?: { label?: string; iri?: string }[];
+    preselected?: { label?: string; iri?: string, description?: string, ontology_name?: string, type?: string, short_form?: string, source?: string, source_url?: string }[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -690,7 +690,8 @@ export type TermDepictionWidgetProps = ApiObj &
 export type GraphViewWidgetProps = ApiObj &
   ForcedIriObj &
   ForcedOntologyIdObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  ParameterObj & {
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */
@@ -712,6 +713,7 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+
   };
 
 export type OlsGraphNode = {

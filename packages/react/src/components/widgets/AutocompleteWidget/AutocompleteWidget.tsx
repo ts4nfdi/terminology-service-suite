@@ -78,7 +78,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const { label, value } = option;
 
     // @ts-ignore
-    const dotColorIndex : number = {
+    const dotColorIndex: number = {
       "class": 8,
       "individual": 4,
       "property": 2,
@@ -98,9 +98,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       value.type === "ontology"
         ? "Prefix: " + value.ontology_name
         : "Prefix > Short form: " +
-          value.ontology_name +
-          " > " +
-          value.short_form;
+        value.ontology_name +
+        " > " +
+        value.short_form;
 
     let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
     if (value.description) {
@@ -119,20 +119,21 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         <span className={finalClassName}>
           <EuiHealth color={dotColor}>
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
-                <EuiHighlight search={searchValue}>{value.label || value.ontology_name}</EuiHighlight>
+              <EuiHighlight search={searchValue}>{value.label || value.ontology_name}</EuiHighlight>
 
-                {!singleSuggestionRow && value.description && (
+              {!singleSuggestionRow && value.description && (
                 <span style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    display: "block",
-                    marginTop: "2px",
-                    color: '#666',}}>
-              {value.description}
-          </span>
-                )}
-        </div>
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  display: "block",
+                  marginTop: "2px",
+                  color: '#666',
+                }}>
+                  {value.description}
+                </span>
+              )}
+            </div>
           </EuiHealth>
         </span>
       );
@@ -143,58 +144,59 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       const bestSynonym = getConstrainedSynonym(value.label, allSynonyms, searchValue);
 
       return (
-          <span title={""} className={finalClassName}>
-      <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-      >
-        <EuiHealth color={dotColor}>
-          <span>
-            <EuiHighlight search={searchValue}>
-              {value.label}
-            </EuiHighlight>
-
-            {bestSynonym && (
-              <>
-                {" ("}
+        <span title={""} className={finalClassName}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <EuiHealth color={dotColor}>
+              <span>
                 <EuiHighlight search={searchValue}>
-                  {`SYN: ${bestSynonym || ''}`}
+                  {value.label}
                 </EuiHighlight>
-                {")"}
-              </>
-            )}
-          </span>
-        </EuiHealth>
 
-        <BreadcrumbPresentation
-            shortForm={value.short_form}
-            ontologyId={value.ontology_name}
-            colorFirst={"primary"}
-            colorSecond={"success"}
-            className={`${finalClassName}-breadcrumb`}
-            onNavigateToOntology={onNavigateToOntology}
-        />
-        <Tooltip text={hoverText}/>
-      </div>
+                {bestSynonym && (
+                  <>
+                    {" ("}
+                    <EuiHighlight search={searchValue}>
+                      {`SYN: ${bestSynonym || ''}`}
+                    </EuiHighlight>
+                    {")"}
+                  </>
+                )}
+              </span>
+            </EuiHealth>
 
-            {!singleSuggestionRow && value.description && (
-                <span
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      display: "block",
-                      marginTop: "4px",
-                      color: '#666'
-                    }}
-                >
-          {value.description}
+            <BreadcrumbPresentation
+              shortForm={value.short_form}
+              ontologyId={value.ontology_name}
+              colorFirst={"primary"}
+              colorSecond={"success"}
+              className={`${finalClassName}-breadcrumb`}
+              onNavigateToOntology={onNavigateToOntology}
+            />
+
+            <Tooltip text={hoverText}/>
+          </div>
+
+          {!singleSuggestionRow && value.description && (
+            <span
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "block",
+                marginTop: "4px",
+                color: '#666'
+              }}
+            >
+              {value.description}
+            </span>
+          )}
         </span>
-            )}
-    </span>
       );
     };
 
@@ -215,12 +217,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       value: {
         iri: preselectedElement.iri || "",
         label: preselectedElement.label,
-        ontology_name: "",
-        type: "",
-        short_form: "",
-        description: "",
-        source: "",
-        source_url: "",
+        ontology_name: preselectedElement.ontology_name ?? "",
+        type: preselectedElement.type ?? "",
+        short_form: preselectedElement.short_form ?? "",
+        description: preselectedElement.description ?? "",
+        source: preselectedElement.source ?? "",
+        source_url: preselectedElement.source_url ?? "",
       },
     };
   }
@@ -251,8 +253,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * For preselected property
    * Creates option from OLS4 API entity response
    * @param entity The Entity object response
+   * @param customeMetadata custom metadata to be added to the option. This metadata comes from the provided preselected object by the client. if an metadata exists in the custom metadata, the component should give a higher priority to it than the target TS resonse.
    */
-  function createEntityOption(entity: Entity): EuiComboBoxOptionOption<any> {
+  function createEntityOption(entity: Entity, customeMetadata: any): EuiComboBoxOptionOption<any> {
     return {
       label: hasShortSelectedLabel
         ? entity.getLabel()
@@ -265,6 +268,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         type: entity.getType(),
         short_form: entity.getShortForm(),
         description: entity.getDescription(),
+        ...customeMetadata,
       },
     };
   }
@@ -288,7 +292,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         useLegacy,
       );
 
-      preselectedOptions.push(createEntityOption(response));
+      preselectedOptions.push(createEntityOption(response, preselectedElement));
 
       if (singleSelection && preselectedOptions.length > 1) {
         preselectedOptions.length = 1;
