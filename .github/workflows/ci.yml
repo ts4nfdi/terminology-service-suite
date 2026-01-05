@@ -113,7 +113,6 @@ jobs:
         run: |
           npm publish
         working-directory: packages/js
-        env:
 
       - name: Update package.json with new version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
