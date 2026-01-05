@@ -12,7 +12,7 @@ import {
   WithOnNodeDoubleClickCallbackArgs,
   ChebiCaffeineHierarchyWithComparisonArgs,
   ChebiIonAndIonRadicalWithComparisonArgs,
-  GraphWithGermanLableArgs
+  GraphWithGermanLabelArgs
 } from "./GraphViewWidgetStories";
 import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -120,8 +120,8 @@ export const ChebiIonAndIonRadicalWithComparison: Story = {
   play: commonGraphViewWidgetPlay,
 };
 
-export const GraphWithGermanLable: Story = {
-  args: GraphWithGermanLableArgs,
+export const GraphWithGermanLabel: Story = {
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,

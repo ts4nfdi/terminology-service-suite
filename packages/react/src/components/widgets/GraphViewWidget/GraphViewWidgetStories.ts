@@ -122,7 +122,7 @@ export const ChebiIonAndIonRadicalWithComparisonArgs = {
   hierarchy: true,
 };
 
-export const GraphWithGermanLableArgs = {
+export const GraphWithGermanLabelArgs = {
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/HP_0003502",
   ontologyId: "hp",

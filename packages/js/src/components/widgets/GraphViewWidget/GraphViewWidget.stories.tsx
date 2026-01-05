@@ -11,7 +11,7 @@ import {
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
   ChebiIonAndIonRadicalWithComparisonArgs,
-  GraphWithGermanLableArgs
+  GraphWithGermanLabelArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
 import "./index";
 import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
@@ -157,7 +157,7 @@ export const ChebiIonAndIonRadicalWithComparison: Story = {
 };
 
 export const GraphWithGermanLable: Story = {
-  args: GraphWithGermanLableArgs,
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,
