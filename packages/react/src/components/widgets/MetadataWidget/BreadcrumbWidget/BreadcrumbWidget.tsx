@@ -2,14 +2,14 @@ import React from "react";
 import {
   EuiLoadingSpinner,
   EuiProvider,
-  EuiBadge,
   EuiIcon,
 } from "@elastic/eui";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
-import { BreadcrumbWidgetProps } from "../../../../app/types";
+import { BreadcrumbWidgetProps } from "../../../../app";
 import { isEntity } from "../../../../model/ModelTypeCheck";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
+import Badge from "../../../helperComponents/Badge";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {
@@ -43,40 +43,21 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
     <div data-testid="breadcrumb">
       {isLoading && (
         <span>
-          <span
+          <Badge
             onClick={() => {
-              if (typeof props.onNavigateToOntology === "function")
-                props.onNavigateToOntology(
-                  props.ontologyId || "",
-                  undefined,
-                  undefined,
-                );
+                if (typeof props.onNavigateToOntology === "function" && props.ontologyId)
+                    props.onNavigateToOntology(props.ontologyId, undefined, undefined);
             }}
-            role="button" // Improve accessibility
-            tabIndex={0} // Make it focusable
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.currentTarget.click();
-            }} // Handle keyboard navigation
+            color={colorFirst || (props.ontologyId ? "primary" : "warning")}
           >
-            <EuiBadge
-              className={
-                props.ontologyId
-                  ? "breadcrumb clickable-breadcrumb"
-                  : "breadcrumb"
-              }
-              color={colorFirst || (props.ontologyId ? "primary" : "warning")}
-            >
-              {props.ontologyId?.toUpperCase() || (
-                <EuiLoadingSpinner size={"s"} />
-              )}
-            </EuiBadge>
-          </span>
+            {props.ontologyId ? props.ontologyId.toUpperCase() : <EuiLoadingSpinner size={"s"} />}
+          </Badge>
           &nbsp;
           <EuiIcon type="arrowRight" />
           &nbsp;
-          <EuiBadge className="breadcrumb" color={colorSecond || "warning"}>
-            {<EuiLoadingSpinner size={"s"} />}
-          </EuiBadge>
+          <Badge color={colorSecond || "warning"}>
+              {<EuiLoadingSpinner size={"s"} />}
+          </Badge>
         </span>
       )}
       {isSuccess && data && isEntity(data) && (

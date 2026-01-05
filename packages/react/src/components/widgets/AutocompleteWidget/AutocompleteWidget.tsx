@@ -9,17 +9,17 @@ import {
   euiPaletteColorBlind,
   EuiHighlight,
   EuiHealth,
-  EuiIcon,
   EuiProvider,
 } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { AutocompleteWidgetProps } from "../../../app/types";
-import { BreadcrumbPresentation } from "../MetadataWidget/BreadcrumbWidget/BreadcrumbPresentation/BreadcrumbPresentation";
+import { AutocompleteWidgetProps } from "../../../app";
+import { BreadcrumbPresentation } from "../MetadataWidget";
 import "../../../style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { Entity } from "../../../model/interfaces";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { getConstrainedSynonym } from "./utils";
+import Tooltip from "../../helperComponents/Tooltip";
 
 /**
  * A React component to provide Autosuggestion based on SemLookP.
@@ -40,6 +40,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     className,
     useLegacy,
     initialSearchQuery,
+    onNavigateToOntology,
     ...rest
   } = props;
 
@@ -102,7 +103,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         value.short_form;
 
     let hoverText = `Type: ${value.type}\n\nLabel: ${value.label}\n\n${prefix}`;
-    if (value.description != undefined) {
+    if (value.description) {
       hoverText += `\n\nDescription: ${value.description}`;
     }
     if (showApiSource && value.source_url && value.source_url !== "") {
@@ -143,7 +144,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
       const bestSynonym = getConstrainedSynonym(value.label, allSynonyms, searchValue);
 
       return (
-        <span title={hoverText} className={finalClassName}>
+        <span title={""} className={finalClassName}>
           <div
             style={{
               display: "flex",
@@ -175,12 +176,10 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
               colorFirst={"primary"}
               colorSecond={"success"}
               className={`${finalClassName}-breadcrumb`}
+              onNavigateToOntology={onNavigateToOntology}
             />
 
-            <EuiIcon
-              type={"iInCircle"}
-              title={hoverText}
-            />
+            <Tooltip text={hoverText}/>
           </div>
 
           {!singleSuggestionRow && value.description && (
