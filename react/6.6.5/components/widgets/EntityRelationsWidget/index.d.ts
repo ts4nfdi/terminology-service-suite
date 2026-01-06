@@ -1,0 +1,1 @@
+export { EntityRelationsWidget } from './EntityRelationsWidget';
