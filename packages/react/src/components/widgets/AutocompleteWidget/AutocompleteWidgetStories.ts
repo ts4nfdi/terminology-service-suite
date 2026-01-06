@@ -1,22 +1,23 @@
 import * as globals from "../../../app/globals";
 
-import {
-    allowCustomTermsArgType,
-    apiArgType,
-    classNameArgType,
-    hasShortSelectedLabelArgType, onNavigateToOntologyArgType,
-    parameterArgType,
-    placeholderArgType,
-    preselectedArgType,
-    selectionChangedEventArgType,
-    showApiSourceArgType,
-    singleSelectionArgType,
-    singleSuggestionRowArgType,
-    ts4nfdiGatewayArgType,
-} from "../../../stories/storyArgs";
-import { AutocompleteWidgetProps } from "../../../app";
 import { action } from "storybook/actions";
-import { waitFor, within, expect } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
+import { AutocompleteWidgetProps } from "../../../app";
+import {
+  allowCustomTermsArgType,
+  apiArgType,
+  classNameArgType,
+  hasShortSelectedLabelArgType,
+  onNavigateToOntologyArgType,
+  parameterArgType,
+  placeholderArgType,
+  preselectedArgType,
+  selectionChangedEventArgType,
+  showApiSourceArgType,
+  singleSelectionArgType,
+  singleSuggestionRowArgType,
+  ts4nfdiGatewayArgType,
+} from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
   ...apiArgType,
@@ -31,7 +32,7 @@ export const AutocompleteWidgetStoryArgTypes = {
   ...singleSuggestionRowArgType,
   ...showApiSourceArgType,
   ...classNameArgType,
-  ...onNavigateToOntologyArgType
+  ...onNavigateToOntologyArgType,
 };
 
 export const AutocompleteWidgetStoryArgsReact = {
@@ -50,7 +51,7 @@ export const AutocompleteWidgetStoryArgsReact = {
   parameter:
     "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
-  onNavigateToOntology: "Console message"
+  onNavigateToOntology: "Console message",
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
@@ -70,7 +71,7 @@ export const AutocompleteWidgetStoryArgsHTML = {
   parameter:
     "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
-  onNavigateToOntology: "Console message"
+  onNavigateToOntology: "Console message",
 };
 
 export const WithDefaultsArgs = {};
@@ -80,7 +81,7 @@ export const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps = {
   ts4nfdiGateway: true,
   parameter:
     "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => { },
+  selectionChangedEvent: () => {},
 };
 
 export const UseAPIGatewayWithOntoPortalArgs: AutocompleteWidgetProps = {
@@ -130,18 +131,18 @@ export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
 };
 
 export const WithPreselectedValueAndUnresolvedIriOLS3Args: AutocompleteWidgetProps =
-{
-  ...AutocompleteWidgetStoryArgsReact,
-  api: globals.ZBMED_OLS3_API,
-  useLegacy: true,
-  preselected: [
-    {
-      label: "COVID-19",
-      iri: "http://purl.bioontology.org/ontology/MESH/D00008",
-    },
-  ],
-  allowCustomTerms: true,
-};
+  {
+    ...AutocompleteWidgetStoryArgsReact,
+    api: globals.ZBMED_OLS3_API,
+    useLegacy: true,
+    preselected: [
+      {
+        label: "COVID-19",
+        iri: "http://purl.bioontology.org/ontology/MESH/D00008",
+      },
+    ],
+    allowCustomTerms: true,
+  };
 
 export const WithPreselectedMultipleValuesOLS4Args: AutocompleteWidgetProps = {
   ...AutocompleteWidgetStoryArgsReact,
@@ -246,7 +247,7 @@ export const InitialSearchQueryArgs: AutocompleteWidgetProps = {
   api: globals.ZBMED_OLS4_API,
   parameter:
     "ontology=iso3166&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => { },
+  selectionChangedEvent: () => {},
   initialSearchQuery: "spain/france/germany",
   useLegacy: false,
 };

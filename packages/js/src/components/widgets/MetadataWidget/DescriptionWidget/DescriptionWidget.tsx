@@ -1,7 +1,6 @@
 import { DescriptionWidgetProps } from "@ts4nfdi/terminology-service-suite";
-import { createRoot, Root } from "react-dom/client";
-import React from "react";
 import { WrappedDescriptionWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/DescriptionWidget/DescriptionWidget";
+import { createRoot, Root } from "react-dom/client";
 
 const roots = new WeakMap<Element, Root>();
 

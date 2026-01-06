@@ -1,7 +1,6 @@
 import { HierarchyWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
-import { createRoot, Root } from "react-dom/client";
-import React from "react";
 import { WrappedHierarchyWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidget";
+import { createRoot, Root } from "react-dom/client";
 
 const roots = new WeakMap<Element, Root>();
 function createHierarchy(props: HierarchyWidgetProps, container: Element) {

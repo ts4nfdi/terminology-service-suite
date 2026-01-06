@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  MetadataWidget,
+  MetadataWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonMetadataWidgetPlay,
   DefinedByAlsoAppearsInWidgetsArgs,
@@ -13,12 +19,6 @@ import {
   TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
 import "./index";
-import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  MetadataWidget,
-  MetadataWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

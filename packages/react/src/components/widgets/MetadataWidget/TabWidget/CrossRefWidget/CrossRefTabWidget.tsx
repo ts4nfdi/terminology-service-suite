@@ -1,16 +1,13 @@
 "use client";
 
-import React from "react";
-import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { getErrorMessageToDisplay } from "../../../../../app/util";
+import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
 import { CrossRefWidgetProps } from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
-import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 import Reified from "../../../../../model/Reified";
-import ReactDOM from "react-dom";
-import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
+import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 
 function CrossRefTabWidget(props: CrossRefWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =

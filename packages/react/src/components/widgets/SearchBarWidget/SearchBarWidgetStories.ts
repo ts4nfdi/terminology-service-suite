@@ -1,13 +1,13 @@
 import * as globals from "../../../app/globals";
 
+import { action } from "storybook/actions";
+import { expect, waitFor, within } from "storybook/test";
 import {
   apiArgType,
   parameterArgType,
   queryArgType,
   selectionChangedEventArgType,
 } from "../../../stories/storyArgs";
-import { action } from "storybook/actions";
-import { expect, waitFor, within } from "storybook/test";
 
 export const SearchBarWidgetStoryArgTypes = {
   ...apiArgType,

@@ -1,20 +1,19 @@
-import React from "react";
 import { EuiTabbedContent } from "@elastic/eui";
+import { TabPresentationProps } from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import {
   isEntity,
   isIndividual,
   isProperty,
 } from "../../../../model/ModelTypeCheck";
+import Reified from "../../../../model/Reified";
+import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css";
+import { GraphViewWidget } from "../../GraphViewWidget";
+import { OntologyInfoWidget } from "../../OntologyInfoWidget";
+import { TermDepictionWidget } from "../../TermDepictionWidget";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
-import Reified from "../../../../model/Reified";
-import { TabPresentationProps } from "../../../../app/types";
-import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 import { HierarchyWidget } from "./HierarchyWidget";
-import { GraphViewWidget } from "../../GraphViewWidget";
-import { TermDepictionWidget } from "../../TermDepictionWidget";
-import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {

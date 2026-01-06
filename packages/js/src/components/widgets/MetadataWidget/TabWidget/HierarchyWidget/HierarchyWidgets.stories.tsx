@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  HierarchyWidget,
+  HierarchyWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
@@ -17,12 +23,6 @@ import {
   SkosmosAgrovocGermanArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
 import "./index";
-import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  HierarchyWidget,
-  HierarchyWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

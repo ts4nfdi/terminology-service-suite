@@ -1,17 +1,16 @@
 "use client";
 
-import React from "react";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
+import { EntityOntoListWidgetProps } from "../../../../app/types";
 import {
   getErrorMessageToDisplay,
   singularizeType,
 } from "../../../../app/util";
-import { EntityOntoListWidgetProps } from "../../../../app/types";
-import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
-import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
-import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
+import "../../../../style/tssStyles.css";
+import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
 function EntityOntoListWidget(props: EntityOntoListWidgetProps) {

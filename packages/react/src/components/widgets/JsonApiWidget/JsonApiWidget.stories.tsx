@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { JsonApiDescription } from "../../../app/widgetDescriptions";
 import { JsonApiWidget } from "./JsonApiWidget";
 import {
   commonJsonApiWidgetPlay,
@@ -5,10 +7,6 @@ import {
   JsonApiWidgetStoryArgs,
   JsonApiWidgetStoryArgTypes,
 } from "./JsonApiWidgetStories";
-import { JsonApiDescription } from "../../../app/widgetDescriptions";
-import * as globals from "../../../app/globals";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DataContentWidget } from "../DataContentWidget";
 
 const meta = {
   title: "API/JsonApiWidget",

@@ -1,4 +1,7 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { SearchBarWidget } from "@ts4nfdi/terminology-service-suite/src";
 import { SearchBarWidgetProps } from "@ts4nfdi/terminology-service-suite/src/app/types";
+import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonSearchBartWidgetPlay,
   SearchBarWidgetDefaultArgs,
@@ -7,10 +10,7 @@ import {
   TibDataPlantArgs,
   TibNFDI4CHEMArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchBarWidget/SearchBarWidgetStories";
-import { SearchBarDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { SearchBarWidget } from "@ts4nfdi/terminology-service-suite/src";
 
 let counter = 0;
 

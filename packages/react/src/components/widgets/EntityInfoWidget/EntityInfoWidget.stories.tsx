@@ -1,22 +1,22 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { EntityInfoDescription } from "../../../app/widgetDescriptions";
 import { EntityInfoWidget } from "./EntityInfoWidget";
 import {
   commonEntityInfoWidgetPlay,
   EntityInfoWidgetStoryArgs,
   EntityInfoWidgetStoryArgTypes,
-  TermInfoWidgetArgs,
-  PropertyInfoWidgetArgs,
   IndividualInfoWidgetArgs,
   InfoWidgetBadgesArgs,
-  OptionalEntityTypeLegacyAPIArgs,
   InfoWidgetDomainArgs,
-  InfoWidgetRangeArgs,
   InfoWidgetPropertyAssertionArgs,
   InfoWidgetPropertyCharacteristicsArgs,
+  InfoWidgetRangeArgs,
   NavigateToEBIPageArgs,
+  OptionalEntityTypeLegacyAPIArgs,
+  PropertyInfoWidgetArgs,
   SkosmosImportArgs,
+  TermInfoWidgetArgs,
 } from "./EntityInfoWidgetStories";
-import { EntityInfoDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/EntityInfoWidget",

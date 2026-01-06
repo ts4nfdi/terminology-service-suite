@@ -1,9 +1,9 @@
-import "./index";
-import { AutocompleteDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   AutocompleteWidget,
   AutocompleteWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
+import { AutocompleteDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   AllowAddingCustomTermsArgs,
   AllowMultipleTermsArgs,
@@ -29,7 +29,7 @@ import {
   WithPreselectedValueAndUnresolvedIriOLS3Args,
   WithPreselectedValueOLS4v2Args,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/AutocompleteWidget/AutocompleteWidgetStories";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import "./index";
 
 let counter = 0;
 

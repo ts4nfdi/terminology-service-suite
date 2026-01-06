@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  BreadcrumbWidget,
+  BreadcrumbWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { BreadcrumbDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   BreadcrumbWidgetDefaultArgs,
   BreadcrumbWidgetStoryArgs,
@@ -11,12 +17,6 @@ import {
   SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/BreadcrumbWidget/BreadcrumbWidgetStories";
 import "./index";
-import { BreadcrumbDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  BreadcrumbWidget,
-  BreadcrumbWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

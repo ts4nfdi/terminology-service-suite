@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  EntityRelationsWidget,
+  EntityRelationsWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { EntityRelationsDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   AllValuesFromArgs,
   AxiomsArgs,
@@ -15,12 +21,6 @@ import {
   SubEntityOfArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityRelationsWidget/EntityRelationsWidgetStories";
 import "./index";
-import { EntityRelationsDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  EntityRelationsWidget,
-  EntityRelationsWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

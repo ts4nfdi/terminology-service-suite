@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  ResourcesWidget,
+  ResourcesWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonResourcesWidgetPlay,
   ResourcesWidget1Args,
@@ -7,12 +13,6 @@ import {
   WithActionsArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
 import "./index";
-import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  ResourcesWidget,
-  ResourcesWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

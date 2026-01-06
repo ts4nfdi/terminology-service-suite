@@ -1,9 +1,6 @@
-import React from "react";
 import { EuiLink, EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { TitlePresentationProps } from "../../../../app";
-import {
-  getErrorMessageToDisplay,
-} from "../../../../app/util";
+import { getErrorMessageToDisplay } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTitleStyle.css";
 
 function TitlePresentation(props: TitlePresentationProps) {

@@ -1,25 +1,25 @@
-import {
-  GraphViewWidgetStoryArgTypes,
-  GraphViewWidgetStoryArgs,
-  commonGraphViewWidgetPlay,
-  ChebiWaterArgs,
-  ChebiWaterRootWalkArgs,
-  ChebiCaffeineHierarchyArgs,
-  WithOnNodeDoubleClickCallbackArgs,
-  ChebiCaffeineHierarchyWithComparisonArgs,
-  ChebiIonArgs,
-  ChebiIonComparisonArgs,
-  ChebiIonRootWalkArgs,
-  ChebiIonAndIonRadicalWithComparisonArgs,
-  GraphWithGermanLabelArgs
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
-import "./index";
-import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   GraphViewWidget,
   GraphViewWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import {
+  ChebiCaffeineHierarchyArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs,
+  ChebiIonArgs,
+  ChebiIonComparisonArgs,
+  ChebiIonRootWalkArgs,
+  ChebiWaterArgs,
+  ChebiWaterRootWalkArgs,
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+  GraphWithGermanLabelArgs,
+  WithOnNodeDoubleClickCallbackArgs,
+  commonGraphViewWidgetPlay,
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
+import "./index";
 
 let counter = 0;
 
@@ -165,4 +165,3 @@ export const GraphWithGermanLable: Story = {
   },
   play: commonGraphViewWidgetPlay,
 };
-

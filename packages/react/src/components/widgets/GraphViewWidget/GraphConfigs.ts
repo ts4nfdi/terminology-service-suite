@@ -1,5 +1,4 @@
-import { OlsGraphNode, OlsGraphEdge } from "../../../app/types";
-
+import { OlsGraphEdge, OlsGraphNode } from "../../../app/types";
 
 export const hierarchicalConfig = {
   enabled: true,
@@ -47,7 +46,6 @@ export const graphNetworkConfig = {
   },
 };
 
-
 export class GraphNode {
   id?: string;
   color: {
@@ -68,7 +66,7 @@ export class GraphNode {
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */
     this.id = node["iri"];
-    this.label = node["label"]
+    this.label = node["label"];
     this.color = {
       background: bgColor,
       highlight: {
@@ -121,4 +119,4 @@ export class GraphEdge {
       };
     }
   }
-  }
+}

@@ -1,8 +1,10 @@
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../../app/globals";
 import {
   apiArgType,
   classNameArgType,
   defaultValueArgType,
+  hrefArgType,
   iriArgType,
   onNavigateToArgType,
   ontologyIdArgType,
@@ -10,10 +12,8 @@ import {
   thingTypeArgType,
   titleTextArgType,
   useLegacyArgType,
-  hrefArgType,
 } from "../../../../stories/storyArgs";
 import "../../../../style/customTitleStyle.css";
-import { expect, waitFor, within } from "storybook/test";
 
 export const TitleWidgetStoryArgTypes = {
   ...apiArgType,

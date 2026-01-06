@@ -1,15 +1,10 @@
-import React from "react";
-import {
-  EuiLoadingSpinner,
-  EuiProvider,
-  EuiIcon,
-} from "@elastic/eui";
+import { EuiIcon, EuiLoadingSpinner, EuiProvider } from "@elastic/eui";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 import { BreadcrumbWidgetProps } from "../../../../app";
 import { isEntity } from "../../../../model/ModelTypeCheck";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
 import Badge from "../../../helperComponents/Badge";
+import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
 
 function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   const {
@@ -45,18 +40,29 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
         <span>
           <Badge
             onClick={() => {
-                if (typeof props.onNavigateToOntology === "function" && props.ontologyId)
-                    props.onNavigateToOntology(props.ontologyId, undefined, undefined);
+              if (
+                typeof props.onNavigateToOntology === "function" &&
+                props.ontologyId
+              )
+                props.onNavigateToOntology(
+                  props.ontologyId,
+                  undefined,
+                  undefined,
+                );
             }}
             color={colorFirst || (props.ontologyId ? "primary" : "warning")}
           >
-            {props.ontologyId ? props.ontologyId.toUpperCase() : <EuiLoadingSpinner size={"s"} />}
+            {props.ontologyId ? (
+              props.ontologyId.toUpperCase()
+            ) : (
+              <EuiLoadingSpinner size={"s"} />
+            )}
           </Badge>
           &nbsp;
           <EuiIcon type="arrowRight" />
           &nbsp;
           <Badge color={colorSecond || "warning"}>
-              {<EuiLoadingSpinner size={"s"} />}
+            {<EuiLoadingSpinner size={"s"} />}
           </Badge>
         </span>
       )}

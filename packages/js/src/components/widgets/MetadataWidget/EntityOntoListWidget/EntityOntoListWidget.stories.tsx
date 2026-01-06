@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  EntityOntoListWidget,
+  EntityOntoListWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { EntityOntoListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonEntityOntoListWidgetPlay,
   EntityOntoListWidgetStoryArgs,
@@ -8,12 +14,6 @@ import {
   v2ApiONSArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityOntoListWidget/EntityOntoListWidgetStories";
 import "./index";
-import { EntityOntoListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  EntityOntoListWidget,
-  EntityOntoListWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

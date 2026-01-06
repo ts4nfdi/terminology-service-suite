@@ -1,3 +1,6 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { manuallyEmbedOnNavigate } from "../../../../../app/util";
+import { BreadcrumbPresentationDescription } from "../../../../../app/widgetDescriptions";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation";
 import {
   BreadcrumbPresentationStoryArgs,
@@ -6,9 +9,6 @@ import {
   EntityInputArgs,
   EntityInputMissingValueArgs,
 } from "./BreadcrumbPresentationStories";
-import { manuallyEmbedOnNavigate } from "../../../../../app/util";
-import { BreadcrumbPresentationDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/BreadcrumbPresentation",

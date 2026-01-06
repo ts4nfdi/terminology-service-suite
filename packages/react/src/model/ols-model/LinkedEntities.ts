@@ -1,5 +1,5 @@
 import Reified from "../Reified";
-import {LinkedEntity} from "./LinkedEntity";
+import { LinkedEntity } from "./LinkedEntity";
 
 export default class LinkedEntities {
   linkedEntities: { [key: string]: LinkedEntity };

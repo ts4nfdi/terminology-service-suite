@@ -1,3 +1,5 @@
+import { expect, waitFor, within } from "storybook/test";
+import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../api/ols/OlsHierarchyApi";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
@@ -12,10 +14,8 @@ import {
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
-  useLegacyArgType
+  useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../api/ols/OlsHierarchyApi";
-import { expect, waitFor, within } from "storybook/test";
 
 export const MetadataWidgetStoryArgTypes = {
   ...apiArgType,

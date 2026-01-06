@@ -1,17 +1,39 @@
 "use client";
 
-import React, { ReactElement } from "react";
+import {
+  EuiCard,
+  EuiFlexItem,
+  EuiLoadingSpinner,
+  EuiProvider,
+  EuiText,
+} from "@elastic/eui";
+import { ReactElement } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiText} from "@elastic/eui";
-import {Class, Entity, Individual, Property, Thing} from "../../../model/interfaces";
-import ClassExpression from "../../helperComponents/ClassExpression";
-import {isClass, isIndividual, isProperty} from "../../../model/ModelTypeCheck";
-import Reified from "../../../model/Reified";
-import {asArray, asReified, capitalize, getEntityTypeName, randomString} from "../../../app/util";
-import {EntityRelationsWidgetProps, OnNavigates} from "../../../app";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { EntityRelationsWidgetProps, OnNavigates } from "../../../app";
+import { DEFAULT_SHOW_BADGES } from "../../../app/globals";
+import {
+  asArray,
+  asReified,
+  capitalize,
+  getEntityTypeName,
+  randomString,
+} from "../../../app/util";
+import {
+  Class,
+  Entity,
+  Individual,
+  Property,
+  Thing,
+} from "../../../model/interfaces";
+import {
+  isClass,
+  isIndividual,
+  isProperty,
+} from "../../../model/ModelTypeCheck";
+import Reified from "../../../model/Reified";
+import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
-import {DEFAULT_SHOW_BADGES} from "../../../app/globals";
 import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
@@ -27,43 +49,43 @@ const DEFAULT_HAS_TITLE = true;
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
 export function getSectionListJSX(
-    parentEntity: Thing,
-    array: any[],
-    showBadges: boolean = DEFAULT_SHOW_BADGES,
-    onNavigates: OnNavigates,
+  parentEntity: Thing,
+  array: any[],
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement {
-    return (
+  return (
+    <>
+      {array.length === 1 ? (
+        <p>
+          <RenderedReified
+            parentEntity={parentEntity}
+            reified={asReified(array[0])}
+            showBadges={showBadges}
+            onNavigates={onNavigates}
+          />
+        </p>
+      ) : (
         <>
-            {array.length === 1 ? (
-                <p>
-                    <RenderedReified
-                        parentEntity={parentEntity}
-                        reified={asReified(array[0])}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
-                </p>
-            ) : (
-                <>
-                    <ul>
-                        {array.map((item: any) => {
-                            return (
-                                <li key={randomString()}>
-                                    <RenderedReified
-                                        parentEntity={parentEntity}
-                                        reified={asReified(item)}
-                                        showBadges={showBadges}
-                                        onNavigates={onNavigates}
-                                    />
-                                </li>
-                            );
-                        })}
-                    </ul>
-                    <p></p>
-                </>
-            )}
+          <ul>
+            {array.map((item: any) => {
+              return (
+                <li key={randomString()}>
+                  <RenderedReified
+                    parentEntity={parentEntity}
+                    reified={asReified(item)}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          <p></p>
         </>
-    );
+      )}
+    </>
+  );
 }
 
 /**
@@ -90,12 +112,7 @@ function getIndividualTypesSectionJSX(
     return (
       <EuiFlexItem>
         <b>Type</b>
-        {getSectionListJSX(
-          individual,
-          types,
-          showBadges,
-          onNavigates
-        )}
+        {getSectionListJSX(individual, types, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -119,12 +136,7 @@ function getIndividualSameAsSectionJSX(
     return (
       <EuiFlexItem>
         <b>Same As</b>
-        {getSectionListJSX(
-          individual,
-          sameAs,
-          showBadges,
-          onNavigates
-        )}
+        {getSectionListJSX(individual, sameAs, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -153,7 +165,7 @@ function getIndividualDifferentFromSectionJSX(
             individual,
             differentFrom,
             showBadges,
-            onNavigates
+            onNavigates,
           )}
         </EuiFlexItem>
       </>
@@ -179,12 +191,7 @@ function getDisjointWithSectionJSX(
     return (
       <EuiFlexItem>
         <b>Disjoint with</b>
-        {getSectionListJSX(
-          entity,
-          disjointWith,
-          showBadges,
-          onNavigates
-        )}
+        {getSectionListJSX(entity, disjointWith, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -208,12 +215,7 @@ function getPropertyInverseOfSectionJSX(
     return (
       <EuiFlexItem>
         <b>Inverse of</b>
-        {getSectionListJSX(
-          property,
-          inverseOfs,
-          showBadges,
-          onNavigates
-        )}
+        {getSectionListJSX(property, inverseOfs, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -241,11 +243,11 @@ function getPropertyChainJSX(
       return (
         <span key={propertyExpr}>
           <ClassExpression
-              parentEntity={property}
-              linkedEntities={property.getLinkedEntities()}
-              currentResponsePath={propertyExpr}
-              showBadges={showBadges}
-              onNavigates={onNavigates}
+            parentEntity={property}
+            linkedEntities={property.getLinkedEntities()}
+            currentResponsePath={propertyExpr}
+            showBadges={showBadges}
+            onNavigates={onNavigates}
           />
           <>
             {i < asArray(propertyChain).length - 1 && (
@@ -283,14 +285,26 @@ function getPropertyChainSectionJSX(
       <EuiFlexItem>
         <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
         {!hasMultipleChains ? (
-          <p>{getPropertyChainJSX(propertyChains, property, showBadges, onNavigates)}</p>
+          <p>
+            {getPropertyChainJSX(
+              propertyChains,
+              property,
+              showBadges,
+              onNavigates,
+            )}
+          </p>
         ) : (
           <>
             <ul>
               {propertyChains.map((item: any) => {
                 return (
                   <li key={randomString()}>
-                    {getPropertyChainJSX(item, property, showBadges, onNavigates)}
+                    {getPropertyChainJSX(
+                      item,
+                      property,
+                      showBadges,
+                      onNavigates,
+                    )}
                   </li>
                 );
               })}
@@ -321,7 +335,12 @@ function getEntityEquivalentToSectionJSX(
     return (
       <EuiFlexItem>
         <b>Equivalent to</b>
-          {getSectionListJSX(entity, equivalents.map((item) => item.value), showBadges, onNavigates)}
+        {getSectionListJSX(
+          entity,
+          equivalents.map((item) => item.value),
+          showBadges,
+          onNavigates,
+        )}
       </EuiFlexItem>
     );
   }
@@ -345,7 +364,7 @@ function getSubEntityOfSectionJSX(
     return (
       <EuiFlexItem>
         <b>Sub{entity.getType()} of</b>
-          {getSectionListJSX(entity, superEntities, showBadges, onNavigates)}
+        {getSectionListJSX(entity, superEntities, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -394,13 +413,13 @@ function getEntityRelatedFromSectionJSX(
                     .map((elem) => {
                       return (
                         <li key={randomString()}>
-                            <ClassExpression
-                                parentEntity={entity}
-                                linkedEntities={entity.getLinkedEntities()}
-                                currentResponsePath={elem.value["value"]}
-                                showBadges={showBadges}
-                                onNavigates={onNavigates}
-                            />
+                          <ClassExpression
+                            parentEntity={entity}
+                            linkedEntities={entity.getLinkedEntities()}
+                            currentResponsePath={elem.value["value"]}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -439,13 +458,13 @@ function getClassInstancesSectionJSX(
             {instances.map((instance) => {
               return (
                 <li key={randomString()}>
-                    <EntityLink
-                        parentEntity={term}
-                        linkedEntities={term.getLinkedEntities()}
-                        iri={instance.getIri()}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
+                  <EntityLink
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    iri={instance.getIri()}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </li>
               );
             })}
@@ -471,10 +490,10 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
   } = props;
 
   const onNavigates = {
-      onNavigateToEntity: props.onNavigateToEntity,
-      onNavigateToOntology: props.onNavigateToOntology,
-      onNavigateToDisambiguate: props.onNavigateToDisambiguate
-  }
+    onNavigateToEntity: props.onNavigateToEntity,
+    onNavigateToOntology: props.onNavigateToOntology,
+    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+  };
 
   const olsApi = new OlsEntityApi(api);
 
@@ -524,41 +543,43 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
 
     if (isIndividual(entity)) {
       sectionList.push(
-          getIndividualTypesSectionJSX(entity, showBadges, onNavigates),
-          getIndividualSameAsSectionJSX(entity, showBadges, onNavigates),
-          getIndividualDifferentFromSectionJSX(entity, showBadges, onNavigates)
+        getIndividualTypesSectionJSX(entity, showBadges, onNavigates),
+        getIndividualSameAsSectionJSX(entity, showBadges, onNavigates),
+        getIndividualDifferentFromSectionJSX(entity, showBadges, onNavigates),
       );
     }
 
     if (isProperty(entity) || isClass(entity)) {
       sectionList.push(
-          getDisjointWithSectionJSX(entity, showBadges, onNavigates)
+        getDisjointWithSectionJSX(entity, showBadges, onNavigates),
       );
     }
 
     if (isProperty(entity)) {
       sectionList.push(
-          getPropertyInverseOfSectionJSX(entity, showBadges, onNavigates),
-          getPropertyChainSectionJSX(entity, showBadges, onNavigates)
+        getPropertyInverseOfSectionJSX(entity, showBadges, onNavigates),
+        getPropertyChainSectionJSX(entity, showBadges, onNavigates),
       );
     }
 
     if (isProperty(entity) || isClass(entity)) {
       sectionList.push(
-          getEntityEquivalentToSectionJSX(entity, showBadges, onNavigates),
-          getSubEntityOfSectionJSX(entity, showBadges, onNavigates),
-          getEntityRelatedFromSectionJSX(entity, showBadges, onNavigates)
+        getEntityEquivalentToSectionJSX(entity, showBadges, onNavigates),
+        getSubEntityOfSectionJSX(entity, showBadges, onNavigates),
+        getEntityRelatedFromSectionJSX(entity, showBadges, onNavigates),
       );
     }
 
     if (isClass(entity)) {
       sectionList.push(
-          getClassInstancesSectionJSX(entity, instances, showBadges, onNavigates)
+        getClassInstancesSectionJSX(entity, instances, showBadges, onNavigates),
       );
     }
 
     // filter out empty (= undefined) sections
-    sectionList = sectionList.filter((elem: ReactElement | undefined): boolean => elem != undefined);
+    sectionList = sectionList.filter(
+      (elem: ReactElement | undefined): boolean => elem != undefined,
+    );
 
     if (sectionList.length > 0) {
       return <EuiText {...rest}>{sectionList}</EuiText>;
