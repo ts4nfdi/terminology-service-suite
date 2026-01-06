@@ -39,6 +39,7 @@ export declare const AutocompleteWidgetStoryArgsReact: {
     useLegacy: boolean;
     parameter: string;
     initialSearchQuery: string;
+    onNavigateToOntology: string;
 };
 export declare const AutocompleteWidgetStoryArgsHTML: {
     api: string;
@@ -54,6 +55,7 @@ export declare const AutocompleteWidgetStoryArgsHTML: {
     useLegacy: boolean;
     parameter: string;
     initialSearchQuery: string;
+    onNavigateToOntology: string;
 };
 export declare const WithDefaultsArgs: {};
 export declare const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps;

@@ -81,6 +81,15 @@ export declare const ChebiIonAndIonRadicalWithComparisonArgs: {
     rootWalk: boolean;
     hierarchy: boolean;
 };
+export declare const GraphWithGermanLabelArgs: {
+    api: string;
+    iri: string;
+    ontologyId: string;
+    rootWalk: boolean;
+    hierarchy: boolean;
+    targetIri: string;
+    parameter: string;
+};
 export declare const commonGraphViewWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;

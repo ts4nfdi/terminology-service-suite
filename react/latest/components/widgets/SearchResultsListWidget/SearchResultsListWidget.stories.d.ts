@@ -22,6 +22,7 @@ declare const meta: {
         preselected: never[];
         targetLink: string;
         parameter: string;
+        onNavigateToOntology: string;
     };
 };
 export default meta;

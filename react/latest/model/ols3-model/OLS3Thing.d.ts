@@ -1,5 +1,5 @@
 import { Thing } from '../interfaces';
-import { default as LinkedEntities } from '../LinkedEntities';
+import { default as LinkedEntities } from '../ols-model/LinkedEntities';
 import { default as Reified } from '../Reified';
 import { ThingTypeName } from '../ModelTypeCheck';
 export declare abstract class OLS3Thing implements Thing {

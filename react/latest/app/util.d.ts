@@ -1,8 +1,10 @@
 import { EuiLinkColor } from '@elastic/eui/src/components/link/link';
 import { ThingTypeName } from '../model/ModelTypeCheck';
 import { StoryContext } from '@storybook/react';
+import { default as Reified } from '../model/Reified';
 export declare const OBO_FOUNDRY_REPO_URL_RAW: "https://raw.githubusercontent.com/OBOFoundry/OBOFoundry.github.io/master";
 export declare function asArray<T>(obj: T | T[]): T[];
+export declare function asReified<T>(obj: T | Reified<T>): Reified<T>;
 /**
  * Returns `useLegacy` if undefined, otherwise returns default value for useLegacy
  * @param useLegacy

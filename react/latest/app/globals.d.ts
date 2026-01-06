@@ -6,3 +6,4 @@ export declare const ZBMED_OLS4_GATEWAY_API = "https://semanticlookup.zbmed.de/a
 export declare const ZBMED_OLS3_GATEWAY_API = "https://ols3-semanticlookup.zbmed.de/api/";
 export declare const EBI_API_ENDPOINT = "https://www.ebi.ac.uk/ols4/api/";
 export declare const FINTO_V1_API_ENDPOINT = "https://api.finto.fi/rest/v1";
+export declare const DEFAULT_SHOW_BADGES = true;
