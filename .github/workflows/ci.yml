@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # to enable use of OIDC for trusted publishing and npm provenance
     strategy:
       matrix:
         node-version: [ 22.x ]
