@@ -12,3 +12,4 @@ export declare const ChebiCaffeineHierarchy: Story;
 export declare const WithOnNodeDoubleClickCallback: Story;
 export declare const ChebiCaffeineHierarchyWithComparison: Story;
 export declare const ChebiIonAndIonRadicalWithComparison: Story;
+export declare const GraphWithGermanLable: Story;

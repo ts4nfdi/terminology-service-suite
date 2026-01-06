@@ -16,4 +16,5 @@ export type GraphFetchFunctionInput = {
     iri: string;
     targetIri?: string;
     dbClicked?: boolean;
+    parameter?: string;
 };

@@ -31,7 +31,10 @@ export declare const MetadataWidgetStoryArgTypes: {
         description: string;
         table: {
             defaultValue: {
-                summary: false;
+                summary: string;
+            };
+            type: {
+                summary: string;
             };
         };
     };

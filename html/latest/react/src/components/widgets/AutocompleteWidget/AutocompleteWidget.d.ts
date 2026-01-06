@@ -1,4 +1,4 @@
-import { AutocompleteWidgetProps } from '../../../app/types';
+import { AutocompleteWidgetProps } from '../../../app';
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */

@@ -51,6 +51,7 @@ declare const meta: {
         useLegacy: boolean;
         parameter: string;
         initialSearchQuery: string;
+        onNavigateToOntology: string;
     };
 };
 export default meta;

@@ -10,6 +10,7 @@ export declare const SearchResultsListWidgetStoryArgs: {
     preselected: never[];
     targetLink: string;
     parameter: string;
+    onNavigateToOntology: string;
 };
 export declare const SearchResultsListSafetyArgs: {
     api: string;

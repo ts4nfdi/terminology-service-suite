@@ -48,7 +48,10 @@ declare const meta: {
             description: string;
             table: {
                 defaultValue: {
-                    summary: false;
+                    summary: string;
+                };
+                type: {
+                    summary: string;
                 };
             };
         };

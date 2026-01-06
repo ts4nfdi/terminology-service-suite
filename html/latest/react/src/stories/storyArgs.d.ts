@@ -120,7 +120,10 @@ export declare const hierarchyWrapArgType: {
         description: string;
         table: {
             defaultValue: {
-                summary: false;
+                summary: string;
+            };
+            type: {
+                summary: string;
             };
         };
     };

@@ -70,7 +70,7 @@ export declare class OlsEntityApi extends OlsBaseApi {
      */
     getEntityObject(iri: string, entityType?: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean): Promise<Entity>;
     getClassInstances(iri: string, ontologyId: string): Promise<Individual[]>;
-    getTermRelations: (contentParams: ContentParams) => Promise<any>;
+    getTermRelations: (contentParams: ContentParams, parameter?: string) => Promise<any>;
     /**
      * getTermTree:
      * This method always requires an ontologyId in contentParams
@@ -78,5 +78,5 @@ export declare class OlsEntityApi extends OlsBaseApi {
      * 2) If a termIri is defined but no child in jsTreeParams, the hierarchy containing that term will be queried
      * 3) If a termIri is defined and also a child in jsTreeParams, the subhierarchy of that child will be queried
      */
-    getTermTree: (contentParams: ContentParams, treeParams: JsTreeParams) => Promise<any>;
+    getTermTree: (contentParams: ContentParams, treeParams: JsTreeParams, parameter?: string) => Promise<any>;
 }

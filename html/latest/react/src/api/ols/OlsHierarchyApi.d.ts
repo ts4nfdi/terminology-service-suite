@@ -1,7 +1,7 @@
 import { EntityTypeName } from '../../model/ModelTypeCheck';
 import { Entity } from '../../model/interfaces';
 import { JSTreeNode } from '../../utils/olsApiTypes';
-import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../HierarchyBuilder';
+import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../../model/interfaces/HierarchyBuilder';
 import { Hierarchy } from '../../model/interfaces/Hierarchy';
 import { EntityData } from '../../app';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
