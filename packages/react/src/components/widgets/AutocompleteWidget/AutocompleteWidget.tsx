@@ -80,14 +80,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const { label, value } = option;
 
     // @ts-ignore
-    const dotColorIndex: number = {
-      "class": 8,
-      "individual": 4,
-      "property": 2,
-      "objectProperty": 1, // blue
-      "dataProperty": 0, // green
-      "annotationProperty": 7 // orange
-    }[value.type] ?? -1;
+    const dotColorIndex: number =
+      {
+        class: 8,
+        individual: 4,
+        property: 2,
+        objectProperty: 1, // blue
+        dataProperty: 0, // green
+        annotationProperty: 7, // orange
+      }[value.type] ?? -1;
 
     const dotColor = visColors[dotColorIndex];
 

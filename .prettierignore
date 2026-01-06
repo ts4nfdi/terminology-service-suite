@@ -10,3 +10,6 @@ packages/react/dist
 packages/react/package-lock.json
 packages/js/package-lock.json
 package-lock.json
+packages/js/storybook-static
+packages/react/storybook-static
+storybook-static
