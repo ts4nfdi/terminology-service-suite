@@ -1,1 +1,1 @@
-echo "test husky"
+npm run style:format
