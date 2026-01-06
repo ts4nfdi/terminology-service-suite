@@ -1,4 +1,5 @@
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
+import { StoryContext } from "@storybook/react";
 import {
   isClassTypeName,
   isIndividualTypeName,
@@ -7,7 +8,6 @@ import {
   isThingTypeName,
   ThingTypeName,
 } from "../model/ModelTypeCheck";
-import { StoryContext } from "@storybook/react";
 import Reified from "../model/Reified";
 
 export const OBO_FOUNDRY_REPO_URL_RAW =
@@ -23,12 +23,11 @@ export function asArray<T>(obj: T | T[]): T[] {
 }
 
 export function asReified<T>(obj: T | Reified<T>): Reified<T> {
-    if (obj instanceof Reified) {
-        return obj;
-    }
-    else {
-        return Reified.fromJson<T>(obj)[0];
-    }
+  if (obj instanceof Reified) {
+    return obj;
+  } else {
+    return Reified.fromJson<T>(obj)[0];
+  }
 }
 
 const DEFAULT_USE_LEGACY = true;

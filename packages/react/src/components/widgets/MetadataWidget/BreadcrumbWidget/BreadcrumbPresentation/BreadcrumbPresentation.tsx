@@ -1,11 +1,10 @@
 "use client";
-import React from "react";
 import { EuiIcon, EuiProvider } from "@elastic/eui";
-import {BreadcrumbPresentationProps,} from "../../../../../app";
-import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import OntologyBadge from "../../../../helperComponents/OntologyBadge";
+import { BreadcrumbPresentationProps } from "../../../../../app";
+import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import Badge from "../../../../helperComponents/Badge";
+import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
 function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
@@ -16,17 +15,15 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
     <>
       <span className={finalClassName}>
         <OntologyBadge
-            ontologyId={ontologyId}
-            onNavigateToOntology={props.onNavigateToOntology}
-            color={props.colorFirst || "primary"}
+          ontologyId={ontologyId}
+          onNavigateToOntology={props.onNavigateToOntology}
+          color={props.colorFirst || "primary"}
         />
         <span style={{ margin: "0 0.1em" }} />
-        <EuiIcon type="arrowRight" color={"black"}/>
+        <EuiIcon type="arrowRight" color={"black"} />
         <span style={{ margin: "0 0.1em" }} />
-        <Badge
-            color={props.colorSecond || "success"}
-        >
-            {shortForm ? shortForm.toUpperCase() : "No short form available"}
+        <Badge color={props.colorSecond || "success"}>
+          {shortForm ? shortForm.toUpperCase() : "No short form available"}
         </Badge>
       </span>
     </>

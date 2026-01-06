@@ -1,15 +1,15 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DescriptionDescription } from "../../../../app/widgetDescriptions";
 import { DescriptionWidget } from "./DescriptionWidget";
 import {
+  commonDescriptionWidgetPlay,
+  DefiningOntologyUnavailableArgs,
+  DescriptionWidget1Args,
   DescriptionWidgetStoryArgs,
   DescriptionWidgetStoryArgTypes,
-  DescriptionWidget1Args,
-  SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs,
   ErrorFetchingDataArgs,
-  commonDescriptionWidgetPlay,
+  SelectingDefiningOntologyArgs,
 } from "./DescriptionWidgetStories";
-import { DescriptionDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/DescriptionWidget",

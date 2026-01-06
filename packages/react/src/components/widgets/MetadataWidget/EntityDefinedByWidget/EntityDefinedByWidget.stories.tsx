@@ -1,15 +1,15 @@
-import { EntityDefinedByWidget } from "./EntityDefinedByWidget";
-import {
-  EntityDefinedByWidgetStoryArgs,
-  EntityDefinedByWidgetStoryArgTypes,
-  v2ApiONSArgs,
-  emptyInDefiningOntologyArgs,
-  legacyApiArgs,
-  commonEntityDefinedByWidgetPlay,
-} from "./EntityDefinedByWidgetStories";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { EntityDefinedByDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { EntityDefinedByWidget } from "./EntityDefinedByWidget";
+import {
+  commonEntityDefinedByWidgetPlay,
+  emptyInDefiningOntologyArgs,
+  EntityDefinedByWidgetStoryArgs,
+  EntityDefinedByWidgetStoryArgTypes,
+  legacyApiArgs,
+  v2ApiONSArgs,
+} from "./EntityDefinedByWidgetStories";
 
 const meta = {
   title: "Additional Entity Metadata/EntityDefinedByWidget",

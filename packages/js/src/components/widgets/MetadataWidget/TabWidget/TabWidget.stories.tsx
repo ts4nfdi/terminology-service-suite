@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  TabWidget,
+  TabWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTabWidgetPlay,
   DefaultArgs,
@@ -12,12 +18,6 @@ import {
   TabWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
 import "./index";
-import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  TabWidget,
-  TabWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

@@ -1,15 +1,15 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { IriDescription } from "../../../../app/widgetDescriptions";
 import { IriWidget } from "./IriWidget";
 import {
+  commonIriWidgetPlay,
+  IriWidget1Args,
   IriWidgetStoryArgs,
   IriWidgetStoryArgTypes,
-  IriWidget1Args,
   withCopyButtonArgs,
   withoutExternalIconArgs,
   withUrlPrefixArgs,
-  commonIriWidgetPlay,
 } from "./IriWidgetStories";
-import { IriDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/IriWidget",

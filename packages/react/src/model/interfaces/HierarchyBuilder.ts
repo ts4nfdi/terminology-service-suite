@@ -1,6 +1,6 @@
+import { EntityData } from "../../app";
 import { EntityTypeName } from "../ModelTypeCheck";
 import { Hierarchy, TreeNode } from "./Hierarchy";
-import { EntityData } from "../../app";
 
 export type HierarchyQueryProps = {
   entityType?: EntityTypeName;

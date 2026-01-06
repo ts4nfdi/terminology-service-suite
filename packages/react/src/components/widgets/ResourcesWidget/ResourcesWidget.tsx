@@ -1,29 +1,29 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
 import {
   Comparators,
   CriteriaWithPagination,
   EuiBasicTable,
   EuiButtonIcon,
+  EuiCallOut,
+  EuiDescriptionList,
   EuiHorizontalRule,
   EuiLink,
+  EuiProvider,
+  EuiScreenReaderOnly,
   EuiSpacer,
   EuiText,
-  EuiScreenReaderOnly,
-  EuiDescriptionList,
-  EuiCallOut,
-  EuiProvider,
 } from "@elastic/eui";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { css, SerializedStyles } from "@emotion/react";
 import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
+import { css, SerializedStyles } from "@emotion/react";
+import { ReactNode, useState } from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
+import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 import { Ontologies } from "../../../model/interfaces";
 import { OLS4Ontology } from "../../../model/ols4-model";
-import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
-import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 
 const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];

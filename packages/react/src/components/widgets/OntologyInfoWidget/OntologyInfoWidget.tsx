@@ -1,14 +1,26 @@
 "use client";
 
-import React, { ReactElement } from "react";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
+import {
+  EuiCard,
+  EuiFlexItem,
+  EuiLoadingSpinner,
+  EuiProvider,
+  EuiSpacer,
+  EuiText,
+} from "@elastic/eui";
+import { ReactElement } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { Ontology, Thing } from "../../../model/interfaces";
-import {capitalize, deCamelCase, deUnderscore, randomString} from "../../../app/util";
-import { getErrorMessageToDisplay } from "../../../app/util";
-import { OntologyInfoWidgetProps } from "../../../app";
-import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
+import { OntologyInfoWidgetProps } from "../../../app";
+import {
+  capitalize,
+  deCamelCase,
+  deUnderscore,
+  getErrorMessageToDisplay,
+  randomString,
+} from "../../../app/util";
+import { Ontology, Thing } from "../../../model/interfaces";
+import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
 
@@ -147,13 +159,13 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                     {ontology.getCreators().map((creator) => {
                       return (
                         <li key={creator + randomString()}>
-                            <EntityLink
-                                parentEntity={ontology}
-                                linkedEntities={ontology.getLinkedEntities()}
-                                iri={creator}
-                                showBadges={showBadges}
-                                onNavigates={onNavigates}
-                            />
+                          <EntityLink
+                            parentEntity={ontology}
+                            linkedEntities={ontology.getLinkedEntities()}
+                            iri={creator}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -162,13 +174,13 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                    <EntityLink
-                        parentEntity={ontology}
-                        linkedEntities={ontology.getLinkedEntities()}
-                        iri={ontology.getCreators()[0]}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
+                  <EntityLink
+                    parentEntity={ontology}
+                    linkedEntities={ontology.getLinkedEntities()}
+                    iri={ontology.getCreators()[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -202,12 +214,12 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                     {annos.map((annotation) => {
                       return (
                         <li key={randomString()} id={annotation.value}>
-                            <RenderedReified
-                                parentEntity={thing}
-                                reified={annotation}
-                                showBadges={showBadges}
-                                onNavigates={onNavigates}
-                            />
+                          <RenderedReified
+                            parentEntity={thing}
+                            reified={annotation}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -216,12 +228,12 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                 </>
               ) : (
                 <p key={randomString()}>
-                    <RenderedReified
-                        parentEntity={thing}
-                        reified={annos[0]}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
+                  <RenderedReified
+                    parentEntity={thing}
+                    reified={annos[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>

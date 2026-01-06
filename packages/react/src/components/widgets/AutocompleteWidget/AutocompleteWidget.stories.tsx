@@ -1,8 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { AutocompleteDescription } from "../../../app/widgetDescriptions";
+import "../../../style/tssStyles.css";
 import { AutocompleteWidget } from "./AutocompleteWidget";
 import {
+  AllowAddingCustomTermsArgs,
+  AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgTypes,
   AutocompleteWidgetStoryArgsReact,
   HideApiSourceApiGatewayArgs,
+  InitialSearchQueryArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
   TibDataPlantArgs,
@@ -10,25 +16,19 @@ import {
   UseAPIGatewayWithOLSArgs,
   UseAPIGatewayWithOntoPortalArgs,
   UseAPIGatewayWithSkosmosArgs,
+  WithCustomValueArgs,
   WithDefaultsArgs,
-  WithMultipleValuesArgs,
-  AllowMultipleTermsArgs,
-  AllowAddingCustomTermsArgs,
+  WithDefaultsCompactArgs,
   WithDescriptionAndShortFormArgs,
-  WithLongFormArgs,
-  WithInvalidValueArgs,
   WithGermanInputArgs,
+  WithInvalidValueArgs,
+  WithLongFormArgs,
+  WithMultipleValuesArgs,
   WithPreselectedMultipleValuesOLS4Args,
   WithPreselectedValueAndUnresolvedIriOLS3Args,
-  WithCustomValueArgs,
   WithPreselectedValueOLS4v2Args,
-  WithDefaultsCompactArgs,
   commonAutocompleteWidgetPlay,
-  InitialSearchQueryArgs,
 } from "./AutocompleteWidgetStories";
-import "../../../style/tssStyles.css";
-import { AutocompleteDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Search/AutocompleteWidget",

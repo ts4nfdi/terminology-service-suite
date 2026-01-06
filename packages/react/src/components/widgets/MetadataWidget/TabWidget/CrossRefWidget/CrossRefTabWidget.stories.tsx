@@ -1,14 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { CrossRefTabDescription } from "../../../../../app/widgetDescriptions";
 import { CrossRefTabWidget } from "./CrossRefTabWidget";
 import {
+  commonCrossRefWidgetPlay,
+  CrossRefTabWidget1Args,
   CrossRefWidgetStoryArgs,
   CrossRefWidgetStoryArgTypes,
-  CrossRefTabWidget1Args,
-  SelectingDefiningOntologyArgs,
   DefiningOntologyUnavailableArgs,
-  commonCrossRefWidgetPlay,
+  SelectingDefiningOntologyArgs,
 } from "./CrossRefWidgetStories";
-import { CrossRefTabDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/CrossRefTabWidget",

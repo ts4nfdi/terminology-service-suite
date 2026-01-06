@@ -1,19 +1,18 @@
-import { OlsResource } from "../../../app/types";
 import { EuiButton, EuiButtonIcon } from "@elastic/eui";
-import React from "react";
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
+import { OlsResource } from "../../../app/types";
 import {
   actionsArgType,
   apiArgType,
   initialEntriesPerPageArgType,
   initialSortDirArgType,
   initialSortFieldArgType,
+  onNavigateArgType,
   pageSizeOptionsArgType,
   parameterArgType,
-  onNavigateArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const ResourcesWidgetStoryArgTypes = {
   ...apiArgType,
@@ -52,11 +51,7 @@ export const ResourcesWidget1Args = {
 const actions = [
   {
     render: (item: OlsResource) => (
-      <EuiButtonIcon
-        href=""
-        iconType="search"
-        aria-label="Search"
-      />
+      <EuiButtonIcon href="" iconType="search" aria-label="Search" />
     ),
   },
   {
@@ -80,7 +75,7 @@ const actions = [
       </EuiButton>
     ),
   },
-]
+];
 
 export const WithActionsArgs = {
   ...ResourcesWidget1Args,

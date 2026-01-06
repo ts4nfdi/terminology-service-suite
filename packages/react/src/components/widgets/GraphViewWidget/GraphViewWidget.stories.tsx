@@ -1,21 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import { GraphViewWidget } from "./GraphViewWidget";
 import {
-  GraphViewWidgetStoryArgTypes,
-  GraphViewWidgetStoryArgs,
+  ChebiCaffeineHierarchyArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs,
   ChebiIonArgs,
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
-  commonGraphViewWidgetPlay,
-  ChebiCaffeineHierarchyArgs,
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+  GraphWithGermanLabelArgs,
   WithOnNodeDoubleClickCallbackArgs,
-  ChebiCaffeineHierarchyWithComparisonArgs,
-  ChebiIonAndIonRadicalWithComparisonArgs,
-  GraphWithGermanLabelArgs
+  commonGraphViewWidgetPlay,
 } from "./GraphViewWidgetStories";
-import { GraphViewDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Hierarchy and Graph/GraphViewWidget",

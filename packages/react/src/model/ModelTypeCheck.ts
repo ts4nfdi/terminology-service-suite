@@ -1,10 +1,10 @@
 import {
-  Thing,
-  Entity,
   Class,
-  Property,
+  Entity,
   Individual,
   Ontology,
+  Property,
+  Thing,
 } from "./interfaces";
 
 // READONLY arrays containing the strings defining a Model Object Type

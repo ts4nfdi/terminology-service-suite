@@ -1,15 +1,18 @@
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
+  classNameArgType,
+  edgeLabelArgType,
+  hierarchyArgType,
+  hrefArgType,
   iriArgType,
+  onNavigateToArgType,
+  onNodeClickArgType,
   ontologyIdReqArgType,
   rootWalkArgType,
-  hierarchyArgType,
   targetIriArgType,
-  edgeLabelArgType,
-  onNodeClickArgType, hrefArgType, onNavigateToArgType, classNameArgType
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const GraphViewWidgetStoryArgTypes = {
   ...apiArgType,
@@ -22,7 +25,7 @@ export const GraphViewWidgetStoryArgTypes = {
   ...edgeLabelArgType,
   ...onNodeClickArgType,
   ...hrefArgType,
-  ...onNavigateToArgType
+  ...onNavigateToArgType,
 };
 
 export const GraphViewWidgetStoryArgs = {
@@ -30,7 +33,7 @@ export const GraphViewWidgetStoryArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
   ontologyId: "chebi",
   rootWalk: false,
-  hierarchy: false
+  hierarchy: false,
 };
 
 export const ChebiIonArgs = {
@@ -49,7 +52,7 @@ export const ChebiIonComparisonArgs = {
   targetIri: "http://purl.obolibrary.org/obo/CHEBI_139544",
   ontologyId: "chebi",
   rootWalk: false,
-  hierarchy: false
+  hierarchy: false,
 };
 
 export const ChebiIonRootWalkArgs = {
@@ -58,7 +61,7 @@ export const ChebiIonRootWalkArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_24870",
   ontologyId: "chebi",
   rootWalk: true,
-  hierarchy: false
+  hierarchy: false,
 };
 
 export const ChebiWaterArgs = {
@@ -67,7 +70,7 @@ export const ChebiWaterArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
   rootWalk: false,
-  hierarchy: false
+  hierarchy: false,
 };
 
 export const ChebiWaterRootWalkArgs = {
@@ -76,7 +79,7 @@ export const ChebiWaterRootWalkArgs = {
   iri: "http://purl.obolibrary.org/obo/CHEBI_15377",
   ontologyId: "chebi",
   rootWalk: true,
-  hierarchy: false
+  hierarchy: false,
 };
 
 export const ChebiCaffeineHierarchyArgs = {
@@ -111,7 +114,6 @@ export const ChebiCaffeineHierarchyWithComparisonArgs = {
   hierarchy: true,
 };
 
-
 export const ChebiIonAndIonRadicalWithComparisonArgs = {
   ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
@@ -129,7 +131,7 @@ export const GraphWithGermanLabelArgs = {
   rootWalk: true,
   hierarchy: true,
   targetIri: "",
-  parameter: "lang=de"
+  parameter: "lang=de",
 };
 
 export const commonGraphViewWidgetPlay = async ({

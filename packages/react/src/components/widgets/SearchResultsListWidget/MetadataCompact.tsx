@@ -1,26 +1,21 @@
+import { EuiCard, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { useQuery } from "react-query";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { MetadataCompactProps } from "../../../app";
+import { pluralizeType } from "../../../app/util";
+import { Entity } from "../../../model/interfaces";
+import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import {
-  EuiCard,
-  EuiSpacer,
-  EuiTitle,
-} from "@elastic/eui";
-import React from "react";
+  createModelObject,
+  getPreferredOntologyJSON,
+} from "../../../model/ols-model/ModelObjectCreator";
 import {
   BreadcrumbWidget,
   DescriptionWidget,
   IriWidget,
 } from "../MetadataWidget";
-import { MetadataCompactProps } from "../../../app";
-import { pluralizeType } from "../../../app/util";
-import { EntityOntoListPresentation } from "../MetadataWidget/EntityOntoListWidget/EntityOntoListPresentation";
-import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import { EntityDefinedByPresentation } from "../MetadataWidget/EntityDefinedByWidget/EntityDefinedByPresentation";
-import { useQuery } from "react-query";
-import { Entity } from "../../../model/interfaces";
-import {
-  createModelObject,
-  getPreferredOntologyJSON,
-} from "../../../model/ols-model/ModelObjectCreator";
-import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { EntityOntoListPresentation } from "../MetadataWidget/EntityOntoListWidget/EntityOntoListPresentation";
 
 type MetadataInfo = {
   entity: Entity;
@@ -44,7 +39,7 @@ function MetadataCompact(props: MetadataCompactProps) {
   } = props;
   const olsApi = new OlsEntityApi(api);
 
-  const { data, isLoading, isSuccess, isError, error } = useQuery<MetadataInfo>(
+  const { data } = useQuery<MetadataInfo>(
     ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       let entity: Entity, ontoList: string[], definedBy: string[];

@@ -1,17 +1,17 @@
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { EntityData } from "../../app";
+import { pluralizeType } from "../../app/util";
+import {
+  Hierarchy,
+  ParentChildRelation,
+  TreeNode,
+} from "../../model/interfaces/Hierarchy";
 import {
   BuildHierarchyProps,
   HierarchyBuilder,
   HierarchyIriProp,
   LoadHierarchyChildrenProps,
 } from "../../model/interfaces/HierarchyBuilder";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import {
-  Hierarchy,
-  ParentChildRelation,
-  TreeNode,
-} from "../../model/interfaces/Hierarchy";
-import { pluralizeType } from "../../app/util";
-import { EntityData } from "../../app";
 
 type HierarchyNode = {
   prefLabel: string;

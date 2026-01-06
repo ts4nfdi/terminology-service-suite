@@ -1,9 +1,9 @@
 import { Thing } from "../interfaces";
 
+import { pluralizeType } from "../../app/util";
+import { ThingTypeName } from "../ModelTypeCheck";
 import LinkedEntities from "../ols-model/LinkedEntities";
 import Reified from "../Reified";
-import { ThingTypeName } from "../ModelTypeCheck";
-import { pluralizeType } from "../../app/util";
 
 export abstract class OLS3Thing implements Thing {
   properties: any;

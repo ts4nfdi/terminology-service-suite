@@ -1,7 +1,6 @@
-import { createRoot, Root } from "react-dom/client";
-import React from "react";
-import { WrappedDataContentWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidget";
 import { DataContentWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
+import { WrappedDataContentWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidget";
+import { createRoot, Root } from "react-dom/client";
 
 const roots = new WeakMap<Element, Root>();
 function createDataContent(props: DataContentWidgetProps, container: any) {

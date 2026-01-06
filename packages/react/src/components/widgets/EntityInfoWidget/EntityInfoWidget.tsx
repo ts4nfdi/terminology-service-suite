@@ -1,17 +1,42 @@
 "use client";
 
-import React, { ReactElement } from "react";
-import {EuiCard, EuiFlexItem, EuiLoadingSpinner, EuiProvider, EuiSpacer, EuiText} from "@elastic/eui";
+import {
+  EuiCard,
+  EuiFlexItem,
+  EuiLoadingSpinner,
+  EuiProvider,
+  EuiSpacer,
+  EuiText,
+} from "@elastic/eui";
+import { ReactElement } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import {asArray, capitalize, deCamelCase, deUnderscore, getEntityTypeName, randomString, getErrorMessageToDisplay} from "../../../app/util";
-import ClassExpression from "../../helperComponents/ClassExpression";
-import {Property, Thing, Class, Entity, Individual} from "../../../model/interfaces";
-import {isClass, isProperty, isIndividual} from "../../../model/ModelTypeCheck";
-import { EntityInfoWidgetProps } from "../../../app";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { EntityInfoWidgetProps } from "../../../app";
+import {
+  asArray,
+  capitalize,
+  deCamelCase,
+  deUnderscore,
+  getEntityTypeName,
+  getErrorMessageToDisplay,
+  randomString,
+} from "../../../app/util";
+import {
+  Class,
+  Entity,
+  Individual,
+  Property,
+  Thing,
+} from "../../../model/interfaces";
+import {
+  isClass,
+  isIndividual,
+  isProperty,
+} from "../../../model/ModelTypeCheck";
+import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
-import Tooltip from "../../helperComponents/Tooltip";
 import RenderedReified from "../../helperComponents/RenderedReified";
+import Tooltip from "../../helperComponents/Tooltip";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -30,10 +55,10 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   } = props;
 
   const onNavigates = {
-      onNavigateToEntity: props.onNavigateToEntity,
-      onNavigateToOntology: props.onNavigateToOntology,
-      onNavigateToDisambiguate: props.onNavigateToDisambiguate
-  }
+    onNavigateToEntity: props.onNavigateToEntity,
+    onNavigateToOntology: props.onNavigateToOntology,
+    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+  };
 
   const olsApi = new OlsEntityApi(api);
 
@@ -83,10 +108,10 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       return (
                         <li key={randomString()} id={synonym.value}>
                           <RenderedReified
-                              parentEntity={entity}
-                              reified={synonym}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
+                            parentEntity={entity}
+                            reified={synonym}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -96,12 +121,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                    <RenderedReified
-                        parentEntity={entity}
-                        reified={entity.getSynonyms()[0]}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
+                  <RenderedReified
+                    parentEntity={entity}
+                    reified={entity.getSynonyms()[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -126,11 +151,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       return (
                         <li key={randomString()}>
                           <ClassExpression
-                              parentEntity={term}
-                              linkedEntities={term.getLinkedEntities()}
-                              currentResponsePath={keys}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
+                            parentEntity={term}
+                            linkedEntities={term.getLinkedEntities()}
+                            currentResponsePath={keys}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -141,11 +166,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               ) : (
                 <p>
                   <ClassExpression
-                      parentEntity={term}
-                      linkedEntities={term.getLinkedEntities()}
-                      currentResponsePath={keys[0]}
-                      showBadges={showBadges}
-                      onNavigates={onNavigates}
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    currentResponsePath={keys[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
                   />
                 </p>
               )}
@@ -170,11 +195,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       return (
                         <li key={randomString()} id={subset + randomString()}>
                           <EntityLink
-                              parentEntity={term}
-                              linkedEntities={term.getLinkedEntities()}
-                              iri={subset}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
+                            parentEntity={term}
+                            linkedEntities={term.getLinkedEntities()}
+                            iri={subset}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -184,13 +209,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                    <EntityLink
-                        parentEntity={term}
-                        linkedEntities={term.getLinkedEntities()}
-                        iri={term.getSubsets()[0]}
-                        showBadges={showBadges}
-                        onNavigates={onNavigates}
-                    />
+                  <EntityLink
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    iri={term.getSubsets()[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -206,7 +231,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       .map((type) => {
         return {
           "http://www.w3.org/2002/07/owl#FunctionalProperty": "Functional",
-          "http://www.w3.org/2002/07/owl#InverseFunctionalProperty": "Inverse Functional",
+          "http://www.w3.org/2002/07/owl#InverseFunctionalProperty":
+            "Inverse Functional",
           "http://www.w3.org/2002/07/owl#TransitiveProperty": "Transitive",
           "http://www.w3.org/2002/07/owl#SymmetricProperty": "Symmetric",
           "http://www.w3.org/2002/07/owl#AsymmetricProperty": "Asymmetric",
@@ -258,11 +284,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       return (
                         <li key={randomString()}>
                           <ClassExpression
-                              parentEntity={property}
-                              linkedEntities={property.getLinkedEntities()}
-                              currentResponsePath={domains}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
+                            parentEntity={property}
+                            linkedEntities={property.getLinkedEntities()}
+                            currentResponsePath={domains}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
                           />
                         </li>
                       );
@@ -273,11 +299,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               ) : (
                 <p>
                   <ClassExpression
-                      parentEntity={property}
-                      linkedEntities={property.getLinkedEntities()}
-                      currentResponsePath={domains[0]}
-                      showBadges={showBadges}
-                      onNavigates={onNavigates}
+                    parentEntity={property}
+                    linkedEntities={property.getLinkedEntities()}
+                    currentResponsePath={domains[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
                   />
                 </p>
               )}
@@ -302,11 +328,11 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     return (
                       <li key={randomString()}>
                         <ClassExpression
-                            parentEntity={property}
-                            linkedEntities={property.getLinkedEntities()}
-                            currentResponsePath={ranges}
-                            showBadges={showBadges}
-                            onNavigates={onNavigates}
+                          parentEntity={property}
+                          linkedEntities={property.getLinkedEntities()}
+                          currentResponsePath={ranges}
+                          showBadges={showBadges}
+                          onNavigates={onNavigates}
                         />
                       </li>
                     );
@@ -384,13 +410,15 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 />
               </>
             ) : (
-              <Tooltip text={
-                typeof v === "string"
-                  ? v
-                  : typeof v === "object" && !Array.isArray(v) && v.value
-                    ? JSON.stringify(v.value)
-                    : JSON.stringify(v)
-              } />
+              <Tooltip
+                text={
+                  typeof v === "string"
+                    ? v
+                    : typeof v === "object" && !Array.isArray(v) && v.value
+                      ? JSON.stringify(v.value)
+                      : JSON.stringify(v)
+                }
+              />
             )}
           </>,
         );
@@ -465,13 +493,15 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 />
               </>
             ) : hasObjectProperty ? (
-              <Tooltip text={
-                typeof v === "string"
-                  ? v
-                  : typeof v === "object" && !Array.isArray(v) && v.value
-                    ? JSON.stringify(v.value)
-                    : JSON.stringify(v)
-              } />
+              <Tooltip
+                text={
+                  typeof v === "string"
+                    ? v
+                    : typeof v === "object" && !Array.isArray(v) && v.value
+                      ? JSON.stringify(v.value)
+                      : JSON.stringify(v)
+                }
+              />
             ) : hasDataProperty ? (
               <>
                 &nbsp;
@@ -546,12 +576,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                              <RenderedReified
-                                  parentEntity={thing}
-                                  reified={annotation}
-                                  showBadges={showBadges}
-                                  onNavigates={onNavigates}
-                              />
+                            <RenderedReified
+                              parentEntity={thing}
+                              reified={annotation}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
                           </li>
                         );
                       })}
@@ -560,12 +590,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   </>
                 ) : (
                   <p key={randomString()}>
-                      <RenderedReified
-                          parentEntity={thing}
-                          reified={annos[0]}
-                          showBadges={showBadges}
-                          onNavigates={onNavigates}
-                      />
+                    <RenderedReified
+                      parentEntity={thing}
+                      reified={annos[0]}
+                      showBadges={showBadges}
+                      onNavigates={onNavigates}
+                    />
                   </p>
                 )}
               </EuiFlexItem>

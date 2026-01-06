@@ -1,17 +1,16 @@
 "use client";
 
-import React from "react";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
+import { EntityDefinedByWidgetProps } from "../../../../app/types";
 import {
   getErrorMessageToDisplay,
   singularizeType,
 } from "../../../../app/util";
-import { EntityDefinedByWidgetProps } from "../../../../app/types";
-import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
-import "../../../../style/tssStyles.css";
 import { EntityTypeName } from "../../../../model/ModelTypeCheck";
-import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
+import "../../../../style/tssStyles.css";
+import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 
 function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =

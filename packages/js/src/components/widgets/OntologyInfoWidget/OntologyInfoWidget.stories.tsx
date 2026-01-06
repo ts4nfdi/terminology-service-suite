@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  OntologyInfoWidget,
+  OntologyInfoWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { OntologyInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonOntologyInfoWidgetPlay,
   NavigateToEBIPageArgs,
@@ -8,12 +14,6 @@ import {
   OntologyInfoWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories";
 import "./index";
-import { OntologyInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  OntologyInfoWidget,
-  OntologyInfoWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

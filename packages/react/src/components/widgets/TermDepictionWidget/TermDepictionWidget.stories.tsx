@@ -1,13 +1,13 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
+  commonTermDepictionWidgetPlay,
+  TermDepictionWidget3DArgs,
+  TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  TermDepictionWidgetExampleArgs,
-  TermDepictionWidget3DArgs,
-  commonTermDepictionWidgetPlay,
 } from "./TermDepictionWidgetStories";
-import { TermDepictionDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Additional Entity Metadata/TermDepictionWidget",
@@ -28,12 +28,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const TermDepictionWidgetExample = {
+export const TermDepictionWidgetExample: Story = {
   args: TermDepictionWidgetExampleArgs,
   play: commonTermDepictionWidgetPlay,
 };
 
-export const TermDepictionWidget3D = {
+export const TermDepictionWidget3D: Story = {
   args: TermDepictionWidget3DArgs,
   play: commonTermDepictionWidgetPlay,
 };

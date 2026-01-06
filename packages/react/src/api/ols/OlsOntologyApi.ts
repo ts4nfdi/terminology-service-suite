@@ -1,11 +1,11 @@
-import { OlsBaseApi } from "./OlsBaseApi";
-import { apiCallFn } from "../../utils/olsApiTypes";
-import { buildOtherParams, buildParamsForGet } from "../../utils/olsApiUtils";
+import { getUseLegacy } from "../../app/util";
 import { Ontologies, Ontology } from "../../model/interfaces";
 import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import { OLS3Ontologies } from "../../model/ols3-model";
 import { OLS4Ontologies } from "../../model/ols4-model";
-import { getUseLegacy } from "../../app/util";
+import { apiCallFn } from "../../utils/olsApiTypes";
+import { buildOtherParams, buildParamsForGet } from "../../utils/olsApiUtils";
+import { OlsBaseApi } from "./OlsBaseApi";
 
 export class OlsOntologyApi extends OlsBaseApi {
   public getOntologies: apiCallFn = async (

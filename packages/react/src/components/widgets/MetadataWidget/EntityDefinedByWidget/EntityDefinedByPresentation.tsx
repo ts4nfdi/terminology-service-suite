@@ -1,4 +1,3 @@
-import React from "react";
 import { EuiText } from "@elastic/eui";
 import { EntityOntoListPresentationProps } from "../../../../app";
 import "../../../../style/ts4nfdiStyles/ts4nfdiEntityDefinedByStyle.css";
@@ -13,11 +12,11 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
         <EuiText style={{ fontWeight: "normal" }}>
           Defined by&nbsp;
           <ExpandableOntologyBadgeList
-              iri={props.iri}
-              label={props.label}
-              ontolist={props.ontolist}
-              onNavigateToOntology={props.onNavigateToOntology}
-              entityType={props.entityType}
+            iri={props.iri}
+            label={props.label}
+            ontolist={props.ontolist}
+            onNavigateToOntology={props.onNavigateToOntology}
+            entityType={props.entityType}
           />
         </EuiText>
       )}

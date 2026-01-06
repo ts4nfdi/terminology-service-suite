@@ -1,11 +1,11 @@
 "use client";
 
 import { EuiComboBox, EuiProvider } from "@elastic/eui";
-import React, { useEffect, useState } from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { SearchBarWidgetProps } from "../../../app/types";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import { useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
+import { SearchBarWidgetProps } from "../../../app/types";
 
 function SearchBarWidget(props: SearchBarWidgetProps) {
   const { api, query, selectionChangedEvent, ...rest } = props;

@@ -1,6 +1,6 @@
+import { EntityData } from "../../app";
 import { EntityTypeName } from "../ModelTypeCheck";
 import { HierarchyBuilder } from "./HierarchyBuilder";
-import { EntityData } from "../../app";
 
 export type ParentChildRelation = {
   childIri: string;

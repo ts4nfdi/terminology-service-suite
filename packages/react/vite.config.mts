@@ -1,13 +1,13 @@
 /// <reference types="vitest/config" />
 // vite.config.ts
-import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import dts from "vite-plugin-dts";
-import path from "path";
 import { fileURLToPath } from "node:url";
+import path from "path";
+import { defineConfig, type Plugin } from "vite";
+import dts from "vite-plugin-dts";
 // @ts-ignore
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import preserveDirectives from 'rollup-preserve-directives'
+import preserveDirectives from "rollup-preserve-directives";
 const dirname =
   typeof __dirname !== "undefined"
     ? __dirname
