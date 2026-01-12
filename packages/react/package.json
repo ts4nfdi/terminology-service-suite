@@ -60,7 +60,6 @@
   },
   "dependencies": {
     "@google/model-viewer": "^4.0.0",
-    "@storybook-community/storybook-addon-matomo": "^2.0.0",
     "patch-package": "^8.0.0",
     "react-router": "^6.3.0",
     "three": "^0.172.0",
