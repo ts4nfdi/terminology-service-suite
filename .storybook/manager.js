@@ -1,9 +1,9 @@
 import { addons } from "@storybook/addons";
 import { create } from "@storybook/theming/create";
 
-const enableMatomo = process.env.STORYBOOK_ENABLE_MATOMO === "true";
+const hasConsent = localStorage.getItem("user_tracking_consent") === "accepted";
 
-if (enableMatomo) {
+if (process.env.STORYBOOK_ENABLE_MATOMO === "true" && hasConsent) {
   addons.setConfig({
     matomo: {
       baseUrl: process.env.STORYBOOK_MATOMO_URL,
@@ -12,7 +12,6 @@ if (enableMatomo) {
     },
   });
 }
-console.log("Matomo enabled: ", enableMatomo);
 
 addons.setConfig({
   theme: create({
