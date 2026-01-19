@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  IriWidget,
+  IriWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { IriDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonIriWidgetPlay,
   IriWidget1Args,
@@ -8,12 +14,6 @@ import {
   withUrlPrefixArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/IriWidget/IriWidgetStories";
 import "./index";
-import { IriDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  IriWidget,
-  IriWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

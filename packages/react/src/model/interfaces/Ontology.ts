@@ -1,5 +1,4 @@
 import { Thing } from ".";
-import { asArray } from "../../app/util";
 
 export interface Ontology extends Thing {
   getOntologyId(): string;

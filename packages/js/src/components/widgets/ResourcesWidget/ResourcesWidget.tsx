@@ -1,7 +1,6 @@
 import { ResourcesWidgetProps } from "@ts4nfdi/terminology-service-suite";
-import { createRoot, Root } from "react-dom/client";
-import React from "react";
 import { WrappedResourcesWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidget";
+import { createRoot, Root } from "react-dom/client";
 
 const roots = new WeakMap<Element, Root>();
 function createResources(props: ResourcesWidgetProps, container: Element) {

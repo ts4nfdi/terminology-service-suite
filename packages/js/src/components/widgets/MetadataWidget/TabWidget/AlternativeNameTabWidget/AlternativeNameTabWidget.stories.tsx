@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  AlternativeNameTabWidget,
+  AlternativeNameTabWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { AlternativeNameTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   AlternativeNameTabWidget1Args,
   AlternativeNameTabWidgetStoryArgs,
@@ -7,12 +13,6 @@ import {
   SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/AlternativeNameTabWidget/AlternativeNameTabWidgetStories";
 import "./index";
-import { AlternativeNameTabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  AlternativeNameTabWidget,
-  AlternativeNameTabWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

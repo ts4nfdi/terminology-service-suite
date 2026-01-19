@@ -2,22 +2,22 @@ import { OlsBaseApi } from "./OlsBaseApi";
 
 import { getEntityInOntologySuffix, getUseLegacy } from "../../app/util";
 import {
-  buildOtherParams,
-  buildParamsForEntities,
-  buildParamsForGet,
-} from "../../utils/olsApiUtils";
-import {
   classTypeNames,
   EntityTypeName,
   entityTypeNames,
 } from "../../model/ModelTypeCheck";
 import { Entity, Individual } from "../../model/interfaces";
-import { createModelObject } from "../../model/ModelObjectCreator";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
 import {
   apiCallFn,
   ContentParams,
   JsTreeParams,
 } from "../../utils/olsApiTypes";
+import {
+  buildOtherParams,
+  buildParamsForEntities,
+  buildParamsForGet,
+} from "../../utils/olsApiUtils";
 
 export class OlsEntityApi extends OlsBaseApi {
   /**
@@ -224,30 +224,30 @@ export class OlsEntityApi extends OlsBaseApi {
     let response;
     if (!iri) throw Error("No IRI provided");
 
-    if (entityType) {
-      response = await this.getEntityWithEntityTypeProvided(
-        iri,
-        entityType,
-        ontologyId,
-        parameter,
-        useLegacy,
-      );
-    } else {
-      if (getUseLegacy(useLegacy)) {
+    if (getUseLegacy(useLegacy)) {
+      if (entityType) {
+        response = await this.getEntityWithEntityTypeProvided(
+          iri,
+          entityType,
+          ontologyId,
+          parameter,
+          useLegacy,
+        );
+      } else {
         response = await this.getEntityWithInferredEntityType(
           iri,
           ontologyId,
           parameter,
         );
-      } else {
-        response = await this.getEntity(
-          undefined,
-          undefined,
-          { ontologyId: ontologyId, termIri: iri },
-          parameter,
-          useLegacy,
-        );
       }
+    } else {
+      response = await this.getEntity(
+        undefined,
+        undefined,
+        { ontologyId: ontologyId, termIri: iri },
+        parameter,
+        useLegacy,
+      );
     }
 
     return response;
@@ -410,15 +410,23 @@ export class OlsEntityApi extends OlsBaseApi {
     );
   }
 
-  public getTermRelations = async (contentParams: ContentParams) => {
+  public getTermRelations = async (
+    contentParams: ContentParams,
+    parameter?: string,
+  ) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
-      return (await this.axiosInstance.get(baseRequest + "/roots")).data; //1)
+      return (
+        await this.axiosInstance.get(
+          baseRequest + "/roots" + (parameter ? "?" + parameter : ""),
+        )
+      ).data; //1)
     baseRequest =
       baseRequest +
       "/" +
       encodeURIComponent(encodeURIComponent(contentParams?.termIri)) +
-      "/graph";
+      "/graph" +
+      (parameter ? "?" + parameter : "");
     return (await this.axiosInstance.get(baseRequest)).data;
   };
 
@@ -432,6 +440,7 @@ export class OlsEntityApi extends OlsBaseApi {
   public getTermTree = async (
     contentParams: ContentParams,
     treeParams: JsTreeParams,
+    parameter?: string,
   ) => {
     let baseRequest = "ontologies/" + contentParams?.ontologyId + "/terms";
     if (!contentParams.termIri)
@@ -440,11 +449,15 @@ export class OlsEntityApi extends OlsBaseApi {
       baseRequest +
       "/" +
       encodeURIComponent(encodeURIComponent(contentParams?.termIri)) +
-      "/jstree";
+      "/jstree" +
+      (parameter ? "?" + parameter : "");
     if (treeParams.child)
       return (
         await this.axiosInstance.get(
-          baseRequest + "/children/" + treeParams.child,
+          baseRequest +
+            "/children/" +
+            treeParams.child +
+            (parameter ? "?" + parameter : ""),
         )
       ).data;
     //3)

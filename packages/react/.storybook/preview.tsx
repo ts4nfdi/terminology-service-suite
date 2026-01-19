@@ -1,4 +1,3 @@
-import React from "react";
 import { Preview } from "@storybook/react-vite";
 
 export const parameters = {

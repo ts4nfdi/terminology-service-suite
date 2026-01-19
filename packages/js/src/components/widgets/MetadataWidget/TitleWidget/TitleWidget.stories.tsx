@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  TitleWidget,
+  TitleWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { TitleDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTitleWidgetPlay,
   DefiningOntologyUnavailableArgs,
@@ -14,12 +20,6 @@ import {
   WithStylesArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TitleWidget/TitleWidgetStories";
 import "./index";
-import { TitleDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  TitleWidget,
-  TitleWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

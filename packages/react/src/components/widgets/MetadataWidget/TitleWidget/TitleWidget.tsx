@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { EuiProvider } from "@elastic/eui";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 import { TitleWidgetProps } from "../../../../app/types";
 import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
-import ReactDOM from "react-dom";
-import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 
 function TitleWidget(props: TitleWidgetProps) {
   const {

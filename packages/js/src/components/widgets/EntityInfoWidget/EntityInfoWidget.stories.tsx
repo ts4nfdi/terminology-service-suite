@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  EntityInfoWidget,
+  EntityInfoWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { EntityInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonEntityInfoWidgetPlay,
   EntityInfoWidgetStoryArgs,
@@ -14,14 +20,7 @@ import {
   SkosmosImportArgs,
   TermInfoWidgetArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/EntityInfoWidget/EntityInfoWidgetStories";
-import { EntityInfoDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  DataContentWidgetProps,
-  EntityInfoWidget,
-  EntityInfoWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
 import "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -59,6 +58,7 @@ window['ts4nfdiWidgets'].createEntityInfo(
         entityType:"${args.entityType}",
         parameter:"${args.parameter}",
         useLegacy:${args.useLegacy},
+        showBadges:${args.showBadges},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate}

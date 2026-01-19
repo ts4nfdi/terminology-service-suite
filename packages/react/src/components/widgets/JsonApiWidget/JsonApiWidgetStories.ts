@@ -1,11 +1,11 @@
 import * as globals from "../../../app/globals";
 
+import { expect, waitFor, within } from "storybook/test";
 import {
   apiQueryArgType,
   buttonSizeArgType,
   buttonTextArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const JsonApiWidgetStoryArgTypes = {
   ...apiQueryArgType,

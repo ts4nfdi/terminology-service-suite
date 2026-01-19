@@ -15,6 +15,9 @@ export const ZBMED_OLS4_GATEWAY_API = "https://semanticlookup.zbmed.de/api/";
 export const ZBMED_OLS3_GATEWAY_API =
   "https://ols3-semanticlookup.zbmed.de/api/";
 
-// Others
+// Other endpoints
 export const EBI_API_ENDPOINT = "https://www.ebi.ac.uk/ols4/api/";
 export const FINTO_V1_API_ENDPOINT = "https://api.finto.fi/rest/v1";
+
+// Default values
+export const DEFAULT_SHOW_BADGES = true;

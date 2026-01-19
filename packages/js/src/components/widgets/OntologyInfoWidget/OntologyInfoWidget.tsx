@@ -1,7 +1,6 @@
 import { OntologyInfoWidgetProps } from "@ts4nfdi/terminology-service-suite";
-import { createRoot, Root } from "react-dom/client";
-import React from "react";
 import { WrappedOntologyInfoWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidget";
+import { createRoot, Root } from "react-dom/client";
 
 const roots = new WeakMap<Element, Root>();
 function createOntologyInfo(

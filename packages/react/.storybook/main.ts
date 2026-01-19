@@ -1,8 +1,7 @@
-import { createRequire } from "node:module";
-import { dirname, join } from "node:path";
 import type { StorybookConfig } from "@storybook/react-vite";
 import { mergeConfig } from 'vite'; // Import mergeConfig
 import * as globals from "../src/app/globals";
+import { dirname, join } from "node:path";
 
 const config: StorybookConfig = {
   // no ts files included here to not include html stories

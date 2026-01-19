@@ -1,36 +1,47 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
-  EuiProvider,
-  EuiLoadingSpinner,
-  EuiText,
   EuiButton,
-  EuiPanel,
-  EuiPopover,
   EuiButtonEmpty,
   EuiIcon,
+  EuiLoadingSpinner,
+  EuiPanel,
+  EuiPopover,
+  EuiProvider,
+  EuiText,
   EuiTextColor,
 } from "@elastic/eui";
-import { Network } from "vis-network";
+import { useEffect, useRef, useState } from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { DataSet } from "vis-data";
+import { Network } from "vis-network";
+import {
+  GraphViewWidgetProps,
+  OlsGraphEdge,
+  OlsGraphNode,
+} from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
-import { hierarchicalConfig, graphNetworkConfig, GraphNode, GraphEdge } from "./GraphConfigs";
-import { OlsGraphNode, OlsGraphEdge, GraphViewWidgetProps } from "../../../app/types";
+import {
+  GraphEdge,
+  graphNetworkConfig,
+  GraphNode,
+  hierarchicalConfig,
+} from "./GraphConfigs";
 import { GraphFetchData, VisGraphData } from "./types";
 import {
-  fetchRootWalkModeData,
+  convertFlatListToTreeStructure,
   fetchHierarchyModeData,
   fetchNormalModeData,
-  convertFlatListToTreeStructure
+  fetchRootWalkModeData,
 } from "./utils";
 
-
-
-const SUBCLASS_OF_URIS = ["http://www.w3.org/2000/01/rdf-schema#subClassOf", "hierarchicalParent", "directParent"];
+const SUBCLASS_OF_URIS = [
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+  "hierarchicalParent",
+  "directParent",
+];
 const HAS_PART_EDGE_LABEL = "has part";
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
@@ -43,6 +54,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     hierarchy,
     edgeLabel,
     onNodeClick,
+    parameter,
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -55,16 +67,24 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [counter, setCounter] = useState(0);
 
   // for downloading the graph data as json.
-  const [graphRawData, setGraphRawData] = useState<VisGraphData>({ "nodes": [], "edges": [] });
+  const [graphRawData, setGraphRawData] = useState<VisGraphData>({
+    nodes: [],
+    edges: [],
+  });
 
   // track the node that is clicked
   const [clickedNodeIri, setClickedNodeIri] = useState<string>("");
 
   // track the doubleClicked node color to set for new expanded nodes
-  const [dbClickedColor, setDbClickedColor] = useState<{ bgColor: "", color: "" }>({ bgColor: "", color: "" });
+  const [dbClickedColor, setDbClickedColor] = useState<{
+    bgColor: "";
+    color: "";
+  }>({ bgColor: "", color: "" });
 
-  const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] = useState<boolean>(false);
-  const [showNothingToAddMessage, setShowNothingToAddMessage] = useState<boolean>(false);
+  const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] =
+    useState<boolean>(false);
+  const [showNothingToAddMessage, setShowNothingToAddMessage] =
+    useState<boolean>(false);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const [targetIri, setTargetIri] = useState<string>(props.targetIri ?? "");
@@ -83,7 +103,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const targetNodeBgColor = "#00a86b";
   const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
-
 
   const { data, isLoading, isError, error } = useQuery(
     [
@@ -104,15 +123,35 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
-        return await fetchRootWalkModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
-
+        return await fetchRootWalkModeData({
+          api: api,
+          iri: sourceIri,
+          ontologyId: ontologyId,
+          targetIri: targetIri,
+          dbClicked: dbclicked,
+          parameter: parameter,
+        });
       } else if (rootWalk && (firstLoad || dbclicked) && hierarchy) {
         // hierarchy mode: we need the term tree data and it's relation (for "has part" relation that is not part of the tree data )
-        return await fetchHierarchyModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
+        return await fetchHierarchyModeData({
+          api: api,
+          iri: sourceIri,
+          ontologyId: ontologyId,
+          targetIri: targetIri,
+          dbClicked: dbclicked,
+          parameter: parameter,
+        });
       } else if (firstLoad || dbclicked) {
         // normal mode graph and,
         // when user double clicks a node --> fetch the clicked node relation
-        return await fetchNormalModeData({ api: api, iri: sourceIri, ontologyId: ontologyId, targetIri: targetIri, dbClicked: dbclicked });
+        return await fetchNormalModeData({
+          api: api,
+          iri: sourceIri,
+          ontologyId: ontologyId,
+          targetIri: targetIri,
+          dbClicked: dbclicked,
+          parameter: parameter,
+        });
       }
     },
   );
@@ -123,8 +162,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const container = useRef(null);
   const fullScreenContainerRef = useRef(null);
   // kep a map between a node iri and it's color to avoid recalculating the color in case the node is removed and added again by the user
-  const nodeColorMap = useRef<Map<string, string>>(new Map())
-
+  const nodeColorMap = useRef<Map<string, string>>(new Map());
 
   if (hierarchy) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
@@ -132,10 +170,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   if (data && (firstLoad || dbclicked)) {
     let gDataForDownload: VisGraphData = { ...graphRawData };
-    let gData: VisGraphData = { nodes: [], edges: [] }
+    let gData: VisGraphData = { nodes: [], edges: [] };
     gData = data.termRelations ?? gData;
     if (data.treeData && rootWalk && (firstLoad || dbclicked) && !hierarchy) {
-      gData = convertToOlsGraphFormat(data.treeData, data.termRelations, data.targetTreeData, data.targetTermRelations);
+      gData = convertToOlsGraphFormat(
+        data.treeData,
+        data.termRelations,
+        data.targetTreeData,
+        data.targetTermRelations,
+      );
     } else if (
       data.termRelations &&
       data.treeData &&
@@ -147,7 +190,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         data.treeData,
         data.termRelations,
         data?.targetTreeData,
-        data?.targetTermRelations
+        data?.targetTermRelations,
       );
     }
     if (!rootWalk && !hierarchy) {
@@ -163,20 +206,26 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       setDbclicked(false);
     }
-    setGraphRawData({ nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])], edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])] });
+    setGraphRawData({
+      nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])],
+      edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])],
+    });
     setGraphDataIsCalculated(true);
   }
 
-
   function addTermRelationsNodesToGraph(graphData: GraphFetchData) {
     let originalNodeCount = nodes.current.length;
-    for (let n of (graphData.termRelations?.nodes ?? [])) {
+    for (let n of graphData.termRelations?.nodes ?? []) {
       addNewNodeToGraph(n);
     }
     let exclusiveTotargetIriNodes = [];
     if (graphData.targetTermRelations) {
       for (let sn of graphData.targetTermRelations.nodes) {
-        if (graphData?.termRelations?.nodes.find((n: OlsGraphNode) => n.iri === sn.iri)) {
+        if (
+          graphData?.termRelations?.nodes.find(
+            (n: OlsGraphNode) => n.iri === sn.iri,
+          )
+        ) {
           addNewNodeToGraph(sn, true);
         } else {
           exclusiveTotargetIriNodes.push(sn);
@@ -189,12 +238,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (originalNodeCount === nodes.current.length) {
       setShowNothingToAddMessage(true);
     }
-    return [...(graphData.termRelations?.nodes ?? []), ...exclusiveTotargetIriNodes];
+    return [
+      ...(graphData.termRelations?.nodes ?? []),
+      ...exclusiveTotargetIriNodes,
+    ];
   }
 
-
   function addTermRelationsEdgesToGraph(graphData: GraphFetchData) {
-    for (let e of (graphData.termRelations?.edges ?? [])) {
+    for (let e of graphData.termRelations?.edges ?? []) {
       if (!SUBCLASS_OF_URIS.includes(e.uri)) {
         addNewEdgeToGraph(e, e.label);
         continue;
@@ -204,7 +255,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let targetEdges = [];
     if (graphData.targetTermRelations?.edges) {
       for (let se of graphData.targetTermRelations.edges) {
-        if (!graphData.termRelations?.edges.find((e: OlsGraphEdge) => e.source === se.source && e.target === se.target)) {
+        if (
+          !graphData.termRelations?.edges.find(
+            (e: OlsGraphEdge) =>
+              e.source === se.source && e.target === se.target,
+          )
+        ) {
           addNewEdgeToGraph(se);
           targetEdges.push(se);
         }
@@ -213,14 +269,21 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     return [...(graphData.termRelations?.edges ?? []), ...targetEdges];
   }
 
-
-
-  function addNewNodeToGraph(node: OlsGraphNode, isCommon = false, bgColor = "", color = "") {
-    let gNode = new GraphNode(node = node);
+  function addNewNodeToGraph(
+    node: OlsGraphNode,
+    isCommon = false,
+    bgColor = "",
+    color = "",
+  ) {
+    let gNode = new GraphNode((node = node));
     if (bgColor && color) {
       // if these colors exist, we are rendering the target iri for comparison. so color has to be different from the
       // default node color.
-      gNode = new GraphNode(node = node, exclusiveToTargetIriColor, nodeTextColor);
+      gNode = new GraphNode(
+        (node = node),
+        exclusiveToTargetIriColor,
+        nodeTextColor,
+      );
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
@@ -234,7 +297,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         gNode.font.color = nodeTextColor;
       } else if (nodeColorMap.current.get(gNode.id!)) {
         gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
-      } else if (dbclicked && dbClickedColor.bgColor && dbClickedColor.bgColor !== sourceNodeBgColor) {
+      } else if (
+        dbclicked &&
+        dbClickedColor.bgColor &&
+        dbClickedColor.bgColor !== sourceNodeBgColor
+      ) {
         gNode.color.background = dbClickedColor.bgColor;
         gNode.font.color = nodeTextColor;
       }
@@ -242,7 +309,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       nodes.current.add(gNode);
     } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
-      gNode = new GraphNode(node = node, commonNodesBgColor);
+      gNode = new GraphNode((node = node), commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
@@ -252,12 +319,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
-    let gEdge = new GraphEdge(edge = edge, label);
+    let gEdge = new GraphEdge((edge = edge), label);
     let dashed =
-      SUBCLASS_OF_URIS.includes(edge.uri ?? "") ||
-        rootWalk
-        ? false
-        : true;
+      SUBCLASS_OF_URIS.includes(edge.uri ?? "") || rootWalk ? false : true;
     gEdge.dashes = dashed;
     //@ts-ignore
     if (!edges.current.get(gEdge.id)) {
@@ -270,8 +334,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-
-  function addTreeDataToGraphData(graphData: VisGraphData, treeData: JSTreeNode[], istargetIri: boolean = false) {
+  function addTreeDataToGraphData(
+    graphData: VisGraphData,
+    treeData: JSTreeNode[],
+    istargetIri: boolean = false,
+  ) {
     let q = [...treeData];
     let layerq = [];
     let height = 1;
@@ -282,21 +349,31 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       q = q.slice(1);
       let gnode = { iri: node.iri, label: node.text, level: height };
       if (!istargetIri) {
-        if (!graphData.nodes.find(n => n.iri === gnode.iri)) {
+        if (!graphData.nodes.find((n) => n.iri === gnode.iri)) {
           graphData.nodes.push(gnode);
         }
         addNewNodeToGraph(gnode);
       } else {
-        if (graphData.nodes.find(n => n.iri === gnode.iri)) {
+        if (graphData.nodes.find((n) => n.iri === gnode.iri)) {
           // in this case, the node is a common node: needs a common node color
-          addNewNodeToGraph(gnode, true, exclusiveToTargetIriColor, nodeTextColor);
+          addNewNodeToGraph(
+            gnode,
+            true,
+            exclusiveToTargetIriColor,
+            nodeTextColor,
+          );
         } else {
           // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
           // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
           // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in
           // detecting the common nodes
-          addNewNodeToGraph(gnode, false, exclusiveToTargetIriColor, nodeTextColor);
-          if (!leftOverNodesFromtargetIri.find(n => n.iri === gnode.iri)) {
+          addNewNodeToGraph(
+            gnode,
+            false,
+            exclusiveToTargetIriColor,
+            nodeTextColor,
+          );
+          if (!leftOverNodesFromtargetIri.find((n) => n.iri === gnode.iri)) {
             leftOverNodesFromtargetIri.push(gnode);
           }
         }
@@ -310,7 +387,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             label: subClassEdgeLabel,
             uri: SUBCLASS_OF_URIS[0],
           };
-          if (!graphData.edges.find(e => e.source === edge.source && e.target === edge.target)) {
+          if (
+            !graphData.edges.find(
+              (e) => e.source === edge.source && e.target === edge.target,
+            )
+          ) {
             graphData.edges.push(edge);
           }
           addNewEdgeToGraph(edge);
@@ -337,8 +418,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     return graphData;
   }
 
-
-  function addHasPartRelationsToGraphData(graphData: VisGraphData, nodeRelations?: VisGraphData, isTargetNode: boolean = false) {
+  function addHasPartRelationsToGraphData(
+    graphData: VisGraphData,
+    nodeRelations?: VisGraphData,
+    isTargetNode: boolean = false,
+  ) {
     if (!nodeRelations) {
       return;
     }
@@ -357,11 +441,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         addNewEdgeToGraph(edge, HAS_PART_EDGE_LABEL);
         addNewNodeToGraph(
           nodeRelations.nodes.find((node) => node.iri === edge.source)!,
-          false, bgColor, color
+          false,
+          bgColor,
+          color,
         );
         addNewNodeToGraph(
           nodeRelations.nodes.find((node) => node.iri === edge.target)!,
-          false, bgColor, color
+          false,
+          bgColor,
+          color,
         );
       }
     }
@@ -387,7 +475,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
 
     if (targetIri && targetListOfJsTreeNodes) {
-      let targetTreeData = convertFlatListToTreeStructure(targetListOfJsTreeNodes);
+      let targetTreeData = convertFlatListToTreeStructure(
+        targetListOfJsTreeNodes,
+      );
       addTreeDataToGraphData(graphData, targetTreeData, true);
       if (!dbclicked) {
         addHasPartRelationsToGraphData(graphData, targetNodeRelations, true);
@@ -415,7 +505,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setDbclicked(false);
     setCounter(counter + 1);
   }
-
 
   function removeNodeFromGraph() {
     if (!clickedNodeIri) {
@@ -478,7 +567,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
     }, 4000);
-
   }, [counter, graphDataIsCalculated]);
 
   useEffect(() => {
@@ -496,7 +584,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           //@ts-ignore
-          setDbClickedColor({ bgColor: nodes.current.get(nodeIri)?.color?.background, color: nodes.current.get(nodeIri)?.font?.color });
+          setDbClickedColor({
+            bgColor: nodes.current.get(nodeIri)?.color?.background,
+            color: nodes.current.get(nodeIri)?.font?.color,
+          });
           setSelectedIri(nodeIri);
           if (onNodeClickCallbackIdProvided) {
             onNodeClick(nodeIri);
@@ -530,7 +621,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setCounter(counter + 1);
   }, [hierarchy]);
 
-
   useEffect(() => {
     if (!dbclicked) {
       return;
@@ -551,9 +641,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     setTimeout(() => {
       setShowNothingToAddMessage(false);
-    }, 3000)
+    }, 3000);
   }, [showNothingToAddMessage]);
-
 
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
@@ -580,11 +669,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   };
 
-
   return (
-    <div className={finalClassName} style={{ width: '1000px', height: '100vh', overflow: "hidden" }} ref={fullScreenContainerRef}>
+    <div
+      className={finalClassName}
+      style={{ width: "1000px", height: "100vh", overflow: "hidden" }}
+      ref={fullScreenContainerRef}
+    >
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
-        {isError && <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>}
+        {isError && (
+          <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>
+        )}
         <EuiPanel
           style={{ fontSize: 12 }}
           paddingSize="s"
@@ -600,7 +694,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           >
             Reset
           </EuiButton>
-          {!isFullScreen &&
+          {!isFullScreen && (
             <EuiPopover
               button={GuideMeBtn}
               isOpen={isPopoverOpen}
@@ -609,8 +703,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               <EuiText style={{ width: 300, padding: 10 }}>
                 <li>Expand the nodes by double clicking on them</li>
                 <li>Zoom out/in by scrolling on the graph.</li>
-                <li>Go to fullscreen mode by clicking the fullscreen icon on the right corner.</li>
-                <li>Download the graph data as JSON by clicking the download icon on the right corner.</li>
+                <li>
+                  Go to fullscreen mode by clicking the fullscreen icon on the
+                  right corner.
+                </li>
+                <li>
+                  Download the graph data as JSON by clicking the download icon
+                  on the right corner.
+                </li>
                 <li>
                   You can go back to the initial graph by clicking on the Reset
                   button.
@@ -618,11 +718,21 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
                 <li>You can move the nodes and edges around by dragging.</li>
               </EuiText>
             </EuiPopover>
-          }
+          )}
 
-          {showNothingToAddMessage &&
-            <div style={{ display: "inline-block", backgroundColor: "#FBCBC6", color: "red", padding: "5px", borderRadius: "10px" }}>nothing to add</div>
-          }
+          {showNothingToAddMessage && (
+            <div
+              style={{
+                display: "inline-block",
+                backgroundColor: "#FBCBC6",
+                color: "red",
+                padding: "5px",
+                borderRadius: "10px",
+              }}
+            >
+              nothing to add
+            </div>
+          )}
 
           <div
             style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
@@ -635,9 +745,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             >
               <EuiIcon type="cut" />
             </button>
-            {showNodeNotSelectedMessage &&
-              <EuiTextColor color="red" style={{ marginTop: "10px", marginRight: "10px", marginLeft: "-10px" }}>Please select a node to remove</EuiTextColor>
-            }
+            {showNodeNotSelectedMessage && (
+              <EuiTextColor
+                color="red"
+                style={{
+                  marginTop: "10px",
+                  marginRight: "10px",
+                  marginLeft: "-10px",
+                }}
+              >
+                Please select a node to remove
+              </EuiTextColor>
+            )}
             <button
               onClick={downloadGraphData}
               title="Download graph data as json."
@@ -649,13 +768,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               onClick={runFullScreen}
               style={{ marginLeft: "20px" }}
               title={!isFullScreen ? "Fullscreen mode" : "Exit fullscreen mode"}
-              aria-label={!isFullScreen ? "go to fullscreen mode" : "exit fullscreen mode"}
+              aria-label={
+                !isFullScreen ? "go to fullscreen mode" : "exit fullscreen mode"
+              }
             >
-              {!isFullScreen ? <EuiIcon type="fullScreen" /> : <EuiIcon type="fullScreenExit" />}
+              {!isFullScreen ? (
+                <EuiIcon type="fullScreen" />
+              ) : (
+                <EuiIcon type="fullScreenExit" />
+              )}
             </button>
           </div>
-        </EuiPanel >
-
+        </EuiPanel>
 
         {isLoading && <EuiLoadingSpinner size="m" />}
         <div
@@ -664,18 +788,84 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           style={{ width: "100%", height: "100vh", margin: "auto" }}
         />
 
-        <div style={{ position: "absolute", display: "inline-block", backgroundColor: "#e5e7ea", padding: "5px", borderRadius: "10px", paddingTop: "10px", bottom: "20px", right: "20px" }}>
+        <div
+          style={{
+            position: "absolute",
+            display: "inline-block",
+            backgroundColor: "#e5e7ea",
+            padding: "5px",
+            borderRadius: "10px",
+            paddingTop: "10px",
+            bottom: "20px",
+            right: "20px",
+          }}
+        >
           <b>Legend:</b>
           <ul style={{ paddingTop: "15px" }}>
-            <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: sourceNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Source: <i>{sourceLabel}</i> </li>
-            {targetIri &&
+            <li style={{ paddingTop: "5px" }}>
+              <div
+                style={{
+                  backgroundColor: sourceNodeBgColor,
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                }}
+              ></div>{" "}
+              Source: <i>{sourceLabel}</i>{" "}
+            </li>
+            {targetIri && (
               <>
-                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: "#455469", width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{sourceLabel}</i> </li>
-                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: commonNodesBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Common subtree </li>
-                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: targetNodeBgColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div> Target: <i>{targetLabel}</i> </li>
-                <li style={{ paddingTop: "5px" }}><div style={{ backgroundColor: exclusiveToTargetIriColor, width: "10px", height: "10px", borderRadius: "50%", display: "inline-block" }}></div>  Subtree exclusive to <i>{targetLabel}</i> </li>
+                <li style={{ paddingTop: "5px" }}>
+                  <div
+                    style={{
+                      backgroundColor: "#455469",
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></div>{" "}
+                  Subtree exclusive to <i>{sourceLabel}</i>{" "}
+                </li>
+                <li style={{ paddingTop: "5px" }}>
+                  <div
+                    style={{
+                      backgroundColor: commonNodesBgColor,
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></div>{" "}
+                  Common subtree{" "}
+                </li>
+                <li style={{ paddingTop: "5px" }}>
+                  <div
+                    style={{
+                      backgroundColor: targetNodeBgColor,
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></div>{" "}
+                  Target: <i>{targetLabel}</i>{" "}
+                </li>
+                <li style={{ paddingTop: "5px" }}>
+                  <div
+                    style={{
+                      backgroundColor: exclusiveToTargetIriColor,
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></div>{" "}
+                  Subtree exclusive to <i>{targetLabel}</i>{" "}
+                </li>
               </>
-            }
+            )}
           </ul>
         </div>
 
@@ -687,7 +877,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       `}</style>
       </EuiPanel>
-    </div >
+    </div>
   );
 }
 function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
@@ -704,6 +894,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           edgeLabel={props.edgeLabel}
           onNodeClick={props.onNodeClick}
           targetIri={props.targetIri}
+          parameter={props.parameter}
         />
       </QueryClientProvider>
     </EuiProvider>

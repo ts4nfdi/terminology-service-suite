@@ -1,18 +1,18 @@
+import { asArray, inferTypeFromTypeArray } from "../../app/util";
+import { Thing } from "../interfaces";
+import { ThingTypeName } from "../ModelTypeCheck";
 import {
-  OLS3Ontology,
   OLS3Class,
-  OLS3Property,
   OLS3Individual,
-} from "./ols3-model";
+  OLS3Ontology,
+  OLS3Property,
+} from "../ols3-model";
 import {
-  OLS4Ontology,
   OLS4Class,
-  OLS4Property,
   OLS4Individual,
-} from "./ols4-model";
-import { Thing } from "./interfaces";
-import { ThingTypeName } from "./ModelTypeCheck";
-import { asArray, inferTypeFromTypeArray } from "../app/util";
+  OLS4Ontology,
+  OLS4Property,
+} from "../ols4-model";
 
 export function createModelObject(response: any) {
   let useLegacy: boolean;

@@ -1,3 +1,4 @@
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../../../app/globals";
 import {
   apiArgType,
@@ -8,7 +9,6 @@ import {
   parameterArgType,
   useLegacyArgType,
 } from "../../../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const AlternativeNameTabWidgetStoryArgTypes = {
   ...apiArgType,

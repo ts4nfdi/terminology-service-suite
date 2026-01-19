@@ -1,3 +1,6 @@
+import { expect, waitFor, within } from "storybook/test";
+import * as globals from "../../../app/globals";
+import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import {
   apiArgType,
   entityTypeArgType,
@@ -11,9 +14,6 @@ import {
   showBadgesArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import * as globals from "../../../app/globals";
-import { expect, waitFor, within } from "storybook/test";
-import { EntityTypeName } from "../../../model/ModelTypeCheck";
 
 export const EntityInfoWidgetStoryArgTypes = {
   ...apiArgType,
@@ -87,7 +87,7 @@ export const InfoWidgetDomainArgs = {
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/NCIT_R89",
   entityType: "property" as EntityTypeName,
-  ontologyId: "ncit"
+  ontologyId: "ncit",
 };
 
 export const InfoWidgetRangeArgs = {
@@ -96,7 +96,7 @@ export const InfoWidgetRangeArgs = {
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/RO_0002029",
   entityType: "property" as EntityTypeName,
-  ontologyId: "ro"
+  ontologyId: "ro",
 };
 
 export const InfoWidgetPropertyAssertionArgs = {
@@ -105,7 +105,7 @@ export const InfoWidgetPropertyAssertionArgs = {
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/ENVO_01001569",
   entityType: "individual" as EntityTypeName,
-  ontologyId: "envo"
+  ontologyId: "envo",
 };
 
 export const InfoWidgetPropertyCharacteristicsArgs = {
@@ -114,7 +114,7 @@ export const InfoWidgetPropertyCharacteristicsArgs = {
   useLegacy: false,
   iri: "http://purl.obolibrary.org/obo/MICRO_0001603",
   entityType: "property" as EntityTypeName,
-  ontologyId: "micro"
+  ontologyId: "micro",
 };
 
 export const NavigateToEBIPageArgs = {
@@ -126,7 +126,7 @@ export const NavigateToEBIPageArgs = {
   onNavigateToOntology: "Navigate to EBI page",
   onNavigateToDisambiguate: "Navigate to EBI page",
   entityType: "individual" as EntityTypeName,
-  ontologyId: "envo"
+  ontologyId: "envo",
 };
 export const SkosmosImportArgs = {
   ...EntityInfoWidgetStoryArgs,

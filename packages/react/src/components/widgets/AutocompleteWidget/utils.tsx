@@ -20,7 +20,7 @@ const calculateSimilarity = (str1: string, str2: string): number => {
   // Also check for substring matches
   const substringScore = s1.includes(s2) || s2.includes(s1) ? 0.5 : 0;
 
-  return (matches / Math.max(s1.length, s2.length)) + substringScore;
+  return matches / Math.max(s1.length, s2.length) + substringScore;
 };
 
 /**
@@ -31,10 +31,10 @@ const calculateSimilarity = (str1: string, str2: string): number => {
  */
 export const getBestMatchingSynonym = (
   synonyms: string[],
-  searchValue: string
+  searchValue: string,
 ): string => {
   if (!synonyms || synonyms.length === 0) {
-    return '';
+    return "";
   }
 
   if (!searchValue) {
@@ -70,10 +70,10 @@ export const getBestMatchingSynonym = (
 export const getConstrainedSynonym = (
   label: string,
   synonyms: string[],
-  searchValue: string
+  searchValue: string,
 ): string => {
   if (!searchValue) {
-    return '';
+    return "";
   }
 
   const normalizedLabel = label.toLowerCase();
@@ -81,12 +81,12 @@ export const getConstrainedSynonym = (
 
   // Rule 1: Do not use synonym if label contains the searchValue
   if (normalizedLabel.includes(normalizedsearchValue)) {
-    return '';
+    return "";
   }
 
   // Rule 2: Filter synonyms that MUST contain the searchValue
   const validSynonyms = synonyms.filter((synonym) =>
-    synonym.toLowerCase().includes(normalizedsearchValue)
+    synonym.toLowerCase().includes(normalizedsearchValue),
   );
 
   // Pick the best match from the valid list

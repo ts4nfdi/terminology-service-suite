@@ -1,6 +1,6 @@
-import Reified from "../Reified";
-import LinkedEntities from "../LinkedEntities";
 import { ThingTypeName } from "../ModelTypeCheck";
+import Reified from "../Reified";
+import LinkedEntities from "../ols-model/LinkedEntities";
 
 export interface Thing {
   properties: any;

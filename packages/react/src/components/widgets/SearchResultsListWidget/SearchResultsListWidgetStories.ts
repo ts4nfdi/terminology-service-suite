@@ -1,16 +1,17 @@
 import * as globals from "../../../app/globals";
 
+import { expect, waitFor, within } from "storybook/test";
 import {
   apiArgType,
   initialItemsPerPageArgType,
   itemsPerPageOptionsArgType,
+  onNavigateToOntologyArgType,
   parameterArgType,
   preselectedArgType,
   queryArgType,
   targetLinkArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const SearchResultsListWidgetStoryArgTypes = {
   ...apiArgType,
@@ -21,6 +22,7 @@ export const SearchResultsListWidgetStoryArgTypes = {
   ...targetLinkArgType,
   ...useLegacyArgType,
   ...parameterArgType,
+  ...onNavigateToOntologyArgType,
 };
 
 export const SearchResultsListWidgetStoryArgs = {
@@ -32,6 +34,7 @@ export const SearchResultsListWidgetStoryArgs = {
   preselected: [],
   targetLink: "",
   parameter: "collection=nfdi4health",
+  onNavigateToOntology: "Console message",
 };
 
 export const SearchResultsListSafetyArgs = {

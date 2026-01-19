@@ -1,7 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   DataContentWidget,
   DataContentWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
+import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   DataContentWidgetStoryArgs,
   DataContentWidgetStoryArgTypes,
@@ -9,9 +11,7 @@ import {
   NFDI4HealthDataContentWidgetArgs,
   SafetyDataContentWidgetArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidgetStories";
-import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
