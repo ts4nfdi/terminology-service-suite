@@ -188,10 +188,10 @@ export const CompareHierarchiesArgs = {
     ...HierarchyWidgetStoryArgs,
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
-    iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-    compareIri: "http://www.ebi.ac.uk/efo/EFO_0005847",
+    iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
+    compareIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
     entityType: "class" as EntityTypeName,
-    ontologyId: "efo",
+    ontologyId: "chebi",
 }
 
 export const CompareHierarchiesSubEntityArgs = {

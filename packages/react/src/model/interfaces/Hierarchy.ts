@@ -260,79 +260,89 @@ export function compareHierarchies(
     hierarchyA: Hierarchy,
     hierarchyB: Hierarchy
 ): Hierarchy {
+  const stackA: TreeNode[][] = [hierarchyA.roots];
+  const stackB: TreeNode[][] = [hierarchyB.roots];
 
-    const stackA: (TreeNode[])[] = [hierarchyA.roots];
-    const stackB: (TreeNode[])[] = [hierarchyB.roots];
+  const sortKey = (node: TreeNode) => node.entityData.label || node.entityData.iri;
 
-    while (stackA.length > 0 && stackB.length > 0) {
-        const currA: TreeNode[] = stackA[stackA.length - 1];
-        stackA.pop();
-        const currB : TreeNode[] = stackB[stackB.length - 1];
-        stackB.pop();
+  hierarchyA.roots.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+  hierarchyB.roots.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
 
-        // Assuming that TreeNode arrays are sorted alphabetically by entityData.label | entityData.iri
-        let iA = 0;
-        let iB = 0;
-        let nodeA: TreeNode;
-        let nodeB: TreeNode;
+  while (stackA.length > 0 && stackB.length > 0) {
+    const currA = stackA.pop()!.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+    const currB = stackB.pop()!.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
 
-        function onlyInAProcedure() {
-            // contained in A, but not in B
-            hierarchyA.colorSubtree(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A);
-            iA++;
+    let iA = 0, iB = 0;
+
+    while (iA < currA.length && iB < currB.length) {
+      const nodeA = currA[iA];
+      const nodeB = currB[iB];
+      const cmp = sortKey(nodeA).localeCompare(sortKey(nodeB));
+      if (cmp === 0) {
+        hierarchyA.colorEntity(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION);
+        stackA.push(nodeA.loadedChildren || []);
+        stackB.push(nodeB.loadedChildren || []);
+        iA++;
+        iB++;
+      } else if (cmp < 0) {
+        hierarchyA.colorSubtree(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A);
+        iA++;
+      } else {
+        currA.splice(iA, 0, nodeB);
+        hierarchyA.colorSubtree(nodeB, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B);
+        if (!hierarchyA.entitiesData.has(nodeB.entityData.iri)) {
+          hierarchyA.entitiesData.set(nodeB.entityData.iri, nodeB.entityData);
         }
-        function onlyInBProcedure() {
-            // contained in B, but not in A
-
-            // add node into A list -> gets injected into hierarchyA
-            iA++;
-            currA.splice(iA, 0, nodeB);
-
-            // add parentChildRelation
-            for (const parIri of (nodeB.entityData.parents || []).map((elem) => elem.value)) {
-                if (hierarchyA.entitiesData.get(parIri)) {
-                    const parChildRelB = hierarchyB.parentChildRelations.get(parIri)!.filter((elem) => elem.childIri == nodeB.entityData.iri)[0];
-
-                    const parChildRelsA = hierarchyA.parentChildRelations.get(parIri) || [];
-                    parChildRelsA.push(parChildRelB);
-
-                    hierarchyA.parentChildRelations.set(parIri, parChildRelsA);
-                }
+        for (const parIri of (nodeB.entityData.parents || []).map(p => p.value)) {
+          if (hierarchyA.entitiesData.has(parIri)) {
+            const rel = hierarchyB.parentChildRelations.get(parIri)?.find(r => r.childIri === nodeB.entityData.iri);
+            if (rel) {
+              let rels = hierarchyA.parentChildRelations.get(parIri) || [];
+              rels.push(rel);
+              hierarchyA.parentChildRelations.set(parIri, rels);
             }
-
-            hierarchyA.colorSubtree(nodeB, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B);
-            iB++;
+          }
         }
-
-        while (iA < currA.length && iB < currB.length) {
-            nodeA = currA[iA];
-            nodeB = currB[iB];
-
-            const compareValue: number = (nodeA.entityData.label || nodeA.entityData.iri).localeCompare(nodeB.entityData.label || nodeB.entityData.iri)
-
-            if (compareValue == 0) {
-                // contained in union
-                hierarchyA.colorEntity(nodeA, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION);
-
-                // children have to be compared further
-                stackA.push(nodeA.loadedChildren);
-                stackB.push(nodeB.loadedChildren);
-
-                iA++;
-                iB++;
-            }
-            else if (compareValue < 0) onlyInAProcedure();
-            else onlyInBProcedure();
-        }
-        while (iA < currA.length) {
-            nodeA = currA[iA];
-            onlyInAProcedure();
-        }
-        while (iB < currB.length) {
-            nodeB = currB[iB];
-            onlyInBProcedure();
-        }
+        iA++;  // skip over inserted node
+        iB++;
+      }
     }
 
-    return hierarchyA;
+    for (; iA < currA.length; iA++) {
+      hierarchyA.colorSubtree(currA[iA], HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A);
+    }
+
+    const trailingB: TreeNode[] = [];
+    for (; iB < currB.length; iB++) {
+      trailingB.push(currB[iB]);
+    }
+
+    trailingB.forEach(nodeB => {
+      currA.push(nodeB);
+      hierarchyA.colorSubtree(nodeB, HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B);
+
+      if (!hierarchyA.entitiesData.has(nodeB.entityData.iri)) {
+        hierarchyA.entitiesData.set(nodeB.entityData.iri, nodeB.entityData);
+      }
+
+      for (const parIri of (nodeB.entityData.parents || []).map(p => p.value)) {
+        if (hierarchyA.entitiesData.has(parIri)) {
+          const rel = hierarchyB.parentChildRelations
+            .get(parIri)
+            ?.find(r => r.childIri === nodeB.entityData.iri);
+          if (rel) {
+            let rels = hierarchyA.parentChildRelations.get(parIri) || [];
+            if (!rels.some(existing => existing.childIri === rel.childIri)) {
+              rels.push(rel);
+              hierarchyA.parentChildRelations.set(parIri, rels);
+            }
+          }
+        }
+      }
+    });
+
+    currA.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+  }
+
+  return hierarchyA;
 }

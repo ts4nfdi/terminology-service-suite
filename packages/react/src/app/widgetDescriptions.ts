@@ -259,6 +259,11 @@ within an ontology. The widget visualizes the entity's position within the hiera
 and expanding down to the specified entity. Users can interact with the hierarchy, expanding or collapsing nodes to navigate 
 through related classes or entities.
 
+In addition to single-entity exploration, the HierarchyWidget supports hierarchy comparison, allowing users to compare 
+the structures of two selected entity subtrees within the same ontology. When comparing, the widget highlights common 
+nodes, as well as branches that exist only in one subtree, enabling clear visual identification of overlaps and 
+differences in classification.
+
 This widget is particularly useful for exploring entity hierarchies and understanding the classification of concepts, 
 offering a flexible and customizable way to visualize ontology structures.
 
@@ -269,6 +274,10 @@ Displays the hierarchical structure of an entity, showing its position within th
 
 - **Expandable Nodes**: 
 Users can expand and collapse hierarchy nodes by clicking on the arrow next to each label, making it easy to navigate through different levels of the hierarchy.
+
+- **Hierarchy Comparison Mode**:
+Enables side-by-side or merged comparison of two entity subtrees, visually distinguishing shared (common) hierarchy 
+nodes, nodes unique to the first entity, and nodes unique to the second entity.
 
 - **User-Friendly Interface**: 
 The widget is interactive, offering a clear and intuitive way to explore the hierarchical structure of entities. 
