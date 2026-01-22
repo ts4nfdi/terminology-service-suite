@@ -2,7 +2,7 @@ import * as globals from "../../../../../app/globals";
 import {
     apiKeyArgType,
     apiUrlArgType,
-    backendArgType, compareIriArgType,
+    backendArgType, targetIriArgType,
     entityTypeArgTypeHierarchy, hierarchyWrapArgType,
     includeObsoleteEntitiesArgType,
     iriArgTypeHierarchy,
@@ -35,7 +35,7 @@ export const HierarchyWidgetStoryArgTypes = {
   ...useLegacyArgTypeHierarchy,
   ...parameterArgTypeHierarchy,
   ...hierarchyWrapArgType,
-  ...compareIriArgType
+  ...targetIriArgType
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -55,7 +55,7 @@ export const HierarchyWidgetStoryArgs = {
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
-  compareIri: "",
+  targetIri: "",
   showHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER,
   showComparisonTitleInHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER
 } as const;
@@ -189,7 +189,7 @@ export const CompareHierarchiesArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
-    compareIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
+    targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
     entityType: "class" as EntityTypeName,
     ontologyId: "chebi",
 }
@@ -199,7 +199,7 @@ export const CompareHierarchiesSubEntityArgs = {
     apiUrl: globals.EBI_API_ENDPOINT,
     backendType: "ols",
     iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-    compareIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
+    targetIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
     entityType: "class" as EntityTypeName,
     ontologyId: "efo",
 }

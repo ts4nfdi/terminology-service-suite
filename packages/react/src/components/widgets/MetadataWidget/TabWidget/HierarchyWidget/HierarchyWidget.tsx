@@ -29,7 +29,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     onNavigateToEntity,
     onNavigateToOntology,
     iri,
-    compareIri,
+    targetIri,
     ontologyId,
     entityType,
     includeObsoleteEntities = HIERARCHY_WIDGET_DEFAULT_VALUES.INCLUDE_OBSOLETE_ENTITIES,
@@ -178,11 +178,11 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       showSiblingsOnInit,
       useLegacy,
       parameter,
-      compareIri,
+      targetIri,
       resetToggle
     ],
     async function getNewHierarchy() {
-      if (compareIri) {
+      if (targetIri) {
           return compareHierarchies(
               await api.buildHierarchyWithIri({
                   ontologyId: ontologyId,
@@ -191,18 +191,18 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                   preferredRoots: preferredRoots,
                   includeObsoleteEntities: includeObsoleteEntities,
                   keepExpansionStates: keepExpansionStates,
-                  showSiblingsOnInit: showSiblingsOnInit,
+                  showSiblingsOnInit: false,
                   useLegacy: useLegacy,
                   parameter: parameter,
               }),
               await api.buildHierarchyWithIri({
                   ontologyId: ontologyId,
-                  iri: compareIri,
+                  iri: targetIri,
                   entityType: entityType,
                   preferredRoots: preferredRoots,
                   includeObsoleteEntities: includeObsoleteEntities,
                   keepExpansionStates: keepExpansionStates,
-                  showSiblingsOnInit: showSiblingsOnInit,
+                  showSiblingsOnInit: false,
                   useLegacy: useLegacy,
                   parameter: parameter,
               })
@@ -307,7 +307,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 : () => {}
             }
             highlightColor={node.entityData.iri == iri          ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A
-                            : node.entityData.iri == compareIri ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B
+                            : node.entityData.iri == targetIri ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B
                             : ""}
           />
         </div>
@@ -352,12 +352,12 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                   >
                       <span style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                           <span>
-                              { iri && compareIri && showComparisonTitleInHeader &&
+                              { iri && targetIri && showComparisonTitleInHeader &&
                                   <EuiTitle size={"s"} >
-                                      <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(iri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(compareIri)?.label || compareIri}</i></h2>
+                                      <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(iri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(targetIri)?.label || targetIri}</i></h2>
                                   </EuiTitle>
                               }
-                              {iri && compareIri &&
+                              {iri && targetIri &&
                                   <span>
                                       <EuiSpacer size="s" />
                                       <EuiAccordion buttonContent={legendToggle ? "Hide Legend" : "Show Legend"} id={""} onToggle={(isOpen) => setLegendToggle(isOpen)}>
@@ -371,7 +371,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                                           </EuiHealth>
                                           <br/>
                                           <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}>
-                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(compareIri)?.label || compareIri}{'"'}
+                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(targetIri)?.label || targetIri}{'"'}
                                           </EuiHealth>
                                           <br/>
                                           <EuiHealth>
@@ -443,7 +443,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           showHeader={props.showHeader}
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
           className={props.className}
-          compareIri={props.compareIri}
+          targetIri={props.targetIri}
         />
       </QueryClientProvider>
     </EuiProvider>

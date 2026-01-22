@@ -223,14 +223,14 @@ export const hierarchyWrapArgType = {
         "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
   },
 };
-export const compareIriArgType = {
-    compareIri: {
+export const targetIriArgType = {
+    targetIri: {
         required: false,
         description:
-            "If provided, a view comparing the hierarchies of iri and compareIri is shown.",
+            "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
         table: {
             defaultValue: {
-                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.COMPARE_IRI,
+                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.TARGET_IRI,
             }
         }
     }
@@ -941,7 +941,8 @@ export const showSiblingsOnInitArgType = {
     required: false,
     description: `
 If false, only the entity with specified iri and its ancestors are displayed in a hierarchy.
-If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API).
+If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API). 
+This option cannot be used alongside the compareHierarchy option and defaults to false in these cases.
     `,
     table: {
       defaultValue: {

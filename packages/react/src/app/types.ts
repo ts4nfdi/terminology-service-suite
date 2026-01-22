@@ -482,7 +482,7 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiKey?: string;
   backendType?: string;
   hierarchyWrap?: boolean;
-  compareIri?: string;
+  targetIri?: string;
   showHeader?: boolean;
   showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps &
