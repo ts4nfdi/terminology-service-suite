@@ -12,9 +12,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # to enable use of OIDC for trusted publishing and npm provenance
     strategy:
       matrix:
-        node-version: [ 20.x ]
+        node-version: [ 22.x ]
     outputs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
       srrelease: ${{ steps.setoutput.outputs.srrelease }}
@@ -60,7 +62,7 @@ jobs:
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for access to NPM
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
         working-directory: packages/react
 
       - name: Parse semantic-release output
@@ -144,7 +146,17 @@ jobs:
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
+    env:
+      STORYBOOK_ENABLE_MATOMO: "true"
+      STORYBOOK_MATOMO_URL: ${{ secrets.STORYBOOK_MATOMO_URL }}
+      STORYBOOK_MATOMO_SITE_ID: ${{ secrets.STORYBOOK_MATOMO_SITE_ID }}
+      NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
     steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -155,33 +167,24 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
           scope: '@ts4nfdi'
 
-      - name: Install root dependencies
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }} # KM PAT for esbuild-dynamic-import and gh-pages-multi
-
-      - name: Install and Build React Storybook
-        working-directory: packages/react
+      - name: Verify environment variables
         run: |
-          npm install
+          echo "STORYBOOK_ENABLE_MATOMO=$STORYBOOK_ENABLE_MATOMO"
+
+      - name: Install and Build all Storybooks
+        run: |
+          npm ci
+          
+          cd packages/react
+          npm ci
           npm run build:storybook -- -o ../../storybook-static/react
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
-
-      - name: Install and Build JS Storybook
-        working-directory: packages/js
-        run: |
-          npm install
+          
+          cd ../js
+          npm ci
           npm run build:storybook -- -o ../../storybook-static/js
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
-
-      - name: Install and Build Composed Storybook
-        run: |
-          npm install
-          npm run build:storybook -- -o storybook-static/public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.KM }}
+          
+          cd ../../
+          STORYBOOK_ENABLE_MATOMO=true STORYBOOK_MATOMO_URL=${{ secrets.STORYBOOK_MATOMO_URL }} STORYBOOK_MATOMO_SITE_ID=${{ secrets.STORYBOOK_MATOMO_SITE_ID }} npm run build:storybook -- -o storybook-static/public
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -212,9 +215,9 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s storybook-static/react --no-history -t react/latest
-          npx gh-pages-multi deploy -s storybook-static/js --no-history -t html/latest
-          npx gh-pages-multi deploy -s storybook-static/public --no-history -t comp/latest
+          npx gh-pages-multi deploy -s storybook-static/react -t react/latest
+          npx gh-pages-multi deploy -s storybook-static/js -t html/latest
+          npx gh-pages-multi deploy -s storybook-static/public -t comp/latest
 
   documentation-versioned:
     if: github.ref == 'refs/heads/main' && needs.build.outputs.srrelease == 'release'
@@ -268,6 +271,6 @@ jobs:
           SRVERSION: ${{ needs.build.outputs.srversion }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx gh-pages-multi deploy -s artifacts/react --no-history -t react/"$SRVERSION"
-          npx gh-pages-multi deploy -s artifacts/js --no-history -t html/"$SRVERSION"
-          npx gh-pages-multi deploy -s artifacts/public --no-history -t comp/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/react -t react/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/js -t html/"$SRVERSION"
+          npx gh-pages-multi deploy -s artifacts/public -t comp/"$SRVERSION"

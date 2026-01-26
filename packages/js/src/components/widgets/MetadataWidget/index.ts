@@ -1,15 +1,15 @@
-import { createMetadata } from "./MetadataWidget";
-import {
-  createTab,
-  createHierarchy,
-  createCrossRefTab,
-  createAlternativeNameTab,
-} from "./TabWidget";
 import { createBreadcrumb } from "./BreadcrumbWidget";
 import { createDescription } from "./DescriptionWidget";
 import { createEntityDefinedBy } from "./EntityDefinedByWidget";
 import { createEntityOntoList } from "./EntityOntoListWidget";
 import { createIri } from "./IriWidget";
+import { createMetadata } from "./MetadataWidget";
+import {
+  createAlternativeNameTab,
+  createCrossRefTab,
+  createHierarchy,
+  createTab,
+} from "./TabWidget";
 import { createTitle } from "./TitleWidget";
 
 (window as any)["ts4nfdiWidgets"] = {
@@ -28,15 +28,15 @@ import { createTitle } from "./TitleWidget";
 };
 
 export {
-  createMetadata,
-  createTab,
-  createHierarchy,
-  createCrossRefTab,
   createAlternativeNameTab,
   createBreadcrumb,
+  createCrossRefTab,
   createDescription,
   createEntityDefinedBy,
   createEntityOntoList,
+  createHierarchy,
   createIri,
+  createMetadata,
+  createTab,
   createTitle,
 };

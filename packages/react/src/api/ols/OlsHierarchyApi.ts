@@ -1,10 +1,5 @@
-import {
-  classTypeNames,
-  EntityTypeName,
-  isClassTypeName,
-  isIndividualTypeName,
-} from "../../model/ModelTypeCheck";
-import { Entity } from "../../model/interfaces";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { EntityData } from "../../app";
 import {
   asArray,
   getEntityInOntologySuffix,
@@ -12,26 +7,31 @@ import {
   pluralizeType,
 } from "../../app/util";
 import {
-  buildOtherParams,
-  check_for_errors,
-  isTop,
-} from "../../utils/olsApiUtils";
-import { createModelObject } from "../../model/ModelObjectCreator";
-import { JSTreeNode } from "../../utils/olsApiTypes";
-import {
-  BuildHierarchyProps,
-  HierarchyBuilder,
-  HierarchyIriProp,
-  LoadHierarchyChildrenProps,
-} from "../HierarchyBuilder";
+  classTypeNames,
+  EntityTypeName,
+  isClassTypeName,
+  isIndividualTypeName,
+} from "../../model/ModelTypeCheck";
+import Reified from "../../model/Reified";
+import { Entity } from "../../model/interfaces";
 import {
   Hierarchy,
   ParentChildRelation,
   TreeNode,
 } from "../../model/interfaces/Hierarchy";
-import { EntityData } from "../../app";
-import Reified from "../../model/Reified";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import {
+  BuildHierarchyProps,
+  HierarchyBuilder,
+  HierarchyIriProp,
+  LoadHierarchyChildrenProps,
+} from "../../model/interfaces/HierarchyBuilder";
+import { createModelObject } from "../../model/ols-model/ModelObjectCreator";
+import { JSTreeNode } from "../../utils/olsApiTypes";
+import {
+  buildOtherParams,
+  check_for_errors,
+  isTop,
+} from "../../utils/olsApiUtils";
 import { OlsEntityApi } from "./OlsEntityApi";
 import { OlsOntologyApi } from "./OlsOntologyApi";
 

@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  MetadataWidget,
+  MetadataWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonMetadataWidgetPlay,
   DefinedByAlsoAppearsInWidgetsArgs,
@@ -13,12 +19,6 @@ import {
   TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
 import "./index";
-import { MetadataDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  MetadataWidget,
-  MetadataWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -63,6 +63,7 @@ window['ts4nfdiWidgets'].createMetadata(
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        hierarchyWrap:${args.hierarchyWrap},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate},

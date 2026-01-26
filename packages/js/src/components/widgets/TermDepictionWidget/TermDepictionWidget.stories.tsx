@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  TermDepictionWidget,
+  TermDepictionWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTermDepictionWidgetPlay,
   TermDepictionWidget3DArgs,
@@ -6,12 +12,6 @@ import {
   TermDepictionWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
 import "./index";
-import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  TermDepictionWidget,
-  TermDepictionWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

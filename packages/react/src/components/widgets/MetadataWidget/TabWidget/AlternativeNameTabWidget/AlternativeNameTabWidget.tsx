@@ -1,15 +1,12 @@
 "use client";
 
-import React from "react";
-import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { getErrorMessageToDisplay } from "../../../../../app/util";
+import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
 import { AlternativeNameTabWidgetProps } from "../../../../../app/types";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
-import ReactDOM from "react-dom";
-import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
 
 function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =

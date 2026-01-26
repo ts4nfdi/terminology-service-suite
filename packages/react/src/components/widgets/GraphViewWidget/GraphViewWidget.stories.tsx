@@ -1,17 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import { GraphViewWidget } from "./GraphViewWidget";
 import {
-  GraphViewWidgetStoryArgTypes,
-  GraphViewWidgetStoryArgs,
-  GraphViewWidgetExampleArgs,
-  RootWalkGraphExampleArgs,
+  ChebiCaffeineHierarchyArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs,
+  ChebiIonArgs,
+  ChebiIonComparisonArgs,
+  ChebiIonRootWalkArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
-  commonGraphViewWidgetPlay,
-  ChebiCaffeineHierarchyArgs,
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+  GraphWithGermanLabelArgs,
   WithOnNodeDoubleClickCallbackArgs,
+  commonGraphViewWidgetPlay,
 } from "./GraphViewWidgetStories";
-import { GraphViewDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Hierarchy and Graph/GraphViewWidget",
@@ -32,13 +36,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const GraphViewWidgetExample: Story = {
-  args: GraphViewWidgetExampleArgs,
+export const ChebiIon: Story = {
+  args: ChebiIonArgs,
   play: commonGraphViewWidgetPlay,
 };
 
-export const RootWalkGraphExample: Story = {
-  args: RootWalkGraphExampleArgs,
+export const ChebiIonComparison: Story = {
+  args: ChebiIonComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+export const ChebiIonRootWalk: Story = {
+  args: ChebiIonRootWalkArgs,
   parameters: {
     docs: {
       disable: true,
@@ -79,6 +92,36 @@ export const ChebiCaffeineHierarchy: Story = {
 
 export const WithOnNodeDoubleClickCallback: Story = {
   args: WithOnNodeDoubleClickCallbackArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchyWithComparison: Story = {
+  args: ChebiCaffeineHierarchyWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiIonAndIonRadicalWithComparison: Story = {
+  args: ChebiIonAndIonRadicalWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLabel: Story = {
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,

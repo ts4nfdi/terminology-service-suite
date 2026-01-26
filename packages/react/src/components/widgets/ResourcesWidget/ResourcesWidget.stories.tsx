@@ -1,15 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ResourcesDescription } from "../../../app/widgetDescriptions";
 import { ResourcesWidget } from "./ResourcesWidget";
 import {
+  commonResourcesWidgetPlay,
+  ResourcesWidget1Args,
+  ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
   ResourcesWidgetStoryArgTypes,
-  ResourcesWidget1Args,
   WithActionsArgs,
-  WithActionsAndSafetyArgs,
-  ResourcesWidgetLogosArgs,
-  commonResourcesWidgetPlay,
 } from "./ResourcesWidgetStories";
-import { ResourcesDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Ontology Metadata/ResourcesWidget",
@@ -36,14 +35,7 @@ export const ResourcesWidget1 = {
 };
 
 export const WithActions = {
-  args: ResourcesWidget1Args,
-  WithActionsArgs,
-  play: commonResourcesWidgetPlay,
-};
-
-export const WithActionsAndSafety = {
   args: WithActionsArgs,
-  WithActionsAndSafetyArgs,
   play: commonResourcesWidgetPlay,
 };
 

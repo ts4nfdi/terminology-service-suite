@@ -1,19 +1,18 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  ResourcesWidget,
+  ResourcesWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonResourcesWidgetPlay,
   ResourcesWidget1Args,
   ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
   ResourcesWidgetStoryArgTypes,
-  WithActionsAndSafetyArgs,
   WithActionsArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/ResourcesWidget/ResourcesWidgetStories";
 import "./index";
-import { ResourcesDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  ResourcesWidget,
-  ResourcesWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -50,6 +49,8 @@ window['ts4nfdiWidgets'].createResources(
         onNavigate:${args.onNavigate},
         actions:[${args.actions}],
         parameter:"${args.parameter}",
+        useLegacy:${args.useLegacy},
+        className:${args.className},
     },
     document.querySelector('#resources_widget_container_${num}')
 )
@@ -72,12 +73,6 @@ export const ResourcesWidget1 = {
 export const WithActions = {
   args: ResourcesWidget1Args,
   WithActionsArgs,
-  play: commonResourcesWidgetPlay,
-};
-
-export const WithActionsAndSafety = {
-  args: WithActionsArgs,
-  WithActionsAndSafetyArgs,
   play: commonResourcesWidgetPlay,
 };
 

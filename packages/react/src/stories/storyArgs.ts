@@ -1,6 +1,6 @@
-import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 import { ArgTypes } from "@storybook/react";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../api/ols/OlsHierarchyApi";
+import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
 export const apiArgType: ArgTypes = {
   api: {
@@ -10,7 +10,6 @@ export const apiArgType: ArgTypes = {
     },
     options: [
       "https://terminology.services.base4nfdi.de/api-gateway/",
-      "https://service.tib.eu/ts4tib/api/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
@@ -21,7 +20,6 @@ export const apiArgType: ArgTypes = {
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
       "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
       "**[TIB:](https://www.tib.eu/de/)**<br> " +
-      "TIB Terminology Service (OLS3): [https://service.tib.eu/ts4tib/api/](https://service.tib.eu/ts4tib/api/)<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
       "**[ZB MED:](https://www.zbmed.de/)**<br> " +
       "SemLookP API (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/ols/api/)<br> " +
@@ -184,7 +182,7 @@ These parameters can be used to filter the search results. Each parameter can be
 | **ontology**  | Restrict a search to a set of ontologies, e.g., \`ontology=uberon,mesh\`. |
 | **type**      | Restrict a search to an entity type, one of \`{class, property, individual, ontology}\`. |
 | **slim**      | Restrict a search to a particular set of slims by name. |
-| **fieldList** | Specify the fields to return. Defaults are **iri, label, short_form, obo_id, ontology_name, ontology_prefix, description, type**. |
+| **fieldList** | Specify the fields to return from the API. Set *fieldList=iri,label,short_form,obo_id,ontology_name,ontology_prefix, description,type,synonym* to get full details for each autocomplete term. |
 | **obsoletes** | Set to \`true\` to include obsolete terms in the results. |
 | **local**     | Set to \`true\` to only return terms that are in a defining ontology, e.g., only return matches to gene ontology terms in the gene ontology, and exclude ontologies where those terms are also referenced. |
 | **childrenOf** | Restrict a search to all children of a given term. Supply a list of IRI for the terms that you want to search under (subclassOf/is-a relation only). Example: \`childrenOf\` the Snomed CT term *Myocardial infarction (disorder)* (→ heart attack) results in returning direct subclasses such as *ST elevation myocardial infarction (STEMI)* or sub-subclasses such as *STEMI of anterior wall*. The search term *Coronary artery occlusion* will return, among other things, *Acute myocardial infarction due to left coronary artery occlusion* because it's a child of *Acute myocardial infarction*, which is a child of *Myocardial infarction*. |
@@ -220,20 +218,14 @@ export const hierarchyWrapArgType = {
   hierarchyWrap: {
     required: false,
     description:
-        "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
+      "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
+    table: {
+      defaultValue: {
+        summary: `${HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP}`,
+      },
+      type: { summary: "boolean" },
+    },
   },
-};
-export const targetIriArgType = {
-    targetIri: {
-        required: false,
-        description:
-            "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
-        table: {
-            defaultValue: {
-                summary: HIERARCHY_WIDGET_DEFAULT_VALUES.TARGET_IRI,
-            }
-        }
-    }
 };
 export const hasShortSelectedLabelArgType = {
   hasShortSelectedLabel: {
@@ -841,6 +833,54 @@ export const rootWalkArgType: ArgTypes = {
   },
 };
 
+export const hierarchyArgType: ArgTypes = {
+  rootWalk: {
+    required: false,
+    description:
+      "When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.",
+    table: {
+      defaultValue: { summary: "false" },
+      type: { summary: "boolean" },
+    },
+    control: { type: "boolean" },
+  },
+};
+
+export const targetIriArgType: ArgTypes = {
+  href: {
+    required: false,
+    description:
+      "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
+    table: {
+      type: { summary: `string` },
+    },
+    control: "text",
+  },
+};
+
+export const edgeLabelArgType: ArgTypes = {
+  href: {
+    required: false,
+    description: `The edge label in the graph. Default is "is a". Only for sub-class predicators.`,
+    table: {
+      type: { summary: `string` },
+    },
+    control: "text",
+  },
+};
+
+export const onNodeClickArgType: ArgTypes = {
+  onNavigateTo: {
+    required: false,
+    description:
+      "Callback function for double clicking on a node in graph. The default behaviour is to expand the node.",
+    table: {
+      type: { summary: "void" },
+    },
+    control: "text",
+  },
+};
+
 export const apiKeyArgType = {
   apiKey: {
     required: false,
@@ -917,8 +957,8 @@ If \`preferredRoots==true\`, only the entities specifically marked as preferred 
   },
 };
 export const hierarchyPreferredRootsArgType = {
-  hierarchyPreferredRoots: preferredRootsArgType.preferredRoots
-}
+  hierarchyPreferredRoots: preferredRootsArgType.preferredRoots,
+};
 export const keepExpansionStatesArgType = {
   keepExpansionStates: {
     required: false,
@@ -934,8 +974,8 @@ Otherwise, if a node is closed, only the direct children will be shown on re-exp
   },
 };
 export const hierarchyKeepExpansionStatesArgType = {
-  hierarchyKeepExpansionStates: keepExpansionStatesArgType.keepExpansionStates
-}
+  hierarchyKeepExpansionStates: keepExpansionStatesArgType.keepExpansionStates,
+};
 export const showSiblingsOnInitArgType = {
   showSiblingsOnInit: {
     required: false,
@@ -952,8 +992,8 @@ This option cannot be used alongside the compareHierarchy option and defaults to
   },
 };
 export const hierarchyShowSiblingsOnInitArgType = {
-  hierarchyShowSiblingsOnInit:  showSiblingsOnInitArgType.showSiblingsOnInit
-}
+  hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit,
+};
 export const entityArgType = {
   entity: {
     required: false,

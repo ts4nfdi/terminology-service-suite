@@ -1,23 +1,23 @@
-import { EntityRelationsWidget } from "./EntityRelationsWidget";
-import {
-  EntityRelationsWidgetStoryArgs,
-  EntityRelationsWidgetStoryArgTypes,
-  SubEntityOfArgs,
-  AllValuesFromArgs,
-  DifferentFromArgs,
-  EquivalentToArgs,
-  SingleValueArgs,
-  InverseOfArgs,
-  PropertyChainArgs,
-  InstancesArgs,
-  AxiomsArgs,
-  QualifiedCardinalityArgs,
-  NavigateToEBIPageArgs,
-  commonEntityRelationsWidgetPlay,
-} from "./EntityRelationsWidgetStories";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { EntityRelationsDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { EntityRelationsWidget } from "./EntityRelationsWidget";
+import {
+  AllValuesFromArgs,
+  AxiomsArgs,
+  commonEntityRelationsWidgetPlay,
+  DifferentFromArgs,
+  EntityRelationsWidgetStoryArgs,
+  EntityRelationsWidgetStoryArgTypes,
+  EquivalentToArgs,
+  InstancesArgs,
+  InverseOfArgs,
+  NavigateToEBIPageArgs,
+  PropertyChainArgs,
+  QualifiedCardinalityArgs,
+  SingleValueArgs,
+  SubEntityOfArgs,
+} from "./EntityRelationsWidgetStories";
 
 const meta = {
   title: "Additional Entity Metadata/EntityRelationsWidget",

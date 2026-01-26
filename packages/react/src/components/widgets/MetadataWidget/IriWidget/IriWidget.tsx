@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { EuiFlexItem, EuiLink, EuiProvider, EuiButtonIcon } from "@elastic/eui";
+import { EuiButtonIcon, EuiFlexItem, EuiLink, EuiProvider } from "@elastic/eui";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { IriWidgetProps } from "../../../../app/types";
 import { isHexColor, isRgbColor } from "../../../../app/util";
-import ReactDOM from "react-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
 import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css";
-import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 function IriWidget(props: IriWidgetProps) {
   const {

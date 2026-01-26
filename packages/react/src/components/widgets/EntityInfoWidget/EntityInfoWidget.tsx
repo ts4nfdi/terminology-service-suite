@@ -1,6 +1,5 @@
 "use client";
 
-import React, { ReactElement } from "react";
 import {
   EuiCard,
   EuiFlexItem,
@@ -9,37 +8,35 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { ReactElement } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { EntityInfoWidgetProps } from "../../../app";
 import {
   asArray,
   capitalize,
   deCamelCase,
   deUnderscore,
   getEntityTypeName,
-  randomString,
   getErrorMessageToDisplay,
+  randomString,
 } from "../../../app/util";
 import {
-  getClassExpressionJSX,
-  getEntityLinkJSX,
-  getReifiedJSX,
-  getTooltip,
-} from "../../../model/StructureRendering";
-import {
-  Property,
-  Thing,
   Class,
   Entity,
   Individual,
+  Property,
+  Thing,
 } from "../../../model/interfaces";
 import {
   isClass,
-  isProperty,
   isIndividual,
+  isProperty,
 } from "../../../model/ModelTypeCheck";
-import { EntityInfoWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
-import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import ClassExpression from "../../helperComponents/ClassExpression";
+import EntityLink from "../../helperComponents/EntityLink";
+import RenderedReified from "../../helperComponents/RenderedReified";
+import Tooltip from "../../helperComponents/Tooltip";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -54,11 +51,15 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     parameter,
     showBadges,
     useLegacy,
-    onNavigateToEntity,
-    onNavigateToOntology,
-    onNavigateToDisambiguate,
     ...rest
   } = props;
+
+  const onNavigates = {
+    onNavigateToEntity: props.onNavigateToEntity,
+    onNavigateToOntology: props.onNavigateToOntology,
+    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+  };
+
   const olsApi = new OlsEntityApi(api);
 
   const {
@@ -106,12 +107,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {entity.getSynonyms().map((synonym) => {
                       return (
                         <li key={randomString()} id={synonym.value}>
-                          {getReifiedJSX(entity, synonym, showBadges, {
-                            onNavigateToEntity: props.onNavigateToEntity,
-                            onNavigateToOntology: props.onNavigateToOntology,
-                            onNavigateToDisambiguate:
-                              props.onNavigateToDisambiguate,
-                          })}
+                          <RenderedReified
+                            parentEntity={entity}
+                            reified={synonym}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -120,11 +121,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getReifiedJSX(entity, entity.getSynonyms()[0], showBadges, {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  })}
+                  <RenderedReified
+                    parentEntity={entity}
+                    reified={entity.getSynonyms()[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -148,18 +150,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {keys.map((keys) => {
                       return (
                         <li key={randomString()}>
-                          {getClassExpressionJSX(
-                            term,
-                            term.getLinkedEntities(),
-                            keys,
-                            showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                          <ClassExpression
+                            parentEntity={term}
+                            linkedEntities={term.getLinkedEntities()}
+                            currentResponsePath={keys}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -168,17 +165,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getClassExpressionJSX(
-                    term,
-                    term.getLinkedEntities(),
-                    keys[0],
-                    showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                  <ClassExpression
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    currentResponsePath={keys[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -201,18 +194,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {term.getSubsets().map((subset) => {
                       return (
                         <li key={randomString()} id={subset + randomString()}>
-                          {getEntityLinkJSX(
-                            term,
-                            term.getLinkedEntities(),
-                            subset,
-                            showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                          <EntityLink
+                            parentEntity={term}
+                            linkedEntities={term.getLinkedEntities()}
+                            iri={subset}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -221,17 +209,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getEntityLinkJSX(
-                    term,
-                    term.getLinkedEntities(),
-                    term.getSubsets()[0],
-                    showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                  <EntityLink
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    iri={term.getSubsets()[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -299,18 +283,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     {domains.map((domains) => {
                       return (
                         <li key={randomString()}>
-                          {getClassExpressionJSX(
-                            property,
-                            property.getLinkedEntities(),
-                            domains,
-                            showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                          <ClassExpression
+                            parentEntity={property}
+                            linkedEntities={property.getLinkedEntities()}
+                            currentResponsePath={domains}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -319,17 +298,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </>
               ) : (
                 <p>
-                  {getClassExpressionJSX(
-                    property,
-                    property.getLinkedEntities(),
-                    domains[0],
-                    showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                  <ClassExpression
+                    parentEntity={property}
+                    linkedEntities={property.getLinkedEntities()}
+                    currentResponsePath={domains[0]}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </p>
               )}
             </EuiFlexItem>
@@ -352,18 +327,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   {ranges.map((ranges) => {
                     return (
                       <li key={randomString()}>
-                        {getClassExpressionJSX(
-                          property,
-                          property.getLinkedEntities(),
-                          ranges,
-                          showBadges,
-                          {
-                            onNavigateToEntity: props.onNavigateToEntity,
-                            onNavigateToOntology: props.onNavigateToOntology,
-                            onNavigateToDisambiguate:
-                              props.onNavigateToDisambiguate,
-                          },
-                        )}
+                        <ClassExpression
+                          parentEntity={property}
+                          linkedEntities={property.getLinkedEntities()}
+                          currentResponsePath={ranges}
+                          showBadges={showBadges}
+                          onNavigates={onNavigates}
+                        />
                       </li>
                     );
                   })}
@@ -372,17 +342,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
               </>
             ) : (
               <p>
-                {getClassExpressionJSX(
-                  property,
-                  property.getLinkedEntities(),
-                  ranges[0],
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <ClassExpression
+                  parentEntity={property}
+                  linkedEntities={property.getLinkedEntities()}
+                  currentResponsePath={ranges[0]}
+                  showBadges={showBadges}
+                  onNavigates={onNavigates}
+                />
               </p>
             )}
           </EuiFlexItem>
@@ -421,17 +387,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       for (const v of values) {
         propertyAssertions.push(
           <>
-            {getClassExpressionJSX(
-              individual,
-              individual.getLinkedEntities(),
-              iri,
-              showBadges,
-              {
-                onNavigateToEntity: props.onNavigateToEntity,
-                onNavigateToOntology: props.onNavigateToOntology,
-                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              },
-            )}
+            <ClassExpression
+              parentEntity={individual}
+              linkedEntities={individual.getLinkedEntities()}
+              currentResponsePath={iri}
+              showBadges={showBadges}
+              onNavigates={onNavigates}
+            />
             {typeof v === "string" && v.includes("http") ? (
               <>
                 &nbsp;
@@ -439,26 +401,24 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={onNavigates}
+                />
               </>
             ) : (
-              getTooltip(
-                typeof v === "string"
-                  ? v
-                  : typeof v === "object" && !Array.isArray(v) && v.value
-                    ? JSON.stringify(v.value)
-                    : JSON.stringify(v),
-              )
+              <Tooltip
+                text={
+                  typeof v === "string"
+                    ? v
+                    : typeof v === "object" && !Array.isArray(v) && v.value
+                      ? JSON.stringify(v.value)
+                      : JSON.stringify(v)
+                }
+              />
             )}
           </>,
         );
@@ -470,17 +430,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       for (const v of values) {
         propertyAssertions.push(
           <>
-            {getClassExpressionJSX(
-              individual,
-              individual.getLinkedEntities(),
-              iri,
-              showBadges,
-              {
-                onNavigateToEntity: props.onNavigateToEntity,
-                onNavigateToOntology: props.onNavigateToOntology,
-                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              },
-            )}
+            <ClassExpression
+              parentEntity={individual}
+              linkedEntities={individual.getLinkedEntities()}
+              currentResponsePath={iri}
+              showBadges={showBadges}
+              onNavigates={onNavigates}
+            />
             {
               <>
                 &nbsp;
@@ -488,17 +444,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={onNavigates}
+                />
               </>
             }
           </>,
@@ -518,17 +470,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         propertyAssertions.push(
           <>
             <i style={{ color: "purple" }}>not</i>{" "}
-            {getClassExpressionJSX(
-              individual,
-              individual.getLinkedEntities(),
-              iri,
-              showBadges,
-              {
-                onNavigateToEntity: props.onNavigateToEntity,
-                onNavigateToOntology: props.onNavigateToOntology,
-                onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-              },
-            )}
+            <ClassExpression
+              parentEntity={individual}
+              linkedEntities={individual.getLinkedEntities()}
+              currentResponsePath={iri}
+              showBadges={showBadges}
+              onNavigates={onNavigates}
+            />
             {typeof v === "string" && v.includes("http") ? (
               <>
                 &nbsp;
@@ -536,26 +484,24 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={onNavigates}
+                />
               </>
             ) : hasObjectProperty ? (
-              getTooltip(
-                typeof v === "string"
-                  ? v
-                  : typeof v === "object" && !Array.isArray(v) && v.value
-                    ? JSON.stringify(v.value)
-                    : JSON.stringify(v),
-              )
+              <Tooltip
+                text={
+                  typeof v === "string"
+                    ? v
+                    : typeof v === "object" && !Array.isArray(v) && v.value
+                      ? JSON.stringify(v.value)
+                      : JSON.stringify(v)
+                }
+              />
             ) : hasDataProperty ? (
               <>
                 &nbsp;
@@ -563,17 +509,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                {getEntityLinkJSX(
-                  individual,
-                  individual.getLinkedEntities(),
-                  v,
-                  showBadges,
-                  {
-                    onNavigateToEntity: props.onNavigateToEntity,
-                    onNavigateToOntology: props.onNavigateToOntology,
-                    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                  },
-                )}
+                <EntityLink
+                  parentEntity={individual}
+                  linkedEntities={individual.getLinkedEntities()}
+                  iri={v}
+                  showBadges={showBadges}
+                  onNavigates={onNavigates}
+                />
               </>
             ) : (
               <></>
@@ -634,12 +576,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                            {getReifiedJSX(thing, annotation, showBadges, {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            })}
+                            <RenderedReified
+                              parentEntity={thing}
+                              reified={annotation}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
                           </li>
                         );
                       })}
@@ -648,11 +590,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   </>
                 ) : (
                   <p key={randomString()}>
-                    {getReifiedJSX(thing, annos[0], showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
+                    <RenderedReified
+                      parentEntity={thing}
+                      reified={annos[0]}
+                      showBadges={showBadges}
+                      onNavigates={onNavigates}
+                    />
                   </p>
                 )}
               </EuiFlexItem>

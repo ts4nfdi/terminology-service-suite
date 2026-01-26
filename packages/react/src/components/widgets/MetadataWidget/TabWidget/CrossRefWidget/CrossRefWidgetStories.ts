@@ -1,4 +1,5 @@
-import { entityTypeNames } from "../../../../../model/ModelTypeCheck";
+import { expect, waitFor, within } from "storybook/test";
+import * as globals from "../../../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
@@ -7,8 +8,6 @@ import {
   parameterArgType,
   useLegacyArgType,
 } from "../../../../../stories/storyArgs";
-import * as globals from "../../../../../app/globals";
-import { expect, waitFor, within } from "storybook/test";
 
 export const CrossRefWidgetStoryArgTypes = {
   ...apiArgType,

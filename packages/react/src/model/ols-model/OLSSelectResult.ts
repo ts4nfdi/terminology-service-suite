@@ -69,4 +69,8 @@ export class OLSSelectResult implements SelectResult {
   getApiSourceEndpoint(): string {
     return "";
   }
+
+  getSynonyms(): [] {
+    return this.properties["synonym"];
+  }
 }

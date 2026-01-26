@@ -1,10 +1,14 @@
 import * as globals from "../../../app/globals";
 
+import { action } from "storybook/actions";
+import { expect, waitFor, within } from "storybook/test";
+import { AutocompleteWidgetProps } from "../../../app";
 import {
   allowCustomTermsArgType,
   apiArgType,
   classNameArgType,
   hasShortSelectedLabelArgType,
+  onNavigateToOntologyArgType,
   parameterArgType,
   placeholderArgType,
   preselectedArgType,
@@ -14,9 +18,6 @@ import {
   singleSuggestionRowArgType,
   ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
-import { AutocompleteWidgetProps } from "../../../app";
-import { action } from "storybook/actions";
-import { waitFor, within, expect } from "storybook/test";
 
 export const AutocompleteWidgetStoryArgTypes = {
   ...apiArgType,
@@ -31,6 +32,7 @@ export const AutocompleteWidgetStoryArgTypes = {
   ...singleSuggestionRowArgType,
   ...showApiSourceArgType,
   ...classNameArgType,
+  ...onNavigateToOntologyArgType,
 };
 
 export const AutocompleteWidgetStoryArgsReact = {
@@ -47,8 +49,9 @@ export const AutocompleteWidgetStoryArgsReact = {
   className: "",
   useLegacy: true,
   parameter:
-    "fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
+  onNavigateToOntology: "Console message",
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
@@ -66,8 +69,9 @@ export const AutocompleteWidgetStoryArgsHTML = {
   singleSuggestionRow: false,
   useLegacy: true,
   parameter:
-    "fieldList=description,label,iri,ontology_name,type,short_form",
+    "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
+  onNavigateToOntology: "Console message",
 };
 
 export const WithDefaultsArgs = {};
@@ -118,6 +122,7 @@ export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
     {
       label: "COVID-19",
       iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
+      source: "zbmed",
     },
   ],
   parameter:

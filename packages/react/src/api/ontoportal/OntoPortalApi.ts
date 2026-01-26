@@ -1,17 +1,17 @@
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { EntityData } from "../../app";
+import { pluralizeType } from "../../app/util";
+import {
+  Hierarchy,
+  ParentChildRelation,
+  TreeNode,
+} from "../../model/interfaces/Hierarchy";
 import {
   BuildHierarchyProps,
   HierarchyBuilder,
   HierarchyIriProp,
   LoadHierarchyChildrenProps,
-} from "./HierarchyBuilder";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import {
-  Hierarchy,
-  ParentChildRelation,
-  TreeNode,
-} from "../model/interfaces/Hierarchy";
-import { pluralizeType } from "../app/util";
-import { EntityData } from "../app/types";
+} from "../../model/interfaces/HierarchyBuilder";
 
 type HierarchyNode = {
   prefLabel: string;
@@ -29,7 +29,7 @@ type HierarchyNode = {
   };
 };
 
-function HierarchyNodeToEntityData(hierarchyNode: HierarchyNode): EntityData {
+function hierarchyNodeToEntityData(hierarchyNode: HierarchyNode): EntityData {
   return {
     iri: hierarchyNode["@id"],
     label: hierarchyNode["prefLabel"],
@@ -86,7 +86,7 @@ export class OntoPortalApi implements HierarchyBuilder {
     const onInitialPath: Set<string> = new Set<string>(); // only used if showSiblingsOnInit == false
 
     function buildRelations(currNode: HierarchyNode) {
-      entitiesData.set(currNode["@id"], HierarchyNodeToEntityData(currNode));
+      entitiesData.set(currNode["@id"], hierarchyNodeToEntityData(currNode));
       if (currNode.hasChildren && currNode.children.length > 0) {
         parentChildRelations.set(
           currNode["@id"],
@@ -239,6 +239,6 @@ export class OntoPortalApi implements HierarchyBuilder {
       )
     )["collection"];
 
-    return children.map((child) => HierarchyNodeToEntityData(child));
+    return children.map((child) => hierarchyNodeToEntityData(child));
   }
 }

@@ -1,19 +1,17 @@
 "use client";
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { TermDepictionWidgetProps } from "../../../app/types";
-import { Thing } from "../../../model/interfaces";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import {
+  EuiImage,
   EuiLoadingSpinner,
   EuiProvider,
   EuiText,
-  EuiImage,
 } from "@elastic/eui";
-import { getErrorMessageToDisplay } from "../../../app/util";
 import "@google/model-viewer";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsThingApi } from "../../../api/ols/OlsThingApi";
+import { TermDepictionWidgetProps } from "../../../app/types";
+import { getErrorMessageToDisplay } from "../../../app/util";
+import { Thing } from "../../../model/interfaces";
 
 function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { api, iri, ontologyId, useLegacy } = props;

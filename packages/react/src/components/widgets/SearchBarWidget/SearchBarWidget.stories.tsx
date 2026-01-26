@@ -1,14 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { SearchBarDescription } from "../../../app/widgetDescriptions";
 import { SearchBarWidget } from "./SearchBarWidget";
 import {
+  commonSearchBartWidgetPlay,
+  SearchBarWidgetDefaultArgs,
   SearchBarWidgetStoryArgsReact,
   SearchBarWidgetStoryArgTypes,
-  SearchBarWidgetDefaultArgs,
-  TibNFDI4CHEMArgs,
   TibDataPlantArgs,
-  commonSearchBartWidgetPlay,
+  TibNFDI4CHEMArgs,
 } from "./SearchBarWidgetStories";
-import { SearchBarDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Search/SearchBarWidget",

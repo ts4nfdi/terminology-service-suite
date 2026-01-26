@@ -6,6 +6,7 @@ module.exports = {
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook-community/storybook-addon-matomo"),
   ],
 
   framework: {

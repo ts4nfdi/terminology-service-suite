@@ -1,19 +1,19 @@
-import { BreadcrumbWidget } from "./BreadcrumbWidget";
-import {
-  BreadcrumbWidgetStoryArgs,
-  BreadcrumbWidgetStoryArgTypes,
-  BreadcrumbWidgetDefaultArgs,
-  SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs,
-  ErrorBreadcrumbWidgetArgs,
-  CustomColorsArgs,
-  CustomStyleArgs,
-  commonBreadcrumbWidgetPlay,
-  EntityInputArgs,
-} from "./BreadcrumbWidgetStories";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../../app/util";
 import { BreadcrumbDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BreadcrumbWidget } from "./BreadcrumbWidget";
+import {
+  BreadcrumbWidgetDefaultArgs,
+  BreadcrumbWidgetStoryArgs,
+  BreadcrumbWidgetStoryArgTypes,
+  commonBreadcrumbWidgetPlay,
+  CustomColorsArgs,
+  CustomStyleArgs,
+  DefiningOntologyUnavailableArgs,
+  EntityInputArgs,
+  ErrorBreadcrumbWidgetArgs,
+  SelectingDefiningOntologyArgs,
+} from "./BreadcrumbWidgetStories";
 
 const meta = {
   title: "Additional Entity Metadata/BreadcrumbWidget",

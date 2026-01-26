@@ -1,19 +1,25 @@
-import {
-  GraphViewWidgetStoryArgTypes,
-  GraphViewWidgetStoryArgs,
-  GraphViewWidgetExampleArgs,
-  commonGraphViewWidgetPlay,
-  RootWalkGraphExampleArgs,
-  ChebiWaterArgs,
-  ChebiWaterRootWalkArgs,
-} from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
-import "./index";
-import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   GraphViewWidget,
   GraphViewWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GraphViewDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import {
+  ChebiCaffeineHierarchyArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs,
+  ChebiIonArgs,
+  ChebiIonComparisonArgs,
+  ChebiIonRootWalkArgs,
+  ChebiWaterArgs,
+  ChebiWaterRootWalkArgs,
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+  GraphWithGermanLabelArgs,
+  WithOnNodeDoubleClickCallbackArgs,
+  commonGraphViewWidgetPlay,
+} from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
+import "./index";
 
 let counter = 0;
 
@@ -46,7 +52,12 @@ window['ts4nfdiWidgets'].createGraphView(
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
-        className:${args.className}
+        className:${args.className},
+        hierarchy: ${args.hierarchy},
+        targetIri: "${args.targetIri}",
+        onNodeClick: ${args.onNodeClick},
+        edgeLabel: ${args.edgeLabel},
+        parameter: "${args.parameter}",
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
@@ -61,13 +72,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const GraphViewWidgetExample: Story = {
-  args: GraphViewWidgetExampleArgs,
+export const ChebiIon: Story = {
+  args: ChebiIonArgs,
   play: commonGraphViewWidgetPlay,
 };
 
-export const RootWalkGraphExample: Story = {
-  args: RootWalkGraphExampleArgs,
+export const ChebiIonComparison: Story = {
+  args: ChebiIonComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+export const ChebiIonRootWalk: Story = {
+  args: ChebiIonRootWalkArgs,
   parameters: {
     docs: {
       disable: true,
@@ -88,6 +108,56 @@ export const ChebiWater: Story = {
 
 export const ChebiWaterRootWalk: Story = {
   args: ChebiWaterRootWalkArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchy: Story = {
+  args: ChebiCaffeineHierarchyArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const WithOnNodeDoubleClickCallback: Story = {
+  args: WithOnNodeDoubleClickCallbackArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiCaffeineHierarchyWithComparison: Story = {
+  args: ChebiCaffeineHierarchyWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiIonAndIonRadicalWithComparison: Story = {
+  args: ChebiIonAndIonRadicalWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLable: Story = {
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,

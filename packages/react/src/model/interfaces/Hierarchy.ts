@@ -1,7 +1,7 @@
-import { EntityTypeName } from "../ModelTypeCheck";
-import { HierarchyBuilder } from "../../api/HierarchyBuilder";
-import { EntityData } from "../../app";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../api/ols/OlsHierarchyApi";
+import { EntityData } from "../../app";
+import { EntityTypeName } from "../ModelTypeCheck";
+import { HierarchyBuilder } from "./HierarchyBuilder";
 
 export type ParentChildRelation = {
   childIri: string;

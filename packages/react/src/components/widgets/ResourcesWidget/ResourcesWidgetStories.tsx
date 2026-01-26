@@ -1,19 +1,18 @@
-import { OlsResource } from "../../../app/types";
 import { EuiButton, EuiButtonIcon } from "@elastic/eui";
-import React from "react";
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
+import { OlsResource } from "../../../app/types";
 import {
   actionsArgType,
   apiArgType,
   initialEntriesPerPageArgType,
   initialSortDirArgType,
   initialSortFieldArgType,
+  onNavigateArgType,
   pageSizeOptionsArgType,
   parameterArgType,
-  onNavigateArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const ResourcesWidgetStoryArgTypes = {
   ...apiArgType,
@@ -49,44 +48,38 @@ export const ResourcesWidget1Args = {
   parameter: "collection=nfdi4health",
 };
 
-export const WithActionsArgs = {
-  actions: [
-    // TODO Allow usage of react-router links
-    {
-      render: (item: OlsResource) => (
-        <EuiButtonIcon
-          href="" // TODO Add working link
-          iconType="search"
-          aria-label="Search"
-        />
-      ),
-    },
-    {
-      render: (item: OlsResource) => (
-        <EuiButton href="" size="s">
-          Show terms
-        </EuiButton> // TODO Add working link
-      ),
-    },
-    {
-      render: (item: OlsResource) => (
-        <EuiButton href="" size="s">
-          Show properties
-        </EuiButton> // TODO Add working link
-      ),
-    },
-    {
-      render: (item: OlsResource) => (
-        <EuiButton href="" size="s">
-          Show individuals
-        </EuiButton> // TODO Add working link
-      ),
-    },
-  ],
-};
+const actions = [
+  {
+    render: (item: OlsResource) => (
+      <EuiButtonIcon href="" iconType="search" aria-label="Search" />
+    ),
+  },
+  {
+    render: (item: OlsResource) => (
+      <EuiButton href="" size="s">
+        Show terms
+      </EuiButton>
+    ),
+  },
+  {
+    render: (item: OlsResource) => (
+      <EuiButton href="" size="s">
+        Show properties
+      </EuiButton>
+    ),
+  },
+  {
+    render: (item: OlsResource) => (
+      <EuiButton href="" size="s">
+        Show individuals
+      </EuiButton>
+    ),
+  },
+];
 
-export const WithActionsAndSafetyArgs = {
-  parameter: "collection=safety",
+export const WithActionsArgs = {
+  ...ResourcesWidget1Args,
+  actions: actions,
 };
 
 export const ResourcesWidgetLogosArgs = {

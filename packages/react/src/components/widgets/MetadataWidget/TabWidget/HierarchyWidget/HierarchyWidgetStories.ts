@@ -1,23 +1,25 @@
-import * as globals from "../../../../../app/globals";
-import {
-    apiKeyArgType,
-    apiUrlArgType,
-    backendArgType, targetIriArgType,
-    entityTypeArgTypeHierarchy, hierarchyWrapArgType,
-    includeObsoleteEntitiesArgType,
-    iriArgTypeHierarchy,
-    keepExpansionStatesArgType,
-    onNavigateToEntityArgType,
-    onNavigateToOntologyArgType,
-    ontologyIdArgTypeHierarchy,
-    parameterArgTypeHierarchy,
-    preferredRootsArgType,
-    showSiblingsOnInitArgType,
-    useLegacyArgTypeHierarchy
-} from "../../../../../stories/storyArgs";
-import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../../../api/ols/OlsHierarchyApi";
 import { expect, waitFor, within } from "storybook/test";
-import {EntityTypeName} from "../../../../../model/ModelTypeCheck";
+import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../../../api/ols/OlsHierarchyApi";
+import * as globals from "../../../../../app/globals";
+import { EntityTypeName } from "../../../../../model/ModelTypeCheck";
+import {
+  apiKeyArgType,
+  apiUrlArgType,
+  backendArgType,
+  entityTypeArgTypeHierarchy,
+  hierarchyWrapArgType,
+  includeObsoleteEntitiesArgType,
+  iriArgTypeHierarchy,
+  keepExpansionStatesArgType,
+  onNavigateToEntityArgType,
+  onNavigateToOntologyArgType,
+  ontologyIdArgTypeHierarchy,
+  parameterArgTypeHierarchy,
+  preferredRootsArgType,
+  showSiblingsOnInitArgType,
+  targetIriArgType,
+  useLegacyArgTypeHierarchy,
+} from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
   ...apiUrlArgType,
@@ -35,7 +37,7 @@ export const HierarchyWidgetStoryArgTypes = {
   ...useLegacyArgTypeHierarchy,
   ...parameterArgTypeHierarchy,
   ...hierarchyWrapArgType,
-  ...targetIriArgType
+  ...targetIriArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -57,7 +59,8 @@ export const HierarchyWidgetStoryArgs = {
   parameter: "",
   targetIri: "",
   showHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER,
-  showComparisonTitleInHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER
+  showComparisonTitleInHeader:
+    HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER,
 } as const;
 
 export const ClassHierarchyArgs = {
@@ -185,24 +188,24 @@ export const SkosmosAgrovocGermanArgs = {
 } as const;
 
 export const CompareHierarchiesArgs = {
-    ...HierarchyWidgetStoryArgs,
-    apiUrl: globals.EBI_API_ENDPOINT,
-    backendType: "ols",
-    iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
-    targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
-    entityType: "class" as EntityTypeName,
-    ontologyId: "chebi",
-}
+  ...HierarchyWidgetStoryArgs,
+  apiUrl: globals.EBI_API_ENDPOINT,
+  backendType: "ols",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
+  entityType: "class" as EntityTypeName,
+  ontologyId: "chebi",
+};
 
 export const CompareHierarchiesSubEntityArgs = {
-    ...HierarchyWidgetStoryArgs,
-    apiUrl: globals.EBI_API_ENDPOINT,
-    backendType: "ols",
-    iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-    targetIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
-    entityType: "class" as EntityTypeName,
-    ontologyId: "efo",
-}
+  ...HierarchyWidgetStoryArgs,
+  apiUrl: globals.EBI_API_ENDPOINT,
+  backendType: "ols",
+  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  targetIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
+  entityType: "class" as EntityTypeName,
+  ontologyId: "efo",
+};
 
 export const commonHierarchyWidgetPlay = async ({
   canvasElement,

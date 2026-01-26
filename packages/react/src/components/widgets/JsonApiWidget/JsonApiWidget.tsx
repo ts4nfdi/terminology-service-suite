@@ -1,10 +1,8 @@
 "use client";
 
-import React from "react";
 import { EuiButton, EuiProvider } from "@elastic/eui";
-import { JsonApiWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { JsonApiWidgetProps } from "../../../app/types";
 
 function JsonApiWidget(props: JsonApiWidgetProps) {
   const { apiQuery, buttonText, buttonSize } = props;
