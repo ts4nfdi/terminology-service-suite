@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useReducer } from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import {
     EuiLoadingSpinner,
     EuiText,
@@ -44,6 +44,19 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     parameter,
   } = props;
   const finalClassName = className || "ts4nfdi-hierarchy-style";
+  const [finalIri, setFinalIri] = useState(iri);
+  const [finalTargetIri, setFinalTargetIri] = useState(targetIri);
+
+  // prevents unwanted effects if iri is not set
+  useEffect(() => {
+    if (!iri && targetIri) {
+      setFinalIri(targetIri);
+      setFinalTargetIri(undefined);
+    } else {
+      setFinalIri(iri);
+      setFinalTargetIri(targetIri);
+    }
+  }, [iri, targetIri]);
 
     // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
     function TreeLink(props: {
@@ -169,7 +182,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   const { data: hierarchy, isSuccess: isSuccessHierarchy } = useQuery(
     [
       "hierarchySemLookP",
-      iri,
+      finalIri,
       entityType,
       ontologyId,
       preferredRoots,
@@ -178,15 +191,15 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       showSiblingsOnInit,
       useLegacy,
       parameter,
-      targetIri,
+      finalTargetIri,
       resetToggle
     ],
     async function getNewHierarchy() {
-      if (targetIri) {
+      if (finalTargetIri && finalIri) {
           return compareHierarchies(
               await api.buildHierarchyWithIri({
                   ontologyId: ontologyId,
-                  iri: iri,
+                  iri: finalIri,
                   entityType: entityType,
                   preferredRoots: preferredRoots,
                   includeObsoleteEntities: includeObsoleteEntities,
@@ -197,7 +210,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
               }),
               await api.buildHierarchyWithIri({
                   ontologyId: ontologyId,
-                  iri: targetIri,
+                  iri: finalTargetIri,
                   entityType: entityType,
                   preferredRoots: preferredRoots,
                   includeObsoleteEntities: includeObsoleteEntities,
@@ -211,7 +224,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       else {
           return await api.buildHierarchyWithIri({
               ontologyId: ontologyId,
-              iri: iri,
+              iri: finalIri,
               entityType: entityType,
               preferredRoots: preferredRoots,
               includeObsoleteEntities: includeObsoleteEntities,
@@ -306,8 +319,8 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 ? onNavigateToOntology
                 : () => {}
             }
-            highlightColor={node.entityData.iri == iri          ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A
-                            : node.entityData.iri == targetIri ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B
+            highlightColor={node.entityData.iri == finalIri          ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A
+                            : node.entityData.iri == finalTargetIri ? HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B
                             : ""}
           />
         </div>
@@ -352,12 +365,12 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                   >
                       <span style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                           <span>
-                              { iri && targetIri && showComparisonTitleInHeader &&
+                              { finalIri && finalTargetIri && showComparisonTitleInHeader &&
                                   <EuiTitle size={"s"} >
-                                      <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(iri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(targetIri)?.label || targetIri}</i></h2>
+                                      <h2 style={{ maxWidth: '350px', whiteSpace: 'normal', wordBreak: "break-word" }}>Comparison of <i>{hierarchy.entitiesData.get(finalIri)?.label || iri}</i> and <i>{hierarchy.entitiesData.get(finalTargetIri)?.label || finalTargetIri}</i></h2>
                                   </EuiTitle>
                               }
-                              {iri && targetIri &&
+                              {finalIri && finalTargetIri &&
                                   <span>
                                       <EuiSpacer size="s" />
                                       <EuiAccordion buttonContent={legendToggle ? "Hide Legend" : "Show Legend"} id={""} onToggle={(isOpen) => setLegendToggle(isOpen)}>
@@ -367,11 +380,11 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                                           </EuiHealth>
                                           <br/>
                                           <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A}>
-                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(iri)?.label || iri}{'"'}
+                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(finalIri)?.label || finalIri}{'"'}
                                           </EuiHealth>
                                           <br/>
                                           <EuiHealth color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}>
-                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(targetIri)?.label || targetIri}{'"'}
+                                              Subtree exclusive to {'"'}{hierarchy.entitiesData.get(finalTargetIri)?.label || finalTargetIri}{'"'}
                                           </EuiHealth>
                                           <br/>
                                           <EuiHealth>
