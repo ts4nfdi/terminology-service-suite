@@ -5,6 +5,8 @@ import { HierarchyWidget } from "./HierarchyWidget";
 import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
+  CompareHierarchiesArgs,
+  CompareHierarchiesSubEntityArgs,
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
   IncludeObsoleteEntitiesArgs,
@@ -105,5 +107,15 @@ export const OLSGerman: Story = {
 
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchies: Story = {
+  args: CompareHierarchiesArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesSubEntity: Story = {
+  args: CompareHierarchiesSubEntityArgs,
   play: commonHierarchyWidgetPlay,
 };

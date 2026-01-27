@@ -1,6 +1,7 @@
 import { expect, waitFor, within } from "storybook/test";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../../../../api/ols/OlsHierarchyApi";
 import * as globals from "../../../../../app/globals";
+import { EntityTypeName } from "../../../../../model/ModelTypeCheck";
 import {
   apiKeyArgType,
   apiUrlArgType,
@@ -15,7 +16,10 @@ import {
   ontologyIdArgTypeHierarchy,
   parameterArgTypeHierarchy,
   preferredRootsArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
   showSiblingsOnInitArgType,
+  targetIriArgType,
   useLegacyArgTypeHierarchy,
 } from "../../../../../stories/storyArgs";
 
@@ -35,6 +39,9 @@ export const HierarchyWidgetStoryArgTypes = {
   ...useLegacyArgTypeHierarchy,
   ...parameterArgTypeHierarchy,
   ...hierarchyWrapArgType,
+  ...targetIriArgType,
+  ...showComparisonTitleInHeaderArgType,
+  ...showHeaderArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -54,6 +61,10 @@ export const HierarchyWidgetStoryArgs = {
   useLegacy: HIERARCHY_WIDGET_DEFAULT_VALUES.USE_LEGACY,
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
+  targetIri: "",
+  showHeader: HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_HEADER,
+  showComparisonTitleInHeader:
+    HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER,
 } as const;
 
 export const ClassHierarchyArgs = {
@@ -179,6 +190,26 @@ export const SkosmosAgrovocGermanArgs = {
   ontologyId: "agrovoc",
   parameter: "lang=de",
 } as const;
+
+export const CompareHierarchiesArgs = {
+  ...HierarchyWidgetStoryArgs,
+  apiUrl: globals.EBI_API_ENDPOINT,
+  backendType: "ols",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
+  entityType: "class" as EntityTypeName,
+  ontologyId: "chebi",
+};
+
+export const CompareHierarchiesSubEntityArgs = {
+  ...HierarchyWidgetStoryArgs,
+  apiUrl: globals.EBI_API_ENDPOINT,
+  backendType: "ols",
+  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  targetIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
+  entityType: "class" as EntityTypeName,
+  ontologyId: "efo",
+};
 
 export const commonHierarchyWidgetPlay = async ({
   canvasElement,

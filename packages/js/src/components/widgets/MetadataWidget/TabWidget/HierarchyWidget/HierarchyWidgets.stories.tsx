@@ -7,6 +7,8 @@ import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app
 import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
+  CompareHierarchiesArgs,
+  CompareHierarchiesSubEntityArgs,
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
   IncludeObsoleteEntitiesArgs,
@@ -66,6 +68,9 @@ window['ts4nfdiWidgets'].createHierarchy(
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         hierarchyWrap:${args.hierarchyWrap},
+        showHeader:${args.showHeader},
+        showComparisonTitleInHeader:${args.showComparisonTitleInHeader},
+        targetIri:"${args.targetIri}",
         className:"${args.className}",
         parameter:"${args.parameter}"
     },
@@ -144,5 +149,15 @@ export const OLSGerman: Story = {
 
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchies: Story = {
+  args: CompareHierarchiesArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesSubEntity: Story = {
+  args: CompareHierarchiesSubEntityArgs,
   play: commonHierarchyWidgetPlay,
 };

@@ -850,11 +850,38 @@ export const targetIriArgType: ArgTypes = {
   href: {
     required: false,
     description:
-      "The target iri. used in the hierarchy mode to compare two terms in one graph.",
+      "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
     table: {
       type: { summary: `string` },
     },
     control: "text",
+  },
+};
+
+export const showHeaderArgType: ArgTypes = {
+  showHeader: {
+    required: false,
+    description: "If enabled, a header is shown.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
+
+export const showComparisonTitleInHeaderArgType: ArgTypes = {
+  showComparisonTitleInHeader: {
+    required: false,
+    description:
+      "If enabled, a comparison title in the header is shown for the comparison mode.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
   },
 };
 
@@ -981,7 +1008,8 @@ export const showSiblingsOnInitArgType = {
     required: false,
     description: `
 If false, only the entity with specified iri and its ancestors are displayed in a hierarchy.
-If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API).
+If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API). 
+This option cannot be used alongside the compareHierarchy option and defaults to false in these cases.
     `,
     table: {
       defaultValue: {
