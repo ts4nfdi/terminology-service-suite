@@ -1,5 +1,5 @@
-import { SearchResultsListWidget } from './SearchResultsListWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { SearchResultsListWidget } from './SearchResultsListWidget';
 declare const meta: {
     title: string;
     component: typeof SearchResultsListWidget;

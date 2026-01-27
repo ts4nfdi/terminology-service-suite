@@ -1,5 +1,5 @@
-import { GraphViewWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { GraphViewWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<GraphViewWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

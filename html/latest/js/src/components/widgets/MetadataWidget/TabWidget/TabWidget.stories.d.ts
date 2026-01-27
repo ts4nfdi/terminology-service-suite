@@ -1,5 +1,5 @@
-import { TabWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { TabWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<TabWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

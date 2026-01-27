@@ -1,3 +1,4 @@
+import { StoryObj } from '@storybook/react-vite';
 import { TermDepictionWidget } from './TermDepictionWidget';
 declare const meta: {
     title: string;
@@ -21,25 +22,6 @@ declare const meta: {
     };
 };
 export default meta;
-export declare const TermDepictionWidgetExample: {
-    args: {
-        api: string;
-        iri: string;
-        ontologyId: string;
-        useLegacy: boolean;
-    };
-    play: ({ canvasElement, }: {
-        canvasElement: HTMLElement;
-    }) => Promise<void>;
-};
-export declare const TermDepictionWidget3D: {
-    args: {
-        api: string;
-        iri: string;
-        ontologyId: string;
-        useLegacy: boolean;
-    };
-    play: ({ canvasElement, }: {
-        canvasElement: HTMLElement;
-    }) => Promise<void>;
-};
+type Story = StoryObj<typeof meta>;
+export declare const TermDepictionWidgetExample: Story;
+export declare const TermDepictionWidget3D: Story;

@@ -1,6 +1,6 @@
-import { BreadcrumbWidget } from './BreadcrumbWidget';
-import { manuallyEmbedOnNavigate } from '../../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../../app/util';
+import { BreadcrumbWidget } from './BreadcrumbWidget';
 declare const meta: {
     title: string;
     component: typeof BreadcrumbWidget;

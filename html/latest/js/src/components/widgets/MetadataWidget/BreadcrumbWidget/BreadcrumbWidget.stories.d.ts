@@ -1,5 +1,5 @@
-import { BreadcrumbWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { BreadcrumbWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<BreadcrumbWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

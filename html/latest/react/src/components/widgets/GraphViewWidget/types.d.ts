@@ -1,5 +1,5 @@
-import { JSTreeNode } from '../../../utils/olsApiTypes';
 import { OlsGraphNode } from '../../../app';
+import { JSTreeNode } from '../../../utils/olsApiTypes';
 export type GraphFetchData = {
     treeData: JSTreeNode[];
     termRelations?: VisGraphData;

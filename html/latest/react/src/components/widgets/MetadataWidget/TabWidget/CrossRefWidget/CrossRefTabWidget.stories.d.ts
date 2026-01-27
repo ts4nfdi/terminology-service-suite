@@ -1,5 +1,5 @@
-import { CrossRefTabWidget } from './CrossRefTabWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { CrossRefTabWidget } from './CrossRefTabWidget';
 declare const meta: {
     title: string;
     component: typeof CrossRefTabWidget;

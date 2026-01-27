@@ -1,5 +1,5 @@
-import { EntityRelationsWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { EntityRelationsWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<EntityRelationsWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

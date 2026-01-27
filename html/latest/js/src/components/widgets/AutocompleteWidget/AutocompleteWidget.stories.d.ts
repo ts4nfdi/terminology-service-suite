@@ -1,5 +1,5 @@
-import { AutocompleteWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { StoryObj } from '@storybook/react-vite';
+import { AutocompleteWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: {
     title: string;
     tags: string[];

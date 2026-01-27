@@ -1,5 +1,5 @@
-import { SearchBarWidgetProps } from '@ts4nfdi/terminology-service-suite/src/app/types';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { SearchBarWidgetProps } from '@ts4nfdi/terminology-service-suite/src/app/types';
 declare const meta: Meta<SearchBarWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

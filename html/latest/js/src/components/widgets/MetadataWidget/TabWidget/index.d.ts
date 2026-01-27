@@ -1,5 +1,5 @@
-import { createTab } from './TabWidget';
-import { createHierarchy } from './HierarchyWidget';
-import { createCrossRefTab } from './CrossRefWidget';
 import { createAlternativeNameTab } from './AlternativeNameTabWidget';
-export { createTab, createHierarchy, createCrossRefTab, createAlternativeNameTab, };
+import { createCrossRefTab } from './CrossRefWidget';
+import { createHierarchy } from './HierarchyWidget';
+import { createTab } from './TabWidget';
+export { createAlternativeNameTab, createCrossRefTab, createHierarchy, createTab, };

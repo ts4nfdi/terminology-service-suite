@@ -1,6 +1,6 @@
 import { ReactElement } from '../../../../../../node_modules/react';
-import { Thing } from '../../../model/interfaces';
 import { EntityRelationsWidgetProps, OnNavigates } from '../../../app';
+import { Thing } from '../../../model/interfaces';
 /**
  * Builds and returns an array of section list elements specified at `currentResponsePath`
  * @param parentEntity

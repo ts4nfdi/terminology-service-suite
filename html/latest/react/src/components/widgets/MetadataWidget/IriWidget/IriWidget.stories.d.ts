@@ -1,5 +1,5 @@
-import { IriWidget } from './IriWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { IriWidget } from './IriWidget';
 declare const meta: {
     title: string;
     component: typeof IriWidget;

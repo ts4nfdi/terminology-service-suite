@@ -1,5 +1,5 @@
-import { DataContentWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { DataContentWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<DataContentWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

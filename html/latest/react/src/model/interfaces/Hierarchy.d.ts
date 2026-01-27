@@ -1,6 +1,6 @@
+import { EntityData } from '../../app';
 import { EntityTypeName } from '../ModelTypeCheck';
 import { HierarchyBuilder } from './HierarchyBuilder';
-import { EntityData } from '../../app';
 export type ParentChildRelation = {
     childIri: string;
     childRelationToParent?: string;
@@ -23,13 +23,13 @@ export declare class Hierarchy {
     entitiesData: Map<string, EntityData>;
     allChildrenPresent: Set<string>;
     roots: TreeNode[];
-    protected api: HierarchyBuilder;
+    api: HierarchyBuilder;
     ontologyId: string;
     includeObsoleteEntities: boolean;
     entityType?: EntityTypeName;
     keepExpansionStates: boolean;
-    protected useLegacy?: boolean;
-    protected parameter?: string;
+    useLegacy?: boolean;
+    parameter?: string;
     mainEntityIri?: string;
     constructor(props: {
         parentChildRelations: Map<string, ParentChildRelation[]>;
@@ -62,4 +62,6 @@ export declare class Hierarchy {
      * @return boolean `true` if information had to be fetched, `false` otherwise
      */
     fetchInformationForExpansion(nodeToExpand: TreeNode): Promise<boolean>;
+    colorEntity(node: TreeNode, color?: string): void;
 }
+export declare function compareHierarchies(hierarchyA: Hierarchy, hierarchyB: Hierarchy): Hierarchy;

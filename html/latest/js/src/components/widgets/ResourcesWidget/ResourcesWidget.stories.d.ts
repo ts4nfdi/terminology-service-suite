@@ -1,5 +1,5 @@
-import { ResourcesWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta } from '@storybook/react-vite';
+import { ResourcesWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<ResourcesWidgetProps>;
 export default meta;
 export declare const ResourcesWidget1: {

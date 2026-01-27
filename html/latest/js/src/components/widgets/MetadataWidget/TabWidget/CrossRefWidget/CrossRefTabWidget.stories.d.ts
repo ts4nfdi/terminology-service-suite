@@ -1,5 +1,5 @@
-import { CrossRefWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { CrossRefWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<CrossRefWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;

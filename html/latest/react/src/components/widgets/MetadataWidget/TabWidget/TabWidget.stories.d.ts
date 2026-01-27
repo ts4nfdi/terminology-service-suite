@@ -1,5 +1,5 @@
-import { TabWidget } from './TabWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { TabWidget } from './TabWidget';
 declare const meta: {
     title: string;
     component: typeof TabWidget;

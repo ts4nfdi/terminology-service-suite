@@ -1,6 +1,6 @@
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { ThingTypeName } from '../../model/ModelTypeCheck';
 import { Thing } from '../../model/interfaces';
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
 export declare class OlsThingApi {
     protected axiosInstance: AxiosInstance;
     private entityService;

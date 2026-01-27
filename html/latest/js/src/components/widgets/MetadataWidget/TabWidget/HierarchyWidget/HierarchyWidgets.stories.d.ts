@@ -1,5 +1,5 @@
-import { HierarchyWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { HierarchyWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<HierarchyWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -16,3 +16,5 @@ export declare const OntoportalHierarchy: Story;
 export declare const OLS3Hierarchy: Story;
 export declare const OLSGerman: Story;
 export declare const SkosmosAgrovocGerman: Story;
+export declare const CompareHierarchies: Story;
+export declare const CompareHierarchiesSubEntity: Story;

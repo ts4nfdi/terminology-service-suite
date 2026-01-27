@@ -1,5 +1,5 @@
-import { TitleWidget } from './TitleWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { TitleWidget } from './TitleWidget';
 declare const meta: {
     title: string;
     component: typeof TitleWidget;

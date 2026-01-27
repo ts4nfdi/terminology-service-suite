@@ -1,0 +1,1 @@
+import{c as s,j as d}from"./client-hNkKQuBU.js";import{W as i}from"./BreadcrumbWidget-IDimH7uT.js";const r=new WeakMap;function a(o,e){let t=r.get(e);t||(t=s.createRoot(e),r.set(e,t)),t.render(d.jsx(i,{...o}))}window.ts4nfdiWidgets={...window.ts4nfdiWidgets,createBreadcrumb:a};export{a as c};

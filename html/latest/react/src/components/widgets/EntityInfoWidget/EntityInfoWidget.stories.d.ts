@@ -1,5 +1,5 @@
-import { EntityInfoWidget } from './EntityInfoWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { EntityInfoWidget } from './EntityInfoWidget';
 declare const meta: {
     title: string;
     tags: string[];

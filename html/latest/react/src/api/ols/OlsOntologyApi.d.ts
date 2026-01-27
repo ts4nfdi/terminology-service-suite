@@ -1,6 +1,6 @@
-import { OlsBaseApi } from './OlsBaseApi';
-import { apiCallFn } from '../../utils/olsApiTypes';
 import { Ontologies, Ontology } from '../../model/interfaces';
+import { apiCallFn } from '../../utils/olsApiTypes';
+import { OlsBaseApi } from './OlsBaseApi';
 export declare class OlsOntologyApi extends OlsBaseApi {
     getOntologies: apiCallFn;
     /**

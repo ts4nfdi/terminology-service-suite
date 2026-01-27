@@ -1,5 +1,5 @@
-import { JsonApiWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 import { Meta } from '@storybook/react-vite';
+import { JsonApiWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<JsonApiWidgetProps>;
 export default meta;
 export declare const JsonApiWidgetDefault: {

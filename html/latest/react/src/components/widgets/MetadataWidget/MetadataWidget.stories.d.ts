@@ -1,6 +1,6 @@
-import { MetadataWidget } from './MetadataWidget';
-import { manuallyEmbedOnNavigate } from '../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../app/util';
+import { MetadataWidget } from './MetadataWidget';
 declare const meta: {
     title: string;
     component: typeof MetadataWidget;

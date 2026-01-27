@@ -1,6 +1,6 @@
-import { EntityOntoListWidget } from './EntityOntoListWidget';
-import { manuallyEmbedOnNavigate } from '../../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../../app/util';
+import { EntityOntoListWidget } from './EntityOntoListWidget';
 declare const meta: {
     title: string;
     component: typeof EntityOntoListWidget;
