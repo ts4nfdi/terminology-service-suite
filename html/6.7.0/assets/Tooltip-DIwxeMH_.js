@@ -1,0 +1,1 @@
+import{j as o}from"./client-hNkKQuBU.js";import{E as t}from"./icon_tip-4Wg2s-aI.js";function n({text:i}){return o.jsx(t,{css:{maxWidth:"580px",backgroundColor:"rgba(0,0,0,0.8)",font:"menu"},type:"iInCircle",color:"subdued",position:"right",content:o.jsx("div",{style:{whiteSpace:"pre-line"},children:i})})}export{n as T};

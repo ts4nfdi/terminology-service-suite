@@ -1,0 +1,1 @@
+export { ResourcesWidget } from './ResourcesWidget';
