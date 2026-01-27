@@ -16,6 +16,8 @@ import {
   ontologyIdArgTypeHierarchy,
   parameterArgTypeHierarchy,
   preferredRootsArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
   showSiblingsOnInitArgType,
   targetIriArgType,
   useLegacyArgTypeHierarchy,
@@ -38,6 +40,8 @@ export const HierarchyWidgetStoryArgTypes = {
   ...parameterArgTypeHierarchy,
   ...hierarchyWrapArgType,
   ...targetIriArgType,
+  ...showComparisonTitleInHeaderArgType,
+  ...showHeaderArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {

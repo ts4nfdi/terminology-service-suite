@@ -858,6 +858,33 @@ export const targetIriArgType: ArgTypes = {
   },
 };
 
+export const showHeaderArgType: ArgTypes = {
+  showHeader: {
+    required: false,
+    description: "If enabled, a header is shown.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
+
+export const showComparisonTitleInHeaderArgType: ArgTypes = {
+  showComparisonTitleInHeader: {
+    required: false,
+    description:
+      "If enabled, a comparison title in the header is shown for the comparison mode.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
+
 export const edgeLabelArgType: ArgTypes = {
   href: {
     required: false,
