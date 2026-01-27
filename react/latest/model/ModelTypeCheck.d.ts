@@ -1,4 +1,4 @@
-import { Thing, Entity, Class, Property, Individual, Ontology } from './interfaces';
+import { Class, Entity, Individual, Ontology, Property, Thing } from './interfaces';
 export declare const classTypeNames: readonly ["class", "term"];
 export declare const propertyTypeNames: readonly ["property", "annotationProperty", "dataProperty", "objectProperty"];
 export declare const individualTypeNames: readonly ["individual"];

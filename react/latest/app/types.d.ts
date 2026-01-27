@@ -1,11 +1,11 @@
-import { EuiComboBoxProps } from '@elastic/eui/src/components/combo_box/combo_box';
-import { EntityTypeName, ThingTypeName } from '../model/ModelTypeCheck';
-import { EuiTextProps } from '@elastic/eui/src/components/text/text';
-import { Action } from '@elastic/eui/src/components/basic_table/action_types';
 import { EuiCardProps } from '@elastic/eui';
+import { Action } from '@elastic/eui/src/components/basic_table/action_types';
+import { EuiComboBoxProps } from '@elastic/eui/src/components/combo_box/combo_box';
 import { EuiLinkColor } from '@elastic/eui/src/components/link/link';
+import { EuiTextProps } from '@elastic/eui/src/components/text/text';
 import { Thing } from '../model/interfaces';
 import { BuildHierarchyProps, HierarchyIriProp } from '../model/interfaces/HierarchyBuilder';
+import { EntityTypeName, ThingTypeName } from '../model/ModelTypeCheck';
 import { default as Reified } from '../model/Reified';
 type ParameterObj = {
     parameter?: string;
@@ -330,6 +330,7 @@ export type EntityData = {
      * should be present for use with hierarchy
      */
     parents?: Reified<string>[];
+    color?: string;
 };
 export type OnNavigateToEntity = {
     /**
@@ -378,6 +379,9 @@ export type HierarchyWidgetProps = CssClassNameObj & {
     apiKey?: string;
     backendType?: string;
     hierarchyWrap?: boolean;
+    targetIri?: string;
+    showHeader?: boolean;
+    showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps & HierarchyIriProp & OnNavigateToEntity & OnNavigateToOntology & ParameterObj;
 export type TitleTextObj = {
     /**

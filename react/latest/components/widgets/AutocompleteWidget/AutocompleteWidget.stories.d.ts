@@ -1,5 +1,5 @@
-import { AutocompleteWidget } from './AutocompleteWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { AutocompleteWidget } from './AutocompleteWidget';
 declare const meta: {
     title: string;
     tags: string[];

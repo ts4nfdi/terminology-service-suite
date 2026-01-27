@@ -1,3 +1,4 @@
+import { EntityTypeName } from '../../../../../model/ModelTypeCheck';
 export declare const HierarchyWidgetStoryArgTypes: {
     hierarchyWrap: {
         required: boolean;
@@ -153,6 +154,9 @@ export declare const HierarchyWidgetStoryArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const ClassHierarchyArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -170,6 +174,9 @@ export declare const ClassHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const IndividualHierarchyArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -187,6 +194,9 @@ export declare const IndividualHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const PreferredRootsArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -204,6 +214,9 @@ export declare const PreferredRootsArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const IncludeObsoleteEntitiesArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -221,6 +234,9 @@ export declare const IncludeObsoleteEntitiesArgs: {
     readonly showSiblingsOnInit: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const PropertyRootsArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -238,6 +254,9 @@ export declare const PropertyRootsArgs: {
     readonly showSiblingsOnInit: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const IndividualRootsArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -255,6 +274,9 @@ export declare const IndividualRootsArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const LargeHierarchyArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -272,6 +294,9 @@ export declare const LargeHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const SkosHierarchyArgs: {
     readonly apiUrl: "https://api.finto.fi/rest/v1";
@@ -289,6 +314,9 @@ export declare const SkosHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const SagePubHierarchyArgs: {
     readonly apiUrl: "https://concepts.sagepub.com/vocabularies/rest/v1/";
@@ -306,6 +334,9 @@ export declare const SagePubHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const OntoportalHierarchyArgs: {
     readonly apiUrl: "https://data.biodivportal.gfbio.org";
@@ -323,6 +354,9 @@ export declare const OntoportalHierarchyArgs: {
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const OLS3HierarchyArgs: {
     readonly apiUrl: "https://ols3-semanticlookup.zbmed.de/ols/api/";
@@ -340,6 +374,9 @@ export declare const OLS3HierarchyArgs: {
     readonly showSiblingsOnInit: false;
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const OLSGermanArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
@@ -357,6 +394,9 @@ export declare const OLSGermanArgs: {
     readonly keepExpansionStates: false;
     readonly showSiblingsOnInit: false;
     readonly hierarchyWrap: false;
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const SkosmosAgrovocGermanArgs: {
     readonly apiUrl: "https://agrovoc.fao.org/browse/rest/v1/";
@@ -374,6 +414,49 @@ export declare const SkosmosAgrovocGermanArgs: {
     readonly keepExpansionStates: false;
     readonly useLegacy: false;
     readonly hierarchyWrap: false;
+    readonly targetIri: "";
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
+};
+export declare const CompareHierarchiesArgs: {
+    apiUrl: string;
+    backendType: string;
+    iri: string;
+    targetIri: string;
+    entityType: EntityTypeName;
+    ontologyId: string;
+    apiKey: "";
+    onNavigateToEntity: "Console message";
+    onNavigateToOntology: "Console message";
+    includeObsoleteEntities: false;
+    preferredRoots: false;
+    keepExpansionStates: false;
+    showSiblingsOnInit: false;
+    useLegacy: false;
+    hierarchyWrap: false;
+    parameter: "";
+    showHeader: true;
+    showComparisonTitleInHeader: true;
+};
+export declare const CompareHierarchiesSubEntityArgs: {
+    apiUrl: string;
+    backendType: string;
+    iri: string;
+    targetIri: string;
+    entityType: EntityTypeName;
+    ontologyId: string;
+    apiKey: "";
+    onNavigateToEntity: "Console message";
+    onNavigateToOntology: "Console message";
+    includeObsoleteEntities: false;
+    preferredRoots: false;
+    keepExpansionStates: false;
+    showSiblingsOnInit: false;
+    useLegacy: false;
+    hierarchyWrap: false;
+    parameter: "";
+    showHeader: true;
+    showComparisonTitleInHeader: true;
 };
 export declare const commonHierarchyWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;

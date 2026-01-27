@@ -1,6 +1,6 @@
-import { OntologyInfoWidget } from './OntologyInfoWidget';
-import { manuallyEmbedOnNavigate } from '../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../app/util';
+import { OntologyInfoWidget } from './OntologyInfoWidget';
 declare const meta: {
     title: string;
     component: typeof OntologyInfoWidget;

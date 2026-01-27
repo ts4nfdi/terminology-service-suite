@@ -1,6 +1,6 @@
-import { EntityDefinedByWidget } from './EntityDefinedByWidget';
-import { manuallyEmbedOnNavigate } from '../../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../../app/util';
+import { EntityDefinedByWidget } from './EntityDefinedByWidget';
 declare const meta: {
     title: string;
     component: typeof EntityDefinedByWidget;

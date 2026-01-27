@@ -1,10 +1,10 @@
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { EntityData } from '../../app';
 import { EntityTypeName } from '../../model/ModelTypeCheck';
 import { Entity } from '../../model/interfaces';
-import { JSTreeNode } from '../../utils/olsApiTypes';
-import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../../model/interfaces/HierarchyBuilder';
 import { Hierarchy } from '../../model/interfaces/Hierarchy';
-import { EntityData } from '../../app';
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../../model/interfaces/HierarchyBuilder';
+import { JSTreeNode } from '../../utils/olsApiTypes';
 export declare const HIERARCHY_WIDGET_DEFAULT_VALUES: {
     readonly INCLUDE_OBSOLETE_ENTITIES: false;
     readonly PREFERRED_ROOTS: false;
@@ -12,6 +12,12 @@ export declare const HIERARCHY_WIDGET_DEFAULT_VALUES: {
     readonly SHOW_SIBLINGS_ON_INIT: false;
     readonly USE_LEGACY: false;
     readonly WRAP: false;
+    readonly TARGET_IRI: undefined;
+    readonly SHOW_HEADER: true;
+    readonly SHOW_COMPARISON_TITLE_IN_HEADER: true;
+    readonly COLOR_UNION: "#ff991c";
+    readonly COLOR_A: "#139ec4";
+    readonly COLOR_B: "#5000C0";
 };
 export declare class OlsHierarchyApi implements HierarchyBuilder {
     protected axiosInstance: AxiosInstance;

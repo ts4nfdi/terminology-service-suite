@@ -1,4 +1,4 @@
-import { OlsGraphNode, OlsGraphEdge } from '../../../app/types';
+import { OlsGraphEdge, OlsGraphNode } from '../../../app/types';
 export declare const hierarchicalConfig: {
     enabled: boolean;
     direction: string;

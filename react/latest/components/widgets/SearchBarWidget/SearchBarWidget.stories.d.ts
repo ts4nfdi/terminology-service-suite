@@ -1,5 +1,5 @@
-import { SearchBarWidget } from './SearchBarWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { SearchBarWidget } from './SearchBarWidget';
 declare const meta: {
     title: string;
     component: typeof SearchBarWidget;

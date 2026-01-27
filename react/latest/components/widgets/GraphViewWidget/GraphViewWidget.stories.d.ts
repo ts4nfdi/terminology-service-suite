@@ -1,5 +1,5 @@
-import { GraphViewWidget } from './GraphViewWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { GraphViewWidget } from './GraphViewWidget';
 declare const meta: {
     title: string;
     component: typeof GraphViewWidget;

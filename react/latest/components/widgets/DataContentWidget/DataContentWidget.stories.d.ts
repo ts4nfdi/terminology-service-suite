@@ -1,5 +1,5 @@
-import { DataContentWidget } from './DataContentWidget';
 import { StoryObj } from '@storybook/react-vite';
+import { DataContentWidget } from './DataContentWidget';
 declare const meta: {
     title: string;
     tags: string[];

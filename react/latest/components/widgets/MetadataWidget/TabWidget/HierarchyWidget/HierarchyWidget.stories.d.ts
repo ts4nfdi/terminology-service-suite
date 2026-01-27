@@ -1,6 +1,6 @@
-import { HierarchyWidget } from './HierarchyWidget';
-import { manuallyEmbedOnNavigate } from '../../../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../../../app/util';
+import { HierarchyWidget } from './HierarchyWidget';
 declare const meta: {
     title: string;
     component: typeof HierarchyWidget;
@@ -170,6 +170,9 @@ declare const meta: {
         readonly useLegacy: false;
         readonly hierarchyWrap: false;
         readonly parameter: "";
+        readonly targetIri: "";
+        readonly showHeader: true;
+        readonly showComparisonTitleInHeader: true;
     };
 };
 export default meta;
@@ -187,3 +190,5 @@ export declare const OntoportalHierarchy: Story;
 export declare const OLS3Hierarchy: Story;
 export declare const OLSGerman: Story;
 export declare const SkosmosAgrovocGerman: Story;
+export declare const CompareHierarchies: Story;
+export declare const CompareHierarchiesSubEntity: Story;

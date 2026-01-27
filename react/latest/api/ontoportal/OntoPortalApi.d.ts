@@ -1,6 +1,6 @@
-import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../../model/interfaces/HierarchyBuilder';
-import { Hierarchy } from '../../model/interfaces/Hierarchy';
 import { EntityData } from '../../app';
+import { Hierarchy } from '../../model/interfaces/Hierarchy';
+import { BuildHierarchyProps, HierarchyBuilder, HierarchyIriProp, LoadHierarchyChildrenProps } from '../../model/interfaces/HierarchyBuilder';
 export declare class OntoPortalApi implements HierarchyBuilder {
     private axiosInstance;
     private apiKey;

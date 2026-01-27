@@ -1,7 +1,7 @@
+import { ReactElement } from '../../../../../node_modules/react';
+import { OnNavigates } from '../../app';
 import { Thing } from '../../model/interfaces';
 import { default as Reified } from '../../model/Reified';
-import { OnNavigates } from '../../app';
-import { ReactElement } from '../../../../../node_modules/react';
 /**
  * Renders a given Reified
  * @param parentEntity the entity the Reified exists in
@@ -12,7 +12,7 @@ import { ReactElement } from '../../../../../node_modules/react';
  * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
-export default function RenderedReified({ parentEntity, reified, showBadges, onNavigates }: {
+export default function RenderedReified({ parentEntity, reified, showBadges, onNavigates, }: {
     parentEntity: Thing;
     reified: Reified<any>;
     showBadges?: boolean;

@@ -1,7 +1,7 @@
 import { ReactElement } from '../../../../../node_modules/react';
+import { OnNavigates } from '../../app';
 import { Thing } from '../../model/interfaces';
 import { default as LinkedEntities } from '../../model/ols-model/LinkedEntities';
-import { OnNavigates } from '../../app';
 /**
  * ONLY USABLE WITH V2-API ENTITIES
  *
@@ -16,7 +16,7 @@ import { OnNavigates } from '../../app';
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  * @returns ReactElement the entity link JSX
  */
-export default function EntityLink({ parentEntity, linkedEntities, iri, showBadges, onNavigates }: {
+export default function EntityLink({ parentEntity, linkedEntities, iri, showBadges, onNavigates, }: {
     parentEntity: Thing;
     linkedEntities: LinkedEntities;
     iri: string;

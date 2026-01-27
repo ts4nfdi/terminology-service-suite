@@ -1,6 +1,6 @@
 import { EuiLinkColor } from '@elastic/eui/src/components/link/link';
-import { ThingTypeName } from '../model/ModelTypeCheck';
 import { StoryContext } from '@storybook/react';
+import { ThingTypeName } from '../model/ModelTypeCheck';
 import { default as Reified } from '../model/Reified';
 export declare const OBO_FOUNDRY_REPO_URL_RAW: "https://raw.githubusercontent.com/OBOFoundry/OBOFoundry.github.io/master";
 export declare function asArray<T>(obj: T | T[]): T[];
@@ -39,8 +39,9 @@ export declare function randomString(): string;
 export declare function isHexColor(str: string): boolean;
 export declare function isRgbColor(str: string): boolean;
 export declare function isEuiLinkColor(str: string): str is EuiLinkColor;
+export declare function withAlpha(color: string, alpha: number): string;
 export declare function isEuiButtonColor(str: string): str is EuiLinkColor;
 export declare function getErrorMessageToDisplay(error: any, messagePlaceholder?: string): string;
-export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology";
+export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "individual" | "ontology";
 export declare function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext): string;
 export declare function dictFromParamString(parameter?: string): any;

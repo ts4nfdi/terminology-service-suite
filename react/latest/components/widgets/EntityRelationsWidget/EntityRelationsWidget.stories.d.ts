@@ -1,6 +1,6 @@
-import { EntityRelationsWidget } from './EntityRelationsWidget';
-import { manuallyEmbedOnNavigate } from '../../../app/util';
 import { StoryObj } from '@storybook/react-vite';
+import { manuallyEmbedOnNavigate } from '../../../app/util';
+import { EntityRelationsWidget } from './EntityRelationsWidget';
 declare const meta: {
     title: string;
     component: typeof EntityRelationsWidget;
