@@ -13,13 +13,13 @@ import {
 import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { EBI_API_ENDPOINT } from "../../../app/globals";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 export type EntityListWidgetProps = { apiUrl?: string };
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
-const DEFAULT_API_URL =
-  "https://www.ebi.ac.uk/ols4/api/v2/ontologies/uberon/classes?search=mid";
+const DEFAULT_API_URL = `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?search=mid`;
 
 const DEFAULT_FETCH_SIZE = 200;
 const FETCH_CONCURRENCY = 4;
@@ -222,7 +222,7 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
   const search: EuiSearchBarProps = {
     box: {
       incremental: true,
-      placeholder: "Search…",
+      placeholder: "Search by Name or ID",
     },
   };
 

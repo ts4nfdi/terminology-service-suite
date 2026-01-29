@@ -1,17 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
-    EntityListWidgetStoryArgsReact,
+  EntityListWidgetStoryArgTypes,
+  EntityListWidgetStoryArgs,
+  buildEntityListApiUrl,
 } from "./EntityListWidgetStories";
 
-const meta: Meta<typeof WrappedEntityListWidget> = {
-    title: "Widgets/EntityListWidget",
-    component: WrappedEntityListWidget,
-    args: EntityListWidgetStoryArgsReact,
+const meta: Meta = {
+  title: "Widgets/EntityListWidget",
+  component: WrappedEntityListWidget,
+  argTypes: EntityListWidgetStoryArgTypes,
+  args: EntityListWidgetStoryArgs,
+  render: (args: any) => {
+    const apiUrl = buildEntityListApiUrl(args);
+    return <WrappedEntityListWidget apiUrl={apiUrl} />;
+  },
 };
 
 export default meta;
-type Story = StoryObj<typeof WrappedEntityListWidget>;
+
+type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {};
-
