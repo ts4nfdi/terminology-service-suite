@@ -25,6 +25,9 @@ const DEFAULT_API_URL = `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?search=
 const DEFAULT_FETCH_SIZE = 200;
 const FETCH_CONCURRENCY = 4;
 
+const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
+const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
+
 function pickLabel(item: any) {
   const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
   if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
@@ -42,14 +45,12 @@ function pickId(item: any) {
 }
 
 function getFetchSizeFromUrl(baseUrl: string) {
-  try {
-    const url = new URL(baseUrl);
-    const ps = Number(url.searchParams.get("size"));
-    return Number.isFinite(ps) && ps > 0 ? ps : DEFAULT_FETCH_SIZE;
-  } catch {
-    return DEFAULT_FETCH_SIZE;
-  }
+  const q = baseUrl.indexOf("?");
+  if (q === -1) return DEFAULT_FETCH_SIZE;
+  const size = Number(new URLSearchParams(baseUrl.slice(q)).get("size"));
+  return size > 0 && Number.isFinite(size) ? size : DEFAULT_FETCH_SIZE;
 }
+
 
 function parseOlsUrl(baseUrl: string): {
   endpoint: "classes" | "terms" | "properties" | "individuals" | "ontologies";
@@ -60,32 +61,34 @@ function parseOlsUrl(baseUrl: string): {
   const url = new URL(baseUrl);
   const parts = url.pathname.split("/").filter(Boolean);
 
-  const useLegacy = !parts.includes("v2");
-
+  const useLegacyBase = !parts.includes("v2");
   const idx = parts.indexOf("ontologies");
+
   const ontologyId = idx >= 0 ? parts[idx + 1] : undefined;
+  const rawEndpoint = idx >= 0 ? parts[idx + 2] : "classes";
+
   const endpoint =
-    (idx >= 0 && parts[idx + 2]) ||
-    (idx >= 0 && !ontologyId ? "ontologies" : "classes");
+    rawEndpoint === "terms" ||
+    rawEndpoint === "properties" ||
+    rawEndpoint === "individuals" ||
+    rawEndpoint === "ontologies"
+      ? rawEndpoint
+      : idx >= 0 && !ontologyId
+        ? "ontologies"
+        : "classes";
 
   const sp = new URLSearchParams(url.searchParams);
   sp.delete("page");
   sp.delete("size");
+  const parameter = sp.toString() || undefined;
 
   return {
-    endpoint:
-      endpoint === "terms" ||
-      endpoint === "properties" ||
-      endpoint === "individuals" ||
-      endpoint === "ontologies"
-        ? endpoint
-        : "classes",
-    useLegacy: endpoint === "terms" ? true : useLegacy,
+    endpoint,
+    useLegacy: endpoint === "terms" ? true : useLegacyBase,
     ontologyId,
-    parameter: sp.toString() || undefined,
+    parameter,
   };
 }
-
 
 function extractElements(response: any): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
@@ -105,37 +108,35 @@ function extractElements(response: any): any[] {
     if (Array.isArray(c)) return c;
   }
 
-  for (const v of Object.values(embedded)) {
+  for (const key in embedded) {
+    const v = (embedded as any)[key];
     if (Array.isArray(v)) return v as any[];
   }
+
 
   return [];
 }
 
 function extractTotal(response: any, fallback: number) {
-  const candidates = [
-    response?.totalElements,
-    response?.numElements,
-    response?.page?.totalElements,
-  ];
+  const total =
+    response?.totalElements ??
+    response?.numElements ??
+    response?.page?.totalElements;
 
-  for (const value of candidates) {
-    const num =
-      typeof value === "number"
-        ? value
-        : typeof value === "string" || typeof value === "bigint"
-          ? Number(value)
-          : NaN;
+  if (typeof total === "number" && Number.isFinite(total)) {
+    return total;
+  }
 
-    if (Number.isFinite(num)) return num;
+  if (
+    (typeof total === "string" || typeof total === "bigint") &&
+    Number.isFinite(Number(total))
+  ) {
+    return Number(total);
   }
 
   return fallback;
 }
 
-
-const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
-const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
 
 async function fetchPage(
   baseUrl: string,
@@ -208,7 +209,6 @@ async function fetchPage(
   };
 }
 
-
 function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
   const baseUrl = apiUrl ?? DEFAULT_API_URL;
   const fetchSize = useMemo(() => getFetchSizeFromUrl(baseUrl), [baseUrl]);
@@ -219,20 +219,6 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  const {
-    data: firstPage,
-    isLoading: isLoadingFirstPage,
-    isError,
-    error,
-  } = useQuery<QueryResult>(
-    ["entityList:firstPage", baseUrl, fetchSize],
-    () => fetchPage(baseUrl, 0, fetchSize),
-    {
-      keepPreviousData: false,
-      staleTime: 60_000,
-    },
-  );
-
   useEffect(() => {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
@@ -241,10 +227,29 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     setTotalItemCount(0);
     setIsFetchingMore(false);
 
-    return () => {
-      abortRef.current?.abort();
-    };
+    return () => abortRef.current?.abort();
   }, [baseUrl, fetchSize]);
+
+  const firstPageKey = useMemo(
+    () => ["entityList:firstPage", baseUrl, fetchSize] as const,
+    [baseUrl, fetchSize],
+  );
+
+  const fetchFirstPage = useMemo(
+    () => () => fetchPage(baseUrl, 0, fetchSize, abortRef.current?.signal),
+    [baseUrl, fetchSize],
+  );
+
+  const {
+    data: firstPage,
+    isLoading: isLoadingFirstPage,
+    isError,
+    error,
+  } = useQuery<QueryResult>(firstPageKey, fetchFirstPage, {
+    keepPreviousData: false,
+    staleTime: 60_000,
+    enabled: Boolean(abortRef.current),
+  });
 
   useEffect(() => {
     if (!firstPage) return;
@@ -252,20 +257,21 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     setTotalItemCount(firstPage.totalItemCount);
   }, [firstPage]);
 
+
   useEffect(() => {
     if (!firstPage) return;
 
-    const controller = abortRef.current;
-    const signal = controller?.signal;
+    const signal = abortRef.current?.signal;
 
     const total = firstPage.totalItemCount;
     const already = firstPage.rows.length;
-
     if (!total || already >= total) return;
 
     const totalPages = Math.ceil(total / fetchSize);
-    const remainingPages: number[] = [];
-    for (let p = 1; p < totalPages; p++) remainingPages.push(p);
+    const remainingPages = Array.from(
+      { length: totalPages - 1 },
+      (_, i) => i + 1,
+    );
 
     let cancelled = false;
     setIsFetchingMore(true);
@@ -274,27 +280,34 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     let nextPageToFlush = 1;
 
     const flush = () => {
-      while (pending.has(nextPageToFlush)) {
-        const rows = pending.get(nextPageToFlush)!;
+      let batch: EntityRow[] | null = null;
+
+      while (true) {
+        const rows = pending.get(nextPageToFlush);
+        if (!rows) break;
+
         pending.delete(nextPageToFlush);
         nextPageToFlush += 1;
 
-        setAllRows((prev) => {
-          if (rows.length === 0) return prev;
-          const last = prev[prev.length - 1];
-          if (last && last.rowIndex >= rows[0].rowIndex) return prev;
-          return [...prev, ...rows];
-        });
+        if (rows.length) (batch ??= []).push(...rows);
       }
+
+      if (!batch || batch.length === 0) return;
+
+      setAllRows((prev) => {
+        const last = prev[prev.length - 1];
+        if (last && last.rowIndex >= batch[0]!.rowIndex) return prev;
+        return [...prev, ...batch];
+      });
     };
 
     const runPool = async () => {
-      const queue = [...remainingPages];
+      const queue = remainingPages;
+      let i = 0;
 
-      const workerCount = Math.min(FETCH_CONCURRENCY, queue.length);
-      const workers = Array.from({ length: workerCount }, async () => {
-        while (queue.length && !cancelled && !signal?.aborted) {
-          const page = queue.shift();
+      const worker = async () => {
+        while (!cancelled && !signal?.aborted) {
+          const page = queue[i++];
           if (page == null) return;
 
           try {
@@ -302,12 +315,13 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
             pending.set(page, result.rows);
             flush();
           } catch {
-            if ((signal as any)?.aborted) return;
+            if (signal?.aborted) return;
           }
         }
-      });
+      };
 
-      await Promise.all(workers);
+      const workerCount = Math.min(FETCH_CONCURRENCY, queue.length);
+      await Promise.all(Array.from({ length: workerCount }, worker));
     };
 
     runPool().finally(() => {

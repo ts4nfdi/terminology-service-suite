@@ -44,7 +44,6 @@ function splitAndApplyParams(url: URL, raw: string) {
   }
 }
 
-
 export function buildEntityListApiUrl(args: {
   api: string;
   useLegacy: boolean;
@@ -53,7 +52,6 @@ export function buildEntityListApiUrl(args: {
   parameter: string;
 }) {
   const api = normalizeBaseApi(args.api);
-
 
   // v2: classes | properties | individuals | ontologies
   // legacy: terms | properties | individuals | ontologies
@@ -77,7 +75,6 @@ export function buildEntityListApiUrl(args: {
 
   const endpoint = args.useLegacy ? legacyEndpoint : v2Endpoint;
 
-
   // v2:
   //   ontologies:  {api}v2/ontologies?
   //   others:      {api}v2/ontologies/{ontologyId}/{endpoint}?
@@ -95,7 +92,6 @@ export function buildEntityListApiUrl(args: {
         : `${api}v2/ontologies/${args.ontologyId}/${endpoint}?`;
 
   const url = new URL(base);
-
 
   url.searchParams.set("size", "10");
 
