@@ -10,9 +10,10 @@ import {
   EuiProvider,
   EuiText,
 } from "@elastic/eui";
-import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { EBI_API_ENDPOINT } from "../../../app/globals";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
@@ -24,25 +25,20 @@ const DEFAULT_API_URL = `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?search=
 const DEFAULT_FETCH_SIZE = 200;
 const FETCH_CONCURRENCY = 4;
 
-function buildPagedUrl(baseUrl: string, pageIndex: number, pageSize: number) {
-  const url = new URL(baseUrl);
-  url.searchParams.set("page", String(pageIndex));
-  url.searchParams.set("size", String(pageSize));
-  return url.toString();
-}
-
 function pickLabel(item: any) {
-  const v = item?.label;
+  const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
   if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
   return v ? String(v) : "—";
 }
 
 function pickId(item: any) {
-  return item?.curie
-    ? String(item.curie)
-    : item?.obo_id
-      ? String(item.obo_id)
-      : "—";
+  const v =
+    item?.curie ??
+    item?.obo_id ??
+    item?.short_form ??
+    item?.id ??
+    item?.ontologyId;
+  return v ? String(v) : "—";
 }
 
 function getFetchSizeFromUrl(baseUrl: string) {
@@ -55,18 +51,154 @@ function getFetchSizeFromUrl(baseUrl: string) {
   }
 }
 
+function parseOlsUrl(baseUrl: string): {
+  endpoint: "classes" | "terms" | "properties" | "individuals" | "ontologies";
+  useLegacy: boolean;
+  ontologyId?: string;
+  parameter?: string;
+} {
+  const url = new URL(baseUrl);
+  const parts = url.pathname.split("/").filter(Boolean);
+
+  const useLegacy = !parts.includes("v2");
+  const ontologiesIdx = parts.indexOf("ontologies");
+
+  let ontologyId: string | undefined;
+  let endpoint:
+    | "classes"
+    | "terms"
+    | "properties"
+    | "individuals"
+    | "ontologies" = "classes";
+
+  if (ontologiesIdx >= 0) {
+    const after = parts.slice(ontologiesIdx + 1);
+    if (after.length === 0) {
+      endpoint = "ontologies";
+    } else {
+      const maybeOntologyId = after[0];
+      const maybeEndpoint = after[1];
+      if (maybeEndpoint) {
+        ontologyId = maybeOntologyId;
+        endpoint = (maybeEndpoint as any) || "classes";
+      } else {
+        endpoint = "ontologies";
+      }
+    }
+  }
+
+  const sp = new URLSearchParams(url.searchParams);
+  sp.delete("page");
+  sp.delete("size");
+  const parameter = sp.toString() ? sp.toString() : undefined;
+
+  if (endpoint === "terms")
+    return { endpoint: "terms", useLegacy: true, ontologyId, parameter };
+  if (endpoint === "ontologies")
+    return { endpoint: "ontologies", useLegacy, parameter };
+  if (endpoint === "properties")
+    return { endpoint: "properties", useLegacy, ontologyId, parameter };
+  if (endpoint === "individuals")
+    return { endpoint: "individuals", useLegacy, ontologyId, parameter };
+  return { endpoint: "classes", useLegacy: false, ontologyId, parameter };
+}
+
+function extractElements(response: any): any[] {
+  if (Array.isArray(response?.elements)) return response.elements;
+
+  const embedded = response?._embedded;
+  if (!embedded || typeof embedded !== "object") return [];
+
+  const candidates = [
+    embedded["terms"],
+    embedded["classes"],
+    embedded["properties"],
+    embedded["individuals"],
+    embedded["ontologies"],
+  ];
+
+  for (const c of candidates) {
+    if (Array.isArray(c)) return c;
+  }
+
+  for (const v of Object.values(embedded)) {
+    if (Array.isArray(v)) return v as any[];
+  }
+
+  return [];
+}
+
+function extractTotal(response: any, fallback: number) {
+  const direct =
+    typeof response?.totalElements === "number"
+      ? response.totalElements
+      : typeof response?.numElements === "number"
+        ? response.numElements
+        : typeof response?.page?.totalElements === "number"
+          ? response.page.totalElements
+          : typeof response?.page?.totalElements === "string"
+            ? Number(response.page.totalElements)
+            : typeof response?.page?.totalElements === "bigint"
+              ? Number(response.page.totalElements)
+              : undefined;
+
+  if (typeof direct === "number" && Number.isFinite(direct)) return direct;
+  return fallback;
+}
+
 async function fetchPage(
   baseUrl: string,
   pageIndex: number,
   pageSize: number,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
-  const pagedUrl = buildPagedUrl(baseUrl, pageIndex, pageSize);
-  const res = await axios.get(pagedUrl, { signal });
+  const { endpoint, useLegacy, ontologyId, parameter } = parseOlsUrl(baseUrl);
 
-  const elements: any[] = Array.isArray(res.data?.elements)
-    ? res.data.elements
-    : [];
+  const paginationParams = { page: String(pageIndex), size: String(pageSize) };
+
+  const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
+  const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
+
+  let response: any;
+
+  if (endpoint === "ontologies") {
+    response = await ontologyApi.getOntologies(
+      paginationParams,
+      undefined,
+      undefined,
+      parameter,
+      useLegacy,
+    );
+  } else if (endpoint === "properties") {
+    response = await (entityApi.getProperties as any)(
+      paginationParams,
+      undefined,
+      ontologyId ? { ontologyId } : undefined,
+      parameter,
+      useLegacy,
+      signal,
+    );
+  } else if (endpoint === "individuals") {
+    response = await (entityApi.getIndividuals as any)(
+      paginationParams,
+      undefined,
+      ontologyId ? { ontologyId } : undefined,
+      parameter,
+      useLegacy,
+      signal,
+    );
+  } else {
+    response = await (entityApi.getTerms as any)(
+      paginationParams,
+      undefined,
+      ontologyId ? { ontologyId } : undefined,
+      parameter,
+      useLegacy,
+      signal,
+    );
+  }
+
+  const elements = extractElements(response);
   const baseIndex = pageIndex * pageSize;
 
   const rows: EntityRow[] = elements.map((item, i) => ({
@@ -75,12 +207,7 @@ async function fetchPage(
     rowIndex: baseIndex + i,
   }));
 
-  const totalItemCount =
-    typeof res.data?.totalElements === "number"
-      ? res.data.totalElements
-      : typeof res.data?.numElements === "number"
-        ? res.data.numElements
-        : rows.length;
+  const totalItemCount = extractTotal(response, rows.length);
 
   return { rows, totalItemCount };
 }
@@ -156,7 +283,6 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
         nextPageToFlush += 1;
 
         setAllRows((prev) => {
-          // Avoid duplicate appends in edge re-render cases.
           if (rows.length === 0) return prev;
           const last = prev[prev.length - 1];
           if (last && last.rowIndex >= rows[0].rowIndex) return prev;
@@ -179,7 +305,6 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
             pending.set(page, result.rows);
             flush();
           } catch {
-            // If aborted, stop silently; otherwise keep going.
             if ((signal as any)?.aborted) return;
           }
         }
