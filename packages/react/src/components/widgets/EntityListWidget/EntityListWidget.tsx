@@ -61,47 +61,31 @@ function parseOlsUrl(baseUrl: string): {
   const parts = url.pathname.split("/").filter(Boolean);
 
   const useLegacy = !parts.includes("v2");
-  const ontologiesIdx = parts.indexOf("ontologies");
 
-  let ontologyId: string | undefined;
-  let endpoint:
-    | "classes"
-    | "terms"
-    | "properties"
-    | "individuals"
-    | "ontologies" = "classes";
-
-  if (ontologiesIdx >= 0) {
-    const after = parts.slice(ontologiesIdx + 1);
-    if (after.length === 0) {
-      endpoint = "ontologies";
-    } else {
-      const maybeOntologyId = after[0];
-      const maybeEndpoint = after[1];
-      if (maybeEndpoint) {
-        ontologyId = maybeOntologyId;
-        endpoint = (maybeEndpoint as any) || "classes";
-      } else {
-        endpoint = "ontologies";
-      }
-    }
-  }
+  const idx = parts.indexOf("ontologies");
+  const ontologyId = idx >= 0 ? parts[idx + 1] : undefined;
+  const endpoint =
+    (idx >= 0 && parts[idx + 2]) ||
+    (idx >= 0 && !ontologyId ? "ontologies" : "classes");
 
   const sp = new URLSearchParams(url.searchParams);
   sp.delete("page");
   sp.delete("size");
-  const parameter = sp.toString() ? sp.toString() : undefined;
 
-  if (endpoint === "terms")
-    return { endpoint: "terms", useLegacy: true, ontologyId, parameter };
-  if (endpoint === "ontologies")
-    return { endpoint: "ontologies", useLegacy, parameter };
-  if (endpoint === "properties")
-    return { endpoint: "properties", useLegacy, ontologyId, parameter };
-  if (endpoint === "individuals")
-    return { endpoint: "individuals", useLegacy, ontologyId, parameter };
-  return { endpoint: "classes", useLegacy: false, ontologyId, parameter };
+  return {
+    endpoint:
+      endpoint === "terms" ||
+      endpoint === "properties" ||
+      endpoint === "individuals" ||
+      endpoint === "ontologies"
+        ? endpoint
+        : "classes",
+    useLegacy: endpoint === "terms" ? true : useLegacy,
+    ontologyId,
+    parameter: sp.toString() || undefined,
+  };
 }
+
 
 function extractElements(response: any): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
@@ -129,22 +113,29 @@ function extractElements(response: any): any[] {
 }
 
 function extractTotal(response: any, fallback: number) {
-  const direct =
-    typeof response?.totalElements === "number"
-      ? response.totalElements
-      : typeof response?.numElements === "number"
-        ? response.numElements
-        : typeof response?.page?.totalElements === "number"
-          ? response.page.totalElements
-          : typeof response?.page?.totalElements === "string"
-            ? Number(response.page.totalElements)
-            : typeof response?.page?.totalElements === "bigint"
-              ? Number(response.page.totalElements)
-              : undefined;
+  const candidates = [
+    response?.totalElements,
+    response?.numElements,
+    response?.page?.totalElements,
+  ];
 
-  if (typeof direct === "number" && Number.isFinite(direct)) return direct;
+  for (const value of candidates) {
+    const num =
+      typeof value === "number"
+        ? value
+        : typeof value === "string" || typeof value === "bigint"
+          ? Number(value)
+          : NaN;
+
+    if (Number.isFinite(num)) return num;
+  }
+
   return fallback;
 }
+
+
+const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
+const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
 
 async function fetchPage(
   baseUrl: string,
@@ -155,62 +146,68 @@ async function fetchPage(
   const { endpoint, useLegacy, ontologyId, parameter } = parseOlsUrl(baseUrl);
 
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
-
-  const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
-  const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
+  const contentParams = ontologyId ? { ontologyId } : undefined;
 
   let response: any;
 
-  if (endpoint === "ontologies") {
-    response = await ontologyApi.getOntologies(
-      paginationParams,
-      undefined,
-      undefined,
-      parameter,
-      useLegacy,
-    );
-  } else if (endpoint === "properties") {
-    response = await (entityApi.getProperties as any)(
-      paginationParams,
-      undefined,
-      ontologyId ? { ontologyId } : undefined,
-      parameter,
-      useLegacy,
-      signal,
-    );
-  } else if (endpoint === "individuals") {
-    response = await (entityApi.getIndividuals as any)(
-      paginationParams,
-      undefined,
-      ontologyId ? { ontologyId } : undefined,
-      parameter,
-      useLegacy,
-      signal,
-    );
-  } else {
-    response = await (entityApi.getTerms as any)(
-      paginationParams,
-      undefined,
-      ontologyId ? { ontologyId } : undefined,
-      parameter,
-      useLegacy,
-      signal,
-    );
+  switch (endpoint) {
+    case "ontologies":
+      response = await ontologyApi.getOntologies(
+        paginationParams,
+        undefined,
+        undefined,
+        parameter,
+        useLegacy,
+      );
+      break;
+
+    case "properties":
+      response = await (entityApi.getProperties as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+      break;
+
+    case "individuals":
+      response = await (entityApi.getIndividuals as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+      break;
+
+    default:
+      response = await (entityApi.getTerms as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+      break;
   }
 
   const elements = extractElements(response);
   const baseIndex = pageIndex * pageSize;
 
-  const rows: EntityRow[] = elements.map((item, i) => ({
-    name: pickLabel(item),
-    id: pickId(item),
-    rowIndex: baseIndex + i,
-  }));
-
-  const totalItemCount = extractTotal(response, rows.length);
-
-  return { rows, totalItemCount };
+  return {
+    rows: elements.map((item, i) => ({
+      name: pickLabel(item),
+      id: pickId(item),
+      rowIndex: baseIndex + i,
+    })),
+    totalItemCount: extractTotal(response, elements.length),
+  };
 }
+
 
 function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
   const baseUrl = apiUrl ?? DEFAULT_API_URL;
