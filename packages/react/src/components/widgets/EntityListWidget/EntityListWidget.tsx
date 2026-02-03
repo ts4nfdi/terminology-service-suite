@@ -15,6 +15,8 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { EBI_API_ENDPOINT } from "../../../app/globals";
+import "../../../style/customBreadcrumbStyle.css"
+
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 export type EntityListWidgetProps = { apiUrl?: string };
@@ -50,7 +52,6 @@ function getFetchSizeFromUrl(baseUrl: string) {
   const size = Number(new URLSearchParams(baseUrl.slice(q)).get("size"));
   return size > 0 && Number.isFinite(size) ? size : DEFAULT_FETCH_SIZE;
 }
-
 
 function parseOlsUrl(baseUrl: string): {
   endpoint: "classes" | "terms" | "properties" | "individuals" | "ontologies";
@@ -113,7 +114,6 @@ function extractElements(response: any): any[] {
     if (Array.isArray(v)) return v as any[];
   }
 
-
   return [];
 }
 
@@ -136,7 +136,6 @@ function extractTotal(response: any, fallback: number) {
 
   return fallback;
 }
-
 
 async function fetchPage(
   baseUrl: string,
@@ -257,7 +256,6 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     setTotalItemCount(firstPage.totalItemCount);
   }, [firstPage]);
 
-
   useEffect(() => {
     if (!firstPage) return;
 
@@ -375,6 +373,7 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
       </EuiFlexGroup>
 
       <EuiInMemoryTable<EntityRow>
+        className="stripedRows"
         tableCaption="Entity list"
         responsiveBreakpoint={false}
         items={allRows}
@@ -386,11 +385,6 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
           pageSizeOptions: [10, 25, 50],
         }}
         sorting={true}
-        rowProps={(item) => ({
-          style: {
-            backgroundColor: item.rowIndex % 2 === 0 ? "#f0f6ff" : "#ffffff",
-          },
-        })}
       />
     </EuiPanel>
   );
