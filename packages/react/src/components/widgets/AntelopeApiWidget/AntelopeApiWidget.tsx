@@ -56,7 +56,7 @@ function AntelopeApiWidget(props: AntelopeApiWidgetProps) {
   return ( <>
     {
       isLoading ? (
-        <EuiLoadingSpinner size="s" />
+        <EuiLoadingSpinner size="s" data-testid="antelope-api" />
       ) : 
       <div dangerouslySetInnerHTML={{__html: annotation.html}}></div>
     }
@@ -70,6 +70,7 @@ function WrappedAntelopeApiWidget(props: AntelopeApiWidgetProps) {
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <AntelopeApiWidget
+          data-testid="antelope-api"
           threshold={props.threshold}
           searchTerm={props.searchTerm}
           language={props.language}
