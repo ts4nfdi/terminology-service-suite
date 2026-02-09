@@ -1,18 +1,18 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { EntityData } from "../../app";
+import { dictFromParamString } from "../../app/util";
+import {
+  Hierarchy,
+  ParentChildRelation,
+  TreeNode,
+} from "../../model/interfaces/Hierarchy";
 import {
   BuildHierarchyProps,
   HierarchyBuilder,
   HierarchyIriProp,
   LoadHierarchyChildrenProps,
-} from "./HierarchyBuilder";
-import {
-  Hierarchy,
-  ParentChildRelation,
-  TreeNode,
-} from "../model/interfaces/Hierarchy";
-import Reified from "../model/Reified";
-import { EntityData } from "../app/types";
-import { dictFromParamString } from "../app/util";
+} from "../../model/interfaces/HierarchyBuilder";
+import Reified from "../../model/Reified";
 
 type TopConcept = {
   uri: string;
@@ -169,7 +169,9 @@ export class SkosApi implements HierarchyBuilder {
               entitiesData.set(childNodeData.iri, childNodeData);
             } else {
               if (
-                !childNodeData?.parents?.map((r) => r.value).includes(node.uri)
+                !childNodeData?.parents
+                  ?.map((r: any) => r.value)
+                  .includes(node.uri)
               )
                 if (childNodeData?.parents) {
                   childNodeData?.parents?.push(

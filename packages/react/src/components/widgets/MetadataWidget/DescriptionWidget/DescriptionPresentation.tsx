@@ -1,4 +1,3 @@
-import React from "react";
 import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
 import { DescriptionPresentationProps } from "../../../../app/types";
 import { getErrorMessageToDisplay } from "../../../../app/util";

@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DataContentDescription } from "../../../app/widgetDescriptions";
 import { DataContentWidget } from "./DataContentWidget";
 import {
   commonDataContentWidgetPlay,
@@ -7,8 +9,6 @@ import {
   NFDI4HealthDataContentWidgetArgs,
   SafetyDataContentWidgetArgs,
 } from "./DataContentWidgetStories";
-import { DataContentDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Terminology Service/DataContentWidget",

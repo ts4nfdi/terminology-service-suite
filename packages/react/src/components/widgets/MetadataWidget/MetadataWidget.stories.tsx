@@ -1,21 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { manuallyEmbedOnNavigate } from "../../../app/util";
+import { MetadataDescription } from "../../../app/widgetDescriptions";
 import { MetadataWidget } from "./MetadataWidget";
 import {
+  commonMetadataWidgetPlay,
+  DefinedByAlsoAppearsInWidgetsArgs,
+  DefiningOntologyUnavailableArgs,
+  HiddenTabsArgs,
+  MetadataWidget1Args,
   MetadataWidgetStoryArgs,
   MetadataWidgetStoryArgTypes,
-  MetadataWidget1Args,
   OLS3Args,
   OLS4V1Args,
   OLS4V2Args,
   SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs,
-  DefinedByAlsoAppearsInWidgetsArgs,
-  HiddenTabsArgs,
   TermAsLinkArgs,
-  commonMetadataWidgetPlay,
 } from "./MetadataWidgetStories";
-import { manuallyEmbedOnNavigate } from "../../../app/util";
-import { MetadataDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/MetadataWidget",

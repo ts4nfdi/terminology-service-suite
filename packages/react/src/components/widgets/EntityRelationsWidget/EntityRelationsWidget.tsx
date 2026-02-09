@@ -1,15 +1,24 @@
 "use client";
 
-import React, { ReactElement } from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
   EuiCard,
   EuiFlexItem,
   EuiLoadingSpinner,
   EuiProvider,
-  EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { ReactElement } from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { EntityRelationsWidgetProps, OnNavigates } from "../../../app";
+import { DEFAULT_SHOW_BADGES } from "../../../app/globals";
+import {
+  asArray,
+  asReified,
+  capitalize,
+  getEntityTypeName,
+  randomString,
+} from "../../../app/util";
 import {
   Class,
   Entity,
@@ -18,38 +27,78 @@ import {
   Thing,
 } from "../../../model/interfaces";
 import {
-  getClassExpressionJSX,
-  getEntityLinkJSX,
-  getReifiedJSX,
-  getSectionListJSX,
-} from "../../../model/StructureRendering";
-import {
   isClass,
   isIndividual,
   isProperty,
 } from "../../../model/ModelTypeCheck";
 import Reified from "../../../model/Reified";
-import {
-  asArray,
-  capitalize,
-  getEntityTypeName,
-  randomString,
-} from "../../../app/util";
-import { EntityRelationsWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
-import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import ClassExpression from "../../helperComponents/ClassExpression";
+import EntityLink from "../../helperComponents/EntityLink";
+import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 
 /**
+ * Builds and returns an array of section list elements specified at `currentResponsePath`
+ * @param parentEntity
+ * @param array
+ * @param showBadges
+ * @param onNavigates functions defining the action when clicking clickable items
+ * @param onNavigates.onNavigateToEntity function defining the action when clicking on an entities name
+ * @param onNavigates.onNavigateToOntology function defining the action when clicking on an ontology badge
+ * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
+ */
+export function getSectionListJSX(
+  parentEntity: Thing,
+  array: any[],
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
+): ReactElement {
+  return (
+    <>
+      {array.length === 1 ? (
+        <p>
+          <RenderedReified
+            parentEntity={parentEntity}
+            reified={asReified(array[0])}
+            showBadges={showBadges}
+            onNavigates={onNavigates}
+          />
+        </p>
+      ) : (
+        <>
+          <ul>
+            {array.map((item: any) => {
+              return (
+                <li key={randomString()}>
+                  <RenderedReified
+                    parentEntity={parentEntity}
+                    reified={asReified(item)}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          <p></p>
+        </>
+      )}
+    </>
+  );
+}
+
+/**
  * Builds and returns the type section JSX element.
  * @param individual
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getIndividualTypesSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const types = individual
     .getRdfTypes()
@@ -63,17 +112,7 @@ function getIndividualTypesSectionJSX(
     return (
       <EuiFlexItem>
         <b>Type</b>
-        {getSectionListJSX(
-          individual,
-          individual.getLinkedEntities(),
-          types,
-          props.showBadges,
-          {
-            onNavigateToEntity: props.onNavigateToEntity,
-            onNavigateToOntology: props.onNavigateToOntology,
-            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          },
-        )}
+        {getSectionListJSX(individual, types, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -82,12 +121,14 @@ function getIndividualTypesSectionJSX(
 /**
  * Builds and returns the same as section JSX element.
  * @param individual
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getIndividualSameAsSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const sameAs = individual.getSameAs();
 
@@ -95,17 +136,7 @@ function getIndividualSameAsSectionJSX(
     return (
       <EuiFlexItem>
         <b>Same As</b>
-        {getSectionListJSX(
-          individual,
-          individual.getLinkedEntities(),
-          sameAs,
-          props.showBadges,
-          {
-            onNavigateToEntity: props.onNavigateToEntity,
-            onNavigateToOntology: props.onNavigateToOntology,
-            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          },
-        )}
+        {getSectionListJSX(individual, sameAs, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -114,31 +145,27 @@ function getIndividualSameAsSectionJSX(
 /**
  * Builds and returns the different from section JSX element.
  * @param individual
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getIndividualDifferentFromSectionJSX(
   individual: Individual,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const differentFrom = individual.getDifferentFrom();
 
   if (differentFrom.length > 0) {
     return (
       <>
-        <EuiSpacer />
         <EuiFlexItem>
           <b>Different from</b>
           {getSectionListJSX(
             individual,
-            individual.getLinkedEntities(),
             differentFrom,
-            props.showBadges,
-            {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            },
+            showBadges,
+            onNavigates,
           )}
         </EuiFlexItem>
       </>
@@ -149,12 +176,14 @@ function getIndividualDifferentFromSectionJSX(
 /**
  * Builds and returns the disjoint with section JSX element.
  * @param entity
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getDisjointWithSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const disjointWith = entity.getDisjointWith();
 
@@ -162,17 +191,7 @@ function getDisjointWithSectionJSX(
     return (
       <EuiFlexItem>
         <b>Disjoint with</b>
-        {getSectionListJSX(
-          entity,
-          entity.getLinkedEntities(),
-          disjointWith,
-          props.showBadges,
-          {
-            onNavigateToEntity: props.onNavigateToEntity,
-            onNavigateToOntology: props.onNavigateToOntology,
-            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          },
-        )}
+        {getSectionListJSX(entity, disjointWith, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -181,12 +200,14 @@ function getDisjointWithSectionJSX(
 /**
  * Builds and returns the inverse of section JSX element.
  * @param property
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getPropertyInverseOfSectionJSX(
   property: Property,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const inverseOfs = property.getInverseOf();
 
@@ -194,17 +215,7 @@ function getPropertyInverseOfSectionJSX(
     return (
       <EuiFlexItem>
         <b>Inverse of</b>
-        {getSectionListJSX(
-          property,
-          property.getLinkedEntities(),
-          inverseOfs,
-          props.showBadges,
-          {
-            onNavigateToEntity: props.onNavigateToEntity,
-            onNavigateToOntology: props.onNavigateToOntology,
-            onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-          },
-        )}
+        {getSectionListJSX(property, inverseOfs, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -214,13 +225,15 @@ function getPropertyInverseOfSectionJSX(
  * Builds and returns one property chain JSX element. Is used for {@link getPropertyChainSectionJSX}.
  * @param propertyChain the property chain
  * @param property
- * @param props     the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement[]} the chains JSX element
  */
 function getPropertyChainJSX(
   propertyChain: any[],
   property: Property,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement[] {
   return asArray(propertyChain)
     .slice()
@@ -229,17 +242,13 @@ function getPropertyChainJSX(
       // using .slice() here is important because a mutation of propertyChain would trigger a useQuery()
       return (
         <span key={propertyExpr}>
-          {getClassExpressionJSX(
-            property,
-            property.getLinkedEntities(),
-            propertyExpr,
-            props.showBadges,
-            {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            },
-          )}
+          <ClassExpression
+            parentEntity={property}
+            linkedEntities={property.getLinkedEntities()}
+            currentResponsePath={propertyExpr}
+            showBadges={showBadges}
+            onNavigates={onNavigates}
+          />
           <>
             {i < asArray(propertyChain).length - 1 && (
               <span style={{ fontSize: "medium", color: "gray" }}>
@@ -255,12 +264,14 @@ function getPropertyChainJSX(
 /**
  * Builds and returns the property chains section JSX element.
  * @param property
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getPropertyChainSectionJSX(
   property: Property,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const propertyChains = property
     .getPropertyChains()
@@ -274,14 +285,26 @@ function getPropertyChainSectionJSX(
       <EuiFlexItem>
         <b>{!hasMultipleChains ? "Property chain" : "Property chains"}</b>
         {!hasMultipleChains ? (
-          <p>{getPropertyChainJSX(propertyChains, property, props)}</p>
+          <p>
+            {getPropertyChainJSX(
+              propertyChains,
+              property,
+              showBadges,
+              onNavigates,
+            )}
+          </p>
         ) : (
           <>
             <ul>
               {propertyChains.map((item: any) => {
                 return (
                   <li key={randomString()}>
-                    {getPropertyChainJSX(item, property, props)}
+                    {getPropertyChainJSX(
+                      item,
+                      property,
+                      showBadges,
+                      onNavigates,
+                    )}
                   </li>
                 );
               })}
@@ -297,12 +320,14 @@ function getPropertyChainSectionJSX(
 /**
  * Builds and returns the equivalent to section JSX element.
  * @param entity
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getEntityEquivalentToSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const equivalents = entity.getEquivalents();
 
@@ -310,31 +335,11 @@ function getEntityEquivalentToSectionJSX(
     return (
       <EuiFlexItem>
         <b>Equivalent to</b>
-        {equivalents.length === 1 ? (
-          <p>
-            {getReifiedJSX(entity, equivalents[0], props.showBadges, {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            })}
-          </p>
-        ) : (
-          <>
-            <ul>
-              {equivalents.map((item: any) => {
-                return (
-                  <li key={randomString()}>
-                    {getReifiedJSX(entity, item, props.showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
-                  </li>
-                );
-              })}
-            </ul>
-            <p></p>
-          </>
+        {getSectionListJSX(
+          entity,
+          equivalents.map((item) => item.value),
+          showBadges,
+          onNavigates,
         )}
       </EuiFlexItem>
     );
@@ -344,12 +349,14 @@ function getEntityEquivalentToSectionJSX(
 /**
  * Builds and returns the subentity of section JSX element.
  * @param entity
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getSubEntityOfSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const superEntities = entity.getSuperEntities();
 
@@ -357,32 +364,7 @@ function getSubEntityOfSectionJSX(
     return (
       <EuiFlexItem>
         <b>Sub{entity.getType()} of</b>
-        {superEntities.length === 1 ? (
-          <p>
-            {getReifiedJSX(entity, superEntities[0], props.showBadges, {
-              onNavigateToEntity: props.onNavigateToEntity,
-              onNavigateToOntology: props.onNavigateToOntology,
-              onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-            })}
-          </p>
-        ) : (
-          <>
-            <ul>
-              {superEntities.map((item: any) => {
-                return (
-                  <li key={randomString()}>
-                    {getReifiedJSX(entity, item, props.showBadges, {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    })}
-                  </li>
-                );
-              })}
-            </ul>
-            <p></p>
-          </>
-        )}
+        {getSectionListJSX(entity, superEntities, showBadges, onNavigates)}
       </EuiFlexItem>
     );
   }
@@ -391,12 +373,14 @@ function getSubEntityOfSectionJSX(
 /**
  * Builds and returns the related from section JSX element.
  * @param entity
- * @param props the entities' properties
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getEntityRelatedFromSectionJSX(
   entity: Property | Class,
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   const relatedFroms = entity.getRelatedFrom();
   const predicates: string[] = Array.from(
@@ -429,18 +413,13 @@ function getEntityRelatedFromSectionJSX(
                     .map((elem) => {
                       return (
                         <li key={randomString()}>
-                          {getClassExpressionJSX(
-                            entity,
-                            entity.getLinkedEntities(),
-                            elem.value["value"],
-                            props.showBadges,
-                            {
-                              onNavigateToEntity: props.onNavigateToEntity,
-                              onNavigateToOntology: props.onNavigateToOntology,
-                              onNavigateToDisambiguate:
-                                props.onNavigateToDisambiguate,
-                            },
-                          )}
+                          <ClassExpression
+                            parentEntity={entity}
+                            linkedEntities={entity.getLinkedEntities()}
+                            currentResponsePath={elem.value["value"]}
+                            showBadges={showBadges}
+                            onNavigates={onNavigates}
+                          />
                         </li>
                       );
                     })}
@@ -460,13 +439,15 @@ function getEntityRelatedFromSectionJSX(
  * Builds and returns the class instances section JSX element.
  * @param term
  * @param instances an array of the classes' instances
- * @param props
+ * @param showBadges
+ * @param onNavigates
  * @returns {ReactElement | undefined} the sections' JSX element or undefined if section would be empty
  */
 function getClassInstancesSectionJSX(
   term: Class,
   instances: Thing[],
-  props: EntityRelationsWidgetProps,
+  showBadges: boolean = DEFAULT_SHOW_BADGES,
+  onNavigates: OnNavigates,
 ): ReactElement | undefined {
   if (instances.length > 0) {
     return (
@@ -477,17 +458,13 @@ function getClassInstancesSectionJSX(
             {instances.map((instance) => {
               return (
                 <li key={randomString()}>
-                  {getEntityLinkJSX(
-                    term,
-                    term.getLinkedEntities(),
-                    instance.getIri(),
-                    props.showBadges,
-                    {
-                      onNavigateToEntity: props.onNavigateToEntity,
-                      onNavigateToOntology: props.onNavigateToOntology,
-                      onNavigateToDisambiguate: props.onNavigateToDisambiguate,
-                    },
-                  )}
+                  <EntityLink
+                    parentEntity={term}
+                    linkedEntities={term.getLinkedEntities()}
+                    iri={instance.getIri()}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
                 </li>
               );
             })}
@@ -509,11 +486,14 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     showBadges,
     entityType,
     parameter,
-    onNavigateToEntity,
-    onNavigateToDisambiguate,
-    onNavigateToOntology,
     ...rest
   } = props;
+
+  const onNavigates = {
+    onNavigateToEntity: props.onNavigateToEntity,
+    onNavigateToOntology: props.onNavigateToOntology,
+    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+  };
 
   const olsApi = new OlsEntityApi(api);
 
@@ -559,72 +539,47 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     entity: Entity,
     instances: Individual[],
   ): ReactElement {
-    const sectionList: ReactElement[] = [];
+    let sectionList: (ReactElement | undefined)[] = [];
 
     if (isIndividual(entity)) {
-      const individualTypesSection = getIndividualTypesSectionJSX(
-        entity,
-        props,
+      sectionList.push(
+        getIndividualTypesSectionJSX(entity, showBadges, onNavigates),
+        getIndividualSameAsSectionJSX(entity, showBadges, onNavigates),
+        getIndividualDifferentFromSectionJSX(entity, showBadges, onNavigates),
       );
-      if (individualTypesSection != undefined)
-        sectionList.push(individualTypesSection);
-
-      const individualSameAsSection = getIndividualSameAsSectionJSX(
-        entity,
-        props,
-      );
-      if (individualSameAsSection != undefined)
-        sectionList.push(individualSameAsSection);
-
-      const individualDifferentFromSection =
-        getIndividualDifferentFromSectionJSX(entity, props);
-      if (individualDifferentFromSection != undefined)
-        sectionList.push(individualDifferentFromSection);
     }
+
     if (isProperty(entity) || isClass(entity)) {
-      const disjointWithSection = getDisjointWithSectionJSX(entity, props);
-      if (disjointWithSection != undefined)
-        sectionList.push(disjointWithSection);
+      sectionList.push(
+        getDisjointWithSectionJSX(entity, showBadges, onNavigates),
+      );
     }
+
     if (isProperty(entity)) {
-      const propertyInverseOfSection = getPropertyInverseOfSectionJSX(
-        entity,
-        props,
+      sectionList.push(
+        getPropertyInverseOfSectionJSX(entity, showBadges, onNavigates),
+        getPropertyChainSectionJSX(entity, showBadges, onNavigates),
       );
-      if (propertyInverseOfSection != undefined)
-        sectionList.push(propertyInverseOfSection);
-
-      const propertyChainSection = getPropertyChainSectionJSX(entity, props);
-      if (propertyChainSection != undefined)
-        sectionList.push(propertyChainSection);
     }
+
     if (isProperty(entity) || isClass(entity)) {
-      const entityEquivalentToSection = getEntityEquivalentToSectionJSX(
-        entity,
-        props,
+      sectionList.push(
+        getEntityEquivalentToSectionJSX(entity, showBadges, onNavigates),
+        getSubEntityOfSectionJSX(entity, showBadges, onNavigates),
+        getEntityRelatedFromSectionJSX(entity, showBadges, onNavigates),
       );
-      if (entityEquivalentToSection != undefined)
-        sectionList.push(entityEquivalentToSection);
-
-      const subEntityOfSection = getSubEntityOfSectionJSX(entity, props);
-      if (subEntityOfSection != undefined) sectionList.push(subEntityOfSection);
-
-      const entityRelatedFromSection = getEntityRelatedFromSectionJSX(
-        entity,
-        props,
-      );
-      if (entityRelatedFromSection != undefined)
-        sectionList.push(entityRelatedFromSection);
     }
+
     if (isClass(entity)) {
-      const classInstancesSection = getClassInstancesSectionJSX(
-        entity,
-        instances,
-        props,
+      sectionList.push(
+        getClassInstancesSectionJSX(entity, instances, showBadges, onNavigates),
       );
-      if (classInstancesSection != undefined)
-        sectionList.push(classInstancesSection);
     }
+
+    // filter out empty (= undefined) sections
+    sectionList = sectionList.filter(
+      (elem: ReactElement | undefined): boolean => elem != undefined,
+    );
 
     if (sectionList.length > 0) {
       return <EuiText {...rest}>{sectionList}</EuiText>;

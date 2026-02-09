@@ -1,19 +1,19 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { TabDescription } from "../../../../app/widgetDescriptions";
 import { TabWidget } from "./TabWidget";
 import {
-  TabWidgetStoryArgs,
-  TabWidgetStoryArgTypes,
+  commonTabWidgetPlay,
   DefaultArgs,
+  DefiningOntologyUnavailableArgs,
+  HiddenTabsArgs,
+  SelectingDefiningOntologyArgs,
+  TabWidgetLargeArgs,
   TabWidgetOLS3Args,
   TabWidgetOLS4V1Args,
   TabWidgetOLS4V2Args,
-  SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs,
-  TabWidgetLargeArgs,
-  HiddenTabsArgs,
+  TabWidgetStoryArgs,
+  TabWidgetStoryArgTypes,
 } from "./TabWidgetStories";
-import { TabDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { commonTabWidgetPlay } from "./TabWidgetStories";
 
 const meta = {
   title: "Additional Entity Metadata/TabWidget",

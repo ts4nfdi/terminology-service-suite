@@ -1,20 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { GraphViewDescription } from "../../../app/widgetDescriptions";
 import { GraphViewWidget } from "./GraphViewWidget";
 import {
-  GraphViewWidgetStoryArgTypes,
-  GraphViewWidgetStoryArgs,
+  ChebiCaffeineHierarchyArgs,
+  ChebiCaffeineHierarchyWithComparisonArgs,
+  ChebiIonAndIonRadicalWithComparisonArgs,
   ChebiIonArgs,
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
-  commonGraphViewWidgetPlay,
-  ChebiCaffeineHierarchyArgs,
+  GraphViewWidgetStoryArgTypes,
+  GraphViewWidgetStoryArgs,
+  GraphWithGermanLabelArgs,
   WithOnNodeDoubleClickCallbackArgs,
-  ChebiCaffeineHierarchyWithComparisonArgs,
-  ChebiIonAndIonRadicalWithComparisonArgs
+  commonGraphViewWidgetPlay,
 } from "./GraphViewWidgetStories";
-import { GraphViewDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Hierarchy and Graph/GraphViewWidget",
@@ -111,6 +112,16 @@ export const ChebiCaffeineHierarchyWithComparison: Story = {
 
 export const ChebiIonAndIonRadicalWithComparison: Story = {
   args: ChebiIonAndIonRadicalWithComparisonArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLabel: Story = {
+  args: GraphWithGermanLabelArgs,
   parameters: {
     docs: {
       disable: true,

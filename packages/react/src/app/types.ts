@@ -1,13 +1,15 @@
-import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
-import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
-import { EuiTextProps } from "@elastic/eui/src/components/text/text";
-import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiCardProps } from "@elastic/eui";
+import { Action } from "@elastic/eui/src/components/basic_table/action_types";
+import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
-import { Entity, Thing } from "../model/interfaces";
-import { BuildHierarchyProps, HierarchyIriProp } from "../api/HierarchyBuilder";
+import { EuiTextProps } from "@elastic/eui/src/components/text/text";
+import { Thing } from "../model/interfaces";
+import {
+  BuildHierarchyProps,
+  HierarchyIriProp,
+} from "../model/interfaces/HierarchyBuilder";
+import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
 import Reified from "../model/Reified";
-import { EuiButtonColor } from "@elastic/eui/src/components/button/button";
 
 type ParameterObj = {
   parameter?: string;
@@ -116,7 +118,7 @@ type ContainerWidthObj = {
   width?: number;
 };
 
-type CssClassNameObj = {
+export type CssClassNameObj = {
   /**
    * CSS class for styling
    */
@@ -167,7 +169,8 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
   ParameterObj &
   ApiObj &
   CssClassNameObj &
-  UseLegacyObj & {
+  UseLegacyObj &
+  OnNavigateToOntology & {
     /**
      * A method that is called once the set of selection changes
      */
@@ -177,7 +180,16 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
     /**
      * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
      */
-    preselected?: { label?: string; iri?: string }[];
+    preselected?: {
+      label?: string;
+      iri?: string;
+      description?: string;
+      ontology_name?: string;
+      type?: string;
+      short_form?: string;
+      source?: string;
+      source_url?: string;
+    }[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -265,6 +277,13 @@ export type JsonApiWidgetProps = {
    * Size of the button.
    */
   buttonSize?: "s" | "m";
+};
+
+export type ColorObj = {
+  /**
+   * Color object, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+   */
+  color?: EuiLinkColor | string;
 };
 
 export type ColorFirstObj = {
@@ -396,16 +415,24 @@ export type EntityOntoListWidgetProps = TabSubwidgetsProps &
   OnNavigateToOntology &
   CssClassNameObj;
 
-export type EntityOntoListPresentationProps = OptionalEntityTypeObj &
-  ForcedIriObj &
-  OnNavigateToOntology &
-  CssClassNameObj & {
-    ontolist: any[];
-    label: string;
-  };
+export type NavigateToOntologyProps = OnNavigateToOntology &
+  OptionalEntityTypeObj &
+  OptionalIriObj & { label?: string };
+
+export type OntologyBadgeProps = NavigateToOntologyProps &
+  OptionalOntologyIdObj &
+  CssClassNameObj &
+  ColorObj;
+
+export type ExpandableOntologyBadgeListProps = NavigateToOntologyProps & {
+  ontolist: any[];
+} & CssClassNameObj &
+  ColorObj;
+
+export type EntityOntoListPresentationProps = ExpandableOntologyBadgeListProps;
+export type EntityDefinedByPresentationProps = ExpandableOntologyBadgeListProps;
 
 export type EntityDefinedByWidgetProps = EntityOntoListWidgetProps;
-export type EntityDefinedByPresentationProps = EntityOntoListPresentationProps;
 
 export type AlternativeNameTabWidgetProps = TabSubwidgetsProps;
 
@@ -437,6 +464,7 @@ export type EntityData = {
    * should be present for use with hierarchy
    */
   parents?: Reified<string>[];
+  color?: string;
 };
 
 export type OnNavigateToEntity = {
@@ -452,8 +480,8 @@ export type OnNavigateToEntity = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToEntity?:
-  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-  | string;
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToOntology = {
@@ -469,8 +497,8 @@ export type OnNavigateToOntology = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToOntology?:
-  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-  | string;
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -485,8 +513,8 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-  | ((entityType: string, entity?: EntityData) => void)
-  | string;
+    | ((entityType: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -498,6 +526,9 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiKey?: string;
   backendType?: string;
   hierarchyWrap?: boolean;
+  targetIri?: string;
+  showHeader?: boolean;
+  showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
@@ -645,6 +676,7 @@ export type SearchResultsListWidgetProps = Partial<
   TargetLinkObj &
   ParameterObj &
   UseLegacyObj &
+  OnNavigateToOntology &
   CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
@@ -684,7 +716,8 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   TargetLinkObj &
   ParameterObj &
   CssClassNameObj &
-  OptionalEntityTypeObj & {
+  OptionalEntityTypeObj &
+  OnNavigateToOntology & {
     result: SearchResultProps;
     iri: string;
     ontologyId: string;
@@ -699,7 +732,8 @@ export type TermDepictionWidgetProps = ApiObj &
 export type GraphViewWidgetProps = ApiObj &
   ForcedIriObj &
   ForcedOntologyIdObj &
-  CssClassNameObj & {
+  CssClassNameObj &
+  ParameterObj & {
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */

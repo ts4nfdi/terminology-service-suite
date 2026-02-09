@@ -1,6 +1,7 @@
+import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../../api/ols/OlsHierarchyApi";
+import { EntityData } from "../../app";
 import { EntityTypeName } from "../ModelTypeCheck";
-import { HierarchyBuilder } from "../../api/HierarchyBuilder";
-import { EntityData } from "../../app/types";
+import { HierarchyBuilder } from "./HierarchyBuilder";
 
 export type ParentChildRelation = {
   childIri: string;
@@ -39,14 +40,14 @@ export class Hierarchy {
   entitiesData: Map<string, EntityData>;
   allChildrenPresent: Set<string>;
   roots: TreeNode[]; // stores the tree hierarchy
-  protected api: HierarchyBuilder;
+  api: HierarchyBuilder;
   ontologyId: string;
 
   includeObsoleteEntities: boolean = DEFAULT_INCLUDE_OBSOLETE_ENTITIES;
   entityType?: EntityTypeName;
   keepExpansionStates: boolean = DEFAULT_KEEP_EXPANSION_STATE;
-  protected useLegacy?: boolean;
-  protected parameter?: string;
+  useLegacy?: boolean;
+  parameter?: string;
 
   mainEntityIri?: string; // to highlight it in the hierarchy
 
@@ -213,7 +214,9 @@ export class Hierarchy {
         // add children to parentChildRelations for iri of nodeToExpand
         const parChildRel: ParentChildRelation[] = [];
         for (const child of children) {
-          this.entitiesData.set(child.iri, child);
+          if (this.entitiesData.get(child.iri) == undefined) {
+            this.entitiesData.set(child.iri, child);
+          } // should not be updated as color could be overridden
           if (child.parents) {
             const parRelation = child.parents.filter(
               (par) => par.value == nodeToExpand.entityData.iri,
@@ -236,4 +239,140 @@ export class Hierarchy {
       return true;
     } else return false;
   }
+
+  colorEntity(node: TreeNode, color?: string) {
+    node.entityData.color = color;
+    this.entitiesData.set(node.entityData.iri, node.entityData);
+  }
+}
+
+export function compareHierarchies(
+  hierarchyA: Hierarchy,
+  hierarchyB: Hierarchy,
+): Hierarchy {
+  // Step 1 — Clone A's data
+  const entitiesData = new Map<string, EntityData>();
+  const parentChildRelations = new Map<string, ParentChildRelation[]>();
+
+  for (const [iri, entity] of hierarchyA.entitiesData.entries()) {
+    entitiesData.set(iri, { ...entity });
+  }
+
+  for (const [parentIri, rels] of hierarchyA.parentChildRelations.entries()) {
+    parentChildRelations.set(parentIri, [...rels]);
+  }
+
+  // Step 2 — Merge B → A
+  for (const [iri, entityB] of hierarchyB.entitiesData.entries()) {
+    if (entitiesData.has(iri)) {
+      // Exists in both → mark union
+      entitiesData.get(iri)!.color =
+        HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION;
+    } else {
+      // Only in B → mark COLOR_B
+      entitiesData.set(iri, {
+        ...entityB,
+        color: HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B,
+      });
+    }
+  }
+
+  // Merge parent-child relations
+  for (const [parentIri, rels] of hierarchyB.parentChildRelations.entries()) {
+    if (!parentChildRelations.has(parentIri)) {
+      parentChildRelations.set(parentIri, []);
+    }
+
+    const target = parentChildRelations.get(parentIri)!;
+    for (const rel of rels) {
+      if (!target.some((r) => r.childIri === rel.childIri)) {
+        target.push(rel);
+      }
+    }
+  }
+
+  // Step 3 — Apply color for nodes only in A (if not already set)
+  for (const [iri, entity] of entitiesData.entries()) {
+    if (!entity.color) {
+      if (hierarchyA.entitiesData.has(iri)) {
+        entity.color = HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A;
+      }
+    }
+  }
+
+  // Step 4 — Rebuild tree
+  return rebuildHierarchyWithColor(
+    hierarchyA,
+    entitiesData,
+    parentChildRelations,
+  );
+}
+
+function rebuildHierarchyWithColor(
+  base: Hierarchy,
+  entitiesData: Map<string, EntityData>,
+  parentChildRelations: Map<string, ParentChildRelation[]>,
+): Hierarchy {
+  function createTreeNode(
+    entityData: EntityData,
+    cycleCheck: Set<string>,
+    childRelationToParent?: string,
+  ): TreeNode {
+    cycleCheck.add(entityData.iri);
+
+    const node = new TreeNode(entityData);
+    node.childRelationToParent = childRelationToParent;
+
+    if (entityData.color) {
+      base.colorEntity(node, entityData.color);
+    }
+
+    const children = parentChildRelations.get(entityData.iri) || [];
+    for (const child of children) {
+      if (cycleCheck.has(child.childIri)) continue;
+
+      const childData = entitiesData.get(child.childIri);
+      if (childData) {
+        node.addChild(
+          createTreeNode(childData, cycleCheck, child.childRelationToParent),
+        );
+      }
+    }
+
+    if (node.loadedChildren.length > 0) node.expanded = true;
+
+    cycleCheck.delete(entityData.iri);
+    return node;
+  }
+
+  const hasParent = new Set<string>();
+  for (const rels of parentChildRelations.values()) {
+    for (const r of rels) hasParent.add(r.childIri);
+  }
+
+  const roots: TreeNode[] = [];
+  for (const [iri, entity] of entitiesData.entries()) {
+    if (!hasParent.has(iri)) {
+      roots.push(createTreeNode(entity, new Set()));
+    }
+  }
+
+  return new Hierarchy({
+    parentChildRelations,
+    entitiesData,
+    allChildrenPresent: base.allChildrenPresent,
+    roots: roots.sort((a, b) =>
+      (a.entityData.label || a.entityData.iri).localeCompare(
+        b.entityData.label || b.entityData.iri,
+      ),
+    ),
+    api: base.api,
+    ontologyId: base.ontologyId,
+    entityType: base.entityType,
+    includeObsoleteEntities: base.includeObsoleteEntities,
+    keepExpansionStates: base.keepExpansionStates,
+    useLegacy: base.useLegacy,
+    parameter: base.parameter,
+    mainEntityIri: base.mainEntityIri,
+  });
 }

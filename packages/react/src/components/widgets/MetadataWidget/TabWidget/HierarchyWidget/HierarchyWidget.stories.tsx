@@ -1,25 +1,27 @@
-import { HierarchyWidget } from "./HierarchyWidget";
-import {
-  HierarchyWidgetStoryArgs,
-  HierarchyWidgetStoryArgTypes,
-  ClassHierarchyArgs,
-  IndividualHierarchyArgs,
-  PreferredRootsArgs,
-  IncludeObsoleteEntitiesArgs,
-  PropertyRootsArgs,
-  IndividualRootsArgs,
-  LargeHierarchyArgs,
-  SkosHierarchyArgs,
-  SagePubHierarchyArgs,
-  OntoportalHierarchyArgs,
-  OLS3HierarchyArgs,
-  commonHierarchyWidgetPlay,
-  OLSGermanArgs,
-  SkosmosAgrovocGermanArgs,
-} from "./HierarchyWidgetStories";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../../../app/util";
 import { HierarchyDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { HierarchyWidget } from "./HierarchyWidget";
+import {
+  ClassHierarchyArgs,
+  commonHierarchyWidgetPlay,
+  CompareHierarchiesArgs,
+  CompareHierarchiesSubEntityArgs,
+  HierarchyWidgetStoryArgs,
+  HierarchyWidgetStoryArgTypes,
+  IncludeObsoleteEntitiesArgs,
+  IndividualHierarchyArgs,
+  IndividualRootsArgs,
+  LargeHierarchyArgs,
+  OLS3HierarchyArgs,
+  OLSGermanArgs,
+  OntoportalHierarchyArgs,
+  PreferredRootsArgs,
+  PropertyRootsArgs,
+  SagePubHierarchyArgs,
+  SkosHierarchyArgs,
+  SkosmosAgrovocGermanArgs,
+} from "./HierarchyWidgetStories";
 
 const meta = {
   title: "Hierarchy and Graph/HierarchyWidget",
@@ -105,5 +107,15 @@ export const OLSGerman: Story = {
 
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchies: Story = {
+  args: CompareHierarchiesArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesSubEntity: Story = {
+  args: CompareHierarchiesSubEntityArgs,
   play: commonHierarchyWidgetPlay,
 };

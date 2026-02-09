@@ -1,22 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { TitleDescription } from "../../../../app/widgetDescriptions";
 import { TitleWidget } from "./TitleWidget";
 import {
-  TitleWidgetStoryArgs,
-  TitleWidgetStoryArgTypes,
-  TitleWidgetDefaultArgs,
-  OntologyTitleArgs,
-  TitleWidgetWithTitleTextArgs,
-  IncorrectIriWithDefaultValueArgs,
-  IncorrectIriWithoutDefaultValueArgs,
-  SelectingDefiningOntologyArgs,
   DefiningOntologyUnavailableArgs,
-  WithStylesArgs,
-  WithoutStylesArgs,
+  IncorrectIriWithoutDefaultValueArgs,
+  OntologyTitleArgs,
   OntologyTitleCustomLinkArgs,
   OntologyTitleCustomOnNavigateArgs,
+  SelectingDefiningOntologyArgs,
+  TitleWidgetDefaultArgs,
+  TitleWidgetStoryArgTypes,
+  TitleWidgetStoryArgs,
+  TitleWidgetWithTitleTextArgs,
+  WithStylesArgs,
+  WithoutStylesArgs,
   commonTitleWidgetPlay,
 } from "./TitleWidgetStories";
-import { TitleDescription } from "../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Entity Metadata/TitleWidget",

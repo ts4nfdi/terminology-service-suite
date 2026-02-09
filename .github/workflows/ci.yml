@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # to enable use of OIDC for trusted publishing and npm provenance
     strategy:
       matrix:
         node-version: [ 22.x ]
@@ -60,7 +62,7 @@ jobs:
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }} # for access to NPM
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
         working-directory: packages/react
 
       - name: Parse semantic-release output

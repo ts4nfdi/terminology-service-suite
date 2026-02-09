@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  TabWidget,
+  TabWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTabWidgetPlay,
   DefaultArgs,
@@ -12,12 +18,6 @@ import {
   TabWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/TabWidgetStories";
 import "./index";
-import { TabDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  TabWidget,
-  TabWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -57,12 +57,16 @@ window['ts4nfdiWidgets'].createTab(
         hierarchyTab: ${args.hierarchyTab},
         crossRefTab: ${args.crossRefTab},
         terminologyInfoTab: ${args.terminologyInfoTab},
+        graphViewTab: ${args.graphViewTab},
+        termDepictionTab: ${args.termDepictionTab},
         hierarchyPreferredRoots:${args.hierarchyPreferredRoots},
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
+        hierarchyWrap:${args.hierarchyWrap},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
-        onNavigateToDisambiguate:${args.onNavigateToDisambiguate}
+        onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
+        className:"${args.className}"
     },
     document.querySelector('#tab_widget_container_${num}')
 )

@@ -1,7 +1,7 @@
-import { createTab } from "./TabWidget";
-import { createHierarchy } from "./HierarchyWidget";
-import { createCrossRefTab } from "./CrossRefWidget";
 import { createAlternativeNameTab } from "./AlternativeNameTabWidget";
+import { createCrossRefTab } from "./CrossRefWidget";
+import { createHierarchy } from "./HierarchyWidget";
+import { createTab } from "./TabWidget";
 
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
@@ -12,8 +12,8 @@ import { createAlternativeNameTab } from "./AlternativeNameTabWidget";
 };
 
 export {
-  createTab,
-  createHierarchy,
-  createCrossRefTab,
   createAlternativeNameTab,
+  createCrossRefTab,
+  createHierarchy,
+  createTab,
 };

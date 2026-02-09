@@ -1,8 +1,5 @@
-import {
-  EntityTypeName,
-  entityTypeNames,
-} from "../../../../model/ModelTypeCheck";
 import * as globals from "../../../../app/globals";
+import { EntityTypeName } from "../../../../model/ModelTypeCheck";
 import {
   apiArgType,
   entityTypeArgType,

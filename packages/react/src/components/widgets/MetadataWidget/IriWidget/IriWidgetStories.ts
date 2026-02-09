@@ -1,14 +1,13 @@
+import { expect, waitFor, within } from "storybook/test";
 import {
   classNameArgType,
   colorArgType,
-  colorSecondArgType,
   copyButtonArgType,
   externalIconArgType,
   iriArgType,
   iriTextArgType,
   urlPrefixArgType,
 } from "../../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const IriWidgetStoryArgTypes = {
   ...colorArgType,

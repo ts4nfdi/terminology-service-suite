@@ -1,14 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { AlternativeNameTabDescription } from "../../../../../app/widgetDescriptions";
 import { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
 import {
+  AlternativeNameTabWidget1Args,
   AlternativeNameTabWidgetStoryArgs,
   AlternativeNameTabWidgetStoryArgTypes,
-  AlternativeNameTabWidget1Args,
-  SelectingDefiningOntologyArgs,
-  DefiningOntologyUnavailableArgs,
   commonAlternativeNameTabWidgetPlay,
+  DefiningOntologyUnavailableArgs,
+  SelectingDefiningOntologyArgs,
 } from "./AlternativeNameTabWidgetStories";
-import { AlternativeNameTabDescription } from "../../../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 const meta = {
   title: "Entity Metadata/AlternativeNameTabWidget",
   component: AlternativeNameTabWidget,

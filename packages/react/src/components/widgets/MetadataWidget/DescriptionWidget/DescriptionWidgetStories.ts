@@ -1,3 +1,6 @@
+import { expect, waitFor, within } from "storybook/test";
+import * as globals from "../../../../app/globals";
+import { ThingTypeName } from "../../../../model/ModelTypeCheck";
 import {
   apiArgType,
   classNameArgType,
@@ -9,9 +12,6 @@ import {
   thingTypeArgType,
   useLegacyArgType,
 } from "../../../../stories/storyArgs";
-import * as globals from "../../../../app/globals";
-import { expect, waitFor, within } from "storybook/test";
-import { ThingTypeName } from "../../../../model/ModelTypeCheck";
 
 export const DescriptionWidgetStoryArgTypes = {
   ...apiArgType,

@@ -1,3 +1,4 @@
+import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
@@ -11,7 +12,6 @@ import {
   parameterArgType,
   showBadgesArgType,
 } from "../../../stories/storyArgs";
-import { expect, waitFor, within } from "storybook/test";
 
 export const EntityRelationsWidgetStoryArgTypes = {
   ...apiArgType,

@@ -1,4 +1,5 @@
-import { OlsBaseApi } from "./OlsBaseApi";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { getUseLegacy } from "../../app/util";
 import {
   entityTypeNames,
   isEntityTypeName,
@@ -8,11 +9,9 @@ import {
   thingTypeNames,
 } from "../../model/ModelTypeCheck";
 import { Thing } from "../../model/interfaces";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { check_for_errors } from "../../utils/olsApiUtils";
 import { OlsEntityApi } from "./OlsEntityApi";
 import { OlsOntologyApi } from "./OlsOntologyApi";
-import { getUseLegacy } from "../../app/util";
-import { check_for_errors } from "../../utils/olsApiUtils";
 
 export class OlsThingApi {
   protected axiosInstance: AxiosInstance;

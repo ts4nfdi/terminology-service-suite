@@ -18,12 +18,11 @@ import {
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { MetadataCompact } from "./MetadataCompact";
-import { SearchResultsListWidgetProps } from "../../../app/types";
-import ReactDOM from "react-dom";
-import { SearchBarWidget } from "../SearchBarWidget";
-import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
 import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
+import { SearchResultsListWidgetProps } from "../../../app";
+import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
+import { SearchBarWidget } from "../SearchBarWidget";
+import { MetadataCompact } from "./MetadataCompact";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
@@ -37,6 +36,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     itemsPerPageOptions = DEFAULT_PAGE_SIZE_OPTIONS,
     targetLink,
     preselected,
+    onNavigateToOntology,
     useLegacy = true,
     className,
     ...rest
@@ -425,6 +425,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                       iri={result.iri}
                       ontologyId={result.ontology_name}
                       useLegacy={useLegacy}
+                      onNavigateToOntology={onNavigateToOntology}
                     />
                     <EuiSpacer />
                   </React.Fragment>

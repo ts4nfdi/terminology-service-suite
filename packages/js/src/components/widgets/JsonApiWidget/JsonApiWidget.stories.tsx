@@ -1,3 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  JsonApiWidget,
+  JsonApiWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { JsonApiDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonJsonApiWidgetPlay,
   JsonApiWidgetDefaultArgs,
@@ -5,12 +11,6 @@ import {
   JsonApiWidgetStoryArgTypes,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/JsonApiWidget/JsonApiWidgetStories";
 import "./index";
-import { JsonApiDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  JsonApiWidget,
-  JsonApiWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 

@@ -1,3 +1,4 @@
+import { expect, waitFor, within } from "storybook/test";
 import {
   classNameArgType,
   colorFirstArgType,
@@ -7,7 +8,6 @@ import {
   ontologyIdArgType,
 } from "../../../../../stories/storyArgs";
 import "../../../../../style/customBreadcrumbStyle.css";
-import { expect, waitFor, within } from "storybook/test";
 
 export const BreadcrumbPresentationStoryArgTypes = {
   ...ontologyIdArgType,

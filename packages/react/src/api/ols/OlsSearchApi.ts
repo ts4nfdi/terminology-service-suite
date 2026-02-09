@@ -1,9 +1,7 @@
-import { OlsBaseApi } from "./OlsBaseApi";
-import {
-  buildParamsForSearch,
-  buildParamsForSelect,
-  buildParamsForSuggest,
-} from "../../utils/olsApiUtils";
+import { Select } from "../../model/interfaces/Select";
+import { OLSSelect } from "../../model/ols-model/OLSSelect";
+import { OLSSelectResult } from "../../model/ols-model/OLSSelectResult";
+import { Ts4nfdiSearchResult } from "../../model/ts4nfdi-model/Ts4nfdiSearchResult";
 import {
   ContentParams,
   PaginationParams,
@@ -11,10 +9,12 @@ import {
   SelectQueryParams,
   SuggestQueryParams,
 } from "../../utils/olsApiTypes";
-import { Select } from "../../model/interfaces/Select";
-import { OLSSelectResult } from "../../model/ols-model/OLSSelectResult";
-import { Ts4nfdiSearchResult } from "../../model/ts4nfdi-model/Ts4nfdiSearchResult";
-import { OLSSelect } from "../../model/ols-model/OLSSelect";
+import {
+  buildParamsForSearch,
+  buildParamsForSelect,
+  buildParamsForSuggest,
+} from "../../utils/olsApiUtils";
+import { OlsBaseApi } from "./OlsBaseApi";
 
 export class OlsSearchApi extends OlsBaseApi {
   public search = async (

@@ -1,6 +1,14 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+  HierarchyWidget,
+  HierarchyWidgetProps,
+} from "@ts4nfdi/terminology-service-suite/src";
+import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
+  CompareHierarchiesArgs,
+  CompareHierarchiesSubEntityArgs,
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
   IncludeObsoleteEntitiesArgs,
@@ -17,12 +25,6 @@ import {
   SkosmosAgrovocGermanArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
 import "./index";
-import { HierarchyDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
-import {
-  HierarchyWidget,
-  HierarchyWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -64,8 +66,13 @@ window['ts4nfdiWidgets'].createHierarchy(
         keepExpansionStates:${args.keepExpansionStates},
         showSiblingsOnInit:${args.showSiblingsOnInit},
         onNavigateToEntity:${args.onNavigateToEntity},
-        onNavigateToOntology:${args.onNavigateToOntology}
-        hierarchyWrap:${args.hierarchyWrap}
+        onNavigateToOntology:${args.onNavigateToOntology},
+        hierarchyWrap:${args.hierarchyWrap},
+        showHeader:${args.showHeader},
+        showComparisonTitleInHeader:${args.showComparisonTitleInHeader},
+        targetIri:"${args.targetIri}",
+        className:"${args.className}",
+        parameter:"${args.parameter}"
     },
     document.querySelector('#hierarchy_semlookp_container_${num}')
 )
@@ -142,5 +149,15 @@ export const OLSGerman: Story = {
 
 export const SkosmosAgrovocGerman: Story = {
   args: SkosmosAgrovocGermanArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchies: Story = {
+  args: CompareHierarchiesArgs,
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesSubEntity: Story = {
+  args: CompareHierarchiesSubEntityArgs,
   play: commonHierarchyWidgetPlay,
 };

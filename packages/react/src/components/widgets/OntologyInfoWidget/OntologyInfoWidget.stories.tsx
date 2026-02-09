@@ -1,16 +1,16 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { manuallyEmbedOnNavigate } from "../../../app/util";
+import { OntologyInfoDescription } from "../../../app/widgetDescriptions";
 import { OntologyInfoWidget } from "./OntologyInfoWidget";
 import {
-  OntologyInfoWidgetStoryArgs,
-  OntologyInfoWidgetStoryArgTypes,
+  commonOntologyInfoWidgetPlay,
+  NavigateToEBIPageArgs,
   OntologyInfoWidget1Args,
   OntologyInfoWidget2Args,
   OntologyInfoWidgetOLS4APIArgs,
-  NavigateToEBIPageArgs,
-  commonOntologyInfoWidgetPlay,
+  OntologyInfoWidgetStoryArgs,
+  OntologyInfoWidgetStoryArgTypes,
 } from "./OntologyInfoWidgetStories";
-import { manuallyEmbedOnNavigate } from "../../../app/util";
-import { OntologyInfoDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Ontology Metadata/OntologyInfoWidget",

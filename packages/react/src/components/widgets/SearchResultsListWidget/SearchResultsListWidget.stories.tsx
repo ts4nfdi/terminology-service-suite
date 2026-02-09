@@ -1,17 +1,17 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 import { SearchResultsListWidget } from "./SearchResultsListWidget";
 import {
+  commonSearchResultsListWidgetPlay,
+  ErrorSearchResultsListArgs,
+  SearchResultsListNFDI4HealthArgs,
+  SearchResultsListOls4Args,
+  SearchResultsListSafetyArgs,
   SearchResultsListWidgetStoryArgs,
   SearchResultsListWidgetStoryArgTypes,
-  SearchResultsListSafetyArgs,
-  SearchResultsListNFDI4HealthArgs,
-  ErrorSearchResultsListArgs,
-  TibNFDI4CHEMArgs,
   TibDataPlantArgs,
-  SearchResultsListOls4Args,
-  commonSearchResultsListWidgetPlay,
+  TibNFDI4CHEMArgs,
 } from "./SearchResultsListWidgetStories";
-import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   title: "Search/SearchResultsListWidget",

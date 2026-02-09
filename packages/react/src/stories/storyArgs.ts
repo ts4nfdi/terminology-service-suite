@@ -1,6 +1,6 @@
-import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 import { ArgTypes } from "@storybook/react";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../api/ols/OlsHierarchyApi";
+import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
 export const apiArgType: ArgTypes = {
   api: {
@@ -221,8 +221,9 @@ export const hierarchyWrapArgType = {
       "If true, text wraps upon exceeding width. If false, content becomes scrollable.",
     table: {
       defaultValue: {
-        summary: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
+        summary: `${HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP}`,
       },
+      type: { summary: "boolean" },
     },
   },
 };
@@ -672,10 +673,10 @@ export const onNavigateToEntityArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToEntity()" +
-          (entityType ? ` for ${entityType || "entity"}` : "") +
-          (entity && entity.label ? ` "${entity.label}"` : "") +
-          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-          ".",
+            (entityType ? ` for ${entityType || "entity"}` : "") +
+            (entity && entity.label ? ` "${entity.label}"` : "") +
+            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+            ".",
         );
       },
       "Navigate to EBI page": (
@@ -686,19 +687,19 @@ export const onNavigateToEntityArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-            ontologyId +
-            "/" +
-            new Map([
-              ["term", "classes"],
-              ["class", "classes"],
-              ["individual", "individuals"],
-              ["property", "properties"],
-              ["dataProperty", "properties"],
-              ["objectProperty", "properties"],
-              ["annotationProperty", "properties"],
-            ]).get(entityType) +
-            "/" +
-            encodeURIComponent(encodeURIComponent(entity.iri)),
+              ontologyId +
+              "/" +
+              new Map([
+                ["term", "classes"],
+                ["class", "classes"],
+                ["individual", "individuals"],
+                ["property", "properties"],
+                ["dataProperty", "properties"],
+                ["objectProperty", "properties"],
+                ["annotationProperty", "properties"],
+              ]).get(entityType) +
+              "/" +
+              encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -730,10 +731,10 @@ export const onNavigateToOntologyArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToOntology()" +
-          (entityType ? ` for ${entityType || "entity"}` : "") +
-          (entity && entity.label ? ` "${entity.label}"` : "") +
-          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-          ` for ontologyId "${ontologyId}".`,
+            (entityType ? ` for ${entityType || "entity"}` : "") +
+            (entity && entity.label ? ` "${entity.label}"` : "") +
+            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+            ` for ontologyId "${ontologyId}".`,
         );
       },
       "Navigate to EBI page": (
@@ -744,19 +745,19 @@ export const onNavigateToOntologyArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-            ontologyId +
-            "/" +
-            new Map([
-              ["term", "classes"],
-              ["class", "classes"],
-              ["individual", "individuals"],
-              ["property", "properties"],
-              ["dataProperty", "properties"],
-              ["objectProperty", "properties"],
-              ["annotationProperty", "properties"],
-            ]).get(entityType) +
-            "/" +
-            encodeURIComponent(encodeURIComponent(entity.iri)),
+              ontologyId +
+              "/" +
+              new Map([
+                ["term", "classes"],
+                ["class", "classes"],
+                ["individual", "individuals"],
+                ["property", "properties"],
+                ["dataProperty", "properties"],
+                ["objectProperty", "properties"],
+                ["annotationProperty", "properties"],
+              ]).get(entityType) +
+              "/" +
+              encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -787,10 +788,10 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToDisambiguate()" +
-          (entityType ? ` for ${entityType || "entity"}` : "") +
-          (entity && entity.label ? ` "${entity.label}"` : "") +
-          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-          ".",
+            (entityType ? ` for ${entityType || "entity"}` : "") +
+            (entity && entity.label ? ` "${entity.label}"` : "") +
+            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+            ".",
         );
       },
       "Navigate to EBI page": (
@@ -798,7 +799,8 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
         entity?: { iri: string; label?: string },
       ) => {
         window.open(
-          `https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : ""
+          `https://www.ebi.ac.uk/ols4/search?q=${
+            entity && entity.label ? entity.label : ""
           }&exactMatch=true&lang=en`,
           "_top",
         );
@@ -867,7 +869,6 @@ export const rootWalkArgType: ArgTypes = {
   },
 };
 
-
 export const hierarchyArgType: ArgTypes = {
   rootWalk: {
     required: false,
@@ -885,7 +886,7 @@ export const targetIriArgType: ArgTypes = {
   href: {
     required: false,
     description:
-      "The target iri. used in the hierarchy mode to compare two terms in one graph.",
+      "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
     table: {
       type: { summary: `string` },
     },
@@ -893,12 +894,37 @@ export const targetIriArgType: ArgTypes = {
   },
 };
 
+export const showHeaderArgType: ArgTypes = {
+  showHeader: {
+    required: false,
+    description: "If enabled, a header is shown.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
+
+export const showComparisonTitleInHeaderArgType: ArgTypes = {
+  showComparisonTitleInHeader: {
+    required: false,
+    description:
+      "If enabled, a comparison title in the header is shown for the comparison mode.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
 
 export const edgeLabelArgType: ArgTypes = {
   href: {
     required: false,
-    description:
-      `The edge label in the graph. Default is "is a". Only for sub-class predicators.`,
+    description: `The edge label in the graph. Default is "is a". Only for sub-class predicators.`,
     table: {
       type: { summary: `string` },
     },
@@ -994,8 +1020,8 @@ If \`preferredRoots==true\`, only the entities specifically marked as preferred 
   },
 };
 export const hierarchyPreferredRootsArgType = {
-  hierarchyPreferredRoots: preferredRootsArgType.preferredRoots
-}
+  hierarchyPreferredRoots: preferredRootsArgType.preferredRoots,
+};
 export const keepExpansionStatesArgType = {
   keepExpansionStates: {
     required: false,
@@ -1011,14 +1037,15 @@ Otherwise, if a node is closed, only the direct children will be shown on re-exp
   },
 };
 export const hierarchyKeepExpansionStatesArgType = {
-  hierarchyKeepExpansionStates: keepExpansionStatesArgType.keepExpansionStates
-}
+  hierarchyKeepExpansionStates: keepExpansionStatesArgType.keepExpansionStates,
+};
 export const showSiblingsOnInitArgType = {
   showSiblingsOnInit: {
     required: false,
     description: `
 If false, only the entity with specified iri and its ancestors are displayed in a hierarchy.
-If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API).
+If true, the siblings of every entity mentioned above is displayed as well (NOTE: this might, but does not have to, need more queries to the API). 
+This option cannot be used alongside the compareHierarchy option and defaults to false in these cases.
     `,
     table: {
       defaultValue: {
@@ -1028,8 +1055,8 @@ If true, the siblings of every entity mentioned above is displayed as well (NOTE
   },
 };
 export const hierarchyShowSiblingsOnInitArgType = {
-  hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit
-}
+  hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit,
+};
 export const entityArgType = {
   entity: {
     required: false,

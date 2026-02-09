@@ -1,7 +1,9 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   SearchResultsListWidget,
   SearchResultsListWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
+import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonSearchResultsListWidgetPlay,
   ErrorSearchResultsListArgs,
@@ -13,9 +15,7 @@ import {
   TibDataPlantArgs,
   TibNFDI4CHEMArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/SearchResultsListWidget/SearchResultsListWidgetStories";
-import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import "./index";
-import type { Meta, StoryObj } from "@storybook/react-vite";
 
 let counter = 0;
 
@@ -51,6 +51,8 @@ window['ts4nfdiWidgets'].createSearchResultsList(
         itemsPerPageOptions:[${args.itemsPerPageOptions}],
         targetLink:"${args.targetLink}",
         useLegacy:"${args.useLegacy}",
+        onNavigateToOntology:${args.onNavigateToOntology},
+        className:"${args.className}"
     },
     document.querySelector('#search_results_list_widget_container_${num}')
 )

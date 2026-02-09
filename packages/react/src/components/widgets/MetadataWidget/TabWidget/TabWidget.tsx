@@ -1,15 +1,13 @@
 "use client";
 
-import React from "react";
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { TabWidgetProps } from "../../../../app/types";
-import { Entity } from "../../../../model/interfaces";
-import { TabPresentation } from "./TabPresentation";
-import { getErrorMessageToDisplay } from "../../../../app/util";
-import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
-import ReactDOM from "react-dom";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
+import { TabWidgetProps } from "../../../../app/types";
+import { getErrorMessageToDisplay } from "../../../../app/util";
+import { Entity } from "../../../../model/interfaces";
+import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
+import { TabPresentation } from "./TabPresentation";
 
 function TabWidget(props: TabWidgetProps) {
   const {

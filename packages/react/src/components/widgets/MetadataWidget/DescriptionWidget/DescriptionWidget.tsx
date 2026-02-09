@@ -1,14 +1,11 @@
 "use client";
 
-import React from "react";
+import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
-import { getErrorMessageToDisplay } from "../../../../app/util";
+import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 import { DescriptionWidgetProps } from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
-import ReactDOM from "react-dom";
-import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 
 const NO_DESCRIPTION = "No description available.";
 
