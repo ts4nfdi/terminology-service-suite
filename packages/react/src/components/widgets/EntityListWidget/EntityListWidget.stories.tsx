@@ -23,6 +23,6 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: {
-    api: "https://terminology.services.base4nfdi.de/api-gateway/",
+    api: "https://www.ebi.ac.uk/ols4/api/",
   },
 };

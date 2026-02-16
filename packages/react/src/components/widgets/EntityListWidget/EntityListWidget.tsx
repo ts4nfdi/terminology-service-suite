@@ -26,6 +26,18 @@ const DEFAULT_API_URL = `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?search=
 const DEFAULT_FETCH_SIZE = 200;
 const FETCH_CONCURRENCY = 4;
 
+const entityTypeNames = [
+  "term",
+  "class",
+  "property",
+  "annotationProperty",
+  "dataProperty",
+  "objectProperty",
+  "individual",
+] as const;
+
+type EntityTypeName = (typeof entityTypeNames)[number];
+
 function pickLabel(item: any) {
   const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
   if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
@@ -138,6 +150,69 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
+async function getEntityWithEntityTypeProvided(
+  entityApi: OlsEntityApi,
+  entityType: EntityTypeName,
+  ontologyId?: string,
+  parameter?: string,
+  useLegacy?: boolean,
+  paginationParams?: { page: string; size: string },
+  signal?: AbortSignal,
+): Promise<any> {
+  const contentParams = ontologyId ? { ontologyId } : undefined;
+
+  switch (entityType) {
+    case "term":
+    case "class":
+      return await (entityApi.getTerms as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    case "property":
+    case "annotationProperty":
+    case "dataProperty":
+    case "objectProperty":
+      return await (entityApi.getProperties as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    case "individual":
+      return await (entityApi.getIndividuals as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    default:
+      throw Error(
+        'Invalid entity type "' +
+          entityType +
+          '". Must be one of {' +
+          entityTypeNames.map((e) => `"${e}"`).join(", ") +
+          "}.",
+      );
+  }
+}
+
+function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
+  if (endpoint === "properties") return "property";
+  if (endpoint === "individuals") return "individual";
+  return "term";
+}
+
 async function fetchPage(
   baseUrl: string,
   pageIndex: number,
@@ -151,54 +226,25 @@ async function fetchPage(
   const ontologyApi = new OlsOntologyApi(apiBase);
 
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
-  const contentParams = ontologyId ? { ontologyId } : undefined;
 
-  let response: any;
-
-  switch (endpoint) {
-    case "ontologies":
-      response = await ontologyApi.getOntologies(
-        paginationParams,
-        undefined,
-        undefined,
-        parameter,
-        useLegacy,
-      );
-      break;
-
-    case "properties":
-      response = await (entityApi.getProperties as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-      break;
-
-    case "individuals":
-      response = await (entityApi.getIndividuals as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-      break;
-
-    default:
-      response = await (entityApi.getTerms as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-      break;
-  }
+  const response =
+    endpoint === "ontologies"
+      ? await ontologyApi.getOntologies(
+          paginationParams,
+          undefined,
+          undefined,
+          parameter,
+          useLegacy,
+        )
+      : await getEntityWithEntityTypeProvided( // switch replacement
+          entityApi,
+          inferEntityTypeFromEndpoint(endpoint),
+          ontologyId,
+          parameter,
+          useLegacy,
+          paginationParams,
+          signal,
+        );
 
   const elements = extractElements(response);
   const baseIndex = pageIndex * pageSize;
