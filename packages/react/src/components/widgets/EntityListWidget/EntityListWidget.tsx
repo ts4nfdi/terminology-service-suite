@@ -15,8 +15,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { EBI_API_ENDPOINT } from "../../../app/globals";
-import "../../../style/customBreadcrumbStyle.css"
-
+import "../../../style/customBreadcrumbStyle.css";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 export type EntityListWidgetProps = { apiUrl?: string };
