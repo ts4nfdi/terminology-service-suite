@@ -21,4 +21,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithDefaults: Story = {};
+export const WithDefaults: Story = {
+  args: {
+    api: "https://terminology.services.base4nfdi.de/api-gateway/",
+  },
+};

@@ -10,7 +10,7 @@ import {
   EuiProvider,
   EuiText,
 } from "@elastic/eui";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
@@ -25,9 +25,6 @@ const DEFAULT_API_URL = `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?search=
 
 const DEFAULT_FETCH_SIZE = 200;
 const FETCH_CONCURRENCY = 4;
-
-const entityApi = new OlsEntityApi(EBI_API_ENDPOINT);
-const ontologyApi = new OlsOntologyApi(EBI_API_ENDPOINT);
 
 function pickLabel(item: any) {
   const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
@@ -52,12 +49,7 @@ function getFetchSizeFromUrl(baseUrl: string) {
   return size > 0 && Number.isFinite(size) ? size : DEFAULT_FETCH_SIZE;
 }
 
-function parseOlsUrl(baseUrl: string): {
-  endpoint: "classes" | "terms" | "properties" | "individuals" | "ontologies";
-  useLegacy: boolean;
-  ontologyId?: string;
-  parameter?: string;
-} {
+function parseOlsUrl(baseUrl: string) {
   const url = new URL(baseUrl);
   const parts = url.pathname.split("/").filter(Boolean);
 
@@ -77,12 +69,22 @@ function parseOlsUrl(baseUrl: string): {
         ? "ontologies"
         : "classes";
 
+  const basePathEnd = useLegacyBase
+    ? url.pathname.indexOf("/ontologies")
+    : url.pathname.indexOf("/v2");
+
+  const apiBase =
+    basePathEnd >= 0
+      ? url.origin + url.pathname.substring(0, basePathEnd)
+      : url.origin;
+
   const sp = new URLSearchParams(url.searchParams);
   sp.delete("page");
   sp.delete("size");
   const parameter = sp.toString() || undefined;
 
   return {
+    apiBase,
     endpoint,
     useLegacy: endpoint === "terms" ? true : useLegacyBase,
     ontologyId,
@@ -142,7 +144,11 @@ async function fetchPage(
   pageSize: number,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
-  const { endpoint, useLegacy, ontologyId, parameter } = parseOlsUrl(baseUrl);
+  const { apiBase, endpoint, useLegacy, ontologyId, parameter } =
+    parseOlsUrl(baseUrl);
+
+  const entityApi = new OlsEntityApi(apiBase);
+  const ontologyApi = new OlsOntologyApi(apiBase);
 
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
   const contentParams = ontologyId ? { ontologyId } : undefined;
@@ -215,26 +221,26 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
   const [totalItemCount, setTotalItemCount] = useState(0);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  const abortRef = useRef<AbortController | null>(null);
+  const [controller, setController] = useState<AbortController>(
+    () => new AbortController(),
+  );
 
   useEffect(() => {
-    abortRef.current?.abort();
-    abortRef.current = new AbortController();
+    controller.abort();
+    const next = new AbortController();
+    setController(next);
 
     setAllRows([]);
     setTotalItemCount(0);
     setIsFetchingMore(false);
 
-    return () => abortRef.current?.abort();
+    return () => {
+      next.abort();
+    };
   }, [baseUrl, fetchSize]);
 
   const firstPageKey = useMemo(
     () => ["entityList:firstPage", baseUrl, fetchSize] as const,
-    [baseUrl, fetchSize],
-  );
-
-  const fetchFirstPage = useMemo(
-    () => () => fetchPage(baseUrl, 0, fetchSize, abortRef.current?.signal),
     [baseUrl, fetchSize],
   );
 
@@ -243,11 +249,14 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     isLoading: isLoadingFirstPage,
     isError,
     error,
-  } = useQuery<QueryResult>(firstPageKey, fetchFirstPage, {
-    keepPreviousData: false,
-    staleTime: 60_000,
-    enabled: Boolean(abortRef.current),
-  });
+  } = useQuery<QueryResult>(
+    firstPageKey,
+    () => fetchPage(baseUrl, 0, fetchSize, controller.signal),
+    {
+      keepPreviousData: false,
+      staleTime: 60_000,
+    },
+  );
 
   useEffect(() => {
     if (!firstPage) return;
@@ -258,7 +267,7 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
   useEffect(() => {
     if (!firstPage) return;
 
-    const signal = abortRef.current?.signal;
+    const signal = controller.signal;
 
     const total = firstPage.totalItemCount;
     const already = firstPage.rows.length;
@@ -303,7 +312,7 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
       let i = 0;
 
       const worker = async () => {
-        while (!cancelled && !signal?.aborted) {
+        while (!cancelled && !signal.aborted) {
           const page = queue[i++];
           if (page == null) return;
 
@@ -312,7 +321,7 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
             pending.set(page, result.rows);
             flush();
           } catch {
-            if (signal?.aborted) return;
+            if (signal.aborted) return;
           }
         }
       };
@@ -322,14 +331,14 @@ function EntityListWidget({ apiUrl }: EntityListWidgetProps) {
     };
 
     runPool().finally(() => {
-      if (cancelled || signal?.aborted) return;
+      if (cancelled || signal.aborted) return;
       setIsFetchingMore(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [firstPage, baseUrl, fetchSize]);
+  }, [firstPage, baseUrl, fetchSize, controller]);
 
   if (isError) {
     return (
