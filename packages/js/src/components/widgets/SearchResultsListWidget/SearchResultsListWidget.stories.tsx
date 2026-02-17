@@ -6,10 +6,9 @@ import {
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonSearchResultsListWidgetPlay,
-  ErrorSearchResultsListArgs,
-  SearchResultsListNFDI4HealthArgs,
-  SearchResultsListOls4Args,
-  SearchResultsListSafetyArgs,
+  DefaultArgs,
+  NFDI4HealthArgs,
+  OpenEnergyPlatformArgs,
   SearchResultsListWidgetStoryArgs,
   SearchResultsListWidgetStoryArgTypes,
   TibDataPlantArgs,
@@ -67,18 +66,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const SearchResultsListSafety: Story = {
-  args: SearchResultsListSafetyArgs,
+export const Default: Story = {
+  args: DefaultArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 
-export const SearchResultsListNFDI4Health: Story = {
-  args: SearchResultsListNFDI4HealthArgs,
-  play: commonSearchResultsListWidgetPlay,
-};
-
-export const ErrorSearchResultsList: Story = {
-  args: ErrorSearchResultsListArgs,
+export const NFDI4Health: Story = {
+  args: NFDI4HealthArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 
@@ -92,7 +86,7 @@ export const TibDataPlant: Story = {
   play: commonSearchResultsListWidgetPlay,
 };
 
-export const SearchResultsListOls4: Story = {
-  args: SearchResultsListOls4Args,
+export const OpenEnergyPlatform: Story = {
+  args: OpenEnergyPlatformArgs,
   play: commonSearchResultsListWidgetPlay,
 };

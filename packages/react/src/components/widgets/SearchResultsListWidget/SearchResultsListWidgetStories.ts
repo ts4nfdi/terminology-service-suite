@@ -33,33 +33,25 @@ export const SearchResultsListWidgetStoryArgs = {
   itemsPerPageOptions: [10, 25, 50, 100],
   preselected: [],
   targetLink: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   onNavigateToOntology: "Console message",
 };
 
-export const SearchResultsListSafetyArgs = {
+export const DefaultArgs = {
   api: globals.ZBMED_OLS4_API,
-  query: "d*",
+  query: "*",
   targetLink: "",
-  parameter:
-    "collection=safety&fieldList=description,label,iri,ontology_name,type,short_form",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
+  useLegacy: false,
 };
 
-export const SearchResultsListNFDI4HealthArgs = {
+export const NFDI4HealthArgs = {
   api: globals.ZBMED_OLS4_API,
   query: "d*",
   targetLink: "",
-  parameter:
-    "collection=nfdi4health&fieldList=description,label,iri,ontology_name,type,short_form",
+  parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   preselected: [{ label: "diabetes" }],
   useLegacy: true,
-};
-
-export const ErrorSearchResultsListArgs = {
-  api: globals.ZBMED_OLS4_API,
-  query: "d*",
-  targetLink: "",
-  parameter: "collection=nfdi4health",
 };
 
 export const TibNFDI4CHEMArgs = {
@@ -78,11 +70,12 @@ export const TibDataPlantArgs = {
   targetLink: "",
 };
 
-export const SearchResultsListOls4Args = {
-  api: globals.EBI_API_ENDPOINT,
+export const OpenEnergyPlatformArgs = {
+  api: globals.TIB_API_ENDPOINT,
   query: "*",
-  targetLink: "/",
-  parameter: "",
+  targetLink: "",
+  parameter:
+    "ontology=oeo&fieldList=description,label,iri,ontology_name,type,short_form",
   useLegacy: false,
 };
 
