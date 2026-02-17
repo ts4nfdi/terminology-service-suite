@@ -295,6 +295,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           selectionChangedEvent={(selectedOption) => {
             transform_to_searchValue(selectedOption);
           }}
+          parameter={parameter}
         />
         <EuiSpacer size="xl" />
         <EuiSpacer size="s" />
