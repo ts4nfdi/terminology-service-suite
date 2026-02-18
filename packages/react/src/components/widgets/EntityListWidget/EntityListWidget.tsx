@@ -255,7 +255,9 @@ async function fetchPage(
   };
 }
 
-function EntityListWidget({ apiUrl, api }: EntityListWidgetProps) {
+function EntityListWidget(props: EntityListWidgetProps) {
+  const { apiUrl, api } = props;
+
   if (!apiUrl) return null;
 
   const baseUrl = apiUrl;
