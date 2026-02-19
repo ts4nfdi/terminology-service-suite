@@ -146,6 +146,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 ontologyId={ontologyId || data.entity.getOntologyId()}
                 shortForm={data.entity.getShortForm()}
                 className={`${finalClassName}-breadcrumb`}
+                colorFirst={props.colorFirst}
+                colorSecond={props.colorSecond}
               />
             </span>
           </EuiFlexItem>
@@ -154,7 +156,14 @@ function MetadataWidget(props: MetadataWidgetProps) {
               <EuiFlexItem>
                 <EuiFlexGroup>
                   <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                    <IriWidget iri={iri} className={`${finalClassName}-iri`} />
+                    <IriWidget
+                      iri={iri}
+                      className={`${finalClassName}-iri`}
+                      iriText={props.iriText}
+                      urlPrefix={props.urlPrefix}
+                      externalIcon={props.externalIcon}
+                      copyButton={props.copyButton}
+                    />
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>
@@ -166,6 +175,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               className={`${finalClassName}-description`}
               isLoading={isLoading}
               error={error}
+              descText={props.descText}
             />
           </EuiFlexItem>
 
@@ -220,6 +230,12 @@ function MetadataWidget(props: MetadataWidgetProps) {
               onNavigateToDisambiguate={props.onNavigateToDisambiguate}
               className={className}
               hierarchyWrap={props.hierarchyWrap}
+              hierarchyTargetIri={props.hierarchyTargetIri}
+              graphTargetIri={props.graphTargetIri}
+              rootWalk={props.rootWalk}
+              edgeLabel={props.edgeLabel}
+              onNodeClick={props.onNodeClick}
+              graphHierarchy={props.graphHierarchy}
             />
           </EuiFlexItem>
         </EuiFlexGroup>

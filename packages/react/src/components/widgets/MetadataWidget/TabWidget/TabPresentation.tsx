@@ -64,6 +64,7 @@ function TabPresentation(props: TabPresentationProps) {
                 keepExpansionStates={props.hierarchyKeepExpansionStates}
                 className={`${finalClassName}-hierarchy`}
                 hierarchyWrap={props.hierarchyWrap}
+                targetIri={props.hierarchyTargetIri}
               />
             </div>
           </>
@@ -102,9 +103,8 @@ function TabPresentation(props: TabPresentationProps) {
             api={props.api}
             parameter={""}
             useLegacy={props.useLegacy}
-            showBadges={false}
+            showBadges={true}
             hasTitle={false}
-            width={600}
           />
         ),
         id: "tab4",
@@ -119,7 +119,11 @@ function TabPresentation(props: TabPresentationProps) {
             api={props.api}
             ontologyId={props.ontologyId || data.getOntologyId()}
             iri={props.iri}
-            rootWalk={false}
+            rootWalk={props.rootWalk}
+            targetIri={props.graphTargetIri}
+            hierarchy={props.graphHierarchy}
+            edgeLabel={props.edgeLabel}
+            onNodeClick={props.onNodeClick}
           />
         ),
         id: "tab5",

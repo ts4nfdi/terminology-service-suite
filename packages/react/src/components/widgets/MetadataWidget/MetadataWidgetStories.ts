@@ -4,9 +4,12 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
+  graphHierarchyArgType,
+  graphTargetIriArgType,
   hierarchyKeepExpansionStatesArgType,
   hierarchyPreferredRootsArgType,
   hierarchyShowSiblingsOnInitArgType,
+  hierarchyTargetIriArgType,
   hierarchyWrapArgType,
   iriArgType,
   onNavigateToDisambiguateArgType,
@@ -14,6 +17,7 @@ import {
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
+  termLinkArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 
@@ -31,6 +35,10 @@ export const MetadataWidgetStoryArgTypes = {
   ...hierarchyPreferredRootsArgType,
   ...hierarchyKeepExpansionStatesArgType,
   ...hierarchyShowSiblingsOnInitArgType,
+  ...hierarchyTargetIriArgType,
+  ...graphTargetIriArgType,
+  ...graphHierarchyArgType,
+  ...termLinkArgType,
 };
 
 export const MetadataWidgetStoryArgs = {

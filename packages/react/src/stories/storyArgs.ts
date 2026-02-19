@@ -812,14 +812,24 @@ export const hrefArgType: ArgTypes = {
   href: {
     required: false,
     description:
-      "Creates a hyperlink. Specify the URL of the page to which the link will go.",
+      "Creates a hyperlink for the title. Specify the URL of the page to which the link will go.",
     table: {
       type: { summary: `string` },
     },
     control: "text",
   },
 };
-
+export const termLinkArgType: ArgTypes = {
+  termLink: {
+    required: false,
+    description:
+      "The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.",
+    table: {
+      type: { summary: `string` },
+    },
+    control: "text",
+  },
+};
 export const rootWalkArgType: ArgTypes = {
   rootWalk: {
     required: false,
@@ -834,7 +844,7 @@ export const rootWalkArgType: ArgTypes = {
 };
 
 export const hierarchyArgType: ArgTypes = {
-  rootWalk: {
+  hierarchy: {
     required: false,
     description:
       "When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.",
@@ -847,10 +857,10 @@ export const hierarchyArgType: ArgTypes = {
 };
 
 export const targetIriArgType: ArgTypes = {
-  href: {
+  targetIri: {
     required: false,
     description:
-      "If provided, a view comparing the hierarchies of iri and targetIri is shown.",
+      "If provided, a view comparing the hierarchies/graphs of iri and targetIri is shown.",
     table: {
       type: { summary: `string` },
     },
@@ -1020,6 +1030,15 @@ This option cannot be used alongside the compareHierarchy option and defaults to
 };
 export const hierarchyShowSiblingsOnInitArgType = {
   hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit,
+};
+export const hierarchyTargetIriArgType = {
+  hierarchyTargetIri: targetIriArgType.targetIri,
+};
+export const graphTargetIriArgType = {
+  graphTargetIri: targetIriArgType.targetIri,
+};
+export const graphHierarchyArgType = {
+  graphHierarchy: hierarchyArgType.hierarchy,
 };
 export const entityArgType = {
   entity: {
