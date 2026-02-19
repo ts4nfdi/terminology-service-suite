@@ -543,7 +543,14 @@ function WrappedEntityListWidget(props: EntityListWidgetProps) {
   return (
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
-        <EntityListWidget {...props} />
+        <EntityListWidget
+          apiUrl={props.apiUrl}
+          api={props.api}
+          useLegacy={props.useLegacy}
+          ontologyId={props.ontologyId}
+          thingType={props.thingType}
+          parameter={props.parameter}
+        />
       </QueryClientProvider>
     </EuiProvider>
   );

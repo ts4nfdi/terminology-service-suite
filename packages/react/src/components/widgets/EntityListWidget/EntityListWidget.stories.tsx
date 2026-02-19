@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: {
-    api: "https://semanticlookup.zbmed.de/ols/api/",
+    api: "https://www.ebi.ac.uk/ols4/api/",
     parameter: "search=",
   },
 };
