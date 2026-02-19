@@ -13,16 +13,17 @@ import {
 } from "@elastic/eui";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import {
+  getEntitiesWithEntityTypeProvided,
+  OlsEntityApi,
+} from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import "../../../style/customBreadcrumbStyle.css";
+import { EntityListWidgetProps } from "../../../app";
+
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 
-export type EntityListWidgetProps = {
-  apiUrl?: string;
-  api?: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
-};
 
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
@@ -146,68 +147,14 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
-async function getEntityWithEntityTypeProvided(
-  entityApi: OlsEntityApi,
-  entityType: EntityTypeName,
-  ontologyId?: string,
-  parameter?: string,
-  useLegacy?: boolean,
-  paginationParams?: { page: string; size: string },
-  signal?: AbortSignal,
-): Promise<any> {
-  const contentParams = ontologyId ? { ontologyId } : undefined;
 
-  switch (entityType) {
-    case "term":
-    case "class":
-      return await (entityApi.getTerms as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-
-    case "property":
-    case "annotationProperty":
-    case "dataProperty":
-    case "objectProperty":
-      return await (entityApi.getProperties as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-
-    case "individual":
-      return await (entityApi.getIndividuals as any)(
-        paginationParams,
-        undefined,
-        contentParams,
-        parameter,
-        useLegacy,
-        signal,
-      );
-
-    default:
-      throw Error(
-        'Invalid entity type "' +
-          entityType +
-          '". Must be one of {' +
-          entityTypeNames.map((e) => `"${e}"`).join(", ") +
-          "}.",
-      );
-  }
-}
 
 function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
   if (endpoint === "properties") return "property";
   if (endpoint === "individuals") return "individual";
   return "term";
 }
+//delete it, useless
 
 function normalizeSearchText(raw: string) {
   return raw.trim().replace(/\s+/g, " ");
@@ -355,7 +302,7 @@ async function fetchListPage(
           parameter,
           useLegacy,
         )
-      : await getEntityWithEntityTypeProvided(
+      : await getEntitiesWithEntityTypeProvided(
           api.entityApi,
           inferEntityTypeFromEndpoint(endpoint),
           ontologyId,

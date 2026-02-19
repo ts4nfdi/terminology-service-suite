@@ -10,6 +10,8 @@ import {
 } from "../model/interfaces/HierarchyBuilder";
 import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
 import Reified from "../model/Reified";
+import { OlsEntityApi } from "../api/ols/OlsEntityApi";
+import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 
 type ParameterObj = {
   parameter?: string;
@@ -753,4 +755,13 @@ export type OlsGraphEdge = {
   label?: string;
   source?: string;
   target?: string;
+};
+
+export type EntityListWidgetProps = {
+  apiUrl?: string;
+  api?: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
+  useLegacy?: boolean;
+  ontologyId?: string;
+  thingType?: ThingTypeName;
+  parameter?: string;
 };
