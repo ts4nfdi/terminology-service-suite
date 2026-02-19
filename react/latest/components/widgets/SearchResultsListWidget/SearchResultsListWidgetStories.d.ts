@@ -12,13 +12,14 @@ export declare const SearchResultsListWidgetStoryArgs: {
     parameter: string;
     onNavigateToOntology: string;
 };
-export declare const SearchResultsListSafetyArgs: {
+export declare const DefaultArgs: {
     api: string;
     query: string;
     targetLink: string;
     parameter: string;
+    useLegacy: boolean;
 };
-export declare const SearchResultsListNFDI4HealthArgs: {
+export declare const NFDI4HealthArgs: {
     api: string;
     query: string;
     targetLink: string;
@@ -27,12 +28,6 @@ export declare const SearchResultsListNFDI4HealthArgs: {
         label: string;
     }[];
     useLegacy: boolean;
-};
-export declare const ErrorSearchResultsListArgs: {
-    api: string;
-    query: string;
-    targetLink: string;
-    parameter: string;
 };
 export declare const TibNFDI4CHEMArgs: {
     api: string;
@@ -46,7 +41,7 @@ export declare const TibDataPlantArgs: {
     query: string;
     targetLink: string;
 };
-export declare const SearchResultsListOls4Args: {
+export declare const OpenEnergyPlatformArgs: {
     api: string;
     query: string;
     targetLink: string;

@@ -27,9 +27,8 @@ declare const meta: {
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const SearchResultsListSafety: Story;
-export declare const SearchResultsListNFDI4Health: Story;
-export declare const ErrorSearchResultsList: Story;
+export declare const Default: Story;
+export declare const NFDI4Health: Story;
 export declare const TibNFDI4CHEM: Story;
 export declare const TibDataPlant: Story;
-export declare const SearchResultsListOls4: Story;
+export declare const OpenEnergyPlatform: Story;
