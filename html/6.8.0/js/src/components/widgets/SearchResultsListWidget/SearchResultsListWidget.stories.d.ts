@@ -1,0 +1,10 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { SearchResultsListWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+declare const meta: Meta<SearchResultsListWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const Default: Story;
+export declare const NFDI4Health: Story;
+export declare const TibNFDI4CHEM: Story;
+export declare const TibDataPlant: Story;
+export declare const OpenEnergyPlatform: Story;

@@ -1,0 +1,1 @@
+import{c as r,j as i}from"./client-hNkKQuBU.js";import{W as d}from"./IriWidget-ChnKaBTJ.js";const o=new WeakMap;function p(s,e){let t=o.get(e);t||(t=r.createRoot(e),o.set(e,t)),t.render(i.jsx(d,{...s}))}window.ts4nfdiWidgets={...window.ts4nfdiWidgets,createIri:p};export{p as c};
