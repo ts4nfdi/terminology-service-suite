@@ -35,6 +35,7 @@ import {
 } from "../../../../../model/interfaces/Hierarchy";
 import { HierarchyBuilder } from "../../../../../model/interfaces/HierarchyBuilder";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
+import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
 function HierarchyWidget(props: HierarchyWidgetProps) {
   const {
@@ -150,7 +151,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       }}
                     >
                       <span className="ontology-badge">
-                        {definingOntology.toUpperCase()}
+                        <OntologyBadge
+                          ontologyId={definingOntology.toUpperCase()}
+                          onNavigateToOntology={props.onNavigateToOntology}
+                        />
                       </span>
                     </button>
                   </span>
