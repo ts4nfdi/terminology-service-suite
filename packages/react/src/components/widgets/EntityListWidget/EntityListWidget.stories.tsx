@@ -1,3 +1,5 @@
+// EntityListWidget.stories.tsx
+
 import type { Meta, StoryObj } from "@storybook/react";
 import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
@@ -23,6 +25,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: {
-    api: "https://terminology.services.base4nfdi.de/api-gateway/",
+    api: "https://semanticlookup.zbmed.de/ols/api/",
+    parameter: "search=",
   },
 };

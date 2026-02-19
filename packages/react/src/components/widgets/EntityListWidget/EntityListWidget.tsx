@@ -1,16 +1,17 @@
 "use client";
-
-import type { EuiBasicTableColumn, EuiSearchBarProps } from "@elastic/eui";
+import type { EuiBasicTableColumn } from "@elastic/eui";
 import {
+  EuiBasicTable,
+  EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiInMemoryTable,
   EuiLoadingSpinner,
   EuiPanel,
   EuiProvider,
+  EuiSpacer,
   EuiText,
 } from "@elastic/eui";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
@@ -25,8 +26,8 @@ export type EntityListWidgetProps = {
 
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
-const DEFAULT_FETCH_SIZE = 200;
-const FETCH_CONCURRENCY = 4;
+const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
+type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 const entityTypeNames = [
   "term",
@@ -54,13 +55,6 @@ function pickId(item: any) {
     item?.id ??
     item?.ontologyId;
   return v ? String(v) : "—";
-}
-
-function getFetchSizeFromUrl(baseUrl: string) {
-  const q = baseUrl.indexOf("?");
-  if (q === -1) return DEFAULT_FETCH_SIZE;
-  const size = Number(new URLSearchParams(baseUrl.slice(q)).get("size"));
-  return size > 0 && Number.isFinite(size) ? size : DEFAULT_FETCH_SIZE;
 }
 
 function parseOlsUrl(baseUrl: string) {
@@ -97,8 +91,10 @@ function parseOlsUrl(baseUrl: string) {
   sp.delete("size");
   const parameter = sp.toString() || undefined;
 
+  const normalizedApiBase = apiBase.endsWith("/") ? apiBase : `${apiBase}/`;
+
   return {
-    apiBase,
+    apiBase: normalizedApiBase,
     endpoint,
     useLegacy: endpoint === "terms" ? true : useLegacyBase,
     ontologyId,
@@ -213,7 +209,134 @@ function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
   return "term";
 }
 
-async function fetchPage(
+function normalizeSearchText(raw: string) {
+  return raw.trim().replace(/\s+/g, " ");
+}
+
+function getInitialPageSizeFromUrl(baseUrl: string): PageSize {
+  const q = baseUrl.indexOf("?");
+  if (q === -1) return 10;
+  const raw = new URLSearchParams(baseUrl.slice(q)).get("size");
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return 10;
+  if (n === 10 || n === 25 || n === 50) return n;
+  return 10;
+}
+
+function compareValues(a: unknown, b: unknown) {
+  const av = a == null ? "" : String(a);
+  const bv = b == null ? "" : String(b);
+  return av.localeCompare(bv, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+function searchTypeFromEndpoint(endpoint: string) {
+  if (endpoint === "ontologies") return "ontology";
+  if (endpoint === "properties") return "property";
+  if (endpoint === "individuals") return "individual";
+  return "class";
+}
+
+function getPreferredIdFromSearchDoc(d: any) {
+  const v =
+    d?.curie ?? d?.obo_id ?? d?.short_form ?? d?.id ?? d?.iri ?? d?.ontologyId;
+  return v ? String(v) : "—";
+}
+
+function getPreferredLabelFromSearchDoc(d: any) {
+  const v =
+    d?.label ?? d?.label_autosuggest ?? d?.title ?? d?.name ?? d?.ontologyId;
+  if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
+  return v ? String(v) : "—";
+}
+
+function isAbortError(err: unknown) {
+  if (!err) return false;
+  if (typeof err === "string") return err.includes("AbortError");
+  const anyErr = err as any;
+  const name = anyErr?.name;
+  const msg = String(anyErr?.message ?? "");
+  return (
+    name === "AbortError" ||
+    msg.includes("AbortError") ||
+    msg.toLowerCase().includes("aborted")
+  );
+}
+
+function escapeSolrSpecialChars(input: string) {
+  return input.replace(/([+\-!(){}\[\]^"~*?:\\\/&|])/g, "\\$1");
+}
+
+function buildSolrPrefixQuery(raw: string) {
+  const tokens = raw.trim().split(/\s+/).filter(Boolean);
+  if (!tokens.length) return "";
+  const parts = tokens.map((t) => {
+    const escaped = escapeSolrSpecialChars(t);
+    if (t.length < 2) return escaped;
+    return `${escaped}*`;
+  });
+  return parts.length === 1 ? parts[0] : parts.join(" AND ");
+}
+
+function queryFieldsForType(type: string) {
+  if (type === "ontology")
+    return "ontologyId,ontology_name,ontology_prefix,label,title,name";
+  return "label,obo_id,short_form,iri";
+}
+
+async function fetchSearchPage(
+  baseUrl: string,
+  pageIndex: number,
+  pageSize: number,
+  searchText: string,
+  signal?: AbortSignal,
+): Promise<QueryResult> {
+  const { apiBase, endpoint, ontologyId } = parseOlsUrl(baseUrl);
+
+  const start = pageIndex * pageSize;
+  const url = new URL("search", apiBase);
+
+  const type = searchTypeFromEndpoint(endpoint);
+  const q = buildSolrPrefixQuery(searchText);
+
+  url.searchParams.set("q", q);
+  url.searchParams.set("type", type);
+  url.searchParams.set("queryFields", queryFieldsForType(type));
+
+  if (ontologyId) url.searchParams.set("ontology", ontologyId);
+
+  url.searchParams.set("start", String(start));
+  url.searchParams.set("rows", String(pageSize));
+
+  url.searchParams.set("exact", "false");
+  url.searchParams.set("obsoletes", "false");
+
+  const res = await fetch(url.toString(), { signal });
+  if (!res.ok) throw new Error(`Search request failed (${res.status})`);
+  const json: any = await res.json();
+
+  const docs: any[] = Array.isArray(json?.response?.docs)
+    ? json.response.docs
+    : [];
+  const total =
+    typeof json?.response?.numFound === "number" &&
+    Number.isFinite(json.response.numFound)
+      ? json.response.numFound
+      : docs.length;
+
+  return {
+    rows: docs.map((d, i) => ({
+      name: getPreferredLabelFromSearchDoc(d),
+      id: getPreferredIdFromSearchDoc(d),
+      rowIndex: start + i,
+    })),
+    totalItemCount: total,
+  };
+}
+
+async function fetchListPage(
   baseUrl: string,
   pageIndex: number,
   pageSize: number,
@@ -261,7 +384,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
   if (!apiUrl) return null;
 
   const baseUrl = apiUrl;
-  const fetchSize = useMemo(() => getFetchSizeFromUrl(baseUrl), [baseUrl]);
 
   const derivedApi = useMemo(() => {
     if (api) return api;
@@ -272,127 +394,140 @@ function EntityListWidget(props: EntityListWidgetProps) {
     };
   }, [api, baseUrl]);
 
-  const [allRows, setAllRows] = useState<EntityRow[]>([]);
-  const [totalItemCount, setTotalItemCount] = useState(0);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-
-  const [controller, setController] = useState<AbortController>(
-    () => new AbortController(),
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState<PageSize>(() =>
+    getInitialPageSizeFromUrl(baseUrl),
   );
+
+  const [searchText, setSearchText] = useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
+
+  const [sortField, setSortField] = useState<keyof EntityRow>("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const controllerRef = useRef<AbortController>(new AbortController());
 
   useEffect(() => {
-    controller.abort();
-    const next = new AbortController();
-    setController(next);
-    setAllRows([]);
-    setTotalItemCount(0);
-    setIsFetchingMore(false);
+    controllerRef.current.abort();
+    controllerRef.current = new AbortController();
+    setPageIndex(0);
+    setPageSize(getInitialPageSizeFromUrl(baseUrl));
+    setSearchText("");
+    setDebouncedSearchText("");
+    setSortField("name");
+    setSortDirection("asc");
     return () => {
-      next.abort();
+      controllerRef.current.abort();
     };
-  }, [baseUrl, fetchSize]);
+  }, [baseUrl]);
 
-  const firstPageKey = useMemo(
-    () => ["entityList:firstPage", baseUrl, fetchSize] as const,
-    [baseUrl, fetchSize],
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearchText(normalizeSearchText(searchText));
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchText]);
+
+  useEffect(() => {
+    controllerRef.current.abort();
+    controllerRef.current = new AbortController();
+    return () => {
+      controllerRef.current.abort();
+    };
+  }, [baseUrl, pageIndex, pageSize, debouncedSearchText]);
+
+  const queryKey = useMemo(
+    () =>
+      [
+        "entityList:page",
+        baseUrl,
+        pageIndex,
+        pageSize,
+        debouncedSearchText,
+      ] as const,
+    [baseUrl, pageIndex, pageSize, debouncedSearchText],
   );
 
-  const {
-    data: firstPage,
-    isLoading: isLoadingFirstPage,
-    isError,
-    error,
-  } = useQuery<QueryResult>(
-    firstPageKey,
-    () => fetchPage(baseUrl, 0, fetchSize, derivedApi, controller.signal),
+  const queryFn = async (): Promise<QueryResult> => {
+    const signal = controllerRef.current.signal;
+
+    if (debouncedSearchText) {
+      return await fetchSearchPage(
+        baseUrl,
+        pageIndex,
+        pageSize,
+        debouncedSearchText,
+        signal,
+      );
+    }
+
+    return await fetchListPage(
+      baseUrl,
+      pageIndex,
+      pageSize,
+      derivedApi,
+      signal,
+    );
+  };
+
+  const { data, isLoading, isFetching, isError, error } = useQuery<QueryResult>(
+    queryKey,
+    queryFn,
     {
-      keepPreviousData: false,
+      keepPreviousData: true,
       staleTime: 60_000,
+      retry: false,
     },
   );
 
-  useEffect(() => {
-    if (!firstPage) return;
-    setAllRows(firstPage.rows);
-    setTotalItemCount(firstPage.totalItemCount);
-  }, [firstPage]);
+  const shouldShowError = isError && !isAbortError(error);
 
-  useEffect(() => {
-    if (!firstPage) return;
+  const totalItemCount = data?.totalItemCount ?? 0;
 
-    const signal = controller.signal;
-    const total = firstPage.totalItemCount;
-    const already = firstPage.rows.length;
-    if (!total || already >= total) return;
-
-    const totalPages = Math.ceil(total / fetchSize);
-    const remainingPages = Array.from(
-      { length: totalPages - 1 },
-      (_, i) => i + 1,
-    );
-
-    let cancelled = false;
-    setIsFetchingMore(true);
-
-    const pending = new Map<number, EntityRow[]>();
-    let nextPageToFlush = 1;
-
-    const flush = () => {
-      let batch: EntityRow[] | null = null;
-      while (true) {
-        const rows = pending.get(nextPageToFlush);
-        if (!rows) break;
-        pending.delete(nextPageToFlush);
-        nextPageToFlush += 1;
-        if (rows.length) (batch ??= []).push(...rows);
-      }
-      if (!batch || batch.length === 0) return;
-      setAllRows((prev) => {
-        const last = prev[prev.length - 1];
-        if (last && last.rowIndex >= batch[0]!.rowIndex) return prev;
-        return [...prev, ...batch];
-      });
-    };
-
-    const runPool = async () => {
-      const queue = remainingPages;
-      let i = 0;
-
-      const worker = async () => {
-        while (!cancelled && !signal.aborted) {
-          const page = queue[i++];
-          if (page == null) return;
-          try {
-            const result = await fetchPage(
-              baseUrl,
-              page,
-              fetchSize,
-              derivedApi,
-              signal,
-            );
-            pending.set(page, result.rows);
-            flush();
-          } catch {
-            if (signal.aborted) return;
-          }
-        }
-      };
-
-      const workerCount = Math.min(FETCH_CONCURRENCY, queue.length);
-      await Promise.all(Array.from({ length: workerCount }, worker));
-    };
-
-    runPool().finally(() => {
-      if (cancelled || signal.aborted) return;
-      setIsFetchingMore(false);
+  const rowsSorted = useMemo(() => {
+    const rows = data?.rows ?? [];
+    const sorted = [...rows].sort((a, b) => {
+      const r = compareValues(a[sortField], b[sortField]);
+      return sortDirection === "asc" ? r : -r;
     });
+    return sorted;
+  }, [data?.rows, sortField, sortDirection]);
 
-    return () => {
-      cancelled = true;
-    };
-  }, [firstPage, baseUrl, fetchSize, controller, derivedApi]);
+  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(
+    () => [
+      { field: "name", name: "Name", truncateText: true, sortable: true },
+      { field: "id", name: "ID", truncateText: true, sortable: true },
+    ],
+    [],
+  );
 
-  if (isError) {
+  const onTableChange = ({
+    page,
+    sort,
+  }: {
+    page?: { index: number; size: number };
+    sort?: { field: keyof EntityRow; direction: "asc" | "desc" };
+  }) => {
+    if (page) {
+      const nextSize = (
+        PAGE_SIZE_OPTIONS.includes(page.size as any) ? page.size : 10
+      ) as PageSize;
+
+      if (nextSize !== pageSize) {
+        setPageSize(nextSize);
+        setPageIndex(0);
+      } else if (page.index !== pageIndex) {
+        setPageIndex(page.index);
+      }
+    }
+
+    if (sort) {
+      setSortField(sort.field);
+      setSortDirection(sort.direction);
+    }
+  };
+
+  if (shouldShowError) {
     return (
       <EuiPanel paddingSize="m">
         <EuiText color="danger">{String(error)}</EuiText>
@@ -400,7 +535,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     );
   }
 
-  if (isLoadingFirstPage && allRows.length === 0) {
+  if (isLoading && !data) {
     return (
       <EuiPanel paddingSize="m" style={{ textAlign: "center" }}>
         <EuiLoadingSpinner size="l" />
@@ -408,43 +543,52 @@ function EntityListWidget(props: EntityListWidgetProps) {
     );
   }
 
-  const columns: Array<EuiBasicTableColumn<EntityRow>> = [
-    { field: "name", name: "Name", truncateText: true, sortable: true },
-    { field: "id", name: "ID", truncateText: true, sortable: true },
-  ];
-
-  const search: EuiSearchBarProps = {
-    box: {
-      incremental: true,
-      placeholder: "Search by Name or ID",
-    },
-  };
-
   return (
     <EuiPanel paddingSize="m">
       <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
         <EuiFlexItem grow={false}>
           <EuiText size="s" color="subdued">
-            Loaded: {allRows.length}
+            Loaded: {rowsSorted.length}
             {totalItemCount ? ` / ${totalItemCount}` : ""}
-            {isFetchingMore ? " (loading more…)" : ""}
+            {isFetching ? " (loading…)" : ""}
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>
 
-      <EuiInMemoryTable<EntityRow>
+      <EuiSpacer size="s" />
+
+      <EuiFieldSearch
+        fullWidth
+        incremental
+        placeholder="Search by Name or ID"
+        value={searchText}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+          setPageIndex(0);
+        }}
+        isClearable
+        aria-label="Search by Name or ID"
+      />
+
+      <EuiSpacer size="m" />
+
+      <EuiBasicTable<EntityRow>
         className="stripedRows"
         tableCaption="Entity list"
         responsiveBreakpoint={false}
-        items={allRows}
+        items={rowsSorted}
         columns={columns}
-        loading={isLoadingFirstPage && allRows.length === 0}
-        search={search}
+        loading={isFetching}
+        onChange={onTableChange}
         pagination={{
-          initialPageSize: 10,
-          pageSizeOptions: [10, 25, 50],
+          pageIndex,
+          pageSize,
+          totalItemCount,
+          pageSizeOptions: [...PAGE_SIZE_OPTIONS],
         }}
-        sorting={true}
+        sorting={{
+          sort: { field: sortField, direction: sortDirection },
+        }}
       />
     </EuiPanel>
   );
