@@ -1,0 +1,13 @@
+import{c as O,a3 as _,p as S,C as W,B as E,G as I,a4 as b,a5 as P,i as B,a6 as v}from"./storyArgs-BXaqVnci.js";import{D as x}from"./DescriptionWidget-HLUvalaS.js";import{Z as F,E as i}from"./globals-BQAFDkgj.js";import"./iframe-D6RYroSH.js";import"./preload-helper-Dp1pzeXC.js";import"./useQuery-qHBwtFk-.js";import"./OlsThingApi-CTUpynEm.js";import"./DescriptionPresentation-e0EKBVfO.js";import"./text-lkAphQ2Q.js";import"./loading_spinner-CVdmt-nO.js";import"./link.styles-BqW3fVvj.js";const{expect:N,waitFor:U,within:w}=__STORYBOOK_MODULE_TEST__,L={...B,...P,...b,...I,...E,...W,...S,..._,...O},M={api:"",iri:"",useLegacy:!0,ontologyId:"",thingType:"term",descText:"",color:"",className:"",parameter:"collection=nfdi4health"},C={iri:"http://purl.obolibrary.org/obo/NCIT_C2985",api:F,ontologyId:"ncit",thingType:"term",parameter:"collection=nfdi4health"},Q={api:i,iri:"http://purl.obolibrary.org/obo/IAO_0000631",thingType:"term",parameter:""},V={api:i,iri:"http://identifiers.org/uniprot/Q9VAM9",thingType:"term",parameter:""},Z={api:i,iri:"http://identifiers.org/uniprot/Q9VA",thingType:"term",parameter:""},a=async({canvasElement:u})=>{const h=w(u);await U(async()=>{const f=h.getByTestId("description");await N(f).toBeInTheDocument()},{timeout:3e3})},$={title:"Entity Metadata/DescriptionWidget",component:x,parameters:{layout:"centered",docs:{description:{component:v}}},argTypes:L,args:M},e={args:C,play:a},r={args:Q,play:a},t={args:V,play:a},o={args:Z,play:a};var n,s,p;e.parameters={...e.parameters,docs:{...(n=e.parameters)==null?void 0:n.docs,source:{originalSource:`{
+  args: DescriptionWidget1Args,
+  play: commonDescriptionWidgetPlay
+}`,...(p=(s=e.parameters)==null?void 0:s.docs)==null?void 0:p.source}}};var c,g,m;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  args: SelectingDefiningOntologyArgs,
+  play: commonDescriptionWidgetPlay
+}`,...(m=(g=r.parameters)==null?void 0:g.docs)==null?void 0:m.source}}};var l,y,d;t.parameters={...t.parameters,docs:{...(l=t.parameters)==null?void 0:l.docs,source:{originalSource:`{
+  args: DefiningOntologyUnavailableArgs,
+  play: commonDescriptionWidgetPlay
+}`,...(d=(y=t.parameters)==null?void 0:y.docs)==null?void 0:d.source}}};var D,T,A;o.parameters={...o.parameters,docs:{...(D=o.parameters)==null?void 0:D.docs,source:{originalSource:`{
+  args: ErrorFetchingDataArgs,
+  play: commonDescriptionWidgetPlay
+}`,...(A=(T=o.parameters)==null?void 0:T.docs)==null?void 0:A.source}}};const ee=["DescriptionWidget1","SelectingDefiningOntology","DefiningOntologyUnavailable","ErrorFetchingData"];export{t as DefiningOntologyUnavailable,e as DescriptionWidget1,o as ErrorFetchingData,r as SelectingDefiningOntology,ee as __namedExportsOrder,$ as default};
