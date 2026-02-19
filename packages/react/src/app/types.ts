@@ -3,6 +3,8 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
+import { OlsEntityApi } from "../api/ols/OlsEntityApi";
+import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 import { Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
@@ -10,8 +12,6 @@ import {
 } from "../model/interfaces/HierarchyBuilder";
 import { EntityTypeName, ThingTypeName } from "../model/ModelTypeCheck";
 import Reified from "../model/Reified";
-import { OlsEntityApi } from "../api/ols/OlsEntityApi";
-import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 
 type ParameterObj = {
   parameter?: string;

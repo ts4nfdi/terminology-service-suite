@@ -18,12 +18,10 @@ import {
   OlsEntityApi,
 } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
-import "../../../style/customBreadcrumbStyle.css";
 import { EntityListWidgetProps } from "../../../app";
-
+import "../../../style/customBreadcrumbStyle.css";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
-
 
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
@@ -146,8 +144,6 @@ function extractTotal(response: any, fallback: number) {
 
   return fallback;
 }
-
-
 
 function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
   if (endpoint === "properties") return "property";
