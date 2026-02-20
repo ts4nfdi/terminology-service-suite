@@ -120,7 +120,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     return (
       <div className={finalClassName} data-testid="metadata">
         <EuiFlexGroup direction="column">
-          <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
+          <EuiFlexItem grow={false}>
             {termLink ? (
               <EuiLink href={termLink} target="_blank" external={false}>
                 <TitlePresentation
@@ -155,7 +155,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
             <EuiFlexGroup direction="column">
               <EuiFlexItem>
                 <EuiFlexGroup>
-                  <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
+                  <EuiFlexItem grow={false}>
                     <IriWidget
                       iri={iri}
                       className={`${finalClassName}-iri`}
@@ -169,7 +169,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
-          <EuiFlexItem style={{ maxWidth: 600 }}>
+          <EuiFlexItem>
             <DescriptionPresentation
               description={data.entity.getDescription()}
               className={`${finalClassName}-description`}
@@ -179,7 +179,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
 
-          <div style={{ margin: "0 12px 0", maxWidth: 600 }}>
+          <div style={{ margin: "0 12px 0" }}>
             <EntityOntoListPresentation
               iri={props.iri}
               label={data.entity.getLabel() || ""}
@@ -272,6 +272,8 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           crossRefTab={props.crossRefTab}
           terminologyInfoTab={props.terminologyInfoTab}
           graphViewTab={props.graphViewTab}
+          entityInfoTab={props.entityInfoTab}
+          entityRelationTab={props.entityRelationTab}
           termDepictionTab={props.termDepictionTab}
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}

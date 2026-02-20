@@ -8,6 +8,8 @@ import {
 } from "../../../../model/ModelTypeCheck";
 import Reified from "../../../../model/Reified";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css";
+import { EntityInfoWidget } from "../../EntityInfoWidget";
+import { EntityRelationsWidget } from "../../EntityRelationsWidget";
 import { GraphViewWidget } from "../../GraphViewWidget";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 import { TermDepictionWidget } from "../../TermDepictionWidget";
@@ -34,7 +36,7 @@ function TabPresentation(props: TabPresentationProps) {
             className={`${finalClassName}-altNameTab`}
           />
         ),
-        id: "tab1",
+        id: "synonyms",
         name: "Alternative Names",
       });
     }
@@ -69,7 +71,7 @@ function TabPresentation(props: TabPresentationProps) {
             </div>
           </>
         ),
-        id: "tab2",
+        id: "hierarchy",
         name: "Hierarchy",
       });
     }
@@ -90,8 +92,8 @@ function TabPresentation(props: TabPresentationProps) {
             className={`${finalClassName}-crossRef`}
           />
         ),
-        id: "tab3",
-        name: "Cross references",
+        id: "crossref",
+        name: "Cross References",
       });
     }
 
@@ -107,7 +109,7 @@ function TabPresentation(props: TabPresentationProps) {
             hasTitle={false}
           />
         ),
-        id: "tab4",
+        id: "ontology",
         name: `About ${props.ontologyId?.toUpperCase()}`,
       });
     }
@@ -126,7 +128,7 @@ function TabPresentation(props: TabPresentationProps) {
             onNodeClick={props.onNodeClick}
           />
         ),
-        id: "tab5",
+        id: "graphview",
         name: "Graph View",
       });
     }
@@ -141,8 +143,51 @@ function TabPresentation(props: TabPresentationProps) {
             useLegacy={props.useLegacy}
           />
         ),
-        id: "tab6",
+        id: "depiction",
         name: "Depiction",
+      });
+    }
+
+    if (props.entityInfoTab === undefined || props.entityInfoTab) {
+      tabs.push({
+        content: (
+          <EntityInfoWidget
+            api={props.api}
+            iri={props.iri}
+            useLegacy={props.useLegacy}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            entityType={props.entityType}
+            hasTitle={false}
+            showBadges={true}
+            parameter={props.parameter}
+            onNavigateToEntity={props.onNavigateToEntity}
+            onNavigateToOntology={props.onNavigateToOntology}
+            onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+          />
+        ),
+        id: "entityinfo",
+        name: "Entity Info",
+      });
+    }
+
+    if (props.entityRelationTab === undefined || props.entityRelationTab) {
+      tabs.push({
+        content: (
+          <EntityRelationsWidget
+            api={props.api}
+            iri={props.iri}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            entityType={props.entityType}
+            hasTitle={false}
+            showBadges={true}
+            parameter={props.parameter}
+            onNavigateToEntity={props.onNavigateToEntity}
+            onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+            onNavigateToOntology={props.onNavigateToOntology}
+          />
+        ),
+        id: "entityrelations",
+        name: "Entity Relations",
       });
     }
 

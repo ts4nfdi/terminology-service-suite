@@ -150,6 +150,14 @@ type TabList = {
    * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
    * */
   termDepictionTab?: boolean;
+  /**
+   * It is possible to show and hide the EntityInfo tab. **True** shows the tab. **False** hides the tab.
+   * */
+  entityInfoTab?: boolean;
+  /**
+   * It is possible to show and hide the EntityRelations tab. **True** shows the tab. **False** hides the tab.
+   * */
+  entityRelationTab?: boolean;
 };
 
 export type AutocompleteWidgetSelectedOptions = {

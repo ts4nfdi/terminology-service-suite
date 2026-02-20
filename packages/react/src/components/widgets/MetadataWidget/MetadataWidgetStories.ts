@@ -72,6 +72,7 @@ export const MetadataWidget1Args = {
   iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
   entityType: "term",
   hierarchyWrap: true,
+  copyButton: "right",
 } as const;
 
 export const OLS3Args = {
