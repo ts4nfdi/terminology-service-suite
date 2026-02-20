@@ -73,6 +73,7 @@ export const MetadataWidget1Args = {
   entityType: "term",
   hierarchyWrap: true,
   copyButton: "right",
+  initialSelectedTab: "ontology",
 } as const;
 
 export const OLS3Args = {

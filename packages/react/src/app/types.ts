@@ -158,6 +158,11 @@ type TabList = {
    * It is possible to show and hide the EntityRelations tab. **True** shows the tab. **False** hides the tab.
    * */
   entityRelationTab?: boolean;
+  /**
+   * The initial active/open tab. One of "synonyms" | "hierarchy" | "crossref" |
+   *     "ontology" | "graphview" | "depiction" | "entityinfo" | "entityrelations"
+   * */
+  initialSelectedTab?: string;
 };
 
 export type AutocompleteWidgetSelectedOptions = {

@@ -138,10 +138,13 @@ const meta = {
     terminologyInfoTab: { table: { category: "Tabs" } },
     graphViewTab: { table: { category: "Tabs" } },
     termDepictionTab: { table: { category: "Tabs" } },
+    entityInfoTab: { table: { category: "Tabs" } },
+    entityRelationTab: { table: { category: "Tabs" } },
     // Other
     useLegacy: { ...useLegacyArgType.useLegacy, table: { category: "Other" } },
     parameter: { ...parameterArgType.parameter, table: { category: "Other" } },
     className: { ...classNameArgType.className, table: { category: "Other" } },
+    initialSelectedTab: { table: { category: "Other" } },
     // Breadcrumb
     colorFirst: { ...colorFirstArgType, table: { category: "Breadcrumb" } },
     colorSecond: { ...colorSecondArgType, table: { category: "Breadcrumb" } },

@@ -236,6 +236,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               edgeLabel={props.edgeLabel}
               onNodeClick={props.onNodeClick}
               graphHierarchy={props.graphHierarchy}
+              initialSelectedTab={props.initialSelectedTab}
             />
           </EuiFlexItem>
         </EuiFlexGroup>

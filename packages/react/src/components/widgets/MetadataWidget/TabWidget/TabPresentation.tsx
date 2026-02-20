@@ -198,9 +198,18 @@ function TabPresentation(props: TabPresentationProps) {
       return "";
     }
 
+    const initialSelectedTab =
+      (props.initialSelectedTab &&
+        tabs.find((t) => t.id === props.initialSelectedTab)) ||
+      tabs[0];
+
     return (
       <div className={finalClassName}>
-        <EuiTabbedContent size="s" tabs={tabs} />
+        <EuiTabbedContent
+          size="s"
+          tabs={tabs}
+          initialSelectedTab={initialSelectedTab}
+        />
       </div>
     );
   }
