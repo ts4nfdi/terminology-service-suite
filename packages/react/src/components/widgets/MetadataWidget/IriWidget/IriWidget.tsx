@@ -26,45 +26,40 @@ function IriWidget(props: IriWidgetProps) {
   const CopyLinkButton = () => {
     if (!copied) {
       return (
-        <div className={finalClassName}>
-          <EuiButtonIcon
-            display="base"
-            iconType="copy"
-            key={"copy-btn"}
-            style={{
-              marginLeft: "5px",
-              marginRight: "5px",
-              color:
-                color && (isHexColor(color) || isRgbColor(color)) ? color : "",
-            }}
-            // @ts-ignore
-            color={color && color}
-            onClick={() => {
-              navigator.clipboard.writeText(iriUrl);
-              setCopied(true);
-              setTimeout(() => {
-                setCopied(false);
-              }, 2000);
-            }}
-          ></EuiButtonIcon>
-        </div>
-      );
-    }
-    return (
-      <div className={finalClassName}>
         <EuiButtonIcon
+          display="base"
+          iconType="copy"
+          key={"copy-btn"}
           style={{
             marginLeft: "5px",
+            marginRight: "5px",
             color:
               color && (isHexColor(color) || isRgbColor(color)) ? color : "",
           }}
-          display="base"
-          iconType="check"
-          key={"copy-btn"}
           // @ts-ignore
           color={color && color}
+          onClick={() => {
+            navigator.clipboard.writeText(iriUrl);
+            setCopied(true);
+            setTimeout(() => {
+              setCopied(false);
+            }, 2000);
+          }}
         ></EuiButtonIcon>
-      </div>
+      );
+    }
+    return (
+      <EuiButtonIcon
+        style={{
+          marginLeft: "5px",
+          color: color && (isHexColor(color) || isRgbColor(color)) ? color : "",
+        }}
+        display="base"
+        iconType="check"
+        key={"copy-btn"}
+        // @ts-ignore
+        color={color && color}
+      ></EuiButtonIcon>
     );
   };
 
