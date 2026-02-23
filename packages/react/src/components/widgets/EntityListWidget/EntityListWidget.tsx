@@ -150,7 +150,6 @@ function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
   if (endpoint === "individuals") return "individual";
   return "term";
 }
-//delete it, useless
 
 function normalizeSearchText(raw: string) {
   return raw.trim().replace(/\s+/g, " ");
@@ -227,6 +226,59 @@ function queryFieldsForType(type: string) {
   if (type === "ontology")
     return "ontologyId,ontology_name,ontology_prefix,label,title,name";
   return "label,obo_id,short_form,iri";
+}
+
+function normalizeBaseApi(api: string) {
+  return api.endsWith("/") ? api : `${api}/`;
+}
+
+function splitAndApplyParams(url: URL, raw: string) {
+  if (!raw) return;
+  for (const part of raw.split("&")) {
+    if (!part) continue;
+    const [k, v] = part.split("=");
+    if (!k) continue;
+    url.searchParams.set(k, v ?? "");
+  }
+}
+
+export function buildEntityListApiUrl(args: {
+  api: string;
+  useLegacy: boolean;
+  ontologyId: string;
+  thingType: string;
+  parameter: string;
+}) {
+  const api = normalizeBaseApi(args.api);
+  const v2Endpoint =
+    args.thingType === "ontology"
+      ? "ontologies"
+      : args.thingType === "property"
+        ? "properties"
+        : args.thingType === "individual"
+          ? "individuals"
+          : "classes";
+  const legacyEndpoint =
+    args.thingType === "ontology"
+      ? "ontologies"
+      : args.thingType === "property"
+        ? "properties"
+        : args.thingType === "individual"
+          ? "individuals"
+          : "terms";
+  const endpoint = args.useLegacy ? legacyEndpoint : v2Endpoint;
+  const base =
+    endpoint === "ontologies"
+      ? args.useLegacy
+        ? `${api}ontologies?`
+        : `${api}v2/ontologies?`
+      : args.useLegacy
+        ? `${api}ontologies/${args.ontologyId}/${endpoint}?`
+        : `${api}v2/ontologies/${args.ontologyId}/${endpoint}?`;
+  const url = new URL(base);
+  url.searchParams.set("size", "10");
+  splitAndApplyParams(url, args.parameter);
+  return url.toString();
 }
 
 async function fetchSearchPage(
@@ -322,14 +374,38 @@ async function fetchListPage(
 }
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { apiUrl, api } = props;
+  const {
+    apiUrl: explicitApiUrl,
+    api,
+    useLegacy,
+    ontologyId,
+    thingType,
+    parameter,
+  } = props;
 
-  if (!apiUrl) return null;
+  const baseUrl = useMemo(() => {
+    if (explicitApiUrl) return explicitApiUrl;
+    if (
+      typeof api === "string" &&
+      typeof useLegacy === "boolean" &&
+      ontologyId &&
+      thingType
+    ) {
+      return buildEntityListApiUrl({
+        api,
+        useLegacy,
+        ontologyId,
+        thingType,
+        parameter: parameter ?? "",
+      });
+    }
+    return undefined;
+  }, [explicitApiUrl, api, useLegacy, ontologyId, thingType, parameter]);
 
-  const baseUrl = apiUrl;
+  if (!baseUrl) return null;
 
   const derivedApi = useMemo(() => {
-    if (api) return api;
+    if (api && typeof api !== "string") return api;
     const { apiBase } = parseOlsUrl(baseUrl);
     return {
       entityApi: new OlsEntityApi(apiBase),
