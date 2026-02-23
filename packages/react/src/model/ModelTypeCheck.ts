@@ -71,3 +71,18 @@ export function isEntity(thing: Thing): thing is Entity {
 export function isOntology(thing: Thing): thing is Ontology {
   return isOntologyTypeName(thing.getType());
 }
+
+export function thingTypeToEntityTypeName(
+  thingType: ThingTypeName,
+): EntityTypeName {
+  if (isPropertyTypeName(thingType)) {
+    return "property";
+  }
+  if (isIndividualTypeName(thingType)) {
+    return "individual";
+  }
+  if (isClassTypeName(thingType)) {
+    return "term";
+  }
+  throw new Error(`Unsupported thingType for entity type: ${thingType}`);
+}
