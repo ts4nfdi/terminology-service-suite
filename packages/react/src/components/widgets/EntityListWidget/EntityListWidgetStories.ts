@@ -9,7 +9,7 @@ import {
   thingTypeArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import type { EntityListWidgetProps } from "./EntityListWidget";
+import { EntityListWidgetProps } from "../../../app";
 
 export const EntityListWidgetStoryArgsReact: EntityListWidgetProps = {
   apiUrl: `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?size=10`,
