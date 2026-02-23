@@ -11,6 +11,7 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { css } from "@emotion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
@@ -24,7 +25,6 @@ import {
   ThingTypeName,
   thingTypeToEntityTypeName,
 } from "../../../model/ModelTypeCheck";
-import "../../../style/customBreadcrumbStyle.css";
 
 function EntityListWidget(props: EntityListWidgetProps) {
   const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
@@ -152,6 +152,16 @@ function EntityListWidget(props: EntityListWidgetProps) {
     },
   );
 
+  if (!baseUrl) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText size="s" color="subdued">
+          No API URL configured.
+        </EuiText>
+      </EuiPanel>
+    );
+  }
+
   const shouldShowError = isError && !isAbortError(error);
 
   const totalItemCount = data?.totalItemCount ?? 0;
@@ -199,16 +209,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
   };
 
-  if (!baseUrl) {
-    return (
-      <EuiPanel paddingSize="m">
-        <EuiText size="s" color="subdued">
-          No API URL configured.
-        </EuiText>
-      </EuiPanel>
-    );
-  }
-
   if (shouldShowError) {
     return (
       <EuiPanel paddingSize="m">
@@ -255,7 +255,15 @@ function EntityListWidget(props: EntityListWidgetProps) {
       <EuiSpacer size="m" />
 
       <EuiBasicTable<EntityRow>
-        className="stripedRows"
+        css={css`
+          tbody .euiTableRow:nth-of-type(odd) {
+            background-color: #ffffff;
+          }
+
+          tbody .euiTableRow:nth-of-type(even) {
+            background-color: #f0f6ff;
+          }
+        `}
         tableCaption="Entity list"
         responsiveBreakpoint={false}
         items={rowsSorted}
@@ -629,7 +637,7 @@ async function fetchListPage(
 
 const queryClient = new QueryClient();
 
-function WrappedEntityListWidget(props: EntityListWidgetProps) {
+export function WrappedEntityListWidget(props: EntityListWidgetProps) {
   return (
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
@@ -646,5 +654,5 @@ function WrappedEntityListWidget(props: EntityListWidgetProps) {
   );
 }
 
-export { EntityListWidget, WrappedEntityListWidget };
+export { EntityListWidget };
 export default WrappedEntityListWidget;
