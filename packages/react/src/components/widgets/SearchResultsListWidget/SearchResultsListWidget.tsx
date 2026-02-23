@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  EuiButton,
   EuiButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
@@ -58,9 +59,19 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     EuiSelectableOption[]
   >([]);
 
+  const initialQuery = props.query || "*";
+
   useEffect(() => {
     setSearchValue(query);
   }, [query]);
+
+  function resetToInitialSearch() {
+    setSearchValue(initialQuery);
+    setExactMatch(false);
+    setShowObsoleteTerms(false);
+    setActivePage(0);
+    clearAllFilters();
+  }
 
   function updateFilterOptions(
     currentOptions: EuiSelectableOption[],
@@ -280,10 +291,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
       <div className={finalClassName}>
         <SearchBarWidget
           api={api}
-          query={""}
+          query={initialQuery}
           selectionChangedEvent={(selectedOption) => {
             transform_to_searchValue(selectedOption);
           }}
+          parameter={parameter}
         />
         <EuiSpacer size="xl" />
         <EuiSpacer size="s" />
@@ -381,6 +393,15 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     checked={showObsoleteTerms}
                     onChange={toggleShowObsoleteTerms}
                   />
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <EuiButton
+                    size="s"
+                    onClick={resetToInitialSearch}
+                    color={"text"}
+                  >
+                    Reset
+                  </EuiButton>
                 </EuiFlexItem>
               </EuiFlexGroup>
 
