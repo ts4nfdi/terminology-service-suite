@@ -19,7 +19,262 @@ import {
 } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { EntityListWidgetProps } from "../../../app";
+import {
+  isThingTypeName,
+  ThingTypeName,
+  thingTypeToEntityTypeName,
+} from "../../../model/ModelTypeCheck";
 import "../../../style/customBreadcrumbStyle.css";
+
+function EntityListWidget(props: EntityListWidgetProps) {
+  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
+
+  const normalizedThingType: ThingTypeName | undefined =
+    thingType && isThingTypeName(thingType) ? thingType : undefined;
+
+  const baseUrl = useMemo(() => {
+    if (apiUrl) return apiUrl;
+    if (
+      typeof api === "string" &&
+      typeof useLegacy === "boolean" &&
+      ontologyId &&
+      normalizedThingType
+    ) {
+      return buildEntityListApiUrl({
+        api,
+        useLegacy,
+        ontologyId,
+        thingType: normalizedThingType,
+        parameter: parameter ?? "",
+      });
+    }
+    return undefined;
+  }, [apiUrl, api, ontologyId, parameter, useLegacy, normalizedThingType]);
+
+  const derivedApi = useMemo(() => {
+    if (!baseUrl) return undefined;
+    if (api && typeof api !== "string") return api;
+    const { apiBase } = parseOlsUrl(baseUrl);
+    return {
+      entityApi: new OlsEntityApi(apiBase),
+      ontologyApi: new OlsOntologyApi(apiBase),
+    };
+  }, [api, baseUrl]);
+
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState<PageSize>(10);
+
+  const [searchText, setSearchText] = useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
+
+  const [sortField, setSortField] = useState<keyof EntityRow>("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const controllerRef = useRef<AbortController>(new AbortController());
+
+  useEffect(() => {
+    controllerRef.current.abort();
+    controllerRef.current = new AbortController();
+    setPageIndex(0);
+    setPageSize(baseUrl ? getInitialPageSizeFromUrl(baseUrl) : 10);
+    setSearchText("");
+    setDebouncedSearchText("");
+    setSortField("name");
+    setSortDirection("asc");
+    return () => {
+      controllerRef.current.abort();
+    };
+  }, [baseUrl]);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearchText(normalizeSearchText(searchText));
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchText]);
+
+  useEffect(() => {
+    controllerRef.current.abort();
+    controllerRef.current = new AbortController();
+    return () => {
+      controllerRef.current.abort();
+    };
+  }, [baseUrl, pageIndex, pageSize, debouncedSearchText, normalizedThingType]);
+
+  const queryKey = useMemo(
+    () =>
+      [
+        "entityList:page",
+        baseUrl,
+        pageIndex,
+        pageSize,
+        debouncedSearchText,
+        normalizedThingType,
+      ] as const,
+    [baseUrl, pageIndex, pageSize, debouncedSearchText, normalizedThingType],
+  );
+
+  const queryFn = async (): Promise<QueryResult> => {
+    const signal = controllerRef.current.signal;
+
+    if (!baseUrl || !derivedApi) {
+      return { rows: [], totalItemCount: 0 };
+    }
+
+    if (debouncedSearchText) {
+      return await fetchSearchPage(
+        baseUrl,
+        pageIndex,
+        pageSize,
+        debouncedSearchText,
+        signal,
+      );
+    }
+
+    return await fetchListPage(
+      baseUrl,
+      pageIndex,
+      pageSize,
+      derivedApi,
+      normalizedThingType,
+      signal,
+    );
+  };
+
+  const { data, isLoading, isFetching, isError, error } = useQuery<QueryResult>(
+    queryKey,
+    queryFn,
+    {
+      enabled: !!baseUrl && !!derivedApi,
+      keepPreviousData: true,
+      staleTime: 60_000,
+      retry: false,
+    },
+  );
+
+  const shouldShowError = isError && !isAbortError(error);
+
+  const totalItemCount = data?.totalItemCount ?? 0;
+
+  const rowsSorted = useMemo(() => {
+    const rows = data?.rows ?? [];
+    const sorted = [...rows].sort((a, b) => {
+      const r = compareValues(a[sortField], b[sortField]);
+      return sortDirection === "asc" ? r : -r;
+    });
+    return sorted;
+  }, [data?.rows, sortField, sortDirection]);
+
+  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(
+    () => [
+      { field: "name", name: "Name", truncateText: true, sortable: true },
+      { field: "id", name: "ID", truncateText: true, sortable: true },
+    ],
+    [],
+  );
+
+  const onTableChange = ({
+    page,
+    sort,
+  }: {
+    page?: { index: number; size: number };
+    sort?: { field: keyof EntityRow; direction: "asc" | "desc" };
+  }) => {
+    if (page) {
+      const nextSize = (
+        PAGE_SIZE_OPTIONS.includes(page.size as any) ? page.size : 10
+      ) as PageSize;
+
+      if (nextSize !== pageSize) {
+        setPageSize(nextSize);
+        setPageIndex(0);
+      } else if (page.index !== pageIndex) {
+        setPageIndex(page.index);
+      }
+    }
+
+    if (sort) {
+      setSortField(sort.field);
+      setSortDirection(sort.direction);
+    }
+  };
+
+  if (!baseUrl) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText size="s" color="subdued">
+          No API URL configured.
+        </EuiText>
+      </EuiPanel>
+    );
+  }
+
+  if (shouldShowError) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText color="danger">{String(error)}</EuiText>
+      </EuiPanel>
+    );
+  }
+
+  if (isLoading && !data) {
+    return (
+      <EuiPanel paddingSize="m" style={{ textAlign: "center" }}>
+        <EuiLoadingSpinner size="l" />
+      </EuiPanel>
+    );
+  }
+
+  return (
+    <EuiPanel paddingSize="m">
+      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
+        <EuiFlexItem grow={false}>
+          <EuiText size="s" color="subdued">
+            Loaded: {rowsSorted.length}
+            {totalItemCount ? ` / ${totalItemCount}` : ""}
+            {isFetching ? " (loading…)" : ""}
+          </EuiText>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiSpacer size="s" />
+
+      <EuiFieldSearch
+        fullWidth
+        incremental
+        placeholder="Search by Name or ID"
+        value={searchText}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+          setPageIndex(0);
+        }}
+        isClearable
+        aria-label="Search by Name or ID"
+      />
+
+      <EuiSpacer size="m" />
+
+      <EuiBasicTable<EntityRow>
+        className="stripedRows"
+        tableCaption="Entity list"
+        responsiveBreakpoint={false}
+        items={rowsSorted}
+        columns={columns}
+        loading={isFetching}
+        onChange={onTableChange}
+        pagination={{
+          pageIndex,
+          pageSize,
+          totalItemCount,
+          pageSizeOptions: [...PAGE_SIZE_OPTIONS],
+        }}
+        sorting={{
+          sort: { field: sortField, direction: sortDirection },
+        }}
+      />
+    </EuiPanel>
+  );
+}
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 
@@ -27,18 +282,6 @@ type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
-
-const entityTypeNames = [
-  "term",
-  "class",
-  "property",
-  "annotationProperty",
-  "dataProperty",
-  "objectProperty",
-  "individual",
-] as const;
-
-type EntityTypeName = (typeof entityTypeNames)[number];
 
 function pickLabel(item: any) {
   const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
@@ -143,12 +386,6 @@ function extractTotal(response: any, fallback: number) {
   }
 
   return fallback;
-}
-
-function inferEntityTypeFromEndpoint(endpoint: string): EntityTypeName {
-  if (endpoint === "properties") return "property";
-  if (endpoint === "individuals") return "individual";
-  return "term";
 }
 
 function normalizeSearchText(raw: string) {
@@ -336,29 +573,46 @@ async function fetchListPage(
   pageIndex: number,
   pageSize: number,
   api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi },
+  thingType?: ThingTypeName,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
   const { endpoint, useLegacy, ontologyId, parameter } = parseOlsUrl(baseUrl);
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
-  const response =
-    endpoint === "ontologies"
-      ? await api.ontologyApi.getOntologies(
-          paginationParams,
-          undefined,
-          undefined,
-          parameter,
-          useLegacy,
-        )
-      : await getEntitiesWithEntityTypeProvided(
-          api.entityApi,
-          inferEntityTypeFromEndpoint(endpoint),
-          ontologyId,
-          parameter,
-          useLegacy,
-          paginationParams,
-          signal,
-        );
+  const isOntologyRequest =
+    endpoint === "ontologies" || thingType === "ontology";
+
+  let response;
+
+  if (isOntologyRequest) {
+    response = await api.ontologyApi.getOntologies(
+      paginationParams,
+      undefined,
+      undefined,
+      parameter,
+      useLegacy,
+    );
+  } else {
+    const effectiveThingType: ThingTypeName =
+      thingType ??
+      (endpoint === "properties"
+        ? "property"
+        : endpoint === "individuals"
+          ? "individual"
+          : "class");
+
+    const entityType = thingTypeToEntityTypeName(effectiveThingType);
+
+    response = await getEntitiesWithEntityTypeProvided(
+      api.entityApi,
+      entityType,
+      ontologyId,
+      parameter,
+      useLegacy,
+      paginationParams,
+      signal,
+    );
+  }
 
   const elements = extractElements(response);
   const baseIndex = pageIndex * pageSize;
@@ -373,246 +627,6 @@ async function fetchListPage(
   };
 }
 
-function EntityListWidget(props: EntityListWidgetProps) {
-  const {
-    apiUrl: explicitApiUrl,
-    api,
-    useLegacy,
-    ontologyId,
-    thingType,
-    parameter,
-  } = props;
-
-  const baseUrl = useMemo(() => {
-    if (explicitApiUrl) return explicitApiUrl;
-    if (
-      typeof api === "string" &&
-      typeof useLegacy === "boolean" &&
-      ontologyId &&
-      thingType
-    ) {
-      return buildEntityListApiUrl({
-        api,
-        useLegacy,
-        ontologyId,
-        thingType,
-        parameter: parameter ?? "",
-      });
-    }
-    return undefined;
-  }, [explicitApiUrl, api, useLegacy, ontologyId, thingType, parameter]);
-
-  if (!baseUrl) return null;
-
-  const derivedApi = useMemo(() => {
-    if (api && typeof api !== "string") return api;
-    const { apiBase } = parseOlsUrl(baseUrl);
-    return {
-      entityApi: new OlsEntityApi(apiBase),
-      ontologyApi: new OlsOntologyApi(apiBase),
-    };
-  }, [api, baseUrl]);
-
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState<PageSize>(() =>
-    getInitialPageSizeFromUrl(baseUrl),
-  );
-
-  const [searchText, setSearchText] = useState("");
-  const [debouncedSearchText, setDebouncedSearchText] = useState("");
-
-  const [sortField, setSortField] = useState<keyof EntityRow>("name");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-
-  const controllerRef = useRef<AbortController>(new AbortController());
-
-  useEffect(() => {
-    controllerRef.current.abort();
-    controllerRef.current = new AbortController();
-    setPageIndex(0);
-    setPageSize(getInitialPageSizeFromUrl(baseUrl));
-    setSearchText("");
-    setDebouncedSearchText("");
-    setSortField("name");
-    setSortDirection("asc");
-    return () => {
-      controllerRef.current.abort();
-    };
-  }, [baseUrl]);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setDebouncedSearchText(normalizeSearchText(searchText));
-    }, 300);
-    return () => clearTimeout(t);
-  }, [searchText]);
-
-  useEffect(() => {
-    controllerRef.current.abort();
-    controllerRef.current = new AbortController();
-    return () => {
-      controllerRef.current.abort();
-    };
-  }, [baseUrl, pageIndex, pageSize, debouncedSearchText]);
-
-  const queryKey = useMemo(
-    () =>
-      [
-        "entityList:page",
-        baseUrl,
-        pageIndex,
-        pageSize,
-        debouncedSearchText,
-      ] as const,
-    [baseUrl, pageIndex, pageSize, debouncedSearchText],
-  );
-
-  const queryFn = async (): Promise<QueryResult> => {
-    const signal = controllerRef.current.signal;
-
-    if (debouncedSearchText) {
-      return await fetchSearchPage(
-        baseUrl,
-        pageIndex,
-        pageSize,
-        debouncedSearchText,
-        signal,
-      );
-    }
-
-    return await fetchListPage(
-      baseUrl,
-      pageIndex,
-      pageSize,
-      derivedApi,
-      signal,
-    );
-  };
-
-  const { data, isLoading, isFetching, isError, error } = useQuery<QueryResult>(
-    queryKey,
-    queryFn,
-    {
-      keepPreviousData: true,
-      staleTime: 60_000,
-      retry: false,
-    },
-  );
-
-  const shouldShowError = isError && !isAbortError(error);
-
-  const totalItemCount = data?.totalItemCount ?? 0;
-
-  const rowsSorted = useMemo(() => {
-    const rows = data?.rows ?? [];
-    const sorted = [...rows].sort((a, b) => {
-      const r = compareValues(a[sortField], b[sortField]);
-      return sortDirection === "asc" ? r : -r;
-    });
-    return sorted;
-  }, [data?.rows, sortField, sortDirection]);
-
-  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(
-    () => [
-      { field: "name", name: "Name", truncateText: true, sortable: true },
-      { field: "id", name: "ID", truncateText: true, sortable: true },
-    ],
-    [],
-  );
-
-  const onTableChange = ({
-    page,
-    sort,
-  }: {
-    page?: { index: number; size: number };
-    sort?: { field: keyof EntityRow; direction: "asc" | "desc" };
-  }) => {
-    if (page) {
-      const nextSize = (
-        PAGE_SIZE_OPTIONS.includes(page.size as any) ? page.size : 10
-      ) as PageSize;
-
-      if (nextSize !== pageSize) {
-        setPageSize(nextSize);
-        setPageIndex(0);
-      } else if (page.index !== pageIndex) {
-        setPageIndex(page.index);
-      }
-    }
-
-    if (sort) {
-      setSortField(sort.field);
-      setSortDirection(sort.direction);
-    }
-  };
-
-  if (shouldShowError) {
-    return (
-      <EuiPanel paddingSize="m">
-        <EuiText color="danger">{String(error)}</EuiText>
-      </EuiPanel>
-    );
-  }
-
-  if (isLoading && !data) {
-    return (
-      <EuiPanel paddingSize="m" style={{ textAlign: "center" }}>
-        <EuiLoadingSpinner size="l" />
-      </EuiPanel>
-    );
-  }
-
-  return (
-    <EuiPanel paddingSize="m">
-      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-        <EuiFlexItem grow={false}>
-          <EuiText size="s" color="subdued">
-            Loaded: {rowsSorted.length}
-            {totalItemCount ? ` / ${totalItemCount}` : ""}
-            {isFetching ? " (loading…)" : ""}
-          </EuiText>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-
-      <EuiSpacer size="s" />
-
-      <EuiFieldSearch
-        fullWidth
-        incremental
-        placeholder="Search by Name or ID"
-        value={searchText}
-        onChange={(e) => {
-          setSearchText(e.target.value);
-          setPageIndex(0);
-        }}
-        isClearable
-        aria-label="Search by Name or ID"
-      />
-
-      <EuiSpacer size="m" />
-
-      <EuiBasicTable<EntityRow>
-        className="stripedRows"
-        tableCaption="Entity list"
-        responsiveBreakpoint={false}
-        items={rowsSorted}
-        columns={columns}
-        loading={isFetching}
-        onChange={onTableChange}
-        pagination={{
-          pageIndex,
-          pageSize,
-          totalItemCount,
-          pageSizeOptions: [...PAGE_SIZE_OPTIONS],
-        }}
-        sorting={{
-          sort: { field: sortField, direction: sortDirection },
-        }}
-      />
-    </EuiPanel>
-  );
-}
-
 const queryClient = new QueryClient();
 
 function WrappedEntityListWidget(props: EntityListWidgetProps) {
@@ -622,10 +636,10 @@ function WrappedEntityListWidget(props: EntityListWidgetProps) {
         <EntityListWidget
           apiUrl={props.apiUrl}
           api={props.api}
-          useLegacy={props.useLegacy}
           ontologyId={props.ontologyId}
-          thingType={props.thingType}
           parameter={props.parameter}
+          useLegacy={props.useLegacy}
+          thingType={props.thingType}
         />
       </QueryClientProvider>
     </EuiProvider>

@@ -19,5 +19,6 @@ export const WithDefaults: Story = {
   args: {
     api: "https://www.ebi.ac.uk/ols4/api/",
     parameter: "search=",
+    thingType: "ontology",
   },
 };
