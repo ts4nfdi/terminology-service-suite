@@ -58,6 +58,8 @@ window['ts4nfdiWidgets'].createGraphView(
         onNodeClick: ${args.onNodeClick},
         edgeLabel: ${args.edgeLabel},
         parameter: "${args.parameter}",
+        hideLegend: ${args.hideLegend},
+        stopFullWidth: ${args.stopFullWidth}
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )

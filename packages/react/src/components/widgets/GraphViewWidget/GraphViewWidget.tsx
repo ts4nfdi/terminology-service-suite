@@ -883,6 +883,8 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           onNodeClick={props.onNodeClick}
           targetIri={props.targetIri}
           parameter={props.parameter}
+          hideLegend={props.hideLegend}
+          stopFullWidth={props.stopFullWidth}
         />
       </QueryClientProvider>
     </EuiProvider>

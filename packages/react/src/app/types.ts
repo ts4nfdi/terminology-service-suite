@@ -744,10 +744,10 @@ export type GraphViewWidgetProps = ApiObj &
     * */
     stopFullWidth?: boolean;
 
-  /**
-   * Hide the graph legend. Default is false/undefined
-   */
-  hideLegend?: boolean;
+    /**
+     * Hide the graph legend. Default is false/undefined
+     */
+    hideLegend?: boolean;
   };
 
 export type OlsGraphNode = {
