@@ -33,14 +33,7 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const {
-    apiUrl,
-    api,
-    ontologyId,
-    parameter,
-    useLegacy,
-    thingType
-  } = props;
+  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
