@@ -283,6 +283,23 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           onNavigateToOntology={props.onNavigateToOntology}
           onNavigateToDisambiguate={props.onNavigateToDisambiguate}
           className={props.className}
+          initialSelectedTab={props.initialSelectedTab}
+          copyButton={props.copyButton}
+          descText={props.descText}
+          titleText={props.titleText}
+          defaultValue={props.defaultValue}
+          iriText={props.iriText}
+          externalIcon={props.externalIcon}
+          urlPrefix={props.urlPrefix}
+          hierarchyWrap={props.hierarchyWrap}
+          hierarchyTargetIri={props.hierarchyTargetIri}
+          graphTargetIri={props.graphTargetIri}
+          rootWalk={props.rootWalk}
+          graphHierarchy={props.graphHierarchy}
+          edgeLabel={props.edgeLabel}
+          onNodeClick={props.onNodeClick}
+          colorSecond={props.colorSecond}
+          colorFirst={props.colorFirst}
         />
       </QueryClientProvider>
     </EuiProvider>

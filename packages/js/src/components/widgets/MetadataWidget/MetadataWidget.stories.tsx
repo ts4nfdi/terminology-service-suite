@@ -19,6 +19,7 @@ import {
   TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
 import "./index";
+import "../../../../../react/src/style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css"
 
 let counter = 0;
 
@@ -84,50 +85,50 @@ type Story = StoryObj<typeof meta>;
 
 export const MetadataWidget1: Story = {
   name: "Metadata Widget",
-  args: MetadataWidget1Args,
+  args: { ...MetadataWidget1Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const OLS3: Story = {
   name: "OLS3",
-  args: OLS3Args,
+  args: { ...OLS3Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V1: Story = {
   name: "OLS4 V1",
-  args: OLS4V1Args,
+  args: { ...OLS4V1Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const OLS4V2: Story = {
   name: "OLS4 V2",
-  args: OLS4V2Args,
+  args: { ...OLS4V2Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const SelectingDefiningOntology: Story = {
-  args: SelectingDefiningOntologyArgs,
+  args: { ...SelectingDefiningOntologyArgs, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
-  args: DefiningOntologyUnavailableArgs,
+  args: { ...DefiningOntologyUnavailableArgs, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const DefinedByAlsoAppearsInWidgets: Story = {
-  args: DefinedByAlsoAppearsInWidgetsArgs,
+  args: { ...DefinedByAlsoAppearsInWidgetsArgs, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const HiddenTabs: Story = {
   name: "Hidden Tabs",
-  args: HiddenTabsArgs,
+  args: { ...HiddenTabsArgs, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
 export const TermAsLink: Story = {
-  args: TermAsLinkArgs,
+  args: { ...TermAsLinkArgs, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
