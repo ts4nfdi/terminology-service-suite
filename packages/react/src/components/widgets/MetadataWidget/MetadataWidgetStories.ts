@@ -71,7 +71,7 @@ export const MetadataWidgetStoryArgs = {
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
   showComparisonTitleInHeader: true,
-  showComparisonInputFieldArgType: true,
+  showComparisonInputField: true,
   showHeader: true,
 } as const;
 
