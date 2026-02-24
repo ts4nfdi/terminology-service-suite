@@ -28,5 +28,3 @@ export const EntityListWidgetStoryArgs = {
   thingType: "class",
   parameter: "",
 } as const;
-
-
