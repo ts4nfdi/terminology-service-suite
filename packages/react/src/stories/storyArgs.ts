@@ -14,6 +14,7 @@ export const apiArgType: ArgTypes = {
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
+      "http://localhost:8080/api-gateway/ols/api/"
     ],
     description:
       "The API instance for the API call.<br><br> " +
@@ -637,10 +638,10 @@ export const onNavigateToEntityArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToEntity()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ".",
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ".",
         );
       },
       "Navigate to EBI page": (
@@ -651,19 +652,19 @@ export const onNavigateToEntityArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-              ontologyId +
-              "/" +
-              new Map([
-                ["term", "classes"],
-                ["class", "classes"],
-                ["individual", "individuals"],
-                ["property", "properties"],
-                ["dataProperty", "properties"],
-                ["objectProperty", "properties"],
-                ["annotationProperty", "properties"],
-              ]).get(entityType) +
-              "/" +
-              encodeURIComponent(encodeURIComponent(entity.iri)),
+            ontologyId +
+            "/" +
+            new Map([
+              ["term", "classes"],
+              ["class", "classes"],
+              ["individual", "individuals"],
+              ["property", "properties"],
+              ["dataProperty", "properties"],
+              ["objectProperty", "properties"],
+              ["annotationProperty", "properties"],
+            ]).get(entityType) +
+            "/" +
+            encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -695,10 +696,10 @@ export const onNavigateToOntologyArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToOntology()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ` for ontologyId "${ontologyId}".`,
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ` for ontologyId "${ontologyId}".`,
         );
       },
       "Navigate to EBI page": (
@@ -709,19 +710,19 @@ export const onNavigateToOntologyArgType: ArgTypes = {
         if (entity && entity.iri && entityType) {
           window.open(
             "https://www.ebi.ac.uk/ols4/ontologies/" +
-              ontologyId +
-              "/" +
-              new Map([
-                ["term", "classes"],
-                ["class", "classes"],
-                ["individual", "individuals"],
-                ["property", "properties"],
-                ["dataProperty", "properties"],
-                ["objectProperty", "properties"],
-                ["annotationProperty", "properties"],
-              ]).get(entityType) +
-              "/" +
-              encodeURIComponent(encodeURIComponent(entity.iri)),
+            ontologyId +
+            "/" +
+            new Map([
+              ["term", "classes"],
+              ["class", "classes"],
+              ["individual", "individuals"],
+              ["property", "properties"],
+              ["dataProperty", "properties"],
+              ["objectProperty", "properties"],
+              ["annotationProperty", "properties"],
+            ]).get(entityType) +
+            "/" +
+            encodeURIComponent(encodeURIComponent(entity.iri)),
             "_top",
           );
         } else {
@@ -752,10 +753,10 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
       ) => {
         console.log(
           "Triggered onNavigateToDisambiguate()" +
-            (entityType ? ` for ${entityType || "entity"}` : "") +
-            (entity && entity.label ? ` "${entity.label}"` : "") +
-            (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
-            ".",
+          (entityType ? ` for ${entityType || "entity"}` : "") +
+          (entity && entity.label ? ` "${entity.label}"` : "") +
+          (entity && entity.iri ? ` (iri="${entity.iri}")` : "") +
+          ".",
         );
       },
       "Navigate to EBI page": (
@@ -763,8 +764,7 @@ export const onNavigateToDisambiguateArgType: ArgTypes = {
         entity?: { iri: string; label?: string },
       ) => {
         window.open(
-          `https://www.ebi.ac.uk/ols4/search?q=${
-            entity && entity.label ? entity.label : ""
+          `https://www.ebi.ac.uk/ols4/search?q=${entity && entity.label ? entity.label : ""
           }&exactMatch=true&lang=en`,
           "_top",
         );

@@ -738,6 +738,11 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+
+    /**
+     * Prevent the graph to be rendered with full width (CSS width 100%).
+    * */
+    stopFullWidth?: boolean;
   };
 
 export type OlsGraphNode = {

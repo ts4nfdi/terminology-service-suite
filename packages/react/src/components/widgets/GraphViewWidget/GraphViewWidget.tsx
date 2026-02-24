@@ -55,6 +55,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     edgeLabel,
     onNodeClick,
     parameter,
+    stopFullWidth
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -672,7 +673,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   return (
     <div
       className={finalClassName}
-      style={{ width: "1000px", height: "100vh", overflow: "hidden" }}
+      style={!stopFullWidth ? { width: "100%", height: "100vh", overflow: "hidden" } : {}}
       ref={fullScreenContainerRef}
     >
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
@@ -785,7 +786,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
-          style={{ width: "100%", height: "100vh", margin: "auto" }}
+          style={!stopFullWidth ? { width: "100%", height: "100vh", margin: "auto" } : {}}
         />
 
         <div

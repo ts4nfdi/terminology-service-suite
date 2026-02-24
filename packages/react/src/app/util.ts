@@ -200,8 +200,8 @@ export function inferTypeFromTypeArray(types: string[]) {
   let res = types.filter((elem: string) => isThingTypeName(elem)); // filter not matching strings
   res = res.map((item) =>
     item === "annotationProperty" ||
-    item === "objectProperty" ||
-    item === "dataProperty"
+      item === "objectProperty" ||
+      item === "dataProperty"
       ? "property"
       : item,
   );

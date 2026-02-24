@@ -21,7 +21,6 @@ export interface Entity extends Thing {
   getAppearsIn(): string[];
   getDefinedBy(): string[];
   getShortForm(): string;
-  getDepictedBy(): Reified<string>[];
   isPredicateFromInformalVocabulary(predicate: string): boolean;
   getNumHierarchicalDescendants(): number;
   getNumDescendants(): number;
