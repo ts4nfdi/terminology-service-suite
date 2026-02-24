@@ -14,6 +14,7 @@ export const apiArgType: ArgTypes = {
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
+      "http://tsag.qa.km.k8s.zbmed.de/api-gateway/ols4/api/"
     ],
     description:
       "The API instance for the API call.<br><br> " +

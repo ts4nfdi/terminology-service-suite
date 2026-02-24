@@ -7,6 +7,7 @@ import {
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
+  OntologyIdAsIriArgs
 } from "./TermDepictionWidgetStories";
 
 const meta = {
@@ -36,4 +37,9 @@ export const TermDepictionWidgetExample: Story = {
 export const TermDepictionWidget3D: Story = {
   args: TermDepictionWidget3DArgs,
   play: commonTermDepictionWidgetPlay,
+};
+
+export const OntologyIdAsIri: Story = {
+  args: OntologyIdAsIriArgs,
+  play: commonTermDepictionWidgetPlay
 };
