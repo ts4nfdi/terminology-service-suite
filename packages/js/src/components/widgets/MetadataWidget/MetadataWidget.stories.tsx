@@ -18,8 +18,8 @@ import {
   SelectingDefiningOntologyArgs,
   TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
+import "../../../../../react/src/style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
 import "./index";
-import "../../../../../react/src/style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css"
 
 let counter = 0;
 
@@ -108,17 +108,26 @@ export const OLS4V2: Story = {
 };
 
 export const SelectingDefiningOntology: Story = {
-  args: { ...SelectingDefiningOntologyArgs, className: "ts4nfdi-metadata-style" },
+  args: {
+    ...SelectingDefiningOntologyArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };
 
 export const DefiningOntologyUnavailable: Story = {
-  args: { ...DefiningOntologyUnavailableArgs, className: "ts4nfdi-metadata-style" },
+  args: {
+    ...DefiningOntologyUnavailableArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };
 
 export const DefinedByAlsoAppearsInWidgets: Story = {
-  args: { ...DefinedByAlsoAppearsInWidgetsArgs, className: "ts4nfdi-metadata-style" },
+  args: {
+    ...DefinedByAlsoAppearsInWidgetsArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };
 
