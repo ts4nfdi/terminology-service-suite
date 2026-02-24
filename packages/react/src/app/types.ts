@@ -416,6 +416,12 @@ export type TabWidgetProps = TabSubwidgetsProps &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+    showHeader?: boolean;
+    showComparisonTitleInHeader?: boolean;
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    showComparisonInputField?: boolean;
   };
 
 export type TabPresentationProps = TabWidgetProps & {
@@ -546,6 +552,10 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   targetIri?: string;
   showHeader?: boolean;
   showComparisonTitleInHeader?: boolean;
+  /**
+   * Show the input field for the targetIri in comparison mode.
+   */
+  showComparisonInputField?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
@@ -626,8 +636,13 @@ export type MetadataWidgetProps = TabWidgetProps &
      * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
      * left/right means showing the button on the left or right side of the iri link.
      */
-
     copyButton?: "right" | "left" | "none";
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    showComparisonInputField?: boolean;
+    showHeader?: boolean;
+    showComparisonTitleInHeader?: boolean;
   };
 
 export type OntologyInfoWidgetProps = ApiObj &

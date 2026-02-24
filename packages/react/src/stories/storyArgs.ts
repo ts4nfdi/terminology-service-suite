@@ -895,6 +895,20 @@ export const showComparisonTitleInHeaderArgType: ArgTypes = {
   },
 };
 
+export const showComparisonInputFieldArgType: ArgTypes = {
+  showComparisonInputField: {
+    required: false,
+    description:
+      "If enabled, an input field for the comparison mode is shown.",
+    table: {
+      type: { summary: `boolean` },
+      defaultValue: {
+        summary: "false",
+      },
+    },
+  },
+};
+
 export const edgeLabelArgType: ArgTypes = {
   href: {
     required: false,

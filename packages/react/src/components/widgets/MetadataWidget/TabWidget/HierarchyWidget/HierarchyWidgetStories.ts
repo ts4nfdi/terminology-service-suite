@@ -21,6 +21,7 @@ import {
   showSiblingsOnInitArgType,
   targetIriArgType,
   useLegacyArgTypeHierarchy,
+  showComparisonInputFieldArgType,
 } from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {
@@ -42,6 +43,7 @@ export const HierarchyWidgetStoryArgTypes = {
   ...targetIriArgType,
   ...showComparisonTitleInHeaderArgType,
   ...showHeaderArgType,
+  ...showComparisonInputFieldArgType,
 };
 
 export const HierarchyWidgetStoryArgs = {
@@ -74,6 +76,7 @@ export const ClassHierarchyArgs = {
   iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
   entityType: "class",
   ontologyId: "efo",
+  showComparisonInputField: true,
 } as const;
 
 export const IndividualHierarchyArgs = {
@@ -199,6 +202,7 @@ export const CompareHierarchiesArgs = {
   targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
   entityType: "class" as EntityTypeName,
   ontologyId: "chebi",
+  showComparisonInputField: true,
 };
 
 export const CompareHierarchiesSubEntityArgs = {

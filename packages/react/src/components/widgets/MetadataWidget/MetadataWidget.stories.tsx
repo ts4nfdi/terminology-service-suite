@@ -32,6 +32,9 @@ import {
   titleTextArgType,
   urlPrefixArgType,
   useLegacyArgType,
+  showComparisonInputFieldArgType,
+  showHeaderArgType,
+  showComparisonTitleInHeaderArgType,
 } from "../../../stories/storyArgs";
 import { MetadataWidget } from "./MetadataWidget";
 import {
@@ -108,6 +111,18 @@ const meta = {
     },
     hierarchyWrap: {
       ...hierarchyWrapArgType.hierarchyWrap,
+      table: { category: "Hierarchy" },
+    },
+    showComparisonInputField: {
+      ...showComparisonInputFieldArgType.showComparisonInputField,
+      table: { category: "Hierarchy" },
+    },
+    showHeader: {
+      ...showHeaderArgType.showHeader,
+      table: { category: "Hierarchy" },
+    },
+    showComparisonTitleInHeader: {
+      ...showComparisonTitleInHeaderArgType.showComparisonTitleInHeader,
       table: { category: "Hierarchy" },
     },
     // Graph settings

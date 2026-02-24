@@ -16,9 +16,9 @@ import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
   ontologyIdArgType,
-  parameterArgType,
+  parameterArgType, showComparisonInputFieldArgType, showComparisonTitleInHeaderArgType, showHeaderArgType,
   termLinkArgType,
-  useLegacyArgType,
+  useLegacyArgType
 } from "../../../stories/storyArgs";
 
 export const MetadataWidgetStoryArgTypes = {
@@ -39,6 +39,9 @@ export const MetadataWidgetStoryArgTypes = {
   ...graphTargetIriArgType,
   ...graphHierarchyArgType,
   ...termLinkArgType,
+  ...showHeaderArgType,
+  ...showComparisonInputFieldArgType,
+  ...showComparisonTitleInHeaderArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -64,6 +67,9 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
+  showComparisonTitleInHeader: true,
+  showComparisonInputFieldArgType: true,
+  showHeader: true,
 } as const;
 
 export const MetadataWidget1Args = {

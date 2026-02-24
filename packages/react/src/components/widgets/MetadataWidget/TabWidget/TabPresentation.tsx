@@ -67,6 +67,9 @@ function TabPresentation(props: TabPresentationProps) {
                 className={`${finalClassName}-hierarchy`}
                 hierarchyWrap={props.hierarchyWrap}
                 targetIri={props.hierarchyTargetIri}
+                showHeader={props.showHeader}
+                showComparisonTitleInHeader={props.showComparisonInputField}
+                showComparisonInputField={props.showComparisonInputField}
               />
             </div>
           </>
