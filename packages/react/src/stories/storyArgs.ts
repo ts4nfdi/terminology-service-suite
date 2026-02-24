@@ -13,8 +13,7 @@ export const apiArgType: ArgTypes = {
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
-      "https://www.ebi.ac.uk/ols4/api/",
-      "http://localhost:8080/api-gateway/ols/api/"
+      "https://www.ebi.ac.uk/ols4/api/"
     ],
     description:
       "The API instance for the API call.<br><br> " +
