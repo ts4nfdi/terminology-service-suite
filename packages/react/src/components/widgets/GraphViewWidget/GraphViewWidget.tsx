@@ -575,8 +575,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           right: "20px",
         }}
       >
-        <b>Legend:</b>
-        <ul style={{ paddingTop: "15px" }}>
+        <ul style={{ padding: "5px" }}>
           <li style={itemPadding}>
             <div
               style={{backgroundColor: sourceNodeBgColor, ...itemStyle}}
