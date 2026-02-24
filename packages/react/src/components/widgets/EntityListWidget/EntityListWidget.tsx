@@ -75,14 +75,12 @@ function EntityListWidget(props: EntityListWidgetProps) {
   useEffect(() => {
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
-
     setPageIndex(0);
     setPageSize(baseUrl ? getInitialPageSizeFromUrl(baseUrl) : 10);
     setSearchText("");
     setDebouncedSearchText("");
     setSortField("name");
     setSortDirection("asc");
-
     return () => {
       controllerRef.current.abort();
     };
@@ -154,18 +152,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     },
   );
 
-  if (!baseUrl) {
-    return (
-      <EuiPanel paddingSize="m">
-        <EuiText size="s" color="subdued">
-          No API URL configured.
-        </EuiText>
-      </EuiPanel>
-    );
-  }
-
   const shouldShowError = isError && !isAbortError(error);
-
   const totalItemCount = data?.totalItemCount ?? 0;
 
   const rowsSorted = useMemo(() => {
@@ -210,6 +197,16 @@ function EntityListWidget(props: EntityListWidgetProps) {
       setSortDirection(sort.direction);
     }
   };
+
+  if (!baseUrl) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText size="s" color="subdued">
+          No API URL configured.
+        </EuiText>
+      </EuiPanel>
+    );
+  }
 
   if (shouldShowError) {
     return (
