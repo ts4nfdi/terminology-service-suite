@@ -3,6 +3,7 @@
 import {
   EuiAccordion,
   EuiButton,
+  EuiFieldText,
   EuiHealth,
   EuiIcon,
   EuiLoadingSpinner,
@@ -35,6 +36,7 @@ import {
 } from "../../../../../model/interfaces/Hierarchy";
 import { HierarchyBuilder } from "../../../../../model/interfaces/HierarchyBuilder";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
+import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
 function HierarchyWidget(props: HierarchyWidgetProps) {
   const {
@@ -57,10 +59,12 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     showComparisonTitleInHeader = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER,
     className,
     parameter,
+    showComparisonInputField = false,
   } = props;
   const finalClassName = className || "ts4nfdi-hierarchy-style";
   const [finalIri, setFinalIri] = useState(iri);
   const [finalTargetIri, setFinalTargetIri] = useState(targetIri);
+  const [targetIriInput, setTargetIriInput] = useState(targetIri || "");
 
   // prevents unwanted effects if iri is not set
   useEffect(() => {
@@ -150,7 +154,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       }}
                     >
                       <span className="ontology-badge">
-                        {definingOntology.toUpperCase()}
+                        <OntologyBadge
+                          ontologyId={definingOntology.toUpperCase()}
+                          onNavigateToOntology={props.onNavigateToOntology}
+                        />
                       </span>
                     </button>
                   </span>
@@ -394,10 +401,33 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  alignItems: "center",
                 }}
               >
-                <span>
+                <span
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                    marginRight: "8px",
+                    minWidth: 0,
+                  }}
+                >
+                  {showComparisonInputField && (
+                    <EuiFieldText
+                      placeholder="Enter target IRI for comparison"
+                      value={targetIriInput}
+                      onChange={(e) => {
+                        setTargetIriInput(e.target.value);
+                        if (e.target.value) {
+                          setFinalTargetIri(e.target.value);
+                        } else {
+                          setFinalTargetIri(props.targetIri);
+                        }
+                      }}
+                      fullWidth
+                    />
+                  )}
                   {finalIri &&
                     finalTargetIri &&
                     showComparisonTitleInHeader && (

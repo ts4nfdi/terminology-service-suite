@@ -24,6 +24,7 @@ import {
   SkosHierarchyArgs,
   SkosmosAgrovocGermanArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/HierarchyWidget/HierarchyWidgetStories";
+import "../../../../../../../react/src/style/ts4nfdiStyles/ts4nfdiHierarchyStyle.css";
 import "./index";
 
 let counter = 0;
@@ -88,76 +89,82 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const ClassHierarchy: Story = {
-  args: ClassHierarchyArgs,
+  args: { ...ClassHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const IndividualHierarchy: Story = {
-  args: IndividualHierarchyArgs,
+  args: { ...IndividualHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const PreferredRoots: Story = {
-  args: PreferredRootsArgs,
+  args: { ...PreferredRootsArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const IncludeObsoleteEntities: Story = {
-  args: IncludeObsoleteEntitiesArgs,
+  args: {
+    ...IncludeObsoleteEntitiesArgs,
+    className: "ts4nfdi-hierarchy-style",
+  },
   play: commonHierarchyWidgetPlay,
 };
 
 export const PropertyRoots: Story = {
-  args: PropertyRootsArgs,
+  args: { ...PropertyRootsArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const IndividualRoots: Story = {
-  args: IndividualRootsArgs,
+  args: { ...IndividualRootsArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const LargeHierarchy: Story = {
-  args: LargeHierarchyArgs,
+  args: { ...LargeHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const SkosHierarchy: Story = {
-  args: SkosHierarchyArgs,
+  args: { ...SkosHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const SagePubHierarchy: Story = {
-  args: SagePubHierarchyArgs,
+  args: { ...SagePubHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const OntoportalHierarchy: Story = {
-  args: OntoportalHierarchyArgs,
+  args: { ...OntoportalHierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const OLS3Hierarchy: Story = {
-  args: OLS3HierarchyArgs,
+  args: { ...OLS3HierarchyArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const OLSGerman: Story = {
-  args: OLSGermanArgs,
+  args: { ...OLSGermanArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const SkosmosAgrovocGerman: Story = {
-  args: SkosmosAgrovocGermanArgs,
+  args: { ...SkosmosAgrovocGermanArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const CompareHierarchies: Story = {
-  args: CompareHierarchiesArgs,
+  args: { ...CompareHierarchiesArgs, className: "ts4nfdi-hierarchy-style" },
   play: commonHierarchyWidgetPlay,
 };
 
 export const CompareHierarchiesSubEntity: Story = {
-  args: CompareHierarchiesSubEntityArgs,
+  args: {
+    ...CompareHierarchiesSubEntityArgs,
+    className: "ts4nfdi-hierarchy-style",
+  },
   play: commonHierarchyWidgetPlay,
 };

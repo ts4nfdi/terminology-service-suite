@@ -4,9 +4,12 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
+  graphHierarchyArgType,
+  graphTargetIriArgType,
   hierarchyKeepExpansionStatesArgType,
   hierarchyPreferredRootsArgType,
   hierarchyShowSiblingsOnInitArgType,
+  hierarchyTargetIriArgType,
   hierarchyWrapArgType,
   iriArgType,
   onNavigateToDisambiguateArgType,
@@ -14,6 +17,10 @@ import {
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
+  showComparisonInputFieldArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
+  termLinkArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 
@@ -31,6 +38,13 @@ export const MetadataWidgetStoryArgTypes = {
   ...hierarchyPreferredRootsArgType,
   ...hierarchyKeepExpansionStatesArgType,
   ...hierarchyShowSiblingsOnInitArgType,
+  ...hierarchyTargetIriArgType,
+  ...graphTargetIriArgType,
+  ...graphHierarchyArgType,
+  ...termLinkArgType,
+  ...showHeaderArgType,
+  ...showComparisonInputFieldArgType,
+  ...showComparisonTitleInHeaderArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -56,6 +70,9 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
+  showComparisonTitleInHeader: true,
+  showComparisonInputField: true,
+  showHeader: true,
 } as const;
 
 export const MetadataWidget1Args = {
@@ -64,6 +81,8 @@ export const MetadataWidget1Args = {
   iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
   entityType: "term",
   hierarchyWrap: true,
+  copyButton: "right",
+  initialSelectedTab: "ontology",
 } as const;
 
 export const OLS3Args = {

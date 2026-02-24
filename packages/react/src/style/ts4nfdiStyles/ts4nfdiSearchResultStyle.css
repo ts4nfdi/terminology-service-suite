@@ -2,11 +2,6 @@
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.ts4nfdi-searchResult-style button {
-  background: none;
-  border: none;
-}
-
 .ts4nfdi-searchResult-style .euiCard {
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   padding-top: 0;

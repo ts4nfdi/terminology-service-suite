@@ -1,6 +1,41 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { MetadataDescription } from "../../../app/widgetDescriptions";
+import {
+  apiArgType,
+  classNameArgType,
+  colorFirstArgType,
+  colorSecondArgType,
+  copyButtonArgType,
+  defaultValueArgType,
+  descTextArgType,
+  edgeLabelArgType,
+  entityTypeArgType,
+  externalIconArgType,
+  graphHierarchyArgType,
+  graphTargetIriArgType,
+  hierarchyKeepExpansionStatesArgType,
+  hierarchyPreferredRootsArgType,
+  hierarchyShowSiblingsOnInitArgType,
+  hierarchyTargetIriArgType,
+  hierarchyWrapArgType,
+  iriArgType,
+  iriTextArgType,
+  onNavigateToDisambiguateArgType,
+  onNavigateToEntityArgType,
+  onNavigateToOntologyArgType,
+  onNodeClickArgType,
+  ontologyIdArgType,
+  parameterArgType,
+  rootWalkArgType,
+  showComparisonInputFieldArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
+  termLinkArgType,
+  titleTextArgType,
+  urlPrefixArgType,
+  useLegacyArgType,
+} from "../../../stories/storyArgs";
 import { MetadataWidget } from "./MetadataWidget";
 import {
   commonMetadataWidgetPlay,
@@ -31,7 +66,137 @@ const meta = {
       },
     },
   },
-  argTypes: MetadataWidgetStoryArgTypes,
+  argTypes: {
+    ...MetadataWidgetStoryArgTypes,
+    // API & Entity group
+    api: { ...apiArgType.api, table: { category: "API & Entity" } },
+    iri: { ...iriArgType.iri, table: { category: "API & Entity" } },
+    entityType: {
+      ...entityTypeArgType.entityType,
+      table: { category: "API & Entity" },
+    },
+    ontologyId: {
+      ...ontologyIdArgType.ontologyId,
+      table: { category: "API & Entity" },
+    },
+    // Navigation
+    onNavigateToEntity: {
+      ...onNavigateToEntityArgType.onNavigateToEntity,
+      table: { category: "Navigation" },
+    },
+    onNavigateToOntology: {
+      ...onNavigateToOntologyArgType.onNavigateToOntology,
+      table: { category: "Navigation" },
+    },
+    onNavigateToDisambiguate: {
+      ...onNavigateToDisambiguateArgType.onNavigateToDisambiguate,
+      table: { category: "Navigation" },
+    },
+    // Hierarchy settings
+    hierarchyPreferredRoots: {
+      ...hierarchyPreferredRootsArgType.hierarchyPreferredRoots,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyKeepExpansionStates: {
+      ...hierarchyKeepExpansionStatesArgType.hierarchyKeepExpansionStates,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyShowSiblingsOnInit: {
+      ...hierarchyShowSiblingsOnInitArgType.hierarchyShowSiblingsOnInit,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyTargetIri: {
+      ...hierarchyTargetIriArgType.hierarchyTargetIri,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyWrap: {
+      ...hierarchyWrapArgType.hierarchyWrap,
+      table: { category: "Hierarchy" },
+    },
+    showComparisonInputField: {
+      ...showComparisonInputFieldArgType.showComparisonInputField,
+      table: { category: "Hierarchy" },
+    },
+    showHeader: {
+      ...showHeaderArgType.showHeader,
+      table: { category: "Hierarchy" },
+    },
+    showComparisonTitleInHeader: {
+      ...showComparisonTitleInHeaderArgType.showComparisonTitleInHeader,
+      table: { category: "Hierarchy" },
+    },
+    // Graph settings
+    graphTargetIri: {
+      ...graphTargetIriArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    graphHierarchy: {
+      ...graphHierarchyArgType.graphHierarchy,
+      table: { category: "Graph" },
+    },
+    rootWalk: {
+      ...rootWalkArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    edgeLabel: {
+      ...edgeLabelArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    onNodeClick: {
+      ...onNodeClickArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    // Tabs visibility
+    altNamesTab: { table: { category: "Tabs" } },
+    hierarchyTab: { table: { category: "Tabs" } },
+    crossRefTab: { table: { category: "Tabs" } },
+    terminologyInfoTab: { table: { category: "Tabs" } },
+    graphViewTab: { table: { category: "Tabs" } },
+    termDepictionTab: { table: { category: "Tabs" } },
+    entityInfoTab: { table: { category: "Tabs" } },
+    entityRelationTab: { table: { category: "Tabs" } },
+    // Other
+    useLegacy: { ...useLegacyArgType.useLegacy, table: { category: "Other" } },
+    parameter: { ...parameterArgType.parameter, table: { category: "Other" } },
+    className: { ...classNameArgType.className, table: { category: "Other" } },
+    initialSelectedTab: { table: { category: "Other" } },
+    // Breadcrumb
+    colorFirst: { ...colorFirstArgType, table: { category: "Breadcrumb" } },
+    colorSecond: { ...colorSecondArgType, table: { category: "Breadcrumb" } },
+    // Title and Description
+    descText: {
+      ...descTextArgType,
+      table: { category: "Title and Description" },
+    },
+    titleText: {
+      ...titleTextArgType,
+      table: { category: "Title and Description" },
+    },
+    defaultValue: {
+      ...defaultValueArgType,
+      table: { category: "Title and Description" },
+    },
+    iriText: {
+      ...iriTextArgType.iriText,
+      table: { category: "Title and Description" },
+    },
+    externalIcon: {
+      ...externalIconArgType,
+      table: { category: "Title and Description" },
+    },
+    urlPrefix: {
+      ...urlPrefixArgType,
+      table: { category: "Title and Description" },
+    },
+    copyButton: {
+      ...copyButtonArgType,
+      table: { category: "Title and Description" },
+    },
+    termLink: {
+      ...termLinkArgType,
+      table: { category: "Title and Description" },
+    },
+  },
   args: MetadataWidgetStoryArgs,
 } satisfies Meta<typeof MetadataWidget>;
 
