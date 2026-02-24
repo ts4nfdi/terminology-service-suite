@@ -650,9 +650,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
-          //@ts-ignore
           setDbClickedColor({
+            //@ts-ignore
             bgColor: nodes.current.get(nodeIri)?.color?.background,
+            //@ts-ignore
             color: nodes.current.get(nodeIri)?.font?.color,
           });
           setSelectedIri(nodeIri);
