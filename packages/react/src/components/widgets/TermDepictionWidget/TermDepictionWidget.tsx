@@ -20,7 +20,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { data, isLoading, isSuccess, isError, error } = useQuery<Thing>(
     ["termDepiction", api, iri, ontologyId, useLegacy],
     async () => {
-      return olsApi.getThingObject(iri, "class", ontologyId, "", useLegacy);
+      return olsApi.getThingObject(iri, "class", encodeURIComponent(encodeURIComponent(ontologyId)), "", useLegacy);
     },
   );
 
