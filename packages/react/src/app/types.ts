@@ -743,6 +743,11 @@ export type GraphViewWidgetProps = ApiObj &
      * Prevent the graph to be rendered with full width (CSS width 100%).
     * */
     stopFullWidth?: boolean;
+
+  /**
+   * Hide the graph legend. Default is false/undefined
+   */
+  hideLegend?: boolean;
   };
 
 export type OlsGraphNode = {

@@ -55,7 +55,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     edgeLabel,
     onNodeClick,
     parameter,
-    stopFullWidth
+    stopFullWidth,
+    hideLegend
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -549,6 +550,72 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
+
+  function renderLegend(){
+    if(hideLegend){
+      return (<></>);
+    }
+    const itemStyle = {
+      width: "10px",
+      height: "10px",
+      borderRadius: "50%",
+      display: "inline-block",
+    };
+    const itemPadding = { paddingTop: "5px" };
+    return(
+      <div
+        style={{
+          position: "absolute",
+          display: "inline-block",
+          backgroundColor: "#e5e7ea",
+          padding: "5px",
+          borderRadius: "10px",
+          paddingTop: "10px",
+          bottom: "20px",
+          right: "20px",
+        }}
+      >
+        <b>Legend:</b>
+        <ul style={{ paddingTop: "15px" }}>
+          <li style={itemPadding}>
+            <div
+              style={{backgroundColor: sourceNodeBgColor, ...itemStyle}}
+            ></div>{" "}
+            Source: <i>{sourceLabel}</i>{" "}
+          </li>
+          {targetIri && (
+            <>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: "#455469", ...itemStyle}}
+                ></div>{" "}
+                Subtree exclusive to <i>{sourceLabel}</i>{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: commonNodesBgColor, ...itemStyle}}
+                ></div>{" "}
+                Common subtree{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: targetNodeBgColor, ...itemStyle}}
+                ></div>{" "}
+                Target: <i>{targetLabel}</i>{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: exclusiveToTargetIriColor, ...itemStyle}}
+                ></div>{" "}
+                Subtree exclusive to <i>{targetLabel}</i>{" "}
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
@@ -789,86 +856,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           style={!stopFullWidth ? { width: "100%", height: "100vh", margin: "auto" } : {}}
         />
 
-        <div
-          style={{
-            position: "absolute",
-            display: "inline-block",
-            backgroundColor: "#e5e7ea",
-            padding: "5px",
-            borderRadius: "10px",
-            paddingTop: "10px",
-            bottom: "20px",
-            right: "20px",
-          }}
-        >
-          <b>Legend:</b>
-          <ul style={{ paddingTop: "15px" }}>
-            <li style={{ paddingTop: "5px" }}>
-              <div
-                style={{
-                  backgroundColor: sourceNodeBgColor,
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                }}
-              ></div>{" "}
-              Source: <i>{sourceLabel}</i>{" "}
-            </li>
-            {targetIri && (
-              <>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: "#455469",
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Subtree exclusive to <i>{sourceLabel}</i>{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: commonNodesBgColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Common subtree{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: targetNodeBgColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Target: <i>{targetLabel}</i>{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: exclusiveToTargetIriColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Subtree exclusive to <i>{targetLabel}</i>{" "}
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
+        {renderLegend()}
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
         <style>{`
