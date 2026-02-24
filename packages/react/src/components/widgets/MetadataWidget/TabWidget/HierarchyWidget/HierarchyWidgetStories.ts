@@ -16,12 +16,12 @@ import {
   ontologyIdArgTypeHierarchy,
   parameterArgTypeHierarchy,
   preferredRootsArgType,
+  showComparisonInputFieldArgType,
   showComparisonTitleInHeaderArgType,
   showHeaderArgType,
   showSiblingsOnInitArgType,
   targetIriArgType,
   useLegacyArgTypeHierarchy,
-  showComparisonInputFieldArgType,
 } from "../../../../../stories/storyArgs";
 
 export const HierarchyWidgetStoryArgTypes = {

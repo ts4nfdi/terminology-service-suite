@@ -28,13 +28,13 @@ import {
   ontologyIdArgType,
   parameterArgType,
   rootWalkArgType,
+  showComparisonInputFieldArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
   termLinkArgType,
   titleTextArgType,
   urlPrefixArgType,
   useLegacyArgType,
-  showComparisonInputFieldArgType,
-  showHeaderArgType,
-  showComparisonTitleInHeaderArgType,
 } from "../../../stories/storyArgs";
 import { MetadataWidget } from "./MetadataWidget";
 import {

@@ -3,6 +3,7 @@
 import {
   EuiAccordion,
   EuiButton,
+  EuiFieldText,
   EuiHealth,
   EuiIcon,
   EuiLoadingSpinner,
@@ -11,7 +12,6 @@ import {
   EuiSpacer,
   EuiText,
   EuiTitle,
-  EuiFieldText,
 } from "@elastic/eui";
 import React, {
   useCallback,
@@ -411,21 +411,23 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                     flexGrow: 1,
                     marginRight: "8px",
                     minWidth: 0,
-                  }}>
+                  }}
+                >
                   {showComparisonInputField && (
-                  <EuiFieldText
-                    placeholder="Enter target IRI for comparison"
-                    value={targetIriInput}
-                    onChange={(e) => {
-                      setTargetIriInput(e.target.value);
-                      if (e.target.value) {
-                        setFinalTargetIri(e.target.value);
-                      } else {
-                        setFinalTargetIri(props.targetIri);
-                      }
-                    }}
-                    fullWidth
-                  />)}
+                    <EuiFieldText
+                      placeholder="Enter target IRI for comparison"
+                      value={targetIriInput}
+                      onChange={(e) => {
+                        setTargetIriInput(e.target.value);
+                        if (e.target.value) {
+                          setFinalTargetIri(e.target.value);
+                        } else {
+                          setFinalTargetIri(props.targetIri);
+                        }
+                      }}
+                      fullWidth
+                    />
+                  )}
                   {finalIri &&
                     finalTargetIri &&
                     showComparisonTitleInHeader && (

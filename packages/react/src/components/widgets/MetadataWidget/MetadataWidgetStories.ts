@@ -16,9 +16,12 @@ import {
   onNavigateToEntityArgType,
   onNavigateToOntologyArgType,
   ontologyIdArgType,
-  parameterArgType, showComparisonInputFieldArgType, showComparisonTitleInHeaderArgType, showHeaderArgType,
+  parameterArgType,
+  showComparisonInputFieldArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
   termLinkArgType,
-  useLegacyArgType
+  useLegacyArgType,
 } from "../../../stories/storyArgs";
 
 export const MetadataWidgetStoryArgTypes = {
