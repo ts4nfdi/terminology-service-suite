@@ -33,7 +33,14 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
+  const {
+    apiUrl,
+    api,
+    ontologyId,
+    parameter,
+    useLegacy,
+    thingType
+  } = props;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
@@ -472,10 +479,6 @@ function queryFieldsForType(type: string) {
   return "label,obo_id,short_form,iri";
 }
 
-function normalizeBaseApi(api: string) {
-  return api.endsWith("/") ? api : `${api}/`;
-}
-
 function splitAndApplyParams(url: URL, raw: string) {
   if (!raw) return;
   for (const part of raw.split("&")) {
@@ -486,6 +489,38 @@ function splitAndApplyParams(url: URL, raw: string) {
   }
 }
 
+function normalizeBaseApi(api: string) {
+  return api.endsWith("/") ? api : `${api}/`;
+}
+
+type Endpoint = | "ontologies" | "properties" | "individuals" | "classes" | "terms";
+
+function getEndpoint(thingType: string, useLegacy: boolean): Endpoint {
+  switch (thingType) {
+    case "ontology":
+      return "ontologies";
+    case "property":
+      return "properties";
+    case "individual":
+      return "individuals";
+    default:
+      return useLegacy ? "terms" : "classes";
+  }
+}
+
+function buildBaseUrl(
+  api: string,
+  useLegacy: boolean,
+  ontologyId: string,
+  endpoint: Endpoint,
+) {
+  const prefix = useLegacy ? "" : "v2/";
+  if (endpoint === "ontologies") {
+    return `${api}${prefix}ontologies?`;
+  }
+  return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
+}
+
 export function buildEntityListApiUrl(args: {
   api: string;
   useLegacy: boolean;
@@ -494,31 +529,9 @@ export function buildEntityListApiUrl(args: {
   parameter: string;
 }) {
   const api = normalizeBaseApi(args.api);
-  const v2Endpoint =
-    args.thingType === "ontology"
-      ? "ontologies"
-      : args.thingType === "property"
-        ? "properties"
-        : args.thingType === "individual"
-          ? "individuals"
-          : "classes";
-  const legacyEndpoint =
-    args.thingType === "ontology"
-      ? "ontologies"
-      : args.thingType === "property"
-        ? "properties"
-        : args.thingType === "individual"
-          ? "individuals"
-          : "terms";
-  const endpoint = args.useLegacy ? legacyEndpoint : v2Endpoint;
-  const base =
-    endpoint === "ontologies"
-      ? args.useLegacy
-        ? `${api}ontologies?`
-        : `${api}v2/ontologies?`
-      : args.useLegacy
-        ? `${api}ontologies/${args.ontologyId}/${endpoint}?`
-        : `${api}v2/ontologies/${args.ontologyId}/${endpoint}?`;
+  const endpoint = getEndpoint(args.thingType, args.useLegacy);
+  const base = buildBaseUrl(api, args.useLegacy, args.ontologyId, endpoint);
+
   const url = new URL(base);
   url.searchParams.set("size", "10");
   splitAndApplyParams(url, args.parameter);
