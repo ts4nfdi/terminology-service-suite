@@ -33,14 +33,7 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const {
-    apiUrl,
-    api,
-    ontologyId,
-    parameter,
-    useLegacy,
-    thingType
-  } = props;
+  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
@@ -493,7 +486,12 @@ function normalizeBaseApi(api: string) {
   return api.endsWith("/") ? api : `${api}/`;
 }
 
-type Endpoint = | "ontologies" | "properties" | "individuals" | "classes" | "terms";
+type Endpoint =
+  | "ontologies"
+  | "properties"
+  | "individuals"
+  | "classes"
+  | "terms";
 
 function getEndpoint(thingType: string, useLegacy: boolean): Endpoint {
   switch (thingType) {
