@@ -75,12 +75,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
   useEffect(() => {
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
+
     setPageIndex(0);
     setPageSize(baseUrl ? getInitialPageSizeFromUrl(baseUrl) : 10);
     setSearchText("");
     setDebouncedSearchText("");
     setSortField("name");
     setSortDirection("asc");
+
     return () => {
       controllerRef.current.abort();
     };
