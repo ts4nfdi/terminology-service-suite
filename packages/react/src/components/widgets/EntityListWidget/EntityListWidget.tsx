@@ -26,8 +26,21 @@ import {
   thingTypeToEntityTypeName,
 } from "../../../model/ModelTypeCheck";
 
+type EntityRow = { name: string; id: string; rowIndex: number };
+type QueryResult = { rows: EntityRow[]; totalItemCount: number };
+
+const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
+type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
+
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
+  const {
+    apiUrl,
+    api,
+    ontologyId,
+    parameter,
+    useLegacy,
+    thingType
+  } = props;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
@@ -60,6 +73,8 @@ function EntityListWidget(props: EntityListWidgetProps) {
       ontologyApi: new OlsOntologyApi(apiBase),
     };
   }, [api, baseUrl]);
+
+  const enabled = Boolean(baseUrl && derivedApi);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState<PageSize>(10);
@@ -145,7 +160,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     queryKey,
     queryFn,
     {
-      enabled: !!baseUrl && !!derivedApi,
+      enabled,
       keepPreviousData: true,
       staleTime: 60_000,
       retry: false,
@@ -198,7 +213,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
   };
 
-  if (!baseUrl) {
+  if (!enabled) {
     return (
       <EuiPanel paddingSize="m">
         <EuiText size="s" color="subdued">
@@ -258,7 +273,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
           tbody .euiTableRow:nth-of-type(odd) {
             background-color: #ffffff;
           }
-
           tbody .euiTableRow:nth-of-type(even) {
             background-color: #f0f6ff;
           }
@@ -282,13 +296,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     </EuiPanel>
   );
 }
-
-type EntityRow = { name: string; id: string; rowIndex: number };
-
-type QueryResult = { rows: EntityRow[]; totalItemCount: number };
-
-const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
-type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function pickLabel(item: any) {
   const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
@@ -548,7 +555,6 @@ async function fetchSearchPage(
 
   url.searchParams.set("start", String(start));
   url.searchParams.set("rows", String(pageSize));
-
   url.searchParams.set("exact", "false");
   url.searchParams.set("obsoletes", "false");
 
