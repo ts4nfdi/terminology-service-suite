@@ -206,31 +206,16 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
   };
 
-  if (!enabled) {
-    return (
-      <EuiPanel paddingSize="m">
-        <EuiText size="s" color="subdued">
-          No API URL configured.
-        </EuiText>
-      </EuiPanel>
-    );
-  }
+  const guard =
+    (!enabled && (
+      <GuardPanel when text="No API URL configured." tone="subdued" />
+    )) ||
+    (shouldShowError && (
+      <GuardPanel when text={String(error)} tone="danger" />
+    )) ||
+    (isLoading && !data && <GuardPanel when loading center />);
 
-  if (shouldShowError) {
-    return (
-      <EuiPanel paddingSize="m">
-        <EuiText color="danger">{String(error)}</EuiText>
-      </EuiPanel>
-    );
-  }
-
-  if (isLoading && !data) {
-    return (
-      <EuiPanel paddingSize="m" style={{ textAlign: "center" }}>
-        <EuiLoadingSpinner size="l" />
-      </EuiPanel>
-    );
-  }
+  if (guard) return guard;
 
   return (
     <EuiPanel paddingSize="m">
@@ -660,6 +645,31 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
         />
       </QueryClientProvider>
     </EuiProvider>
+  );
+}
+
+function GuardPanel(props: {
+  when: boolean;
+  text?: React.ReactNode;
+  tone?: "subdued" | "danger";
+  loading?: boolean;
+  center?: boolean;
+}) {
+  if (!props.when) return null;
+
+  return (
+    <EuiPanel
+      paddingSize="m"
+      style={props.center ? { textAlign: "center" } : undefined}
+    >
+      {props.loading ? (
+        <EuiLoadingSpinner size="l" />
+      ) : (
+        <EuiText size="s" color={props.tone ?? "subdued"}>
+          {props.text}
+        </EuiText>
+      )}
+    </EuiPanel>
   );
 }
 

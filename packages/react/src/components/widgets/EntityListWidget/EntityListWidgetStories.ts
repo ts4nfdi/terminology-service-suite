@@ -8,7 +8,6 @@ import {
   thingTypeArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
-import { buildEntityListApiUrl } from "./EntityListWidget";
 
 export const EntityListWidgetStoryArgsReact: EntityListWidgetProps = {
   apiUrl: `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?size=10`,
@@ -30,4 +29,3 @@ export const EntityListWidgetStoryArgs = {
   parameter: "",
 } as const;
 
-export { buildEntityListApiUrl };
