@@ -38,6 +38,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
 
+  // the full address is baseUrl
   const baseUrl = useMemo(() => {
     if (apiUrl) return apiUrl;
     if (
@@ -56,7 +57,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
     return undefined;
   }, [apiUrl, api, ontologyId, parameter, useLegacy, normalizedThingType]);
-
   const derivedApi = useMemo(() => {
     if (!baseUrl) return undefined;
     if (api && typeof api !== "string") return api;
@@ -80,6 +80,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
 
   const controllerRef = useRef<AbortController>(new AbortController());
 
+  // Reset table state and cancel in-flight requests whenever the data source (baseUrl) changes.
   useEffect(() => {
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
@@ -291,6 +292,14 @@ function pickId(item: any) {
   return v ? String(v) : "—";
 }
 
+// the input of parseOlsUrl is -->  baseUrl ="https://www.ebi.ac.uk/ols4/api/v2/ontologies/efo/classes?size=10&lang=en";
+//  the output is -->
+//   apiBase: "https://www.ebi.ac.uk/ols4/api/",
+//   endpoint: "classes",
+//   useLegacy: false,
+//   ontologyId: "efo",
+//   parameter: "lang=en"
+
 function parseOlsUrl(baseUrl: string) {
   const url = new URL(baseUrl);
   const parts = url.pathname.split("/").filter(Boolean);
@@ -336,6 +345,7 @@ function parseOlsUrl(baseUrl: string) {
   };
 }
 
+// Extracts the array of entity items from the API response not all the info, only the necessary ones
 function extractElements(response: any): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
 
@@ -394,6 +404,7 @@ function getInitialPageSizeFromUrl(baseUrl: string): PageSize {
   return 10;
 }
 
+// heart = Heart = HEART = HeaRt =...
 function compareValues(a: unknown, b: unknown) {
   const av = a == null ? "" : String(a);
   const bv = b == null ? "" : String(b);
@@ -504,6 +515,7 @@ function buildBaseUrl(
   return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
 }
 
+// opposite of parseOlsUrl
 export function buildEntityListApiUrl(args: {
   api: string;
   useLegacy: boolean;
