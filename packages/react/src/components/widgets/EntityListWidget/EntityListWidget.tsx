@@ -33,42 +33,39 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { apiUrl, api, ontologyId, parameter, useLegacy, thingType } = props;
+  const { api, ontologyId, parameter, useLegacy, thingType } = props;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
 
-  // the full address is baseUrl
+  const apiBase = useMemo(() => {
+    if (!api || typeof api !== "string") return undefined;
+    return normalizeBaseApi(api);
+  }, [api]);
+
   const baseUrl = useMemo(() => {
-    if (apiUrl) return apiUrl;
-    if (
-      typeof api === "string" &&
-      typeof useLegacy === "boolean" &&
-      ontologyId &&
-      normalizedThingType
-    ) {
-      return buildEntityListApiUrl({
-        api,
-        useLegacy,
-        ontologyId,
-        thingType: normalizedThingType,
-        parameter: parameter ?? "",
-      });
+    if (!apiBase || typeof useLegacy !== "boolean" || !ontologyId || !normalizedThingType) {
+      return undefined;
     }
-    return undefined;
-  }, [apiUrl, api, ontologyId, parameter, useLegacy, normalizedThingType]);
 
-  const derivedApi = useMemo(() => {
-    if (!baseUrl) return undefined;
-    if (api && typeof api !== "string") return api;
-    const { apiBase } = parseOlsUrl(baseUrl);
-    return {
-      entityApi: new OlsEntityApi(apiBase),
-      ontologyApi: new OlsOntologyApi(apiBase),
-    };
-  }, [api, baseUrl]);
+    return buildEntityListApiUrl({
+      api: apiBase,
+      useLegacy,
+      ontologyId,
+      thingType: normalizedThingType,
+      parameter: parameter ?? "",
+    });
+  }, [apiBase, useLegacy, ontologyId, normalizedThingType, parameter]);
 
-  const enabled = Boolean(baseUrl && derivedApi);
+  const entityApi = useMemo(() => {
+    if (!apiBase) return undefined;
+    return new OlsEntityApi(apiBase);
+  }, [apiBase]);
+
+  const ontologyApi = useMemo(() => {
+    if (!apiBase) return undefined;
+    return new OlsOntologyApi(apiBase);
+  }, [apiBase]);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState<PageSize>(10);
@@ -81,12 +78,12 @@ function EntityListWidget(props: EntityListWidgetProps) {
 
   const controllerRef = useRef<AbortController>(new AbortController());
 
-  // Reset table state and cancel in-flight requests whenever the data source (baseUrl) changes.
+
   useEffect(() => {
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
     setPageIndex(0);
-    setPageSize(baseUrl ? getInitialPageSizeFromUrl(baseUrl) : 10);
+    setPageSize(10);
     setSearchText("");
     setDebouncedSearchText("");
     setSortField("name");
@@ -127,13 +124,15 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const queryFn = async (): Promise<QueryResult> => {
     const signal = controllerRef.current.signal;
 
-    if (!baseUrl || !derivedApi) {
+    if (!baseUrl || !apiBase || !entityApi || !ontologyApi) {
       return { rows: [], totalItemCount: 0 };
     }
 
     if (debouncedSearchText) {
       return await fetchSearchPage(
-        baseUrl,
+        apiBase,
+        normalizedThingType,
+        ontologyId,
         pageIndex,
         pageSize,
         debouncedSearchText,
@@ -142,11 +141,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
 
     return await fetchListPage(
-      baseUrl,
+      entityApi,
+      ontologyApi,
+      ontologyId,
+      parameter ?? "",
+      useLegacy ?? false,
+      normalizedThingType,
       pageIndex,
       pageSize,
-      derivedApi,
-      normalizedThingType,
       signal,
     );
   };
@@ -155,7 +157,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     queryKey,
     queryFn,
     {
-      enabled,
+      enabled: Boolean(apiBase && ontologyId && normalizedThingType && typeof useLegacy === "boolean"),
       keepPreviousData: true,
       staleTime: 60_000,
       retry: false,
@@ -209,12 +211,8 @@ function EntityListWidget(props: EntityListWidgetProps) {
   };
 
   const guard =
-    (!enabled && (
-      <GuardPanel when text="No API URL configured." tone="subdued" />
-    )) ||
-    (shouldShowError && (
-      <GuardPanel when text={String(error)} tone="danger" />
-    )) ||
+    (!baseUrl && <GuardPanel when text="No API URL configured." tone="subdued" />) ||
+    (shouldShowError && <GuardPanel when text={String(error)} tone="danger" />) ||
     (isLoading && !data && <GuardPanel when loading center />);
 
   if (guard) return guard;
@@ -293,58 +291,6 @@ function pickId(item: any) {
   return v ? String(v) : "—";
 }
 
-// the input of parseOlsUrl is -->  baseUrl ="https://www.ebi.ac.uk/ols4/api/v2/ontologies/efo/classes?size=10&lang=en";
-//  the output is -->
-//   apiBase: "https://www.ebi.ac.uk/ols4/api/",
-//   endpoint: "classes",
-//   useLegacy: false,
-//   ontologyId: "efo",
-//   parameter: "lang=en"
-
-function parseOlsUrl(baseUrl: string) {
-  const url = new URL(baseUrl);
-  const parts = url.pathname.split("/").filter(Boolean);
-
-  const useLegacyBase = !parts.includes("v2");
-  const idx = parts.indexOf("ontologies");
-
-  const ontologyId = idx >= 0 ? parts[idx + 1] : undefined;
-  const rawEndpoint = idx >= 0 ? parts[idx + 2] : "classes";
-
-  const endpoint =
-    rawEndpoint === "terms" ||
-    rawEndpoint === "properties" ||
-    rawEndpoint === "individuals" ||
-    rawEndpoint === "ontologies"
-      ? rawEndpoint
-      : idx >= 0 && !ontologyId
-        ? "ontologies"
-        : "classes";
-
-  const basePathEnd = useLegacyBase
-    ? url.pathname.indexOf("/ontologies")
-    : url.pathname.indexOf("/v2");
-
-  const apiBase =
-    basePathEnd >= 0
-      ? url.origin + url.pathname.substring(0, basePathEnd)
-      : url.origin;
-
-  const sp = new URLSearchParams(url.searchParams);
-  sp.delete("page");
-  sp.delete("size");
-  const parameter = sp.toString() || undefined;
-
-  const normalizedApiBase = apiBase.endsWith("/") ? apiBase : `${apiBase}/`;
-
-  return {
-    apiBase: normalizedApiBase,
-    endpoint,
-    useLegacy: endpoint === "terms" ? true : useLegacyBase,
-    ontologyId,
-    parameter,
-  };
-}
 
 // Extracts the array of entity items from the API response not all the info, only the necessary ones
 function extractElements(response: any): any[] {
@@ -395,15 +341,6 @@ function normalizeSearchText(raw: string) {
   return raw.trim().replace(/\s+/g, " ");
 }
 
-function getInitialPageSizeFromUrl(baseUrl: string): PageSize {
-  const q = baseUrl.indexOf("?");
-  if (q === -1) return 10;
-  const raw = new URLSearchParams(baseUrl.slice(q)).get("size");
-  const n = Number(raw);
-  if (!Number.isFinite(n)) return 10;
-  if (n === 10 || n === 25 || n === 50) return n;
-  return 10;
-}
 
 // heart = Heart = HEART = HeaRt =...
 function compareValues(a: unknown, b: unknown) {
@@ -415,12 +352,6 @@ function compareValues(a: unknown, b: unknown) {
   });
 }
 
-function searchTypeFromEndpoint(endpoint: string) {
-  if (endpoint === "ontologies") return "ontology";
-  if (endpoint === "properties") return "property";
-  if (endpoint === "individuals") return "individual";
-  return "class";
-}
 
 function getPreferredIdFromSearchDoc(d: any) {
   const v =
@@ -535,18 +466,27 @@ export function buildEntityListApiUrl(args: {
 }
 
 async function fetchSearchPage(
-  baseUrl: string,
+  apiBase: string,
+  thingType: ThingTypeName | undefined,
+  ontologyId: string | undefined,
   pageIndex: number,
   pageSize: number,
   searchText: string,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
-  const { apiBase, endpoint, ontologyId } = parseOlsUrl(baseUrl);
-
   const start = pageIndex * pageSize;
   const url = new URL("search", apiBase);
 
-  const type = searchTypeFromEndpoint(endpoint);
+  const effectiveThingType = thingType ?? "class";
+  const type =
+    effectiveThingType === "ontology"
+      ? "ontology"
+      : effectiveThingType === "property"
+        ? "property"
+        : effectiveThingType === "individual"
+          ? "individual"
+          : "class";
+
   const q = buildSolrPrefixQuery(searchText);
 
   url.searchParams.set("q", q);
@@ -584,23 +524,24 @@ async function fetchSearchPage(
 }
 
 async function fetchListPage(
-  baseUrl: string,
+  entityApi: OlsEntityApi,
+  ontologyApi: OlsOntologyApi,
+  ontologyId: string | undefined,
+  parameter: string,
+  useLegacy: boolean,
+  thingType: ThingTypeName | undefined,
   pageIndex: number,
   pageSize: number,
-  api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi },
-  thingType?: ThingTypeName,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
-  const { endpoint, useLegacy, ontologyId, parameter } = parseOlsUrl(baseUrl);
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
-  const isOntologyRequest =
-    endpoint === "ontologies" || thingType === "ontology";
+  const effectiveThingType: ThingTypeName = thingType ?? "class";
 
   let response;
 
-  if (isOntologyRequest) {
-    response = await api.ontologyApi.getOntologies(
+  if (effectiveThingType === "ontology") {
+    response = await ontologyApi.getOntologies(
       paginationParams,
       undefined,
       undefined,
@@ -608,18 +549,10 @@ async function fetchListPage(
       useLegacy,
     );
   } else {
-    const effectiveThingType: ThingTypeName =
-      thingType ??
-      (endpoint === "properties"
-        ? "property"
-        : endpoint === "individuals"
-          ? "individual"
-          : "class");
-
     const entityType = thingTypeToEntityTypeName(effectiveThingType);
 
     response = await getEntitiesWithEntityTypeProvided(
-      api.entityApi,
+      entityApi,
       entityType,
       ontologyId,
       parameter,
@@ -649,7 +582,6 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <EntityListWidget
-          apiUrl={props.apiUrl}
           api={props.api}
           ontologyId={props.ontologyId}
           parameter={props.parameter}
