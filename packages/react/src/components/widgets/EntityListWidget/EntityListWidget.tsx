@@ -176,7 +176,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     },
   );
 
-   const totalItemCount = data?.totalItemCount ?? 0;
+  const totalItemCount = data?.totalItemCount ?? 0;
 
   const rowsSorted = useMemo(() => {
     const rows = data?.rows ?? [];
@@ -306,9 +306,12 @@ function extractElements(
   const embedded = response?._embedded;
   if (!embedded || typeof embedded !== "object") return [];
 
-  if (thingType === "ontology") return Array.isArray(embedded.ontologies) ? embedded.ontologies : [];
-  if (thingType === "property") return Array.isArray(embedded.properties) ? embedded.properties : [];
-  if (thingType === "individual") return Array.isArray(embedded.individuals) ? embedded.individuals : [];
+  if (thingType === "ontology")
+    return Array.isArray(embedded.ontologies) ? embedded.ontologies : [];
+  if (thingType === "property")
+    return Array.isArray(embedded.properties) ? embedded.properties : [];
+  if (thingType === "individual")
+    return Array.isArray(embedded.individuals) ? embedded.individuals : [];
 
   if (useLegacy) return Array.isArray(embedded.terms) ? embedded.terms : [];
   return Array.isArray(embedded.classes) ? embedded.classes : [];
@@ -331,8 +334,6 @@ function extractTotal(response: any, fallback: number) {
 
   return fallback;
 }
-
-
 
 // heart = Heart = HEART = HeaRt =...
 function compareValues(a: unknown, b: unknown) {
@@ -369,8 +370,6 @@ function isAbortError(err: unknown) {
     msg.toLowerCase().includes("aborted")
   );
 }
-
-
 
 function queryFieldsForType(type: string) {
   if (type === "ontology")
@@ -424,7 +423,6 @@ function buildBaseUrl(
   }
   return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
 }
-
 
 export function buildEntityListApiUrl(args: {
   api: string;
@@ -570,8 +568,6 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
     </EuiProvider>
   );
 }
-
-
 
 export { EntityListWidget };
 export default WrappedEntityListWidget;
