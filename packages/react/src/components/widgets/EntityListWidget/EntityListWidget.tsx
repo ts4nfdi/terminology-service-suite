@@ -131,7 +131,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const queryFn = async (): Promise<QueryResult> => {
     const signal = controllerRef.current.signal;
 
-    if (!baseUrl || !apiBase || !entityApi || !ontologyApi || !ontologyId || !normalizedThingType) {
+    if (
+      !baseUrl ||
+      !apiBase ||
+      !entityApi ||
+      !ontologyApi ||
+      !ontologyId ||
+      !normalizedThingType
+    ) {
       return { rows: [], totalItemCount: 0 };
     }
 
