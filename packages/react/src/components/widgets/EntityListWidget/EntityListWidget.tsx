@@ -57,6 +57,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
     return undefined;
   }, [apiUrl, api, ontologyId, parameter, useLegacy, normalizedThingType]);
+
   const derivedApi = useMemo(() => {
     if (!baseUrl) return undefined;
     if (api && typeof api !== "string") return api;
