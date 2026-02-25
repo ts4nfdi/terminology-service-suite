@@ -91,14 +91,6 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity {
     return this.properties["curie"] || this.properties["shortForm"];
   }
 
-  getDepictedBy(): Reified<string>[] {
-    return Reified.fromJson<string>([
-      ...asArray(
-        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || [],
-      ),
-      ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []),
-    ]);
-  }
 
   isPredicateFromInformalVocabulary(predicate: string): boolean {
     return (

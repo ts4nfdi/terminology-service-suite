@@ -103,15 +103,6 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
     return this.properties["obo_id"] || this.properties["short_form"];
   }
 
-  // TODO: are the following 3 needed?
-  getDepictedBy(): Reified<string>[] {
-    return Reified.fromJson<string>([
-      ...asArray(
-        this.properties["http://xmlns.com/foaf/0.1/depicted_by"] || [],
-      ),
-      ...asArray(this.properties["http://xmlns.com/foaf/0.1/depiction"] || []),
-    ]);
-  }
 
   isPredicateFromInformalVocabulary(predicate: string): boolean {
     return (

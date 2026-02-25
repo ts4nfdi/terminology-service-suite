@@ -120,6 +120,7 @@ function TabPresentation(props: TabPresentationProps) {
             ontologyId={props.ontologyId || data.getOntologyId()}
             iri={props.iri}
             rootWalk={false}
+            stopFullWidth={true}
           />
         ),
         id: "tab5",

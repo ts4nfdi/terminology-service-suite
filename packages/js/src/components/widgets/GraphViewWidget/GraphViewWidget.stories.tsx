@@ -38,7 +38,7 @@ const meta: Meta<GraphViewWidgetProps> = {
       },
     },
   },
-  //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
+  //@ts-expect-error: You can either use a function to create DOM elements or use a plain HTML string!
   render: (args: GraphViewWidgetProps) => {
     const num = getIncNum();
 
@@ -58,6 +58,8 @@ window['ts4nfdiWidgets'].createGraphView(
         onNodeClick: ${args.onNodeClick},
         edgeLabel: ${args.edgeLabel},
         parameter: "${args.parameter}",
+        hideLegend: ${args.hideLegend},
+        stopFullWidth: ${args.stopFullWidth}
     },
     document.querySelector('#graph_view_widget_container_${num}')
 )
