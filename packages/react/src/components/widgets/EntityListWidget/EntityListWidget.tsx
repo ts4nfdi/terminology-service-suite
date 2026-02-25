@@ -210,12 +210,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
   };
 
-  const guard =
-    (!baseUrl && <GuardPanel when text="No API URL configured." tone="subdued" />) ||
-    (shouldShowError && <GuardPanel when text={String(error)} tone="danger" />) ||
-    (isLoading && !data && <GuardPanel when loading center />);
-
-  if (guard) return guard;
 
   return (
     <EuiPanel paddingSize="m">
