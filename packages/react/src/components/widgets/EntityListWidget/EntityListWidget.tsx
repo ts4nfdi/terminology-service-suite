@@ -131,7 +131,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const queryFn = async (): Promise<QueryResult> => {
     const signal = controllerRef.current.signal;
 
-    if (!baseUrl || !apiBase || !entityApi || !ontologyApi) {
+    if (!baseUrl || !apiBase || !entityApi || !ontologyApi || !ontologyId || !normalizedThingType) {
       return { rows: [], totalItemCount: 0 };
     }
 
@@ -358,12 +358,6 @@ function getPreferredLabelFromSearchDoc(d: any) {
   return v ? String(v) : "—";
 }
 
-function queryFieldsForType(type: string) {
-  if (type === "ontology")
-    return "ontologyId,ontology_name,ontology_prefix,label,title,name";
-  return "label,obo_id,short_form,iri";
-}
-
 function splitAndApplyParams(url: URL, raw: string) {
   if (!raw) return;
   for (const part of raw.split("&")) {
@@ -430,8 +424,8 @@ export function buildEntityListApiUrl(args: {
 
 async function fetchSearchPage(
   apiBase: string,
-  thingType: ThingTypeName | undefined,
-  ontologyId: string | undefined,
+  thingType: ThingTypeName,
+  ontologyId: string,
   pageIndex: number,
   pageSize: number,
   searchText: string,
@@ -440,24 +434,24 @@ async function fetchSearchPage(
   const start = pageIndex * pageSize;
   const url = new URL("search", apiBase);
 
-  const effectiveThingType = thingType ?? "class";
   const type =
-    effectiveThingType === "ontology"
+    thingType === "ontology"
       ? "ontology"
-      : effectiveThingType === "property"
+      : thingType === "property"
         ? "property"
-        : effectiveThingType === "individual"
+        : thingType === "individual"
           ? "individual"
           : "class";
 
-  const q = buildSolrPrefixQuery(searchText);
-
-  url.searchParams.set("q", q);
+  url.searchParams.set("q", buildSolrPrefixQuery(searchText));
   url.searchParams.set("type", type);
-  url.searchParams.set("queryFields", queryFieldsForType(type));
-
-  if (ontologyId) url.searchParams.set("ontology", ontologyId);
-
+  url.searchParams.set(
+    "queryFields",
+    type === "ontology"
+      ? "ontologyId,ontology_name,ontology_prefix,label,title,name"
+      : "label,obo_id,short_form,iri",
+  );
+  url.searchParams.set("ontology", ontologyId);
   url.searchParams.set("start", String(start));
   url.searchParams.set("rows", String(pageSize));
   url.searchParams.set("exact", "false");
