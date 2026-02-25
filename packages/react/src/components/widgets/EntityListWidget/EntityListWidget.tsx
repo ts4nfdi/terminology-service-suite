@@ -358,19 +358,6 @@ function getPreferredLabelFromSearchDoc(d: any) {
   return v ? String(v) : "—";
 }
 
-function isAbortError(err: unknown) {
-  if (!err) return false;
-  if (typeof err === "string") return err.includes("AbortError");
-  const anyErr = err as any;
-  const name = anyErr?.name;
-  const msg = String(anyErr?.message ?? "");
-  return (
-    name === "AbortError" ||
-    msg.includes("AbortError") ||
-    msg.toLowerCase().includes("aborted")
-  );
-}
-
 function queryFieldsForType(type: string) {
   if (type === "ontology")
     return "ontologyId,ontology_name,ontology_prefix,label,title,name";
