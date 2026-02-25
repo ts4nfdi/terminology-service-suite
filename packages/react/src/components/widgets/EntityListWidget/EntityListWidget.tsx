@@ -5,7 +5,6 @@ import {
   EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiLoadingSpinner,
   EuiPanel,
   EuiProvider,
   EuiSpacer,
@@ -25,6 +24,10 @@ import {
   ThingTypeName,
   thingTypeToEntityTypeName,
 } from "../../../model/ModelTypeCheck";
+import {
+  buildSolrPrefixQuery,
+  normalizeSearchText,
+} from "./Utils/inputSearchUtils";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
@@ -44,7 +47,12 @@ function EntityListWidget(props: EntityListWidgetProps) {
   }, [api]);
 
   const baseUrl = useMemo(() => {
-    if (!apiBase || typeof useLegacy !== "boolean" || !ontologyId || !normalizedThingType) {
+    if (
+      !apiBase ||
+      typeof useLegacy !== "boolean" ||
+      !ontologyId ||
+      !normalizedThingType
+    ) {
       return undefined;
     }
 
@@ -77,7 +85,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const controllerRef = useRef<AbortController>(new AbortController());
-
 
   useEffect(() => {
     controllerRef.current.abort();
@@ -157,15 +164,19 @@ function EntityListWidget(props: EntityListWidgetProps) {
     queryKey,
     queryFn,
     {
-      enabled: Boolean(apiBase && ontologyId && normalizedThingType && typeof useLegacy === "boolean"),
+      enabled: Boolean(
+        apiBase &&
+        ontologyId &&
+        normalizedThingType &&
+        typeof useLegacy === "boolean",
+      ),
       keepPreviousData: true,
       staleTime: 60_000,
       retry: false,
     },
   );
 
-  const shouldShowError = isError && !isAbortError(error);
-  const totalItemCount = data?.totalItemCount ?? 0;
+   const totalItemCount = data?.totalItemCount ?? 0;
 
   const rowsSorted = useMemo(() => {
     const rows = data?.rows ?? [];
@@ -209,7 +220,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
       setSortDirection(sort.direction);
     }
   };
-
 
   return (
     <EuiPanel paddingSize="m">
@@ -285,32 +295,23 @@ function pickId(item: any) {
   return v ? String(v) : "—";
 }
 
-
-// Extracts the array of entity items from the API response not all the info, only the necessary ones
-function extractElements(response: any): any[] {
+// Extracts the array of entity items from the API response, using thingType and useLegacy
+function extractElements(
+  response: any,
+  thingType: ThingTypeName,
+  useLegacy: boolean,
+): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
 
   const embedded = response?._embedded;
   if (!embedded || typeof embedded !== "object") return [];
 
-  const candidates = [
-    embedded["terms"],
-    embedded["classes"],
-    embedded["properties"],
-    embedded["individuals"],
-    embedded["ontologies"],
-  ];
+  if (thingType === "ontology") return Array.isArray(embedded.ontologies) ? embedded.ontologies : [];
+  if (thingType === "property") return Array.isArray(embedded.properties) ? embedded.properties : [];
+  if (thingType === "individual") return Array.isArray(embedded.individuals) ? embedded.individuals : [];
 
-  for (const c of candidates) {
-    if (Array.isArray(c)) return c;
-  }
-
-  for (const key in embedded) {
-    const v = (embedded as any)[key];
-    if (Array.isArray(v)) return v as any[];
-  }
-
-  return [];
+  if (useLegacy) return Array.isArray(embedded.terms) ? embedded.terms : [];
+  return Array.isArray(embedded.classes) ? embedded.classes : [];
 }
 
 function extractTotal(response: any, fallback: number) {
@@ -331,9 +332,6 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
-function normalizeSearchText(raw: string) {
-  return raw.trim().replace(/\s+/g, " ");
-}
 
 
 // heart = Heart = HEART = HeaRt =...
@@ -345,7 +343,6 @@ function compareValues(a: unknown, b: unknown) {
     sensitivity: "base",
   });
 }
-
 
 function getPreferredIdFromSearchDoc(d: any) {
   const v =
@@ -373,20 +370,7 @@ function isAbortError(err: unknown) {
   );
 }
 
-function escapeSolrSpecialChars(input: string) {
-  return input.replace(/([+\-!(){}\[\]^"~*?:\\\/&|])/g, "\\$1");
-}
 
-function buildSolrPrefixQuery(raw: string) {
-  const tokens = raw.trim().split(/\s+/).filter(Boolean);
-  if (!tokens.length) return "";
-  const parts = tokens.map((t) => {
-    const escaped = escapeSolrSpecialChars(t);
-    if (t.length < 2) return escaped;
-    return `${escaped}*`;
-  });
-  return parts.length === 1 ? parts[0] : parts.join(" AND ");
-}
 
 function queryFieldsForType(type: string) {
   if (type === "ontology")
@@ -441,7 +425,7 @@ function buildBaseUrl(
   return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
 }
 
-// opposite of parseOlsUrl
+
 export function buildEntityListApiUrl(args: {
   api: string;
   useLegacy: boolean;
@@ -556,7 +540,7 @@ async function fetchListPage(
     );
   }
 
-  const elements = extractElements(response);
+  const elements = extractElements(response, effectiveThingType, useLegacy);
   const baseIndex = pageIndex * pageSize;
 
   return {
@@ -587,30 +571,7 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
   );
 }
 
-function GuardPanel(props: {
-  when: boolean;
-  text?: React.ReactNode;
-  tone?: "subdued" | "danger";
-  loading?: boolean;
-  center?: boolean;
-}) {
-  if (!props.when) return null;
 
-  return (
-    <EuiPanel
-      paddingSize="m"
-      style={props.center ? { textAlign: "center" } : undefined}
-    >
-      {props.loading ? (
-        <EuiLoadingSpinner size="l" />
-      ) : (
-        <EuiText size="s" color={props.tone ?? "subdued"}>
-          {props.text}
-        </EuiText>
-      )}
-    </EuiPanel>
-  );
-}
 
 export { EntityListWidget };
 export default WrappedEntityListWidget;

@@ -20,6 +20,6 @@ export const WithDefaults: Story = {
     api: "https://www.ebi.ac.uk/ols4/api/",
     parameter: "",
     thingType: "term",
-    useLegacy: true,
+    useLegacy: false,
   },
 };
