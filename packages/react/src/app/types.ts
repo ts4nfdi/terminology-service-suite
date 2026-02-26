@@ -245,6 +245,23 @@ export type EntityRelationsWidgetProps = ApiObj &
   ParameterObj &
   OnNavigates;
 
+export type AntelopeApiWidgetProps = {
+  /**
+   * Threshold.
+   */
+  threshold: number;
+
+  /**
+   * Search term.
+   */
+  searchTerm: string;
+
+  /**
+   * Language.
+   */
+  language?: string;
+};
+
 export type JsonApiWidgetProps = {
   /**
    * The API query whose response JSON should be displayed on click.
