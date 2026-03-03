@@ -758,7 +758,6 @@ export type OlsGraphEdge = {
 };
 
 export type EntityListWidgetProps = {
-  apiUrl?: string;
   api?: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
   useLegacy?: boolean;
   ontologyId?: string;

@@ -46,25 +46,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return normalizeBaseApi(api);
   }, [api]);
 
-  // const baseUrl = useMemo(() => {
-  //   if (
-  //     !apiBase ||
-  //     typeof useLegacy !== "boolean" ||
-  //     !ontologyId ||
-  //     !normalizedThingType
-  //   ) {
-  //     return undefined;
-  //   }
-  //
-  //   return buildEntityListApiUrl({
-  //     api: apiBase,
-  //     useLegacy,
-  //     ontologyId,
-  //     thingType: normalizedThingType,
-  //     parameter: parameter ?? "",
-  //   });
-  // }, [apiBase, useLegacy, ontologyId, normalizedThingType, parameter]);
-
   const entityApi = useMemo(() => {
     if (!apiBase) return undefined;
     return new OlsEntityApi(apiBase);
@@ -411,22 +392,6 @@ function buildBaseUrl(
   return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
 }
 
-export function buildEntityListApiUrl(args: {
-  api: string;
-  useLegacy: boolean;
-  ontologyId: string;
-  thingType: string;
-  parameter: string;
-}) {
-  const api = normalizeBaseApi(args.api);
-  const endpoint = getEndpoint(args.thingType, args.useLegacy);
-  const base = buildBaseUrl(api, args.useLegacy, args.ontologyId, endpoint);
-
-  const url = new URL(base);
-  url.searchParams.set("size", "10");
-  splitAndApplyParams(url, args.parameter);
-  return url.toString();
-}
 
 async function fetchSearchPage(
   apiBase: string,
@@ -503,15 +468,6 @@ async function fetchListPage(
 
   let response;
 
-  if (effectiveThingType === "ontology") {
-    response = await ontologyApi.getOntologies(
-      paginationParams,
-      undefined,
-      undefined,
-      parameter,
-      useLegacy,
-    );
-  } else {
     const entityType = thingTypeToEntityTypeName(effectiveThingType);
 
     response = await getEntitiesWithEntityTypeProvided(
@@ -523,7 +479,7 @@ async function fetchListPage(
       paginationParams,
       signal,
     );
-  }
+
 
   const elements = extractElements(response, effectiveThingType, useLegacy);
   const baseIndex = pageIndex * pageSize;
