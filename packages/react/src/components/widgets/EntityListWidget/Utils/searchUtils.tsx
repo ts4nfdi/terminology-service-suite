@@ -39,4 +39,3 @@ export function getPreferredLabelFromSearchDoc(d: any) {
   if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
   return v ? String(v) : "—";
 }
-

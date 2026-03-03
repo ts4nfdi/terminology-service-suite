@@ -5,6 +5,7 @@ import {
   EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiLoadingSpinner,
   EuiPanel,
   EuiProvider,
   EuiSpacer,
@@ -28,9 +29,9 @@ import {
 import {
   buildSolrPrefixQuery,
   compareValues,
-  normalizeSearchText,
-  getPreferredLabelFromSearchDoc,
   getPreferredIdFromSearchDoc,
+  getPreferredLabelFromSearchDoc,
+  normalizeSearchText,
 } from "./Utils/searchUtils";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
@@ -212,6 +213,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div>
+        <EuiLoadingSpinner size="s" />
+      </div>
+    );
+  }
+
   return (
     <EuiPanel paddingSize="m">
       <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
@@ -340,16 +349,14 @@ async function fetchSearchPage(
 
   const type =
     thingType === "property"
-        ? "property"
-        : thingType === "individual"
-          ? "individual"
-          : "class";
+      ? "property"
+      : thingType === "individual"
+        ? "individual"
+        : "class";
 
   url.searchParams.set("q", buildSolrPrefixQuery(searchText));
   url.searchParams.set("type", type);
-  url.searchParams.set(
-    "queryFields", "label,obo_id,short_form,iri",
-  );
+  url.searchParams.set("queryFields", "label,obo_id,short_form,iri");
   url.searchParams.set("ontology", ontologyId);
   url.searchParams.set("start", String(start));
   url.searchParams.set("rows", String(pageSize));

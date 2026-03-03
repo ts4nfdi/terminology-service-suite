@@ -1,6 +1,4 @@
-import { EntityListWidgetProps } from "../../../app";
 import * as globals from "../../../app/globals";
-import { EBI_API_ENDPOINT } from "../../../app/globals";
 import {
   apiArgType,
   ontologyIdArgType,
@@ -9,9 +7,7 @@ import {
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 
-export const EntityListWidgetStoryArgsReact: EntityListWidgetProps = {
-  apiUrl: `${EBI_API_ENDPOINT}v2/ontologies/uberon/classes?size=10`,
-};
+
 
 export const EntityListWidgetStoryArgTypes = {
   ...apiArgType,
