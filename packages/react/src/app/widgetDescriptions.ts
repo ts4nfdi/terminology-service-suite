@@ -126,6 +126,15 @@ Use it when you want an out-of-the-box breadcrumb with minimal setup.
 
 - **Customizable color scheme**:  
   Configure badge colors via \`colorFirst\` and \`colorSecond\`.
+  
+   <br />
+   
+### BreadcrumbPresentation
+UI-only breadcrumb renderer (badges).  
+Requires pre-resolved data via props(\`ontologyId\`, \`shortForm\`, \`entity\`, etc.). <br />
+No fetching, no loading/error handling.  
+Use in a parent/container flow (e.g., \`getBreadcrumbData()\` → \`BreadcrumbPresentation\`).  
+Client Component (\`"use client"\`).
 `.trim();
 
 export const BreadcrumbPresentationDescription = `
