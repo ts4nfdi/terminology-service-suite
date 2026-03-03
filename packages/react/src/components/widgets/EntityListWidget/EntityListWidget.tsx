@@ -46,24 +46,24 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return normalizeBaseApi(api);
   }, [api]);
 
-  const baseUrl = useMemo(() => {
-    if (
-      !apiBase ||
-      typeof useLegacy !== "boolean" ||
-      !ontologyId ||
-      !normalizedThingType
-    ) {
-      return undefined;
-    }
-
-    return buildEntityListApiUrl({
-      api: apiBase,
-      useLegacy,
-      ontologyId,
-      thingType: normalizedThingType,
-      parameter: parameter ?? "",
-    });
-  }, [apiBase, useLegacy, ontologyId, normalizedThingType, parameter]);
+  // const baseUrl = useMemo(() => {
+  //   if (
+  //     !apiBase ||
+  //     typeof useLegacy !== "boolean" ||
+  //     !ontologyId ||
+  //     !normalizedThingType
+  //   ) {
+  //     return undefined;
+  //   }
+  //
+  //   return buildEntityListApiUrl({
+  //     api: apiBase,
+  //     useLegacy,
+  //     ontologyId,
+  //     thingType: normalizedThingType,
+  //     parameter: parameter ?? "",
+  //   });
+  // }, [apiBase, useLegacy, ontologyId, normalizedThingType, parameter]);
 
   const entityApi = useMemo(() => {
     if (!apiBase) return undefined;
@@ -98,7 +98,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [baseUrl]);
+  }, [api]);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -113,26 +113,25 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [baseUrl, pageIndex, pageSize, debouncedSearchText, normalizedThingType]);
+  }, [api, pageIndex, pageSize, debouncedSearchText, normalizedThingType]);
 
   const queryKey = useMemo(
     () =>
       [
         "entityList:page",
-        baseUrl,
+        api,
         pageIndex,
         pageSize,
         debouncedSearchText,
         normalizedThingType,
       ] as const,
-    [baseUrl, pageIndex, pageSize, debouncedSearchText, normalizedThingType],
+    [api, pageIndex, pageSize, debouncedSearchText, normalizedThingType],
   );
 
   const queryFn = async (): Promise<QueryResult> => {
     const signal = controllerRef.current.signal;
 
     if (
-      !baseUrl ||
       !apiBase ||
       !entityApi ||
       !ontologyApi ||

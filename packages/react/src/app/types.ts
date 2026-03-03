@@ -762,6 +762,6 @@ export type EntityListWidgetProps = {
   api?: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
   useLegacy?: boolean;
   ontologyId?: string;
-  thingType?: ThingTypeName;
+  thingType?: EntityTypeName;
   parameter?: string;
 };
