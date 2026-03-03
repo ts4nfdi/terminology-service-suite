@@ -156,3 +156,17 @@ export class OlsSearchApi extends OlsBaseApi {
     );
   };
 }
+
+export function splitAndApplyParams(url: URL, raw: string) {
+  if (!raw) return;
+  for (const part of raw.split("&")) {
+    if (!part) continue;
+    const [k, v] = part.split("=");
+    if (!k) continue;
+    url.searchParams.set(k, v ?? "");
+  }
+}
+
+export function normalizeBaseApi(api: string) {
+  return api.endsWith("/") ? api : `${api}/`;
+}

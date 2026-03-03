@@ -18,6 +18,7 @@ import {
   OlsEntityApi,
 } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
+import { normalizeBaseApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
 import {
   isThingTypeName,
@@ -26,8 +27,11 @@ import {
 } from "../../../model/ModelTypeCheck";
 import {
   buildSolrPrefixQuery,
+  compareValues,
   normalizeSearchText,
-} from "./Utils/inputSearchUtils";
+  getPreferredLabelFromSearchDoc,
+  getPreferredIdFromSearchDoc,
+} from "./Utils/searchUtils";
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
@@ -322,76 +326,6 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
-// heart = Heart = HEART = HeaRt =...
-function compareValues(a: unknown, b: unknown) {
-  const av = a == null ? "" : String(a);
-  const bv = b == null ? "" : String(b);
-  return av.localeCompare(bv, undefined, {
-    numeric: true,
-    sensitivity: "base",
-  });
-}
-
-function getPreferredIdFromSearchDoc(d: any) {
-  const v =
-    d?.curie ?? d?.obo_id ?? d?.short_form ?? d?.id ?? d?.iri ?? d?.ontologyId;
-  return v ? String(v) : "—";
-}
-
-function getPreferredLabelFromSearchDoc(d: any) {
-  const v =
-    d?.label ?? d?.label_autosuggest ?? d?.title ?? d?.name ?? d?.ontologyId;
-  if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
-  return v ? String(v) : "—";
-}
-
-function splitAndApplyParams(url: URL, raw: string) {
-  if (!raw) return;
-  for (const part of raw.split("&")) {
-    if (!part) continue;
-    const [k, v] = part.split("=");
-    if (!k) continue;
-    url.searchParams.set(k, v ?? "");
-  }
-}
-
-function normalizeBaseApi(api: string) {
-  return api.endsWith("/") ? api : `${api}/`;
-}
-
-type Endpoint =
-  | "ontologies"
-  | "properties"
-  | "individuals"
-  | "classes"
-  | "terms";
-
-function getEndpoint(thingType: string, useLegacy: boolean): Endpoint {
-  switch (thingType) {
-    case "ontology":
-      return "ontologies";
-    case "property":
-      return "properties";
-    case "individual":
-      return "individuals";
-    default:
-      return useLegacy ? "terms" : "classes";
-  }
-}
-
-function buildBaseUrl(
-  api: string,
-  useLegacy: boolean,
-  ontologyId: string,
-  endpoint: Endpoint,
-) {
-  const prefix = useLegacy ? "" : "v2/";
-  if (endpoint === "ontologies") {
-    return `${api}${prefix}ontologies?`;
-  }
-  return `${api}${prefix}ontologies/${ontologyId}/${endpoint}?`;
-}
-
 
 async function fetchSearchPage(
   apiBase: string,
@@ -406,9 +340,7 @@ async function fetchSearchPage(
   const url = new URL("search", apiBase);
 
   const type =
-    thingType === "ontology"
-      ? "ontology"
-      : thingType === "property"
+    thingType === "property"
         ? "property"
         : thingType === "individual"
           ? "individual"
@@ -416,12 +348,6 @@ async function fetchSearchPage(
 
   url.searchParams.set("q", buildSolrPrefixQuery(searchText));
   url.searchParams.set("type", type);
-  url.searchParams.set(
-    "queryFields",
-    type === "ontology"
-      ? "ontologyId,ontology_name,ontology_prefix,label,title,name"
-      : "label,obo_id,short_form,iri",
-  );
   url.searchParams.set("ontology", ontologyId);
   url.searchParams.set("start", String(start));
   url.searchParams.set("rows", String(pageSize));
@@ -468,18 +394,17 @@ async function fetchListPage(
 
   let response;
 
-    const entityType = thingTypeToEntityTypeName(effectiveThingType);
+  const entityType = thingTypeToEntityTypeName(effectiveThingType);
 
-    response = await getEntitiesWithEntityTypeProvided(
-      entityApi,
-      entityType,
-      ontologyId,
-      parameter,
-      useLegacy,
-      paginationParams,
-      signal,
-    );
-
+  response = await getEntitiesWithEntityTypeProvided(
+    entityApi,
+    entityType,
+    ontologyId,
+    parameter,
+    useLegacy,
+    paginationParams,
+    signal,
+  );
 
   const elements = extractElements(response, effectiveThingType, useLegacy);
   const baseIndex = pageIndex * pageSize;
