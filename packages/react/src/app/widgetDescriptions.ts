@@ -113,23 +113,33 @@ Supports user-defined button text and adjustable button sizes (\`small\`, \`medi
 `.trim();
 
 export const BreadcrumbDescription = `
-The BreadcrumbWidget to display the ontology and CURIE (compact URI) of an entity as badges to indicate the location of an entity within a terminology service. 
+BreadcrumbWidget is a container component that loads and renders an entity breadcrumb (ontology + entity short form/CURIE) as badges to indicate an entity’s location within the terminology service. It queries the terminology service via \`OlsEntityApi\` and \`react-query\` using \`api\`, \`iri\`, \`entityType\`, \`ontologyId\`, and related parameters.
+
+It provides built-in loading/error handling, optional ontology navigation via \`onNavigateToOntology\`, and badge theming through \`colorFirst\` / \`colorSecond\`.
+
+Use it when you want an out-of-the-box breadcrumb with minimal setup.
 
 #### Key Features:
 
 - **Interactive breadcrumbs**:  
-Displays a clickable badge that allows users to navigate back to the parent ontology easily.
+  Clickable ontology badge for quick navigation.
 
 - **Customizable color scheme**:  
-Supports flexible customization of breadcrumb badge colors (\`colorFirst\` and \`colorSecond\`) to align with application themes.
+  Configure badge colors via \`colorFirst\` and \`colorSecond\`.
 `.trim();
 
 export const BreadcrumbPresentationDescription = `
-The BreadcrumbPresentation is a presentational component for rendering the breadcrumb view.
-It is designed to handle display concerns only and does not include any logic for data fetching.
-Use this component when you need to separate concerns between presentation and data handling - for example, when fetching the data asynchronously. 
-To retrieve the required data, you can use the provided utility function getBreadcrumbData().
-This function can be called in your logic or container component, and the resulting data can be passed to BreadcrumbPresentation as props.
+BreadcrumbPresentation is a **presentational (UI-only)** component that renders a breadcrumb as badges (**ontology** + entity **short form/CURIE**).
+
+- **No data fetching**
+- **No loading/error state management**
+- Renders values provided via props (e.g., \`ontologyId\`, \`shortForm\`, or \`entity\`)
+
+Use it when breadcrumb values are already available (e.g., resolved in a parent/container).
+
+**Typical usage:** resolve the breadcrumb fields in a parent/container (or via \`getBreadcrumbData()\`), then pass them to \`BreadcrumbPresentation\` as props.
+
+**Note:** shipped as a Next.js Client Component (\`"use client"\`).
 `.trim();
 
 export const DescriptionDescription = `
