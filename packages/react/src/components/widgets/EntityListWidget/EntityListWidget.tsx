@@ -326,7 +326,6 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
-
 async function fetchSearchPage(
   apiBase: string,
   thingType: ThingTypeName,
@@ -348,6 +347,9 @@ async function fetchSearchPage(
 
   url.searchParams.set("q", buildSolrPrefixQuery(searchText));
   url.searchParams.set("type", type);
+  url.searchParams.set(
+    "queryFields", "label,obo_id,short_form,iri",
+  );
   url.searchParams.set("ontology", ontologyId);
   url.searchParams.set("start", String(start));
   url.searchParams.set("rows", String(pageSize));

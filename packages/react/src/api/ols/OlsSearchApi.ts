@@ -170,3 +170,4 @@ export function splitAndApplyParams(url: URL, raw: string) {
 export function normalizeBaseApi(api: string) {
   return api.endsWith("/") ? api : `${api}/`;
 }
+
