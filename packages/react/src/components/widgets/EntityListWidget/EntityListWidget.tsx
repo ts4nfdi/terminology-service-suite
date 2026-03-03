@@ -21,6 +21,7 @@ import {
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { normalizeBaseApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
+import { getErrorMessageToDisplay } from "../../../app/util";
 import {
   isThingTypeName,
   ThingTypeName,
@@ -33,7 +34,6 @@ import {
   getPreferredLabelFromSearchDoc,
   normalizeSearchText,
 } from "./Utils/searchUtils";
-import {getErrorMessageToDisplay} from "../../../app/util"
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
