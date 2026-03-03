@@ -7,8 +7,6 @@ import {
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 
-
-
 export const EntityListWidgetStoryArgTypes = {
   ...apiArgType,
   ...useLegacyArgType,

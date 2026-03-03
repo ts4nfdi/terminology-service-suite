@@ -33,6 +33,7 @@ import {
   getPreferredLabelFromSearchDoc,
   normalizeSearchText,
 } from "./Utils/searchUtils";
+import {getErrorMessageToDisplay} from "../../../app/util"
 
 type EntityRow = { name: string; id: string; rowIndex: number };
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
@@ -217,6 +218,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return (
       <div>
         <EuiLoadingSpinner size="s" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        <EuiText color="danger">{getErrorMessageToDisplay(error)}</EuiText>
       </div>
     );
   }
