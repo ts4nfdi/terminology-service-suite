@@ -6,7 +6,7 @@ import {
 } from "./EntityListWidgetStories";
 
 const meta: Meta = {
-  title: "Widgets/EntityListWidget",
+  title: "Search/EntityListWidget",
   component: WrappedEntityListWidget,
   argTypes: EntityListWidgetStoryArgTypes,
   args: EntityListWidgetStoryArgs,
