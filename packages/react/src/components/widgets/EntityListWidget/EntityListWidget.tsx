@@ -19,7 +19,7 @@ import {
   OlsEntityApi,
 } from "../../../api/ols/OlsEntityApi";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
-import { normalizeBaseApi } from "../../../api/ols/OlsSearchApi";
+import { normalizeBaseApi, OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import {
@@ -43,6 +43,7 @@ type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
   const { api, ontologyId, parameter, useLegacy, thingType } = props;
+  const searchParameter = (props as any).searchParameter as string | undefined;
 
   const normalizedThingType: ThingTypeName | undefined =
     thingType && isThingTypeName(thingType) ? thingType : undefined;
@@ -60,6 +61,11 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const ontologyApi = useMemo(() => {
     if (!apiBase) return undefined;
     return new OlsOntologyApi(apiBase);
+  }, [apiBase]);
+
+  const searchApi = useMemo(() => {
+    if (!apiBase) return undefined;
+    return new OlsSearchApi(apiBase);
   }, [apiBase]);
 
   const [pageIndex, setPageIndex] = useState(0);
@@ -122,6 +128,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       !apiBase ||
       !entityApi ||
       !ontologyApi ||
+      !searchApi ||
       !ontologyId ||
       !normalizedThingType
     ) {
@@ -129,13 +136,16 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
 
     if (debouncedSearchText) {
-      return await fetchSearchPage(
-        apiBase,
+      return await searchEntitiesPage(
+        searchApi,
         normalizedThingType,
         ontologyId,
         pageIndex,
         pageSize,
         debouncedSearchText,
+        // Search endpoint extra params should be passed via the `parameter` arg (see SearchResultsListWidget).
+        // Prefer a dedicated `searchParameter` if provided, otherwise fall back to `parameter`.
+        searchParameter ?? parameter ?? "queryFields=label,obo_id,short_form,iri",
         signal,
       );
     }
@@ -314,9 +324,6 @@ function extractElements(
 
   const embedded = response?._embedded;
   if (!embedded || typeof embedded !== "object") return [];
-
-  if (thingType === "ontology")
-    return Array.isArray(embedded.ontologies) ? embedded.ontologies : [];
   if (thingType === "property")
     return Array.isArray(embedded.properties) ? embedded.properties : [];
   if (thingType === "individual")
@@ -344,17 +351,17 @@ function extractTotal(response: any, fallback: number) {
   return fallback;
 }
 
-async function fetchSearchPage(
-  apiBase: string,
+async function searchEntitiesPage(
+  searchApi: OlsSearchApi,
   thingType: ThingTypeName,
   ontologyId: string,
   pageIndex: number,
   pageSize: number,
   searchText: string,
+  searchParameter: string,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
   const start = pageIndex * pageSize;
-  const url = new URL("search", apiBase);
 
   const type =
     thingType === "property"
@@ -363,18 +370,27 @@ async function fetchSearchPage(
         ? "individual"
         : "class";
 
-  url.searchParams.set("q", buildSolrPrefixQuery(searchText));
-  url.searchParams.set("type", type);
-  url.searchParams.set("queryFields", "label,obo_id,short_form,iri");
-  url.searchParams.set("ontology", ontologyId);
-  url.searchParams.set("start", String(start));
-  url.searchParams.set("rows", String(pageSize));
-  url.searchParams.set("exact", "false");
-  url.searchParams.set("obsoletes", "false");
+  const solrQuery = buildSolrPrefixQuery(searchText);
 
-  const res = await fetch(url.toString(), { signal });
-  if (!res.ok) throw new Error(`Search request failed (${res.status})`);
-  const json: any = await res.json();
+  const json: any = await searchApi.search(
+    {
+      // buildParamsForSearch expects `query` and (optionally) `types`/`ontology`
+      query: solrQuery,
+      types: type,
+      ontology: ontologyId,
+      // preserve old behavior flags
+      exactMatch: false,
+      showObsoleteTerms: false,
+      queryFields: "label,obo_id,short_form,iri",
+    } as any,
+    {
+      page: String(pageIndex),
+      size: String(pageSize),
+    } as any,
+    undefined,
+    searchParameter,
+    signal,
+  );
 
   const docs: any[] = Array.isArray(json?.response?.docs)
     ? json.response.docs
