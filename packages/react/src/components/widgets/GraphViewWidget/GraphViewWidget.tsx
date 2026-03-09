@@ -56,7 +56,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     onNodeClick,
     parameter,
     stopFullWidth,
-    hideLegend
+    hideLegend,
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -550,10 +550,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-
-  function renderLegend(){
-    if(hideLegend){
-      return (<></>);
+  function renderLegend() {
+    if (hideLegend) {
+      return <></>;
     }
     const itemStyle = {
       width: "10px",
@@ -562,7 +561,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       display: "inline-block",
     };
     const itemPadding = { paddingTop: "5px" };
-    return(
+    return (
       <div
         style={{
           position: "absolute",
@@ -578,33 +577,34 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <ul style={{ padding: "5px" }}>
           <li style={itemPadding}>
             <div
-              style={{backgroundColor: sourceNodeBgColor, ...itemStyle}}
+              style={{ backgroundColor: sourceNodeBgColor, ...itemStyle }}
             ></div>{" "}
             Source: <i>{sourceLabel}</i>{" "}
           </li>
           {targetIri && (
             <>
               <li style={itemPadding}>
-                <div
-                  style={{ backgroundColor: "#455469", ...itemStyle}}
-                ></div>{" "}
+                <div style={{ backgroundColor: "#455469", ...itemStyle }}></div>{" "}
                 Subtree exclusive to <i>{sourceLabel}</i>{" "}
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: commonNodesBgColor, ...itemStyle}}
+                  style={{ backgroundColor: commonNodesBgColor, ...itemStyle }}
                 ></div>{" "}
                 Common subtree{" "}
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: targetNodeBgColor, ...itemStyle}}
+                  style={{ backgroundColor: targetNodeBgColor, ...itemStyle }}
                 ></div>{" "}
                 Target: <i>{targetLabel}</i>{" "}
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: exclusiveToTargetIriColor, ...itemStyle}}
+                  style={{
+                    backgroundColor: exclusiveToTargetIriColor,
+                    ...itemStyle,
+                  }}
                 ></div>{" "}
                 Subtree exclusive to <i>{targetLabel}</i>{" "}
               </li>
@@ -753,7 +753,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   return (
     <div
       className={finalClassName}
-      style={!stopFullWidth ? { width: "100%", height: "100vh", overflow: "hidden" } : {}}
+      style={
+        !stopFullWidth
+          ? { width: "100%", height: "100vh", overflow: "hidden" }
+          : {}
+      }
       ref={fullScreenContainerRef}
     >
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
@@ -866,7 +870,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
-          style={!stopFullWidth ? { width: "100%", height: "100vh", margin: "auto" } : {}}
+          style={
+            !stopFullWidth
+              ? { width: "100%", height: "100vh", margin: "auto" }
+              : {}
+          }
         />
 
         {renderLegend()}

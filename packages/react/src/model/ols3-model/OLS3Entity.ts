@@ -103,7 +103,6 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
     return this.properties["obo_id"] || this.properties["short_form"];
   }
 
-
   isPredicateFromInformalVocabulary(predicate: string): boolean {
     return (
       predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||

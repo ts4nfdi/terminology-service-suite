@@ -79,16 +79,15 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const renderOption = (option, searchValue) => {
     const { label, value } = option;
 
-    // @ts-ignore
-    const dotColorIndex: number =
-      {
-        class: 8,
-        individual: 4,
-        property: 2,
-        objectProperty: 1, // blue
-        dataProperty: 0, // green
-        annotationProperty: 7, // orange
-      }[value.type] ?? -1;
+    const colorMap = new Map([
+      ['class', 8],
+      ['individual', 4],
+      ['property', 2],
+      ['objectProperty', 1],
+      ['dataProperty', 0],
+      ['annotationProperty', 7],
+    ]);
+    const dotColorIndex = colorMap.get(value.type) ?? -1;
 
     const dotColor = visColors[dotColorIndex];
 

@@ -741,7 +741,7 @@ export type GraphViewWidgetProps = ApiObj &
 
     /**
      * Prevent the graph to be rendered with full width (CSS width 100%).
-    * */
+     * */
     stopFullWidth?: boolean;
 
     /**

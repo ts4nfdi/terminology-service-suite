@@ -91,7 +91,6 @@ export abstract class OLS4Entity extends OLS4Thing implements Entity {
     return this.properties["curie"] || this.properties["shortForm"];
   }
 
-
   isPredicateFromInformalVocabulary(predicate: string): boolean {
     return (
       predicate.startsWith("http://www.w3.org/2004/02/skos/core#") ||
