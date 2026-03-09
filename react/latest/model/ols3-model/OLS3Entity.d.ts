@@ -24,7 +24,6 @@ export declare abstract class OLS3Entity extends OLS3Thing implements Entity {
     getDefinedBy(): string[];
     getIsDefiningOntology(): boolean;
     getShortForm(): string;
-    getDepictedBy(): Reified<string>[];
     isPredicateFromInformalVocabulary(predicate: string): boolean;
     /** Can be just found under `properties["annotation"]`.
      *  Not present in ols4/api,
