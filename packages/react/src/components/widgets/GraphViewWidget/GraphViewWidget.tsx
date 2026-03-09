@@ -681,6 +681,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [props.targetIri]);
 
   useEffect(() => {
+    if (props.iri && selectedIri !== props.iri) {
+      setGraphDataIsCalculated(false);
+      //@ts-ignore
+      graphNetwork.current.destroy();
+      nodes.current.clear();
+      edges.current.clear();
+      setSelectedIri(props.iri);
+      setFirstLoad(true);
+      setCounter(counter + 1);
+    }
+  }, [props.iri]);
+
+  useEffect(() => {
     if (hierarchy) {
       graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
     } else {
