@@ -23,7 +23,6 @@ export declare abstract class OLS4Entity extends OLS4Thing implements Entity {
     getDefinedBy(): string[];
     getIsDefiningOntology(): boolean;
     getShortForm(): string;
-    getDepictedBy(): Reified<string>[];
     isPredicateFromInformalVocabulary(predicate: string): boolean;
     getAnnotationPredicates(): string[];
     getNumHierarchicalDescendants(): number;
