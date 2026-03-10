@@ -1,9 +1,9 @@
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
+  entityTypeArgType,
   ontologyIdArgType,
   parameterArgType,
-  entityTypeArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 

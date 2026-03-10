@@ -45,7 +45,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const { api, ontologyId, parameter, useLegacy, entityType } = props;
   const searchParameter = (props as any).searchParameter as string | undefined;
 
-  const normalizedThingType: ThingTypeName | undefined =
+  const normalizedEntityType: ThingTypeName | undefined =
     entityType && isEntityTypeName(entityType) ? entityType : undefined;
 
   const apiBase = useMemo(() => {
@@ -115,7 +115,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [api, pageIndex, pageSize, debouncedSearchText, normalizedThingType]);
+  }, [api, pageIndex, pageSize, debouncedSearchText, normalizedEntityType]);
 
   const queryKey = useMemo(
     () =>
@@ -125,9 +125,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
         pageIndex,
         pageSize,
         debouncedSearchText,
-        normalizedThingType,
+        normalizedEntityType,
       ] as const,
-    [api, pageIndex, pageSize, debouncedSearchText, normalizedThingType],
+    [api, pageIndex, pageSize, debouncedSearchText, normalizedEntityType],
   );
 
   const queryFn = async (): Promise<QueryResult> => {
@@ -139,7 +139,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       !ontologyApi ||
       !searchApi ||
       !ontologyId ||
-      !normalizedThingType
+      !normalizedEntityType
     ) {
       return { rows: [], totalItemCount: 0 };
     }
@@ -151,7 +151,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     if (debouncedSearchText) {
       return await searchEntitiesPage(
         searchApi,
-        normalizedThingType,
+        normalizedEntityType,
         ontologyId,
         pageIndex,
         pageSize,
@@ -170,7 +170,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       ontologyId,
       parameter ?? "",
       useLegacy ?? false,
-      normalizedThingType,
+      normalizedEntityType,
       pageIndex,
       pageSize,
       signal,
@@ -184,7 +184,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       enabled: Boolean(
         apiBase &&
         ontologyId &&
-        normalizedThingType &&
+        normalizedEntityType &&
         typeof useLegacy === "boolean",
       ),
       keepPreviousData: true,
