@@ -443,14 +443,14 @@ async function fetchListPage(
   ontologyId: string | undefined,
   parameter: string,
   useLegacy: boolean,
-  thingType: EntityTypeName | undefined,
+  entityTypes: EntityTypeName | undefined,
   pageIndex: number,
   pageSize: number,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
-  const effectiveEntityType: EntityTypeName = thingType ?? "class";
+  const effectiveEntityType: EntityTypeName = entityTypes ?? "class";
 
   let response;
 
