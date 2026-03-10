@@ -369,7 +369,7 @@ function extractTotal(response: any, fallback: number) {
 
 async function searchEntitiesPage(
   searchApi: OlsSearchApi,
-  thingType: EntityTypeName,
+  entityType: EntityTypeName,
   ontologyId: string,
   pageIndex: number,
   pageSize: number,
@@ -380,9 +380,9 @@ async function searchEntitiesPage(
   const start = pageIndex * pageSize;
 
   const type =
-    thingType === "property"
+    entityType === "property"
       ? "property"
-      : thingType === "individual"
+      : entityType === "individual"
         ? "individual"
         : "class";
 
