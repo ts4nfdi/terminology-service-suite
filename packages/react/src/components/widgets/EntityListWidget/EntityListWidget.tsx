@@ -23,9 +23,9 @@ import { normalizeBaseApi, OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import {
+  entityTypeToEntityTypeName,
   isThingTypeName,
   ThingTypeName,
-  entityTypeToEntityTypeName,
 } from "../../../model/ModelTypeCheck";
 import {
   buildSolrPrefixQuery,
