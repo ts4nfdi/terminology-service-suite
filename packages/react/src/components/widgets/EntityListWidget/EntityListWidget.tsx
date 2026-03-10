@@ -23,9 +23,9 @@ import { normalizeBaseApi, OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import {
+  EntityTypeName,
   entityTypeToEntityTypeName,
   isEntityTypeName,
-  EntityTypeName,
 } from "../../../model/ModelTypeCheck";
 import {
   buildSolrPrefixQuery,
@@ -333,16 +333,16 @@ function pickId(item: any) {
  */
 function extractElements(
   response: any,
-  thingType: EntityTypeName,
+  entityType: EntityTypeName,
   useLegacy: boolean,
 ): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
 
   const embedded = response?._embedded;
   if (!embedded || typeof embedded !== "object") return [];
-  if (thingType === "property")
+  if (entityType === "property")
     return Array.isArray(embedded.properties) ? embedded.properties : [];
-  if (thingType === "individual")
+  if (entityType === "individual")
     return Array.isArray(embedded.individuals) ? embedded.individuals : [];
 
   if (useLegacy) return Array.isArray(embedded.terms) ? embedded.terms : [];
