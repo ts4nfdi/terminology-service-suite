@@ -450,11 +450,11 @@ async function fetchListPage(
 ): Promise<QueryResult> {
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
-  const effectiveThingType: ThingTypeName = thingType ?? "class";
+  const effectiveEntityType: ThingTypeName = thingType ?? "class";
 
   let response;
 
-  const entityType = entityTypeToEntityTypeName(effectiveThingType);
+  const entityType = entityTypeToEntityTypeName(effectiveEntityType);
 
   response = await getEntitiesWithEntityTypeProvided(
     entityApi,
@@ -466,7 +466,7 @@ async function fetchListPage(
     signal,
   );
 
-  const elements = extractElements(response, effectiveThingType, useLegacy);
+  const elements = extractElements(response, effectiveEntityType, useLegacy);
   const baseIndex = pageIndex * pageSize;
 
   return {
