@@ -77,8 +77,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   // track the doubleClicked node color to set for new expanded nodes
   const [dbClickedColor, setDbClickedColor] = useState<{
-    bgColor: "";
-    color: "";
+    bgColor: string;
+    color: string;
   }>({ bgColor: "", color: "" });
 
   const [showNodeNotSelectedMessage, setShowNodeNotSelectedMessage] =
@@ -156,8 +156,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     },
   );
 
-  const nodes = useRef(new DataSet([]));
-  const edges = useRef(new DataSet([]));
+  const nodes = useRef<DataSet<GraphNode, "id">>(
+    new DataSet<GraphNode, "id">([]),
+  );
+  const edges = useRef<DataSet<GraphEdge, "id">>(
+    new DataSet<GraphEdge, "id">([]),
+  );
   const graphNetwork = useRef({});
   const container = useRef(null);
   const fullScreenContainerRef = useRef(null);
@@ -582,11 +586,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       //@ts-ignore
       graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
-          let nodeIri = params.nodes[0];
-          //@ts-ignore
+          const nodeIri = params.nodes[0] as string;
+          const clickedNode = nodes.current.get(nodeIri);
           setDbClickedColor({
-            bgColor: nodes.current.get(nodeIri)?.color?.background,
-            color: nodes.current.get(nodeIri)?.font?.color,
+            bgColor: clickedNode?.color?.background ?? "",
+            color: clickedNode?.font?.color ?? "",
           });
           setSelectedIri(nodeIri);
           if (onNodeClickCallbackIdProvided) {
