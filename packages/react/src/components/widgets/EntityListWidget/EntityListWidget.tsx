@@ -25,7 +25,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import {
   isThingTypeName,
   ThingTypeName,
-  thingTypeToEntityTypeName,
+  entityTypeToEntityTypeName,
 } from "../../../model/ModelTypeCheck";
 import {
   buildSolrPrefixQuery,
@@ -454,7 +454,7 @@ async function fetchListPage(
 
   let response;
 
-  const entityType = thingTypeToEntityTypeName(effectiveThingType);
+  const entityType = entityTypeToEntityTypeName(effectiveThingType);
 
   response = await getEntitiesWithEntityTypeProvided(
     entityApi,

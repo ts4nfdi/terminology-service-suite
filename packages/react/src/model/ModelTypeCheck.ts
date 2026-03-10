@@ -72,7 +72,7 @@ export function isOntology(thing: Thing): thing is Ontology {
   return isOntologyTypeName(thing.getType());
 }
 
-export function thingTypeToEntityTypeName(
+export function entityTypeToEntityTypeName(
   thingType: ThingTypeName,
 ): EntityTypeName {
   if (isPropertyTypeName(thingType)) {
