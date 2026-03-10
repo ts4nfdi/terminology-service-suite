@@ -72,7 +72,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const [pageSize, setPageSize] = useState<PageSize>(10);
 
   const [searchText, setSearchText] = useState("");
-  // debouncedSearchText: normalized + delayed (300ms) value to avoid firing a request on every keystroke
+  /**
+   * Normalized and delayed search value used to avoid firing a request on every keystroke
+   */
   const [debouncedSearchText, setDebouncedSearchText] = useState("");
 
   const [sortField, setSortField] = useState<keyof EntityRow>("name");
@@ -95,7 +97,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
   }, [api]);
 
   useEffect(() => {
-    // Debounce user input so we only search after the user pauses typing.
+    /**
+     * Wait until the user pauses typing before updating the search value
+     */
     const t = setTimeout(() => {
       setDebouncedSearchText(normalizeSearchText(searchText));
     }, 300);
@@ -103,7 +107,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
   }, [searchText]);
 
   useEffect(() => {
-    // Cancel any in-flight request when inputs change (prevents race conditions and stale data).
+    /**
+     * Cancel any in-flight request when inputs change to prevent race conditions and stale data
+     */
     controllerRef.current.abort();
     controllerRef.current = new AbortController();
     return () => {
@@ -138,8 +144,10 @@ function EntityListWidget(props: EntityListWidgetProps) {
       return { rows: [], totalItemCount: 0 };
     }
 
-    // If the user typed something (debouncedSearchText is non-empty), use the /search endpoint.
-    // Otherwise, load the default paginated entity list.
+    /**
+     * Use the /search endpoint when the user enters a search value
+     * Otherwise, load the default paginated entity list
+     */
     if (debouncedSearchText) {
       return await searchEntitiesPage(
         searchApi,
@@ -148,7 +156,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
         pageIndex,
         pageSize,
         debouncedSearchText,
-        // Extra search-endpoint params (optional). Keep `queryFields` in queryParams for stable matching behavior.
+        /**
+         * Optional /search params. Keep `queryFields` in query params for stable matching behavior
+         */
         searchParameter ?? "",
         signal,
       );
@@ -318,7 +328,9 @@ function pickId(item: any) {
   return v ? String(v) : "—";
 }
 
-// Extracts the array of entity items from the API response, using thingType and useLegacy
+/**
+ * Extract entity items from the API response based on thing type and legacy mode
+ */
 function extractElements(
   response: any,
   thingType: ThingTypeName,
@@ -374,19 +386,24 @@ async function searchEntitiesPage(
         ? "individual"
         : "class";
 
-  // Convert user input into a Solr prefix query for more precise matching (same behavior as the original implementation).
+  /**
+   * Convert user input into a Solr prefix query for more precise matching
+   */
   const solrQuery = buildSolrPrefixQuery(searchText);
 
   const json: any = await searchApi.search(
     {
-      // NOTE: keep query semantics identical to the old fetchSearchPage
+      /**
+       * Keep query semantics identical to the old fetchSearchPage
+       */
       query: solrQuery,
       types: type,
       ontology: ontologyId,
-      // preserve old behavior flags
       exactMatch: false,
       showObsoleteTerms: false,
-      // Restrict matching to key identifier fields (keeps results tight, e.g. searching "v" doesn't explode to many hits)
+      /**
+       * Restrict matching to key identifier fields for tighter results
+       */
       queryFields: "label,obo_id,short_form,iri",
     } as any,
     {
@@ -394,7 +411,9 @@ async function searchEntitiesPage(
       size: String(pageSize),
     } as any,
     undefined,
-    // Optional extra /search params (e.g. fieldList=..., etc.) passed via the `parameter` arg (project convention)
+    /**
+     * Pass optional /search params via the `parameter` argument
+     */
     searchParameter,
     signal,
   );
