@@ -24,7 +24,7 @@ import { EntityListWidgetProps } from "../../../app";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import {
   entityTypeToEntityTypeName,
-  isThingTypeName,
+  isEntityTypeName,
   ThingTypeName,
 } from "../../../model/ModelTypeCheck";
 import {
@@ -42,11 +42,11 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { api, ontologyId, parameter, useLegacy, thingType } = props;
+  const { api, ontologyId, parameter, useLegacy, entityType } = props;
   const searchParameter = (props as any).searchParameter as string | undefined;
 
   const normalizedThingType: ThingTypeName | undefined =
-    thingType && isThingTypeName(thingType) ? thingType : undefined;
+    entityType && isEntityTypeName(entityType) ? entityType : undefined;
 
   const apiBase = useMemo(() => {
     if (!api || typeof api !== "string") return undefined;
@@ -329,7 +329,7 @@ function pickId(item: any) {
 }
 
 /**
- * Extract entity items from the API response based on thing type and legacy mode
+ * Extract entity items from the API response based on entity type and legacy mode
  */
 function extractElements(
   response: any,
@@ -490,7 +490,7 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
           ontologyId={props.ontologyId}
           parameter={props.parameter}
           useLegacy={props.useLegacy}
-          thingType={props.thingType}
+          entityType={props.entityType}
         />
       </QueryClientProvider>
     </EuiProvider>

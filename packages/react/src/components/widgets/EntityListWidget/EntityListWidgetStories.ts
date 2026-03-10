@@ -3,7 +3,7 @@ import {
   apiArgType,
   ontologyIdArgType,
   parameterArgType,
-  thingTypeArgType,
+  entityTypeArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
 
@@ -11,7 +11,7 @@ export const EntityListWidgetStoryArgTypes = {
   ...apiArgType,
   ...useLegacyArgType,
   ...ontologyIdArgType,
-  ...thingTypeArgType,
+  ...entityTypeArgType,
   ...parameterArgType,
 };
 
@@ -19,6 +19,6 @@ export const EntityListWidgetStoryArgs = {
   api: globals.EBI_API_ENDPOINT,
   useLegacy: false,
   ontologyId: "uberon",
-  thingType: "class",
+  entityType: "class",
   parameter: "",
 } as const;
