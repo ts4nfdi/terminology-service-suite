@@ -25,7 +25,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import {
   entityTypeToEntityTypeName,
   isEntityTypeName,
-  ThingTypeName,
+  EntityTypeName,
 } from "../../../model/ModelTypeCheck";
 import {
   buildSolrPrefixQuery,
@@ -45,7 +45,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const { api, ontologyId, parameter, useLegacy, entityType } = props;
   const searchParameter = (props as any).searchParameter as string | undefined;
 
-  const normalizedEntityType: ThingTypeName | undefined =
+  const normalizedEntityType: EntityTypeName | undefined =
     entityType && isEntityTypeName(entityType) ? entityType : undefined;
 
   const apiBase = useMemo(() => {
@@ -333,7 +333,7 @@ function pickId(item: any) {
  */
 function extractElements(
   response: any,
-  thingType: ThingTypeName,
+  thingType: EntityTypeName,
   useLegacy: boolean,
 ): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
@@ -369,7 +369,7 @@ function extractTotal(response: any, fallback: number) {
 
 async function searchEntitiesPage(
   searchApi: OlsSearchApi,
-  thingType: ThingTypeName,
+  thingType: EntityTypeName,
   ontologyId: string,
   pageIndex: number,
   pageSize: number,
@@ -443,14 +443,14 @@ async function fetchListPage(
   ontologyId: string | undefined,
   parameter: string,
   useLegacy: boolean,
-  thingType: ThingTypeName | undefined,
+  thingType: EntityTypeName | undefined,
   pageIndex: number,
   pageSize: number,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
-  const effectiveEntityType: ThingTypeName = thingType ?? "class";
+  const effectiveEntityType: EntityTypeName = thingType ?? "class";
 
   let response;
 
