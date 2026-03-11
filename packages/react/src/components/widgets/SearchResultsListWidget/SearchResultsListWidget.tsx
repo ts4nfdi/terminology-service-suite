@@ -126,6 +126,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   const {
     data: searchResults,
     isLoading,
+    isFetching,
     isSuccess,
     isError,
     error,
@@ -409,6 +410,24 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               />
 
               <EuiSpacer size="s" />
+
+              {isFetching && (
+                <>
+                  <EuiFlexGroup
+                    justifyContent="center"
+                    alignItems="center"
+                    gutterSize="s"
+                  >
+                    <EuiFlexItem grow={false}>
+                      <EuiLoadingSpinner size="m" />
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                      <EuiText size="m">Loading results...</EuiText>
+                    </EuiFlexItem>
+                  </EuiFlexGroup>
+                  <EuiSpacer size="l" />
+                </>
+              )}
 
               {searchResults &&
                 searchResults.map((result: any) => (
