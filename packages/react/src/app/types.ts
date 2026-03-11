@@ -733,9 +733,14 @@ export type GraphViewWidgetProps = ApiObj &
     edgeLabel?: string;
 
     /**
-     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * Callback function for double-clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+
+    /**
+     * This function is called if navigation should be handled externally.
+     */
+    onNavigateTo?: (target: string) => void;
   };
 
 export type OlsGraphNode = {
