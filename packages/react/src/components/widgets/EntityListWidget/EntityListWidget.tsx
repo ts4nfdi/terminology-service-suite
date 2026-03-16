@@ -35,7 +35,15 @@ import {
   normalizeSearchText,
 } from "./Utils/searchUtils";
 
-type EntityRow = { name: string; id: string; rowIndex: number };
+type EntityRow = {
+  name: string;
+  id: string;
+  rowIndex: number;
+  domain?: string;
+  range?: string;
+  type?: string;
+};
+
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
@@ -204,13 +212,35 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return sorted;
   }, [data?.rows, sortField, sortDirection]);
 
-  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(
-    () => [
+  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(() => {
+    const baseColumns: Array<EuiBasicTableColumn<EntityRow>> = [
       { field: "name", name: "Name", truncateText: true, sortable: true },
       { field: "id", name: "ID", truncateText: true, sortable: true },
-    ],
-    [],
-  );
+    ];
+
+    if (normalizedEntityType === "property") {
+      baseColumns.push(
+        {
+          field: "domain",
+          name: "Domain",
+          truncateText: true,
+          sortable: true,
+        },
+        { field: "range", name: "Range", truncateText: true, sortable: true },
+      );
+    }
+
+    if (normalizedEntityType === "individual") {
+      baseColumns.push({
+        field: "type",
+        name: "Type",
+        truncateText: true,
+        sortable: true,
+      });
+    }
+
+    return baseColumns;
+  }, [normalizedEntityType]);
 
   const onTableChange = ({
     page,
@@ -328,6 +358,66 @@ function pickId(item: any) {
   return v ? String(v) : "—";
 }
 
+function pickDomain(item: any) {
+  return formatEntityField(item?.domain ?? item?.domains);
+}
+
+function pickRange(item: any) {
+  return formatEntityField(item?.range ?? item?.ranges);
+}
+
+function pickType(item: any) {
+  return formatEntityField(item?.type ?? item?.types);
+}
+
+/**
+ * Convert entity field values into string, including multi-value fields.
+ */
+function formatEntityField(value: any): string {
+  if (value == null) return "—";
+
+  if (Array.isArray(value)) {
+    const parts = value
+      .map((item) => formatSingleEntityField(item))
+      .filter(Boolean);
+    return parts.length ? parts.join(", ") : "—";
+  }
+
+  return formatSingleEntityField(value) || "—";
+}
+
+function formatSingleEntityField(value: any): string {
+  if (value == null) return "";
+
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
+    return String(value);
+  }
+
+  if (typeof value === "object") {
+    const candidate =
+      value.label ??
+      value.name ??
+      value.title ??
+      value.short_form ??
+      value.obo_id ??
+      value.curie ??
+      value.id ??
+      value.iri;
+
+    if (Array.isArray(candidate)) {
+      return candidate.length ? String(candidate[0]) : "";
+    }
+
+    return candidate ? String(candidate) : "";
+  }
+
+  return "";
+}
+
 /**
  * Extract entity items from the API response based on entity type and legacy mode
  */
@@ -432,6 +522,9 @@ async function searchEntitiesPage(
       name: getPreferredLabelFromSearchDoc(d),
       id: getPreferredIdFromSearchDoc(d),
       rowIndex: start + i,
+      domain: entityType === "property" ? pickDomain(d) : undefined,
+      range: entityType === "property" ? pickRange(d) : undefined,
+      type: entityType === "individual" ? pickType(d) : undefined,
     })),
     totalItemCount: total,
   };
@@ -474,6 +567,9 @@ async function fetchListPage(
       name: pickLabel(item),
       id: pickId(item),
       rowIndex: baseIndex + i,
+      domain: effectiveEntityType === "property" ? pickDomain(item) : undefined,
+      range: effectiveEntityType === "property" ? pickRange(item) : undefined,
+      type: effectiveEntityType === "individual" ? pickType(item) : undefined,
     })),
     totalItemCount: extractTotal(response, elements.length),
   };
