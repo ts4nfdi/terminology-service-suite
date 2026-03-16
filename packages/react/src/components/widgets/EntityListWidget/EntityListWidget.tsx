@@ -343,9 +343,12 @@ function EntityListWidget(props: EntityListWidgetProps) {
 }
 
 function pickLabel(item: any) {
-  const v = item?.label ?? item?.title ?? item?.name ?? item?.ontologyId;
-  if (Array.isArray(v)) return v[0] ? String(v[0]) : "—";
-  return v ? String(v) : "—";
+  return formatEntityField(
+    item?.label ??
+      item?.title ??
+      item?.name ??
+      item?.ontologyId,
+  );
 }
 
 function pickId(item: any) {
@@ -402,6 +405,9 @@ function formatSingleEntityField(value: any): string {
       value.label ??
       value.name ??
       value.title ??
+      value.value ??
+      value.text ??
+      value.literal ??
       value.short_form ??
       value.obo_id ??
       value.curie ??
@@ -409,10 +415,12 @@ function formatSingleEntityField(value: any): string {
       value.iri;
 
     if (Array.isArray(candidate)) {
-      return candidate.length ? String(candidate[0]) : "";
+      return candidate.length ? formatSingleEntityField(candidate[0]) : "";
     }
 
-    return candidate ? String(candidate) : "";
+    if (candidate != null && candidate !== value) {
+      return formatSingleEntityField(candidate);
+    }
   }
 
   return "";
