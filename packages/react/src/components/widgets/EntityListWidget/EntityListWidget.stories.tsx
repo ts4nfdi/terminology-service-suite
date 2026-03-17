@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
-  EntityListWidgetStoryArgTypes,
-  EntityListWidgetStoryArgs,
-  EntityListWidgetPropertiesArgs,
   EntityListWidgetIndividualsArgs,
   EntityListWidgetMeshTermsArgs,
+  EntityListWidgetPropertiesArgs,
+  EntityListWidgetStoryArgTypes,
+  EntityListWidgetStoryArgs,
 } from "./EntityListWidgetStories";
 
 const meta: Meta = {
@@ -22,7 +22,6 @@ export const Default: Story = {
   args: EntityListWidgetStoryArgs,
 };
 
-
 export const MeshTerms: Story = {
   args: EntityListWidgetMeshTermsArgs,
 };
@@ -34,4 +33,3 @@ export const Individuals: Story = {
 export const Properties: Story = {
   args: EntityListWidgetPropertiesArgs,
 };
-
