@@ -102,7 +102,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [api]);
+  }, [api, ontologyId]);
 
   useEffect(() => {
     /**
@@ -123,19 +123,20 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [api, pageIndex, pageSize, debouncedSearchText, normalizedEntityType]);
+  }, [api, ontologyId, pageIndex, pageSize, debouncedSearchText, normalizedEntityType]);
 
   const queryKey = useMemo(
     () =>
       [
         "entityList:page",
         api,
+        ontologyId,
         pageIndex,
         pageSize,
         debouncedSearchText,
         normalizedEntityType,
       ] as const,
-    [api, pageIndex, pageSize, debouncedSearchText, normalizedEntityType],
+    [api, ontologyId, pageIndex, pageSize, debouncedSearchText, normalizedEntityType],
   );
 
   const queryFn = async (): Promise<QueryResult> => {
