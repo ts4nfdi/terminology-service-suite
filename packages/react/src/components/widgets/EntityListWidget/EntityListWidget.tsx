@@ -123,7 +123,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [api, ontologyId, pageIndex, pageSize, debouncedSearchText, normalizedEntityType]);
+  }, [
+    api,
+    ontologyId,
+    pageIndex,
+    pageSize,
+    debouncedSearchText,
+    normalizedEntityType,
+  ]);
 
   const queryKey = useMemo(
     () =>
@@ -136,7 +143,14 @@ function EntityListWidget(props: EntityListWidgetProps) {
         debouncedSearchText,
         normalizedEntityType,
       ] as const,
-    [api, ontologyId, pageIndex, pageSize, debouncedSearchText, normalizedEntityType],
+    [
+      api,
+      ontologyId,
+      pageIndex,
+      pageSize,
+      debouncedSearchText,
+      normalizedEntityType,
+    ],
   );
 
   const queryFn = async (): Promise<QueryResult> => {
@@ -192,9 +206,9 @@ function EntityListWidget(props: EntityListWidgetProps) {
     {
       enabled: Boolean(
         apiBase &&
-        ontologyId &&
-        normalizedEntityType &&
-        typeof useLegacy === "boolean",
+          ontologyId &&
+          normalizedEntityType &&
+          typeof useLegacy === "boolean",
       ),
       keepPreviousData: true,
       staleTime: 60_000,
@@ -345,10 +359,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
 
 function pickLabel(item: any) {
   return formatEntityField(
-    item?.label ??
-      item?.title ??
-      item?.name ??
-      item?.ontologyId,
+    item?.label ?? item?.title ?? item?.name ?? item?.ontologyId,
   );
 }
 

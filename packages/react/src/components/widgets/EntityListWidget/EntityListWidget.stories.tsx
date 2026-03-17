@@ -3,6 +3,9 @@ import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
   EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
+  EntityListWidgetPropertiesArgs,
+  EntityListWidgetIndividualsArgs,
+  EntityListWidgetMeshTermsArgs,
 } from "./EntityListWidgetStories";
 
 const meta: Meta = {
@@ -15,6 +18,20 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithDefaults: Story = {
+export const Default: Story = {
   args: EntityListWidgetStoryArgs,
 };
+
+
+export const MeshTerms: Story = {
+  args: EntityListWidgetMeshTermsArgs,
+};
+
+export const Individuals: Story = {
+  args: EntityListWidgetIndividualsArgs,
+};
+
+export const Properties: Story = {
+  args: EntityListWidgetPropertiesArgs,
+};
+
