@@ -159,8 +159,9 @@ type TabList = {
    * */
   entityRelationTab?: boolean;
   /**
-   * The initial active/open tab. One of "synonyms" | "hierarchy" | "crossref" |
-   *     "ontology" | "graphview" | "depiction" | "entityinfo" | "entityrelations"
+   * This argument can be used to define active/open tab by initialisation. The following values can be used:
+   *     "synonyms" | "hierarchy" | "crossref" | "ontology" | "graphview" | "depiction" | "entityinfo" |
+   *     "entityrelations"
    * */
   initialSelectedTab?: string;
 };
