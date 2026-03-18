@@ -445,3 +445,24 @@ The widget fetches and displays the depiction (image) associated with a specific
 Once the image is successfully fetched, it is displayed with a medium size and shadow for enhanced aesthetics. 
 The image is clickable, allowing users to expand it and view it in full-screen mode for better clarity.
 `.trim();
+
+export const EntityListDescription = `
+The EntityListWidget is a structured data browsing component designed to display ontology entities in a table-based interface. It enables users to explore large collections of entities efficiently by presenting essential information such as names, identifiers, and type-specific metadata. Built for OLS-based ontology APIs, this widget supports scalable navigation and quick entity discovery across different ontology entity types.
+
+#### Key Features:
+
+- **Structured entity listing**:
+Displays ontology entities in a clean tabular layout with core fields such as **name** and **ID** for quick inspection.
+
+- **Entity-type-aware metadata**:
+Adapts the displayed information based on the entity type. For **properties**, the table includes **Domain** and **Range** columns. For **individuals**, it includes a **Type** column. For other entity types, only the common core fields are displayed.
+
+- **Integrated search**:
+Allows users to quickly find entities by name or identifier, improving navigation across large datasets.
+
+- **Pagination support**:
+Handles large ontology collections through paginated browsing, ensuring a responsive and manageable user experience.
+
+- **Scalable exploration**:
+Supports efficient inspection of extensive ontology content without overwhelming the interface.
+`.trim();

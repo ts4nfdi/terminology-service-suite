@@ -7,12 +7,21 @@ import {
   EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
 } from "./EntityListWidgetStories";
+import { EntityListDescription } from "../../../app/widgetDescriptions";
 
 const meta: Meta = {
   title: "Search/EntityListWidget",
   component: WrappedEntityListWidget,
   argTypes: EntityListWidgetStoryArgTypes,
   args: EntityListWidgetStoryArgs,
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: EntityListDescription,
+      },
+    },
+  },
 };
 export default meta;
 
