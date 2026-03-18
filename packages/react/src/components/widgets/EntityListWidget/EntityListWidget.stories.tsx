@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { EntityListDescription } from "../../../app/widgetDescriptions";
 import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
   EntityListWidgetIndividualsArgs,
@@ -7,7 +8,6 @@ import {
   EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
 } from "./EntityListWidgetStories";
-import { EntityListDescription } from "../../../app/widgetDescriptions";
 
 const meta: Meta = {
   title: "Search/EntityListWidget",
