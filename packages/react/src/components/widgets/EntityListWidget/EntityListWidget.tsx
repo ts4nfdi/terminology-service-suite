@@ -435,10 +435,7 @@ function formatSingleEntityField(value: any): string {
 /**
  * Extract entity items from the API response based on entity type
  */
-function extractElements(
-  response: any,
-  entityType: EntityTypeName,
-): any[] {
+function extractElements(response: any, entityType: EntityTypeName): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
 
   const embedded = response?._embedded;
