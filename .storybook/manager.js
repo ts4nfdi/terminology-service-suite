@@ -9,6 +9,11 @@ if (enableMatomo) {
       baseUrl: process.env.STORYBOOK_MATOMO_URL,
       siteId: Number(process.env.STORYBOOK_MATOMO_SITE_ID),
       heartbeat: true,
+      configurations: {
+        setRequestMethod: "POST",
+        disableAlwaysUseSendBeacon: "TRUE",
+      },
+      linkTracking: false,
     },
   });
 }

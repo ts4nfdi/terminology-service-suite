@@ -449,6 +449,7 @@ export type EntityData = {
    * should be present for use with hierarchy
    */
   parents?: Reified<string>[];
+  color?: string;
 };
 
 export type OnNavigateToEntity = {
@@ -510,6 +511,9 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   apiKey?: string;
   backendType?: string;
   hierarchyWrap?: boolean;
+  targetIri?: string;
+  showHeader?: boolean;
+  showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
@@ -736,6 +740,16 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double-clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+
+    /**
+     * Prevent the graph to be rendered with full width (CSS width 100%).
+     * */
+    stopFullWidth?: boolean;
+
+    /**
+     * Hide the graph legend. Default is false/undefined
+     */
+    hideLegend?: boolean;
 
     /**
      * This function is called if navigation should be handled externally.
