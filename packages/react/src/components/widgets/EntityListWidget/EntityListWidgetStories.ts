@@ -41,10 +41,3 @@ export const EntityListWidgetMeshTermsArgs = {
   parameter: "",
 } as const;
 
-
-export const EntityListWidgetMeshTermsArgsTestttttt = {
-  api: "https://semanticlookup.zbmed.de/ols/api/",
-  ontologyId: "icd10",
-  entityType: "term",
-  parameter: "lang=de",
-} as const;

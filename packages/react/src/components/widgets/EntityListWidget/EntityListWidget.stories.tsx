@@ -7,7 +7,6 @@ import {
   EntityListWidgetPropertiesArgs,
   EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
-  EntityListWidgetMeshTermsArgsTestttttt,
 } from "./EntityListWidgetStories";
 
 const meta: Meta = {
@@ -44,6 +43,3 @@ export const Properties: Story = {
   args: EntityListWidgetPropertiesArgs,
 };
 
-export const testICD: Story = {
-  args: EntityListWidgetMeshTermsArgsTestttttt,
-};
