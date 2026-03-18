@@ -102,7 +102,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     return () => {
       controllerRef.current.abort();
     };
-  }, [api, ontologyId]);
+  }, [api, ontologyId, parameter, entityType]);
 
   useEffect(() => {
     /**
@@ -126,6 +126,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
   }, [
     api,
     ontologyId,
+    parameter,
     pageIndex,
     pageSize,
     debouncedSearchText,
@@ -138,6 +139,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
         "entityList:page",
         api,
         ontologyId,
+        parameter,
         pageIndex,
         pageSize,
         debouncedSearchText,
@@ -146,6 +148,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     [
       api,
       ontologyId,
+      parameter,
       pageIndex,
       pageSize,
       debouncedSearchText,
