@@ -40,4 +40,3 @@ export const EntityListWidgetMeshTermsArgs = {
   entityType: "term",
   parameter: "",
 } as const;
-
