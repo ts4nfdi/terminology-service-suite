@@ -50,7 +50,7 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
 function EntityListWidget(props: EntityListWidgetProps) {
-  const { api, ontologyId, parameter, useLegacy, entityType } = props;
+  const { api, ontologyId, parameter, entityType } = props;
   const searchParameter = (props as any).searchParameter as string | undefined;
 
   const normalizedEntityType: EntityTypeName | undefined =
@@ -192,7 +192,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
       ontologyApi,
       ontologyId,
       parameter ?? "",
-      useLegacy ?? false,
       normalizedEntityType,
       pageIndex,
       pageSize,
@@ -204,12 +203,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
     queryKey,
     queryFn,
     {
-      enabled: Boolean(
-        apiBase &&
-          ontologyId &&
-          normalizedEntityType &&
-          typeof useLegacy === "boolean",
-      ),
+      enabled: Boolean(apiBase && ontologyId && normalizedEntityType),
       keepPreviousData: true,
       staleTime: 60_000,
       retry: false,
@@ -439,12 +433,11 @@ function formatSingleEntityField(value: any): string {
 }
 
 /**
- * Extract entity items from the API response based on entity type and legacy mode
+ * Extract entity items from the API response based on entity type
  */
 function extractElements(
   response: any,
   entityType: EntityTypeName,
-  useLegacy: boolean,
 ): any[] {
   if (Array.isArray(response?.elements)) return response.elements;
 
@@ -455,7 +448,6 @@ function extractElements(
   if (entityType === "individual")
     return Array.isArray(embedded.individuals) ? embedded.individuals : [];
 
-  if (useLegacy) return Array.isArray(embedded.terms) ? embedded.terms : [];
   return Array.isArray(embedded.classes) ? embedded.classes : [];
 }
 
@@ -555,7 +547,6 @@ async function fetchListPage(
   ontologyApi: OlsOntologyApi,
   ontologyId: string | undefined,
   parameter: string,
-  useLegacy: boolean,
   entityTypes: EntityTypeName | undefined,
   pageIndex: number,
   pageSize: number,
@@ -574,12 +565,12 @@ async function fetchListPage(
     entityType,
     ontologyId,
     parameter,
-    useLegacy,
+    false,
     paginationParams,
     signal,
   );
 
-  const elements = extractElements(response, effectiveEntityType, useLegacy);
+  const elements = extractElements(response, effectiveEntityType);
   const baseIndex = pageIndex * pageSize;
 
   return {
@@ -605,7 +596,6 @@ export function WrappedEntityListWidget(props: EntityListWidgetProps) {
           api={props.api}
           ontologyId={props.ontologyId}
           parameter={props.parameter}
-          useLegacy={props.useLegacy}
           entityType={props.entityType}
         />
       </QueryClientProvider>

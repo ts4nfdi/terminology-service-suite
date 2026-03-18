@@ -4,12 +4,10 @@ import {
   entityTypeArgType,
   ontologyIdArgType,
   parameterArgType,
-  useLegacyArgType,
 } from "../../../stories/storyArgs";
 
 export const EntityListWidgetStoryArgTypes = {
   ...apiArgType,
-  ...useLegacyArgType,
   ...ontologyIdArgType,
   ...entityTypeArgType,
   ...parameterArgType,
@@ -17,7 +15,6 @@ export const EntityListWidgetStoryArgTypes = {
 
 export const EntityListWidgetStoryArgs = {
   api: globals.EBI_API_ENDPOINT,
-  useLegacy: false,
   ontologyId: "uberon",
   entityType: "class",
   parameter: "",
@@ -25,7 +22,6 @@ export const EntityListWidgetStoryArgs = {
 
 export const EntityListWidgetPropertiesArgs = {
   api: "https://api.terminology.tib.eu/api/",
-  useLegacy: false,
   ontologyId: "uberon",
   entityType: "property",
   parameter: "",
@@ -33,7 +29,6 @@ export const EntityListWidgetPropertiesArgs = {
 
 export const EntityListWidgetIndividualsArgs = {
   api: globals.EBI_API_ENDPOINT,
-  useLegacy: false,
   ontologyId: "efo",
   entityType: "individual",
   parameter: "",
@@ -41,7 +36,6 @@ export const EntityListWidgetIndividualsArgs = {
 
 export const EntityListWidgetMeshTermsArgs = {
   api: "https://semanticlookup.zbmed.de/ols/api/",
-  useLegacy: false,
   ontologyId: "mesh",
   entityType: "term",
   parameter: "",

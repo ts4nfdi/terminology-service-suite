@@ -448,8 +448,12 @@ The image is clickable, allowing users to expand it and view it in full-screen m
 
 export const EntityListDescription = `
 The EntityListWidget is a structured data browsing component designed to display ontology entities in a table-based interface. It enables users to explore large collections of entities efficiently by presenting essential information such as names, identifiers, and type-specific metadata. Built for OLS-based ontology APIs, this widget supports scalable navigation and quick entity discovery across different ontology entity types.
+This widget is only available for the non-legacy OLS4 API (v2). It is not supported by the legacy OLS4 API, because the required entity listing behavior and response structure are only available in v2.
 
 #### Key Features:
+
+- **Availability**:
+Only supported with the non-legacy OLS4 API (**v2**). The legacy OLS4 API does not provide the required support for this widget.
 
 - **Structured entity listing**:
 Displays ontology entities in a clean tabular layout with core fields such as **name** and **ID** for quick inspection.
