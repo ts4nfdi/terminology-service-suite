@@ -11,6 +11,7 @@ import {
   onNodeClickArgType,
   ontologyIdReqArgType,
   rootWalkArgType,
+  showComparisonInputFieldArgType,
   targetIriArgType,
 } from "../../../stories/storyArgs";
 
@@ -26,6 +27,7 @@ export const GraphViewWidgetStoryArgTypes = {
   ...onNodeClickArgType,
   ...hrefArgType,
   ...onNavigateToArgType,
+  ...showComparisonInputFieldArgType,
 };
 
 export const GraphViewWidgetStoryArgs = {
@@ -122,6 +124,7 @@ export const ChebiIonAndIonRadicalWithComparisonArgs = {
   ontologyId: "chebi",
   rootWalk: true,
   hierarchy: true,
+  showComparisonInputField: true,
 };
 
 export const GraphWithGermanLabelArgs = {

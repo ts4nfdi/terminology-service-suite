@@ -816,6 +816,10 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    showComparisonInputField?: boolean;
   };
 
 export type OlsGraphNode = {

@@ -55,6 +55,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     edgeLabel,
     onNodeClick,
     parameter,
+    showComparisonInputField = false,
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -90,6 +91,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [targetIri, setTargetIri] = useState<string>(props.targetIri ?? "");
   const [sourceLabel, setSourceLabel] = useState<string>(""); // main node label
   const [targetLabel, setTargetLabel] = useState<string>(""); // target node label (comparison)
+  const [finalTargetIri, setFinalTargetIri] = useState(targetIri);
+  const [targetIriInput, setTargetIriInput] = useState(targetIri || "");
 
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -104,6 +107,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
 
+  useEffect(() => {
+    setFinalTargetIri(targetIri);
+    setTargetIriInput(targetIri || "");
+  }, [targetIri]);
+
+  useEffect(() => {
+    setTargetIri(finalTargetIri);
+  }, [finalTargetIri]);
+
   const { data, isLoading, isError, error } = useQuery(
     [
       "termGraph",
@@ -112,7 +124,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       rootWalk,
       hierarchy,
       dbclicked,
-      targetIri,
+      finalTargetIri,
       counter,
     ],
     async () => {
@@ -127,7 +139,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: targetIri,
+          targetIri: finalTargetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -137,7 +149,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: targetIri,
+          targetIri: finalTargetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -148,7 +160,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: targetIri,
+          targetIri: finalTargetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -291,7 +303,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         setSourceLabel(gNode.label ?? "");
         gNode.color.background = sourceNodeBgColor;
         gNode.font.color = nodeTextColor;
-      } else if (targetIri && gNode.id === targetIri) {
+      } else if (finalTargetIri && gNode.id === finalTargetIri) {
         setTargetLabel(gNode.label ?? "");
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
@@ -308,7 +320,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
-    } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
+    } else if (isCommon && gNode.id !== iri && gNode.id !== finalTargetIri) {
       gNode = new GraphNode((node = node), commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
@@ -474,7 +486,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       addHasPartRelationsToGraphData(graphData, nodeRelations);
     }
 
-    if (targetIri && targetListOfJsTreeNodes) {
+    if (finalTargetIri && targetListOfJsTreeNodes) {
       let targetTreeData = convertFlatListToTreeStructure(
         targetListOfJsTreeNodes,
       );
@@ -611,6 +623,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       setCounter(counter + 1);
     }
   }, [props.targetIri]);
+
+  useEffect(() => {
+    if (targetIri) {
+      setGraphDataIsCalculated(false);
+      //@ts-ignore
+      graphNetwork.current.destroy();
+      nodes.current.clear();
+      edges.current.clear();
+      setTargetIri(targetIri);
+      setFirstLoad(true);
+      setCounter(counter + 1);
+    }
+  }, [targetIri]);
 
   useEffect(() => {
     if (hierarchy) {
@@ -814,7 +839,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               ></div>{" "}
               Source: <i>{sourceLabel}</i>{" "}
             </li>
-            {targetIri && (
+            {finalTargetIri && (
               <>
                 <li style={{ paddingTop: "5px" }}>
                   <div
@@ -867,6 +892,64 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               </>
             )}
           </ul>
+          {showComparisonInputField && (
+            <>
+              <div
+                style={{
+                  paddingTop: "10px",
+                  fontSize: "0.9em",
+                  fontWeight: 500,
+                }}
+              >
+                Comparison IRI:
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "5px",
+                  gap: "8px",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Enter target IRI for comparison"
+                  value={targetIriInput}
+                  onChange={(e) => setTargetIriInput(e.target.value)}
+                  style={{
+                    flexGrow: 1,
+                    padding: "4px 6px",
+                    borderRadius: "4px",
+                    border: "1px solid #cbd5e1",
+                    fontSize: "0.9em",
+                  }}
+                />
+
+                <button
+                  style={{
+                    padding: "4px 10px",
+                    fontSize: "0.85em",
+                    backgroundColor: "#0073e6",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    console.log("clicked");
+                    const value = targetIriInput.trim();
+                    if (value && value !== finalTargetIri) {
+                      setFinalTargetIri(value);
+                    }
+                  }}
+                  disabled={!targetIriInput.trim()}
+                >
+                  Apply
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
