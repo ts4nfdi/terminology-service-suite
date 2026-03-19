@@ -603,6 +603,7 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
           className={props.className}
           targetIri={props.targetIri}
+          showComparisonInputField={props.showComparisonInputField}
         />
       </QueryClientProvider>
     </EuiProvider>

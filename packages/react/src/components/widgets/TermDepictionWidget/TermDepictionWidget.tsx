@@ -17,7 +17,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   const { api, iri, ontologyId, useLegacy } = props;
   const olsApi = new OlsThingApi(api);
 
-  const { data, isLoading, isSuccess, isError, error } = useQuery<Thing>(
+  const { data, isLoading, isSuccess, isLoadingError, error } = useQuery<Thing>(
     ["termDepiction", api, iri, ontologyId, useLegacy],
     async () => {
       return olsApi.getThingObject(iri, "class", ontologyId, "", useLegacy);
@@ -31,6 +31,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
         <>
           {data.getDepictionUrl().map((url: string) => {
             if (url.includes(".glb")) {
+              // the image is 3-d so we need to use model-viewer
               return (
                 <model-viewer
                   style={{
@@ -62,7 +63,7 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
           })}
         </>
       )}
-      {isError && (
+      {isLoadingError && (
         <EuiText>{getErrorMessageToDisplay(error, "depiction")}</EuiText>
       )}
     </div>

@@ -36,6 +36,7 @@ export const GraphViewWidgetStoryArgs = {
   ontologyId: "chebi",
   rootWalk: false,
   hierarchy: false,
+  showComparisonInputField: false,
 };
 
 export const ChebiIonArgs = {

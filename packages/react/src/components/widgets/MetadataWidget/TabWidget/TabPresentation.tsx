@@ -124,6 +124,8 @@ function TabPresentation(props: TabPresentationProps) {
             api={props.api}
             ontologyId={props.ontologyId || data.getOntologyId()}
             iri={props.iri}
+            rootWalk={false}
+            stopFullWidth={true}
             rootWalk={props.rootWalk}
             targetIri={props.graphTargetIri}
             hierarchy={props.graphHierarchy}

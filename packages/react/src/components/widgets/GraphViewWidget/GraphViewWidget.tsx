@@ -55,6 +55,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     edgeLabel,
     onNodeClick,
     parameter,
+    stopFullWidth,
+    hideLegend,
     showComparisonInputField = false,
   } = props;
 
@@ -560,6 +562,128 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
+  function renderLegend() {
+    if (hideLegend) {
+      return <></>;
+    }
+    const itemStyle = {
+      width: "10px",
+      height: "10px",
+      borderRadius: "50%",
+      display: "inline-block",
+    };
+    const itemPadding = { paddingTop: "5px" };
+    return (
+      <div
+        style={{
+          position: "absolute",
+          display: "inline-block",
+          backgroundColor: "#e5e7ea",
+          padding: "5px",
+          borderRadius: "10px",
+          paddingTop: "10px",
+          bottom: "20px",
+          right: "20px",
+        }}
+      >
+        <ul style={{ padding: "5px" }}>
+          <li style={itemPadding}>
+            <div
+              style={{ backgroundColor: sourceNodeBgColor, ...itemStyle }}
+            ></div>{" "}
+            Source: <i>{sourceLabel}</i>{" "}
+          </li>
+          {targetIri && (
+            <>
+              <li style={itemPadding}>
+                <div style={{ backgroundColor: "#455469", ...itemStyle }}></div>{" "}
+                Subtree exclusive to <i>{sourceLabel}</i>{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: commonNodesBgColor, ...itemStyle }}
+                ></div>{" "}
+                Common subtree{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{ backgroundColor: targetNodeBgColor, ...itemStyle }}
+                ></div>{" "}
+                Target: <i>{targetLabel}</i>{" "}
+              </li>
+              <li style={itemPadding}>
+                <div
+                  style={{
+                    backgroundColor: exclusiveToTargetIriColor,
+                    ...itemStyle,
+                  }}
+                ></div>{" "}
+                Subtree exclusive to <i>{targetLabel}</i>{" "}
+              </li>
+            </>
+          )}
+        </ul>
+        {showComparisonInputField && (
+          <>
+            <div
+              style={{
+                paddingTop: "10px",
+                fontSize: "0.9em",
+                fontWeight: 500,
+              }}
+            >
+              Comparison IRI:
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: "5px",
+                gap: "8px",
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Enter target IRI for comparison"
+                value={targetIriInput}
+                onChange={(e) => setTargetIriInput(e.target.value)}
+                style={{
+                  flexGrow: 1,
+                  padding: "4px 6px",
+                  borderRadius: "4px",
+                  border: "1px solid #cbd5e1",
+                  fontSize: "0.9em",
+                }}
+              />
+
+              <button
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "0.85em",
+                  backgroundColor: "#0073e6",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  const value = targetIriInput.trim();
+                  if (value && value !== finalTargetIri) {
+                    setFinalTargetIri(value);
+                  }
+                }}
+                disabled={!targetIriInput.trim()}
+              >
+                Apply
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
@@ -595,9 +719,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
-          //@ts-ignore
           setDbClickedColor({
+            //@ts-ignore
             bgColor: nodes.current.get(nodeIri)?.color?.background,
+            //@ts-ignore
             color: nodes.current.get(nodeIri)?.font?.color,
           });
           setSelectedIri(nodeIri);
@@ -625,10 +750,30 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [props.targetIri]);
 
   useEffect(() => {
-    if (targetIri) {
+    if (props.iri && selectedIri !== props.iri) {
       setGraphDataIsCalculated(false);
       //@ts-ignore
       graphNetwork.current.destroy();
+      nodes.current.clear();
+      edges.current.clear();
+      setSelectedIri(props.iri);
+      setFirstLoad(true);
+      setCounter(counter + 1);
+    }
+  }, [props.iri]);
+
+  const safeDestroy = () => {
+    const network = graphNetwork.current as any;
+    if (network && typeof network.destroy === "function") {
+      network.destroy();
+    }
+  };
+
+  useEffect(() => {
+    if (targetIri) {
+      setGraphDataIsCalculated(false);
+      //@ts-ignore
+      safeDestroy();
       nodes.current.clear();
       edges.current.clear();
       setTargetIri(targetIri);
@@ -697,7 +842,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   return (
     <div
       className={finalClassName}
-      style={{ width: "1000px", height: "100vh", overflow: "hidden" }}
+      style={
+        !stopFullWidth
+          ? { width: "100%", height: "100vh", overflow: "hidden" }
+          : {}
+      }
       ref={fullScreenContainerRef}
     >
       <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
@@ -810,7 +959,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
-          style={{ width: "100%", height: "100vh", margin: "auto" }}
+          style={
+            !stopFullWidth
+              ? { width: "100%", height: "100vh", margin: "auto" }
+              : {}
+          }
         />
 
         <div
@@ -824,133 +977,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             bottom: "20px",
             right: "20px",
           }}
-        >
-          <b>Legend:</b>
-          <ul style={{ paddingTop: "15px" }}>
-            <li style={{ paddingTop: "5px" }}>
-              <div
-                style={{
-                  backgroundColor: sourceNodeBgColor,
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                }}
-              ></div>{" "}
-              Source: <i>{sourceLabel}</i>{" "}
-            </li>
-            {finalTargetIri && (
-              <>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: "#455469",
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Subtree exclusive to <i>{sourceLabel}</i>{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: commonNodesBgColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Common subtree{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: targetNodeBgColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Target: <i>{targetLabel}</i>{" "}
-                </li>
-                <li style={{ paddingTop: "5px" }}>
-                  <div
-                    style={{
-                      backgroundColor: exclusiveToTargetIriColor,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                    }}
-                  ></div>{" "}
-                  Subtree exclusive to <i>{targetLabel}</i>{" "}
-                </li>
-              </>
-            )}
-          </ul>
-          {showComparisonInputField && (
-            <>
-              <div
-                style={{
-                  paddingTop: "10px",
-                  fontSize: "0.9em",
-                  fontWeight: 500,
-                }}
-              >
-                Comparison IRI:
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "5px",
-                  gap: "8px",
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Enter target IRI for comparison"
-                  value={targetIriInput}
-                  onChange={(e) => setTargetIriInput(e.target.value)}
-                  style={{
-                    flexGrow: 1,
-                    padding: "4px 6px",
-                    borderRadius: "4px",
-                    border: "1px solid #cbd5e1",
-                    fontSize: "0.9em",
-                  }}
-                />
-
-                <button
-                  style={{
-                    padding: "4px 10px",
-                    fontSize: "0.85em",
-                    backgroundColor: "#0073e6",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    console.log("clicked");
-                    const value = targetIriInput.trim();
-                    if (value && value !== finalTargetIri) {
-                      setFinalTargetIri(value);
-                    }
-                  }}
-                  disabled={!targetIriInput.trim()}
-                >
-                  Apply
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        ></div>
+        {renderLegend()}
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
         <style>{`
@@ -978,6 +1006,9 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           onNodeClick={props.onNodeClick}
           targetIri={props.targetIri}
           parameter={props.parameter}
+          hideLegend={props.hideLegend}
+          stopFullWidth={props.stopFullWidth}
+          showComparisonInputField={props.showComparisonInputField}
         />
       </QueryClientProvider>
     </EuiProvider>
