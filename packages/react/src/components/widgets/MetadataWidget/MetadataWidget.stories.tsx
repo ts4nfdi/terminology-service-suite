@@ -12,10 +12,10 @@ import {
   edgeLabelArgType,
   entityTypeArgType,
   externalIconArgType,
-  graphHierarchyArgType,
-  graphTargetIriArgType,
+  graphHierarchyArgType, graphShowComparisonInputFieldArgType,
+  graphTargetIriArgType, hideLegendArgType,
   hierarchyKeepExpansionStatesArgType,
-  hierarchyPreferredRootsArgType,
+  hierarchyPreferredRootsArgType, hierarchyShowComparisonInputFieldArgType,
   hierarchyShowSiblingsOnInitArgType,
   hierarchyTargetIriArgType,
   hierarchyWrapArgType,
@@ -28,13 +28,12 @@ import {
   ontologyIdArgType,
   parameterArgType,
   rootWalkArgType,
-  showComparisonInputFieldArgType,
   showComparisonTitleInHeaderArgType,
-  showHeaderArgType,
+  showHeaderArgType, stopFullWidthArgType,
   termLinkArgType,
   titleTextArgType,
   urlPrefixArgType,
-  useLegacyArgType,
+  useLegacyArgType
 } from "../../../stories/storyArgs";
 import { MetadataWidget } from "./MetadataWidget";
 import {
@@ -113,16 +112,16 @@ const meta = {
       ...hierarchyWrapArgType.hierarchyWrap,
       table: { category: "Hierarchy" },
     },
-    showComparisonInputField: {
-      ...showComparisonInputFieldArgType.showComparisonInputField,
-      table: { category: "Hierarchy" },
-    },
     showHeader: {
       ...showHeaderArgType.showHeader,
       table: { category: "Hierarchy" },
     },
     showComparisonTitleInHeader: {
       ...showComparisonTitleInHeaderArgType.showComparisonTitleInHeader,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyShowComparisonInputField: {
+      ...hierarchyShowComparisonInputFieldArgType.showComparisonInputField,
       table: { category: "Hierarchy" },
     },
     // Graph settings
@@ -144,6 +143,18 @@ const meta = {
     },
     onNodeClick: {
       ...onNodeClickArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    graphShowComparisonInputField: {
+      ...graphShowComparisonInputFieldArgType.graphShowComparisonInputField,
+      table: { category: "Graph" },
+    },
+    stopFullWidth: {
+      ...stopFullWidthArgType.stopFullWidth,
+      table: { category: "Graph" },
+    },
+    hideLegend: {
+      ...hideLegendArgType.hideLegend,
       table: { category: "Graph" },
     },
     // Tabs visibility

@@ -908,6 +908,15 @@ export const showComparisonInputFieldArgType: ArgTypes = {
   },
 };
 
+export const hierarchyShowComparisonInputFieldArgType: ArgTypes = {
+  hierarchyShowComparisonInputField: showComparisonInputFieldArgType.showComparisonInputField
+};
+
+export const graphShowComparisonInputFieldArgType: ArgTypes = {
+  graphShowComparisonInputField: showComparisonInputFieldArgType.showComparisonInputField
+};
+
+
 export const edgeLabelArgType: ArgTypes = {
   href: {
     required: false,
@@ -1057,5 +1066,17 @@ export const entityArgType = {
   entity: {
     required: false,
     description: "Input data object.",
+  },
+};
+export const stopFullWidthArgType = {
+  stopFullWidth: {
+    required: false,
+    description: "Prevent the graph to be rendered with full width (CSS width 100%).",
+  },
+};
+export const hideLegendArgType = {
+  hideLegend: {
+    required: false,
+    description: "Hide the graph legend. Default is false/undefined",
   },
 };

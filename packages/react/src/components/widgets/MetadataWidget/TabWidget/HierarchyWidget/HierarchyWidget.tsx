@@ -454,7 +454,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       </EuiButton>
                     </EuiFlexItem>
                   </EuiFlexGroup>
-                  {finalIri && finalTargetIri && (
+                  {finalIri && showComparisonInputField && (
                     <span>
                       <EuiSpacer size="s" />
                       <EuiAccordion
@@ -465,6 +465,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                         onToggle={(isOpen) => setLegendToggle(isOpen)}
                       >
                         <EuiFlexGroup direction={"column"} gutterSize="s">
+                          {finalTargetIri && (
                           <EuiFlexItem grow={1}>
                             <EuiText style={{ paddingLeft: ".3em" }}>
                               <EuiHealth
@@ -496,6 +497,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                               <EuiHealth>Subtree independent of both</EuiHealth>
                             </EuiText>
                           </EuiFlexItem>
+                          )}
 
                           <EuiFlexItem grow={3}>
                             {showComparisonInputField && (

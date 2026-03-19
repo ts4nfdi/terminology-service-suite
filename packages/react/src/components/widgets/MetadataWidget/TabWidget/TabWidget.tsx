@@ -59,6 +59,10 @@ function TabWidget(props: TabWidgetProps) {
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+          graphShowComparisonInputField={props.graphShowComparisonInputField}
+          hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
+          stopFullWidth={props.stopFullWidth}
+          hideLegend={props.hideLegend}
         />
       </div>
     );
@@ -97,6 +101,10 @@ function WrappedTabWidget(props: TabWidgetProps) {
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+          graphShowComparisonInputField={props.graphShowComparisonInputField}
+          hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
+          stopFullWidth={props.stopFullWidth}
+          hideLegend={props.hideLegend}
         />
       </QueryClientProvider>
     </EuiProvider>

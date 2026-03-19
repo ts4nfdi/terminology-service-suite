@@ -68,8 +68,8 @@ function TabPresentation(props: TabPresentationProps) {
                 hierarchyWrap={props.hierarchyWrap}
                 targetIri={props.hierarchyTargetIri}
                 showHeader={props.showHeader}
-                showComparisonTitleInHeader={props.showComparisonInputField}
-                showComparisonInputField={props.showComparisonInputField}
+                showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+                showComparisonInputField={props.hierarchyShowComparisonInputField}
               />
             </div>
           </>
@@ -124,13 +124,14 @@ function TabPresentation(props: TabPresentationProps) {
             api={props.api}
             ontologyId={props.ontologyId || data.getOntologyId()}
             iri={props.iri}
-            rootWalk={false}
-            stopFullWidth={true}
             rootWalk={props.rootWalk}
             targetIri={props.graphTargetIri}
             hierarchy={props.graphHierarchy}
             edgeLabel={props.edgeLabel}
             onNodeClick={props.onNodeClick}
+            showComparisonInputField={props.graphShowComparisonInputField}
+            stopFullWidth={props.stopFullWidth}
+            hideLegend={props.hideLegend}
           />
         ),
         id: "graphview",

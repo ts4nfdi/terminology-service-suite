@@ -420,9 +420,22 @@ export type TabWidgetProps = TabSubwidgetsProps &
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
     /**
-     * Show the input field for the targetIri in comparison mode.
+     * Show the input field for the targetIri in comparison mode for the hierarchy.
      */
-    showComparisonInputField?: boolean;
+    hierarchyShowComparisonInputField?: boolean;
+    /**
+     * Show the input field for the targetIri in comparison mode for the graph view.
+     */
+    graphShowComparisonInputField?: boolean;
+    /**
+     * Prevent the graph to be rendered with full width (CSS width 100%).
+     * */
+    stopFullWidth?: boolean;
+
+    /**
+     * Hide the graph legend. Default is false/undefined
+     */
+    hideLegend?: boolean;
   };
 
 export type TabPresentationProps = TabWidgetProps & {

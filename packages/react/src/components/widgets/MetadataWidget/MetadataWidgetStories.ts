@@ -4,10 +4,10 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
-  graphHierarchyArgType,
+  graphHierarchyArgType, graphShowComparisonInputFieldArgType,
   graphTargetIriArgType,
   hierarchyKeepExpansionStatesArgType,
-  hierarchyPreferredRootsArgType,
+  hierarchyPreferredRootsArgType, hierarchyShowComparisonInputFieldArgType,
   hierarchyShowSiblingsOnInitArgType,
   hierarchyTargetIriArgType,
   hierarchyWrapArgType,
@@ -17,12 +17,12 @@ import {
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
-  showComparisonInputFieldArgType,
   showComparisonTitleInHeaderArgType,
   showHeaderArgType,
   termLinkArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css"
 
 export const MetadataWidgetStoryArgTypes = {
   ...apiArgType,
@@ -43,8 +43,9 @@ export const MetadataWidgetStoryArgTypes = {
   ...graphHierarchyArgType,
   ...termLinkArgType,
   ...showHeaderArgType,
-  ...showComparisonInputFieldArgType,
   ...showComparisonTitleInHeaderArgType,
+  ...hierarchyShowComparisonInputFieldArgType,
+  ...graphShowComparisonInputFieldArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -70,9 +71,8 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
-  showComparisonTitleInHeader: true,
-  showComparisonInputField: true,
   showHeader: true,
+  className: "ts4nfdi-metadata-style"
 } as const;
 
 export const MetadataWidget1Args = {

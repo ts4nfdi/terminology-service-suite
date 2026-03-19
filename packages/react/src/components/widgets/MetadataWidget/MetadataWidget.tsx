@@ -238,7 +238,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
               graphHierarchy={props.graphHierarchy}
               initialSelectedTab={props.initialSelectedTab}
               showHeader={props.showHeader}
-              showComparisonInputField={props.showComparisonInputField}
+              hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
+              graphShowComparisonInputField={props.graphShowComparisonInputField}
               showComparisonTitleInHeader={props.showComparisonTitleInHeader}
             />
           </EuiFlexItem>
@@ -304,7 +305,8 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           colorSecond={props.colorSecond}
           colorFirst={props.colorFirst}
           showHeader={props.showHeader}
-          showComparisonInputField={props.showComparisonInputField}
+          graphShowComparisonInputField={props.graphShowComparisonInputField}
+          hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
         />
       </QueryClientProvider>
