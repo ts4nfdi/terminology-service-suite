@@ -35,7 +35,7 @@ export const TermDepictionWidget3DArgs = {
   useLegacy: false,
 };
 
-export const OntologyIdAsIriArgs = {
+export const OntologyIriAsIdArgs = {
   api: "http://tsag.qa.km.k8s.zbmed.de/api-gateway/ols4/api/",
   iri: "https://nomenclature.info/nom/5254",
   ontologyId: "http://bartoc.org/en/node/1232",

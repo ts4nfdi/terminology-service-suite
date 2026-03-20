@@ -7,7 +7,7 @@ import {
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  OntologyIdAsIriArgs
+  OntologyIriAsIdArgs
 } from "./TermDepictionWidgetStories";
 
 const meta = {
@@ -39,7 +39,7 @@ export const TermDepictionWidget3D: Story = {
   play: commonTermDepictionWidgetPlay,
 };
 
-export const OntologyIdAsIri: Story = {
-  args: OntologyIdAsIriArgs,
+export const OntologyIriAsId: Story = {
+  args: OntologyIriAsIdArgs,
   play: commonTermDepictionWidgetPlay
 };
