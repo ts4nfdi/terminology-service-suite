@@ -125,9 +125,9 @@ export abstract class OLS4Thing implements Thing {
       this.properties[depictionUri] &&
       typeof this.properties[depictionUri] === "string"
     ) {
-      return [this.properties["http://xmlns.com/foaf/0.1/depiction"]];
-    } else if (this.properties[depictionUri]) {
-      return this.properties["http://xmlns.com/foaf/0.1/depiction"];
+      return [this.properties[depictionUri]];
+    } else if (Array.isArray(this.properties[depictionUri])) {
+      return this.properties[depictionUri];
     }
     return [];
   }
