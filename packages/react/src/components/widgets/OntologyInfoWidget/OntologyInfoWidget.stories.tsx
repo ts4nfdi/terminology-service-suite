@@ -10,6 +10,7 @@ import {
   OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
   OntologyInfoWidgetStoryArgTypes,
+  OntologyInfoWidgetUberon,
 } from "./OntologyInfoWidgetStories";
 
 const meta = {
@@ -51,5 +52,10 @@ export const OntologyInfoWidgetOLS4API: Story = {
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
+  play: commonOntologyInfoWidgetPlay,
+};
+
+export const OntologyInfoUberon: Story = {
+  args: OntologyInfoWidgetUberon,
   play: commonOntologyInfoWidgetPlay,
 };

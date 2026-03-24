@@ -56,9 +56,21 @@ export function buildParamsForSearch(
   parameter?: string,
   ts4nfdiGateway?: boolean,
 ) {
+  const hasSearchEndpointParams =
+    Boolean((queryParams as any).queryFields) ||
+    (typeof parameter === "string" && parameter.includes("queryFields="));
+
   const params: any = {
-    exact: queryParams.exactMatch,
-    obsoletes: queryParams.showObsoleteTerms,
+    exact: hasSearchEndpointParams
+      ? typeof queryParams.exactMatch === "boolean"
+        ? String(queryParams.exactMatch)
+        : queryParams.exactMatch
+      : queryParams.exactMatch,
+    obsoletes: hasSearchEndpointParams
+      ? typeof queryParams.showObsoleteTerms === "boolean"
+        ? String(queryParams.showObsoleteTerms)
+        : queryParams.showObsoleteTerms
+      : queryParams.showObsoleteTerms,
   };
 
   if (ts4nfdiGateway) {
@@ -77,6 +89,11 @@ export function buildParamsForSearch(
 
   if (queryParams.ontology) {
     params.ontology = queryParams.ontology;
+  }
+
+  // Forward queryFields only when explicitly requested (to avoid impacting other widgets)
+  if (hasSearchEndpointParams && (queryParams as any).queryFields) {
+    params.queryFields = (queryParams as any).queryFields;
   }
 
   return {
