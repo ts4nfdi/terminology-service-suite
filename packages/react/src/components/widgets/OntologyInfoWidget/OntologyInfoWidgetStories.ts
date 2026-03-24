@@ -63,11 +63,11 @@ export const NavigateToEBIPageArgs = {
 };
 
 export const OntologyInfoWidgetUberon = {
-    api: globals.EBI_API_ENDPOINT,
-    useLegacy: false,
-    ontologyId: "uberon",
-    hasTitle: true,
-    showBadges: true,
+  api: globals.EBI_API_ENDPOINT,
+  useLegacy: false,
+  ontologyId: "uberon",
+  hasTitle: true,
+  showBadges: true,
 };
 
 export const commonOntologyInfoWidgetPlay = async ({

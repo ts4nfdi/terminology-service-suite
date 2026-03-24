@@ -9,7 +9,8 @@ import {
   OntologyInfoWidget2Args,
   OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
-  OntologyInfoWidgetStoryArgTypes, OntologyInfoWidgetUberon,
+  OntologyInfoWidgetStoryArgTypes,
+  OntologyInfoWidgetUberon,
 } from "./OntologyInfoWidgetStories";
 
 const meta = {
