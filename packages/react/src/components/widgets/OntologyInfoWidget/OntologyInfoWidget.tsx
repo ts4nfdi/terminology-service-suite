@@ -23,6 +23,7 @@ import { Ontology, Thing } from "../../../model/interfaces";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
+import "../../../style/tssStyles.css"
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -146,6 +147,45 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
+
+  /**
+   * Get logo from annotation 'depicted_by'
+   */
+  function getLogoSection(ontology: Ontology): ReactElement {
+    try {
+      const logos = ontology.getAnnotationById("depicted_by");
+
+      if (!logos || logos.length === 0) return <></>;
+
+      const logoUrl = logos[0]?.value;
+      if (!logoUrl) return <></>;
+
+      return (
+        <>
+          <EuiFlexItem>
+            <b>Logo:</b>
+            <div>
+              <img
+                src={logoUrl}
+                alt={"ontology logo"}
+                className={"ontology-logo"}
+              />
+            </div>
+          </EuiFlexItem>
+        </>
+      );
+
+      /**
+       * Happens when legacy API or annotations config is missing
+       */
+    } catch (e) {
+      return <></>;
+    }
+    }
+    ;
+
+
+
   function getCreatorsSection(ontology: Ontology): ReactElement {
     return (
       <>
@@ -263,6 +303,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
                 {getOntologyIdSection(ontology)}
                 {getVersionSection(ontology)}
                 {getNumClassesSection(ontology)}
+                {getLogoSection(ontology)}
                 {/*{getCreatorsSection(entityInfo)}*/
                 /* redundant as it's listed in annotations anyway */}
               </>

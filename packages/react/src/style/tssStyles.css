@@ -72,3 +72,11 @@ button {
 .clickable:hover {
   text-decoration: underline;
 }
+
+.ontology-logo {
+  max-width: 8rem;
+  max-height: 8rem;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 1rem;
+}
