@@ -21,9 +21,9 @@ import {
 } from "../../../app/util";
 import { Ontology, Thing } from "../../../model/interfaces";
 import "../../../style/ts4nfdiStyles/ts4nfdiOntologyInfoStyle.css";
+import "../../../style/tssStyles.css";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
-import "../../../style/tssStyles.css"
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -147,7 +147,6 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     );
   }
 
-
   /**
    * Get logo from annotation 'depicted_by'
    */
@@ -181,11 +180,7 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     } catch (e) {
       return <></>;
     }
-    }
-    ;
-
-
-
+  }
   function getCreatorsSection(ontology: Ontology): ReactElement {
     return (
       <>
