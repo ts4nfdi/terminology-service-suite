@@ -908,15 +908,6 @@ export const showComparisonInputFieldArgType: ArgTypes = {
   },
 };
 
-export const hierarchyShowComparisonInputFieldArgType: ArgTypes = {
-  hierarchyShowComparisonInputField: showComparisonInputFieldArgType.showComparisonInputField
-};
-
-export const graphShowComparisonInputFieldArgType: ArgTypes = {
-  graphShowComparisonInputField: showComparisonInputFieldArgType.showComparisonInputField
-};
-
-
 export const edgeLabelArgType: ArgTypes = {
   href: {
     required: false,
@@ -1053,12 +1044,6 @@ This option cannot be used alongside the compareHierarchy option and defaults to
 export const hierarchyShowSiblingsOnInitArgType = {
   hierarchyShowSiblingsOnInit: showSiblingsOnInitArgType.showSiblingsOnInit,
 };
-export const hierarchyTargetIriArgType = {
-  hierarchyTargetIri: targetIriArgType.targetIri,
-};
-export const graphTargetIriArgType = {
-  graphTargetIri: targetIriArgType.targetIri,
-};
 export const graphHierarchyArgType = {
   graphHierarchy: hierarchyArgType.hierarchy,
 };
@@ -1071,7 +1056,8 @@ export const entityArgType = {
 export const stopFullWidthArgType = {
   stopFullWidth: {
     required: false,
-    description: "Prevent the graph to be rendered with full width (CSS width 100%).",
+    description:
+      "Prevent the graph to be rendered with full width (CSS width 100%).",
   },
 };
 export const hideLegendArgType = {

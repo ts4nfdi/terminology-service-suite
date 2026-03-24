@@ -57,7 +57,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     parameter,
     stopFullWidth,
     hideLegend,
-    showComparisonInputField = false,
   } = props;
 
   const [selectedIri, setSelectedIri] = useState(iri);
@@ -93,8 +92,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [targetIri, setTargetIri] = useState<string>(props.targetIri ?? "");
   const [sourceLabel, setSourceLabel] = useState<string>(""); // main node label
   const [targetLabel, setTargetLabel] = useState<string>(""); // target node label (comparison)
-  const [finalTargetIri, setFinalTargetIri] = useState(targetIri);
-  const [targetIriInput, setTargetIriInput] = useState(targetIri || "");
 
   const finalClassName = className || "ts4nfdi-graph-style";
   const subClassEdgeLabel =
@@ -108,27 +105,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const targetNodeBgColor = "#00a86b";
   const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
-
-  useEffect(() => {
-    setFinalTargetIri(targetIri);
-    setTargetIriInput(targetIri || "");
-  }, [targetIri]);
-
-  useEffect(() => {
-    setTargetIri(finalTargetIri);
-  }, [finalTargetIri]);
-
   const { data, isLoading, isError, error } = useQuery(
-    [
-      "termGraph",
-      api,
-      ontologyId,
-      rootWalk,
-      hierarchy,
-      dbclicked,
-      finalTargetIri,
-      counter,
-    ],
+    ["termGraph", api, ontologyId, rootWalk, hierarchy, dbclicked, counter],
     async () => {
       let sourceIri = iri;
       if (dbclicked) {
@@ -141,7 +119,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: finalTargetIri,
+          targetIri: targetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -151,7 +129,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: finalTargetIri,
+          targetIri: targetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -162,7 +140,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           api: api,
           iri: sourceIri,
           ontologyId: ontologyId,
-          targetIri: finalTargetIri,
+          targetIri: targetIri,
           dbClicked: dbclicked,
           parameter: parameter,
         });
@@ -305,7 +283,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         setSourceLabel(gNode.label ?? "");
         gNode.color.background = sourceNodeBgColor;
         gNode.font.color = nodeTextColor;
-      } else if (finalTargetIri && gNode.id === finalTargetIri) {
+      } else if (targetIri && gNode.id === targetIri) {
         setTargetLabel(gNode.label ?? "");
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
@@ -322,7 +300,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
-    } else if (isCommon && gNode.id !== iri && gNode.id !== finalTargetIri) {
+    } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
       gNode = new GraphNode((node = node), commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
@@ -488,7 +466,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       addHasPartRelationsToGraphData(graphData, nodeRelations);
     }
 
-    if (finalTargetIri && targetListOfJsTreeNodes) {
+    if (targetIri && targetListOfJsTreeNodes) {
       let targetTreeData = convertFlatListToTreeStructure(
         targetListOfJsTreeNodes,
       );
@@ -623,63 +601,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             </>
           )}
         </ul>
-        {showComparisonInputField && (
-          <>
-            <div
-              style={{
-                paddingTop: "10px",
-                fontSize: "0.9em",
-                fontWeight: 500,
-              }}
-            >
-              Comparison IRI:
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "5px",
-                gap: "8px",
-              }}
-            >
-              <input
-                type="text"
-                placeholder="Enter target IRI for comparison"
-                value={targetIriInput}
-                onChange={(e) => setTargetIriInput(e.target.value)}
-                style={{
-                  flexGrow: 1,
-                  padding: "4px 6px",
-                  borderRadius: "4px",
-                  border: "1px solid #cbd5e1",
-                  fontSize: "0.9em",
-                }}
-              />
-
-              <button
-                style={{
-                  padding: "4px 10px",
-                  fontSize: "0.85em",
-                  backgroundColor: "#0073e6",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  const value = targetIriInput.trim();
-                  if (value && value !== finalTargetIri) {
-                    setFinalTargetIri(value);
-                  }
-                }}
-                disabled={!targetIriInput.trim()}
-              >
-                Apply
-              </button>
-            </div>
-          </>
-        )}
       </div>
     );
   }
@@ -761,26 +682,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       setCounter(counter + 1);
     }
   }, [props.iri]);
-
-  const safeDestroy = () => {
-    const network = graphNetwork.current as any;
-    if (network && typeof network.destroy === "function") {
-      network.destroy();
-    }
-  };
-
-  useEffect(() => {
-    if (targetIri) {
-      setGraphDataIsCalculated(false);
-      //@ts-ignore
-      safeDestroy();
-      nodes.current.clear();
-      edges.current.clear();
-      setTargetIri(targetIri);
-      setFirstLoad(true);
-      setCounter(counter + 1);
-    }
-  }, [targetIri]);
 
   useEffect(() => {
     if (hierarchy) {
@@ -1008,7 +909,6 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           parameter={props.parameter}
           hideLegend={props.hideLegend}
           stopFullWidth={props.stopFullWidth}
-          showComparisonInputField={props.showComparisonInputField}
         />
       </QueryClientProvider>
     </EuiProvider>

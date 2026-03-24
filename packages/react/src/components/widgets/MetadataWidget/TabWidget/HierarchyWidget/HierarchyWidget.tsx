@@ -3,7 +3,6 @@
 import {
   EuiAccordion,
   EuiButton,
-  EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiHealth,
@@ -61,12 +60,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
     showComparisonTitleInHeader = HIERARCHY_WIDGET_DEFAULT_VALUES.SHOW_COMPARISON_TITLE_IN_HEADER,
     className,
     parameter,
-    showComparisonInputField = false,
   } = props;
   const finalClassName = className || "ts4nfdi-hierarchy-style";
   const [finalIri, setFinalIri] = useState(iri);
   const [finalTargetIri, setFinalTargetIri] = useState(targetIri);
-  const [targetIriInput, setTargetIriInput] = useState(targetIri || "");
 
   // prevents unwanted effects if iri is not set
   useEffect(() => {
@@ -78,17 +75,6 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
       setFinalTargetIri(targetIri);
     }
   }, [iri, targetIri]);
-
-  // Sync finalIri from prop changes
-  useEffect(() => {
-    setFinalIri(iri);
-  }, [iri]);
-
-  // Sync finalTargetIri + input from targetIri prop changes
-  useEffect(() => {
-    setFinalTargetIri(targetIri);
-    setTargetIriInput(targetIri || "");
-  }, [targetIri]);
 
   // TODO: use of entityType has to be reviewed. Currently it is assumed that the entityType of the hierarchy and the specific entity inside it always match (not necessarily true for individual hierarchies, but these have to be reviewed anyways)
   function TreeLink(props: {
@@ -403,30 +389,24 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   return (
     <div className={finalClassName}>
       {isSuccessHierarchy && hierarchy != undefined ? (
-        <span>
+        <div>
           {showHeader && (
             <EuiPanel
               style={{ overflowX: "auto", overflowY: "hidden" }}
               borderRadius="none"
-              paddingSize="s"
+              hasShadow={false}
+              paddingSize={"m"}
             >
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                }}
-              >
-                <span>
+              <EuiFlexGroup alignItems={"center"} justifyContent="spaceBetween">
+                <EuiFlexItem grow={7} alignItems={"center"}>
                   <EuiFlexGroup>
-                    <EuiFlexItem grow={4}>
+                    <EuiFlexItem>
                       {finalIri &&
                         finalTargetIri &&
                         showComparisonTitleInHeader && (
                           <EuiTitle size={"s"}>
                             <h2
                               style={{
-                                maxWidth: "350px",
                                 whiteSpace: "normal",
                                 wordBreak: "break-word",
                               }}
@@ -445,18 +425,20 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                           </EuiTitle>
                         )}
                     </EuiFlexItem>
-                    <EuiFlexItem grow={1}>
+                    <EuiFlexItem grow={false}>
                       <EuiButton
                         size="s"
                         onClick={() => setResetToggle(!resetToggle)}
+                        color={"text"}
                       >
                         Reset
                       </EuiButton>
                     </EuiFlexItem>
                   </EuiFlexGroup>
-                  {finalIri && showComparisonInputField && (
-                    <span>
+                  {finalIri && finalTargetIri && (
+                    <EuiFlexItem>
                       <EuiSpacer size="s" />
+
                       <EuiAccordion
                         buttonContent={
                           legendToggle ? "Hide Legend" : "Show Legend"
@@ -464,89 +446,38 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                         id={""}
                         onToggle={(isOpen) => setLegendToggle(isOpen)}
                       >
-                        <EuiFlexGroup direction={"column"} gutterSize="s">
-                          {finalTargetIri && (
-                          <EuiFlexItem grow={1}>
-                            <EuiText style={{ paddingLeft: ".3em" }}>
-                              <EuiHealth
-                                color={
-                                  HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION
-                                }
-                              >
-                                Common subtree
-                              </EuiHealth>
-                              <br />
-                              <EuiHealth
-                                color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A}
-                              >
-                                Subtree exclusive to {'"'}
-                                {hierarchy.entitiesData.get(finalIri)?.label ||
-                                  finalIri}
-                                {'"'}
-                              </EuiHealth>
-                              <br />
-                              <EuiHealth
-                                color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}
-                              >
-                                Subtree exclusive to {'"'}
-                                {hierarchy.entitiesData.get(finalTargetIri)
-                                  ?.label || finalTargetIri}
-                                {'"'}
-                              </EuiHealth>
-                              <br />
-                              <EuiHealth>Subtree independent of both</EuiHealth>
-                            </EuiText>
-                          </EuiFlexItem>
-                          )}
-
-                          <EuiFlexItem grow={3}>
-                            {showComparisonInputField && (
-                              <EuiText
-                                size="s"
-                                color="subdued"
-                                style={{ paddingLeft: ".3em" }}
-                              >
-                                <strong>Comparison IRI:</strong>
-                              </EuiText>
-                            )}
-                          </EuiFlexItem>
-                          {showComparisonInputField && (
-                            <EuiFlexGroup gutterSize={"s"} alignItems="center">
-                              <EuiFlexItem>
-                                <>
-                                  <EuiFlexItem grow={1}>
-                                    <EuiFieldText
-                                      placeholder="Enter target IRI for comparison"
-                                      value={targetIriInput}
-                                      onChange={(e) =>
-                                        setTargetIriInput(e.target.value)
-                                      }
-                                      fullWidth
-                                    />
-                                  </EuiFlexItem>
-                                </>
-                              </EuiFlexItem>
-                              <EuiFlexItem grow={false}>
-                                <EuiButton
-                                  size="s"
-                                  fill
-                                  onClick={() => {
-                                    const value = targetIriInput.trim();
-                                    setFinalTargetIri(value || undefined);
-                                  }}
-                                  disabled={!targetIriInput.trim()}
-                                >
-                                  Apply
-                                </EuiButton>
-                              </EuiFlexItem>
-                            </EuiFlexGroup>
-                          )}
-                        </EuiFlexGroup>
+                        <EuiText style={{ paddingLeft: ".3em" }}>
+                          <EuiHealth
+                            color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_UNION}
+                          >
+                            Common subtree
+                          </EuiHealth>
+                          <br />
+                          <EuiHealth
+                            color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_A}
+                          >
+                            Subtree exclusive to {'"'}
+                            {hierarchy.entitiesData.get(finalIri)?.label ||
+                              finalIri}
+                            {'"'}
+                          </EuiHealth>
+                          <br />
+                          <EuiHealth
+                            color={HIERARCHY_WIDGET_DEFAULT_VALUES.COLOR_B}
+                          >
+                            Subtree exclusive to {'"'}
+                            {hierarchy.entitiesData.get(finalTargetIri)
+                              ?.label || finalTargetIri}
+                            {'"'}
+                          </EuiHealth>
+                          <br />
+                          <EuiHealth>Subtree independent of both</EuiHealth>
+                        </EuiText>
                       </EuiAccordion>
-                    </span>
+                    </EuiFlexItem>
                   )}
-                </span>
-              </span>
+                </EuiFlexItem>
+              </EuiFlexGroup>
             </EuiPanel>
           )}
           <EuiPanel
@@ -570,7 +501,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
               </EuiText>
             </span>
           </EuiPanel>
-        </span>
+        </div>
       ) : (
         <EuiPanel>
           <EuiLoadingSpinner />
@@ -605,7 +536,6 @@ function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
           className={props.className}
           targetIri={props.targetIri}
-          showComparisonInputField={props.showComparisonInputField}
         />
       </QueryClientProvider>
     </EuiProvider>

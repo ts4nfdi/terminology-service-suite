@@ -25,7 +25,7 @@ import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresenta
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoListPresentation";
 import { IriWidget } from "./IriWidget";
-import { TabPresentation } from "./TabWidget/TabPresentation";
+import { TabWidget } from "./TabWidget";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 
 type MetadataInfo = {
@@ -203,10 +203,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </div>
 
           <EuiFlexItem>
-            <TabPresentation
-              data={data.entity}
-              isLoading={isLoading}
-              error={error}
+            <TabWidget
               iri={iri}
               entityType={props.entityType}
               api={api}
@@ -222,25 +219,25 @@ function MetadataWidget(props: MetadataWidgetProps) {
               termDepictionTab={termDepictionTab}
               graphViewTab={graphViewTab}
               altNamesTab={altNamesTab}
+              entityInfoTab={props.entityInfoTab}
+              entityRelationTab={props.entityRelationTab}
               hierarchyPreferredRoots={props.hierarchyPreferredRoots}
               hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
               hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
               onNavigateToEntity={props.onNavigateToEntity}
               onNavigateToOntology={props.onNavigateToOntology}
               onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-              className={className}
+              className={`${finalClassName}-tab`}
               hierarchyWrap={props.hierarchyWrap}
-              hierarchyTargetIri={props.hierarchyTargetIri}
-              graphTargetIri={props.graphTargetIri}
               rootWalk={props.rootWalk}
               edgeLabel={props.edgeLabel}
               onNodeClick={props.onNodeClick}
               graphHierarchy={props.graphHierarchy}
               initialSelectedTab={props.initialSelectedTab}
               showHeader={props.showHeader}
-              hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
-              graphShowComparisonInputField={props.graphShowComparisonInputField}
+              showComparisonInputField={props.showComparisonInputField}
               showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+              targetIri={props.targetIri}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -296,8 +293,6 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           externalIcon={props.externalIcon}
           urlPrefix={props.urlPrefix}
           hierarchyWrap={props.hierarchyWrap}
-          hierarchyTargetIri={props.hierarchyTargetIri}
-          graphTargetIri={props.graphTargetIri}
           rootWalk={props.rootWalk}
           graphHierarchy={props.graphHierarchy}
           edgeLabel={props.edgeLabel}
@@ -305,9 +300,9 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           colorSecond={props.colorSecond}
           colorFirst={props.colorFirst}
           showHeader={props.showHeader}
-          graphShowComparisonInputField={props.graphShowComparisonInputField}
-          hierarchyShowComparisonInputField={props.hierarchyShowComparisonInputField}
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+          showComparisonInputField={props.showComparisonInputField}
+          targetIri={props.targetIri}
         />
       </QueryClientProvider>
     </EuiProvider>

@@ -398,8 +398,6 @@ export type TabWidgetProps = TabSubwidgetsProps &
     hierarchyKeepExpansionStates?: boolean;
     hierarchyShowSiblingsOnInit?: boolean;
     hierarchyWrap?: boolean;
-    hierarchyTargetIri?: string;
-    graphTargetIri?: string;
     /**
      * When true, the graph will show the tree hierarchy for the target node in form of a graph.
      */
@@ -420,28 +418,27 @@ export type TabWidgetProps = TabSubwidgetsProps &
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
     /**
-     * Show the input field for the targetIri in comparison mode for the hierarchy.
-     */
-    hierarchyShowComparisonInputField?: boolean;
-    /**
-     * Show the input field for the targetIri in comparison mode for the graph view.
-     */
-    graphShowComparisonInputField?: boolean;
-    /**
      * Prevent the graph to be rendered with full width (CSS width 100%).
      * */
     stopFullWidth?: boolean;
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    showComparisonInputField?: boolean;
 
     /**
      * Hide the graph legend. Default is false/undefined
      */
     hideLegend?: boolean;
+    className?: string;
+    targetIri?: string;
   };
 
 export type TabPresentationProps = TabWidgetProps & {
   data: Thing;
   isLoading?: boolean;
   error?: string | unknown;
+  onTargetIriChange?: (iri: string | undefined) => void;
 };
 
 export type EntityOntoListWidgetProps = TabSubwidgetsProps &
@@ -566,10 +563,6 @@ export type HierarchyWidgetProps = CssClassNameObj & {
   targetIri?: string;
   showHeader?: boolean;
   showComparisonTitleInHeader?: boolean;
-  /**
-   * Show the input field for the targetIri in comparison mode.
-   */
-  showComparisonInputField?: boolean;
 } & BuildHierarchyProps &
   HierarchyIriProp &
   OnNavigateToEntity &
@@ -829,10 +822,6 @@ export type GraphViewWidgetProps = ApiObj &
      * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
-    /**
-     * Show the input field for the targetIri in comparison mode.
-     */
-    showComparisonInputField?: boolean;
 
     /**
      * Prevent the graph to be rendered with full width (CSS width 100%).
@@ -862,4 +851,11 @@ export type OlsGraphEdge = {
   label?: string;
   source?: string;
   target?: string;
+};
+
+export type ComparisonInputProps = {
+  entityLabel?: string;
+  onTargetIriChange: (iri: string | undefined) => void;
+  initialTargetIri?: string;
+  className?: string;
 };

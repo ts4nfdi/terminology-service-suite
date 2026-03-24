@@ -16,6 +16,7 @@ import { TermDepictionWidget } from "../../TermDepictionWidget";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidget } from "./HierarchyWidget";
+import { ComparisonInput } from "./HierarchyWidget/ComparisonInput";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
@@ -45,8 +46,15 @@ function TabPresentation(props: TabPresentationProps) {
       tabs.push({
         content: (
           <>
+            {props.showComparisonInputField && (
+              <ComparisonInput
+                entityLabel={data.getLabel?.()}
+                initialTargetIri={props.targetIri}
+                onTargetIriChange={props.onTargetIriChange!}
+              />
+            )}
             {/* TODO: Is overflow: "auto" wanted? */}
-            <div style={{ overflow: "auto" }}>
+            <div style={{ overflow: "auto", width: "100%" }}>
               <HierarchyWidget
                 // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
                 apiUrl={props.api}
@@ -66,10 +74,9 @@ function TabPresentation(props: TabPresentationProps) {
                 keepExpansionStates={props.hierarchyKeepExpansionStates}
                 className={`${finalClassName}-hierarchy`}
                 hierarchyWrap={props.hierarchyWrap}
-                targetIri={props.hierarchyTargetIri}
+                targetIri={props.targetIri}
                 showHeader={props.showHeader}
                 showComparisonTitleInHeader={props.showComparisonTitleInHeader}
-                showComparisonInputField={props.hierarchyShowComparisonInputField}
               />
             </div>
           </>
@@ -120,19 +127,27 @@ function TabPresentation(props: TabPresentationProps) {
     if (props.graphViewTab === undefined || props.graphViewTab) {
       tabs.push({
         content: (
-          <GraphViewWidget
-            api={props.api}
-            ontologyId={props.ontologyId || data.getOntologyId()}
-            iri={props.iri}
-            rootWalk={props.rootWalk}
-            targetIri={props.graphTargetIri}
-            hierarchy={props.graphHierarchy}
-            edgeLabel={props.edgeLabel}
-            onNodeClick={props.onNodeClick}
-            showComparisonInputField={props.graphShowComparisonInputField}
-            stopFullWidth={props.stopFullWidth}
-            hideLegend={props.hideLegend}
-          />
+          <>
+            {props.showComparisonInputField && (
+              <ComparisonInput
+                entityLabel={data.getLabel?.()}
+                initialTargetIri={props.targetIri}
+                onTargetIriChange={props.onTargetIriChange!}
+              />
+            )}
+            <GraphViewWidget
+              api={props.api}
+              ontologyId={props.ontologyId || data.getOntologyId()}
+              iri={props.iri}
+              rootWalk={props.rootWalk}
+              targetIri={props.targetIri}
+              hierarchy={props.graphHierarchy}
+              edgeLabel={props.edgeLabel}
+              onNodeClick={props.onNodeClick}
+              stopFullWidth={props.stopFullWidth}
+              hideLegend={props.hideLegend}
+            />
+          </>
         ),
         id: "graphview",
         name: "Graph View",
@@ -210,7 +225,7 @@ function TabPresentation(props: TabPresentationProps) {
       tabs[0];
 
     return (
-      <div className={finalClassName}>
+      <div className={finalClassName} style={{ width: "100%" }}>
         <EuiTabbedContent
           size="s"
           tabs={tabs}

@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { MetadataDescription } from "../../../app/widgetDescriptions";
@@ -12,12 +14,11 @@ import {
   edgeLabelArgType,
   entityTypeArgType,
   externalIconArgType,
-  graphHierarchyArgType, graphShowComparisonInputFieldArgType,
-  graphTargetIriArgType, hideLegendArgType,
+  graphHierarchyArgType,
+  hideLegendArgType,
   hierarchyKeepExpansionStatesArgType,
-  hierarchyPreferredRootsArgType, hierarchyShowComparisonInputFieldArgType,
+  hierarchyPreferredRootsArgType,
   hierarchyShowSiblingsOnInitArgType,
-  hierarchyTargetIriArgType,
   hierarchyWrapArgType,
   iriArgType,
   iriTextArgType,
@@ -28,13 +29,17 @@ import {
   ontologyIdArgType,
   parameterArgType,
   rootWalkArgType,
+  showComparisonInputFieldArgType,
   showComparisonTitleInHeaderArgType,
-  showHeaderArgType, stopFullWidthArgType,
+  showHeaderArgType,
+  stopFullWidthArgType,
+  targetIriArgType,
   termLinkArgType,
   titleTextArgType,
   urlPrefixArgType,
-  useLegacyArgType
+  useLegacyArgType,
 } from "../../../stories/storyArgs";
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
 import { MetadataWidget } from "./MetadataWidget";
 import {
   commonMetadataWidgetPlay,
@@ -48,6 +53,7 @@ import {
   OLS4V1Args,
   OLS4V2Args,
   SelectingDefiningOntologyArgs,
+  ShowComparisonInputFieldArgs,
   TermAsLinkArgs,
 } from "./MetadataWidgetStories";
 
@@ -104,10 +110,6 @@ const meta = {
       ...hierarchyShowSiblingsOnInitArgType.hierarchyShowSiblingsOnInit,
       table: { category: "Hierarchy" },
     },
-    hierarchyTargetIri: {
-      ...hierarchyTargetIriArgType.hierarchyTargetIri,
-      table: { category: "Hierarchy" },
-    },
     hierarchyWrap: {
       ...hierarchyWrapArgType.hierarchyWrap,
       table: { category: "Hierarchy" },
@@ -120,15 +122,7 @@ const meta = {
       ...showComparisonTitleInHeaderArgType.showComparisonTitleInHeader,
       table: { category: "Hierarchy" },
     },
-    hierarchyShowComparisonInputField: {
-      ...hierarchyShowComparisonInputFieldArgType.showComparisonInputField,
-      table: { category: "Hierarchy" },
-    },
     // Graph settings
-    graphTargetIri: {
-      ...graphTargetIriArgType.graphTargetIri,
-      table: { category: "Graph" },
-    },
     graphHierarchy: {
       ...graphHierarchyArgType.graphHierarchy,
       table: { category: "Graph" },
@@ -143,10 +137,6 @@ const meta = {
     },
     onNodeClick: {
       ...onNodeClickArgType.graphTargetIri,
-      table: { category: "Graph" },
-    },
-    graphShowComparisonInputField: {
-      ...graphShowComparisonInputFieldArgType.graphShowComparisonInputField,
       table: { category: "Graph" },
     },
     stopFullWidth: {
@@ -171,6 +161,14 @@ const meta = {
     parameter: { ...parameterArgType.parameter, table: { category: "Other" } },
     className: { ...classNameArgType.className, table: { category: "Other" } },
     initialSelectedTab: { table: { category: "Other" } },
+    showComparisonInputField: {
+      ...showComparisonInputFieldArgType.showComparisonInputField,
+      table: { category: "Other" },
+    },
+    targetIri: {
+      ...targetIriArgType.targetIri,
+      table: { category: "Other" },
+    },
     // Breadcrumb
     colorFirst: { ...colorFirstArgType, table: { category: "Breadcrumb" } },
     colorSecond: { ...colorSecondArgType, table: { category: "Breadcrumb" } },
@@ -217,7 +215,7 @@ type Story = StoryObj<typeof meta>;
 
 export const MetadataWidget1: Story = {
   name: "Metadata Widget",
-  args: MetadataWidget1Args,
+  args: { ...MetadataWidget1Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
@@ -261,5 +259,14 @@ export const HiddenTabs: Story = {
 
 export const TermAsLink: Story = {
   args: TermAsLinkArgs,
+  play: commonMetadataWidgetPlay,
+};
+
+export const ShowComparisonInputField: Story = {
+  name: "Comparison input field in hierarchy and graph tabs",
+  args: {
+    ...ShowComparisonInputFieldArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };
