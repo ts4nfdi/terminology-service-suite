@@ -2,6 +2,7 @@
 
 import {
   EuiButton,
+  EuiButtonIcon,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -40,21 +41,33 @@ export function ComparisonInput({
   return (
     <>
       <EuiPanel hasShadow={false} className={className} paddingSize={"m"}>
-        <EuiFormRow
-          label="Compare terms"
-          helpText="Enter a target IRI to compare against"
-          fullWidth
-          style={{ marginBottom: -10 }}
-        >
+        <EuiFormRow fullWidth style={{ marginBottom: -10 }}>
           <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem>
               <EuiFieldText
-                placeholder="Enter target IRI"
+                placeholder="Enter a target IRI to compare against"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 fullWidth
                 compressed
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    onTargetIriChange(inputValue.trim() || undefined);
+                  }
+                }}
               />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              {inputValue && (
+                <EuiButtonIcon
+                  iconType="cross"
+                  aria-label="Clear target IRI"
+                  onClick={() => {
+                    setInputValue("");
+                    onTargetIriChange(undefined);
+                  }}
+                />
+              )}
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton
@@ -63,7 +76,7 @@ export function ComparisonInput({
                 disabled={!inputValue.trim()}
                 color="text"
               >
-                Apply
+                Compare
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

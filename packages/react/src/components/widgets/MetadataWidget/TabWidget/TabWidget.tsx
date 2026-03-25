@@ -22,7 +22,7 @@ function TabWidget(props: TabWidgetProps) {
     crossRefTab,
     terminologyInfoTab,
     altNamesTab,
-    showComparisonInputField = false,
+    enableComparisonMode = false,
     className,
     ...rest
   } = props;
@@ -73,7 +73,7 @@ function TabWidget(props: TabWidgetProps) {
           hideLegend={props.hideLegend}
           targetIri={targetIri}
           onTargetIriChange={setTargetIri}
-          showComparisonInputField={props.showComparisonInputField}
+          enableComparisonMode={props.enableComparisonMode}
           className={finalClassName}
         />
       </div>
@@ -115,7 +115,7 @@ function WrappedTabWidget(props: TabWidgetProps) {
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
           stopFullWidth={props.stopFullWidth}
           hideLegend={props.hideLegend}
-          showComparisonInputField={props.showComparisonInputField}
+          enableComparisonMode={props.enableComparisonMode}
           targetIri={props.targetIri}
         />
       </QueryClientProvider>

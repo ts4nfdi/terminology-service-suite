@@ -424,7 +424,7 @@ export type TabWidgetProps = TabSubwidgetsProps &
     /**
      * Show the input field for the targetIri in comparison mode.
      */
-    showComparisonInputField?: boolean;
+    enableComparisonMode?: boolean;
 
     /**
      * Hide the graph legend. Default is false/undefined
@@ -647,7 +647,7 @@ export type MetadataWidgetProps = TabWidgetProps &
     /**
      * Show the input field for the targetIri in comparison mode.
      */
-    showComparisonInputField?: boolean;
+    enableComparisonMode?: boolean;
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
   };

@@ -12,6 +12,7 @@ import {
   defaultValueArgType,
   descTextArgType,
   edgeLabelArgType,
+  enableComparisonModeArgType,
   entityTypeArgType,
   externalIconArgType,
   graphHierarchyArgType,
@@ -29,7 +30,6 @@ import {
   ontologyIdArgType,
   parameterArgType,
   rootWalkArgType,
-  showComparisonInputFieldArgType,
   showComparisonTitleInHeaderArgType,
   showHeaderArgType,
   stopFullWidthArgType,
@@ -161,8 +161,8 @@ const meta = {
     parameter: { ...parameterArgType.parameter, table: { category: "Other" } },
     className: { ...classNameArgType.className, table: { category: "Other" } },
     initialSelectedTab: { table: { category: "Other" } },
-    showComparisonInputField: {
-      ...showComparisonInputFieldArgType.showComparisonInputField,
+    enableComparisonMode: {
+      ...enableComparisonModeArgType.showComparisonInputField,
       table: { category: "Other" },
     },
     targetIri: {

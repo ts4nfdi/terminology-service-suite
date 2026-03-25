@@ -235,7 +235,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
               graphHierarchy={props.graphHierarchy}
               initialSelectedTab={props.initialSelectedTab}
               showHeader={props.showHeader}
-              showComparisonInputField={props.showComparisonInputField}
+              enableComparisonMode={props.enableComparisonMode}
               showComparisonTitleInHeader={props.showComparisonTitleInHeader}
               targetIri={props.targetIri}
             />
@@ -301,7 +301,7 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           colorFirst={props.colorFirst}
           showHeader={props.showHeader}
           showComparisonTitleInHeader={props.showComparisonTitleInHeader}
-          showComparisonInputField={props.showComparisonInputField}
+          enableComparisonMode={props.enableComparisonMode}
           targetIri={props.targetIri}
         />
       </QueryClientProvider>

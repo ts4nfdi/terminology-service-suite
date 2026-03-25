@@ -895,7 +895,7 @@ export const showComparisonTitleInHeaderArgType: ArgTypes = {
   },
 };
 
-export const showComparisonInputFieldArgType: ArgTypes = {
+export const enableComparisonModeArgType: ArgTypes = {
   showComparisonInputField: {
     required: false,
     description: "If enabled, an input field for the comparison mode is shown.",

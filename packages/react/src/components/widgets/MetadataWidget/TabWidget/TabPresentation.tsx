@@ -1,4 +1,11 @@
-import { EuiTabbedContent } from "@elastic/eui";
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiSwitch,
+  EuiTabbedContent,
+} from "@elastic/eui";
+import { useState } from "react";
 import { TabPresentationProps } from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import {
@@ -42,43 +49,74 @@ function TabPresentation(props: TabPresentationProps) {
       });
     }
 
+    const [hasComparisonMode, setHasComparisonMode] = useState(false);
+
+    const onChange = (e) => {
+      setHasComparisonMode(e.target.checked);
+    };
+
     if (props.hierarchyTab === undefined || props.hierarchyTab) {
       tabs.push({
         content: (
           <>
-            {props.showComparisonInputField && (
-              <ComparisonInput
-                entityLabel={data.getLabel?.()}
-                initialTargetIri={props.targetIri}
-                onTargetIriChange={props.onTargetIriChange!}
-              />
-            )}
-            {/* TODO: Is overflow: "auto" wanted? */}
-            <div style={{ overflow: "auto", width: "100%" }}>
-              <HierarchyWidget
-                // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
-                apiUrl={props.api}
-                iri={props.iri}
-                ontologyId={
-                  props.ontologyId ||
-                  (data && data.getOntologyId() !== undefined
-                    ? data.getOntologyId()
-                    : "")
-                }
-                entityType={props.entityType}
-                useLegacy={props.useLegacy}
-                onNavigateToEntity={props.onNavigateToEntity}
-                onNavigateToOntology={props.onNavigateToOntology}
-                preferredRoots={props.hierarchyPreferredRoots}
-                showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-                keepExpansionStates={props.hierarchyKeepExpansionStates}
-                className={`${finalClassName}-hierarchy`}
-                hierarchyWrap={props.hierarchyWrap}
-                targetIri={props.targetIri}
-                showHeader={props.showHeader}
-                showComparisonTitleInHeader={props.showComparisonTitleInHeader}
-              />
-            </div>
+            <EuiFlexGroup direction="column" gutterSize={"xs"}>
+              <EuiFlexItem>
+                <EuiFlexGroup justifyContent="flexEnd" responsive={false}>
+                  <EuiFlexItem grow={false}>
+                    {props.enableComparisonMode && (
+                      <>
+                        <EuiSpacer size="s" />
+                        <EuiSwitch
+                          label="Comparison mode"
+                          checked={hasComparisonMode}
+                          onChange={(e) => onChange(e)}
+                        />
+                        <EuiSpacer size="s" />
+                      </>
+                    )}
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                {props.enableComparisonMode && hasComparisonMode && (
+                  <ComparisonInput
+                    entityLabel={data.getLabel?.()}
+                    initialTargetIri={props.targetIri}
+                    onTargetIriChange={props.onTargetIriChange!}
+                  />
+                )}
+              </EuiFlexItem>
+              {/* TODO: Is overflow: "auto" wanted? */}
+              <EuiFlexItem>
+                <div style={{ overflow: "auto", width: "100%" }}>
+                  <HierarchyWidget
+                    // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                    apiUrl={props.api}
+                    iri={props.iri}
+                    ontologyId={
+                      props.ontologyId ||
+                      (data && data.getOntologyId() !== undefined
+                        ? data.getOntologyId()
+                        : "")
+                    }
+                    entityType={props.entityType}
+                    useLegacy={props.useLegacy}
+                    onNavigateToEntity={props.onNavigateToEntity}
+                    onNavigateToOntology={props.onNavigateToOntology}
+                    preferredRoots={props.hierarchyPreferredRoots}
+                    showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+                    keepExpansionStates={props.hierarchyKeepExpansionStates}
+                    className={`${finalClassName}-hierarchy`}
+                    hierarchyWrap={props.hierarchyWrap}
+                    targetIri={props.targetIri}
+                    showHeader={props.showHeader}
+                    showComparisonTitleInHeader={
+                      props.showComparisonTitleInHeader
+                    }
+                  />
+                </div>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </>
         ),
         id: "hierarchy",
@@ -127,27 +165,49 @@ function TabPresentation(props: TabPresentationProps) {
     if (props.graphViewTab === undefined || props.graphViewTab) {
       tabs.push({
         content: (
-          <>
-            {props.showComparisonInputField && (
-              <ComparisonInput
-                entityLabel={data.getLabel?.()}
-                initialTargetIri={props.targetIri}
-                onTargetIriChange={props.onTargetIriChange!}
+          <EuiFlexGroup direction="column" gutterSize={"xs"}>
+            <EuiFlexItem>
+              <EuiFlexGroup justifyContent="flexEnd" responsive={false}>
+                <EuiFlexItem grow={false}>
+                  {props.enableComparisonMode && (
+                    <>
+                      <EuiSpacer size="s" />
+                      <EuiSwitch
+                        label="Comparison mode"
+                        checked={hasComparisonMode}
+                        onChange={(e) => onChange(e)}
+                      />
+                      <EuiSpacer size="s" />
+                    </>
+                  )}
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              {props.enableComparisonMode && hasComparisonMode && (
+                <ComparisonInput
+                  entityLabel={data.getLabel?.()}
+                  initialTargetIri={props.targetIri}
+                  onTargetIriChange={props.onTargetIriChange!}
+                />
+              )}
+            </EuiFlexItem>
+            {/* TODO: Is overflow: "auto" wanted? */}
+            <EuiFlexItem>
+              <GraphViewWidget
+                api={props.api}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                iri={props.iri}
+                rootWalk={props.rootWalk}
+                targetIri={props.targetIri}
+                hierarchy={props.graphHierarchy}
+                edgeLabel={props.edgeLabel}
+                onNodeClick={props.onNodeClick}
+                stopFullWidth={props.stopFullWidth}
+                hideLegend={props.hideLegend}
               />
-            )}
-            <GraphViewWidget
-              api={props.api}
-              ontologyId={props.ontologyId || data.getOntologyId()}
-              iri={props.iri}
-              rootWalk={props.rootWalk}
-              targetIri={props.targetIri}
-              hierarchy={props.graphHierarchy}
-              edgeLabel={props.edgeLabel}
-              onNodeClick={props.onNodeClick}
-              stopFullWidth={props.stopFullWidth}
-              hideLegend={props.hideLegend}
-            />
-          </>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         ),
         id: "graphview",
         name: "Graph View",

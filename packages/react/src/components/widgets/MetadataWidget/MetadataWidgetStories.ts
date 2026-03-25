@@ -154,7 +154,7 @@ export const ShowComparisonInputFieldArgs = {
   entityType: "term",
   hierarchyWrap: true,
   copyButton: "right",
-  showComparisonInputField: true,
+  enableComparisonMode: true,
   showComparisonTitleInHeader: true,
   targetIri: "http://purl.obolibrary.org/obo/UBERON_0001444",
 } as const;
