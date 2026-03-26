@@ -10,6 +10,7 @@ import {
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
+  OntologyIriAsIdArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
 import "./index";
 
@@ -67,3 +68,8 @@ export const TermDepictionWidget3D = {
   args: TermDepictionWidget3DArgs,
   play: commonTermDepictionWidgetPlay,
 };
+
+export const OntologyIriAsId = {
+  args: OntologyIriAsIdArgs,
+  play: commonTermDepictionWidgetPlay,
+}

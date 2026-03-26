@@ -35,6 +35,13 @@ export const TermDepictionWidget3DArgs = {
   useLegacy: false,
 };
 
+export const OntologyIriAsIdArgs = {
+  api: globals.GATEWAY_API_ENDPOINT,
+  iri: "https://nomenclature.info/nom/5254",
+  ontologyId: "http://bartoc.org/en/node/1232",
+  useLegacy: true,
+};
+
 export const commonTermDepictionWidgetPlay = async ({
   canvasElement,
 }: {
