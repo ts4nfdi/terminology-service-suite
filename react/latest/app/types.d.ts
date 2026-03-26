@@ -131,6 +131,20 @@ type TabList = {
      * It is possible to show and hide the TermDepiction tab. **True** shows the tab. **False** hides the tab.
      * */
     termDepictionTab?: boolean;
+    /**
+     * It is possible to show and hide the EntityInfo tab. **True** shows the tab. **False** hides the tab.
+     * */
+    entityInfoTab?: boolean;
+    /**
+     * It is possible to show and hide the EntityRelations tab. **True** shows the tab. **False** hides the tab.
+     * */
+    entityRelationTab?: boolean;
+    /**
+     * This argument can be used to define active/open tab by initialisation. The following values can be used:
+     *     "synonyms" | "hierarchy" | "crossref" | "ontology" | "graphview" | "depiction" | "entityinfo" |
+     *     "entityrelations"
+     * */
+    initialSelectedTab?: string;
 };
 export type AutocompleteWidgetSelectedOptions = {
     /**
@@ -220,13 +234,13 @@ export type ColorObj = {
 };
 export type ColorFirstObj = {
     /**
-     * Color of the first badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+     * Color of the first breadcrumb badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
      */
     colorFirst?: EuiLinkColor | string;
 };
 export type ColorSecondObj = {
     /**
-     * Color of the second badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
+     * Color of the second breadcrumb badge, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value
      */
     colorSecond?: EuiLinkColor | string;
 };
@@ -244,7 +258,7 @@ export type BreadcrumbPresentationProps = OptionalOntologyIdObj & ColorFirstObj 
 };
 export type DescTextObj = {
     /**
-     * Set your own text manually that overwrites the text fetched from the API
+     * Set your own description text manually that overwrites the text fetched from the API
      */
     descText?: string;
 };
@@ -288,11 +302,44 @@ export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & CssCla
     hierarchyKeepExpansionStates?: boolean;
     hierarchyShowSiblingsOnInit?: boolean;
     hierarchyWrap?: boolean;
+    /**
+     * When true, the graph will show the tree hierarchy for the target node in form of a graph.
+     */
+    rootWalk?: boolean;
+    /**
+     * When true, the graph shows the nodes in their hierarchy based on their position in the tree. It should be used with the rootWalk mode to true.
+     */
+    graphHierarchy?: boolean;
+    /**
+     * The edge label in the graph. Default is "is a". Only for sub-class predicators.
+     */
+    edgeLabel?: string;
+    /**
+     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * */
+    onNodeClick?: (iri: string) => void;
+    showHeader?: boolean;
+    showComparisonTitleInHeader?: boolean;
+    /**
+     * Prevent the graph to be rendered with full width (CSS width 100%).
+     * */
+    stopFullWidth?: boolean;
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    enableComparisonMode?: boolean;
+    /**
+     * Hide the graph legend. Default is false/undefined
+     */
+    hideLegend?: boolean;
+    className?: string;
+    targetIri?: string;
 };
-export type TabPresentationProps = TabWidgetProps & CssClassNameObj & {
+export type TabPresentationProps = TabWidgetProps & {
     data: Thing;
     isLoading?: boolean;
     error?: string | unknown;
+    onTargetIriChange?: (iri: string | undefined) => void;
 };
 export type EntityOntoListWidgetProps = TabSubwidgetsProps & ForcedOntologyIdObj & OnNavigateToOntology & CssClassNameObj;
 export type NavigateToOntologyProps = OnNavigateToOntology & OptionalEntityTypeObj & OptionalIriObj & {
@@ -379,19 +426,22 @@ export type HierarchyWidgetProps = CssClassNameObj & {
     apiKey?: string;
     backendType?: string;
     hierarchyWrap?: boolean;
+    /**
+     * If provided, a view comparing the hierarchies of iri and targetIri is shown.
+     */
     targetIri?: string;
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
 } & BuildHierarchyProps & HierarchyIriProp & OnNavigateToEntity & OnNavigateToOntology & ParameterObj;
 export type TitleTextObj = {
     /**
-     * Set your own text manually that overwrites the text fetched from the API
+     * Set your own title text manually that overwrites the text fetched from the API
      */
     titleText?: string;
 };
 export type TitleWidgetProps = ApiObj & OptionalThingTypeObj & OptionalOntologyIdObj & OptionalIriObj & ParameterObj & UseLegacyObj & TitleTextObj & CssClassNameObj & {
     /**
-     * Set the default text shown if the API fails to retrieve one.
+     * Set the default title text shown if the API fails to retrieve one.
      */
     defaultValue?: string;
     /**
@@ -412,11 +462,38 @@ export type TitlePresentationProps = TitleTextObj & CssClassNameObj & OptionalTh
     onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
     href?: string;
 };
-export type MetadataWidgetProps = TabWidgetProps & CssClassNameObj & {
+export type MetadataWidgetProps = TabWidgetProps & CssClassNameObj & ColorFirstObj & ColorSecondObj & DescTextObj & TitleTextObj & {
     /**
      * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
      */
     termLink?: string;
+    /**
+     * Set the default title text shown if the API fails to retrieve one.
+     */
+    defaultValue?: string;
+    /**
+     * Set your own text manually, which will show as a clickable link instead of the IRI.
+     */
+    iriText?: string;
+    /**
+     * Indicates that the target iri is external and needs an icon.
+     */
+    externalIcon?: boolean;
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
+    /**
+     * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+     * left/right means showing the button on the left or right side of the iri link.
+     */
+    copyButton?: "right" | "left" | "none";
+    /**
+     * Show the input field for the targetIri in comparison mode.
+     */
+    enableComparisonMode?: boolean;
+    showHeader?: boolean;
+    showComparisonTitleInHeader?: boolean;
 };
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates & CssClassNameObj;
 export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & CssClassNameObj & {
@@ -563,5 +640,11 @@ export type OlsGraphEdge = {
     label?: string;
     source?: string;
     target?: string;
+};
+export type ComparisonInputProps = {
+    entityLabel?: string;
+    onTargetIriChange: (iri: string | undefined) => void;
+    initialTargetIri?: string;
+    className?: string;
 };
 export {};

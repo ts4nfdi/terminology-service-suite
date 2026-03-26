@@ -19,6 +19,12 @@ export declare const TermDepictionWidget3DArgs: {
     ontologyId: string;
     useLegacy: boolean;
 };
+export declare const OntologyIriAsIdArgs: {
+    api: string;
+    iri: string;
+    ontologyId: string;
+    useLegacy: boolean;
+};
 export declare const commonTermDepictionWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;

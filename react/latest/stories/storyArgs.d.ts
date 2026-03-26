@@ -179,11 +179,13 @@ export declare const onNavigateToDisambiguateArgType: ArgTypes;
 export declare const onNavigateArgType: ArgTypes;
 export declare const onNavigateToArgType: ArgTypes;
 export declare const hrefArgType: ArgTypes;
+export declare const termLinkArgType: ArgTypes;
 export declare const rootWalkArgType: ArgTypes;
 export declare const hierarchyArgType: ArgTypes;
 export declare const targetIriArgType: ArgTypes;
 export declare const showHeaderArgType: ArgTypes;
 export declare const showComparisonTitleInHeaderArgType: ArgTypes;
+export declare const enableComparisonModeArgType: ArgTypes;
 export declare const edgeLabelArgType: ArgTypes;
 export declare const onNodeClickArgType: ArgTypes;
 export declare const apiKeyArgType: {
@@ -302,8 +304,23 @@ export declare const hierarchyShowSiblingsOnInitArgType: {
         };
     };
 };
+export declare const graphHierarchyArgType: {
+    graphHierarchy: import('storybook/internal/csf').InputType;
+};
 export declare const entityArgType: {
     entity: {
+        required: boolean;
+        description: string;
+    };
+};
+export declare const stopFullWidthArgType: {
+    stopFullWidth: {
+        required: boolean;
+        description: string;
+    };
+};
+export declare const hideLegendArgType: {
+    hideLegend: {
         required: boolean;
         description: string;
     };
