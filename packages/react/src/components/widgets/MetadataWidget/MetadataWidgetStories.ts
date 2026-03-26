@@ -148,15 +148,17 @@ export const TermAsLinkArgs = {
 } as const;
 
 export const ShowComparisonInputFieldArgs = {
-  api: globals.ZBMED_OLS4_API,
-  ontologyId: "uberon",
-  iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
+  api: globals.EBI_API_ENDPOINT,
+  ontologyId: "chebi",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
   entityType: "term",
   hierarchyWrap: true,
   copyButton: "right",
   enableComparisonMode: true,
   showComparisonTitleInHeader: true,
-  targetIri: "http://purl.obolibrary.org/obo/UBERON_0001444",
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
+  rootWalk: true,
+  graphHierarchy: true,
 } as const;
 
 export const commonMetadataWidgetPlay = async ({
