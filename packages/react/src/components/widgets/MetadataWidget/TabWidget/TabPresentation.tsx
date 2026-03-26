@@ -1,4 +1,11 @@
-import { EuiTabbedContent } from "@elastic/eui";
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiSwitch,
+  EuiTabbedContent,
+} from "@elastic/eui";
+import { useState } from "react";
 import { TabPresentationProps } from "../../../../app/types";
 import { Entity } from "../../../../model/interfaces";
 import {
@@ -8,12 +15,15 @@ import {
 } from "../../../../model/ModelTypeCheck";
 import Reified from "../../../../model/Reified";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTabStyle.css";
+import { EntityInfoWidget } from "../../EntityInfoWidget";
+import { EntityRelationsWidget } from "../../EntityRelationsWidget";
 import { GraphViewWidget } from "../../GraphViewWidget";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 import { TermDepictionWidget } from "../../TermDepictionWidget";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
 import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
 import { HierarchyWidget } from "./HierarchyWidget";
+import { ComparisonInput } from "./HierarchyWidget/ComparisonInput";
 
 function TabPresentation(props: TabPresentationProps) {
   function render(data: Entity) {
@@ -34,41 +44,82 @@ function TabPresentation(props: TabPresentationProps) {
             className={`${finalClassName}-altNameTab`}
           />
         ),
-        id: "tab1",
+        id: "synonyms",
         name: "Alternative Names",
       });
     }
+
+    const [hasComparisonMode, setHasComparisonMode] = useState(false);
+
+    const onChange = (e) => {
+      setHasComparisonMode(e.target.checked);
+    };
 
     if (props.hierarchyTab === undefined || props.hierarchyTab) {
       tabs.push({
         content: (
           <>
-            {/* TODO: Is overflow: "auto" wanted? */}
-            <div style={{ overflow: "auto" }}>
-              <HierarchyWidget
-                // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
-                apiUrl={props.api}
-                iri={props.iri}
-                ontologyId={
-                  props.ontologyId ||
-                  (data && data.getOntologyId() !== undefined
-                    ? data.getOntologyId()
-                    : "")
-                }
-                entityType={props.entityType}
-                useLegacy={props.useLegacy}
-                onNavigateToEntity={props.onNavigateToEntity}
-                onNavigateToOntology={props.onNavigateToOntology}
-                preferredRoots={props.hierarchyPreferredRoots}
-                showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-                keepExpansionStates={props.hierarchyKeepExpansionStates}
-                className={`${finalClassName}-hierarchy`}
-                hierarchyWrap={props.hierarchyWrap}
-              />
-            </div>
+            <EuiFlexGroup direction="column" gutterSize={"xs"}>
+              <EuiFlexItem>
+                <EuiFlexGroup justifyContent="flexEnd" responsive={false}>
+                  <EuiFlexItem grow={false}>
+                    {props.enableComparisonMode && (
+                      <>
+                        <EuiSpacer size="s" />
+                        <EuiSwitch
+                          label="Comparison mode"
+                          checked={hasComparisonMode}
+                          onChange={(e) => onChange(e)}
+                        />
+                        <EuiSpacer size="s" />
+                      </>
+                    )}
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                {props.enableComparisonMode && hasComparisonMode && (
+                  <ComparisonInput
+                    entityLabel={data.getLabel?.()}
+                    initialTargetIri={props.targetIri}
+                    onTargetIriChange={props.onTargetIriChange!}
+                  />
+                )}
+              </EuiFlexItem>
+              {/* TODO: Is overflow: "auto" wanted? */}
+              <EuiFlexItem>
+                <div style={{ overflow: "auto", width: "100%" }}>
+                  <HierarchyWidget
+                    // backend_type and apiKey missing here. If TabWidget/ MetadataWidget shall be used for other backend types later, this has to be provided
+                    apiUrl={props.api}
+                    iri={props.iri}
+                    ontologyId={
+                      props.ontologyId ||
+                      (data && data.getOntologyId() !== undefined
+                        ? data.getOntologyId()
+                        : "")
+                    }
+                    entityType={props.entityType}
+                    useLegacy={props.useLegacy}
+                    onNavigateToEntity={props.onNavigateToEntity}
+                    onNavigateToOntology={props.onNavigateToOntology}
+                    preferredRoots={props.hierarchyPreferredRoots}
+                    showSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+                    keepExpansionStates={props.hierarchyKeepExpansionStates}
+                    className={`${finalClassName}-hierarchy`}
+                    hierarchyWrap={props.hierarchyWrap}
+                    targetIri={props.targetIri}
+                    showHeader={props.showHeader}
+                    showComparisonTitleInHeader={
+                      props.showComparisonTitleInHeader
+                    }
+                  />
+                </div>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </>
         ),
-        id: "tab2",
+        id: "hierarchy",
         name: "Hierarchy",
       });
     }
@@ -89,8 +140,8 @@ function TabPresentation(props: TabPresentationProps) {
             className={`${finalClassName}-crossRef`}
           />
         ),
-        id: "tab3",
-        name: "Cross references",
+        id: "crossref",
+        name: "Cross References",
       });
     }
 
@@ -102,12 +153,11 @@ function TabPresentation(props: TabPresentationProps) {
             api={props.api}
             parameter={""}
             useLegacy={props.useLegacy}
-            showBadges={false}
+            showBadges={true}
             hasTitle={false}
-            width={600}
           />
         ),
-        id: "tab4",
+        id: "ontology",
         name: `About ${props.ontologyId?.toUpperCase()}`,
       });
     }
@@ -115,15 +165,51 @@ function TabPresentation(props: TabPresentationProps) {
     if (props.graphViewTab === undefined || props.graphViewTab) {
       tabs.push({
         content: (
-          <GraphViewWidget
-            api={props.api}
-            ontologyId={props.ontologyId || data.getOntologyId()}
-            iri={props.iri}
-            rootWalk={false}
-            stopFullWidth={true}
-          />
+          <EuiFlexGroup direction="column" gutterSize={"xs"}>
+            <EuiFlexItem>
+              <EuiFlexGroup justifyContent="flexEnd" responsive={false}>
+                <EuiFlexItem grow={false}>
+                  {props.enableComparisonMode && (
+                    <>
+                      <EuiSpacer size="s" />
+                      <EuiSwitch
+                        label="Comparison mode"
+                        checked={hasComparisonMode}
+                        onChange={(e) => onChange(e)}
+                      />
+                      <EuiSpacer size="s" />
+                    </>
+                  )}
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              {props.enableComparisonMode && hasComparisonMode && (
+                <ComparisonInput
+                  entityLabel={data.getLabel?.()}
+                  initialTargetIri={props.targetIri}
+                  onTargetIriChange={props.onTargetIriChange!}
+                />
+              )}
+            </EuiFlexItem>
+            {/* TODO: Is overflow: "auto" wanted? */}
+            <EuiFlexItem>
+              <GraphViewWidget
+                api={props.api}
+                ontologyId={props.ontologyId || data.getOntologyId()}
+                iri={props.iri}
+                rootWalk={props.rootWalk}
+                targetIri={props.targetIri}
+                hierarchy={props.graphHierarchy}
+                edgeLabel={props.edgeLabel}
+                onNodeClick={props.onNodeClick}
+                stopFullWidth={props.stopFullWidth}
+                hideLegend={props.hideLegend}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
         ),
-        id: "tab5",
+        id: "graphview",
         name: "Graph View",
       });
     }
@@ -138,8 +224,51 @@ function TabPresentation(props: TabPresentationProps) {
             useLegacy={props.useLegacy}
           />
         ),
-        id: "tab6",
+        id: "depiction",
         name: "Depiction",
+      });
+    }
+
+    if (props.entityInfoTab === undefined || props.entityInfoTab) {
+      tabs.push({
+        content: (
+          <EntityInfoWidget
+            api={props.api}
+            iri={props.iri}
+            useLegacy={props.useLegacy}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            entityType={props.entityType}
+            hasTitle={false}
+            showBadges={true}
+            parameter={props.parameter}
+            onNavigateToEntity={props.onNavigateToEntity}
+            onNavigateToOntology={props.onNavigateToOntology}
+            onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+          />
+        ),
+        id: "entityinfo",
+        name: "Entity Info",
+      });
+    }
+
+    if (props.entityRelationTab === undefined || props.entityRelationTab) {
+      tabs.push({
+        content: (
+          <EntityRelationsWidget
+            api={props.api}
+            iri={props.iri}
+            ontologyId={props.ontologyId || data.getOntologyId()}
+            entityType={props.entityType}
+            hasTitle={false}
+            showBadges={true}
+            parameter={props.parameter}
+            onNavigateToEntity={props.onNavigateToEntity}
+            onNavigateToDisambiguate={props.onNavigateToDisambiguate}
+            onNavigateToOntology={props.onNavigateToOntology}
+          />
+        ),
+        id: "entityrelations",
+        name: "Entity Relations",
       });
     }
 
@@ -150,9 +279,18 @@ function TabPresentation(props: TabPresentationProps) {
       return "";
     }
 
+    const initialSelectedTab =
+      (props.initialSelectedTab &&
+        tabs.find((t) => t.id === props.initialSelectedTab)) ||
+      tabs[0];
+
     return (
-      <div className={finalClassName}>
-        <EuiTabbedContent size="s" tabs={tabs} />
+      <div className={finalClassName} style={{ width: "100%" }}>
+        <EuiTabbedContent
+          size="s"
+          tabs={tabs}
+          initialSelectedTab={initialSelectedTab}
+        />
       </div>
     );
   }

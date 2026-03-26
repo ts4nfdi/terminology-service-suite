@@ -3,6 +3,8 @@
 import {
   EuiAccordion,
   EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiHealth,
   EuiIcon,
   EuiLoadingSpinner,
@@ -35,6 +37,7 @@ import {
 } from "../../../../../model/interfaces/Hierarchy";
 import { HierarchyBuilder } from "../../../../../model/interfaces/HierarchyBuilder";
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
+import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
 function HierarchyWidget(props: HierarchyWidgetProps) {
   const {
@@ -150,7 +153,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                       }}
                     >
                       <span className="ontology-badge">
-                        {definingOntology.toUpperCase()}
+                        <OntologyBadge
+                          ontologyId={definingOntology.toUpperCase()}
+                          onNavigateToOntology={props.onNavigateToOntology}
+                        />
                       </span>
                     </button>
                   </span>
@@ -383,47 +389,56 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   return (
     <div className={finalClassName}>
       {isSuccessHierarchy && hierarchy != undefined ? (
-        <span>
+        <div>
           {showHeader && (
             <EuiPanel
               style={{ overflowX: "auto", overflowY: "hidden" }}
               borderRadius="none"
-              paddingSize="s"
+              hasShadow={false}
+              paddingSize={"m"}
             >
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                }}
-              >
-                <span>
-                  {finalIri &&
-                    finalTargetIri &&
-                    showComparisonTitleInHeader && (
-                      <EuiTitle size={"s"}>
-                        <h2
-                          style={{
-                            maxWidth: "350px",
-                            whiteSpace: "normal",
-                            wordBreak: "break-word",
-                          }}
-                        >
-                          Comparison of{" "}
-                          <i>
-                            {hierarchy.entitiesData.get(finalIri)?.label || iri}
-                          </i>{" "}
-                          and{" "}
-                          <i>
-                            {hierarchy.entitiesData.get(finalTargetIri)
-                              ?.label || finalTargetIri}
-                          </i>
-                        </h2>
-                      </EuiTitle>
-                    )}
+              <EuiFlexGroup alignItems={"center"} justifyContent="spaceBetween">
+                <EuiFlexItem grow={7} alignItems={"center"}>
+                  <EuiFlexGroup>
+                    <EuiFlexItem>
+                      {finalIri &&
+                        finalTargetIri &&
+                        showComparisonTitleInHeader && (
+                          <EuiTitle size={"s"}>
+                            <h2
+                              style={{
+                                whiteSpace: "normal",
+                                wordBreak: "break-word",
+                              }}
+                            >
+                              Comparison of{" "}
+                              <i>
+                                {hierarchy.entitiesData.get(finalIri)?.label ||
+                                  iri}
+                              </i>{" "}
+                              and{" "}
+                              <i>
+                                {hierarchy.entitiesData.get(finalTargetIri)
+                                  ?.label || finalTargetIri}
+                              </i>
+                            </h2>
+                          </EuiTitle>
+                        )}
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                      <EuiButton
+                        size="s"
+                        onClick={() => setResetToggle(!resetToggle)}
+                        color={"text"}
+                      >
+                        Reset
+                      </EuiButton>
+                    </EuiFlexItem>
+                  </EuiFlexGroup>
                   {finalIri && finalTargetIri && (
-                    <span>
+                    <EuiFlexItem>
                       <EuiSpacer size="s" />
+
                       <EuiAccordion
                         buttonContent={
                           legendToggle ? "Hide Legend" : "Show Legend"
@@ -459,16 +474,10 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
                           <EuiHealth>Subtree independent of both</EuiHealth>
                         </EuiText>
                       </EuiAccordion>
-                    </span>
+                    </EuiFlexItem>
                   )}
-                </span>
-                <EuiButton
-                  size="s"
-                  onClick={() => setResetToggle(!resetToggle)}
-                >
-                  Reset
-                </EuiButton>
-              </span>
+                </EuiFlexItem>
+              </EuiFlexGroup>
             </EuiPanel>
           )}
           <EuiPanel
@@ -492,7 +501,7 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
               </EuiText>
             </span>
           </EuiPanel>
-        </span>
+        </div>
       ) : (
         <EuiPanel>
           <EuiLoadingSpinner />

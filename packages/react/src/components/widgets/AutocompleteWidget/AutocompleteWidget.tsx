@@ -80,12 +80,12 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const { label, value } = option;
 
     const colorMap = new Map([
-      ['class', 8],
-      ['individual', 4],
-      ['property', 2],
-      ['objectProperty', 1],
-      ['dataProperty', 0],
-      ['annotationProperty', 7],
+      ["class", 8],
+      ["individual", 4],
+      ["property", 2],
+      ["objectProperty", 1],
+      ["dataProperty", 0],
+      ["annotationProperty", 7],
     ]);
     const dotColorIndex = colorMap.get(value.type) ?? -1;
 

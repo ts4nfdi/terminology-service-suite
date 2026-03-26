@@ -65,12 +65,20 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setSearchValue(query);
   }, [query]);
 
-  function resetToInitialSearch() {
-    setSearchValue(initialQuery);
-    setExactMatch(false);
-    setShowObsoleteTerms(false);
-    setActivePage(0);
-    clearAllFilters();
+  const [isResetting, setIsResetting] = useState(false);
+
+  async function resetToInitialSearch() {
+    setIsResetting(true);
+    try {
+      setSearchValue(initialQuery);
+      setExactMatch(false);
+      setShowObsoleteTerms(false);
+      setActivePage(0);
+      clearAllFilters();
+    } finally {
+      // Small delay to show spinner briefly, then reset
+      setTimeout(() => setIsResetting(false), 500);
+    }
   }
 
   function updateFilterOptions(
@@ -399,8 +407,15 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     size="s"
                     onClick={resetToInitialSearch}
                     color={"text"}
+                    disabled={isResetting}
                   >
-                    Reset
+                    {isResetting ? (
+                      <>
+                        <EuiLoadingSpinner size="s" /> Resetting...
+                      </>
+                    ) : (
+                      "Reset search"
+                    )}
                   </EuiButton>
                 </EuiFlexItem>
               </EuiFlexGroup>

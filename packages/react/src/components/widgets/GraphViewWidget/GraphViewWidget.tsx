@@ -105,18 +105,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const targetNodeBgColor = "#00a86b";
   const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
-
   const { data, isLoading, isError, error } = useQuery(
-    [
-      "termGraph",
-      api,
-      ontologyId,
-      rootWalk,
-      hierarchy,
-      dbclicked,
-      targetIri,
-      counter,
-    ],
+    ["termGraph", api, ontologyId, rootWalk, hierarchy, dbclicked, counter],
     async () => {
       let sourceIri = iri;
       if (dbclicked) {
@@ -877,6 +867,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           }
         />
 
+        <div
+          style={{
+            position: "absolute",
+            display: "inline-block",
+            backgroundColor: "#e5e7ea",
+            padding: "5px",
+            borderRadius: "10px",
+            paddingTop: "10px",
+            bottom: "20px",
+            right: "20px",
+          }}
+        ></div>
         {renderLegend()}
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}

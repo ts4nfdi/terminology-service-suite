@@ -4,6 +4,7 @@ import * as globals from "../../../app/globals";
 import {
   apiArgType,
   entityTypeArgType,
+  graphHierarchyArgType,
   hierarchyKeepExpansionStatesArgType,
   hierarchyPreferredRootsArgType,
   hierarchyShowSiblingsOnInitArgType,
@@ -14,8 +15,12 @@ import {
   onNavigateToOntologyArgType,
   ontologyIdArgType,
   parameterArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
+  termLinkArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
 
 export const MetadataWidgetStoryArgTypes = {
   ...apiArgType,
@@ -31,6 +36,10 @@ export const MetadataWidgetStoryArgTypes = {
   ...hierarchyPreferredRootsArgType,
   ...hierarchyKeepExpansionStatesArgType,
   ...hierarchyShowSiblingsOnInitArgType,
+  ...graphHierarchyArgType,
+  ...termLinkArgType,
+  ...showHeaderArgType,
+  ...showComparisonTitleInHeaderArgType,
 };
 
 export const MetadataWidgetStoryArgs = {
@@ -56,6 +65,8 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToDisambiguate: "Console message",
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
   parameter: "",
+  showHeader: true,
+  className: "ts4nfdi-metadata-style",
 } as const;
 
 export const MetadataWidget1Args = {
@@ -64,6 +75,7 @@ export const MetadataWidget1Args = {
   iri: "http://purl.obolibrary.org/obo/UBERON_0001443",
   entityType: "term",
   hierarchyWrap: true,
+  copyButton: "right",
 } as const;
 
 export const OLS3Args = {
@@ -87,6 +99,7 @@ export const OLS4V2Args = {
   entityType: "term",
   useLegacy: false,
   parameter: "",
+  initialSelectedTab: "ontology",
 } as const;
 
 export const SelectingDefiningOntologyArgs = {
@@ -122,6 +135,8 @@ export const HiddenTabsArgs = {
   terminologyInfoTab: false,
   graphViewTab: false,
   termDepictionTab: false,
+  entityRelationTab: false,
+  entityInfoTab: false,
 } as const;
 
 export const TermAsLinkArgs = {
@@ -130,6 +145,20 @@ export const TermAsLinkArgs = {
   ontologyId: "efo",
   termLink:
     "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819",
+} as const;
+
+export const ShowComparisonInputFieldArgs = {
+  api: globals.EBI_API_ENDPOINT,
+  ontologyId: "chebi",
+  iri: "http://purl.obolibrary.org/obo/CHEBI_27594",
+  entityType: "term",
+  hierarchyWrap: true,
+  copyButton: "right",
+  enableComparisonMode: true,
+  showComparisonTitleInHeader: true,
+  targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248",
+  rootWalk: true,
+  graphHierarchy: true,
 } as const;
 
 export const commonMetadataWidgetPlay = async ({
