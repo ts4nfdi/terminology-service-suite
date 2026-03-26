@@ -99,6 +99,10 @@ export declare const HiddenTabsArgs: {
     readonly hierarchyTab: false;
     readonly crossRefTab: false;
     readonly terminologyInfoTab: false;
+    readonly graphViewTab: false;
+    readonly termDepictionTab: false;
+    readonly entityRelationTab: false;
+    readonly entityInfoTab: false;
 };
 export declare const commonTabWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;

@@ -44,3 +44,14 @@ export declare const TermDepictionWidget3D: {
         canvasElement: HTMLElement;
     }) => Promise<void>;
 };
+export declare const OntologyIriAsId: {
+    args: {
+        api: string;
+        iri: string;
+        ontologyId: string;
+        useLegacy: boolean;
+    };
+    play: ({ canvasElement, }: {
+        canvasElement: HTMLElement;
+    }) => Promise<void>;
+};

@@ -1,4 +1,5 @@
 export declare const MetadataWidgetStoryArgTypes: {
+    graphHierarchy: import('storybook/internal/csf').InputType;
     hierarchyShowSiblingsOnInit: {
         required: boolean;
         description: string;
@@ -85,6 +86,8 @@ export declare const MetadataWidgetStoryArgs: {
     readonly onNavigateToDisambiguate: "Console message";
     readonly hierarchyWrap: false;
     readonly parameter: "";
+    readonly showHeader: true;
+    readonly className: "ts4nfdi-metadata-style";
 };
 export declare const MetadataWidget1Args: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
@@ -92,6 +95,7 @@ export declare const MetadataWidget1Args: {
     readonly iri: "http://purl.obolibrary.org/obo/UBERON_0001443";
     readonly entityType: "term";
     readonly hierarchyWrap: true;
+    readonly copyButton: "right";
 };
 export declare const OLS3Args: {
     readonly api: "https://ols3-semanticlookup.zbmed.de/ols/api/";
@@ -112,6 +116,7 @@ export declare const OLS4V2Args: {
     readonly entityType: "term";
     readonly useLegacy: false;
     readonly parameter: "";
+    readonly initialSelectedTab: "ontology";
 };
 export declare const SelectingDefiningOntologyArgs: {
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
@@ -143,12 +148,27 @@ export declare const HiddenTabsArgs: {
     readonly terminologyInfoTab: false;
     readonly graphViewTab: false;
     readonly termDepictionTab: false;
+    readonly entityRelationTab: false;
+    readonly entityInfoTab: false;
 };
 export declare const TermAsLinkArgs: {
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
     readonly iri: "http://purl.obolibrary.org/obo/HP_0000819";
     readonly ontologyId: "efo";
     readonly termLink: "https://www.ebi.ac.uk/ols4/ontologies/efo/classes/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FHP_0000819";
+};
+export declare const ShowComparisonInputFieldArgs: {
+    readonly api: "https://www.ebi.ac.uk/ols4/api/";
+    readonly ontologyId: "chebi";
+    readonly iri: "http://purl.obolibrary.org/obo/CHEBI_27594";
+    readonly entityType: "term";
+    readonly hierarchyWrap: true;
+    readonly copyButton: "right";
+    readonly enableComparisonMode: true;
+    readonly showComparisonTitleInHeader: true;
+    readonly targetIri: "http://purl.obolibrary.org/obo/CHEBI_18248";
+    readonly rootWalk: true;
+    readonly graphHierarchy: true;
 };
 export declare const commonMetadataWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
