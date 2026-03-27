@@ -163,7 +163,10 @@ export const CompareHierarchies: Story = {
 };
 
 export const CompareHierarchiesGerman: Story = {
-  args: { ...CompareHierarchiesGermanArgs, className: "ts4nfdi-hierarchy-style" },
+  args: {
+    ...CompareHierarchiesGermanArgs,
+    className: "ts4nfdi-hierarchy-style",
+  },
   play: commonHierarchyWidgetPlay,
 };
 

@@ -5,7 +5,8 @@ import { HierarchyWidget } from "./HierarchyWidget";
 import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
-  CompareHierarchiesArgs, CompareHierarchiesGermanArgs,
+  CompareHierarchiesArgs,
+  CompareHierarchiesGermanArgs,
   CompareHierarchiesSubEntityArgs,
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
