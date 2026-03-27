@@ -125,13 +125,25 @@ export const ChebiIonAndIonRadicalWithComparisonArgs = {
 };
 
 export const GraphWithGermanLabelArgs = {
-  api: globals.EBI_API_ENDPOINT,
-  iri: "http://purl.obolibrary.org/obo/HP_0003502",
-  ontologyId: "hp",
+  api: globals.TIB_API_ENDPOINT,
+  iri: "https://database.factgrid.de/entity/Q692839",
+  ontologyId: "ohdab",
   rootWalk: true,
   hierarchy: true,
   targetIri: "",
   parameter: "lang=de",
+  edgeLabel: "OhdAB-Kategorie",
+};
+
+export const GraphWithGermanLabelWithComparisonArgs = {
+  api: globals.TIB_API_ENDPOINT,
+  iri: "https://database.factgrid.de/entity/Q522817",
+  targetIri: "https://database.factgrid.de/entity/Q522788",
+  ontologyId: "ohdab",
+  rootWalk: true,
+  hierarchy: true,
+  parameter: "lang=de",
+  edgeLabel: "OhdAB-Kategorie",
 };
 
 export const commonGraphViewWidgetPlay = async ({

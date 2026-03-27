@@ -8,6 +8,7 @@ import {
   ClassHierarchyArgs,
   commonHierarchyWidgetPlay,
   CompareHierarchiesArgs,
+  CompareHierarchiesGermanArgs,
   CompareHierarchiesSubEntityArgs,
   HierarchyWidgetStoryArgs,
   HierarchyWidgetStoryArgTypes,
@@ -158,6 +159,14 @@ export const SkosmosAgrovocGerman: Story = {
 
 export const CompareHierarchies: Story = {
   args: { ...CompareHierarchiesArgs, className: "ts4nfdi-hierarchy-style" },
+  play: commonHierarchyWidgetPlay,
+};
+
+export const CompareHierarchiesGerman: Story = {
+  args: {
+    ...CompareHierarchiesGermanArgs,
+    className: "ts4nfdi-hierarchy-style",
+  },
   play: commonHierarchyWidgetPlay,
 };
 
