@@ -13,6 +13,7 @@ import {
   GraphViewWidgetStoryArgTypes,
   GraphViewWidgetStoryArgs,
   GraphWithGermanLabelArgs,
+  GraphWithGermanLabelWithComparisonArgs,
   WithOnNodeDoubleClickCallbackArgs,
   commonGraphViewWidgetPlay,
 } from "./GraphViewWidgetStories";
@@ -122,6 +123,16 @@ export const ChebiIonAndIonRadicalWithComparison: Story = {
 
 export const GraphWithGermanLabel: Story = {
   args: GraphWithGermanLabelArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLabelWithComparison: Story = {
+  args: GraphWithGermanLabelWithComparisonArgs,
   parameters: {
     docs: {
       disable: true,
