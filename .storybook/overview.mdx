@@ -1,6 +1,25 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import React, { useState } from "react";
+import TrackingConsentForm from "./TrackingConsentForm";
+import { getConsent, setConsent } from "./trackingConsent";
 
 <Meta title="Overview" />
+
+{(() => {
+  const [consent, setLocalConsent] = useState(getConsent());
+
+  if (consent) return null;
+
+  return (
+    <TrackingConsentForm
+      onConsentChange={(value) => {
+        setConsent(value);
+        setLocalConsent(value);
+        window.top.location.reload();
+      }}
+    />
+  );
+})()}
 
 <div
   style={{
