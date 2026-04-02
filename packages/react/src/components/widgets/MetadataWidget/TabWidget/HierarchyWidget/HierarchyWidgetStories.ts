@@ -172,11 +172,11 @@ export const OLS3HierarchyArgs = {
 
 export const OLSGermanArgs = {
   ...HierarchyWidgetStoryArgs,
-  apiUrl: globals.EBI_API_ENDPOINT,
+  apiUrl: globals.TIB_API_ENDPOINT,
   backendType: "ols",
-  iri: "http://purl.obolibrary.org/obo/HP_0003502",
+  iri: "https://database.factgrid.de/entity/Q692839",
   entityType: "class",
-  ontologyId: "hp",
+  ontologyId: "ohdab",
   useLegacy: false,
   parameter: "lang=de",
 } as const;
@@ -210,6 +210,18 @@ export const CompareHierarchiesSubEntityArgs = {
   entityType: "class" as EntityTypeName,
   ontologyId: "efo",
 };
+
+export const CompareHierarchiesGermanArgs = {
+  ...HierarchyWidgetStoryArgs,
+  apiUrl: globals.TIB_API_ENDPOINT,
+  backendType: "ols",
+  iri: "https://database.factgrid.de/entity/Q692839",
+  targetIri: "https://database.factgrid.de/entity/Q522788",
+  entityType: "class",
+  ontologyId: "ohdab",
+  useLegacy: false,
+  parameter: "lang=de",
+} as const;
 
 export const commonHierarchyWidgetPlay = async ({
   canvasElement,

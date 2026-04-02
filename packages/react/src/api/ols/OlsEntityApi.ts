@@ -198,6 +198,7 @@ export class OlsEntityApi extends OlsBaseApi {
     const params = {
       iri: contentParams?.termIri,
       ...buildParamsForEntities(parameter),
+      ...buildOtherParams(parameter)
     };
     return this.makeCall(
       queryPrefix + "entities",
