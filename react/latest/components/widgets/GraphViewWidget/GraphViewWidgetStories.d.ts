@@ -89,6 +89,17 @@ export declare const GraphWithGermanLabelArgs: {
     hierarchy: boolean;
     targetIri: string;
     parameter: string;
+    edgeLabel: string;
+};
+export declare const GraphWithGermanLabelWithComparisonArgs: {
+    api: string;
+    iri: string;
+    targetIri: string;
+    ontologyId: string;
+    rootWalk: boolean;
+    hierarchy: boolean;
+    parameter: string;
+    edgeLabel: string;
 };
 export declare const commonGraphViewWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;

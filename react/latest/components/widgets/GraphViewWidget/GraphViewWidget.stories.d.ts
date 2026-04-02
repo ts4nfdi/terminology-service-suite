@@ -34,3 +34,4 @@ export declare const WithOnNodeDoubleClickCallback: Story;
 export declare const ChebiCaffeineHierarchyWithComparison: Story;
 export declare const ChebiIonAndIonRadicalWithComparison: Story;
 export declare const GraphWithGermanLabel: Story;
+export declare const GraphWithGermanLabelWithComparison: Story;

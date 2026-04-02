@@ -191,4 +191,5 @@ export declare const OLS3Hierarchy: Story;
 export declare const OLSGerman: Story;
 export declare const SkosmosAgrovocGerman: Story;
 export declare const CompareHierarchies: Story;
+export declare const CompareHierarchiesGerman: Story;
 export declare const CompareHierarchiesSubEntity: Story;
