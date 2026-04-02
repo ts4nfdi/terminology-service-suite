@@ -6,11 +6,12 @@ import {
 import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTermDepictionWidgetPlay,
+  ColiConcAPIGatewayDepictionArgs,
+  IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  OntologyIriAsIdArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
 import "./index";
 
@@ -69,7 +70,12 @@ export const TermDepictionWidget3D = {
   play: commonTermDepictionWidgetPlay,
 };
 
-export const OntologyIriAsId = {
-  args: OntologyIriAsIdArgs,
+export const ColiConcAPIGatewayDepiction = {
+  args: ColiConcAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
+}
+
+export const IconclassAPIGatewayDepiction = {
+  args: IconclassAPIGatewayDepictionArgs,
   play: commonTermDepictionWidgetPlay,
 }
