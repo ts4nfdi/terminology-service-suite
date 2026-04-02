@@ -3,11 +3,11 @@ import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
   commonTermDepictionWidgetPlay,
+  OntologyIriAsIdArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  OntologyIriAsIdArgs
 } from "./TermDepictionWidgetStories";
 
 const meta = {
@@ -41,5 +41,5 @@ export const TermDepictionWidget3D: Story = {
 
 export const OntologyIriAsId: Story = {
   args: OntologyIriAsIdArgs,
-  play: commonTermDepictionWidgetPlay
+  play: commonTermDepictionWidgetPlay,
 };

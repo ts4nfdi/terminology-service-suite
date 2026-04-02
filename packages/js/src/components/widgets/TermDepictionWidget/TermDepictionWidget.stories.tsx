@@ -6,11 +6,11 @@ import {
 import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   commonTermDepictionWidgetPlay,
+  OntologyIriAsIdArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  OntologyIriAsIdArgs
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/TermDepictionWidget/TermDepictionWidgetStories";
 import "./index";
 
@@ -72,4 +72,4 @@ export const TermDepictionWidget3D = {
 export const OntologyIriAsId = {
   args: OntologyIriAsIdArgs,
   play: commonTermDepictionWidgetPlay,
-}
+};

@@ -29,4 +29,3 @@ The NFDI4Health Consortium gratefully acknowledges the financial support of the 
 
 The project is derived from the Semantic Lookup Platform SemLookP which was also developed in part
 by [ZB MED - Information Centre for Life Sciences](https://www.zbmed.de/en/).
-
