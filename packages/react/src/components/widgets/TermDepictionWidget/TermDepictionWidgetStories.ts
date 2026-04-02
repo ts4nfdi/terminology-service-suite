@@ -6,6 +6,7 @@ import {
   ontologyIdReqArgType,
   useLegacyArgType,
 } from "../../../stories/storyArgs";
+import {GATEWAY_API_OLS_ENDPOINT} from "../../../app/globals";
 
 export const TermDepictionWidgetStoryArgTypes = {
   ...apiArgType,
