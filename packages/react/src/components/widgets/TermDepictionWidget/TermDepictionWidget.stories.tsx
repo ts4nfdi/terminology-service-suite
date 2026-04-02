@@ -3,11 +3,12 @@ import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
   commonTermDepictionWidgetPlay,
+  ColiConcAPIGatewayDepictionArgs,
+  IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
   TermDepictionWidgetStoryArgTypes,
-  OntologyIriAsIdArgs
 } from "./TermDepictionWidgetStories";
 
 const meta = {
@@ -39,7 +40,12 @@ export const TermDepictionWidget3D: Story = {
   play: commonTermDepictionWidgetPlay,
 };
 
-export const OntologyIriAsId: Story = {
-  args: OntologyIriAsIdArgs,
-  play: commonTermDepictionWidgetPlay
+export const ColiConcAPIGatewayDepiction: Story = {
+  args: ColiConcAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const IconclassAPIGatewayDepiction: Story = {
+  args: IconclassAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
 };

@@ -9,6 +9,7 @@ export const apiArgType: ArgTypes = {
       type: "radio",
     },
     options: [
+      "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/",
       "https://terminology.services.base4nfdi.de/api-gateway/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
