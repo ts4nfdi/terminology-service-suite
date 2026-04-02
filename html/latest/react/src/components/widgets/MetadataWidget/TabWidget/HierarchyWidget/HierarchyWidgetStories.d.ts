@@ -379,11 +379,11 @@ export declare const OLS3HierarchyArgs: {
     readonly showComparisonTitleInHeader: true;
 };
 export declare const OLSGermanArgs: {
-    readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
+    readonly apiUrl: "https://api.terminology.tib.eu/api/";
     readonly backendType: "ols";
-    readonly iri: "http://purl.obolibrary.org/obo/HP_0003502";
+    readonly iri: "https://database.factgrid.de/entity/Q692839";
     readonly entityType: "class";
-    readonly ontologyId: "hp";
+    readonly ontologyId: "ohdab";
     readonly useLegacy: false;
     readonly parameter: "lang=de";
     readonly apiKey: "";
@@ -457,6 +457,26 @@ export declare const CompareHierarchiesSubEntityArgs: {
     parameter: "";
     showHeader: true;
     showComparisonTitleInHeader: true;
+};
+export declare const CompareHierarchiesGermanArgs: {
+    readonly apiUrl: "https://api.terminology.tib.eu/api/";
+    readonly backendType: "ols";
+    readonly iri: "https://database.factgrid.de/entity/Q692839";
+    readonly targetIri: "https://database.factgrid.de/entity/Q522788";
+    readonly entityType: "class";
+    readonly ontologyId: "ohdab";
+    readonly useLegacy: false;
+    readonly parameter: "lang=de";
+    readonly apiKey: "";
+    readonly onNavigateToEntity: "Console message";
+    readonly onNavigateToOntology: "Console message";
+    readonly includeObsoleteEntities: false;
+    readonly preferredRoots: false;
+    readonly keepExpansionStates: false;
+    readonly showSiblingsOnInit: false;
+    readonly hierarchyWrap: false;
+    readonly showHeader: true;
+    readonly showComparisonTitleInHeader: true;
 };
 export declare const commonHierarchyWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
