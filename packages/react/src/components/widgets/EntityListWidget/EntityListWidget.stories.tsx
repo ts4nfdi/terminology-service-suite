@@ -4,7 +4,6 @@ import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
   EntityListWidgetIndividualsArgs,
   EntityListWidgetMeshTermsArgs,
-  EntityListWidgetPropertiesArgs,
   EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
 } from "./EntityListWidgetStories";
@@ -38,4 +37,3 @@ export const Classes: Story = {
 export const Individuals: Story = {
   args: EntityListWidgetIndividualsArgs,
 };
-

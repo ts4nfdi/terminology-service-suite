@@ -478,4 +478,7 @@ Handles large ontology collections through paginated browsing, ensuring a respon
 
 - **Scalable exploration**:
 Supports efficient inspection of extensive ontology content without overwhelming the interface.
+
+- **Known limitation**:
+The widget currently does not work correctly for **properties**. This is due to an issue in the **OLS4 API** where the required parameter for property-based queries is not properly handled, resulting in incomplete or non-functional results.
 `.trim();
