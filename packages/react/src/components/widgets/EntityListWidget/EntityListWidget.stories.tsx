@@ -31,7 +31,7 @@ export const Default: Story = {
   args: EntityListWidgetStoryArgs,
 };
 
-export const MeshTerms: Story = {
+export const Classes: Story = {
   args: EntityListWidgetMeshTermsArgs,
 };
 
