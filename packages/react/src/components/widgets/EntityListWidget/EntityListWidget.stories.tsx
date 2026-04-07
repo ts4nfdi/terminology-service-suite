@@ -39,6 +39,3 @@ export const Individuals: Story = {
   args: EntityListWidgetIndividualsArgs,
 };
 
-export const Properties: Story = {
-  args: EntityListWidgetPropertiesArgs,
-};

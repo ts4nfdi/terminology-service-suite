@@ -20,12 +20,6 @@ export const EntityListWidgetStoryArgs = {
   parameter: "",
 } as const;
 
-export const EntityListWidgetPropertiesArgs = {
-  api: "https://api.terminology.tib.eu/api/",
-  ontologyId: "uberon",
-  entityType: "property",
-  parameter: "",
-} as const;
 
 export const EntityListWidgetIndividualsArgs = {
   api: globals.EBI_API_ENDPOINT,
