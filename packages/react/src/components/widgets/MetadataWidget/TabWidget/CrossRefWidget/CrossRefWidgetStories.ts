@@ -24,7 +24,7 @@ export const CrossRefWidgetStoryArgs = {
   useLegacy: true,
   ontologyId: "",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 } as const;
 
 export const CrossRefTabWidget1Args = {
