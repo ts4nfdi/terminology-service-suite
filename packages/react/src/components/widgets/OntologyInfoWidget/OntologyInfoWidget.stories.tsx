@@ -7,6 +7,7 @@ import {
   NavigateToEBIPageArgs,
   OntologyInfoWidget1Args,
   OntologyInfoWidget2Args,
+  OntologyInfoWidgetOhdab,
   OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
   OntologyInfoWidgetStoryArgTypes,
@@ -57,5 +58,10 @@ export const NavigateToEBIPage: Story = {
 
 export const OntologyInfoUberon: Story = {
   args: OntologyInfoWidgetUberon,
+  play: commonOntologyInfoWidgetPlay,
+};
+
+export const OntologyInfoOhdab: Story = {
+  args: OntologyInfoWidgetOhdab,
   play: commonOntologyInfoWidgetPlay,
 };

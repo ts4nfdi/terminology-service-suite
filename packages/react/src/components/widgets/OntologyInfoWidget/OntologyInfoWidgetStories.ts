@@ -70,6 +70,12 @@ export const OntologyInfoWidgetUberon = {
   showBadges: true,
 };
 
+export const OntologyInfoWidgetOhdab = {
+  api: "https://terminology.tib.eu/ts/ontologies/ohdab",
+  useLegacy: false,
+  ontologyId: "ohdab",
+};
+
 export const commonOntologyInfoWidgetPlay = async ({
   canvasElement,
 }: {
