@@ -71,7 +71,7 @@ export const OntologyInfoWidgetUberon = {
 };
 
 export const OntologyInfoWidgetOhdab = {
-  api: "https://terminology.tib.eu/ts/ontologies/ohdab",
+  api: globals.TIB_API_ENDPOINT,
   useLegacy: false,
   ontologyId: "ohdab",
 };
