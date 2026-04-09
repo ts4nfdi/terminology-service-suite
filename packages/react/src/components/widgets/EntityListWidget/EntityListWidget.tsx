@@ -406,7 +406,16 @@ function pickType(item: any) {
     }
   }
 
+  /**
+   * Fallback: extract fragment after #
+   */
+  const fragment = iri.includes("#")
+    ? iri.split("#").pop()
+    : iri.split("/").pop();
 
+  console.log(`No label was found for the IRI: ${iri}`);
+
+  return fragment || "—";
 }
 
 /**
