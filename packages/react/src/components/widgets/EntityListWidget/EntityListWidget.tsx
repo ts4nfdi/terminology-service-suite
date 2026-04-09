@@ -379,7 +379,34 @@ function pickRange(item: any) {
 }
 
 function pickType(item: any) {
-  return formatEntityField(item?.type ?? item?.types);
+  const rdfTypeKey = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+  const rawValue = item?.[rdfTypeKey];
+
+  if (!rawValue) return "—";
+
+  /**
+   * Normalize to single value (first if array)
+   */
+  const iri = Array.isArray(rawValue) ? rawValue[0] : rawValue;
+
+  if (!iri || typeof iri !== "string") return "—";
+
+  /**
+   * Try to resolve and find via linkedEntities
+   */
+  const linked = item?.linkedEntities?.[iri];
+
+  if (linked?.label) {
+    const labelArray = Array.isArray(linked.label)
+      ? linked.label
+      : [linked.label];
+
+    if (labelArray.length > 0 && labelArray[0]) {
+      return String(labelArray[0]);
+    }
+  }
+
+
 }
 
 /**
