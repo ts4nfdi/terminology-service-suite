@@ -356,7 +356,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
 
 function pickLabel(item: any) {
   return formatEntityField(
-    item?.label ?? item?.title ?? item?.name ?? item?.ontologyId,
+    item?.label ?? item?.title ?? item?.name,
   );
 }
 
@@ -365,8 +365,7 @@ function pickId(item: any) {
     item?.curie ??
     item?.obo_id ??
     item?.short_form ??
-    item?.id ??
-    item?.ontologyId;
+    item?.id;
   return v ? String(v) : "—";
 }
 
