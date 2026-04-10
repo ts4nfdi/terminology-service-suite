@@ -355,17 +355,11 @@ function EntityListWidget(props: EntityListWidgetProps) {
 }
 
 function pickLabel(item: any) {
-  return formatEntityField(
-    item?.label ?? item?.title ?? item?.name,
-  );
+  return formatEntityField(item?.label ?? item?.title ?? item?.name);
 }
 
 function pickId(item: any) {
-  const v =
-    item?.curie ??
-    item?.obo_id ??
-    item?.short_form ??
-    item?.id;
+  const v = item?.curie ?? item?.obo_id ?? item?.short_form ?? item?.id;
   return v ? String(v) : "—";
 }
 
@@ -404,8 +398,21 @@ function pickType(item: any) {
       .map((l: any) => String(l).trim())
       .filter(Boolean);
 
-    if (cleaned.length > 0) {
-      return cleaned.join(", ");
+    const filtered = cleaned.filter(
+      (l: any) => String(l).trim() !== "NamedIndividual",
+    );
+
+    // If there are meaningful labels besides NamedIndividual, show them
+    if (filtered.length > 0) {
+      return filtered.join(", ");
+    }
+
+    // If everything is NamedIndividual, allow it
+    if (
+      cleaned.length > 0 &&
+      cleaned.every((l: any) => String(l).trim() === "NamedIndividual")
+    ) {
+      return "NamedIndividual";
     }
   }
 
