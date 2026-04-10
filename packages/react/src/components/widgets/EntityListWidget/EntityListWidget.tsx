@@ -400,8 +400,12 @@ function pickType(item: any) {
       ? linked.label
       : [linked.label];
 
-    if (labelArray.length > 0 && labelArray[0]) {
-      return String(labelArray[0]);
+    const cleaned = labelArray
+      .map((l: any) => String(l).trim())
+      .filter(Boolean);
+
+    if (cleaned.length > 0) {
+      return cleaned.join(", ");
     }
   }
 
