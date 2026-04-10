@@ -377,16 +377,16 @@ function pickType(item: any) {
 
   if (!rawValue) return "—";
 
-  /**
-   * Normalize to single value (first if array)
-   */
-  const iri = Array.isArray(rawValue) ? rawValue[0] : rawValue;
 
+  const iris = Array.isArray(rawValue) ? rawValue : [rawValue];
+  if (!iris.length) return "—";
+
+  /**
+   * Only consider the first value
+   */
+  const iri = iris[0];
   if (!iri || typeof iri !== "string") return "—";
 
-  /**
-   * Try to resolve and find via linkedEntities
-   */
   const linked = item?.linkedEntities?.[iri];
 
   if (linked?.label) {
@@ -394,36 +394,41 @@ function pickType(item: any) {
       ? linked.label
       : [linked.label];
 
-    const cleaned = labelArray
-      .map((l: any) => String(l).trim())
-      .filter(Boolean);
-
-    const filtered = cleaned.filter(
-      (l: any) => String(l).trim() !== "NamedIndividual",
+    /**
+     * Normalize + deduplicate
+     */
+    const cleaned = Array.from(
+      new Set(labelArray.map((l: any) => String(l).trim()).filter(Boolean)),
     );
 
-    // If there are meaningful labels besides NamedIndividual, show them
-    if (filtered.length > 0) {
-      return filtered.join(", ");
-    }
+    if (cleaned.length === 0) {
+      console.log(`No label was found for the IRI: ${iri}`);
+    } else {
+      /**
+       * If multiple values, remove NamedIndividual
+       */
+      if (cleaned.length > 1) {
+        const filtered = cleaned.filter((l) => l !== "NamedIndividual");
+        if (filtered.length > 0) {
+          return filtered.join(", ");
+        }
+      }
 
-    // If everything is NamedIndividual, allow it
-    if (
-      cleaned.length > 0 &&
-      cleaned.every((l: any) => String(l).trim() === "NamedIndividual")
-    ) {
-      return "NamedIndividual";
+      /**
+       * If only NamedIndividual or nothing else remains
+       */
+      return cleaned.join(", ");
     }
+  } else {
+    console.log(`No label was found for the IRI: ${iri}`);
   }
 
   /**
-   * Fallback: extract fragment after #
+   * Fallback: extract fragment after # or /
    */
   const fragment = iri.includes("#")
     ? iri.split("#").pop()
     : iri.split("/").pop();
-
-  console.log(`No label was found for the IRI: ${iri}`);
 
   return fragment || "—";
 }
