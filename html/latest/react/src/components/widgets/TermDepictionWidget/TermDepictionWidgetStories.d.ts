@@ -19,7 +19,13 @@ export declare const TermDepictionWidget3DArgs: {
     ontologyId: string;
     useLegacy: boolean;
 };
-export declare const OntologyIriAsIdArgs: {
+export declare const ColiConcAPIGatewayDepictionArgs: {
+    api: string;
+    iri: string;
+    ontologyId: string;
+    useLegacy: boolean;
+};
+export declare const IconclassAPIGatewayDepictionArgs: {
     api: string;
     iri: string;
     ontologyId: string;

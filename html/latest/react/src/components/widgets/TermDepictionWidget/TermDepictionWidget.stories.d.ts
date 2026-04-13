@@ -25,4 +25,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const TermDepictionWidgetExample: Story;
 export declare const TermDepictionWidget3D: Story;
-export declare const OntologyIriAsId: Story;
+export declare const ColiConcAPIGatewayDepiction: Story;
+export declare const IconclassAPIGatewayDepiction: Story;

@@ -44,7 +44,18 @@ export declare const TermDepictionWidget3D: {
         canvasElement: HTMLElement;
     }) => Promise<void>;
 };
-export declare const OntologyIriAsId: {
+export declare const ColiConcAPIGatewayDepiction: {
+    args: {
+        api: string;
+        iri: string;
+        ontologyId: string;
+        useLegacy: boolean;
+    };
+    play: ({ canvasElement, }: {
+        canvasElement: HTMLElement;
+    }) => Promise<void>;
+};
+export declare const IconclassAPIGatewayDepiction: {
     args: {
         api: string;
         iri: string;
