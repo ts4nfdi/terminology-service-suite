@@ -78,4 +78,4 @@ export const ColiConcAPIGatewayDepiction = {
 export const IconclassAPIGatewayDepiction = {
   args: IconclassAPIGatewayDepictionArgs,
   play: commonTermDepictionWidgetPlay,
-}
+};
