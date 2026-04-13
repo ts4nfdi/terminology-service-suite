@@ -197,7 +197,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
 
       return {
         rows: filteredRows,
-        totalItemCount: filteredRows.length,
+        totalItemCount: fullData.totalItemCount,
       };
     }
 
@@ -328,7 +328,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
         value={searchText}
         onChange={(e) => {
           setSearchText(e.target.value);
-          setPageIndex(0);
         }}
         isClearable
         aria-label="Search by Name or ID"
