@@ -386,7 +386,6 @@ function pickType(item: any) {
   const rdfTypeKey = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
   const rawValue = item?.[rdfTypeKey];
 
-  // Fallback for search results (Solr docs may not have rdfTypeKey but may have type info directly)
   if (!rawValue) {
     const fallbackType = item?.type ?? item?.entityType ?? item?.ontologyType;
     if (fallbackType) {
