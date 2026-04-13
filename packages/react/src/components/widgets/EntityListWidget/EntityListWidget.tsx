@@ -175,7 +175,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
      * Otherwise, load the default paginated entity list
      */
     if (debouncedSearchText) {
-      // Use full entity data and filter locally to preserve complete fields like `type`
       const fullData = await fetchListPage(
         entityApi,
         ontologyApi,
