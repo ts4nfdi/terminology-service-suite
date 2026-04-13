@@ -542,7 +542,7 @@ async function searchEntitiesPage(
   /**
    * Convert user input into a Solr prefix query for more precise matching
    */
-  const solrQuery = buildSolrPrefixQuery(searchText);
+  const solrQuery = `${buildSolrPrefixQuery(searchText)} OR ${searchText} OR *${searchText}*`;
 
   const json: any = await searchApi.search(
     {
@@ -557,7 +557,7 @@ async function searchEntitiesPage(
       /**
        * Restrict matching to key identifier fields for tighter results
        */
-      queryFields: "label,obo_id,short_form,iri",
+      queryFields: "label,obo_id,short_form,iri,id",
     } as any,
     {
       page: String(pageIndex),
