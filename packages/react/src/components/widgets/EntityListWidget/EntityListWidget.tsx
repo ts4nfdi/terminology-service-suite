@@ -175,19 +175,30 @@ function EntityListWidget(props: EntityListWidgetProps) {
      * Otherwise, load the default paginated entity list
      */
     if (debouncedSearchText) {
-      return await searchEntitiesPage(
-        searchApi,
-        normalizedEntityType,
+      // Use full entity data and filter locally to preserve complete fields like `type`
+      const fullData = await fetchListPage(
+        entityApi,
+        ontologyApi,
         ontologyId,
+        parameter ?? "",
+        normalizedEntityType,
         pageIndex,
         pageSize,
-        debouncedSearchText,
-        /**
-         * Optional /search params. Keep `queryFields` in query params for stable matching behavior
-         */
-        searchParameter ?? "",
         signal,
       );
+
+      const filteredRows = fullData.rows.filter((row) => {
+        const search = debouncedSearchText.toLowerCase();
+        return (
+          row.name?.toLowerCase().includes(search) ||
+          row.id?.toLowerCase().includes(search)
+        );
+      });
+
+      return {
+        rows: filteredRows,
+        totalItemCount: filteredRows.length,
+      };
     }
 
     return await fetchListPage(
@@ -375,8 +386,18 @@ function pickType(item: any) {
   const rdfTypeKey = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
   const rawValue = item?.[rdfTypeKey];
 
-  if (!rawValue) return "—";
+  // Fallback for search results (Solr docs may not have rdfTypeKey but may have type info directly)
+  if (!rawValue) {
+    const fallbackType = item?.type ?? item?.entityType ?? item?.ontologyType;
+    if (fallbackType) {
+      if (Array.isArray(fallbackType)) {
+        return fallbackType.join(", ");
+      }
+      return String(fallbackType);
+    }
+  }
 
+  if (!rawValue) return "—";
 
   const iris = Array.isArray(rawValue) ? rawValue : [rawValue];
   if (!iris.length) return "—";
