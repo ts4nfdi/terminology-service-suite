@@ -3,7 +3,8 @@ import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
   commonTermDepictionWidgetPlay,
-  OntologyIriAsIdArgs,
+  ColiConcAPIGatewayDepictionArgs,
+  IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
@@ -39,7 +40,12 @@ export const TermDepictionWidget3D: Story = {
   play: commonTermDepictionWidgetPlay,
 };
 
-export const OntologyIriAsId: Story = {
-  args: OntologyIriAsIdArgs,
+export const ColiConcAPIGatewayDepiction: Story = {
+  args: ColiConcAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const IconclassAPIGatewayDepiction: Story = {
+  args: IconclassAPIGatewayDepictionArgs,
   play: commonTermDepictionWidgetPlay,
 };
