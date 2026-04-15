@@ -51,7 +51,7 @@ function TabPresentation(props: TabPresentationProps) {
 
     const [hasComparisonMode, setHasComparisonMode] = useState(false);
 
-    const onChange = (e) => {
+    const onChange = (e: any) => {
       setHasComparisonMode(e.target.checked);
     };
 
