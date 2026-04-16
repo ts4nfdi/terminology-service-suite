@@ -16,7 +16,6 @@ export const DataContentWidgetStoryArgs = {
 export const NFDI4HealthDataContentWidgetArgs = {
   ...DataContentWidgetStoryArgs,
   api: globals.ZBMED_OLS4_API,
-  parameter: "collection=nfdi4health",
 };
 
 export const SafetyDataContentWidgetArgs = {

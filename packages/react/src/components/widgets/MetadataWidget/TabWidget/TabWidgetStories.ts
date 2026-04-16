@@ -26,7 +26,7 @@ export const TabWidgetStoryArgTypes = {
 
 export const TabWidgetStoryArgs = {
   api: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   useLegacy: true,
   ontologyId: "",
   entityType: "term" as EntityTypeName,

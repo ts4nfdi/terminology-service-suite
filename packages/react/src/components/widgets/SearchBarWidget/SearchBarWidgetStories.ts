@@ -20,7 +20,7 @@ export const SearchBarWidgetStoryArgsReact = {
   api: "",
   query: "",
   selectionChangedEvent: action("selectionChangedEvent"),
-  parameter: "collection=nfdi4health",
+  parameter: "",
 };
 
 export const SearchBarWidgetStoryArgs = {
@@ -30,7 +30,6 @@ export const SearchBarWidgetStoryArgs = {
   selectionChangedEvent: () => {
     return;
   },
-  parameter: "collection=nfdi4health",
 };
 
 export const SearchBarWidgetDefaultArgs = {

@@ -27,7 +27,7 @@ export const AlternativeNameTabWidgetStoryArgs = {
   ontologyId: "",
   entityType: "term",
   className: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 } as const;
 
 export const AlternativeNameTabWidget1Args = {

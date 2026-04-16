@@ -38,7 +38,7 @@ export const TitleWidgetStoryArgs = {
   titleText: "",
   defaultValue: "",
   className: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 } as const;
 
 export const TitleWidgetDefaultArgs = {

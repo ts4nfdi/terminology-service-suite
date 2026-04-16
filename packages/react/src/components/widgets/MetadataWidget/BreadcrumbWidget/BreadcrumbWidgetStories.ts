@@ -34,7 +34,7 @@ export const BreadcrumbWidgetStoryArgs = {
   entityType: "term" as EntityTypeName,
   colorFirst: "",
   colorSecond: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   onNavigateToOntology: "Console message",
 };
 
@@ -43,7 +43,7 @@ export const BreadcrumbWidgetDefaultArgs = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 } as const;
 
 export const SelectingDefiningOntologyArgs = {
@@ -65,7 +65,7 @@ export const ErrorBreadcrumbWidgetArgs = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 } as const;
 
 export const CustomColorsArgs = {
@@ -73,7 +73,7 @@ export const CustomColorsArgs = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   colorFirst: "red",
   colorSecond: "grey",
 } as const;
@@ -83,7 +83,7 @@ export const CustomStyleArgs = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   colorFirst: "#eced8e",
   colorSecond: "#8eaeed",
   className: "custom-breadcrumb-style",
@@ -94,7 +94,7 @@ export const EntityInputArgs = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   entityType: "term",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   entity: {
     properties: {
       iri: "http://purl.obolibrary.org/obo/NCIT_C2985",

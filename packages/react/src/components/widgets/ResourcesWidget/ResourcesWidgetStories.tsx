@@ -35,7 +35,7 @@ export const ResourcesWidgetStoryArgs = {
   initialSortDir: "asc" as "asc" | "desc",
   actions: [],
   onNavigate: "Console message",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 };
 
 export const ResourcesWidget1Args = {
@@ -45,7 +45,6 @@ export const ResourcesWidget1Args = {
   initialSortField: "config.preferredPrefix",
   initialSortDir: "asc" as const,
   onNavigate: "Console message",
-  parameter: "collection=nfdi4health",
 };
 
 const actions = [
