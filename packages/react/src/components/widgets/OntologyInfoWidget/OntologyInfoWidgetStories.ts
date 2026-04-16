@@ -70,6 +70,12 @@ export const OntologyInfoWidgetUberon = {
   showBadges: true,
 };
 
+export const OntologyInfoWidgetOhdab = {
+  api: globals.TIB_API_ENDPOINT,
+  useLegacy: false,
+  ontologyId: "ohdab",
+};
+
 export const commonOntologyInfoWidgetPlay = async ({
   canvasElement,
 }: {
