@@ -34,7 +34,6 @@ export declare const ResourcesWidget1: {
         initialSortField: string;
         initialSortDir: "asc";
         onNavigate: string;
-        parameter: string;
     };
     play: ({ canvasElement, }: {
         canvasElement: HTMLElement;
@@ -51,7 +50,6 @@ export declare const WithActions: {
         initialSortField: string;
         initialSortDir: "asc";
         onNavigate: string;
-        parameter: string;
     };
     play: ({ canvasElement, }: {
         canvasElement: HTMLElement;

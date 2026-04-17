@@ -34,7 +34,7 @@ declare const meta: {
         readonly titleText: "";
         readonly defaultValue: "";
         readonly className: "";
-        readonly parameter: "collection=nfdi4health";
+        readonly parameter: "";
     };
 };
 export default meta;

@@ -31,7 +31,7 @@ export declare const CrossRefWidgetStoryArgs: {
     readonly useLegacy: true;
     readonly ontologyId: "";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
 };
 export declare const CrossRefTabWidget1Args: {
     readonly iri: "http://purl.obolibrary.org/obo/RXNO_0000138";

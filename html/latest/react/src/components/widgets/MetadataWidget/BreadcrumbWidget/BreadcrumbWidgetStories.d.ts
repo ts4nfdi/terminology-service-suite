@@ -42,7 +42,7 @@ export declare const BreadcrumbWidgetDefaultArgs: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
 };
 export declare const SelectingDefiningOntologyArgs: {
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
@@ -61,14 +61,14 @@ export declare const ErrorBreadcrumbWidgetArgs: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
 };
 export declare const CustomColorsArgs: {
     readonly iri: "http://purl.obolibrary.org/obo/NCIT_C2985";
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
     readonly colorFirst: "red";
     readonly colorSecond: "grey";
 };
@@ -77,7 +77,7 @@ export declare const CustomStyleArgs: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
     readonly colorFirst: "#eced8e";
     readonly colorSecond: "#8eaeed";
     readonly className: "custom-breadcrumb-style";
@@ -87,7 +87,7 @@ export declare const EntityInputArgs: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly entityType: "term";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
     readonly entity: {
         readonly properties: {
             readonly iri: "http://purl.obolibrary.org/obo/NCIT_C2985";

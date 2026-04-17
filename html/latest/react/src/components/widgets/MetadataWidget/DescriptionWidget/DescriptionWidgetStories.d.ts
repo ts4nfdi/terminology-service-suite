@@ -29,7 +29,6 @@ export declare const DescriptionWidget1Args: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "ncit";
     readonly thingType: "term";
-    readonly parameter: "collection=nfdi4health";
 };
 export declare const SelectingDefiningOntologyArgs: {
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
