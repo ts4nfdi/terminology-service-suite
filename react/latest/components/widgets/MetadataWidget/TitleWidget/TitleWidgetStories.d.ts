@@ -21,7 +21,7 @@ export declare const TitleWidgetStoryArgs: {
     readonly titleText: "";
     readonly defaultValue: "";
     readonly className: "";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
 };
 export declare const TitleWidgetDefaultArgs: {
     readonly iri: "http://purl.obolibrary.org/obo/NCIT_C2985";

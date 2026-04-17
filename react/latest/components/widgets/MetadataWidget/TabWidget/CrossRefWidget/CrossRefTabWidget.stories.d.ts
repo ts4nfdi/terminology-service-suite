@@ -44,7 +44,7 @@ declare const meta: {
         readonly useLegacy: true;
         readonly ontologyId: "";
         readonly entityType: "term";
-        readonly parameter: "collection=nfdi4health";
+        readonly parameter: "";
     };
 };
 export default meta;

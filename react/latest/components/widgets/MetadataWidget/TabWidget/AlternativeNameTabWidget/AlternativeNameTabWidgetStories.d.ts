@@ -32,7 +32,7 @@ export declare const AlternativeNameTabWidgetStoryArgs: {
     readonly ontologyId: "";
     readonly entityType: "term";
     readonly className: "";
-    readonly parameter: "collection=nfdi4health";
+    readonly parameter: "";
 };
 export declare const AlternativeNameTabWidget1Args: {
     readonly iri: "http://purl.obolibrary.org/obo/NCIT_C2985";

@@ -1,0 +1,22 @@
+import{o as U,Q as w,R as x,u as L,p as M,q as Q,r as R,m as Z,i as q,T as K,x as V}from"./storyArgs-CjGtpkmU.js";import{B as Y}from"./BreadcrumbWidget-DHK79T_4.js";import{Z as e,E as h}from"./globals-Dneqqh2P.js";/* empty css                              */import"./iframe-CGfzi3Qs.js";import"./preload-helper-Dp1pzeXC.js";import"./useQuery-CIAnucTb.js";import"./OntologyBadge-DnSp0OTN.js";import"./badge-53HsUmGu.js";import"./href_validator-CXcxbGH9.js";import"./color_utils-C_jUGB05.js";import"./_button-xN3R0uj6.js";import"./icon-flfbec20.js";import"./inner_text-DPQWR_wz.js";import"./BreadcrumbPresentation-BWTYm_Yc.js";import"./loading_spinner-DnDeO1uo.js";const{expect:j,waitFor:k,within:z}=__STORYBOOK_MODULE_TEST__,G={...q,...Z,...R,...Q,...M,...L,...x,...w,...U},H={api:"",useLegacy:!0,iri:"",ontologyId:"",entityType:"term",colorFirst:"",colorSecond:"",parameter:"",onNavigateToOntology:"Console message"},J={iri:"http://purl.obolibrary.org/obo/NCIT_C2985",api:e,ontologyId:"ncit",entityType:"term",parameter:""},X={api:h,iri:"http://purl.obolibrary.org/obo/IAO_0000631",entityType:"term",parameter:""},$={api:h,iri:"http://identifiers.org/uniprot/Q9VAM9",entityType:"term",parameter:""},rr={iri:"http://purl.obolibrary.org/obo/NCIT_C2985987654345678",api:e,ontologyId:"ncit",entityType:"term",parameter:""},er={iri:"http://purl.obolibrary.org/obo/NCIT_C2985",api:e,ontologyId:"ncit",entityType:"term",parameter:"",colorFirst:"red",colorSecond:"grey"},or={iri:"http://purl.obolibrary.org/obo/NCIT_C2985",api:e,ontologyId:"ncit",entityType:"term",parameter:"",colorFirst:"#eced8e",colorSecond:"#8eaeed",className:"custom-breadcrumb-style"},tr={iri:"http://purl.obolibrary.org/obo/NCIT_C2985",api:e,ontologyId:"ncit",entityType:"term",parameter:"",entity:{properties:{iri:"http://purl.obolibrary.org/obo/NCIT_C2985",ontologyId:"ncit",shortForm:"NCIT_C2985"}}},r=async({canvasElement:P})=>{const v=z(P);await k(async()=>{const F=v.getByTestId("breadcrumb");await j(F).toBeInTheDocument()},{timeout:3e3})},Cr={title:"Additional Entity Metadata/BreadcrumbWidget",component:Y,parameters:{layout:"centered",docs:{source:{transform:V},description:{component:K}}},argTypes:G,args:H},o={args:J,play:r},t={args:X,play:r},a={args:$,play:r},s={args:rr,play:r},i={args:er,play:r},n={args:or,play:r},c={args:tr,play:r};var p,m,g;o.parameters={...o.parameters,docs:{...(p=o.parameters)==null?void 0:p.docs,source:{originalSource:`{
+  args: BreadcrumbWidgetDefaultArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(g=(m=o.parameters)==null?void 0:m.docs)==null?void 0:g.source}}};var l,y,d;t.parameters={...t.parameters,docs:{...(l=t.parameters)==null?void 0:l.docs,source:{originalSource:`{
+  args: SelectingDefiningOntologyArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(d=(y=t.parameters)==null?void 0:y.docs)==null?void 0:d.source}}};var u,b,T;a.parameters={...a.parameters,docs:{...(u=a.parameters)==null?void 0:u.docs,source:{originalSource:`{
+  args: DefiningOntologyUnavailableArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(T=(b=a.parameters)==null?void 0:b.docs)==null?void 0:T.source}}};var A,B,C;s.parameters={...s.parameters,docs:{...(A=s.parameters)==null?void 0:A.docs,source:{originalSource:`{
+  args: ErrorBreadcrumbWidgetArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(C=(B=s.parameters)==null?void 0:B.docs)==null?void 0:C.source}}};var I,S,W;i.parameters={...i.parameters,docs:{...(I=i.parameters)==null?void 0:I.docs,source:{originalSource:`{
+  args: CustomColorsArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(W=(S=i.parameters)==null?void 0:S.docs)==null?void 0:W.source}}};var _,O,f;n.parameters={...n.parameters,docs:{...(_=n.parameters)==null?void 0:_.docs,source:{originalSource:`{
+  args: CustomStyleArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(f=(O=n.parameters)==null?void 0:O.docs)==null?void 0:f.source}}};var D,E,N;c.parameters={...c.parameters,docs:{...(D=c.parameters)==null?void 0:D.docs,source:{originalSource:`{
+  args: EntityInputArgs,
+  play: commonBreadcrumbWidgetPlay
+}`,...(N=(E=c.parameters)==null?void 0:E.docs)==null?void 0:N.source}}};const Ir=["BreadcrumbWidgetDefault","SelectingDefiningOntology","DefiningOntologyUnavailable","ErrorBreadcrumbWidget","CustomColors","CustomStyle","EntityInput"];export{o as BreadcrumbWidgetDefault,i as CustomColors,n as CustomStyle,a as DefiningOntologyUnavailable,c as EntityInput,s as ErrorBreadcrumbWidget,t as SelectingDefiningOntology,Ir as __namedExportsOrder,Cr as default};

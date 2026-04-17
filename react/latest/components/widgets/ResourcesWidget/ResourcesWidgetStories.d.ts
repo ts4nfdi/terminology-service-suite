@@ -20,7 +20,6 @@ export declare const ResourcesWidget1Args: {
     initialSortField: string;
     initialSortDir: "asc";
     onNavigate: string;
-    parameter: string;
 };
 export declare const WithActionsArgs: {
     actions: {
@@ -32,7 +31,6 @@ export declare const WithActionsArgs: {
     initialSortField: string;
     initialSortDir: "asc";
     onNavigate: string;
-    parameter: string;
 };
 export declare const ResourcesWidgetLogosArgs: {
     api: string;
