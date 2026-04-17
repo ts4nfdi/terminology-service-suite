@@ -66,7 +66,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(Math.floor(Math.random() * 100));
 
   // for downloading the graph data as json.
   const [graphRawData, setGraphRawData] = useState<VisGraphData>({
