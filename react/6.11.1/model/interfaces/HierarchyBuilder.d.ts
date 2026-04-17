@@ -1,0 +1,26 @@
+import { EntityData } from '../../app';
+import { EntityTypeName } from '../ModelTypeCheck';
+import { Hierarchy, TreeNode } from './Hierarchy';
+export type HierarchyQueryProps = {
+    entityType?: EntityTypeName;
+    ontologyId?: string;
+    includeObsoleteEntities?: boolean;
+    useLegacy?: boolean;
+    parameter?: string;
+};
+export type HierarchyIriProp = {
+    iri?: string;
+};
+export type BuildHierarchyProps = HierarchyQueryProps & {
+    preferredRoots?: boolean;
+    keepExpansionStates?: boolean;
+    showSiblingsOnInit?: boolean;
+};
+export type LoadHierarchyChildrenProps = HierarchyQueryProps & {
+    nodeToExpand: TreeNode;
+    ontologyId: string;
+};
+export interface HierarchyBuilder {
+    buildHierarchyWithIri(props: BuildHierarchyProps & HierarchyIriProp): Promise<Hierarchy>;
+    loadHierarchyChildren(props: LoadHierarchyChildrenProps): Promise<EntityData[]>;
+}
