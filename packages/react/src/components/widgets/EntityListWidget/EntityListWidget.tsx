@@ -554,9 +554,10 @@ async function searchEntitiesPage(
   const type = getSearchEntityType(entityType);
 
   /**
-   * Convert user input into a Solr prefix query for more precise matching
+   * Use a single Solr prefix query so the typed value appears only once in the
+   * request while still supporting search-as-you-type across the whole dataset.
    */
-  const solrQuery = `${buildSolrPrefixQuery(searchText)} OR ${searchText} OR *${searchText}*`;
+  const solrQuery = buildSolrPrefixQuery(searchText);
 
   const json: any = await searchApi.search(
     {
