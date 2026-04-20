@@ -18,7 +18,6 @@ import {
   getEntitiesWithEntityTypeProvided,
   OlsEntityApi,
 } from "../../../api/ols/OlsEntityApi";
-import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { normalizeBaseApi, OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { EntityListWidgetProps } from "../../../app";
 import { getErrorMessageToDisplay } from "../../../app/util";
@@ -49,9 +48,29 @@ type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
 
+function isPropertyEntityType(entityType: EntityTypeName | undefined) {
+  return (
+    entityType === "property" ||
+    entityType === "annotationProperty" ||
+    entityType === "dataProperty" ||
+    entityType === "objectProperty"
+  );
+}
+
+function isIndividualEntityType(entityType: EntityTypeName | undefined) {
+  return entityType === "individual";
+}
+
+function getSearchEntityType(
+  entityType: EntityTypeName,
+): "class" | "property" | "individual" {
+  if (isPropertyEntityType(entityType)) return "property";
+  if (isIndividualEntityType(entityType)) return "individual";
+  return "class";
+}
+
 function EntityListWidget(props: EntityListWidgetProps) {
   const { api, ontologyId, parameter, entityType } = props;
-  const searchParameter = (props as any).searchParameter as string | undefined;
 
   const normalizedEntityType: EntityTypeName | undefined =
     entityType && isEntityTypeName(entityType) ? entityType : undefined;
@@ -64,11 +83,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
   const entityApi = useMemo(() => {
     if (!apiBase) return undefined;
     return new OlsEntityApi(apiBase);
-  }, [apiBase]);
-
-  const ontologyApi = useMemo(() => {
-    if (!apiBase) return undefined;
-    return new OlsOntologyApi(apiBase);
   }, [apiBase]);
 
   const searchApi = useMemo(() => {
@@ -107,9 +121,12 @@ function EntityListWidget(props: EntityListWidgetProps) {
   useEffect(() => {
     /**
      * Wait until the user pauses typing before updating the search value
+     * and restart pagination from the first page for global search results.
      */
     const t = setTimeout(() => {
-      setDebouncedSearchText(normalizeSearchText(searchText));
+      const normalizedSearchValue = normalizeSearchText(searchText);
+      setPageIndex(0);
+      setDebouncedSearchText(normalizedSearchValue);
     }, 300);
     return () => clearTimeout(t);
   }, [searchText]);
@@ -162,7 +179,6 @@ function EntityListWidget(props: EntityListWidgetProps) {
     if (
       !apiBase ||
       !entityApi ||
-      !ontologyApi ||
       !searchApi ||
       !ontologyId ||
       !normalizedEntityType
@@ -171,38 +187,24 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
 
     /**
-     * Use the /search endpoint when the user enters a search value
-     * Otherwise, load the default paginated entity list
+     * Use the global /search endpoint when the user enters a search value.
+     * This searches the whole dataset instead of filtering only the current page.
      */
     if (debouncedSearchText) {
-      const fullData = await fetchListPage(
-        entityApi,
-        ontologyApi,
-        ontologyId,
-        parameter ?? "",
+      return await searchEntitiesPage(
+        searchApi,
         normalizedEntityType,
+        ontologyId,
         pageIndex,
         pageSize,
+        debouncedSearchText,
+        parameter ?? "",
         signal,
       );
-
-      const filteredRows = fullData.rows.filter((row) => {
-        const search = debouncedSearchText.toLowerCase();
-        return (
-          row.name?.toLowerCase().includes(search) ||
-          row.id?.toLowerCase().includes(search)
-        );
-      });
-
-      return {
-        rows: filteredRows,
-        totalItemCount: fullData.totalItemCount,
-      };
     }
 
     return await fetchListPage(
       entityApi,
-      ontologyApi,
       ontologyId,
       parameter ?? "",
       normalizedEntityType,
@@ -240,7 +242,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       { field: "id", name: "ID", truncateText: true, sortable: true },
     ];
 
-    if (normalizedEntityType === "property") {
+    if (isPropertyEntityType(normalizedEntityType)) {
       baseColumns.push(
         {
           field: "domain",
@@ -252,7 +254,7 @@ function EntityListWidget(props: EntityListWidgetProps) {
       );
     }
 
-    if (normalizedEntityType === "individual") {
+    if (isIndividualEntityType(normalizedEntityType)) {
       baseColumns.push({
         field: "type",
         name: "Type",
@@ -512,9 +514,9 @@ function extractElements(response: any, entityType: EntityTypeName): any[] {
 
   const embedded = response?._embedded;
   if (!embedded || typeof embedded !== "object") return [];
-  if (entityType === "property")
+  if (isPropertyEntityType(entityType))
     return Array.isArray(embedded.properties) ? embedded.properties : [];
-  if (entityType === "individual")
+  if (isIndividualEntityType(entityType))
     return Array.isArray(embedded.individuals) ? embedded.individuals : [];
 
   return Array.isArray(embedded.classes) ? embedded.classes : [];
@@ -545,17 +547,11 @@ async function searchEntitiesPage(
   pageIndex: number,
   pageSize: number,
   searchText: string,
-  searchParameter: string,
+  parameter: string,
   signal?: AbortSignal,
 ): Promise<QueryResult> {
   const start = pageIndex * pageSize;
-
-  const type =
-    entityType === "property"
-      ? "property"
-      : entityType === "individual"
-        ? "individual"
-        : "class";
+  const type = getSearchEntityType(entityType);
 
   /**
    * Convert user input into a Solr prefix query for more precise matching
@@ -564,28 +560,18 @@ async function searchEntitiesPage(
 
   const json: any = await searchApi.search(
     {
-      /**
-       * Keep query semantics identical to the old fetchSearchPage
-       */
       query: solrQuery,
       types: type,
       ontology: ontologyId,
       exactMatch: false,
       showObsoleteTerms: false,
-      /**
-       * Restrict matching to key identifier fields for tighter results
-       */
-      queryFields: "label,obo_id,short_form,iri,id",
     } as any,
     {
       page: String(pageIndex),
       size: String(pageSize),
     } as any,
     undefined,
-    /**
-     * Pass optional /search params via the `parameter` argument
-     */
-    searchParameter,
+    parameter,
     signal,
   );
 
@@ -603,9 +589,9 @@ async function searchEntitiesPage(
       name: getPreferredLabelFromSearchDoc(d),
       id: getPreferredIdFromSearchDoc(d),
       rowIndex: start + i,
-      domain: entityType === "property" ? pickDomain(d) : undefined,
-      range: entityType === "property" ? pickRange(d) : undefined,
-      type: entityType === "individual" ? pickType(d) : undefined,
+      domain: isPropertyEntityType(entityType) ? pickDomain(d) : undefined,
+      range: isPropertyEntityType(entityType) ? pickRange(d) : undefined,
+      type: isIndividualEntityType(entityType) ? pickType(d) : undefined,
     })),
     totalItemCount: total,
   };
@@ -613,7 +599,6 @@ async function searchEntitiesPage(
 
 async function fetchListPage(
   entityApi: OlsEntityApi,
-  ontologyApi: OlsOntologyApi,
   ontologyId: string | undefined,
   parameter: string,
   entityTypes: EntityTypeName | undefined,
@@ -624,12 +609,9 @@ async function fetchListPage(
   const paginationParams = { page: String(pageIndex), size: String(pageSize) };
 
   const effectiveEntityType: EntityTypeName = entityTypes ?? "class";
-
-  let response;
-
   const entityType = entityTypeToEntityTypeName(effectiveEntityType);
 
-  response = await getEntitiesWithEntityTypeProvided(
+  const response = await getEntitiesWithEntityTypeProvided(
     entityApi,
     entityType,
     ontologyId,
@@ -647,9 +629,15 @@ async function fetchListPage(
       name: pickLabel(item),
       id: pickId(item),
       rowIndex: baseIndex + i,
-      domain: effectiveEntityType === "property" ? pickDomain(item) : undefined,
-      range: effectiveEntityType === "property" ? pickRange(item) : undefined,
-      type: effectiveEntityType === "individual" ? pickType(item) : undefined,
+      domain: isPropertyEntityType(effectiveEntityType)
+        ? pickDomain(item)
+        : undefined,
+      range: isPropertyEntityType(effectiveEntityType)
+        ? pickRange(item)
+        : undefined,
+      type: isIndividualEntityType(effectiveEntityType)
+        ? pickType(item)
+        : undefined,
     })),
     totalItemCount: extractTotal(response, elements.length),
   };
