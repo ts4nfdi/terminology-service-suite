@@ -234,6 +234,13 @@ export const OLS4V1: Story = {
 export const OLS4V2: Story = {
   name: "OLS4 V2",
   args: OLS4V2Args,
+  decorators: [
+    (Story) => (
+      <div style={{ width: "600px", maxWidth: "100%" }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: commonMetadataWidgetPlay,
 };
 

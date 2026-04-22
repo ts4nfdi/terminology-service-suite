@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
-  commonTermDepictionWidgetPlay,
   ColiConcAPIGatewayDepictionArgs,
+  commonTermDepictionWidgetPlay,
   IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
