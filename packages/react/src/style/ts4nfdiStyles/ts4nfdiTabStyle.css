@@ -32,8 +32,3 @@
   margin: 0 !important;
 }
 
-.ts4nfdi-tab-container-scroll-fix {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  width: 100%;
-}
