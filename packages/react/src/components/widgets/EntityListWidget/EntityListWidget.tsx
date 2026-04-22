@@ -187,19 +187,19 @@ function EntityListWidget(props: EntityListWidgetProps) {
     }
 
     /**
-     * Use the global /search endpoint when the user enters a search value.
+     * Use the search parameter when the user enters a search value.
      * This searches the whole dataset instead of filtering only the current page.
      */
     if (debouncedSearchText) {
-      return await searchEntitiesPage(
-        searchApi,
-        normalizedEntityType,
-        ontologyId,
-        pageIndex,
-        pageSize,
-        debouncedSearchText,
-        parameter ?? "",
-        signal,
+      const searchParameter = `${parameter}&search=**${debouncedSearchText}**`;
+      return await fetchListPage(
+          entityApi,
+          ontologyId,
+          searchParameter,
+          normalizedEntityType,
+          pageIndex,
+          pageSize,
+          signal,
       );
     }
 
