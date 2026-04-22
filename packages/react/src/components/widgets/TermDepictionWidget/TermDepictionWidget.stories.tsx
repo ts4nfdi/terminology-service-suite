@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TermDepictionDescription } from "../../../app/widgetDescriptions";
 import { TermDepictionWidget } from "./TermDepictionWidget";
 import {
+  ColiConcAPIGatewayDepictionArgs,
   commonTermDepictionWidgetPlay,
+  IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
@@ -35,5 +37,15 @@ export const TermDepictionWidgetExample: Story = {
 
 export const TermDepictionWidget3D: Story = {
   args: TermDepictionWidget3DArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const ColiConcAPIGatewayDepiction: Story = {
+  args: ColiConcAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const IconclassAPIGatewayDepiction: Story = {
+  args: IconclassAPIGatewayDepictionArgs,
   play: commonTermDepictionWidgetPlay,
 };

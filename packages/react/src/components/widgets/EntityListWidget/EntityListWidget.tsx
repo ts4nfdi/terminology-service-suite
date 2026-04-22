@@ -193,13 +193,13 @@ function EntityListWidget(props: EntityListWidgetProps) {
     if (debouncedSearchText) {
       const searchParameter = `${parameter}&search=**${debouncedSearchText}**`;
       return await fetchListPage(
-          entityApi,
-          ontologyId,
-          searchParameter,
-          normalizedEntityType,
-          pageIndex,
-          pageSize,
-          signal,
+        entityApi,
+        ontologyId,
+        searchParameter,
+        normalizedEntityType,
+        pageIndex,
+        pageSize,
+        signal,
       );
     }
 

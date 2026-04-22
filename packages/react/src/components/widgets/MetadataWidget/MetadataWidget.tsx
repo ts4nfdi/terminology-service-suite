@@ -25,7 +25,7 @@ import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresenta
 import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
 import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoListPresentation";
 import { IriWidget } from "./IriWidget";
-import { TabPresentation } from "./TabWidget/TabPresentation";
+import { TabWidget } from "./TabWidget";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 
 type MetadataInfo = {
@@ -120,7 +120,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
     return (
       <div className={finalClassName} data-testid="metadata">
         <EuiFlexGroup direction="column">
-          <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
+          <EuiFlexItem grow={false}>
             {termLink ? (
               <EuiLink href={termLink} target="_blank" external={false}>
                 <TitlePresentation
@@ -146,6 +146,8 @@ function MetadataWidget(props: MetadataWidgetProps) {
                 ontologyId={ontologyId || data.entity.getOntologyId()}
                 shortForm={data.entity.getShortForm()}
                 className={`${finalClassName}-breadcrumb`}
+                colorFirst={props.colorFirst}
+                colorSecond={props.colorSecond}
               />
             </span>
           </EuiFlexItem>
@@ -153,23 +155,31 @@ function MetadataWidget(props: MetadataWidgetProps) {
             <EuiFlexGroup direction="column">
               <EuiFlexItem>
                 <EuiFlexGroup>
-                  <EuiFlexItem grow={false} style={{ maxWidth: 600 }}>
-                    <IriWidget iri={iri} className={`${finalClassName}-iri`} />
+                  <EuiFlexItem grow={false}>
+                    <IriWidget
+                      iri={iri}
+                      className={`${finalClassName}-iri`}
+                      iriText={props.iriText}
+                      urlPrefix={props.urlPrefix}
+                      externalIcon={props.externalIcon}
+                      copyButton={props.copyButton}
+                    />
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
-          <EuiFlexItem style={{ maxWidth: 600 }}>
+          <EuiFlexItem>
             <DescriptionPresentation
               description={data.entity.getDescription()}
               className={`${finalClassName}-description`}
               isLoading={isLoading}
               error={error}
+              descText={props.descText}
             />
           </EuiFlexItem>
 
-          <div style={{ margin: "0 12px 0", maxWidth: 600 }}>
+          <div style={{ margin: "0 12px 0" }}>
             <EntityOntoListPresentation
               iri={props.iri}
               label={data.entity.getLabel() || ""}
@@ -193,10 +203,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
           </div>
 
           <EuiFlexItem>
-            <TabPresentation
-              data={data.entity}
-              isLoading={isLoading}
-              error={error}
+            <TabWidget
               iri={iri}
               entityType={props.entityType}
               api={api}
@@ -212,14 +219,25 @@ function MetadataWidget(props: MetadataWidgetProps) {
               termDepictionTab={termDepictionTab}
               graphViewTab={graphViewTab}
               altNamesTab={altNamesTab}
+              entityInfoTab={props.entityInfoTab}
+              entityRelationTab={props.entityRelationTab}
               hierarchyPreferredRoots={props.hierarchyPreferredRoots}
               hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
               hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
               onNavigateToEntity={props.onNavigateToEntity}
               onNavigateToOntology={props.onNavigateToOntology}
               onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-              className={className}
+              className={`${finalClassName}-tab`}
               hierarchyWrap={props.hierarchyWrap}
+              rootWalk={props.rootWalk}
+              edgeLabel={props.edgeLabel}
+              onNodeClick={props.onNodeClick}
+              graphHierarchy={props.graphHierarchy}
+              initialSelectedTab={props.initialSelectedTab}
+              showHeader={props.showHeader}
+              enableComparisonMode={props.enableComparisonMode}
+              showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+              targetIri={props.targetIri}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -256,6 +274,8 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           crossRefTab={props.crossRefTab}
           terminologyInfoTab={props.terminologyInfoTab}
           graphViewTab={props.graphViewTab}
+          entityInfoTab={props.entityInfoTab}
+          entityRelationTab={props.entityRelationTab}
           termDepictionTab={props.termDepictionTab}
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
@@ -264,6 +284,25 @@ function WrappedMetadataWidget(props: MetadataWidgetProps) {
           onNavigateToOntology={props.onNavigateToOntology}
           onNavigateToDisambiguate={props.onNavigateToDisambiguate}
           className={props.className}
+          initialSelectedTab={props.initialSelectedTab}
+          copyButton={props.copyButton}
+          descText={props.descText}
+          titleText={props.titleText}
+          defaultValue={props.defaultValue}
+          iriText={props.iriText}
+          externalIcon={props.externalIcon}
+          urlPrefix={props.urlPrefix}
+          hierarchyWrap={props.hierarchyWrap}
+          rootWalk={props.rootWalk}
+          graphHierarchy={props.graphHierarchy}
+          edgeLabel={props.edgeLabel}
+          onNodeClick={props.onNodeClick}
+          colorSecond={props.colorSecond}
+          colorFirst={props.colorFirst}
+          showHeader={props.showHeader}
+          showComparisonTitleInHeader={props.showComparisonTitleInHeader}
+          enableComparisonMode={props.enableComparisonMode}
+          targetIri={props.targetIri}
         />
       </QueryClientProvider>
     </EuiProvider>

@@ -5,7 +5,9 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src";
 import { TermDepictionDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
+  ColiConcAPIGatewayDepictionArgs,
   commonTermDepictionWidgetPlay,
+  IconclassAPIGatewayDepictionArgs,
   TermDepictionWidget3DArgs,
   TermDepictionWidgetExampleArgs,
   TermDepictionWidgetStoryArgs,
@@ -65,5 +67,15 @@ export const TermDepictionWidgetExample = {
 
 export const TermDepictionWidget3D = {
   args: TermDepictionWidget3DArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const ColiConcAPIGatewayDepiction = {
+  args: ColiConcAPIGatewayDepictionArgs,
+  play: commonTermDepictionWidgetPlay,
+};
+
+export const IconclassAPIGatewayDepiction = {
+  args: IconclassAPIGatewayDepictionArgs,
   play: commonTermDepictionWidgetPlay,
 };

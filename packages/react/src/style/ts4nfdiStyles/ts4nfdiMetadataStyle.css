@@ -1,5 +1,4 @@
 .ts4nfdi-metadata-style button {
-  background: none;
   border: none;
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   font-size: inherit;
@@ -38,32 +37,31 @@
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.ts4nfdi-metadata-style-altNameTab * {
+.ts4nfdi-metadata-style-tab-altNameTab * {
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.ts4nfdi-metadata-style-crossRef * {
+.ts4nfdi-metadata-style-tab-crossRef * {
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.ts4nfdi-metadata-style-hierarchy {
+.ts4nfdi-metadata-style-tab-hierarchy {
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
-.ts4nfdi-metadata-style-hierarchy button {
-  background: none;
+.ts4nfdi-metadata-style-tab-hierarchy button {
   border: none;
   font-family: "Inter", BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   font-size: inherit;
   padding: 0;
 }
 
-.ts4nfdi-metadata-style-hierarchy ul {
+.ts4nfdi-metadata-style-tab-hierarchy ul {
   margin-block-start: 0;
   padding-inline-start: 0;
 }
 
-.ts4nfdi-metadata-style-hierarchy div {
+.ts4nfdi-metadata-style-tab-hierarchy div {
   margin: 0 !important;
 }
 

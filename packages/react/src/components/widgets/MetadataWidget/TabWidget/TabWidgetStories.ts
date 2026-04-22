@@ -26,7 +26,7 @@ export const TabWidgetStoryArgTypes = {
 
 export const TabWidgetStoryArgs = {
   api: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
   useLegacy: true,
   ontologyId: "",
   entityType: "term" as EntityTypeName,
@@ -107,6 +107,10 @@ export const HiddenTabsArgs = {
   hierarchyTab: false,
   crossRefTab: false,
   terminologyInfoTab: false,
+  graphViewTab: false,
+  termDepictionTab: false,
+  entityRelationTab: false,
+  entityInfoTab: false,
 } as const;
 
 export const commonTabWidgetPlay = async ({

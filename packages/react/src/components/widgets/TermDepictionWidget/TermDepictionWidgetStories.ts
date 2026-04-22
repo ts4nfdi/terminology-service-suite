@@ -35,6 +35,20 @@ export const TermDepictionWidget3DArgs = {
   useLegacy: false,
 };
 
+export const ColiConcAPIGatewayDepictionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  iri: "https://nomenclature.info/nom/5254",
+  ontologyId: "http://bartoc.org/en/node/1232",
+  useLegacy: true,
+};
+
+export const IconclassAPIGatewayDepictionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  iri: "https://iconclass.org/25F",
+  ontologyId: "https://test.iconclass.org/",
+  useLegacy: true,
+};
+
 export const commonTermDepictionWidgetPlay = async ({
   canvasElement,
 }: {

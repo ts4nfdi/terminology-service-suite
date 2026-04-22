@@ -16,6 +16,7 @@ import {
   GraphViewWidgetStoryArgTypes,
   GraphViewWidgetStoryArgs,
   GraphWithGermanLabelArgs,
+  GraphWithGermanLabelWithComparisonArgs,
   WithOnNodeDoubleClickCallbackArgs,
   commonGraphViewWidgetPlay,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/GraphViewWidget/GraphViewWidgetStories";
@@ -158,8 +159,18 @@ export const ChebiIonAndIonRadicalWithComparison: Story = {
   play: commonGraphViewWidgetPlay,
 };
 
-export const GraphWithGermanLable: Story = {
+export const GraphWithGermanLabel: Story = {
   args: GraphWithGermanLabelArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const GraphWithGermanLabelWithComparison: Story = {
+  args: GraphWithGermanLabelWithComparisonArgs,
   parameters: {
     docs: {
       disable: true,

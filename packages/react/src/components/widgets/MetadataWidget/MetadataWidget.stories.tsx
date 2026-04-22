@@ -1,6 +1,45 @@
+// @ts-ignore
+
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { manuallyEmbedOnNavigate } from "../../../app/util";
 import { MetadataDescription } from "../../../app/widgetDescriptions";
+import {
+  apiArgType,
+  classNameArgType,
+  colorFirstArgType,
+  colorSecondArgType,
+  copyButtonArgType,
+  defaultValueArgType,
+  descTextArgType,
+  edgeLabelArgType,
+  enableComparisonModeArgType,
+  entityTypeArgType,
+  externalIconArgType,
+  graphHierarchyArgType,
+  hideLegendArgType,
+  hierarchyKeepExpansionStatesArgType,
+  hierarchyPreferredRootsArgType,
+  hierarchyShowSiblingsOnInitArgType,
+  hierarchyWrapArgType,
+  iriArgType,
+  iriTextArgType,
+  onNavigateToDisambiguateArgType,
+  onNavigateToEntityArgType,
+  onNavigateToOntologyArgType,
+  onNodeClickArgType,
+  ontologyIdArgType,
+  parameterArgType,
+  rootWalkArgType,
+  showComparisonTitleInHeaderArgType,
+  showHeaderArgType,
+  stopFullWidthArgType,
+  targetIriArgType,
+  termLinkArgType,
+  titleTextArgType,
+  urlPrefixArgType,
+  useLegacyArgType,
+} from "../../../stories/storyArgs";
+import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
 import { MetadataWidget } from "./MetadataWidget";
 import {
   commonMetadataWidgetPlay,
@@ -14,6 +53,7 @@ import {
   OLS4V1Args,
   OLS4V2Args,
   SelectingDefiningOntologyArgs,
+  ShowComparisonInputFieldArgs,
   TermAsLinkArgs,
 } from "./MetadataWidgetStories";
 
@@ -31,7 +71,141 @@ const meta = {
       },
     },
   },
-  argTypes: MetadataWidgetStoryArgTypes,
+  argTypes: {
+    ...MetadataWidgetStoryArgTypes,
+    // API & Entity group
+    api: { ...apiArgType.api, table: { category: "API & Entity" } },
+    iri: { ...iriArgType.iri, table: { category: "API & Entity" } },
+    entityType: {
+      ...entityTypeArgType.entityType,
+      table: { category: "API & Entity" },
+    },
+    ontologyId: {
+      ...ontologyIdArgType.ontologyId,
+      table: { category: "API & Entity" },
+    },
+    // Navigation
+    onNavigateToEntity: {
+      ...onNavigateToEntityArgType.onNavigateToEntity,
+      table: { category: "Navigation" },
+    },
+    onNavigateToOntology: {
+      ...onNavigateToOntologyArgType.onNavigateToOntology,
+      table: { category: "Navigation" },
+    },
+    onNavigateToDisambiguate: {
+      ...onNavigateToDisambiguateArgType.onNavigateToDisambiguate,
+      table: { category: "Navigation" },
+    },
+    // Hierarchy settings
+    hierarchyPreferredRoots: {
+      ...hierarchyPreferredRootsArgType.hierarchyPreferredRoots,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyKeepExpansionStates: {
+      ...hierarchyKeepExpansionStatesArgType.hierarchyKeepExpansionStates,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyShowSiblingsOnInit: {
+      ...hierarchyShowSiblingsOnInitArgType.hierarchyShowSiblingsOnInit,
+      table: { category: "Hierarchy" },
+    },
+    hierarchyWrap: {
+      ...hierarchyWrapArgType.hierarchyWrap,
+      table: { category: "Hierarchy" },
+    },
+    showHeader: {
+      ...showHeaderArgType.showHeader,
+      table: { category: "Hierarchy" },
+    },
+    showComparisonTitleInHeader: {
+      ...showComparisonTitleInHeaderArgType.showComparisonTitleInHeader,
+      table: { category: "Hierarchy" },
+    },
+    // Graph settings
+    graphHierarchy: {
+      ...graphHierarchyArgType.graphHierarchy,
+      table: { category: "Graph" },
+    },
+    rootWalk: {
+      ...rootWalkArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    edgeLabel: {
+      ...edgeLabelArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    onNodeClick: {
+      ...onNodeClickArgType.graphTargetIri,
+      table: { category: "Graph" },
+    },
+    stopFullWidth: {
+      ...stopFullWidthArgType.stopFullWidth,
+      table: { category: "Graph" },
+    },
+    hideLegend: {
+      ...hideLegendArgType.hideLegend,
+      table: { category: "Graph" },
+    },
+    // Tabs visibility
+    altNamesTab: { table: { category: "Tabs" } },
+    hierarchyTab: { table: { category: "Tabs" } },
+    crossRefTab: { table: { category: "Tabs" } },
+    terminologyInfoTab: { table: { category: "Tabs" } },
+    graphViewTab: { table: { category: "Tabs" } },
+    termDepictionTab: { table: { category: "Tabs" } },
+    entityInfoTab: { table: { category: "Tabs" } },
+    entityRelationTab: { table: { category: "Tabs" } },
+    // Other
+    useLegacy: { ...useLegacyArgType.useLegacy, table: { category: "Other" } },
+    parameter: { ...parameterArgType.parameter, table: { category: "Other" } },
+    className: { ...classNameArgType.className, table: { category: "Other" } },
+    initialSelectedTab: { table: { category: "Other" } },
+    enableComparisonMode: {
+      ...enableComparisonModeArgType.showComparisonInputField,
+      table: { category: "Other" },
+    },
+    targetIri: {
+      ...targetIriArgType.targetIri,
+      table: { category: "Other" },
+    },
+    // Breadcrumb
+    colorFirst: { ...colorFirstArgType, table: { category: "Breadcrumb" } },
+    colorSecond: { ...colorSecondArgType, table: { category: "Breadcrumb" } },
+    // Title and Description
+    descText: {
+      ...descTextArgType,
+      table: { category: "Title and Description" },
+    },
+    titleText: {
+      ...titleTextArgType,
+      table: { category: "Title and Description" },
+    },
+    defaultValue: {
+      ...defaultValueArgType,
+      table: { category: "Title and Description" },
+    },
+    iriText: {
+      ...iriTextArgType.iriText,
+      table: { category: "Title and Description" },
+    },
+    externalIcon: {
+      ...externalIconArgType,
+      table: { category: "Title and Description" },
+    },
+    urlPrefix: {
+      ...urlPrefixArgType,
+      table: { category: "Title and Description" },
+    },
+    copyButton: {
+      ...copyButtonArgType,
+      table: { category: "Title and Description" },
+    },
+    termLink: {
+      ...termLinkArgType,
+      table: { category: "Title and Description" },
+    },
+  },
   args: MetadataWidgetStoryArgs,
 } satisfies Meta<typeof MetadataWidget>;
 
@@ -41,7 +215,7 @@ type Story = StoryObj<typeof meta>;
 
 export const MetadataWidget1: Story = {
   name: "Metadata Widget",
-  args: MetadataWidget1Args,
+  args: { ...MetadataWidget1Args, className: "ts4nfdi-metadata-style" },
   play: commonMetadataWidgetPlay,
 };
 
@@ -85,5 +259,14 @@ export const HiddenTabs: Story = {
 
 export const TermAsLink: Story = {
   args: TermAsLinkArgs,
+  play: commonMetadataWidgetPlay,
+};
+
+export const ShowComparisonInputField: Story = {
+  name: "Comparison input field in hierarchy and graph tabs",
+  args: {
+    ...ShowComparisonInputFieldArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };

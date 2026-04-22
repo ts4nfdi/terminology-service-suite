@@ -1,6 +1,7 @@
 "use client";
 
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 import { TabWidgetProps } from "../../../../app/types";
@@ -21,9 +22,12 @@ function TabWidget(props: TabWidgetProps) {
     crossRefTab,
     terminologyInfoTab,
     altNamesTab,
+    enableComparisonMode = false,
+    className,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
+  const finalClassName = className || "ts4nfdi-tab-style";
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<Entity>(
     ["tabdata", api, parameter, entityType, iri, ontologyId, useLegacy],
@@ -36,6 +40,10 @@ function TabWidget(props: TabWidgetProps) {
         useLegacy,
       );
     },
+  );
+
+  const [targetIri, setTargetIri] = useState<string | undefined>(
+    props.targetIri,
   );
 
   function render(data: Entity) {
@@ -53,12 +61,20 @@ function TabWidget(props: TabWidgetProps) {
           crossRefTab={crossRefTab}
           terminologyInfoTab={terminologyInfoTab}
           altNamesTab={altNamesTab}
+          entityRelationTab={props.entityRelationTab}
+          entityInfoTab={props.entityInfoTab}
           onNavigateToEntity={props.onNavigateToEntity}
           onNavigateToOntology={props.onNavigateToOntology}
           onNavigateToDisambiguate={props.onNavigateToDisambiguate}
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+          stopFullWidth={props.stopFullWidth}
+          hideLegend={props.hideLegend}
+          targetIri={targetIri}
+          onTargetIriChange={setTargetIri}
+          enableComparisonMode={props.enableComparisonMode}
+          className={finalClassName}
         />
       </div>
     );
@@ -97,6 +113,10 @@ function WrappedTabWidget(props: TabWidgetProps) {
           hierarchyPreferredRoots={props.hierarchyPreferredRoots}
           hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
           hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
+          stopFullWidth={props.stopFullWidth}
+          hideLegend={props.hideLegend}
+          enableComparisonMode={props.enableComparisonMode}
+          targetIri={props.targetIri}
         />
       </QueryClientProvider>
     </EuiProvider>

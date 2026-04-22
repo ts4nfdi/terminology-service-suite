@@ -34,7 +34,7 @@ export const DescriptionWidgetStoryArgs = {
   descText: "",
   color: "",
   className: "",
-  parameter: "collection=nfdi4health",
+  parameter: "",
 };
 
 export const DescriptionWidget1Args = {
@@ -42,7 +42,6 @@ export const DescriptionWidget1Args = {
   api: globals.ZBMED_OLS4_API,
   ontologyId: "ncit",
   thingType: "term",
-  parameter: "collection=nfdi4health",
 } as const;
 
 export const SelectingDefiningOntologyArgs = {
