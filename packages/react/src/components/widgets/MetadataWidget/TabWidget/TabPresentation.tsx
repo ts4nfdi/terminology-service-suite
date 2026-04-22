@@ -285,14 +285,7 @@ function TabPresentation(props: TabPresentationProps) {
       tabs[0];
 
     return (
-      <div
-        className={finalClassName}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr)",
-          width: "100%",
-        }}
-      >
+      <div className={`${finalClassName} ts4nfdi-tab-container-scroll-fix`}>
         <EuiTabbedContent
           size="s"
           tabs={tabs}
