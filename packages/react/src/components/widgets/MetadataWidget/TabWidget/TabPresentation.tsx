@@ -6,7 +6,7 @@ import {
   EuiTabbedContent,
 } from "@elastic/eui";
 import { useState } from "react";
-import { TabPresentationProps } from "../../../../app/types";
+import { TabPresentationProps } from "../../../../app";
 import { Entity } from "../../../../model/interfaces";
 import {
   isEntity,
