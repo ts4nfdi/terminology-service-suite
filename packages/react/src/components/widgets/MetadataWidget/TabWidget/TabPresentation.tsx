@@ -30,7 +30,7 @@ function TabPresentation(props: TabPresentationProps) {
     const finalClassName = props.className || "ts4nfdi-tab-style";
     const tabs = [];
     /**
-     * The default behaviour is to show the tabs. Therefore, undefined gets treated as truthy.
+     * The default behavior is to show the tabs. Therefore, undefined gets treated as truthy.
      */
     if (props.altNamesTab === undefined || props.altNamesTab) {
       tabs.push({
