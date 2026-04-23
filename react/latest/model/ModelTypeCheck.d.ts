@@ -22,3 +22,4 @@ export declare function isProperty(thing: Thing): thing is Property;
 export declare function isIndividual(thing: Thing): thing is Individual;
 export declare function isEntity(thing: Thing): thing is Entity;
 export declare function isOntology(thing: Thing): thing is Ontology;
+export declare function entityTypeToEntityTypeName(thingType: ThingTypeName): EntityTypeName;

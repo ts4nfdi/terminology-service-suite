@@ -1,6 +1,7 @@
 export * from './AutocompleteWidget';
 export * from './DataContentWidget';
 export * from './EntityInfoWidget';
+export * from './EntityListWidget';
 export * from './EntityRelationsWidget';
 export * from './GraphViewWidget';
 export * from './JsonApiWidget';

@@ -85,9 +85,9 @@ export declare const MetadataWidgetStoryArgs: {
     readonly onNavigateToOntology: "Console message";
     readonly onNavigateToDisambiguate: "Console message";
     readonly hierarchyWrap: false;
+    readonly className: "ts4nfdi-metadata-style";
     readonly parameter: "";
     readonly showHeader: true;
-    readonly className: "ts4nfdi-metadata-style";
 };
 export declare const MetadataWidget1Args: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";

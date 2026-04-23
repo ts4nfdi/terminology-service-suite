@@ -54,6 +54,6 @@ declare const meta: {
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const emptyInDefiningOntology: Story;
 export declare const v2ApiONS: Story;
 export declare const legacyApi: Story;
+export declare const emptyInDefiningOntology: Story;

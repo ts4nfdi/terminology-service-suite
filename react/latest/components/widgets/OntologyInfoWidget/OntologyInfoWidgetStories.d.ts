@@ -33,6 +33,18 @@ export declare const NavigateToEBIPageArgs: {
     onNavigateToOntology: string;
     onNavigateToDisambiguate: string;
 };
+export declare const OntologyInfoWidgetUberon: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+    hasTitle: boolean;
+    showBadges: boolean;
+};
+export declare const OntologyInfoWidgetOhdab: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+};
 export declare const commonOntologyInfoWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;

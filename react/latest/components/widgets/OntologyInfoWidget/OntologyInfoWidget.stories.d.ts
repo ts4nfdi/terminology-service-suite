@@ -36,3 +36,5 @@ export declare const OntologyInfoWidget1: Story;
 export declare const OntologyInfoWidget2: Story;
 export declare const OntologyInfoWidgetOLS4API: Story;
 export declare const NavigateToEBIPage: Story;
+export declare const OntologyInfoUberon: Story;
+export declare const OntologyInfoOhdab: Story;
