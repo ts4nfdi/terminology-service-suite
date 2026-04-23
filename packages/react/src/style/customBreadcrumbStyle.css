@@ -22,3 +22,13 @@
 .custom-breadcrumb-style .clickable-badge:hover {
   border: 2px solid black;
 }
+
+.stripedRows tbody > tr:nth-child(odd),
+.stripedRows tbody > .euiTableRow:nth-of-type(odd) {
+  background-color: #ffffff;
+}
+
+.stripedRows tbody > tr:nth-child(even),
+.stripedRows tbody > .euiTableRow:nth-of-type(even) {
+  background-color: #f0f6ff;
+}

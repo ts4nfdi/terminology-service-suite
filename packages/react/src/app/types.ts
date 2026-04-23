@@ -3,6 +3,8 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
+import { OlsEntityApi } from "../api/ols/OlsEntityApi";
+import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 import { Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
@@ -819,7 +821,7 @@ export type GraphViewWidgetProps = ApiObj &
     edgeLabel?: string;
 
     /**
-     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * Callback function for double-clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
 
@@ -832,6 +834,11 @@ export type GraphViewWidgetProps = ApiObj &
      * Hide the graph legend. Default is false/undefined
      */
     hideLegend?: boolean;
+
+    /**
+     * This function is called if navigation should be handled externally.
+     */
+    onNavigateTo?: (target: string) => void;
   };
 
 export type OlsGraphNode = {
@@ -858,4 +865,11 @@ export type ComparisonInputProps = {
   onTargetIriChange: (iri: string | undefined) => void;
   initialTargetIri?: string;
   className?: string;
+};
+
+export type EntityListWidgetProps = {
+  api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
+  ontologyId: string;
+  entityType: EntityTypeName;
+  parameter?: string;
 };

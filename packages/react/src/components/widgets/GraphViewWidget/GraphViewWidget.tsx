@@ -54,6 +54,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     hierarchy,
     edgeLabel,
     onNodeClick,
+    onNavigateTo,
     parameter,
     stopFullWidth,
     hideLegend,
@@ -905,6 +906,7 @@ function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
           hierarchy={props.hierarchy}
           edgeLabel={props.edgeLabel}
           onNodeClick={props.onNodeClick}
+          onNavigateTo={props.onNavigateTo}
           targetIri={props.targetIri}
           parameter={props.parameter}
           hideLegend={props.hideLegend}

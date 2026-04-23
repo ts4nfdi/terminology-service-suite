@@ -33,11 +33,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const emptyInDefiningOntology: Story = {
-  args: emptyInDefiningOntologyArgs,
-  play: commonEntityDefinedByWidgetPlay,
-};
-
 export const v2ApiONS: Story = {
   args: v2ApiONSArgs,
   play: commonEntityDefinedByWidgetPlay,
@@ -45,5 +40,10 @@ export const v2ApiONS: Story = {
 
 export const legacyApi: Story = {
   args: legacyApiArgs,
+  play: commonEntityDefinedByWidgetPlay,
+};
+
+export const emptyInDefiningOntology: Story = {
+  args: emptyInDefiningOntologyArgs,
   play: commonEntityDefinedByWidgetPlay,
 };

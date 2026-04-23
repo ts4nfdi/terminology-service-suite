@@ -43,6 +43,7 @@ export class OlsEntityApi extends OlsBaseApi {
           paginationParams,
           sortingParams,
           contentParams,
+          parameter,
         ),
       },
       getUseLegacy(useLegacy),
@@ -63,6 +64,7 @@ export class OlsEntityApi extends OlsBaseApi {
           paginationParams,
           sortingParams,
           contentParams,
+          parameter,
         ),
       },
       getUseLegacy(useLegacy),
@@ -83,6 +85,7 @@ export class OlsEntityApi extends OlsBaseApi {
           paginationParams,
           sortingParams,
           contentParams,
+          parameter,
         ),
       },
       getUseLegacy(useLegacy),
@@ -466,4 +469,61 @@ export class OlsEntityApi extends OlsBaseApi {
       return (await this.axiosInstance.get(baseRequest, { params: treeParams }))
         .data; //2)
   };
+}
+
+export async function getEntitiesWithEntityTypeProvided(
+  entityApi: OlsEntityApi,
+  entityType: EntityTypeName,
+  ontologyId?: string,
+  parameter?: string,
+  useLegacy?: boolean,
+  paginationParams?: { page: string; size: string },
+  signal?: AbortSignal,
+): Promise<any> {
+  const contentParams = ontologyId ? { ontologyId } : undefined;
+
+  switch (entityType) {
+    case "term":
+    case "class":
+      return await (entityApi.getTerms as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    case "property":
+    case "annotationProperty":
+    case "dataProperty":
+    case "objectProperty":
+      return await (entityApi.getProperties as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    case "individual":
+      return await (entityApi.getIndividuals as any)(
+        paginationParams,
+        undefined,
+        contentParams,
+        parameter,
+        useLegacy,
+        signal,
+      );
+
+    default:
+      throw Error(
+        'Invalid entity type "' +
+          entityType +
+          '". Must be one of {' +
+          entityTypeNames.map((e) => `"${e}"`).join(", ") +
+          "}.",
+      );
+  }
 }

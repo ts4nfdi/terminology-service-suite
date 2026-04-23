@@ -51,6 +51,7 @@ const queryClient = new QueryClient();
 
 - The TSS is a client library - in a Next.js app, the 'use client'-directive is needed
 - We can provide server functions at user request, e.g. `getBreadcrumbData()` to allow server side data fetching. [Pull request](https://github.com/ts4nfdi/terminology-service-suite/pull/269)
+- In Next.js apps, it may be necessary to explicitly import widget stylesheets. We tested this in a Next.js app and found that missing stylesheet imports can cause UI issues. The styles are available in [`packages/react/src/style/ts4nfdiStyles`](https://github.com/ts4nfdi/terminology-service-suite/tree/main/packages/react/src/style/ts4nfdiStyles). Copy the relevant stylesheet for the widget you use into your project and import it there. For example, when using `SearchResultsListWidget`, you may need to add and import `SearchResultStyle.css`.
 
 # Usage of older versions
 
