@@ -80,3 +80,7 @@ export declare class OlsEntityApi extends OlsBaseApi {
      */
     getTermTree: (contentParams: ContentParams, treeParams: JsTreeParams, parameter?: string) => Promise<any>;
 }
+export declare function getEntitiesWithEntityTypeProvided(entityApi: OlsEntityApi, entityType: EntityTypeName, ontologyId?: string, parameter?: string, useLegacy?: boolean, paginationParams?: {
+    page: string;
+    size: string;
+}, signal?: AbortSignal): Promise<any>;

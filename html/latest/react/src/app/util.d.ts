@@ -42,6 +42,6 @@ export declare function isEuiLinkColor(str: string): str is EuiLinkColor;
 export declare function withAlpha(color: string, alpha: number): string;
 export declare function isEuiButtonColor(str: string): str is EuiLinkColor;
 export declare function getErrorMessageToDisplay(error: any, messagePlaceholder?: string): string;
-export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "individual" | "ontology";
+export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology";
 export declare function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext): string;
 export declare function dictFromParamString(parameter?: string): any;
