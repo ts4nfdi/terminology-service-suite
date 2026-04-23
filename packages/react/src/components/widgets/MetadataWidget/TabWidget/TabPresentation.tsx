@@ -6,7 +6,7 @@ import {
   EuiTabbedContent,
 } from "@elastic/eui";
 import { useState } from "react";
-import { TabPresentationProps } from "../../../../app/types";
+import { TabPresentationProps } from "../../../../app";
 import { Entity } from "../../../../model/interfaces";
 import {
   isEntity,
@@ -30,7 +30,7 @@ function TabPresentation(props: TabPresentationProps) {
     const finalClassName = props.className || "ts4nfdi-tab-style";
     const tabs = [];
     /**
-     * The default behaviour is to show the tabs. Therefore, undefined gets treated as truthy.
+     * The default behavior is to show the tabs. Therefore, undefined gets treated as truthy.
      */
     if (props.altNamesTab === undefined || props.altNamesTab) {
       tabs.push({
@@ -51,7 +51,7 @@ function TabPresentation(props: TabPresentationProps) {
 
     const [hasComparisonMode, setHasComparisonMode] = useState(false);
 
-    const onChange = (e) => {
+    const onChange = (e: any): void => {
       setHasComparisonMode(e.target.checked);
     };
 
@@ -285,7 +285,14 @@ function TabPresentation(props: TabPresentationProps) {
       tabs[0];
 
     return (
-      <div className={finalClassName} style={{ width: "100%" }}>
+      <div
+        className={finalClassName}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr)",
+          width: "100%",
+        }}
+      >
         <EuiTabbedContent
           size="s"
           tabs={tabs}
