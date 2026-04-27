@@ -31,7 +31,7 @@ export const EntityDefinedByWidgetStoryArgs = {
 } as const;
 
 export const emptyInDefiningOntologyArgs = {
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  iri: "http://purl.obolibrary.org/obo/MONDO_0005015",
   api: globals.EBI_API_ENDPOINT,
   entityType: "term",
   ontologyId: "efo",
@@ -44,7 +44,7 @@ export const v2ApiONSArgs = {
 } as const;
 
 export const legacyApiArgs = {
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  iri: "http://purl.obolibrary.org/obo/MONDO_0005015",
   api: globals.EBI_API_ENDPOINT,
   entityType: "term",
   ontologyId: "efo",
