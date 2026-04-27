@@ -22,7 +22,7 @@ export const EntityListWidgetStoryArgs = {
 
 export const EntityListWidgetIndividualsArgs = {
   api: globals.EBI_API_ENDPOINT,
-  ontologyId: "efo",
+  ontologyId: "iao",
   entityType: "individual",
   parameter: "",
 } as const;
