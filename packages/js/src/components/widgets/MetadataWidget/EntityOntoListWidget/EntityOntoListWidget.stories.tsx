@@ -64,12 +64,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const v2ApiEFO: Story = {
+export const v2ApiNCBITaxon: Story = {
   args: v2ApiNCBITaxonArgs,
   play: commonEntityOntoListWidgetPlay,
 };
 
-export const v2ApiONS: Story = {
+export const v2ApiFOODON: Story = {
   args: v2ApiFOODONArgs,
   play: commonEntityOntoListWidgetPlay,
 };

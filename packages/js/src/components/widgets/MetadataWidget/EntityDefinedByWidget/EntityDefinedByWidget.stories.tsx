@@ -68,7 +68,7 @@ export const emptyInDefiningOntology: Story = {
   play: commonEntityDefinedByWidgetPlay,
 };
 
-export const v2ApiONS: Story = {
+export const v2ApiFOODON: Story = {
   args: v2ApiFOODONArgs,
   play: commonEntityDefinedByWidgetPlay,
 };
