@@ -10,7 +10,7 @@ import {
   EntityDefinedByWidgetStoryArgs,
   EntityDefinedByWidgetStoryArgTypes,
   legacyApiArgs,
-  v2ApiONSArgs,
+  v2ApiFOODONArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityDefinedByWidget/EntityDefinedByWidgetStories";
 import "./index";
 
@@ -69,7 +69,7 @@ export const emptyInDefiningOntology: Story = {
 };
 
 export const v2ApiONS: Story = {
-  args: v2ApiONSArgs,
+  args: v2ApiFOODONArgs,
   play: commonEntityDefinedByWidgetPlay,
 };
 

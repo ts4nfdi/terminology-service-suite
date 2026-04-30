@@ -37,17 +37,17 @@ export const emptyInDefiningOntologyArgs = {
   ontologyId: "efo",
 } as const;
 
-export const v2ApiONSArgs = {
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-  api: globals.EBI_API_ENDPOINT,
-  ontologyId: "ons",
+export const v2ApiFOODONArgs = {
+  iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+  api: globals.ZBMED_OLS4_API,
+  ontologyId: "foodon",
 } as const;
 
 export const legacyApiArgs = {
-  iri: "http://purl.obolibrary.org/obo/MONDO_0005015",
-  api: globals.EBI_API_ENDPOINT,
+  iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+  api: globals.ZBMED_OLS4_API,
   entityType: "term",
-  ontologyId: "efo",
+  ontologyId: "foodon",
   useLegacy: true,
 } as const;
 

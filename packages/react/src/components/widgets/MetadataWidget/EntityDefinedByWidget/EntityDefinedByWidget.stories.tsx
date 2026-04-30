@@ -8,7 +8,7 @@ import {
   EntityDefinedByWidgetStoryArgs,
   EntityDefinedByWidgetStoryArgTypes,
   legacyApiArgs,
-  v2ApiONSArgs,
+  v2ApiFOODONArgs,
 } from "./EntityDefinedByWidgetStories";
 
 const meta = {
@@ -33,8 +33,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const v2ApiONS: Story = {
-  args: v2ApiONSArgs,
+export const v2ApiFOODON: Story = {
+  args: v2ApiFOODONArgs,
   play: commonEntityDefinedByWidgetPlay,
 };
 
