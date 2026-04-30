@@ -8,8 +8,8 @@ import {
   EntityOntoListWidgetStoryArgTypes,
   exceedsMaxDisplayArgs,
   legacyApiArgs,
-  v2ApiNCBITaxonArgs,
   v2ApiFOODONArgs,
+  v2ApiNCBITaxonArgs,
 } from "./EntityOntoListWidgetStories";
 
 const meta = {

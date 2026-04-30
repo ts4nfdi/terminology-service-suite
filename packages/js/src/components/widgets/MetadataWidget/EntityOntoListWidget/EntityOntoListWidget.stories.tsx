@@ -10,8 +10,8 @@ import {
   EntityOntoListWidgetStoryArgTypes,
   exceedsMaxDisplayArgs,
   legacyApiArgs,
-  v2ApiNCBITaxonArgs,
   v2ApiFOODONArgs,
+  v2ApiNCBITaxonArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityOntoListWidget/EntityOntoListWidgetStories";
 import "./index";
 
