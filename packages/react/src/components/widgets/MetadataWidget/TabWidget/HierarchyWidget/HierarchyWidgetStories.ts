@@ -71,7 +71,7 @@ export const ClassHierarchyArgs = {
   ...HierarchyWidgetStoryArgs,
   apiUrl: globals.EBI_API_ENDPOINT,
   backendType: "ols",
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  iri: "http://purl.obolibrary.org/obo/MONDO_0005015",
   entityType: "class",
   ontologyId: "efo",
 } as const;
@@ -164,9 +164,9 @@ export const OLS3HierarchyArgs = {
   ...HierarchyWidgetStoryArgs,
   apiUrl: globals.ZBMED_OLS3_API,
   backendType: "ols",
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2984",
   entityType: "class",
-  ontologyId: "efo",
+  ontologyId: "ncit",
   useLegacy: true,
 } as const;
 
@@ -205,8 +205,8 @@ export const CompareHierarchiesSubEntityArgs = {
   ...HierarchyWidgetStoryArgs,
   apiUrl: globals.EBI_API_ENDPOINT,
   backendType: "ols",
-  iri: "http://www.ebi.ac.uk/efo/EFO_0000400",
-  targetIri: "http://www.ebi.ac.uk/efo/EFO_0000405",
+  iri: "http://purl.obolibrary.org/obo/MONDO_0005015",
+  targetIri: "http://purl.obolibrary.org/obo/MONDO_0004335",
   entityType: "class" as EntityTypeName,
   ontologyId: "efo",
 };

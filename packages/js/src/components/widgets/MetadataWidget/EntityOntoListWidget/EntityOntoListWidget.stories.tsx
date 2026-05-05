@@ -10,8 +10,8 @@ import {
   EntityOntoListWidgetStoryArgTypes,
   exceedsMaxDisplayArgs,
   legacyApiArgs,
-  v2ApiEFOArgs,
-  v2ApiONSArgs,
+  v2ApiFOODONArgs,
+  v2ApiNCBITaxonArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/EntityOntoListWidget/EntityOntoListWidgetStories";
 import "./index";
 
@@ -64,13 +64,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const v2ApiEFO: Story = {
-  args: v2ApiEFOArgs,
+export const v2ApiNCBITaxon: Story = {
+  args: v2ApiNCBITaxonArgs,
   play: commonEntityOntoListWidgetPlay,
 };
 
-export const v2ApiONS: Story = {
-  args: v2ApiONSArgs,
+export const v2ApiFOODON: Story = {
+  args: v2ApiFOODONArgs,
   play: commonEntityOntoListWidgetPlay,
 };
 
