@@ -38,7 +38,6 @@
     }
   },
   "scripts": {
-    "prepare": "patch-package",
     "test": "vitest",
     "test:storybook": "vitest --project=storybook",
     "storybook": "storybook dev -p 6006 ",
@@ -49,7 +48,7 @@
   },
   "peerDependencies": {
     "@elastic/datemath": "^5.0.3",
-    "@elastic/eui": ">= 97.3.1 <102.1.0",
+    "@elastic/eui": ">= 97.3.1 <=115.0.0",
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.13.5",
     "axios": "^1.1.2",
@@ -60,9 +59,8 @@
   },
   "dependencies": {
     "@google/model-viewer": "^4.0.0",
-    "patch-package": "^8.0.0",
     "react-router": "^6.3.0",
-    "three": "^0.172.0",
+    "three": "^0.182.0",
     "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
   },

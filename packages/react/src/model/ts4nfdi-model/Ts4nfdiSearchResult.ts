@@ -8,6 +8,10 @@ export class Ts4nfdiSearchResult implements SelectResult {
     this.properties = properties;
   }
 
+  getSynonyms(): [] {
+    throw new Error("Method not implemented.");
+  }
+
   getDescription(): string {
     const description = this.properties["description"];
 

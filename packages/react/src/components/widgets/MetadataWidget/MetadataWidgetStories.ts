@@ -64,7 +64,6 @@ export const MetadataWidgetStoryArgs = {
   onNavigateToOntology: "Console message",
   onNavigateToDisambiguate: "Console message",
   hierarchyWrap: HIERARCHY_WIDGET_DEFAULT_VALUES.WRAP,
-  className: "ts4nfdi-breadcrumb-style",
   parameter: "",
   showHeader: true,
   className: "ts4nfdi-metadata-style",

@@ -57,7 +57,7 @@ import {
   TermAsLinkArgs,
 } from "./MetadataWidgetStories";
 
-const meta = {
+const meta: Meta<typeof MetadataWidget> = {
   title: "Entity Metadata/MetadataWidget",
   component: MetadataWidget,
   parameters: {
