@@ -11,6 +11,7 @@ import {
   ChebiIonArgs,
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
+  ChebiMultiIriHierarchyArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
   GraphViewWidgetStoryArgTypes,
@@ -49,7 +50,7 @@ const meta: Meta<GraphViewWidgetProps> = {
 <script type="text/javascript">
 window['ts4nfdiWidgets'].createGraphView(
     {
-        iri:"${args.iri}",
+        iri:${JSON.stringify(args.iri)},
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
@@ -121,6 +122,16 @@ export const ChebiWaterRootWalk: Story = {
 
 export const ChebiCaffeineHierarchy: Story = {
   args: ChebiCaffeineHierarchyArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiMultiIriHierarchy: Story = {
+  args: ChebiMultiIriHierarchyArgs,
   parameters: {
     docs: {
       disable: true,
