@@ -33,6 +33,7 @@ import { GraphFetchData, VisGraphData } from "./types";
 import {
   convertFlatListToTreeStructure,
   fetchHierarchyModeData,
+  fetchMultiIriHierarchyModeData,
   fetchNormalModeData,
   fetchRootWalkModeData,
 } from "./utils";
@@ -59,8 +60,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     stopFullWidth,
     hideLegend,
   } = props;
+  const iris = (Array.isArray(iri) ? iri : [iri]).filter(Boolean);
+  const primaryIri = iris[0] ?? "";
+  const iriQueryKey = Array.isArray(iri) ? iri.join("|") : iri;
+  const isMultiIri = Array.isArray(iri);
+  const shouldUseHierarchyLayout = hierarchy || isMultiIri;
+  const hierarchyLayoutConfig = isMultiIri
+    ? { ...hierarchicalConfig, direction: "LR" }
+    : hierarchicalConfig;
 
-  const [selectedIri, setSelectedIri] = useState(iri);
+  const [selectedIri, setSelectedIri] = useState(primaryIri);
   const [firstLoad, setFirstLoad] = useState(true);
   const [graphDataIsCalculated, setGraphDataIsCalculated] = useState(false);
   const [dbclicked, setDbclicked] = useState(false);
@@ -107,13 +116,37 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const commonNodesBgColor = "#ff991c";
   const nodeTextColor = "white";
   const { data, isLoading, isError, error } = useQuery(
-    ["termGraph", api, ontologyId, rootWalk, hierarchy, dbclicked, counter],
+    [
+      "termGraph",
+      api,
+      ontologyId,
+      iriQueryKey,
+      rootWalk,
+      hierarchy,
+      dbclicked,
+      counter,
+    ],
     async () => {
-      let sourceIri = iri;
+      let sourceIri = primaryIri;
       if (dbclicked) {
         sourceIri = selectedIri;
       }
-      if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
+      if (isMultiIri && firstLoad) {
+        return await fetchMultiIriHierarchyModeData({
+          api: api,
+          iris: iris,
+          ontologyId: ontologyId,
+          parameter: parameter,
+        });
+      } else if (isMultiIri && dbclicked) {
+        return await fetchHierarchyModeData({
+          api: api,
+          iri: sourceIri,
+          ontologyId: ontologyId,
+          dbClicked: dbclicked,
+          parameter: parameter,
+        });
+      } else if (rootWalk && (firstLoad || dbclicked) && !hierarchy) {
         // this is for rootWalk mode wihtout hierarchy view
         // only use this call on load. Double ckicking on a node should call the normal getTermRelations function.
         return await fetchRootWalkModeData({
@@ -156,9 +189,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const fullScreenContainerRef = useRef(null);
   // kep a map between a node iri and it's color to avoid recalculating the color in case the node is removed and added again by the user
   const nodeColorMap = useRef<Map<string, string>>(new Map());
+  const previousIriQueryKey = useRef(iriQueryKey);
 
-  if (hierarchy) {
-    graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
+  if (shouldUseHierarchyLayout) {
+    graphNetworkConfig["layout"]["hierarchical"] = hierarchyLayoutConfig;
   }
 
   if (data && (firstLoad || dbclicked)) {
@@ -175,10 +209,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     } else if (
       data.termRelations &&
       data.treeData &&
-      rootWalk &&
+      (rootWalk || isMultiIri) &&
       (firstLoad || dbclicked) &&
-      hierarchy
+      shouldUseHierarchyLayout
     ) {
+
       gData = convertToOlsGraphFormat(
         data.treeData,
         data.termRelations,
@@ -186,7 +221,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         data?.targetTermRelations,
       );
     }
-    if (!rootWalk && !hierarchy) {
+    if (!rootWalk && !hierarchy && !isMultiIri) {
       gData.nodes = addTermRelationsNodesToGraph(data);
       gData.edges = addTermRelationsEdgesToGraph(data);
       setGraphDataIsCalculated(true);
@@ -280,11 +315,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
-      if (gNode.id === iri) {
+      if (!isMultiIri && gNode.id === primaryIri) {
         setSourceLabel(gNode.label ?? "");
         gNode.color.background = sourceNodeBgColor;
         gNode.font.color = nodeTextColor;
-      } else if (targetIri && gNode.id === targetIri) {
+      } else if (!isMultiIri && targetIri && gNode.id === targetIri) {
         setTargetLabel(gNode.label ?? "");
         gNode.color.background = targetNodeBgColor;
         gNode.font.color = nodeTextColor;
@@ -301,7 +336,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
-    } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
+    } else if (isCommon && gNode.id !== primaryIri && gNode.id !== targetIri) {
       gNode = new GraphNode((node = node), commonNodesBgColor);
       //@ts-ignore
       nodes.current.remove(gNode.id);
@@ -318,7 +353,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     gEdge.dashes = dashed;
     //@ts-ignore
     if (!edges.current.get(gEdge.id)) {
-      if (gEdge.id?.includes(iri) && rootWalk) {
+      if (!isMultiIri && gEdge.id?.includes(primaryIri) && rootWalk) {
         //@ts-ignore
         gEdge.color.color = "black";
       }
@@ -467,7 +502,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       addHasPartRelationsToGraphData(graphData, nodeRelations);
     }
 
-    if (targetIri && targetListOfJsTreeNodes) {
+    if (!isMultiIri && targetIri && targetListOfJsTreeNodes) {
       let targetTreeData = convertFlatListToTreeStructure(
         targetListOfJsTreeNodes,
       );
@@ -484,7 +519,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     const blob = new Blob([jsonString], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `graphData_${ontologyId}_${iri}.json`;
+    link.download = `graphData_${ontologyId}_${isMultiIri ? "multiple-iris" : primaryIri}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -493,7 +528,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function reset() {
     nodes.current.clear();
     edges.current.clear();
-    setSelectedIri(iri);
+    setSelectedIri(primaryIri);
     setFirstLoad(true);
     setDbclicked(false);
     setCounter(counter + 1);
@@ -542,7 +577,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function renderLegend() {
-    if (hideLegend) {
+    if (hideLegend || isMultiIri) {
       return <></>;
     }
     const itemStyle = {
@@ -672,26 +707,30 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [props.targetIri]);
 
   useEffect(() => {
-    if (props.iri && selectedIri !== props.iri) {
+    if (previousIriQueryKey.current !== iriQueryKey) {
+      const nextPrimaryIri = Array.isArray(props.iri)
+        ? (props.iri[0] ?? "")
+        : props.iri;
       setGraphDataIsCalculated(false);
       //@ts-ignore
-      graphNetwork.current.destroy();
+      graphNetwork.current.destroy?.();
       nodes.current.clear();
       edges.current.clear();
-      setSelectedIri(props.iri);
+      setSelectedIri(nextPrimaryIri);
       setFirstLoad(true);
+      previousIriQueryKey.current = iriQueryKey;
       setCounter(counter + 1);
     }
-  }, [props.iri]);
+  }, [iriQueryKey]);
 
   useEffect(() => {
-    if (hierarchy) {
-      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
+    if (shouldUseHierarchyLayout) {
+      graphNetworkConfig["layout"]["hierarchical"] = hierarchyLayoutConfig;
     } else {
       graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
     }
     setCounter(counter + 1);
-  }, [hierarchy]);
+  }, [shouldUseHierarchyLayout, isMultiIri]);
 
   useEffect(() => {
     if (!dbclicked) {

@@ -17,6 +17,15 @@ import {
 export const GraphViewWidgetStoryArgTypes = {
   ...apiArgType,
   ...iriArgType,
+  iri: {
+    ...iriArgType.iri,
+    description:
+      "Entity IRI or list of entity IRIs whose graph should be rendered.",
+    table: {
+      type: { summary: "string | string[]" },
+    },
+    control: { type: "object" } as const,
+  },
   ...ontologyIdReqArgType,
   ...rootWalkArgType,
   ...hierarchyArgType,
@@ -86,6 +95,18 @@ export const ChebiCaffeineHierarchyArgs = {
   ...ChebiIonArgs,
   api: globals.EBI_API_ENDPOINT,
   iri: "http://purl.obolibrary.org/obo/CHEBI_27732",
+  ontologyId: "chebi",
+  rootWalk: true,
+  hierarchy: true,
+};
+
+export const ChebiMultiIriHierarchyArgs = {
+  api: globals.EBI_API_ENDPOINT,
+  iri: [
+    "http://purl.obolibrary.org/obo/CHEBI_30242",
+    "http://purl.obolibrary.org/obo/CHEBI_29874",
+    "http://purl.obolibrary.org/obo/CHEBI_29416",
+  ],
   ontologyId: "chebi",
   rootWalk: true,
   hierarchy: true,

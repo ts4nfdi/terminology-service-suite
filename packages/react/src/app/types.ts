@@ -799,10 +799,14 @@ export type TermDepictionWidgetProps = ApiObj &
   UseLegacyObj;
 
 export type GraphViewWidgetProps = ApiObj &
-  ForcedIriObj &
   ForcedOntologyIdObj &
   CssClassNameObj &
   ParameterObj & {
+    /**
+     * Entity IRI or IRIs whose graph hierarchy should be rendered.
+     */
+    iri: string | string[];
+
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */
