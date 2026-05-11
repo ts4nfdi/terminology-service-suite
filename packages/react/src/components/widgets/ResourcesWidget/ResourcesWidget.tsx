@@ -4,6 +4,7 @@ import {
   Comparators,
   CriteriaWithPagination,
   EuiBasicTable,
+  EuiBasicTableColumn,
   EuiButtonIcon,
   EuiCallOut,
   EuiDescriptionList,
@@ -14,7 +15,6 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
-import { EuiBasicTableColumn } from "@elastic/eui/src/components/basic_table/basic_table";
 import { css, SerializedStyles } from "@emotion/react";
 import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -404,7 +404,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     <div className={finalClassName} data-testid="resources">
       {isSuccess && (
         <>
-          <EuiCallOut title={"Licenses"} iconType="iInCircle" color={"warning"}>
+          <EuiCallOut title={"Licenses"} iconType="info" color={"warning"}>
             <p>
               The use and distribution of the terminologies beyond this service
               is only permitted in compliance with the license conditions of the

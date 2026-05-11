@@ -19,7 +19,7 @@ npm install @ts4nfdi/terminology-service-suite
 2. Install peer dependencies
 
 ```
-npm install @elastic/eui@102.0.0 @emotion/react@11.13.5 react@18.3 react-dom@18.3 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3
+npm install @elastic/eui@113.3.0 @elastic/eui-theme-borealis @emotion/react @emotion/css moment @elastic/datemath react@18.3 react-dom@18.3 react-query@3.39.2 axios@1.1.2
 ```
 
 3. In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters. See example below:
@@ -47,11 +47,13 @@ const queryClient = new QueryClient();
 </QueryClientProvider>
 ```
 
+### If you encounter any installation or integration errors, please open an issue to let us know!
+
 ## Hints:
 
-- The TSS is a client library - in a Next.js app, the 'use client'-directive is needed
-- We can provide server functions at user request, e.g. `getBreadcrumbData()` to allow server side data fetching. [Pull request](https://github.com/ts4nfdi/terminology-service-suite/pull/269)
-- In Next.js apps, it may be necessary to explicitly import widget stylesheets. We tested this in a Next.js app and found that missing stylesheet imports can cause UI issues. The styles are available in [`packages/react/src/style/ts4nfdiStyles`](https://github.com/ts4nfdi/terminology-service-suite/tree/main/packages/react/src/style/ts4nfdiStyles). Copy the relevant stylesheet for the widget you use into your project and import it there. For example, when using `SearchResultsListWidget`, you may need to add and import `SearchResultStyle.css`.
+- **Vite:** There is an [Elastic UI issue](https://github.com/elastic/eui/issues/5463) using Vite and EUI versions <113.0.0. We recommend using TSS versions >6.12.0 and EUI versions >113.0.0. For TSS versions >6.0.0 and <6.12.0 we integrated a [workaround](https://github.com/ts4nfdi/terminology-service-suite/wiki/Why-patch%E2%80%90package-and-the-prepare-script%3F).
+- **Next.js:** The TSS is a client library - in a Next.js app, the 'use client'-directive is needed. We can provide server functions at user request, e.g. `getBreadcrumbData()` to allow server side data fetching. [Pull request](https://github.com/ts4nfdi/terminology-service-suite/pull/269)
+- **Next.js:** In Next.js apps, it may be necessary to explicitly import widget stylesheets. We tested this in a Next.js app and found that missing stylesheet imports can cause UI issues. The styles are available in [`packages/react/src/style/ts4nfdiStyles`](https://github.com/ts4nfdi/terminology-service-suite/tree/main/packages/react/src/style/ts4nfdiStyles). Copy the relevant stylesheet for the widget you use into your project and import it there. For example, when using `SearchResultsListWidget`, you may need to add and import `SearchResultStyle.css`.
 
 # Usage of older versions
 

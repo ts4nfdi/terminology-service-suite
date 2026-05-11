@@ -19,7 +19,6 @@
     "access": "public"
   },
   "scripts": {
-    "prepare": "patch-package",
     "build": "npx vite build",
     "test": "vitest",
     "test:storybook": "vitest --project=storybook",
