@@ -1,4 +1,5 @@
-import { EuiBasicTableColumn } from "@elastic/eui";
+import { EuiBasicTableColumn, EuiInMemoryTable, EuiPanel } from "@elastic/eui";
+import { css } from "@emotion/react";
 import { MappingListDetailWidgetProps } from "../../../app";
 
 type MappingRow = {
@@ -9,7 +10,7 @@ type MappingRow = {
   created: string;
 };
 
-const baseColumns: Array<EuiBasicTableColumn<MappingRow>> = [
+const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   { field: "to", name: "to", truncateText: true, sortable: true },
   { field: "toScheme", name: "toScheme", truncateText: true, sortable: true },
   { field: "creator", name: "creator", truncateText: true, sortable: true },
@@ -17,9 +18,30 @@ const baseColumns: Array<EuiBasicTableColumn<MappingRow>> = [
   { field: "created", name: "created", truncateText: true, sortable: true },
 ];
 
+const items: MappingRow[] = [];
+
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
-  return <></>;
+
+  return (
+    <EuiPanel paddingSize="m">
+      <EuiInMemoryTable<MappingRow>
+        css={css`
+          tbody .euiTableRow:nth-of-type(odd) {
+            background-color: #ffffff;
+          }
+          tbody .euiTableRow:nth-of-type(even) {
+            background-color: #fce4ea;
+          }
+        `}
+        tableCaption="Mapping list"
+        responsiveBreakpoint={false}
+        items={items}
+        columns={columns}
+        pagination={true}
+      />
+    </EuiPanel>
+  );
 }
 
 function WrappedMappingListDetailWidget(props: MappingListDetailWidgetProps) {
