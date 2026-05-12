@@ -1,5 +1,6 @@
 import { EuiBasicTableColumn, EuiInMemoryTable, EuiPanel } from "@elastic/eui";
 import { css } from "@emotion/react";
+import { useState } from "react";
 import { MappingListDetailWidgetProps } from "../../../app";
 
 type MappingWidgetProps = {
@@ -23,7 +24,7 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   { field: "created", name: "created", truncateText: true, sortable: true },
 ];
 
-const items: MappingRow[] = [];
+const [items, setItems] = useState<MappingRow[]>([]);
 
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
