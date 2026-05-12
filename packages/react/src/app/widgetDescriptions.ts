@@ -482,3 +482,21 @@ Supports efficient inspection of extensive ontology content without overwhelming
 - **Known limitation**:
 The widget currently does not work correctly for **properties**. This is due to an issue in the **OLS4 API** where the required parameter for property-based queries is not properly handled, resulting in incomplete or non-functional results.
 `.trim();
+
+export const MappingListDetailDescription = `
+The MappingListDetailWidget is a table-based visualization component designed to display mappings between ontology or terminology entities retrieved from a Concordance API. The widget fetches mapping relations dynamically using a provided API endpoint and a source entity IRI, allowing users to inspect how a specific concept is mapped to related target concepts across terminologies.
+
+#### Key Features:
+
+- **Dynamic mapping retrieval**:
+Fetches mappings directly from a Concordance API using a provided source entity IRI and displays all related target mappings in real time.
+
+- **Structured mapping table**:
+Displays mapping results in a clean tabular layout with important metadata such as target notation, target scheme, creator, mapping type, and creation date.
+
+- **Cross-terminology exploration**:
+Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
+
+- **Mapping type visualization**:
+Displays semantic mapping relations such as \`exactMatch\`, \`narrowMatch\`, and other SKOS mapping types in a user-friendly format.
+`.trim();
