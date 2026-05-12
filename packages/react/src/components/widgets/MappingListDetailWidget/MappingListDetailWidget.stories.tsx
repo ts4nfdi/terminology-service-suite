@@ -1,4 +1,4 @@
-import type { Meta } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { MappingListDetailDescription } from "../../../app/widgetDescriptions";
 import { WrappedMappingListDetailWidget } from "./MappingListDetailWidget";
 import {
@@ -21,3 +21,9 @@ const meta: Meta = {
   },
 };
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Classes: Story = {
+  args: MappingListDetailWidgetStoryArgs,
+};
