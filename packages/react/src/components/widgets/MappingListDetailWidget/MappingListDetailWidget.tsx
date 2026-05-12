@@ -10,11 +10,6 @@ import { useEffect, useState } from "react";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
 
-type MappingWidgetProps = {
-  api?: string;
-  iri?: string;
-};
-
 type MappingRow = {
   to: string;
   toScheme: string;
