@@ -30,6 +30,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
   const [items, setItems] = useState<MappingRow[]>([]);
+  const [fromLabel, setFromLabel] = useState("");
 
   async function fetchMappings() {
     try {
@@ -39,6 +40,9 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       // the notation is :
       // console.log(response[0]["from"]["memberSet"][0]["notation"][0]);
       // console.log(response[0].to?.memberSet[0]?.notation[0]);
+
+      const from = response?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
+      setFromLabel(from);
 
       const rows = response.map((item: any) => ({
         to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
@@ -61,7 +65,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   return (
     <EuiPanel paddingSize="m">
       <EuiTitle size="s">
-        <h2>From: </h2>
+        <h2>From: &nbsp;{fromLabel}</h2>
       </EuiTitle>
 
       <EuiSpacer size="xl" />
