@@ -76,8 +76,9 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
           tbody .euiTableRow:nth-of-type(odd) {
             background-color: #ffffff;
           }
+
           tbody .euiTableRow:nth-of-type(even) {
-            background-color: #fce4ea;
+            background-color: #fff5fa;
           }
         `}
         tableCaption="Mapping list"
