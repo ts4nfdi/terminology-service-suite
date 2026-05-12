@@ -6,7 +6,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
 
@@ -58,6 +58,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       console.error(e);
     }
   }
+
+  useEffect(() => {
+    fetchMappings();
+  }, [api, iri]);
 
   return (
     <EuiPanel paddingSize="m">
