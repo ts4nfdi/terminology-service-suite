@@ -21,7 +21,7 @@ export class ColiConcApi {
   }
 
   async getMappingsByFrom(iri: string) {
-    return this.makeCall("", {
+    return this.makeCall("/mappings", {
       params: {
         from: iri,
       },
