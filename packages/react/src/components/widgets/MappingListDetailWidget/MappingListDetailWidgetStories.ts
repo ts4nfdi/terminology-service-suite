@@ -6,5 +6,5 @@ export const MappingListDetailWidgetStoryArgTypes = {
 
 export const MappingListDetailWidgetStoryArgs = {
   api: "https://coli-conc.gbv.de/api/",
-  iri: "http%3A%2F%2Furi.gbv.de%2Fterminology%2Fnsk%2FRec%2520B%25202000",
+  iri: "http://uri.gbv.de/terminology/nsk/Rec%20B%202000",
 } as const;
