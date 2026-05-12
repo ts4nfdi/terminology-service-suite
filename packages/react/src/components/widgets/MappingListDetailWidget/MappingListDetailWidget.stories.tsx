@@ -1,12 +1,16 @@
 import type { Meta } from "@storybook/react";
 import { MappingListDetailDescription } from "../../../app/widgetDescriptions";
 import { WrappedMappingListDetailWidget } from "./MappingListDetailWidget";
+import {
+  MappingListDetailWidgetStoryArgTypes,
+  MappingListDetailWidgetStoryArgs,
+} from "./MappingListDetailWidgetStories";
 
 const meta: Meta = {
   title: "Mapping/EntityListWidget",
   component: WrappedMappingListDetailWidget,
-  // argTypes: ,
-  // args: ,
+  argTypes: MappingListDetailWidgetStoryArgTypes,
+  args: MappingListDetailWidgetStoryArgs,
   parameters: {
     layout: "centered",
     docs: {
