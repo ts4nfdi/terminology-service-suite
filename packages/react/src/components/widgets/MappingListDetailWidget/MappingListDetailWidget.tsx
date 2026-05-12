@@ -7,6 +7,7 @@ import {
 } from "@elastic/eui";
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
 
 type MappingWidgetProps = {
@@ -34,6 +35,29 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
   const [items, setItems] = useState<MappingRow[]>([]);
+
+  async function fetchMappings() {
+    try {
+      if (!api || !iri) return;
+      const mappingApi = new ColiConcApi(api);
+      const response = await mappingApi.getMappingsByFrom(iri);
+      // the notation is :
+      // console.log(response[0]["from"]["memberSet"][0]["notation"][0]);
+      // console.log(response[0].to?.memberSet[0]?.notation[0]);
+
+      const rows = response.map((item: any) => ({
+        to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+        toScheme: item.toScheme?.notation?.[0] ?? "—",
+        creator: item.creator?.[0]?.prefLabel?.en ?? "—",
+        type: item.type?.[0]?.split("#").pop() ?? "—",
+        created: item.created ?? "—",
+      }));
+
+      setItems(rows);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <EuiPanel paddingSize="m">
