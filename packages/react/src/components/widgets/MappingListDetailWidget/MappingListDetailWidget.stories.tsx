@@ -7,7 +7,7 @@ import {
 } from "./MappingListDetailWidgetStories";
 
 const meta: Meta = {
-  title: "Mapping/EntityListWidget",
+  title: "Mapping/MappingListDetailWidget",
   component: WrappedMappingListDetailWidget,
   argTypes: MappingListDetailWidgetStoryArgTypes,
   args: MappingListDetailWidgetStoryArgs,
