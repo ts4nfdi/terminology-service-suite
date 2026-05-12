@@ -24,10 +24,10 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   { field: "created", name: "created", truncateText: true, sortable: true },
 ];
 
-const [items, setItems] = useState<MappingRow[]>([]);
-
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
+
+  const [items, setItems] = useState<MappingRow[]>([]);
 
   return (
     <EuiPanel paddingSize="m">
