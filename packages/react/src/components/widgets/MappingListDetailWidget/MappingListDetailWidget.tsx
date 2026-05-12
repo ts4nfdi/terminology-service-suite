@@ -50,7 +50,9 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   );
 }
 
-function WrappedMappingListDetailWidget(props: MappingListDetailWidgetProps) {
+export function WrappedMappingListDetailWidget(
+  props: MappingListDetailWidgetProps,
+) {
   return <MappingListDetailWidget api={props.api} iri={props.iri} />;
 }
 
