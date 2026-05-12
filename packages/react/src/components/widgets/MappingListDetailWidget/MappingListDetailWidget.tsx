@@ -2,6 +2,11 @@ import { EuiBasicTableColumn, EuiInMemoryTable, EuiPanel } from "@elastic/eui";
 import { css } from "@emotion/react";
 import { MappingListDetailWidgetProps } from "../../../app";
 
+type MappingWidgetProps = {
+  api?: string;
+  iri?: string;
+};
+
 type MappingRow = {
   to: string;
   toScheme: string;
