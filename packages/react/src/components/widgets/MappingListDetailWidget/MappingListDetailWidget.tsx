@@ -1,4 +1,10 @@
-import { EuiBasicTableColumn, EuiInMemoryTable, EuiPanel } from "@elastic/eui";
+import {
+  EuiBasicTableColumn,
+  EuiInMemoryTable,
+  EuiPanel,
+  EuiSpacer,
+  EuiTitle,
+} from "@elastic/eui";
 import { css } from "@emotion/react";
 import { useState } from "react";
 import { MappingListDetailWidgetProps } from "../../../app";
@@ -31,6 +37,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
   return (
     <EuiPanel paddingSize="m">
+      <EuiTitle size="s">
+        <h2>From: </h2>
+      </EuiTitle>
+
+      <EuiSpacer size="xl" />
+
       <EuiInMemoryTable<MappingRow>
         css={css`
           tbody .euiTableRow:nth-of-type(odd) {
