@@ -37,9 +37,6 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       if (!api || !iri) return;
       const mappingApi = new ColiConcApi(api);
       const response = await mappingApi.getMappingsByFrom(iri);
-      // the notation is :
-      // console.log(response[0]["from"]["memberSet"][0]["notation"][0]);
-      // console.log(response[0].to?.memberSet[0]?.notation[0]);
 
       const from = response?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
       setFromLabel(from);
