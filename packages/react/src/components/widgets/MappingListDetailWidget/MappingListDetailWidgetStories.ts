@@ -6,4 +6,5 @@ export const MappingListDetailWidgetStoryArgTypes = {
 
 export const MappingListDetailWidgetStoryArgs = {
   api: "",
+  iri: "",
 } as const;
