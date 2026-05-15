@@ -1,9 +1,14 @@
 import { OlsGraphEdge, OlsGraphNode } from "../../../app/types";
+import {
+  DEFAULT_HIERARCHY_DIRECTION,
+  DEFAULT_NODE_BG_COLOR,
+  NODE_TEXT_COLOR,
+} from "./vars";
 
 export const hierarchicalConfig = {
   enabled: true,
   //@ts-ignore
-  direction: "DU",
+  direction: DEFAULT_HIERARCHY_DIRECTION,
   //@ts-ignore
   sortMethod: "directed",
 };
@@ -61,7 +66,11 @@ export class GraphNode {
   };
   label?: string;
 
-  constructor(node: OlsGraphNode, bgColor = "#455469", color = "white") {
+  constructor(
+    node: OlsGraphNode,
+    bgColor = DEFAULT_NODE_BG_COLOR,
+    color = NODE_TEXT_COLOR,
+  ) {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */

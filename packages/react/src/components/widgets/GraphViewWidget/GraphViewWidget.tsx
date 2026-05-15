@@ -1,6 +1,5 @@
 "use client";
 
-// import React from "react";
 import {
   EuiButtonIcon,
   EuiIcon,
@@ -29,6 +28,24 @@ import {
   GraphNode,
   hierarchicalConfig,
 } from "./GraphConfigs";
+import {
+  actionButtonsContainerStyle,
+  fontSizeStyle,
+  fullHeightStyle,
+  fullScreenStyle,
+  graphContainerStyle,
+  guideMeStyle,
+  legendItemStyle,
+  legendStyle,
+  margingLeftStyle,
+  nothingToAddStyle,
+  paddingStyle,
+  paddingTopStyle,
+  removeButtonStyle,
+  removeWarningMessageStyle,
+  resetButtonStyle,
+  widgetContainerStyle,
+} from "./styles";
 import { GraphFetchData, VisGraphData } from "./types";
 import {
   convertFlatListToTreeStructure,
@@ -41,6 +58,7 @@ import {
   COMMON_NODES_BG_COLOR,
   DEFAULT_CLASSNAME,
   DEFAULT_HIERARCHY_DIRECTION,
+  DEFAULT_NODE_BG_COLOR,
   EXCLUSIVE_TO_TARGET_IRI_COLOR,
   HAS_PART_EDGE_LABEL,
   NODE_TEXT_COLOR,
@@ -572,77 +590,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   }
 
-  function renderLegend() {
-    if (hideLegend || irisList) {
-      return <></>;
-    }
-    const itemStyle = {
-      width: "10px",
-      height: "10px",
-      borderRadius: "50%",
-      display: "inline-block",
-    };
-    const itemPadding = { paddingTop: "5px" };
-    return (
-      <div
-        style={{
-          position: "absolute",
-          display: "inline-block",
-          backgroundColor: "#e5e7ea",
-          padding: "5px",
-          borderRadius: "10px",
-          paddingTop: "10px",
-          bottom: "20px",
-          right: "20px",
-        }}
-      >
-        <ul style={{ padding: "5px" }}>
-          <li style={itemPadding}>
-            <div
-              style={{ backgroundColor: SOURCE_NODE_BG_COLOR, ...itemStyle }}
-            ></div>{" "}
-            Source: <i>{sourceLabel}</i>{" "}
-          </li>
-          {targetIri && (
-            <>
-              <li style={itemPadding}>
-                <div style={{ backgroundColor: "#455469", ...itemStyle }}></div>{" "}
-                Subtree exclusive to <i>{sourceLabel}</i>{" "}
-              </li>
-              <li style={itemPadding}>
-                <div
-                  style={{
-                    backgroundColor: COMMON_NODES_BG_COLOR,
-                    ...itemStyle,
-                  }}
-                ></div>{" "}
-                Common subtree{" "}
-              </li>
-              <li style={itemPadding}>
-                <div
-                  style={{
-                    backgroundColor: TARGET_NODE_BG_COLOR,
-                    ...itemStyle,
-                  }}
-                ></div>{" "}
-                Target: <i>{targetLabel}</i>{" "}
-              </li>
-              <li style={itemPadding}>
-                <div
-                  style={{
-                    backgroundColor: EXCLUSIVE_TO_TARGET_IRI_COLOR,
-                    ...itemStyle,
-                  }}
-                ></div>{" "}
-                Subtree exclusive to <i>{targetLabel}</i>{" "}
-              </li>
-            </>
-          )}
-        </ul>
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
@@ -760,22 +707,80 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
   };
 
+  function renderLegend() {
+    if (hideLegend || irisList) {
+      return <></>;
+    }
+
+    return (
+      <div style={legendStyle}>
+        <ul style={paddingStyle("5px")}>
+          <li style={{ ...paddingTopStyle("5px") }}>
+            <div
+              style={{
+                backgroundColor: SOURCE_NODE_BG_COLOR,
+                ...legendItemStyle,
+              }}
+            ></div>{" "}
+            Source: <i>{sourceLabel}</i>{" "}
+          </li>
+          {targetIri && (
+            <>
+              <li style={paddingTopStyle("5px")}>
+                <div
+                  style={{
+                    backgroundColor: DEFAULT_NODE_BG_COLOR,
+                    ...legendItemStyle,
+                  }}
+                ></div>{" "}
+                Subtree exclusive to <i>{sourceLabel}</i>{" "}
+              </li>
+              <li style={paddingTopStyle("5px")}>
+                <div
+                  style={{
+                    backgroundColor: COMMON_NODES_BG_COLOR,
+                    ...legendItemStyle,
+                  }}
+                ></div>{" "}
+                Common subtree{" "}
+              </li>
+              <li style={paddingTopStyle("5px")}>
+                <div
+                  style={{
+                    backgroundColor: TARGET_NODE_BG_COLOR,
+                    ...legendItemStyle,
+                  }}
+                ></div>{" "}
+                Target: <i>{targetLabel}</i>{" "}
+              </li>
+              <li style={paddingTopStyle("5px")}>
+                <div
+                  style={{
+                    backgroundColor: EXCLUSIVE_TO_TARGET_IRI_COLOR,
+                    ...legendItemStyle,
+                  }}
+                ></div>{" "}
+                Subtree exclusive to <i>{targetLabel}</i>{" "}
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    );
+  }
+
   return (
     <div
       className={finalClassName}
-      style={
-        !stopFullWidth
-          ? { width: "100%", height: "100vh", overflow: "hidden" }
-          : {}
-      }
+      style={!stopFullWidth ? widgetContainerStyle : {}}
       ref={fullScreenContainerRef}
     >
-      <EuiPanel style={{ height: "100vh" }} data-testid="graph-widget">
+      <EuiPanel style={fullHeightStyle} data-testid="graph-widget">
         {isError && (
           <EuiText>{getErrorMessageToDisplay(error, "graph")}</EuiText>
         )}
         <EuiPanel
-          style={{ fontSize: 12 }}
+          style={fontSizeStyle(12)}
           paddingSize="s"
           borderRadius="none"
           data-testid="graph-view"
@@ -792,7 +797,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               isOpen={isPopoverOpen}
               closePopover={closePopover}
             >
-              <EuiText style={{ width: 300, padding: 10 }}>
+              <EuiText style={guideMeStyle}>
                 <li>Expand the nodes by double clicking on them</li>
                 <li>Zoom out/in by scrolling on the graph.</li>
                 <li>
@@ -813,47 +818,28 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           )}
 
           {showNothingToAddMessage && (
-            <div
-              style={{
-                display: "inline-block",
-                backgroundColor: "#FBCBC6",
-                color: "red",
-                padding: "5px",
-                borderRadius: "10px",
-              }}
-            >
-              nothing to add
-            </div>
+            <div style={nothingToAddStyle}>nothing to add</div>
           )}
 
-          <div
-            style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
-          >
+          <div style={actionButtonsContainerStyle}>
             <button
               onClick={reset}
               aria-label="reset the graph to default view"
               title="Reset the graph to the original state."
-              style={{ textDecoration: "none", marginRight: "20px" }}
+              style={resetButtonStyle}
             >
               <EuiIcon type="refresh" />
             </button>
             <button
               onClick={removeNodeFromGraph}
-              style={{ marginRight: "20px", color: "red" }}
+              style={removeButtonStyle}
               title="Remove node"
               aria-label="remove the selected node from graph"
             >
               <EuiIcon type="cut" />
             </button>
             {showNodeNotSelectedMessage && (
-              <EuiTextColor
-                color="red"
-                style={{
-                  marginTop: "10px",
-                  marginRight: "10px",
-                  marginLeft: "-10px",
-                }}
-              >
+              <EuiTextColor color="red" style={removeWarningMessageStyle}>
                 Please select a node to remove
               </EuiTextColor>
             )}
@@ -866,7 +852,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             </button>
             <button
               onClick={runFullScreen}
-              style={{ marginLeft: "20px" }}
+              style={margingLeftStyle("20px")}
               title={!isFullScreen ? "Fullscreen mode" : "Exit fullscreen mode"}
               aria-label={
                 !isFullScreen ? "go to fullscreen mode" : "exit fullscreen mode"
@@ -885,34 +871,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <div
           ref={container}
           className="graph-container"
-          style={
-            !stopFullWidth
-              ? { width: "100%", height: "100vh", margin: "auto" }
-              : {}
-          }
+          style={!stopFullWidth ? graphContainerStyle : {}}
         />
-
-        <div
-          style={{
-            position: "absolute",
-            display: "inline-block",
-            backgroundColor: "#e5e7ea",
-            padding: "5px",
-            borderRadius: "10px",
-            paddingTop: "10px",
-            bottom: "20px",
-            right: "20px",
-          }}
-        ></div>
         {renderLegend()}
 
         {/*the default background color for the reqeustFullscreen browser API is black. so we need this to keep it white. */}
-        <style>{`
-        .graph-container:fullscreen,
-        .graph-container::backdrop {
-          background-color: white;
-        }
-      `}</style>
+        <style>{fullScreenStyle}</style>
       </EuiPanel>
     </div>
   );

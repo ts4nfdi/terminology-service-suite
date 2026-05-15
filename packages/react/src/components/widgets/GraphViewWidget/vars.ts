@@ -6,6 +6,7 @@ export const SUBCLASS_OF_URIS = [
 ];
 export const HAS_PART_EDGE_LABEL = "has part";
 export const DEFAULT_CLASSNAME = "ts4nfdi-graph-style";
+export const DEFAULT_NODE_BG_COLOR = "#455469";
 export const SOURCE_NODE_BG_COLOR = "#139ec4";
 export const EXCLUSIVE_TO_TARGET_IRI_COLOR = "#708238";
 export const TARGET_NODE_BG_COLOR = "#00a86b";
