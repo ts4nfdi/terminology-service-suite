@@ -84,7 +84,7 @@ export async function fetchMultiIriHierarchyModeData(
 
   return {
     treeData: hierarchyData.flatMap((data) => data.treeData ?? []),
-    termRelations: {nodes: [], edges: []}
+    termRelations: { nodes: [], edges: [] },
   } as GraphFetchData;
 }
 

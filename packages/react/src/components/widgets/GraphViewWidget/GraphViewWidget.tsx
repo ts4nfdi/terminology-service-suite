@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import {
   EuiButton,
   EuiButtonEmpty,
@@ -208,7 +207,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       (firstLoad || dbclicked) &&
       shouldUseHierarchyLayout
     ) {
-
       gData = convertToOlsGraphFormat(
         data.treeData,
         data.termRelations,
@@ -700,8 +698,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       setCounter(counter + 1);
     }
   }, [props.targetIri]);
-
-
 
   useEffect(() => {
     if (shouldUseHierarchyLayout) {

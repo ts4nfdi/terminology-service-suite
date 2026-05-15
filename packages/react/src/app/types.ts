@@ -513,8 +513,8 @@ export type OnNavigateToEntity = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToEntity?:
-  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-  | string;
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToOntology = {
@@ -530,8 +530,8 @@ export type OnNavigateToOntology = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToOntology?:
-  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-  | string;
+    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -546,8 +546,8 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-  | ((entityType: string, entity?: EntityData) => void)
-  | string;
+    | ((entityType: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -813,8 +813,8 @@ export type GraphViewWidgetProps = ApiObj &
     irisList?: string[];
 
     /**
-      * The direction of the hierarchy. It is used on the hierarchy mode and the irisList mode. The default value is "DU".
-      */
+     * The direction of the hierarchy. It is used on the hierarchy mode and the irisList mode. The default value is "DU".
+     */
     hierarchyDirection?: "LR" | "RL" | "DU" | "UD";
 
     /**
