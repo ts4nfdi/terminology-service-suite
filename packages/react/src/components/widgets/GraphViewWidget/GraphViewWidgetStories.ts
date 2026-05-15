@@ -102,7 +102,7 @@ export const ChebiCaffeineHierarchyArgs = {
 
 export const ChebiMultiIriHierarchyArgs = {
   api: globals.EBI_API_ENDPOINT,
-  iri: [
+  irisList: [
     "http://purl.obolibrary.org/obo/CHEBI_30242",
     "http://purl.obolibrary.org/obo/CHEBI_29874",
     "http://purl.obolibrary.org/obo/CHEBI_29416",
@@ -110,6 +110,7 @@ export const ChebiMultiIriHierarchyArgs = {
   ontologyId: "chebi",
   rootWalk: true,
   hierarchy: true,
+  hierarchyDirection: "LR",
 };
 
 export const WithOnNodeDoubleClickCallbackArgs = {

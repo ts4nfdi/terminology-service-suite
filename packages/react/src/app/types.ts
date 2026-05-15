@@ -513,8 +513,8 @@ export type OnNavigateToEntity = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToEntity?:
-    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-    | string;
+  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigateToOntology = {
@@ -530,8 +530,8 @@ export type OnNavigateToOntology = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToOntology?:
-    | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
-    | string;
+  | ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigateToDisambiguate = {
@@ -546,8 +546,8 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+  | ((entityType: string, entity?: EntityData) => void)
+  | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -803,9 +803,19 @@ export type GraphViewWidgetProps = ApiObj &
   CssClassNameObj &
   ParameterObj & {
     /**
-     * Entity IRI or IRIs whose graph hierarchy should be rendered.
+     * The Iri of the term to show in the graph.
      */
-    iri: string | string[];
+    iri: string;
+
+    /**
+     * The list of Iris of the terms to show in the graph. The graph renders in the hierarchy mode in this case.
+     */
+    irisList?: string[];
+
+    /**
+      * The direction of the hierarchy. It is used on the hierarchy mode and the irisList mode. The default value is "DU".
+      */
+    hierarchyDirection?: "LR" | "RL" | "DU" | "UD";
 
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.

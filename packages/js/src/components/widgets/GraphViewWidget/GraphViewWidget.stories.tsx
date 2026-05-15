@@ -50,12 +50,14 @@ const meta: Meta<GraphViewWidgetProps> = {
 <script type="text/javascript">
 window['ts4nfdiWidgets'].createGraphView(
     {
-        iri:${JSON.stringify(args.iri)},
+        iri:${args.iri},
+        irisList:${JSON.stringify(args.irisList)},
         ontologyId:"${args.ontologyId}",
         api:"${args.api}",                
         rootWalk: ${args.rootWalk},
         className:${args.className},
         hierarchy: ${args.hierarchy},
+        hierarchyDirection: "${args.hierarchyDirection}",
         targetIri: "${args.targetIri}",
         onNodeClick: ${args.onNodeClick},
         edgeLabel: ${args.edgeLabel},
