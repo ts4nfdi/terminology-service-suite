@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   EuiButtonIcon,
   EuiIcon,
@@ -638,6 +639,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       return;
     }
     let graphData = { nodes: nodes.current, edges: edges.current };
+    if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
+      hierarchicalConfig["direction"] = hierarchyDirection;
+    } else {
+      hierarchicalConfig["direction"] = "DU";
+    }
+    if (shouldUseHierarchyLayout) {
+      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
+    } else {
+      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
+    }
     let config = JSON.parse(JSON.stringify(graphNetworkConfig));
     graphNetwork.current = new Network(
       //@ts-ignore
@@ -645,11 +656,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphData,
       config,
     );
-    if (shouldUseHierarchyLayout) {
-      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
-    } else {
-      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
-    }
 
     // Stop physics after the initial layout so users can freely move nodes
     //@ts-ignore
@@ -662,7 +668,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
-      graphNetwork.current.on("click", function (params) {
+      graphNetwork.current.on("click", function(params) {
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -670,7 +676,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
       //@ts-ignore
-      graphNetwork.current.on("doubleClick", function (params) {
+      graphNetwork.current.on("doubleClick", function(params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
@@ -704,9 +710,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }, [props.targetIri]);
 
   useEffect(() => {
-    if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
-      hierarchicalConfig["direction"] = hierarchyDirection;
-    }
     setCounter(Math.floor(Math.random() * 100));
   }, [shouldUseHierarchyLayout, hierarchyDirection]);
 

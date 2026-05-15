@@ -48,7 +48,6 @@ export const HIERARCHY_WIDGET_DEFAULT_VALUES = {
   COLOR_UNION: "#ff991c",
   COLOR_A: "#139ec4",
   COLOR_B: "#5000C0",
-  HIERARCHY_DIRECTION: "DU",
 } as const;
 
 export class OlsHierarchyApi implements HierarchyBuilder {
@@ -60,9 +59,9 @@ export class OlsHierarchyApi implements HierarchyBuilder {
     this.axiosInstance =
       typeof api === "string"
         ? axios.create({
-            baseURL: api,
-            headers: { Accept: "application/json" },
-          })
+          baseURL: api,
+          headers: { Accept: "application/json" },
+        })
         : api;
     this.entityService = new OlsEntityApi(this.axiosInstance);
     this.ontologyService = new OlsOntologyApi(this.axiosInstance);
@@ -610,8 +609,8 @@ export class OlsHierarchyApi implements HierarchyBuilder {
                         childRelationToParent:
                           parRelation.length > 0 && parRelation[0].getMetadata()
                             ? parRelation[0].getMetadata()[
-                                "childRelationToParent"
-                              ]
+                            "childRelationToParent"
+                            ]
                             : undefined,
                       });
                     } // should have exactly one element
