@@ -1,5 +1,6 @@
 "use client";
 
+// import React from "react";
 import {
   EuiButtonIcon,
   EuiIcon,
@@ -36,13 +37,20 @@ import {
   fetchNormalModeData,
   fetchRootWalkModeData,
 } from "./utils";
+import {
+  ValidDirections,
+  SUBCLASS_OF_URIS,
+  HAS_PART_EDGE_LABEL,
+  DEFAULT_CLASSNAME,
+  SOURCE_NODE_BG_COLOR,
+  EXCLUSIVE_TO_TARGET_IRI_COLOR,
+  TARGET_NODE_BG_COLOR,
+  COMMON_NODES_BG_COLOR,
+  NODE_TEXT_COLOR,
+  DEFAULT_HIERARCHY_DIRECTION,
+} from "./vars";
 
-const SUBCLASS_OF_URIS = [
-  "http://www.w3.org/2000/01/rdf-schema#subClassOf",
-  "hierarchicalParent",
-  "directParent",
-];
-const HAS_PART_EDGE_LABEL = "has part";
+
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const {
@@ -63,7 +71,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   } = props;
 
   const shouldUseHierarchyLayout = !!(hierarchy || irisList);
-  const ValidDirections = ["LR", "RL", "DU", "UD"];
   if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
     hierarchicalConfig["direction"] = hierarchyDirection;
   }
@@ -102,18 +109,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const [sourceLabel, setSourceLabel] = useState<string>(""); // main node label
   const [targetLabel, setTargetLabel] = useState<string>(""); // target node label (comparison)
 
-  const finalClassName = className || "ts4nfdi-graph-style";
+  const finalClassName = className || DEFAULT_CLASSNAME;
   const subClassEdgeLabel =
     !edgeLabel || edgeLabel === "undefined" ? "is a" : edgeLabel;
   const onNodeClickCallbackIdProvided =
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("actionHandler");
 
-  const sourceNodeBgColor = "#139ec4";
-  const exclusiveToTargetIriColor = "#708238";
-  const targetNodeBgColor = "#00a86b";
-  const commonNodesBgColor = "#ff991c";
-  const nodeTextColor = "white";
+
 
   const fetchQueryKey = irisList ? irisList.join("|") : iri;
   const { data, isLoading, isError, error } = useQuery(
@@ -252,7 +255,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
       for (let n of exclusiveTotargetIriNodes) {
-        addNewNodeToGraph(n, false, exclusiveToTargetIriColor, nodeTextColor);
+        addNewNodeToGraph(n, false, EXCLUSIVE_TO_TARGET_IRI_COLOR, NODE_TEXT_COLOR);
       }
     }
     if (originalNodeCount === nodes.current.length) {
@@ -301,35 +304,35 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       // default node color.
       gNode = new GraphNode(
         (node = node),
-        exclusiveToTargetIriColor,
-        nodeTextColor,
+        EXCLUSIVE_TO_TARGET_IRI_COLOR,
+        NODE_TEXT_COLOR,
       );
     }
     //@ts-ignore
     if (!nodes.current.get(gNode.id)) {
       if (!irisList && gNode.id === iri) {
         setSourceLabel(gNode.label ?? "");
-        gNode.color.background = sourceNodeBgColor;
-        gNode.font.color = nodeTextColor;
+        gNode.color.background = SOURCE_NODE_BG_COLOR;
+        gNode.font.color = NODE_TEXT_COLOR;
       } else if (!irisList && targetIri && gNode.id === targetIri) {
         setTargetLabel(gNode.label ?? "");
-        gNode.color.background = targetNodeBgColor;
-        gNode.font.color = nodeTextColor;
+        gNode.color.background = TARGET_NODE_BG_COLOR;
+        gNode.font.color = NODE_TEXT_COLOR;
       } else if (nodeColorMap.current.get(gNode.id!)) {
         gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
       } else if (
         dbclicked &&
         dbClickedColor.bgColor &&
-        dbClickedColor.bgColor !== sourceNodeBgColor
+        dbClickedColor.bgColor !== SOURCE_NODE_BG_COLOR
       ) {
         gNode.color.background = dbClickedColor.bgColor;
-        gNode.font.color = nodeTextColor;
+        gNode.font.color = NODE_TEXT_COLOR;
       }
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
       //@ts-ignore
       nodes.current.add(gNode);
     } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
-      gNode = new GraphNode((node = node), commonNodesBgColor);
+      gNode = new GraphNode((node = node), COMMON_NODES_BG_COLOR);
       //@ts-ignore
       nodes.current.remove(gNode.id);
       nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
@@ -379,8 +382,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           addNewNodeToGraph(
             gnode,
             true,
-            exclusiveToTargetIriColor,
-            nodeTextColor,
+            EXCLUSIVE_TO_TARGET_IRI_COLOR,
+            NODE_TEXT_COLOR,
           );
         } else {
           // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
@@ -390,8 +393,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           addNewNodeToGraph(
             gnode,
             false,
-            exclusiveToTargetIriColor,
-            nodeTextColor,
+            EXCLUSIVE_TO_TARGET_IRI_COLOR,
+            NODE_TEXT_COLOR,
           );
           if (!leftOverNodesFromtargetIri.find((n) => n.iri === gnode.iri)) {
             leftOverNodesFromtargetIri.push(gnode);
@@ -449,8 +452,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let bgColor = "";
     let color = "";
     if (isTargetNode) {
-      bgColor = exclusiveToTargetIriColor;
-      color = nodeTextColor;
+      bgColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
+      color = NODE_TEXT_COLOR;
     }
     let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
       nodes: [],
@@ -595,7 +598,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         <ul style={{ padding: "5px" }}>
           <li style={itemPadding}>
             <div
-              style={{ backgroundColor: sourceNodeBgColor, ...itemStyle }}
+              style={{ backgroundColor: SOURCE_NODE_BG_COLOR, ...itemStyle }}
             ></div>{" "}
             Source: <i>{sourceLabel}</i>{" "}
           </li>
@@ -607,20 +610,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: commonNodesBgColor, ...itemStyle }}
+                  style={{ backgroundColor: COMMON_NODES_BG_COLOR, ...itemStyle }}
                 ></div>{" "}
                 Common subtree{" "}
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: targetNodeBgColor, ...itemStyle }}
+                  style={{ backgroundColor: TARGET_NODE_BG_COLOR, ...itemStyle }}
                 ></div>{" "}
                 Target: <i>{targetLabel}</i>{" "}
               </li>
               <li style={itemPadding}>
                 <div
                   style={{
-                    backgroundColor: exclusiveToTargetIriColor,
+                    backgroundColor: EXCLUSIVE_TO_TARGET_IRI_COLOR,
                     ...itemStyle,
                   }}
                 ></div>{" "}
@@ -641,7 +644,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
       hierarchicalConfig["direction"] = hierarchyDirection;
     } else {
-      hierarchicalConfig["direction"] = "DU";
+      hierarchicalConfig["direction"] = DEFAULT_HIERARCHY_DIRECTION;
     }
     if (shouldUseHierarchyLayout) {
       graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
@@ -667,7 +670,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
-      graphNetwork.current.on("click", function (params) {
+      graphNetwork.current.on("click", function(params) {
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -675,7 +678,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
       //@ts-ignore
-      graphNetwork.current.on("doubleClick", function (params) {
+      graphNetwork.current.on("doubleClick", function(params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
