@@ -12,6 +12,8 @@ import {
   ontologyIdReqArgType,
   rootWalkArgType,
   targetIriArgType,
+  irisListArgType,
+  hierarchyDirectionArgType
 } from "../../../stories/storyArgs";
 
 export const GraphViewWidgetStoryArgTypes = {
@@ -26,9 +28,11 @@ export const GraphViewWidgetStoryArgTypes = {
     },
     control: { type: "object" } as const,
   },
+  ...irisListArgType,
   ...ontologyIdReqArgType,
   ...rootWalkArgType,
   ...hierarchyArgType,
+  ...hierarchyDirectionArgType,
   ...classNameArgType,
   ...targetIriArgType,
   ...edgeLabelArgType,

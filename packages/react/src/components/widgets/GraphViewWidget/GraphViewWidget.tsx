@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import {
   EuiButton,
-  EuiButtonEmpty,
+  EuiButtonIcon,
   EuiIcon,
   EuiLoadingSpinner,
   EuiPanel,
@@ -524,7 +525,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setSelectedIri(iri);
     setFirstLoad(true);
     setDbclicked(false);
-    setCounter(counter + 1);
+    setCounter(Math.floor(Math.random() * 100));
   }
 
   function removeNodeFromGraph() {
@@ -646,6 +647,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       graphData,
       config,
     );
+    if (shouldUseHierarchyLayout) {
+      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
+    } else {
+      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
+    }
 
     // Stop physics after the initial layout so users can freely move nodes
     //@ts-ignore
@@ -658,7 +664,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
-      graphNetwork.current.on("click", function (params) {
+      graphNetwork.current.on("click", function(params) {
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -666,7 +672,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
       //@ts-ignore
-      graphNetwork.current.on("doubleClick", function (params) {
+      graphNetwork.current.on("doubleClick", function(params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
@@ -695,17 +701,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       edges.current.clear();
       setTargetIri(props.targetIri);
       setFirstLoad(true);
-      setCounter(counter + 1);
+      setCounter(Math.floor(Math.random() * 100));
     }
   }, [props.targetIri]);
 
   useEffect(() => {
-    if (shouldUseHierarchyLayout) {
-      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
-    } else {
-      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
+    if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
+      hierarchicalConfig["direction"] = hierarchyDirection;
     }
-    setCounter(counter + 1);
+    setCounter(Math.floor(Math.random() * 100));
   }, [shouldUseHierarchyLayout, hierarchyDirection]);
 
   useEffect(() => {
@@ -734,12 +738,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
-
-  const GuideMeBtn = (
-    <EuiButtonEmpty iconType="info" iconSide="right" onClick={onButtonClick}>
-      Guide me
-    </EuiButtonEmpty>
-  );
 
   const runFullScreen = () => {
     if (document.fullscreenElement) {
@@ -772,18 +770,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           borderRadius="none"
           data-testid="graph-view"
         >
-          <EuiButton
-            size="s"
-            onClick={reset}
-            aria-label="reset the graph to default view"
-            title="Reset the graph to the original state."
-            style={{ textDecoration: "none" }}
-          >
-            Reset
-          </EuiButton>
+
           {!isFullScreen && (
             <EuiPopover
-              button={GuideMeBtn}
+              button={<EuiButtonIcon iconType="questionInCircle" onClick={onButtonClick} size="m" />}
               isOpen={isPopoverOpen}
               closePopover={closePopover}
             >
@@ -824,6 +814,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           <div
             style={{ display: "inline-flex", float: "right", paddingTop: 10 }}
           >
+            <button
+              onClick={reset}
+              aria-label="reset the graph to default view"
+              title="Reset the graph to the original state."
+              style={{ textDecoration: "none", marginRight: "20px" }}
+            >
+              <EuiIcon type="refresh" />
+            </button>
             <button
               onClick={removeNodeFromGraph}
               style={{ marginRight: "20px", color: "red" }}
