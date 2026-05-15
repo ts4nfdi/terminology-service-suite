@@ -59,9 +59,9 @@ export class OlsHierarchyApi implements HierarchyBuilder {
     this.axiosInstance =
       typeof api === "string"
         ? axios.create({
-          baseURL: api,
-          headers: { Accept: "application/json" },
-        })
+            baseURL: api,
+            headers: { Accept: "application/json" },
+          })
         : api;
     this.entityService = new OlsEntityApi(this.axiosInstance);
     this.ontologyService = new OlsOntologyApi(this.axiosInstance);
@@ -609,8 +609,8 @@ export class OlsHierarchyApi implements HierarchyBuilder {
                         childRelationToParent:
                           parRelation.length > 0 && parRelation[0].getMetadata()
                             ? parRelation[0].getMetadata()[
-                            "childRelationToParent"
-                            ]
+                                "childRelationToParent"
+                              ]
                             : undefined,
                       });
                     } // should have exactly one element
