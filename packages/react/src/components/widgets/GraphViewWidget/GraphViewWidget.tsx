@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
 import {
-  EuiButton,
   EuiButtonIcon,
   EuiIcon,
   EuiLoadingSpinner,
@@ -664,7 +662,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
-      graphNetwork.current.on("click", function(params) {
+      graphNetwork.current.on("click", function (params) {
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -672,7 +670,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
       //@ts-ignore
-      graphNetwork.current.on("doubleClick", function(params) {
+      graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
@@ -770,10 +768,15 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           borderRadius="none"
           data-testid="graph-view"
         >
-
           {!isFullScreen && (
             <EuiPopover
-              button={<EuiButtonIcon iconType="questionInCircle" onClick={onButtonClick} size="m" />}
+              button={
+                <EuiButtonIcon
+                  iconType="questionInCircle"
+                  onClick={onButtonClick}
+                  size="m"
+                />
+              }
               isOpen={isPopoverOpen}
               closePopover={closePopover}
             >

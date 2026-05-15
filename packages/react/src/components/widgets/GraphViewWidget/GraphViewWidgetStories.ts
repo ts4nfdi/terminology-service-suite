@@ -5,15 +5,15 @@ import {
   classNameArgType,
   edgeLabelArgType,
   hierarchyArgType,
+  hierarchyDirectionArgType,
   hrefArgType,
   iriArgType,
+  irisListArgType,
   onNavigateToArgType,
   onNodeClickArgType,
   ontologyIdReqArgType,
   rootWalkArgType,
   targetIriArgType,
-  irisListArgType,
-  hierarchyDirectionArgType
 } from "../../../stories/storyArgs";
 
 export const GraphViewWidgetStoryArgTypes = {
