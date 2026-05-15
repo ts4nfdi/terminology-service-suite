@@ -38,19 +38,17 @@ import {
   fetchRootWalkModeData,
 } from "./utils";
 import {
-  ValidDirections,
-  SUBCLASS_OF_URIS,
-  HAS_PART_EDGE_LABEL,
-  DEFAULT_CLASSNAME,
-  SOURCE_NODE_BG_COLOR,
-  EXCLUSIVE_TO_TARGET_IRI_COLOR,
-  TARGET_NODE_BG_COLOR,
   COMMON_NODES_BG_COLOR,
-  NODE_TEXT_COLOR,
+  DEFAULT_CLASSNAME,
   DEFAULT_HIERARCHY_DIRECTION,
+  EXCLUSIVE_TO_TARGET_IRI_COLOR,
+  HAS_PART_EDGE_LABEL,
+  NODE_TEXT_COLOR,
+  SOURCE_NODE_BG_COLOR,
+  SUBCLASS_OF_URIS,
+  TARGET_NODE_BG_COLOR,
+  ValidDirections,
 } from "./vars";
-
-
 
 function GraphViewWidget(props: GraphViewWidgetProps) {
   const {
@@ -115,8 +113,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const onNodeClickCallbackIdProvided =
     typeof onNodeClick === "function" &&
     !onNodeClick.name.includes("actionHandler");
-
-
 
   const fetchQueryKey = irisList ? irisList.join("|") : iri;
   const { data, isLoading, isError, error } = useQuery(
@@ -255,7 +251,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
       for (let n of exclusiveTotargetIriNodes) {
-        addNewNodeToGraph(n, false, EXCLUSIVE_TO_TARGET_IRI_COLOR, NODE_TEXT_COLOR);
+        addNewNodeToGraph(
+          n,
+          false,
+          EXCLUSIVE_TO_TARGET_IRI_COLOR,
+          NODE_TEXT_COLOR,
+        );
       }
     }
     if (originalNodeCount === nodes.current.length) {
@@ -610,13 +611,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: COMMON_NODES_BG_COLOR, ...itemStyle }}
+                  style={{
+                    backgroundColor: COMMON_NODES_BG_COLOR,
+                    ...itemStyle,
+                  }}
                 ></div>{" "}
                 Common subtree{" "}
               </li>
               <li style={itemPadding}>
                 <div
-                  style={{ backgroundColor: TARGET_NODE_BG_COLOR, ...itemStyle }}
+                  style={{
+                    backgroundColor: TARGET_NODE_BG_COLOR,
+                    ...itemStyle,
+                  }}
                 ></div>{" "}
                 Target: <i>{targetLabel}</i>{" "}
               </li>
@@ -670,7 +677,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
-      graphNetwork.current.on("click", function(params) {
+      graphNetwork.current.on("click", function (params) {
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -678,7 +685,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       });
       //@ts-ignore
-      graphNetwork.current.on("doubleClick", function(params) {
+      graphNetwork.current.on("doubleClick", function (params) {
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
