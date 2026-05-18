@@ -38,7 +38,7 @@
     "react-dom": "^18.3",
     "react-query": "^3.39.2",
     "react-router": "^6.3.0",
-    "three": "^0.172.0",
+    "three": "^0.182.0",
     "vis-data": "^7.1.9",
     "vis-network": "^9.1.9"
   },
