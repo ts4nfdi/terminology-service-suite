@@ -46,7 +46,7 @@ import {
   resetButtonStyle,
   widgetContainerStyle,
 } from "./styles";
-import { GraphFetchData, VisGraphData } from "./types";
+import { GraphFetchData, VisGraphData, VisGraphNode } from "./types";
 import {
   convertFlatListToTreeStructure,
   fetchHierarchyModeData,
@@ -63,6 +63,7 @@ import {
   HAS_PART_EDGE_LABEL,
   NODE_TEXT_COLOR,
   SOURCE_NODE_BG_COLOR,
+  SUBCLASS_OF_EDGE_LABEL,
   SUBCLASS_OF_URIS,
   TARGET_NODE_BG_COLOR,
   ValidDirections,
@@ -105,6 +106,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     nodes: [],
     edges: [],
   });
+
+  // for storing the rendered graph nodes and edges. used for adding the nodes and edges to the network.
+  const [renderedGraphNodes, setRenderedGraphNodes] = useState<GraphNode[]>([]);
+  const [renderedGraphEdges, setRenderedGraphEdges] = useState<GraphEdge[]>([]);
 
   // track the node that is clicked
   const [clickedNodeIri, setClickedNodeIri] = useState<string>("");
@@ -193,8 +198,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     },
   );
 
-  const nodes = useRef(new DataSet([]));
-  const edges = useRef(new DataSet([]));
+  const networkNodes = useRef(new DataSet([]));
+  const networkEdges = useRef(new DataSet([]));
   const graphNetwork = useRef({});
   const container = useRef(null);
   const fullScreenContainerRef = useRef(null);
@@ -251,11 +256,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addTermRelationsNodesToGraph(graphData: GraphFetchData) {
-    let originalNodeCount = nodes.current.length;
-    for (let n of graphData.termRelations?.nodes ?? []) {
-      addNewNodeToGraph(n);
-    }
-    let exclusiveTotargetIriNodes: OlsGraphNode[] = [];
+    let originalNodeCount = networkNodes.current.length;
+    addAllGraphNodesToVisNetwork(graphData.termRelations?.nodes ?? []);
+    let exclusiveTotargetIriNodes: VisGraphNode[] = [];
+    let graphNodes: VisGraphNode[] = [];
     if (graphData.targetTermRelations) {
       for (let sn of graphData.targetTermRelations.nodes) {
         if (
@@ -263,21 +267,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             (n: OlsGraphNode) => n.iri === sn.iri,
           )
         ) {
-          addNewNodeToGraph(sn, true);
+          sn.isCommon = true;
+          graphNodes.push(sn);
         } else {
+          sn.isCommon = false;
+          sn.backgroundColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
+          sn.color = NODE_TEXT_COLOR;
+          graphNodes.push(sn);
           exclusiveTotargetIriNodes.push(sn);
         }
       }
-      for (let n of exclusiveTotargetIriNodes) {
-        addNewNodeToGraph(
-          n,
-          false,
-          EXCLUSIVE_TO_TARGET_IRI_COLOR,
-          NODE_TEXT_COLOR,
-        );
-      }
     }
-    if (originalNodeCount === nodes.current.length) {
+    addAllGraphNodesToVisNetwork(graphNodes);
+    if (originalNodeCount === networkNodes.current.length) {
       setShowNothingToAddMessage(true);
     }
     return [
@@ -287,12 +289,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addTermRelationsEdgesToGraph(graphData: GraphFetchData) {
+    let graphEdges: OlsGraphEdge[] = [];
     for (let e of graphData.termRelations?.edges ?? []) {
-      if (!SUBCLASS_OF_URIS.includes(e.uri)) {
-        addNewEdgeToGraph(e, e.label);
+      if (!SUBCLASS_OF_URIS.includes(e.uri!)) {
+        graphEdges.push(e);
         continue;
       }
-      addNewEdgeToGraph(e);
+      e.label = SUBCLASS_OF_EDGE_LABEL;
+      graphEdges.push(e);
     }
     let targetEdges: OlsGraphEdge[] = [];
     if (graphData.targetTermRelations?.edges) {
@@ -303,77 +307,83 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
               e.source === se.source && e.target === se.target,
           )
         ) {
-          addNewEdgeToGraph(se);
+          graphEdges.push(se);
           targetEdges.push(se);
         }
       }
     }
+    addAllGraphEdgesToVisNetwork(graphEdges);
     return [...(graphData.termRelations?.edges ?? []), ...targetEdges];
   }
 
-  function addNewNodeToGraph(
-    node: OlsGraphNode,
-    isCommon = false,
-    bgColor = "",
-    color = "",
-  ) {
-    let gNode = new GraphNode((node = node));
-    if (bgColor && color) {
-      // if these colors exist, we are rendering the target iri for comparison. so color has to be different from the
-      // default node color.
-      gNode = new GraphNode(
-        (node = node),
-        EXCLUSIVE_TO_TARGET_IRI_COLOR,
-        NODE_TEXT_COLOR,
-      );
+  function addAllGraphNodesToVisNetwork(nodes: VisGraphNode[]) {
+    let graphNodes: GraphNode[] = [...renderedGraphNodes];
+    for (let node of nodes) {
+      let gNode = new GraphNode((node = node));
+      if (node.backgroundColor && node.color) {
+        // if these colors exist, we are rendering the target iri for comparison. so color has to be different from the
+        // default node color.
+        gNode = new GraphNode(
+          (node = node),
+          EXCLUSIVE_TO_TARGET_IRI_COLOR,
+          NODE_TEXT_COLOR,
+        );
+      }
+      if (!graphNodes.find((n) => n.id === gNode.id)) {
+        if (!irisList && gNode.id === iri) {
+          setSourceLabel(gNode.label ?? "");
+          gNode.color.background = SOURCE_NODE_BG_COLOR;
+          gNode.font.color = NODE_TEXT_COLOR;
+        } else if (!irisList && targetIri && gNode.id === targetIri) {
+          setTargetLabel(gNode.label ?? "");
+          gNode.color.background = TARGET_NODE_BG_COLOR;
+          gNode.font.color = NODE_TEXT_COLOR;
+        } else if (nodeColorMap.current.get(gNode.id!)) {
+          gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
+        } else if (
+          dbclicked &&
+          dbClickedColor.bgColor &&
+          dbClickedColor.bgColor !== SOURCE_NODE_BG_COLOR
+        ) {
+          gNode.color.background = dbClickedColor.bgColor;
+          gNode.font.color = NODE_TEXT_COLOR;
+        }
+        nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
+        graphNodes.push(gNode);
+      } else if (node.isCommon && gNode.id !== iri && gNode.id !== targetIri) {
+        gNode = new GraphNode((node = node), COMMON_NODES_BG_COLOR);
+        let gNodeIndex = graphNodes.findIndex((n) => n.id === gNode.id);
+        if (gNodeIndex !== -1) {
+          graphNodes.splice(gNodeIndex, 1);
+        }
+        nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
+        graphNodes.push(gNode);
+      }
     }
     //@ts-ignore
-    if (!nodes.current.get(gNode.id)) {
-      if (!irisList && gNode.id === iri) {
-        setSourceLabel(gNode.label ?? "");
-        gNode.color.background = SOURCE_NODE_BG_COLOR;
-        gNode.font.color = NODE_TEXT_COLOR;
-      } else if (!irisList && targetIri && gNode.id === targetIri) {
-        setTargetLabel(gNode.label ?? "");
-        gNode.color.background = TARGET_NODE_BG_COLOR;
-        gNode.font.color = NODE_TEXT_COLOR;
-      } else if (nodeColorMap.current.get(gNode.id!)) {
-        gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
-      } else if (
-        dbclicked &&
-        dbClickedColor.bgColor &&
-        dbClickedColor.bgColor !== SOURCE_NODE_BG_COLOR
-      ) {
-        gNode.color.background = dbClickedColor.bgColor;
-        gNode.font.color = NODE_TEXT_COLOR;
-      }
-      nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
-      //@ts-ignore
-      nodes.current.add(gNode);
-    } else if (isCommon && gNode.id !== iri && gNode.id !== targetIri) {
-      gNode = new GraphNode((node = node), COMMON_NODES_BG_COLOR);
-      //@ts-ignore
-      nodes.current.remove(gNode.id);
-      nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
-      //@ts-ignore
-      nodes.current.add(gNode);
-    }
+    networkNodes.current.update(graphNodes);
+    setRenderedGraphNodes(graphNodes);
+    return true;
   }
 
-  function addNewEdgeToGraph(edge: OlsGraphEdge, label = subClassEdgeLabel) {
-    let gEdge = new GraphEdge((edge = edge), label);
-    let dashed =
-      SUBCLASS_OF_URIS.includes(edge.uri ?? "") || rootWalk ? false : true;
-    gEdge.dashes = dashed;
-    //@ts-ignore
-    if (!edges.current.get(gEdge.id)) {
-      if (!irisList && gEdge.id?.includes(iri) && rootWalk) {
-        //@ts-ignore
-        gEdge.color.color = "black";
+  function addAllGraphEdgesToVisNetwork(edges: OlsGraphEdge[]) {
+    let graphEdges: GraphEdge[] = [...renderedGraphEdges];
+    for (let edge of edges) {
+      let gEdge = new GraphEdge((edge = edge), edge.label);
+      let dashed =
+        SUBCLASS_OF_URIS.includes(edge.uri ?? "") || rootWalk ? false : true;
+      gEdge.dashes = dashed;
+      if (!graphEdges.find((e) => e.id === gEdge.id)) {
+        if (!irisList && gEdge.id?.includes(iri) && rootWalk) {
+          //@ts-ignore
+          gEdge.color.color = "black";
+        }
+        graphEdges.push(gEdge);
       }
-      //@ts-ignore
-      edges.current.add(gEdge);
     }
+    //@ts-ignore
+    networkEdges.current.add(graphEdges);
+    setRenderedGraphEdges(graphEdges);
   }
 
   function addTreeDataToGraphData(
@@ -385,36 +395,40 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let layerq: JSTreeNode[] = [];
     let height = 1;
     let leftOverNodesFromtargetIri: OlsGraphNode[] = [];
-    let originalGraphNodesCount = nodes.current.length;
+    let originalGraphNodesCount = networkNodes.current.length;
     while (true) {
       let node = q[0];
       q = q.slice(1);
-      let gnode = { iri: node.iri, label: node.text, level: height };
+      let gnode: VisGraphNode = {
+        iri: node.iri,
+        label: node.text,
+        level: height,
+      };
       if (!istargetIri) {
-        if (!graphData.nodes.find((n) => n.iri === gnode.iri)) {
+        let existingNode = graphData.nodes.find((n) => n.iri === gnode.iri);
+        if (!existingNode) {
           graphData.nodes.push(gnode);
+        } else {
+          // remove the existing node from the nodes map. This because the node height has to be updated.
+          networkNodes.current.remove(existingNode.iri as string);
+          existingNode.level = height;
         }
-        addNewNodeToGraph(gnode);
       } else {
-        if (graphData.nodes.find((n) => n.iri === gnode.iri)) {
+        let existingNode = graphData.nodes.find((n) => n.iri === gnode.iri);
+        if (existingNode) {
           // in this case, the node is a common node: needs a common node color
-          addNewNodeToGraph(
-            gnode,
-            true,
-            EXCLUSIVE_TO_TARGET_IRI_COLOR,
-            NODE_TEXT_COLOR,
-          );
+          existingNode.isCommon = true;
+          existingNode.backgroundColor = COMMON_NODES_BG_COLOR;
+          existingNode.color = NODE_TEXT_COLOR;
         } else {
           // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
           // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
           // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in
           // detecting the common nodes
-          addNewNodeToGraph(
-            gnode,
-            false,
-            EXCLUSIVE_TO_TARGET_IRI_COLOR,
-            NODE_TEXT_COLOR,
-          );
+          gnode.isCommon = false;
+          gnode.backgroundColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
+          gnode.color = NODE_TEXT_COLOR;
+          graphData.nodes.push(gnode);
           if (!leftOverNodesFromtargetIri.find((n) => n.iri === gnode.iri)) {
             leftOverNodesFromtargetIri.push(gnode);
           }
@@ -436,7 +450,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           ) {
             graphData.edges.push(edge);
           }
-          addNewEdgeToGraph(edge);
         });
       }
 
@@ -452,12 +465,40 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         layerq = [];
       }
     }
-
+    addAllGraphNodesToVisNetwork(graphData.nodes);
+    addAllGraphEdgesToVisNetwork(graphData.edges);
     graphData.nodes = [...graphData.nodes, ...leftOverNodesFromtargetIri];
-    if (originalGraphNodesCount === nodes.current.length) {
+    if (originalGraphNodesCount === networkNodes.current.length) {
       setShowNothingToAddMessage(true);
     }
+    if (irisList) {
+      return transfromGraphDataToTree(graphData);
+    }
     return graphData;
+  }
+
+  function transfromGraphDataToTree(graphData: VisGraphData): VisGraphData {
+    // Transfer the graph data to tree. Used when irisList is given as input.
+
+    let treeData: VisGraphData = { nodes: [], edges: [] };
+    for (let edge of graphData.edges) {
+      let sourceNode = graphData.nodes.find(
+        (node) => node.iri === edge.source,
+      )!;
+      let targetNode = graphData.nodes.find(
+        (node) => node.iri === edge.target,
+      )!;
+      if (sourceNode.level! - targetNode.level! === 1) {
+        if (!treeData.nodes.find((node) => node.iri === edge.source)) {
+          treeData.nodes.push(sourceNode);
+        }
+        if (!treeData.nodes.find((node) => node.iri === edge.target)) {
+          treeData.nodes.push(targetNode);
+        }
+        treeData.edges.push(edge);
+      }
+    }
+    return treeData;
   }
 
   function addHasPartRelationsToGraphData(
@@ -474,33 +515,29 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       bgColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
       color = NODE_TEXT_COLOR;
     }
-    let onlyHasPartRelations: { nodes: any[]; edges: any[] } = {
-      nodes: [],
-      edges: [],
-    };
+    let graphEdges: OlsGraphEdge[] = [];
+    let graphNodes: OlsGraphNode[] = [];
     for (let edge of nodeRelations["edges"]) {
       if (edge["label"] === HAS_PART_EDGE_LABEL) {
-        addNewEdgeToGraph(edge, HAS_PART_EDGE_LABEL);
-        addNewNodeToGraph(
-          nodeRelations.nodes.find((node) => node.iri === edge.source)!,
-          false,
-          bgColor,
-          color,
-        );
-        addNewNodeToGraph(
-          nodeRelations.nodes.find((node) => node.iri === edge.target)!,
-          false,
-          bgColor,
-          color,
-        );
+        graphEdges.push(edge);
+        let sourceNode = nodeRelations.nodes.find(
+          (node) => node.iri === edge.source,
+        )!;
+        sourceNode.isCommon = false;
+        sourceNode.backgroundColor = bgColor;
+        sourceNode.color = color;
+        graphNodes.push(sourceNode);
+        let targetNode = nodeRelations.nodes.find(
+          (node) => node.iri === edge.target,
+        )!;
+        targetNode.isCommon = false;
+        targetNode.backgroundColor = bgColor;
+        targetNode.color = color;
+        graphNodes.push(targetNode);
       }
     }
-    graphData["nodes"] = graphData["nodes"].concat(
-      onlyHasPartRelations["nodes"],
-    );
-    graphData["edges"] = graphData["edges"].concat(
-      onlyHasPartRelations["edges"],
-    );
+    addAllGraphNodesToVisNetwork(graphNodes);
+    addAllGraphEdgesToVisNetwork(graphEdges);
   }
 
   function convertToOlsGraphFormat(
@@ -540,8 +577,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function reset() {
-    nodes.current.clear();
-    edges.current.clear();
+    networkNodes.current.clear();
+    networkEdges.current.clear();
     setSelectedIri(iri);
     setFirstLoad(true);
     setDbclicked(false);
@@ -557,7 +594,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     } else {
       let incommingEdgesSources: string[] = [];
       let outgoingEdgesSources: string[] = [];
-      edges.current.forEach((item: GraphEdge, _) => {
+      networkEdges.current.forEach((item: GraphEdge, _) => {
         if (item.label === HAS_PART_EDGE_LABEL) {
           return;
         }
@@ -567,6 +604,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           outgoingEdgesSources.push(item.to!);
         }
       });
+      let graphEdges: OlsGraphEdge[] = [];
       for (let source of incommingEdgesSources) {
         for (let target of outgoingEdgesSources) {
           let newEdge = {
@@ -575,10 +613,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             label: subClassEdgeLabel,
             uri: SUBCLASS_OF_URIS[0],
           };
-          addNewEdgeToGraph(newEdge);
+          graphEdges.push(newEdge);
         }
       }
-      nodes.current.remove(clickedNodeIri);
+      addAllGraphEdgesToVisNetwork(graphEdges);
+      networkNodes.current.remove(clickedNodeIri);
 
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: true });
@@ -594,7 +633,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (!graphDataIsCalculated) {
       return;
     }
-    let graphData = { nodes: nodes.current, edges: edges.current };
+    let graphData = {
+      nodes: networkNodes.current,
+      edges: networkEdges.current,
+    };
     if (hierarchyDirection && ValidDirections.includes(hierarchyDirection)) {
       hierarchicalConfig["direction"] = hierarchyDirection;
     } else {
@@ -657,8 +699,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       setGraphDataIsCalculated(false);
       //@ts-ignore
       graphNetwork.current.destroy();
-      nodes.current.clear();
-      edges.current.clear();
+      networkNodes.current.clear();
+      networkEdges.current.clear();
       setTargetIri(props.targetIri);
       setFirstLoad(true);
       setCounter(Math.floor(Math.random() * 100));

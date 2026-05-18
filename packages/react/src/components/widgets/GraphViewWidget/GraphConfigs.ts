@@ -1,4 +1,5 @@
-import { OlsGraphEdge, OlsGraphNode } from "../../../app/types";
+import { OlsGraphEdge } from "../../../app/types";
+import { VisGraphNode } from "./types";
 import {
   DEFAULT_HIERARCHY_DIRECTION,
   DEFAULT_NODE_BG_COLOR,
@@ -67,7 +68,7 @@ export class GraphNode {
   label?: string;
 
   constructor(
-    node: OlsGraphNode,
+    node: VisGraphNode,
     bgColor = DEFAULT_NODE_BG_COLOR,
     color = NODE_TEXT_COLOR,
   ) {

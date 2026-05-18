@@ -1,4 +1,4 @@
-import { OlsGraphNode } from "../../../app";
+import { OlsGraphEdge, OlsGraphNode } from "../../../app";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 
 export type GraphFetchData = {
@@ -9,8 +9,14 @@ export type GraphFetchData = {
 };
 
 export type VisGraphData = {
-  nodes: OlsGraphNode[];
-  edges: any[];
+  nodes: VisGraphNode[];
+  edges: OlsGraphEdge[];
+};
+
+export type VisGraphNode = OlsGraphNode & {
+  color?: string;
+  backgroundColor?: string;
+  isCommon?: boolean;
 };
 
 export type GraphFetchFunctionInput = {
