@@ -330,7 +330,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         );
       }
       if (!graphNodes.find((n) => n.id === gNode.id)) {
-        if (!irisList && gNode.id === iri) {
+        if (gNode.id === iri || (irisList && irisList.includes(gNode.id ?? ""))) {
           setSourceLabel(gNode.label ?? "");
           gNode.color.background = SOURCE_NODE_BG_COLOR;
           gNode.font.color = NODE_TEXT_COLOR;
@@ -396,7 +396,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     let height = 1;
     let leftOverNodesFromtargetIri: OlsGraphNode[] = [];
     let originalGraphNodesCount = networkNodes.current.length;
-    while (true) {
+    while (q.length) {
       let node = q[0];
       q = q.slice(1);
       let gnode: VisGraphNode = {
@@ -409,7 +409,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (!existingNode) {
           graphData.nodes.push(gnode);
         } else {
-          // remove the existing node from the nodes map. This because the node height has to be updated.
+          // remove the existing node from the nodes map. This is because the node height has to be updated.
           networkNodes.current.remove(existingNode.iri as string);
           existingNode.level = height;
         }
@@ -420,6 +420,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           existingNode.isCommon = true;
           existingNode.backgroundColor = COMMON_NODES_BG_COLOR;
           existingNode.color = NODE_TEXT_COLOR;
+          existingNode.level = height;
         } else {
           // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
           // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
@@ -453,26 +454,23 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         });
       }
 
-      if (node.childrenList && node.childrenList.length !== 0) {
+      if (node.childrenList?.length) {
         layerq.push(...node.childrenList);
       }
       if (q.length === 0) {
-        if (layerq.length === 0) {
-          break;
-        }
         height += 1;
         q.push(...layerq);
         layerq = [];
       }
+    }
+    if (irisList) {
+      graphData = transfromGraphDataToTree(graphData);
     }
     addAllGraphNodesToVisNetwork(graphData.nodes);
     addAllGraphEdgesToVisNetwork(graphData.edges);
     graphData.nodes = [...graphData.nodes, ...leftOverNodesFromtargetIri];
     if (originalGraphNodesCount === networkNodes.current.length) {
       setShowNothingToAddMessage(true);
-    }
-    if (irisList) {
-      return transfromGraphDataToTree(graphData);
     }
     return graphData;
   }
