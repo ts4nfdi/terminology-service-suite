@@ -1,0 +1,1 @@
+export { CrossRefTabWidget } from './CrossRefTabWidget';

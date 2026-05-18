@@ -1,0 +1,16 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { TitleWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+declare const meta: Meta<TitleWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const TitleWidgetDefault: Story;
+export declare const OntologyTitle: Story;
+export declare const SelectingDefiningOntology: Story;
+export declare const TitleWidgetWithTitleText: Story;
+export declare const IncorrectIriWithDefaultValue: Story;
+export declare const IncorrectIriWithoutDefaultValue: Story;
+export declare const DefiningOntologyUnavailable: Story;
+export declare const WithStyles: Story;
+export declare const WithoutStyles: Story;
+export declare const OntologyTitleCustomOnNavigate: Story;
+export declare const OntologyTitleCustomLink: Story;
