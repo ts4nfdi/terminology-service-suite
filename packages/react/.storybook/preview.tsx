@@ -56,6 +56,38 @@ const UrlSyncManager = ({ args, SetArgs, storyChildren }: any) => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // 2. Sync active arguments to the URL with a debounce to prevent race conditions
+  useEffect(() => {
+    if (!isReady) return; // Wait for initial load to complete
+
+    const timer = setTimeout(() => {
+      try {
+        const topWindow = window.top || window;
+        const currentPageURL = new URL(topWindow.location.href);
+
+        const activeArgs = Object.fromEntries(
+          Object.entries(args || {}).filter(
+            ([_, value]) => value !== undefined && value !== "",
+          ),
+        );
+
+        if (Object.keys(activeArgs).length > 0) {
+          const encoded = btoa(encodeURIComponent(JSON.stringify(activeArgs)));
+          currentPageURL.searchParams.set("tss_args", encoded);
+        } else {
+          currentPageURL.searchParams.delete("tss_args");
+        }
+
+        topWindow.history.replaceState({}, "", currentPageURL.toString());
+      } catch (err) {
+        console.error("Failed to update URL:", err);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [args, isReady]);
+
+  // Suspend rendering until URL parameters are fully processed
   if (!isReady) return null;
 
   return <>{storyChildren}</>;
