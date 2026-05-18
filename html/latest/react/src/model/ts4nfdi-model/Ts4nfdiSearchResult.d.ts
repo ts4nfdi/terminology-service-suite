@@ -3,6 +3,7 @@ import { ThingTypeName } from '../ModelTypeCheck';
 export declare class Ts4nfdiSearchResult implements SelectResult {
     properties: any;
     constructor(properties: any);
+    getSynonyms(): [];
     getDescription(): string;
     getIri(): string;
     getLabel(): string | undefined;

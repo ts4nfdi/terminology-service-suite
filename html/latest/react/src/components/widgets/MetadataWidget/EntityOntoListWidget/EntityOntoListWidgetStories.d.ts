@@ -34,19 +34,19 @@ export declare const EntityOntoListWidgetStoryArgs: {
     readonly parameter: "";
     readonly onNavigateToOntology: "Console message";
 };
-export declare const v2ApiEFOArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
-    readonly api: "https://www.ebi.ac.uk/ols4/api/";
+export declare const v2ApiNCBITaxonArgs: {
+    readonly iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090";
+    readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly entityType: "term";
-    readonly ontologyId: "efo";
+    readonly ontologyId: "ncbitaxon";
 };
-export declare const v2ApiONSArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
-    readonly api: "https://www.ebi.ac.uk/ols4/api/";
-    readonly ontologyId: "ons";
+export declare const v2ApiFOODONArgs: {
+    readonly iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090";
+    readonly api: "https://semanticlookup.zbmed.de/ols/api/";
+    readonly ontologyId: "foodon";
 };
 export declare const legacyApiArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
+    readonly iri: "http://purl.obolibrary.org/obo/MONDO_0005015";
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
     readonly entityType: "term";
     readonly ontologyId: "efo";

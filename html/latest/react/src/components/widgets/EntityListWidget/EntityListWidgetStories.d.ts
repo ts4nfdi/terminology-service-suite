@@ -33,7 +33,7 @@ export declare const EntityListWidgetStoryArgs: {
 };
 export declare const EntityListWidgetIndividualsArgs: {
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
-    readonly ontologyId: "efo";
+    readonly ontologyId: "iao";
     readonly entityType: "individual";
     readonly parameter: "";
 };

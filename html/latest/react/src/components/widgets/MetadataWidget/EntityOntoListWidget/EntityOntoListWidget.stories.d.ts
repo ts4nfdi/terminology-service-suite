@@ -54,7 +54,7 @@ declare const meta: {
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const v2ApiEFO: Story;
-export declare const v2ApiONS: Story;
+export declare const v2ApiNCBITaxon: Story;
+export declare const v2ApiFOODON: Story;
 export declare const legacyApi: Story;
 export declare const exceedsMaxDisplay: Story;
