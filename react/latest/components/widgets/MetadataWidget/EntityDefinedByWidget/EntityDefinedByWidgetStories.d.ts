@@ -35,21 +35,21 @@ export declare const EntityDefinedByWidgetStoryArgs: {
     readonly onNavigateToOntology: "Console message";
 };
 export declare const emptyInDefiningOntologyArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
+    readonly iri: "http://purl.obolibrary.org/obo/MONDO_0005015";
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
     readonly entityType: "term";
     readonly ontologyId: "efo";
 };
-export declare const v2ApiONSArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
-    readonly api: "https://www.ebi.ac.uk/ols4/api/";
-    readonly ontologyId: "ons";
+export declare const v2ApiFOODONArgs: {
+    readonly iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090";
+    readonly api: "https://semanticlookup.zbmed.de/ols/api/";
+    readonly ontologyId: "foodon";
 };
 export declare const legacyApiArgs: {
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
-    readonly api: "https://www.ebi.ac.uk/ols4/api/";
+    readonly iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090";
+    readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly entityType: "term";
-    readonly ontologyId: "efo";
+    readonly ontologyId: "foodon";
     readonly useLegacy: true;
 };
 export declare const commonEntityDefinedByWidgetPlay: ({ canvasElement, }: {

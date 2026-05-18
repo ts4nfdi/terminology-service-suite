@@ -161,7 +161,7 @@ export declare const HierarchyWidgetStoryArgs: {
 export declare const ClassHierarchyArgs: {
     readonly apiUrl: "https://www.ebi.ac.uk/ols4/api/";
     readonly backendType: "ols";
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
+    readonly iri: "http://purl.obolibrary.org/obo/MONDO_0005015";
     readonly entityType: "class";
     readonly ontologyId: "efo";
     readonly apiKey: "";
@@ -361,9 +361,9 @@ export declare const OntoportalHierarchyArgs: {
 export declare const OLS3HierarchyArgs: {
     readonly apiUrl: "https://ols3-semanticlookup.zbmed.de/ols/api/";
     readonly backendType: "ols";
-    readonly iri: "http://www.ebi.ac.uk/efo/EFO_0000400";
+    readonly iri: "http://purl.obolibrary.org/obo/NCIT_C2984";
     readonly entityType: "class";
-    readonly ontologyId: "efo";
+    readonly ontologyId: "ncit";
     readonly useLegacy: true;
     readonly apiKey: "";
     readonly onNavigateToEntity: "Console message";
