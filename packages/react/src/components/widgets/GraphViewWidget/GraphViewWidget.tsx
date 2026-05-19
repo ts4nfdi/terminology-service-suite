@@ -351,13 +351,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         graphNodes.push(gNode);
       }
     }
-    if (networkNodes.current.length === 0) {
-      //@ts-ignore
-      networkNodes.current.add(graphNodes);
-    } else {
-      //@ts-ignore
-      networkNodes.current.update(graphNodes);
-    }
+    networkNodes.current.clear();
+    //@ts-ignore
+    networkNodes.current.add(graphNodes);
+    // if (networkNodes.current.length === 0) {
+    //   //@ts-ignore
+    //   networkNodes.current.add(graphNodes);
+    // } else {
+    //   //@ts-ignore
+    //   networkNodes.current.update(graphNodes);
+    // }
     return true;
   }
 
@@ -377,13 +380,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         graphEdges.push(gEdge);
       }
     }
-    if (networkEdges.current.length === 0) {
-      //@ts-ignore
-      networkEdges.current.add(graphEdges);
-    } else {
-      //@ts-ignore
-      networkEdges.current.update(graphEdges);
-    }
+    networkEdges.current.clear();
+    //@ts-ignore
+    networkEdges.current.add(graphEdges);
   }
 
   function convertToOlsGraphFormat(
@@ -407,7 +406,26 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         addHasPartRelationsToGraphData(graphData, targetNodeRelations, true);
       }
     }
-    setGraphDataToRender(graphData);
+    if (dbclicked) {
+      let currentGraphData = { ...graphDataToRender };
+      for (let node of graphData.nodes) {
+        if (!currentGraphData.nodes.find((n) => n.iri === node.iri)) {
+          currentGraphData.nodes.push(node);
+        }
+      }
+      for (let edge of graphData.edges) {
+        if (
+          !currentGraphData.edges.find(
+            (e) => e.source === edge.source && e.target === edge.target,
+          )
+        ) {
+          currentGraphData.edges.push(edge);
+        }
+      }
+      setGraphDataToRender(currentGraphData);
+    } else {
+      setGraphDataToRender(graphData);
+    }
     setGraphDataIsCalculated(true);
   }
 
@@ -574,6 +592,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setSelectedIri(iri);
     setFirstLoad(true);
     setDbclicked(false);
+    setGraphDataToRender({ nodes: [], edges: [] });
     setCounter(Math.floor(Math.random() * 100));
   }
 
@@ -641,8 +660,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (!graphDataIsCalculated) {
       return;
     }
-    // addAllGraphNodesToVisNetwork();
-    // addAllGraphEdgesToVisNetwork();
     let graphData = {
       nodes: networkNodes.current,
       edges: networkEdges.current,
@@ -677,6 +694,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
       graphNetwork.current.on("click", function (params) {
+        if (!params.nodes?.length) {
+          return;
+        }
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -685,13 +705,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       });
       //@ts-ignore
       graphNetwork.current.on("doubleClick", function (params) {
+        if (!params.nodes?.length) {
+          return;
+        }
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
             //@ts-ignore
-            bgColor: nodes.current.get(nodeIri)?.color?.background,
+            bgColor: networkNodes.current.get(nodeIri)?.color?.background,
             //@ts-ignore
-            color: nodes.current.get(nodeIri)?.font?.color,
+            color: networkNodes.current.get(nodeIri)?.font?.color,
           });
           setSelectedIri(nodeIri);
           if (onNodeClickCallbackIdProvided) {
