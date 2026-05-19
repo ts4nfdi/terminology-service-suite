@@ -252,7 +252,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])],
       edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])],
     });
-    setGraphDataIsCalculated(true);
   }
 
   function addTermRelationsNodesToGraph(data: GraphFetchData) {
@@ -409,6 +408,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
     setGraphDataToRender(graphData);
+    setGraphDataIsCalculated(true);
   }
 
   function addTreeDataToGraphData(
@@ -588,10 +588,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setGraphDataIsCalculated(false);
     let graphData = { ...graphDataToRender };
     let incommingNodesIris = graphData.edges
-      .filter((e) => e.source === clickedNodeIri)
+      .filter((e) => e.target === clickedNodeIri)
       .map((e) => e.source);
     let outgoingNodesIris = graphData.edges
-      .filter((e) => e.target === clickedNodeIri)
+      .filter((e) => e.source === clickedNodeIri)
       .map((e) => e.target);
     let nodeToRemoveIndex = graphData.nodes.findIndex(
       (n) => n.iri === clickedNodeIri,
@@ -619,27 +619,30 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
     }
-    networkNodes.current.clear();
-    networkEdges.current.clear();
+    networkNodes.current.remove(clickedNodeIri);
     setGraphDataToRender(graphData);
     setGraphDataIsCalculated(true);
 
-    //
-    // //@ts-ignore
-    // graphNetwork.current.setOptions({ physics: true });
-    // //@ts-ignore
-    // setTimeout(() => {
-    //   //@ts-ignore
-    //   graphNetwork.current.setOptions({ physics: false });
-    // }, 4000);
+    //@ts-ignore
+    graphNetwork.current.setOptions({ physics: true });
+    //@ts-ignore
+    setTimeout(() => {
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: false });
+    }, 4000);
   }
+
+  useEffect(() => {
+    addAllGraphNodesToVisNetwork();
+    addAllGraphEdgesToVisNetwork();
+  }, [graphDataToRender.nodes.length, graphDataToRender.edges.length]);
 
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
     }
-    addAllGraphNodesToVisNetwork();
-    addAllGraphEdgesToVisNetwork();
+    // addAllGraphNodesToVisNetwork();
+    // addAllGraphEdgesToVisNetwork();
     let graphData = {
       nodes: networkNodes.current,
       edges: networkEdges.current,
