@@ -17,6 +17,7 @@ export type VisGraphNode = OlsGraphNode & {
   color?: string;
   backgroundColor?: string;
   isCommon?: boolean;
+  exclusiveToTargetIri?: boolean;
 };
 
 export type GraphFetchFunctionInput = {
