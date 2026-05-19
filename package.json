@@ -30,8 +30,7 @@
     "lint:check": "npx eslint ./packages/react/src ./packages/js/src --ext js,jsx,ts,tsx",
     "lint:fix": "npx eslint ./packages/react/src ./packages/js/src --ext js,jsx,ts,tsx --fix",
     "test": "vitest",
-    "test:storybook": "vitest --project=storybook",
-    "prepare": "husky"
+    "test:storybook": "vitest --project=storybook"
   },
   "types": "dist/esm/index.d.ts",
   "author": "TS4NFDI",
@@ -67,7 +66,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-storybook": "^9.0.18",
     "eslint-plugin-unused-imports": "^4.3.0",
-    "husky": "^9.1.7",
     "playwright": "^1.52.0",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
