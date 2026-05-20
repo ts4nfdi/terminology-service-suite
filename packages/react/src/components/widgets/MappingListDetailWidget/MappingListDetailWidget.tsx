@@ -19,10 +19,9 @@ type MappingRow = {
 };
 
 const columns: Array<EuiBasicTableColumn<MappingRow>> = [
-  { field: "to", name: "to", truncateText: true, sortable: true },
-  { field: "toScheme", name: "toScheme", truncateText: true, sortable: true },
-  { field: "creator", name: "creator", truncateText: true, sortable: true },
-  { field: "type", name: "type", truncateText: true, sortable: true },
+  { field: "type", name: "Predicate", truncateText: true, sortable: true },
+  { field: "to", name: "Object", truncateText: true, sortable: true },
+  { field: "creator", name: "Creator", truncateText: true, sortable: true },
   { field: "created", name: "created", truncateText: true, sortable: true },
 ];
 
@@ -43,7 +42,6 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
       const rows = response.map((item: any) => ({
         to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
-        toScheme: item.toScheme?.notation?.[0] ?? "—",
         creator: item.creator?.[0]?.prefLabel?.en ?? "—",
         type: item.type?.[0]?.split("#").pop() ?? "—",
         created: item.created ?? "—",
@@ -62,7 +60,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   return (
     <EuiPanel paddingSize="m">
       <EuiTitle size="s">
-        <h2>From: &nbsp;{fromLabel}</h2>
+        <h2>Subject: &nbsp;{fromLabel}</h2>
       </EuiTitle>
 
       <EuiSpacer size="xl" />
