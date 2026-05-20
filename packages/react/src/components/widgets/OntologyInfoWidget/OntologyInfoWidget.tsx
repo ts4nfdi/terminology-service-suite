@@ -58,23 +58,27 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     return olsApi.getOntologyObject(ontologyId, parameter, useLegacy);
   });
 
-  function getOntologyIriSection(ontology: Ontology): ReactElement {
+  function getOntologyIriSection(
+    ontology: Ontology,
+  ): React.ReactElement | null {
+    const iri = ontology.getIri() || ontology.getOntologyPurl();
+
+    if (!iri || iri.startsWith("file:")) {
+      return null;
+    }
+
     return (
-      <>
-        {(ontology.getIri() || ontology.getOntologyPurl()) && (
-          <EuiFlexItem>
-            <b>Ontology IRI:</b>
-            <p>
-              <a
-                id={"ontologyIri"}
-                href={ontology.getIri() || ontology.getOntologyPurl()}
-              >
-                {ontology.getIri() || ontology.getOntologyPurl()}
-              </a>
-            </p>
-          </EuiFlexItem>
-        )}
-      </>
+      <EuiFlexItem>
+        <b>Ontology IRI:</b>
+        <p>
+          <a
+            id={"ontologyIri"}
+            href={ontology.getIri() || ontology.getOntologyPurl()}
+          >
+            {ontology.getIri() || ontology.getOntologyPurl()}
+          </a>
+        </p>
+      </EuiFlexItem>
     );
   }
 

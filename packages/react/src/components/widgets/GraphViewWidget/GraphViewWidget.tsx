@@ -721,11 +721,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const closePopover = () => setIsPopoverOpen(false);
 
   const GuideMeBtn = (
-    <EuiButtonEmpty
-      iconType="iInCircle"
-      iconSide="right"
-      onClick={onButtonClick}
-    >
+    <EuiButtonEmpty iconType="info" iconSide="right" onClick={onButtonClick}>
       Guide me
     </EuiButtonEmpty>
   );
