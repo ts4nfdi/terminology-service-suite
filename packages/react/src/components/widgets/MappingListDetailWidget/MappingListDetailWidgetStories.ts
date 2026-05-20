@@ -1,8 +1,4 @@
-import { apiArgType } from "../../../stories/storyArgs";
-
-export const MappingListDetailWidgetStoryArgTypes = {
-  ...apiArgType,
-};
+export const MappingListDetailWidgetStoryArgTypes = {};
 
 export const MappingListDetailWidgetStoryArgs = {
   api: "https://coli-conc.gbv.de/api/",
