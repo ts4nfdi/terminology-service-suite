@@ -72,7 +72,7 @@ const PredicateIcon = ({ type }: { type: string }) => {
 const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   {
     field: "type",
-    name: "Predicate",
+    name: <strong style={{ fontSize: "14px" }}>Predicate</strong>,
     truncateText: true,
     sortable: true,
 
@@ -88,11 +88,21 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
       </span>
     ),
   },
-  { field: "to", name: "Object", truncateText: true, sortable: true },
-  { field: "creator", name: "Creator", truncateText: true, sortable: true },
+  {
+    field: "to",
+    name: <strong style={{ fontSize: "14px" }}>Object</strong>,
+    truncateText: true,
+    sortable: true,
+  },
+  {
+    field: "creator",
+    name: <strong style={{ fontSize: "14px" }}>Creator</strong>,
+    truncateText: true,
+    sortable: true,
+  },
   {
     field: "created",
-    name: "Created",
+    name: <strong style={{ fontSize: "14px" }}>Created</strong>,
     truncateText: true,
     sortable: true,
     render: (created: string) => {
@@ -152,7 +162,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   return (
     <EuiPanel paddingSize="m">
       <EuiTitle size="s">
-        <h2>Subject: &nbsp;{fromLabel}</h2>
+        <h2>
+          <strong>Subject:</strong>
+          <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
+        </h2>
       </EuiTitle>
 
       <EuiSpacer size="xl" />
