@@ -96,6 +96,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   // needed for useQuery. without it the graph won't get updated on switching berween rootWalk=true and false.
   const [counter, setCounter] = useState(Math.floor(Math.random() * 100));
+  const [dbClickCounter, setDbClickCounter] = useState(0);
 
   // for downloading the graph data as json.
   const [graphRawData, setGraphRawData] = useState<VisGraphData>({
@@ -107,6 +108,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     nodes: [],
     edges: [],
   });
+  const [previousGraphNodeCount, setPreviousGraphNodeCount] = useState(0);
+  const [previousGraphEdgeCount, setPreviousGraphEdgeCount] = useState(0);
 
   // track the node that is clicked
   const [clickedNodeIri, setClickedNodeIri] = useState<string>("");
@@ -145,6 +148,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       hierarchy,
       dbclicked,
       counter,
+      dbClickCounter,
     ],
     async () => {
       let sourceIri = iri;
@@ -206,7 +210,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   if (shouldUseHierarchyLayout) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
-
   if (data && (firstLoad || dbclicked)) {
     let gDataForDownload: VisGraphData = { ...graphRawData };
     let gData = { ...graphDataToRender };
@@ -245,9 +248,11 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       gDataForDownload = { nodes: [], edges: [] };
       setFirstLoad(false);
     }
+
     if (dbclicked) {
       setDbclicked(false);
     }
+
     setGraphRawData({
       nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])],
       edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])],
@@ -257,8 +262,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function addTermRelationsNodesToGraph(data: GraphFetchData) {
     let graphData = { ...graphDataToRender };
     let originalNodeCount = graphData.nodes.length;
-    graphData.nodes.push(...(data.termRelations?.nodes ?? []));
+    for (let n of data.termRelations?.nodes ?? []) {
+      if (!graphData.nodes.find((gn) => gn.iri === n.iri)) {
+        graphData.nodes.push(n);
+      }
+    }
     if (data.targetTermRelations) {
+      // when targetIri is given for comparison
       for (let sn of data.targetTermRelations.nodes) {
         let existingNode = graphData.nodes.find((n) => n.iri === sn.iri);
         if (existingNode) {
@@ -422,6 +432,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           currentGraphData.edges.push(edge);
         }
       }
+      currentGraphData.edges = currentGraphData.edges.filter(
+        (e) => !e.notOriginal,
+      );
       setGraphDataToRender(currentGraphData);
     } else {
       setGraphDataToRender(graphData);
@@ -623,11 +636,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     );
     for (let iri of incommingNodesIris) {
       for (let oiri of outgoingNodesIris) {
+        // create new edges upon removing the node from the graph
         let edge = {
           source: iri,
           target: oiri,
           label: SUBCLASS_OF_EDGE_LABEL,
           uri: SUBCLASS_OF_URIS[0],
+          notOriginal: true,
         };
         if (
           !graphData.edges.find(
@@ -652,14 +667,32 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   useEffect(() => {
+    if (
+      !Object.keys(graphNetwork.current).length ||
+      (previousGraphNodeCount === graphDataToRender.nodes.length &&
+        previousGraphEdgeCount === graphDataToRender.edges.length)
+    ) {
+      return;
+    }
+
     addAllGraphNodesToVisNetwork();
     addAllGraphEdgesToVisNetwork();
+    setPreviousGraphNodeCount(graphDataToRender.nodes.length);
+    setPreviousGraphEdgeCount(graphDataToRender.edges.length);
+    //@ts-ignore
+    graphNetwork.current.setOptions({ physics: true });
+    setTimeout(() => {
+      //@ts-ignore
+      graphNetwork.current.setOptions({ physics: false });
+    }, 4000);
   }, [graphDataToRender.nodes.length, graphDataToRender.edges.length]);
 
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
     }
+    addAllGraphNodesToVisNetwork();
+    addAllGraphEdgesToVisNetwork();
     let graphData = {
       nodes: networkNodes.current,
       edges: networkEdges.current,
@@ -694,9 +727,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (graphNetwork.current && graphDataIsCalculated) {
       //@ts-ignore
       graphNetwork.current.on("click", function (params) {
-        if (!params.nodes?.length) {
-          return;
-        }
         if (params.nodes.length > 0) {
           setClickedNodeIri(params.nodes[0]);
         } else {
@@ -705,9 +735,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       });
       //@ts-ignore
       graphNetwork.current.on("doubleClick", function (params) {
-        if (!params.nodes?.length) {
-          return;
-        }
         if (params.nodes.length > 0) {
           let nodeIri = params.nodes[0];
           setDbClickedColor({
@@ -720,6 +747,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           if (onNodeClickCallbackIdProvided) {
             onNodeClick(nodeIri);
           } else {
+            setDbClickCounter(Math.floor(Math.random() * 100));
             setDbclicked(true);
           }
         }
@@ -743,20 +771,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     setCounter(Math.floor(Math.random() * 100));
   }, [shouldUseHierarchyLayout, hierarchyDirection]);
-
-  useEffect(() => {
-    if (!dbclicked) {
-      return;
-    }
-    //@ts-ignore
-    graphNetwork.current.setOptions({ physics: true });
-    // Stop physics after the initial layout so users can freely move nodes
-    //@ts-ignore
-    setTimeout(() => {
-      //@ts-ignore
-      graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
-  }, [dbclicked]);
 
   useEffect(() => {
     if (!showNothingToAddMessage) {

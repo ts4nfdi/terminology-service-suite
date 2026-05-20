@@ -10,7 +10,7 @@ export type GraphFetchData = {
 
 export type VisGraphData = {
   nodes: VisGraphNode[];
-  edges: OlsGraphEdge[];
+  edges: VisGraphEdge[];
 };
 
 export type VisGraphNode = OlsGraphNode & {
@@ -18,6 +18,10 @@ export type VisGraphNode = OlsGraphNode & {
   backgroundColor?: string;
   isCommon?: boolean;
   exclusiveToTargetIri?: boolean;
+};
+
+export type VisGraphEdge = OlsGraphEdge & {
+  notOriginal?: boolean; // this is used to mark the edges that are not part of the original tree data and added upon removing the node from the graph.
 };
 
 export type GraphFetchFunctionInput = {
