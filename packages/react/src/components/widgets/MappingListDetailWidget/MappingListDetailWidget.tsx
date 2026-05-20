@@ -90,7 +90,30 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   },
   { field: "to", name: "Object", truncateText: true, sortable: true },
   { field: "creator", name: "Creator", truncateText: true, sortable: true },
-  { field: "created", name: "Created", truncateText: true, sortable: true },
+  {
+    field: "created",
+    name: "Created",
+    truncateText: true,
+    sortable: true,
+    render: (created: string) => {
+      if (created === "—") return "—";
+
+      const date = new Date(created);
+
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }).format(date);
+
+      const formattedTime = new Intl.DateTimeFormat("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+
+      return `${formattedDate}, ${formattedTime}`;
+    },
+  },
 ];
 
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
