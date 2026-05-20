@@ -42,7 +42,12 @@ import {
   resetButtonStyle,
   widgetContainerStyle,
 } from "./styles";
-import { GraphFetchData, VisGraphData, VisGraphNode } from "./types";
+import {
+  GraphFetchData,
+  VisGraphData,
+  VisGraphEdge,
+  VisGraphNode,
+} from "./types";
 import {
   convertFlatListToTreeStructure,
   fetchHierarchyModeData,
@@ -520,19 +525,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
     if (irisList) {
-      graphData = transfromGraphDataToTree(graphData);
+      transfromGraphDataToTree(graphData);
     }
     graphData.nodes = [...graphData.nodes, ...leftOverNodesFromtargetIri];
     if (originalGraphNodesCount === graphData.nodes.length) {
       setShowNothingToAddMessage(true);
     }
-    return graphData;
   }
 
-  function transfromGraphDataToTree(graphData: VisGraphData): VisGraphData {
+  function transfromGraphDataToTree(graphData: VisGraphData) {
     // Transfer the graph data to tree. Used when irisList is given as input.
 
-    let treeData: VisGraphData = { nodes: [], edges: [] };
+    let cleanedEdges: VisGraphEdge[] = [];
     for (let edge of graphData.edges) {
       let sourceNode = graphData.nodes.find(
         (node) => node.iri === edge.source,
@@ -541,16 +545,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         (node) => node.iri === edge.target,
       )!;
       if (sourceNode.level! - targetNode.level! === 1) {
-        if (!treeData.nodes.find((node) => node.iri === edge.source)) {
-          treeData.nodes.push(sourceNode);
-        }
-        if (!treeData.nodes.find((node) => node.iri === edge.target)) {
-          treeData.nodes.push(targetNode);
-        }
-        treeData.edges.push(edge);
+        cleanedEdges.push(edge);
       }
     }
-    return treeData;
+    graphData.edges = cleanedEdges;
   }
 
   function addHasPartRelationsToGraphData(
