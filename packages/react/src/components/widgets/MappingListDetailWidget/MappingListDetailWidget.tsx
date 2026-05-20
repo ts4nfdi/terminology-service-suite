@@ -12,6 +12,7 @@ import { MappingListDetailWidgetProps } from "../../../app";
 
 type MappingRow = {
   to: string;
+  toUri: string;
   creator: string;
   type: string;
   created: string;
@@ -93,6 +94,7 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     name: <strong style={{ fontSize: "14px" }}>Object</strong>,
     truncateText: true,
     sortable: true,
+    render: (to: string, item: MappingRow) => <span title={item.toUri}>{to}</span>,
   },
   {
     field: "creator",
@@ -144,6 +146,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
       const rows = response.map((item: any) => ({
         to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+        toUri: item.to?.memberSet?.[0]?.uri ?? "—",
         creator: item.creator?.[0]?.prefLabel?.en ?? "—",
         type: item.type?.[0]?.split("#").pop() ?? "—",
         created: item.created ?? "—",
