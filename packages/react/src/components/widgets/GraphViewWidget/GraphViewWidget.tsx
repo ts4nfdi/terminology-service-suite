@@ -257,11 +257,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       setDbclicked(false);
     }
-
-    setGraphRawData({
-      nodes: [...gDataForDownload.nodes, ...(gData?.nodes ?? [])],
-      edges: [...gDataForDownload.edges, ...(gData?.edges ?? [])],
-    });
   }
 
   function addTermRelationsNodesToGraph(data: GraphFetchData) {
@@ -672,7 +667,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     ) {
       return;
     }
-
+    setGraphRawData(graphDataToRender);
     addAllGraphNodesToVisNetwork();
     addAllGraphEdgesToVisNetwork();
     setPreviousGraphNodeCount(graphDataToRender.nodes.length);
@@ -689,6 +684,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (!graphDataIsCalculated) {
       return;
     }
+    setGraphRawData(graphDataToRender);
     addAllGraphNodesToVisNetwork();
     addAllGraphEdgesToVisNetwork();
     let graphData = {
