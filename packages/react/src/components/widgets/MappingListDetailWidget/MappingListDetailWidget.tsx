@@ -94,7 +94,9 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     name: <strong style={{ fontSize: "14px" }}>Object</strong>,
     truncateText: true,
     sortable: true,
-    render: (to: string, item: MappingRow) => <span title={item.toUri}>{to}</span>,
+    render: (to: string, item: MappingRow) => (
+      <span title={item.toUri}>{to}</span>
+    ),
   },
   {
     field: "creator",
