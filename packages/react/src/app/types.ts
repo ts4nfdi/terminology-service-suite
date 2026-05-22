@@ -873,3 +873,5 @@ export type EntityListWidgetProps = {
   entityType: EntityTypeName;
   parameter?: string;
 };
+
+export type OntologySelectWidgetProps = ApiObj & ParameterObj;

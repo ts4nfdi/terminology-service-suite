@@ -1,0 +1,1 @@
+export { DataContentWidget } from "./OntologySelectWidget";
