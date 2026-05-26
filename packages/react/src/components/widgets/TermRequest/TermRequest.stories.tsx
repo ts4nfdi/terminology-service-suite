@@ -8,7 +8,8 @@ const meta = {
     layout: "centered",
   },
   args: {
-    ontologyRepoUrl: "https://github.com/TIBHannover/VibrationalSpectroscopyOntology",
+    ontologyRepoUrl:
+      "https://github.com/TIBHannover/VibrationalSpectroscopyOntology",
   },
 } satisfies Meta<typeof TermRequest>;
 
