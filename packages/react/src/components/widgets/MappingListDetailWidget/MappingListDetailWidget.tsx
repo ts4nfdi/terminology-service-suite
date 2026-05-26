@@ -21,6 +21,9 @@ type MappingRow = {
   created: string;
 };
 
+/**
+ * Dictionary mapping each predicate type to its inner SVG elements.
+ */
 const predicateIcons: Record<string, React.ReactNode> = {
   exactMatch: (
     <>
@@ -49,6 +52,9 @@ const predicateIcons: Record<string, React.ReactNode> = {
 const PredicateIcon = ({ type }: { type: string }) => {
   const iconContent = predicateIcons[type];
 
+  /**
+   * Return nothing if the type doesn't exist in our dictionary
+   */
   if (!iconContent) return null;
 
   return (
@@ -73,6 +79,10 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     name: <strong style={{ fontSize: "14px" }}>Predicate</strong>,
     truncateText: true,
     sortable: true,
+
+    /**
+     * Render both the custom SVG icon and the text side-by-side
+     */
     render: (type: string) => (
       <span
         style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
@@ -128,10 +138,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
   const [items, setItems] = useState<MappingRow[]>([]);
   const [fromLabel, setFromLabel] = useState("");
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const onButtonClick = () =>
-    setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
+  /**
+   * State and handlers for the contextual help popover.
+   */
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const onButtonClick = () => setIsPopoverOpen((isOpen) => !isOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
   async function fetchMappings() {
@@ -162,6 +174,9 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     fetchMappings();
   }, [api, iri]);
 
+  /**
+   * Custom help button trigger with adjusted stroke width
+   */
   const helpButton = (
     <EuiButtonIcon
       iconType="iInCircle"
@@ -220,6 +235,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                 </li>
               </ul>
               <EuiSpacer size="m" />
+
+              {/**
+               * Visual representation of an RDF Triple.
+               */}
               <div
                 style={{
                   display: "flex",
