@@ -22,6 +22,7 @@ import { createResources } from "./ResourcesWidget";
 import { createSearchBar } from "./SearchBarWidget";
 import { createSearchResultsList } from "./SearchResultsListWidget";
 import { createDepiction } from "./TermDepictionWidget";
+import { createTermRequest } from "./TermRequest";
 
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
@@ -36,6 +37,7 @@ import { createDepiction } from "./TermDepictionWidget";
   createResources,
   createSearchResultsList,
   createDepiction,
+  createTermRequest,
   createMetadata,
   createTab,
   createHierarchy,
@@ -71,5 +73,6 @@ export {
   createSearchBar,
   createSearchResultsList,
   createTab,
+  createTermRequest,
   createTitle,
 };

@@ -798,6 +798,13 @@ export type TermDepictionWidgetProps = ApiObj &
   ForcedOntologyIdObj &
   UseLegacyObj;
 
+export type TermRequestProps = {
+  /**
+   * URL of the ontology repository where term requests should be submitted.
+   */
+  ontologyRepoUrl: string;
+};
+
 export type GraphViewWidgetProps = ApiObj &
   ForcedIriObj &
   ForcedOntologyIdObj &

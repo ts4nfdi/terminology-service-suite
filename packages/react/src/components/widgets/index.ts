@@ -11,3 +11,4 @@ export * from "./ResourcesWidget";
 export * from "./SearchBarWidget";
 export * from "./SearchResultsListWidget";
 export * from "./TermDepictionWidget";
+export * from "./TermRequest";
