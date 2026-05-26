@@ -24,6 +24,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Classes: Story = {
+export const Rec_B_2000: Story = {
   args: MappingListDetailWidgetStoryArgs,
 };
