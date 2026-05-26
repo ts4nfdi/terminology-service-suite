@@ -1,8 +1,11 @@
 import {
   EuiBasicTableColumn,
+  EuiButtonIcon,
   EuiInMemoryTable,
   EuiPanel,
+  EuiPopover,
   EuiSpacer,
+  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
@@ -18,9 +21,6 @@ type MappingRow = {
   created: string;
 };
 
-/**
- * Dictionary mapping each predicate type to its inner SVG elements.
- */
 const predicateIcons: Record<string, React.ReactNode> = {
   exactMatch: (
     <>
@@ -49,9 +49,6 @@ const predicateIcons: Record<string, React.ReactNode> = {
 const PredicateIcon = ({ type }: { type: string }) => {
   const iconContent = predicateIcons[type];
 
-  /**
-   * Return nothing if the type doesn't exist in our dictionary
-   */
   if (!iconContent) return null;
 
   return (
@@ -76,10 +73,6 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     name: <strong style={{ fontSize: "14px" }}>Predicate</strong>,
     truncateText: true,
     sortable: true,
-
-    /**
-     * Render both the custom SVG icon and the text side-by-side
-     */
     render: (type: string) => (
       <span
         style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
@@ -135,6 +128,11 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
   const [items, setItems] = useState<MappingRow[]>([]);
   const [fromLabel, setFromLabel] = useState("");
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const onButtonClick = () =>
+    setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
+  const closePopover = () => setIsPopoverOpen(false);
 
   async function fetchMappings() {
     if (!api || !iri) return;
@@ -164,14 +162,85 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     fetchMappings();
   }, [api, iri]);
 
+  const helpButton = (
+    <EuiButtonIcon
+      iconType="iInCircle"
+      color="primary"
+      aria-label="Help"
+      onClick={onButtonClick}
+      css={css`
+        svg {
+          stroke: currentColor;
+          stroke-width: 0.5px;
+          color: #0645ad;
+        }
+      `}
+    />
+  );
+
   return (
     <EuiPanel paddingSize="m">
-      <EuiTitle size="s">
-        <h2>
-          <strong>Subject:</strong>
-          <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
-        </h2>
-      </EuiTitle>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          width: "100%",
+        }}
+      >
+        <EuiTitle size="s">
+          <h2>
+            <strong>Subject:</strong>
+            <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
+          </h2>
+        </EuiTitle>
+
+        <EuiPopover
+          button={helpButton}
+          isOpen={isPopoverOpen}
+          closePopover={closePopover}
+          anchorPosition="downRight"
+        >
+          <div style={{ width: "320px", padding: "8px" }}>
+            <EuiText size="s">
+              <EuiSpacer size="s" />
+              <ul>
+                <li>
+                  <strong>Subject:</strong> The main entity being described
+                </li>
+                <br />
+                <li>
+                  <strong>Predicate:</strong> The relationship or attribute
+                  linking the subject to the object
+                </li>
+                <br />
+                <li>
+                  <strong>Object:</strong> The piece of information the subject
+                  is linked to.
+                </li>
+              </ul>
+              <EuiSpacer size="m" />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  backgroundColor: "#f5f7fa",
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
+                <span>Subject</span>
+                <span>&rarr;</span>
+                <span>Predicate</span>
+                <span>&rarr;</span>
+                <span>Object</span>
+              </div>
+            </EuiText>
+          </div>
+        </EuiPopover>
+      </div>
 
       <EuiSpacer size="xl" />
 
