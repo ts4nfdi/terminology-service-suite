@@ -216,7 +216,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
   if (data && (firstLoad || dbclicked)) {
-
     let gDataForDownload: VisGraphData = { ...graphRawData };
     let gData = { ...graphDataToRender };
     if (!rootWalk && !hierarchy && !irisList) {
@@ -420,12 +419,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (dbclicked) {
       let currentGraphData = { ...graphDataToRender };
       for (let node of graphData.nodes) {
-        if (!currentGraphData.nodes.find(n => n.iri === node.iri)) {
+        if (!currentGraphData.nodes.find((n) => n.iri === node.iri)) {
           currentGraphData.nodes.push(node);
         }
       }
       for (let edge of graphData.edges) {
-        if (!currentGraphData.edges.find(e => e.source === edge.source && e.target === edge.target)) {
+        if (
+          !currentGraphData.edges.find(
+            (e) => e.source === edge.source && e.target === edge.target,
+          )
+        ) {
           currentGraphData.edges.push(edge);
         }
       }
