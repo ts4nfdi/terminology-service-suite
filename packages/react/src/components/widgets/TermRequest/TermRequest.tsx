@@ -24,6 +24,13 @@ type CodeApiResp = {
   };
 };
 
+type TermRequestApiResp = {
+  _result: {
+    status: "success" | "pending" | "slow_down" | "denied";
+    issue_url: string;
+  };
+};
+
 function TermRequest({ ontologyId }: TermRequestProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -32,8 +39,9 @@ function TermRequest({ ontologyId }: TermRequestProps) {
   >("idle");
   const [code, setCode] = useState("");
   const [deviceCode, setDeviceCode] = useState("");
+  const [issueUrl, setIssueUrl] = useState("");
 
-  async function submitTermRequest() {
+  async function getAuthCode() {
     if (!title.trim() || !content.trim()) {
       return;
     }
@@ -53,6 +61,61 @@ function TermRequest({ ontologyId }: TermRequestProps) {
     setCode(data["_result"]["code"]);
     setDeviceCode(data["_result"]["device_code"]);
     setRequestState("success");
+  }
+
+  async function submitTermRequest() {
+    if (!code || !deviceCode) {
+      return;
+    }
+    setRequestState("loading");
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    let url = "http://localhost/user/login/send_term_request/";
+    let res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        device_code: deviceCode,
+        title: title,
+        content: content,
+        repo_url: "",
+      }),
+    });
+    if (!res.ok) {
+      setRequestState("error");
+      return;
+    }
+    let data = (await res.json()) as TermRequestApiResp;
+    while (
+      data["_result"]["status"] === "pending" ||
+      data["_result"]["status"] === "slow_down"
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          device_code: deviceCode,
+          title: title,
+          content: content,
+          repo_url: "",
+        }),
+      });
+      if (!res.ok) {
+        setRequestState("error");
+        return;
+      }
+      data = (await res.json()) as TermRequestApiResp;
+    }
+    if (data["_result"]["status"] === "success") {
+      setRequestState("success");
+      setIssueUrl(data["_result"]["issue_url"]);
+      return;
+    }
+    setRequestState("error");
   }
 
   return (
@@ -89,7 +152,7 @@ function TermRequest({ ontologyId }: TermRequestProps) {
           <EuiFlexGroup justifyContent="flexEnd" responsive={false}>
             <EuiFlexItem grow={false}>
               <EuiButton
-                onClick={submitTermRequest}
+                onClick={getAuthCode}
                 size="s"
                 iconType="logoGithub"
                 fill
@@ -127,7 +190,11 @@ function TermRequest({ ontologyId }: TermRequestProps) {
           <EuiText color="success">Request submitted successfully.</EuiText>
           <div>{`Code: ${code}`}</div>
           <p>{`Please use this link to login to your account: `}</p>
-          <a href="https://github.com/login/device" target="_blank">
+          <a
+            href="https://github.com/login/device"
+            target="_blank"
+            onClick={submitTermRequest}
+          >
             https://github.com/login/device
           </a>
         </>
