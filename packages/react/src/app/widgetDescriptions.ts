@@ -482,3 +482,8 @@ Supports efficient inspection of extensive ontology content without overwhelming
 - **Known limitation**:
 The widget currently does not work correctly for **properties**. This is due to an issue in the **OLS4 API** where the required parameter for property-based queries is not properly handled, resulting in incomplete or non-functional results.
 `.trim();
+
+export const TermRequestDescription = `
+The TermRequestWidget is a component designed to provide users with a simple and intuitive way to request terms from an ontology repository. 
+
+`.trim();

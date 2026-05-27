@@ -1,0 +1,27 @@
+import { expect, waitFor, within } from "storybook/test";
+
+export const TermRequestWidgetStoryArgs = {
+  ontologyId: "",
+};
+
+export const TermRequestVibsoExampleArgs = {
+  ontologyId: "vibso",
+};
+
+export const commonTermRequestWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("term-depiction");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
+};

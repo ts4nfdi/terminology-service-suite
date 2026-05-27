@@ -800,9 +800,9 @@ export type TermDepictionWidgetProps = ApiObj &
 
 export type TermRequestProps = {
   /**
-   * URL of the ontology repository where term requests should be submitted.
+   * Id of the ontology where term requests should be submitted to.
    */
-  ontologyRepoUrl: string;
+  ontologyId: string;
 };
 
 export type GraphViewWidgetProps = ApiObj &

@@ -1067,3 +1067,10 @@ export const hideLegendArgType = {
     description: "Hide the graph legend. Default is false/undefined",
   },
 };
+
+export const TermRequestWidgetStoryArgTypes = {
+  ontologyId: {
+    required: true,
+    description: "The ontology ID to request terms from.",
+  },
+};
