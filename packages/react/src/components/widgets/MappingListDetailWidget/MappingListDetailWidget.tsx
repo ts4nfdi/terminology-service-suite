@@ -244,16 +244,46 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "8px",
+                  gap: "12px",
                   backgroundColor: "#f5f7fa",
-                  padding: "8px",
+                  padding: "16px 8px",
                   borderRadius: "4px",
                 }}
               >
-                <span>Subject</span>
-                <span>&rarr;</span>
-                <span>Predicate</span>
-                <span>&rarr;</span>
+                <span>subject</span>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      marginBottom: "4px",
+                      color: "#333",
+                    }}
+                  >
+                    predicate
+                  </span>
+                  <svg width="100" height="10" viewBox="0 0 100 10">
+                    <line
+                      x1="0"
+                      y1="5"
+                      x2="95"
+                      y2="5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <polyline
+                      points="88,1 95,5 88,9"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </div>
                 <span>Object</span>
               </div>
             </EuiText>
