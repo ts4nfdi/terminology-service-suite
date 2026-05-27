@@ -12,7 +12,7 @@ const meta = {
   title: "Term Request/TermRequest",
   component: TermRequest,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
     docs: {
       description: {
         component: TermRequestDescription,

@@ -17,7 +17,7 @@ export const commonTermRequestWidgetPlay = async ({
 
   await waitFor(
     async () => {
-      const content = canvas.getByTestId("term-depiction");
+      const content = canvas.getByTestId("term-request");
       await expect(content).toBeInTheDocument();
     },
     {
