@@ -458,10 +458,12 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         if (graphData.nodes.has(gnode.iri as string)) {
           // in this case, the node is a common node: needs a common node color
           let existingNode = graphData.nodes.get(gnode.iri as string)!;
-          existingNode.isCommon = true;
-          existingNode.backgroundColor = COMMON_NODES_BG_COLOR;
-          existingNode.color = NODE_TEXT_COLOR;
           existingNode.level = height;
+          if (!existingNode.exclusiveToTargetIri) {
+            existingNode.isCommon = true;
+            existingNode.backgroundColor = COMMON_NODES_BG_COLOR;
+            existingNode.color = NODE_TEXT_COLOR;
+          }
         } else {
           /* otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
            we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
@@ -475,6 +477,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           if (!leftOverNodesFromtargetIri.find((n) => n.iri === gnode.iri)) {
             leftOverNodesFromtargetIri.push(gnode);
           }
+          graphData.nodes.set(gnode.iri as string, gnode);
         }
       }
 
