@@ -3,8 +3,6 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
-import { OlsEntityApi } from "../api/ols/OlsEntityApi";
-import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 import { Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
@@ -868,7 +866,7 @@ export type ComparisonInputProps = {
 };
 
 export type EntityListWidgetProps = {
-  api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
+  api: string;
   ontologyId: string;
   entityType: EntityTypeName;
   parameter?: string;
