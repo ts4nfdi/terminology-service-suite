@@ -1,8 +1,8 @@
 export const MappingListDetailWidgetStoryArgTypes = {};
 
-export const MappingListDetailWidgetStoryArgs_Rec_B_2000 = {
+export const MappingListDetailWidgetStoryArgs_OEO_00000150 = {
   api: "https://coli-conc.gbv.de/api/",
-  iri: "http://uri.gbv.de/terminology/nsk/Rec%20B%202000",
+  iri: "https://openenergyplatform.org/ontology/oeo/OEO_00000150",
 } as const;
 
 export const MappingListDetailWidgetStoryArgs_Ges_C_2700 = {

@@ -4,7 +4,7 @@ import { WrappedMappingListDetailWidget } from "./MappingListDetailWidget";
 import {
   MappingListDetailWidgetStoryArgs_B14C4A,
   MappingListDetailWidgetStoryArgs_Ges_C_2700,
-  MappingListDetailWidgetStoryArgs_Rec_B_2000,
+  MappingListDetailWidgetStoryArgs_OEO_00000150,
   MappingListDetailWidgetStoryArgTypes,
 } from "./MappingListDetailWidgetStories";
 
@@ -12,7 +12,7 @@ const meta: Meta = {
   title: "Mapping/MappingListDetailWidget",
   component: WrappedMappingListDetailWidget,
   argTypes: MappingListDetailWidgetStoryArgTypes,
-  args: MappingListDetailWidgetStoryArgs_Rec_B_2000,
+  args: MappingListDetailWidgetStoryArgs_OEO_00000150,
   parameters: {
     layout: "centered",
     docs: {
@@ -26,8 +26,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Rec_B_2000: Story = {
-  args: MappingListDetailWidgetStoryArgs_Rec_B_2000,
+export const OEO_00000150: Story = {
+  args: MappingListDetailWidgetStoryArgs_OEO_00000150,
 };
 
 export const Ges_C_2700: Story = {
