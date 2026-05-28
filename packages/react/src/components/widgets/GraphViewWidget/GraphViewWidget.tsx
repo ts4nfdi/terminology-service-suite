@@ -285,6 +285,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     if (originalNodeCount === graphData.nodes.size) {
       setShowNothingToAddMessage(true);
     }
+    setGraphDataToRender(graphData);
   }
 
   function addTermRelationsEdgesToGraph(data: GraphFetchData) {
@@ -305,6 +306,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         }
       }
     }
+    setGraphDataToRender(graphData);
   }
 
   function addAllGraphNodesToVisNetwork() {
@@ -431,7 +433,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     treeData: JSTreeNode[],
     istargetIri: boolean = false,
   ) {
-    const start = performance.now();
     let q = [...treeData];
     let nextLayerNodes: JSTreeNode[] = [];
     let height = 1;
@@ -450,7 +451,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           graphData.nodes.set(gnode.iri as string, gnode);
         } else {
           // remove the existing node from the nodes in the graph network. This is because the node height has to be updated.
-          networkNodes.current.remove(gnode.iri as string);
           let existingNode = graphData.nodes.get(gnode.iri as string)!;
           existingNode.level = height;
         }
@@ -480,12 +480,14 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           graphData.nodes.set(gnode.iri as string, gnode);
         }
       }
-
-      if (node.parentList && node.parentList.length !== 0) {
-        node.parentList.forEach((pn) => {
+      if (node.childrenList?.length) {
+        for (let child of node.childrenList) {
+          if (!nextLayerNodes.find((n) => n.iri === child.iri)) {
+            nextLayerNodes.push(child);
+          }
           let edge = {
-            source: node.iri,
-            target: pn.iri,
+            source: child.iri,
+            target: node.iri,
             label: subClassEdgeLabel,
             uri: SUBCLASS_OF_URIS[0],
           };
@@ -493,11 +495,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           if (!graphData.edges.has(edgeId)) {
             graphData.edges.set(edgeId, edge);
           }
-        });
-      }
-
-      if (node.childrenList?.length) {
-        nextLayerNodes.push(...node.childrenList);
+        }
       }
       if (q.length === 0) {
         height += 1;
@@ -514,8 +512,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     ) {
       setShowNothingToAddMessage(true);
     }
-    const end = performance.now();
-    console.log(`addAllGraphNodesToVisNetwork took ${(end - start) / 1000}s`);
   }
 
   function shapeGraphDataForMultiIriMode(graphData: VisGraphDataMap) {
