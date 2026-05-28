@@ -868,7 +868,7 @@ export type ComparisonInputProps = {
 };
 
 export type EntityListWidgetProps = {
-  api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
+  api: string;
   ontologyId: string;
   entityType: EntityTypeName;
   parameter?: string;
