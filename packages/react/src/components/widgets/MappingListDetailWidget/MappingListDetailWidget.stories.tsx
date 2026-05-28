@@ -3,8 +3,11 @@ import { MappingListDetailDescription } from "../../../app/widgetDescriptions";
 import { WrappedMappingListDetailWidget } from "./MappingListDetailWidget";
 import {
   MappingListDetailWidgetStoryArgs_B14C4A,
+  MappingListDetailWidgetStoryArgs_Energy,
   MappingListDetailWidgetStoryArgs_Ges_C_2700,
   MappingListDetailWidgetStoryArgs_OEO_00000150,
+  MappingListDetailWidgetStoryArgs_Q259745,
+  MappingListDetailWidgetStoryArgs_Rec_B_2000,
   MappingListDetailWidgetStoryArgTypes,
 } from "./MappingListDetailWidgetStories";
 
@@ -28,6 +31,18 @@ type Story = StoryObj<typeof meta>;
 
 export const OEO_00000150: Story = {
   args: MappingListDetailWidgetStoryArgs_OEO_00000150,
+};
+
+export const Q259745: Story = {
+  args: MappingListDetailWidgetStoryArgs_Q259745,
+};
+
+export const Energy: Story = {
+  args: MappingListDetailWidgetStoryArgs_Energy,
+};
+
+export const Rec_B_2000: Story = {
+  args: MappingListDetailWidgetStoryArgs_Rec_B_2000,
 };
 
 export const Ges_C_2700: Story = {
