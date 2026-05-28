@@ -13,6 +13,11 @@ export type VisGraphData = {
   edges: VisGraphEdge[];
 };
 
+export type VisGraphDataMap = {
+  nodes: Map<string, VisGraphNode>;
+  edges: Map<string, VisGraphEdge>;
+};
+
 export type VisGraphNode = OlsGraphNode & {
   color?: string;
   backgroundColor?: string;

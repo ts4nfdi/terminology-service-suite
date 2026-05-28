@@ -114,7 +114,7 @@ export class GraphEdge {
       /**
        * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html
        */
-      this.id = edge["source"] + edge["target"] + "&uri=" + edge["uri"];
+      this.id = generateEdgeId(edge);
       this.from = edge["source"];
       this.to = edge["target"];
       this.label = edgeLabel;
@@ -129,4 +129,11 @@ export class GraphEdge {
       };
     }
   }
+}
+
+export function generateEdgeId(edge: OlsGraphEdge) {
+  if (!edge["source"] || !edge["target"] || !edge["uri"]) {
+    return "";
+  }
+  return edge["source"] + edge["target"] + "&uri=" + edge["uri"];
 }

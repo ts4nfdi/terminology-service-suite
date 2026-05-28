@@ -19,6 +19,7 @@ import { getErrorMessageToDisplay } from "../../../app/util";
 import "../../../style/ts4nfdiStyles/ts4nfdiGraphStyle.css";
 import { JSTreeNode } from "../../../utils/olsApiTypes";
 import {
+  generateEdgeId,
   GraphEdge,
   graphNetworkConfig,
   GraphNode,
@@ -45,6 +46,7 @@ import {
 import {
   GraphFetchData,
   VisGraphData,
+  VisGraphDataMap,
   VisGraphEdge,
   VisGraphNode,
 } from "./types";
@@ -109,9 +111,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     edges: [],
   });
 
-  const [graphDataToRender, setGraphDataToRender] = useState<VisGraphData>({
-    nodes: [],
-    edges: [],
+  const [graphDataToRender, setGraphDataToRender] = useState<VisGraphDataMap>({
+    nodes: new Map<string, VisGraphNode>(new Map()),
+    edges: new Map<string, VisGraphEdge>(new Map()),
   });
   const [previousGraphNodeCount, setPreviousGraphNodeCount] = useState(0);
   const [previousGraphEdgeCount, setPreviousGraphEdgeCount] = useState(0);
@@ -216,8 +218,6 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
   }
   if (data && (firstLoad || dbclicked)) {
-    let gDataForDownload: VisGraphData = { ...graphRawData };
-    let gData = { ...graphDataToRender };
     if (!rootWalk && !hierarchy && !irisList) {
       addTermRelationsNodesToGraph(data);
       addTermRelationsEdgesToGraph(data);
@@ -250,7 +250,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
 
     if (firstLoad) {
-      gDataForDownload = { nodes: [], edges: [] };
+      setGraphRawData({ nodes: [], edges: [] });
       setFirstLoad(false);
     }
 
@@ -261,27 +261,28 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   function addTermRelationsNodesToGraph(data: GraphFetchData) {
     let graphData = { ...graphDataToRender };
-    let originalNodeCount = graphData.nodes.length;
+    let originalNodeCount = graphData.nodes.size;
     for (let n of data.termRelations?.nodes ?? []) {
-      if (!graphData.nodes.find((gn) => gn.iri === n.iri)) {
-        graphData.nodes.push(n);
+      if (!graphData.nodes.has(n.iri as string)) {
+        graphData.nodes.set(n.iri as string, n);
       }
     }
     if (data.targetTermRelations) {
       // when targetIri is given for comparison
       for (let sn of data.targetTermRelations.nodes) {
-        let existingNode = graphData.nodes.find((n) => n.iri === sn.iri);
-        if (existingNode) {
+        if (graphData.nodes.has(sn.iri as string)) {
+          let existingNode = graphData.nodes.get(sn.iri as string)!;
           existingNode.isCommon = true;
         } else {
           sn.isCommon = false;
           sn.backgroundColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
           sn.color = NODE_TEXT_COLOR;
-          graphData.nodes.push(sn);
+          sn.exclusiveToTargetIri = true;
+          graphData.nodes.set(sn.iri as string, sn);
         }
       }
     }
-    if (originalNodeCount === graphData.nodes.length) {
+    if (originalNodeCount === graphData.nodes.size) {
       setShowNothingToAddMessage(true);
     }
   }
@@ -289,25 +290,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   function addTermRelationsEdgesToGraph(data: GraphFetchData) {
     let graphData = { ...graphDataToRender };
     for (let e of data.termRelations?.edges ?? []) {
-      let existing = graphData.edges.find(
-        (edge) => edge.source === e.source && edge.target === e.target,
-      );
-      if (existing) continue;
+      let eId = generateEdgeId(e);
+      if (graphData.edges.has(eId)) continue;
       if (SUBCLASS_OF_URIS.includes(e.uri!)) {
         e.label = SUBCLASS_OF_EDGE_LABEL;
       }
-      graphData.edges.push(e);
+      graphData.edges.set(eId, e);
     }
     if (data.targetTermRelations?.edges) {
       for (let se of data.targetTermRelations.edges) {
-        let existing = graphData.edges.find(
-          (edge) => edge.source === se.source && edge.target === se.target,
-        );
-        if (!existing) {
-          graphData.edges.push(se);
-        }
-        if (!existing) {
-          graphData.edges.push(se);
+        let eId = generateEdgeId(se);
+        if (!graphData.edges.has(eId)) {
+          graphData.edges.set(eId, se);
         }
       }
     }
@@ -315,8 +309,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   function addAllGraphNodesToVisNetwork() {
     let graphNodesToAdd = [...graphDataToRender.nodes];
-    let graphNodes: GraphNode[] = [];
-    for (let node of graphNodesToAdd) {
+    let graphNodes: Map<string, GraphNode> = new Map();
+    for (let [_, node] of graphNodesToAdd) {
       let gNode = new GraphNode(node);
       if (node.exclusiveToTargetIri) {
         gNode = new GraphNode(
@@ -325,45 +319,36 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           NODE_TEXT_COLOR,
         );
       }
-      if (!graphNodes.find((n) => n.id === gNode.id)) {
-        if (
-          gNode.id === iri ||
-          (irisList && irisList.includes(gNode.id ?? ""))
-        ) {
-          setSourceLabel(gNode.label ?? "");
-          gNode.color.background = SOURCE_NODE_BG_COLOR;
-          gNode.font.color = NODE_TEXT_COLOR;
-        } else if (!irisList && targetIri && gNode.id === targetIri) {
-          setTargetLabel(gNode.label ?? "");
-          gNode.color.background = TARGET_NODE_BG_COLOR;
-          gNode.font.color = NODE_TEXT_COLOR;
-        } else if (nodeColorMap.current.get(gNode.id!)) {
-          // node has been removed and now added again. so it has to get the previous color to avoid re-calculation
-          gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
-        } else if (
-          dbclicked &&
-          dbClickedColor.bgColor &&
-          dbClickedColor.bgColor !== SOURCE_NODE_BG_COLOR
-        ) {
-          gNode.color.background = dbClickedColor.bgColor;
-          gNode.font.color = NODE_TEXT_COLOR;
-        }
-        nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
-        graphNodes.push(gNode);
-      }
-      if (node.isCommon && gNode.id !== iri && gNode.id !== targetIri) {
+      if (gNode.id === iri || (irisList && irisList.includes(gNode.id ?? ""))) {
+        setSourceLabel(gNode.label ?? "");
+        gNode.color.background = SOURCE_NODE_BG_COLOR;
+        gNode.font.color = NODE_TEXT_COLOR;
+      } else if (!irisList && targetIri && gNode.id === targetIri) {
+        setTargetLabel(gNode.label ?? "");
+        gNode.color.background = TARGET_NODE_BG_COLOR;
+        gNode.font.color = NODE_TEXT_COLOR;
+      } else if (nodeColorMap.current.get(gNode.id!)) {
+        // node has been removed and now added again. so it has to get the previous color to avoid re-calculation
+        gNode.color.background = nodeColorMap.current.get(gNode.id!)!;
+      } else if (
+        dbclicked &&
+        dbClickedColor.bgColor &&
+        dbClickedColor.bgColor !== SOURCE_NODE_BG_COLOR
+      ) {
+        gNode.color.background = dbClickedColor.bgColor;
+        gNode.font.color = NODE_TEXT_COLOR;
+      } else if (node.isCommon && gNode.id !== iri && gNode.id !== targetIri) {
         gNode = new GraphNode((node = node), COMMON_NODES_BG_COLOR);
-        let gNodeIndex = graphNodes.findIndex((n) => n.id === gNode.id);
-        if (gNodeIndex !== -1) {
-          graphNodes.splice(gNodeIndex, 1);
+        if (graphNodes.has(gNode.id as string)) {
+          graphNodes.delete(gNode.id as string);
         }
-        nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
-        graphNodes.push(gNode);
       }
+      nodeColorMap.current.set(gNode.id ?? "", gNode.color.background);
+      graphNodes.set(gNode.id as string, gNode);
     }
     networkNodes.current.clear();
     //@ts-ignore
-    networkNodes.current.add(graphNodes);
+    networkNodes.current.add([...graphNodes.values()]);
     // if (networkNodes.current.length === 0) {
     //   //@ts-ignore
     //   networkNodes.current.add(graphNodes);
@@ -376,23 +361,23 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
 
   function addAllGraphEdgesToVisNetwork() {
     let edgesToAdd = [...graphDataToRender.edges];
-    let graphEdges: GraphEdge[] = [];
-    for (let edge of edgesToAdd) {
+    let graphEdges: Map<string, GraphEdge> = new Map();
+    for (let [_, edge] of edgesToAdd) {
       let gEdge = new GraphEdge((edge = edge), edge.label);
       let dashed =
         SUBCLASS_OF_URIS.includes(edge.uri ?? "") || rootWalk ? false : true;
       gEdge.dashes = dashed;
-      if (!graphEdges.find((e) => e.id === gEdge.id)) {
+      if (!graphEdges.has(gEdge.id as string)) {
         if (!irisList && gEdge.id?.includes(iri) && rootWalk) {
           //@ts-ignore
           gEdge.color.color = "black";
         }
-        graphEdges.push(gEdge);
+        graphEdges.set(gEdge.id as string, gEdge);
       }
     }
     networkEdges.current.clear();
     //@ts-ignore
-    networkEdges.current.add(graphEdges);
+    networkEdges.current.add([...graphEdges.values()]);
   }
 
   function convertToOlsGraphFormat(
@@ -401,7 +386,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     targetListOfJsTreeNodes?: Array<JSTreeNode>,
     targetNodeRelations?: { nodes: any[]; edges: any[] },
   ) {
-    let graphData: VisGraphData = { nodes: [], edges: [] };
+    let graphData: VisGraphDataMap = {
+      nodes: new Map<string, VisGraphNode>(new Map()),
+      edges: new Map<string, VisGraphEdge>(new Map()),
+    };
     let treeData = convertFlatListToTreeStructure(listOfJsTreeNodes);
     addTreeDataToGraphData(graphData, treeData);
     if (!dbclicked) {
@@ -418,23 +406,19 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     if (dbclicked) {
       let currentGraphData = { ...graphDataToRender };
-      for (let node of graphData.nodes) {
-        if (!currentGraphData.nodes.find((n) => n.iri === node.iri)) {
-          currentGraphData.nodes.push(node);
+      for (let [iri, node] of graphData.nodes) {
+        if (!currentGraphData.nodes.has(iri)) {
+          currentGraphData.nodes.set(iri, node);
         }
       }
-      for (let edge of graphData.edges) {
-        if (
-          !currentGraphData.edges.find(
-            (e) => e.source === edge.source && e.target === edge.target,
-          )
-        ) {
-          currentGraphData.edges.push(edge);
+      for (let [iri, edge] of graphData.edges) {
+        if (!currentGraphData.edges.has(iri)) {
+          currentGraphData.edges.set(iri, edge);
+        }
+        if (edge.notOriginal) {
+          currentGraphData.edges.delete(iri);
         }
       }
-      currentGraphData.edges = currentGraphData.edges.filter(
-        (e) => !e.notOriginal,
-      );
       setGraphDataToRender(currentGraphData);
     } else {
       setGraphDataToRender(graphData);
@@ -443,15 +427,16 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addTreeDataToGraphData(
-    graphData: VisGraphData,
+    graphData: VisGraphDataMap,
     treeData: JSTreeNode[],
     istargetIri: boolean = false,
   ) {
+    const start = performance.now();
     let q = [...treeData];
     let nextLayerNodes: JSTreeNode[] = [];
     let height = 1;
     let leftOverNodesFromtargetIri: OlsGraphNode[] = [];
-    let originalGraphNodesCount = graphData.nodes.length;
+    let originalGraphNodesCount = graphData.nodes.size;
     while (q.length) {
       let node = q[0];
       q = q.slice(1);
@@ -461,27 +446,28 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         level: height,
       };
       if (!istargetIri) {
-        let existingNode = graphData.nodes.find((n) => n.iri === gnode.iri);
-        if (!existingNode) {
-          graphData.nodes.push(gnode);
+        if (!graphData.nodes.has(gnode.iri as string)) {
+          graphData.nodes.set(gnode.iri as string, gnode);
         } else {
-          // remove the existing node from the nodes map. This is because the node height has to be updated.
-          networkNodes.current.remove(existingNode.iri as string);
+          // remove the existing node from the nodes in the graph network. This is because the node height has to be updated.
+          networkNodes.current.remove(gnode.iri as string);
+          let existingNode = graphData.nodes.get(gnode.iri as string)!;
           existingNode.level = height;
         }
       } else {
-        let existingNode = graphData.nodes.find((n) => n.iri === gnode.iri);
-        if (existingNode) {
+        if (graphData.nodes.has(gnode.iri as string)) {
           // in this case, the node is a common node: needs a common node color
+          let existingNode = graphData.nodes.get(gnode.iri as string)!;
           existingNode.isCommon = true;
           existingNode.backgroundColor = COMMON_NODES_BG_COLOR;
           existingNode.color = NODE_TEXT_COLOR;
           existingNode.level = height;
         } else {
-          // otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
-          // we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
-          // in ols tree structure a node may appears multiple times --> it conflicts with this function logic in
-          // detecting the common nodes
+          /* otherwise the node is exclusive to the target iri. we add it to the graph with it's own color but
+           we do not add it at this point to graph data (we do it in the end of this funciton). reason is:
+           in ols tree structure a node may appears multiple times --> it conflicts with this function logic in
+          detecting the common nodes */
+
           gnode.isCommon = false;
           gnode.backgroundColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
           gnode.color = NODE_TEXT_COLOR;
@@ -500,12 +486,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
             label: subClassEdgeLabel,
             uri: SUBCLASS_OF_URIS[0],
           };
-          if (
-            !graphData.edges.find(
-              (e) => e.source === edge.source && e.target === edge.target,
-            )
-          ) {
-            graphData.edges.push(edge);
+          let edgeId = generateEdgeId(edge);
+          if (!graphData.edges.has(edgeId)) {
+            graphData.edges.set(edgeId, edge);
           }
         });
       }
@@ -520,34 +503,34 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       }
     }
     if (irisList) {
-      transfromGraphDataToTree(graphData);
+      shapeGraphDataForMultiIriMode(graphData);
     }
-    graphData.nodes = [...graphData.nodes, ...leftOverNodesFromtargetIri];
-    if (originalGraphNodesCount === graphData.nodes.length) {
+    if (
+      originalGraphNodesCount ===
+      graphData.nodes.size + leftOverNodesFromtargetIri.length
+    ) {
       setShowNothingToAddMessage(true);
     }
+    const end = performance.now();
+    console.log(`addAllGraphNodesToVisNetwork took ${(end - start) / 1000}s`);
   }
 
-  function transfromGraphDataToTree(graphData: VisGraphData) {
+  function shapeGraphDataForMultiIriMode(graphData: VisGraphDataMap) {
     // Transfer the graph data to tree. Used when irisList is given as input.
 
-    let cleanedEdges: VisGraphEdge[] = [];
-    for (let edge of graphData.edges) {
-      let sourceNode = graphData.nodes.find(
-        (node) => node.iri === edge.source,
-      )!;
-      let targetNode = graphData.nodes.find(
-        (node) => node.iri === edge.target,
-      )!;
+    let cleanedEdges: Map<string, VisGraphEdge> = new Map();
+    for (let [edgeId, edge] of graphData.edges) {
+      let sourceNode = graphData.nodes.get(edge.source as string)!;
+      let targetNode = graphData.nodes.get(edge.target as string)!;
       if (sourceNode.level! - targetNode.level! === 1) {
-        cleanedEdges.push(edge);
+        cleanedEdges.set(edgeId, edge);
       }
     }
     graphData.edges = cleanedEdges;
   }
 
   function addHasPartRelationsToGraphData(
-    graphData: VisGraphData,
+    graphData: VisGraphDataMap,
     nodeRelations?: VisGraphData,
     isTargetNode: boolean = false,
   ) {
@@ -560,23 +543,30 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       bgColor = EXCLUSIVE_TO_TARGET_IRI_COLOR;
       color = NODE_TEXT_COLOR;
     }
-    for (let edge of nodeRelations["edges"]) {
+    for (let edge of nodeRelations.edges) {
       if (edge["label"] === HAS_PART_EDGE_LABEL) {
-        graphData.edges.push(edge);
+        let eId = generateEdgeId(edge);
+        if (!graphData.edges.has(eId)) {
+          graphData.edges.set(eId, edge);
+        }
         let sourceNode = nodeRelations.nodes.find(
           (node) => node.iri === edge.source,
         )!;
         sourceNode.isCommon = false;
         sourceNode.backgroundColor = bgColor;
         sourceNode.color = color;
-        graphData.nodes.push(sourceNode);
+        if (!graphData.nodes.has(sourceNode.iri as string)) {
+          graphData.nodes.set(sourceNode.iri as string, sourceNode);
+        }
         let targetNode = nodeRelations.nodes.find(
           (node) => node.iri === edge.target,
         )!;
         targetNode.isCommon = false;
         targetNode.backgroundColor = bgColor;
         targetNode.color = color;
-        graphData.nodes.push(targetNode);
+        if (!graphData.nodes.has(targetNode.iri as string)) {
+          graphData.nodes.set(targetNode.iri as string, targetNode);
+        }
       }
     }
   }
@@ -598,7 +588,10 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setSelectedIri(iri);
     setFirstLoad(true);
     setDbclicked(false);
-    setGraphDataToRender({ nodes: [], edges: [] });
+    setGraphDataToRender({
+      nodes: new Map<string, VisGraphNode>(),
+      edges: new Map<string, VisGraphEdge>(),
+    });
     setCounter(Math.floor(Math.random() * 100));
   }
 
@@ -613,20 +606,24 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setGraphDataIsCalculated(false);
     let graphData = { ...graphDataToRender };
     let incommingNodesIris = graphData.edges
+      .values()
       .filter((e) => e.target === clickedNodeIri)
       .map((e) => e.source);
     let outgoingNodesIris = graphData.edges
+      .values()
       .filter((e) => e.source === clickedNodeIri)
       .map((e) => e.target);
-    let nodeToRemoveIndex = graphData.nodes.findIndex(
-      (n) => n.iri === clickedNodeIri,
-    );
-    if (nodeToRemoveIndex !== -1) {
-      graphData.nodes.splice(nodeToRemoveIndex, 1);
+
+    graphData.nodes.delete(clickedNodeIri);
+
+    let edgesToRemove = graphData.edges
+      .values()
+      .filter(
+        (e) => e.source !== clickedNodeIri && e.target !== clickedNodeIri,
+      );
+    for (let edge of edgesToRemove) {
+      graphData.edges.delete(generateEdgeId(edge));
     }
-    graphData.edges = graphData.edges.filter(
-      (e) => e.source !== clickedNodeIri && e.target !== clickedNodeIri,
-    );
     for (let iri of incommingNodesIris) {
       for (let oiri of outgoingNodesIris) {
         // create new edges upon removing the node from the graph
@@ -637,12 +634,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
           uri: SUBCLASS_OF_URIS[0],
           notOriginal: true,
         };
-        if (
-          !graphData.edges.find(
-            (e) => e.source === edge.source && e.target === edge.target,
-          )
-        ) {
-          graphData.edges.push(edge);
+        let eId = generateEdgeId(edge);
+        if (!graphData.edges.has(eId)) {
+          graphData.edges.set(eId, edge);
         }
       }
     }
@@ -662,29 +656,35 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   useEffect(() => {
     if (
       !Object.keys(graphNetwork.current).length ||
-      (previousGraphNodeCount === graphDataToRender.nodes.length &&
-        previousGraphEdgeCount === graphDataToRender.edges.length)
+      (previousGraphNodeCount === graphDataToRender.nodes.size &&
+        previousGraphEdgeCount === graphDataToRender.edges.size)
     ) {
       return;
     }
-    setGraphRawData(graphDataToRender);
+    setGraphRawData({
+      nodes: [...graphDataToRender.nodes.values()],
+      edges: [...graphDataToRender.edges.values()],
+    });
     addAllGraphNodesToVisNetwork();
     addAllGraphEdgesToVisNetwork();
-    setPreviousGraphNodeCount(graphDataToRender.nodes.length);
-    setPreviousGraphEdgeCount(graphDataToRender.edges.length);
+    setPreviousGraphNodeCount(graphDataToRender.nodes.size);
+    setPreviousGraphEdgeCount(graphDataToRender.edges.size);
     //@ts-ignore
     graphNetwork.current.setOptions({ physics: true });
     setTimeout(() => {
       //@ts-ignore
       graphNetwork.current.setOptions({ physics: false });
     }, 4000);
-  }, [graphDataToRender.nodes.length, graphDataToRender.edges.length]);
+  }, [graphDataToRender.nodes.size, graphDataToRender.edges.size]);
 
   useEffect(() => {
     if (!graphDataIsCalculated) {
       return;
     }
-    setGraphRawData(graphDataToRender);
+    setGraphRawData({
+      nodes: [...graphDataToRender.nodes.values()],
+      edges: [...graphDataToRender.edges.values()],
+    });
     addAllGraphNodesToVisNetwork();
     addAllGraphEdgesToVisNetwork();
     let graphData = {
