@@ -119,7 +119,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
   function render(data: MetadataInfo) {
     return (
       <div className={finalClassName} data-testid="metadata">
-        <EuiFlexGroup direction="column">
+        <EuiFlexGroup direction="column" gutterSize={"m"}>
           <EuiFlexItem grow={false}>
             {termLink ? (
               <EuiLink href={termLink} target="_blank" external={false}>
@@ -179,28 +179,30 @@ function MetadataWidget(props: MetadataWidgetProps) {
             />
           </EuiFlexItem>
 
-          <div style={{ margin: "0 12px 0" }}>
-            <EntityOntoListPresentation
-              iri={props.iri}
-              label={data.entity.getLabel() || ""}
-              ontolist={data.ontoList}
-              entityType={
-                entityType || (data.entity.getType() as EntityTypeName)
-              }
-              onNavigateToOntology={onNavigateToOntology}
-              className={`${finalClassName}-entity-onto-list`}
-            />
-            <EntityDefinedByPresentation
-              iri={props.iri}
-              ontolist={data.definedBy}
-              label={data.entity.getLabel() || ""}
-              entityType={
-                entityType || (data.entity.getType() as EntityTypeName)
-              }
-              onNavigateToOntology={onNavigateToOntology}
-              className={`${finalClassName}-entity-defined-by`}
-            />
-          </div>
+          {(data.ontoList.length > 0 || data.definedBy.length > 0) && (
+            <div style={{ margin: "0 12px 0" }}>
+              <EntityOntoListPresentation
+                iri={props.iri}
+                label={data.entity.getLabel() || ""}
+                ontolist={data.ontoList}
+                entityType={
+                  entityType || (data.entity.getType() as EntityTypeName)
+                }
+                onNavigateToOntology={onNavigateToOntology}
+                className={`${finalClassName}-entity-onto-list`}
+              />
+              <EntityDefinedByPresentation
+                iri={props.iri}
+                ontolist={data.definedBy}
+                label={data.entity.getLabel() || ""}
+                entityType={
+                  entityType || (data.entity.getType() as EntityTypeName)
+                }
+                onNavigateToOntology={onNavigateToOntology}
+                className={`${finalClassName}-entity-defined-by`}
+              />
+            </div>
+          )}
 
           <EuiFlexItem>
             <TabWidget
