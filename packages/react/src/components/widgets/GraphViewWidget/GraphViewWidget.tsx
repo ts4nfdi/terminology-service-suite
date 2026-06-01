@@ -364,13 +364,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     networkNodes.current.clear();
     //@ts-ignore
     networkNodes.current.add([...graphNodes.values()]);
-    // if (networkNodes.current.length === 0) {
-    //   //@ts-ignore
-    //   networkNodes.current.add(graphNodes);
-    // } else {
-    //   //@ts-ignore
-    //   networkNodes.current.update(graphNodes);
-    // }
+
     return true;
   }
 
@@ -516,9 +510,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
         nextLayerNodes = [];
       }
     }
-    if (irisList) {
-      shapeGraphDataForMultiIriMode(graphData);
-    }
+    // if (irisList) {
+    //   shapeGraphDataForMultiIriMode(graphData);
+    // }
     if (
       originalGraphNodesCount ===
       graphData.nodes.size + leftOverNodesFromtargetIri.length
