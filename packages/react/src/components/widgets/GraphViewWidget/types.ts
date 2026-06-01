@@ -37,3 +37,11 @@ export type GraphFetchFunctionInput = {
   dbClicked?: boolean;
   parameter?: string;
 };
+
+export type HierarchyConfigT = {
+  enabled: boolean;
+  direction: "DU" | "UD" | "LR" | "RL";
+  sortMethod: string;
+  levelSeparation: number;
+  nodeSpacing: number;
+};

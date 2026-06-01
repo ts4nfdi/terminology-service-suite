@@ -1,17 +1,17 @@
 import { OlsGraphEdge } from "../../../app/types";
-import { VisGraphNode } from "./types";
+import { HierarchyConfigT, VisGraphNode } from "./types";
 import {
   DEFAULT_HIERARCHY_DIRECTION,
   DEFAULT_NODE_BG_COLOR,
   NODE_TEXT_COLOR,
 } from "./vars";
 
-export const hierarchicalConfig = {
+export const hierarchicalConfig: HierarchyConfigT = {
   enabled: true,
-  //@ts-ignore
   direction: DEFAULT_HIERARCHY_DIRECTION,
-  //@ts-ignore
   sortMethod: "directed",
+  levelSeparation: 100,
+  nodeSpacing: 100,
 };
 
 export const graphNetworkConfig = {
@@ -28,6 +28,8 @@ export const graphNetworkConfig = {
     clusterThreshold: 150,
     hierarchical: {
       enabled: false,
+      levelSeparation: 100,
+      nodeSpacing: 200,
     },
   },
   physics: {

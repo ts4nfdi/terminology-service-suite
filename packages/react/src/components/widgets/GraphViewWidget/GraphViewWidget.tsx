@@ -210,6 +210,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   const networkEdges = useRef(new DataSet([]));
   const graphNetwork = useRef({});
   const container = useRef(null);
+  const nodeSpacing = useRef(100);
+  const levelSeparation = useRef(100);
   const fullScreenContainerRef = useRef(null);
   // kep a map between a node iri and it's color to avoid recalculating the color in case the node is removed and added again by the user
   const nodeColorMap = useRef<Map<string, string>>(new Map());
@@ -310,9 +312,20 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
   }
 
   function addAllGraphNodesToVisNetwork() {
+    nodeSpacing.current = 100;
+    levelSeparation.current = 100;
     let graphNodesToAdd = [...graphDataToRender.nodes];
     let graphNodes: Map<string, GraphNode> = new Map();
     for (let [_, node] of graphNodesToAdd) {
+      if (["LR", "RL"].includes(hierarchicalConfig["direction"])) {
+        if (node.label?.length && node.label.length < 30) {
+          nodeSpacing.current = 200;
+          levelSeparation.current = 300;
+        } else {
+          nodeSpacing.current = 500;
+          levelSeparation.current = 700;
+        }
+      }
       let gNode = new GraphNode(node);
       if (node.exclusiveToTargetIri) {
         gNode = new GraphNode(
@@ -594,6 +607,13 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setCounter(Math.floor(Math.random() * 100));
   }
 
+  function runPhysics(graphNetwork: Network, timeout: number) {
+    graphNetwork.setOptions({ physics: true });
+    setTimeout(() => {
+      graphNetwork.setOptions({ physics: false });
+    }, timeout);
+  }
+
   function removeNodeFromGraph() {
     if (!clickedNodeIri) {
       setShowNodeNotSelectedMessage(true);
@@ -604,22 +624,18 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     }
     setGraphDataIsCalculated(false);
     let graphData = { ...graphDataToRender };
-    let incommingNodesIris = graphData.edges
-      .values()
+    let incommingNodesIris = [...graphData.edges.values()]
       .filter((e) => e.target === clickedNodeIri)
       .map((e) => e.source);
-    let outgoingNodesIris = graphData.edges
-      .values()
+    let outgoingNodesIris = [...graphData.edges.values()]
       .filter((e) => e.source === clickedNodeIri)
       .map((e) => e.target);
 
     graphData.nodes.delete(clickedNodeIri);
 
-    let edgesToRemove = graphData.edges
-      .values()
-      .filter(
-        (e) => e.source !== clickedNodeIri && e.target !== clickedNodeIri,
-      );
+    let edgesToRemove = [...graphData.edges.values()].filter(
+      (e) => e.source !== clickedNodeIri && e.target !== clickedNodeIri,
+    );
     for (let edge of edgesToRemove) {
       graphData.edges.delete(generateEdgeId(edge));
     }
@@ -642,14 +658,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     networkNodes.current.remove(clickedNodeIri);
     setGraphDataToRender(graphData);
     setGraphDataIsCalculated(true);
-
     //@ts-ignore
-    graphNetwork.current.setOptions({ physics: true });
-    //@ts-ignore
-    setTimeout(() => {
-      //@ts-ignore
-      graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
+    runPhysics(graphNetwork.current, 4000);
   }
 
   useEffect(() => {
@@ -669,11 +679,7 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     setPreviousGraphNodeCount(graphDataToRender.nodes.size);
     setPreviousGraphEdgeCount(graphDataToRender.edges.size);
     //@ts-ignore
-    graphNetwork.current.setOptions({ physics: true });
-    setTimeout(() => {
-      //@ts-ignore
-      graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
+    runPhysics(graphNetwork.current, 4000);
   }, [graphDataToRender.nodes.size, graphDataToRender.edges.size]);
 
   useEffect(() => {
@@ -696,9 +702,21 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       hierarchicalConfig["direction"] = DEFAULT_HIERARCHY_DIRECTION;
     }
     if (shouldUseHierarchyLayout) {
+      hierarchicalConfig["enabled"] = true;
+      if (
+        hierarchicalConfig["direction"] === "DU" ||
+        hierarchicalConfig["direction"] === "UD"
+      ) {
+        hierarchicalConfig["nodeSpacing"] = nodeSpacing.current;
+        hierarchicalConfig["levelSeparation"] = levelSeparation.current;
+      } else {
+        hierarchicalConfig["nodeSpacing"] = nodeSpacing.current;
+        hierarchicalConfig["levelSeparation"] = levelSeparation.current;
+      }
       graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
     } else {
-      graphNetworkConfig["layout"]["hierarchical"] = { enabled: false };
+      hierarchicalConfig["enabled"] = false;
+      graphNetworkConfig["layout"]["hierarchical"] = hierarchicalConfig;
     }
     let config = JSON.parse(JSON.stringify(graphNetworkConfig));
     graphNetwork.current = new Network(
@@ -708,12 +726,8 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
       config,
     );
 
-    // Stop physics after the initial layout so users can freely move nodes
     //@ts-ignore
-    setTimeout(() => {
-      //@ts-ignore
-      graphNetwork.current.setOptions({ physics: false });
-    }, 4000);
+    runPhysics(graphNetwork.current, 4000);
   }, [counter, graphDataIsCalculated]);
 
   useEffect(() => {
