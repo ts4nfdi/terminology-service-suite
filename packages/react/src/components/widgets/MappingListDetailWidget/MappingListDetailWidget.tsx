@@ -9,9 +9,10 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
+import { useQuery } from "react-query";
 
 type MappingRow = {
   to: string;
@@ -136,8 +137,24 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
-  const [items, setItems] = useState<MappingRow[]>([]);
-  const [fromLabel, setFromLabel] = useState("");
+  const coliConcApi = new ColiConcApi(api);
+
+  const { data, isLoading, isError, error } = useQuery(
+    ["mappings", iri],
+    () => {
+      return coliConcApi.getMappingsByFrom(iri);
+    },
+  );
+
+  const rows: MappingRow[] = (data ?? []).map((item: any) => ({
+    to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+    toUri: item.to?.memberSet?.[0]?.uri ?? "—",
+    creator: item.creator?.[0]?.prefLabel?.en ?? "—",
+    type: item.type?.[0]?.split("#").pop() ?? "—",
+    created: item.created ?? "—",
+  }));
+
+  const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
   /**
    * State and handlers for the contextual help popover.
@@ -145,34 +162,6 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const onButtonClick = () => setIsPopoverOpen((isOpen) => !isOpen);
   const closePopover = () => setIsPopoverOpen(false);
-
-  async function fetchMappings() {
-    if (!api || !iri) return;
-
-    try {
-      const mappingApi = new ColiConcApi(api);
-      const response = await mappingApi.getMappingsByFrom(iri);
-
-      const from = response?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
-      setFromLabel(from);
-
-      const rows = response.map((item: any) => ({
-        to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
-        toUri: item.to?.memberSet?.[0]?.uri ?? "—",
-        creator: item.creator?.[0]?.prefLabel?.en ?? "—",
-        type: item.type?.[0]?.split("#").pop() ?? "—",
-        created: item.created ?? "—",
-      }));
-
-      setItems(rows);
-    } catch (error) {
-      console.error("Failed to fetch mappings:", error);
-    }
-  }
-
-  useEffect(() => {
-    fetchMappings();
-  }, [api, iri]);
 
   /**
    * Custom help button trigger with adjusted stroke width
@@ -193,7 +182,17 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     />
   );
 
-  return (
+  return isLoading ? (
+    <EuiPanel paddingSize="m">
+      <EuiText>Loading mappings...</EuiText>
+    </EuiPanel>
+  ) : isError ? (
+    <EuiPanel paddingSize="m">
+      <EuiText color="danger">
+        Failed to load mappings: {String(error)}
+      </EuiText>
+    </EuiPanel>
+  ) : (
     <EuiPanel paddingSize="m">
       <div
         style={{
@@ -304,12 +303,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         `}
         tableCaption="Mapping list"
         responsiveBreakpoint={false}
-        items={items}
+        items={rows}
         columns={columns}
         pagination={true}
       />
     </EuiPanel>
-  );
+  )
 }
 
 export function WrappedMappingListDetailWidget(
