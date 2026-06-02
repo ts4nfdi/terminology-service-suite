@@ -10,9 +10,9 @@ import {
 } from "@elastic/eui";
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { useQuery } from "react-query";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
-import { useQuery } from "react-query";
 
 type MappingRow = {
   to: string;
@@ -118,6 +118,8 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
 
       const date = new Date(created);
 
+      if (isNaN(date.getTime())) return "—";
+
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
         day: "2-digit",
         month: "short",
@@ -188,9 +190,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     </EuiPanel>
   ) : isError ? (
     <EuiPanel paddingSize="m">
-      <EuiText color="danger">
-        Failed to load mappings: {String(error)}
-      </EuiText>
+      <EuiText color="danger">Failed to load mappings: {String(error)}</EuiText>
     </EuiPanel>
   ) : (
     <EuiPanel paddingSize="m">
@@ -308,7 +308,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         pagination={true}
       />
     </EuiPanel>
-  )
+  );
 }
 
 export function WrappedMappingListDetailWidget(
