@@ -3,6 +3,8 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 export class ColiConcApi {
   protected axiosInstance: AxiosInstance;
 
+  private labelCache = new Map<string, Promise<string | null>>();
+
   constructor(api: string | AxiosInstance) {
     this.axiosInstance =
       typeof api === "string"
@@ -14,6 +16,7 @@ export class ColiConcApi {
           })
         : api;
   }
+
   protected async makeCall(url: string, config?: AxiosRequestConfig) {
     const response = await this.axiosInstance.get(url, config);
 
@@ -28,16 +31,20 @@ export class ColiConcApi {
     });
   }
 
-  async getEntityLabel(schema: string, iri: string) {
-    const response = await axios.get(
-      `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${schema}/entities`,
-      {
-        params: {
-          iri,
+  async getEntityLabel(schema: string, iri: string): Promise<string | null> {
+    try {
+      const response = await axios.get(
+        `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${schema}/entities`,
+        {
+          params: {
+            iri,
+          },
         },
-      },
-    );
+      );
 
-    return response.data?.elements?.[0]?.label ?? null;
+      return response.data?.elements?.[0]?.label ?? null;
+    } catch {
+      return null;
+    }
   }
 }
