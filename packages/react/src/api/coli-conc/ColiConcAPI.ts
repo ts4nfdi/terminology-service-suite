@@ -27,4 +27,17 @@ export class ColiConcApi {
       },
     });
   }
+
+  async getEntityLabel(schema: string, iri: string) {
+    const response = await axios.get(
+      `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${schema}/entities`,
+      {
+        params: {
+          iri,
+        },
+      },
+    );
+
+    return response.data?.elements?.[0]?.label ?? null;
+  }
 }
