@@ -9,7 +9,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
@@ -25,7 +25,7 @@ type MappingRow = {
 /**
  * Dictionary mapping each predicate type to its inner SVG elements.
  */
-const predicateIcons: Record<string, React.ReactNode> = {
+const predicateIcons: Record<string, ReactNode> = {
   exactMatch: (
     <>
       <line x1="5" y1="9" x2="19" y2="9" />
@@ -139,7 +139,7 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
-  const coliConcApi = new ColiConcApi(api);
+  const coliConcApi = useMemo(() => new ColiConcApi(api), [api]);
 
   const { data, isLoading, isError, error } = useQuery(
     ["mappings", iri],
@@ -148,15 +148,22 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     },
   );
 
-  const rows: MappingRow[] = (data ?? []).map((item: any) => ({
-    to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
-    toUri: item.to?.memberSet?.[0]?.uri ?? "—",
-    creator: item.creator?.[0]?.prefLabel?.en ?? "—",
-    type: item.type?.[0]?.split("#").pop() ?? "—",
-    created: item.created ?? "—",
-  }));
+  const rows: MappingRow[] = useMemo(
+    () =>
+      (data ?? []).map((item: any) => ({
+        to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+        toUri: item.to?.memberSet?.[0]?.uri ?? "—",
+        creator: item.creator?.[0]?.prefLabel?.en ?? "—",
+        type: item.type?.[0]?.split("#").pop() ?? "—",
+        created: item.created ?? "—",
+      })),
+    [data],
+  );
 
-  const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
+  const fromLabel = useMemo(
+    () => data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—",
+    [data],
+  );
 
   /**
    * State and handlers for the contextual help popover.
@@ -190,7 +197,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     </EuiPanel>
   ) : isError ? (
     <EuiPanel paddingSize="m">
-      <EuiText color="danger">Failed to load mappings: {String(error)}</EuiText>
+      <EuiText color="danger">
+        Failed to load mappings:{" "}
+        {error instanceof Error ? error.message : String(error)}
+      </EuiText>
     </EuiPanel>
   ) : (
     <EuiPanel paddingSize="m">
