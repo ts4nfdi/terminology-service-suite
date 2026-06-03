@@ -9,7 +9,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { useMemo, useState, type ReactNode } from "react";
+import { memo, useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
@@ -72,7 +72,7 @@ const predicateIcons: Record<string, ReactNode> = {
   mappingRelation: <path d="M 4 12 Q 8 8 12 12 T 20 12" />,
 };
 
-const PredicateIcon = ({ type }: { type: string }) => {
+const PredicateIcon = memo(({ type }: { type: string }) => {
   const iconContent = predicateIcons[type];
 
   /**
@@ -94,7 +94,7 @@ const PredicateIcon = ({ type }: { type: string }) => {
       {iconContent}
     </svg>
   );
-};
+});
 
 const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   {
