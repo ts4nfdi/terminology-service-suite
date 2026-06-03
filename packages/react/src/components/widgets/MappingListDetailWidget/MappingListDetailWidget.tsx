@@ -22,6 +22,17 @@ type MappingRow = {
   created: string;
 };
 
+const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
+
+const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
 /**
  * Dictionary mapping each predicate type to its inner SVG elements.
  */
@@ -120,16 +131,8 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
 
       if (isNaN(date.getTime())) return "—";
 
-      const formattedDate = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }).format(date);
-
-      const formattedTime = new Intl.DateTimeFormat("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
+      const formattedDate = dateFormatter.format(date);
+      const formattedTime = timeFormatter.format(date);
 
       return `${formattedDate}, ${formattedTime}`;
     },
@@ -160,10 +163,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     [data],
   );
 
-  const fromLabel = useMemo(
-    () => data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—",
-    [data],
-  );
+  const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
   /**
    * State and handlers for the contextual help popover.
