@@ -2,9 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 export class ColiConcApi {
   protected axiosInstance: AxiosInstance;
-
-  private labelCache = new Map<string, Promise<string | null>>();
-
+  
   constructor(api: string | AxiosInstance) {
     this.axiosInstance =
       typeof api === "string"
