@@ -20,6 +20,7 @@ type MappingRow = {
   creator: string;
   type: string;
   created: string;
+  createdLabel: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -32,6 +33,16 @@ const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   hour: "2-digit",
   minute: "2-digit",
 });
+
+const formatMappingDate = (created: string) => {
+  if (created === "—") return "—";
+
+  const date = new Date(created);
+
+  if (isNaN(date.getTime())) return "—";
+
+  return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
+};
 
 /**
  * Dictionary mapping each predicate type to its inner SVG elements.
@@ -124,18 +135,7 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     name: <strong style={{ fontSize: "14px" }}>Created</strong>,
     truncateText: true,
     sortable: true,
-    render: (created: string) => {
-      if (created === "—") return "—";
-
-      const date = new Date(created);
-
-      if (isNaN(date.getTime())) return "—";
-
-      const formattedDate = dateFormatter.format(date);
-      const formattedTime = timeFormatter.format(date);
-
-      return `${formattedDate}, ${formattedTime}`;
-    },
+    render: (_created: string, item: MappingRow) => item.createdLabel,
   },
 ];
 
@@ -159,6 +159,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         creator: item.creator?.[0]?.prefLabel?.en ?? "—",
         type: item.type?.[0]?.split("#").pop() ?? "—",
         created: item.created ?? "—",
+        createdLabel: formatMappingDate(item.created ?? "—"),
       })),
     [data],
   );
