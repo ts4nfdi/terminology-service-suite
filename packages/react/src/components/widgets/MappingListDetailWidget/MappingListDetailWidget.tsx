@@ -166,7 +166,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       const toUri = item.to?.memberSet?.[0]?.uri;
       const toScheme = item.toScheme?.notation?.[0];
 
-      if (!toScheme || !toUri) return;
+      if (!toScheme || !toUri || labels[toUri]) return;
 
       const label = await coliConcApi.getEntityLabel(toScheme, toUri);
 
@@ -174,19 +174,22 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
       setLabels((prevState) => ({ ...prevState, [toUri]: label }));
     });
-  }, [ColiConcApi, data]);
+  }, [coliConcApi, data]);
 
   const rows: MappingRow[] = useMemo(
     () =>
       (data ?? []).map((item: any) => ({
-        to: labels[item.to?.memberSet?.[0]?.notation?.[0]] ?? item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+        to:
+          labels[item.to?.memberSet?.[0]?.uri] ??
+          item.to?.memberSet?.[0]?.notation?.[0] ??
+          "—",
         toUri: item.to?.memberSet?.[0]?.uri ?? "—",
         creator: item.creator?.[0]?.prefLabel?.en ?? "—",
         type: item.type?.[0]?.split("#").pop() ?? "—",
         created: item.created ?? "—",
         createdLabel: formatMappingDate(item.created ?? "—"),
       })),
-    [data],
+    [data, labels],
   );
 
   const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
