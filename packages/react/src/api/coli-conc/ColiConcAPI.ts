@@ -28,28 +28,4 @@ export class ColiConcApi {
       },
     });
   }
-
-  async getEntityLabel(scheme: string, iri: string): Promise<string | null> {
-    if (!scheme || !iri) return null;
-
-    try {
-      const response = await axios.get(
-        `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${encodeURIComponent(
-          scheme,
-        )}/entities`,
-        {
-          params: {
-            iri,
-          },
-          headers: {
-            Accept: "application/json",
-          },
-        },
-      );
-
-      return response.data?.elements?.[0]?.label ?? null;
-    } catch {
-      return null;
-    }
-  }
 }
