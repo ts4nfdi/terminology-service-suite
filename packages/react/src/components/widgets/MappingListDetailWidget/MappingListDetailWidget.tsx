@@ -179,7 +179,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const rows: MappingRow[] = useMemo(
     () =>
       (data ?? []).map((item: any) => ({
-        to: item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
+        to: labels[item.to?.memberSet?.[0]?.notation?.[0]] ?? item.to?.memberSet?.[0]?.notation?.[0] ?? "—",
         toUri: item.to?.memberSet?.[0]?.uri ?? "—",
         creator: item.creator?.[0]?.prefLabel?.en ?? "—",
         type: item.type?.[0]?.split("#").pop() ?? "—",
