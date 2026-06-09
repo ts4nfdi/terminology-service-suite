@@ -12,7 +12,9 @@ import { css } from "@emotion/react";
 import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
+import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListDetailWidgetProps } from "../../../app";
+import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 
 type MappingRow = {
   to: string;
@@ -143,6 +145,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
   const coliConcApi = useMemo(() => new ColiConcApi(api), [api]);
+  const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
     ["mappings", iri],
@@ -164,17 +167,31 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
     data.forEach(async (item: any) => {
       const toUri = item.to?.memberSet?.[0]?.uri;
-      const toScheme = item.toScheme?.notation?.[0];
+      const toScheme = item.toScheme?.notation?.[0]?.toLowerCase();
 
       if (!toScheme || !toUri || labels[toUri]) return;
 
-      const label = await coliConcApi.getEntityLabel(toScheme, toUri);
+      try {
+        const entityResponse = await olsApi.getEntity(
+          undefined,
+          undefined,
+          { ontologyId: toScheme, termIri: toUri },
+          undefined,
+          false,
+        );
 
-      if (!label) return;
+        const label = entityResponse?.elements?.[0]?.label ?? null;
 
-      setLabels((prevState) => ({ ...prevState, [toUri]: label }));
+        if (!label) return;
+
+        setLabels((prevState) => ({ ...prevState, [toUri]: label }));
+      } catch {
+        /**
+         * Keep the fallback notation when the OLS label cannot be loaded.
+         */
+      }
     });
-  }, [coliConcApi, data]);
+  }, [data, labels, olsApi]);
 
   const rows: MappingRow[] = useMemo(
     () =>
