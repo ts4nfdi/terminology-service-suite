@@ -9,7 +9,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { memo, useMemo, useState, type ReactNode } from "react";
+import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
 import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { MappingListDetailWidgetProps } from "../../../app";
@@ -150,6 +150,31 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       return coliConcApi.getMappingsByFrom(iri);
     },
   );
+
+  /**
+   * For example:
+   * {
+   *     "http://uri.gbv.de/terminology/bk/86.69": "Agricultural law. Water law. Hunting law"
+   *   }
+   */
+  const [labels, setLabels] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!data) return;
+
+    data.forEach(async (item: any) => {
+      const toUri = item.to?.memberSet?.[0]?.uri;
+      const toScheme = item.toScheme?.notation?.[0];
+
+      if (!toScheme || !toUri) return;
+
+      const label = await coliConcApi.getEntityLabel(toScheme, toUri);
+
+      if (!label) return;
+
+      setLabels((prevState) => ({ ...prevState, [toUri]: label }));
+    });
+  }, [ColiConcApi, data]);
 
   const rows: MappingRow[] = useMemo(
     () =>
