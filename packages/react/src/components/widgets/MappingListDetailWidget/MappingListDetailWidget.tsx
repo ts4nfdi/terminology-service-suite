@@ -343,6 +343,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         tableCaption="Mapping list"
         responsiveBreakpoint={false}
         items={rows}
+        sorting={{
+          sort: {
+            field: "to",
+            direction: "asc",
+          },
+        }}
         columns={columns}
         pagination={true}
       />
