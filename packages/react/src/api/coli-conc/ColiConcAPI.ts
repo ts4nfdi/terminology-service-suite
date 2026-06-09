@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 export class ColiConcApi {
   protected axiosInstance: AxiosInstance;
-  
+
   constructor(api: string | AxiosInstance) {
     this.axiosInstance =
       typeof api === "string"
@@ -29,13 +29,20 @@ export class ColiConcApi {
     });
   }
 
-  async getEntityLabel(schema: string, iri: string): Promise<string | null> {
+  async getEntityLabel(scheme: string, iri: string): Promise<string | null> {
+    if (!scheme || !iri) return null;
+
     try {
       const response = await axios.get(
-        `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${schema}/entities`,
+        `https://terminology.services.base4nfdi.de/api-gateway/ols/api/v2/ontologies/${encodeURIComponent(
+          scheme,
+        )}/entities`,
         {
           params: {
             iri,
+          },
+          headers: {
+            Accept: "application/json",
           },
         },
       );
