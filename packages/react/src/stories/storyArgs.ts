@@ -53,6 +53,15 @@ Toggle between OLS3 (legacy) and OLS4 API versions.
     control: { type: "boolean" } as const,
   },
 };
+export const contentArgType: ArgTypes = {
+  content: {
+    required: true,
+    description: "Content to pass to the widget.",
+    table: {
+      type: { summary: "string" },
+    },
+  },
+};
 export const iriArgType: ArgTypes = {
   iri: {
     required: true,

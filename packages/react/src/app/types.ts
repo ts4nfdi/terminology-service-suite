@@ -353,6 +353,10 @@ export type DescriptionPresentationProps = DescTextObj &
     error?: string | unknown;
   };
 
+export type MathFormulaWidgetProps = {
+  content: string;
+};
+
 export type IriWidgetProps = ForcedIriObj &
   CssClassNameObj & {
     /**
