@@ -47,7 +47,7 @@ const formatMappingDate = (created: string) => {
 };
 
 /**
- * Dictionary mapping each predicate type to its inner SVG elements.
+ * Dictionary mapping each type to its inner SVG elements.
  */
 const predicateIcons: Record<string, ReactNode> = {
   exactMatch: (
@@ -101,7 +101,7 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
 const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   {
     field: "type",
-    name: <strong style={{ fontSize: "14px" }}>Predicate</strong>,
+    name: <strong style={{ fontSize: "14px" }}>Type</strong>,
     truncateText: true,
     sortable: true,
 
@@ -119,7 +119,7 @@ const columns: Array<EuiBasicTableColumn<MappingRow>> = [
   },
   {
     field: "to",
-    name: <strong style={{ fontSize: "14px" }}>Object</strong>,
+    name: <strong style={{ fontSize: "14px" }}>Target</strong>,
     truncateText: true,
     sortable: true,
     render: (to: string, item: MappingRow) => (
@@ -260,7 +260,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       >
         <EuiTitle size="s">
           <h2>
-            <strong>Subject:</strong>
+            <strong>Source:</strong>
             <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
           </h2>
         </EuiTitle>
@@ -276,23 +276,23 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
               <EuiSpacer size="s" />
               <ul>
                 <li>
-                  <strong>Subject:</strong> The main entity being described
+                  <strong>Source:</strong> The main entity being described
                 </li>
                 <br />
                 <li>
-                  <strong>Predicate:</strong> The relationship or attribute
-                  linking the subject to the object
+                  <strong>Type:</strong> The relationship or attribute linking
+                  the source to the object
                 </li>
                 <br />
                 <li>
-                  <strong>Object:</strong> The piece of information the subject
+                  <strong>Target:</strong> The piece of information the source
                   is linked to.
                 </li>
               </ul>
               <EuiSpacer size="m" />
 
               {/**
-               * Visual representation of an RDF Triple.
+               * Visual representation of a source-type-target relationship.
                */}
               <div
                 style={{
@@ -305,7 +305,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                   borderRadius: "4px",
                 }}
               >
-                <span>subject</span>
+                <span>Source</span>
                 <div
                   style={{
                     display: "flex",
@@ -320,7 +320,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                       color: "#333",
                     }}
                   >
-                    predicate
+                    Type
                   </span>
                   <svg width="100" height="10" viewBox="0 0 100 10">
                     <line
@@ -339,7 +339,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                     />
                   </svg>
                 </div>
-                <span>Object</span>
+                <span>Target</span>
               </div>
             </EuiText>
           </div>
