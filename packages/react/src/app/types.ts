@@ -353,9 +353,14 @@ export type DescriptionPresentationProps = DescTextObj &
     error?: string | unknown;
   };
 
-export type MathFormulaWidgetProps = {
-  content: string;
-};
+export type MathFormulaWidgetProps = ForcedIriObj &
+  ApiObj &
+  ForcedOntologyIdObj & {
+    /**
+     * The math property URI to render for the target term
+     */
+    mathProperty: string;
+  };
 
 export type IriWidgetProps = ForcedIriObj &
   CssClassNameObj & {

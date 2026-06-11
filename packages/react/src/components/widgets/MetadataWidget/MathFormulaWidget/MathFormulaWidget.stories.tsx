@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MathFormulaWidget } from "./MathFormulaWidget";
 import {
-  MathFormulaWidgetDefaultArgs,
+  commonMathFormulaWidgetPlay,
   MathFormulaWidgetStoryArgs,
   MathFormulaWidgetStoryArgTypes,
+  MathmodP983StoryArgs,
+  MathmodP989StoryArgs,
 } from "./MathFormulaWidgetStories";
 
 const meta = {
@@ -20,6 +22,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const MathFormulaWidgetDefault: Story = {
-  args: MathFormulaWidgetDefaultArgs,
+export const MathmodP983: Story = {
+  args: MathmodP983StoryArgs,
+  play: commonMathFormulaWidgetPlay,
+};
+
+export const MathmodP989: Story = {
+  args: MathmodP989StoryArgs,
+  play: commonMathFormulaWidgetPlay,
 };

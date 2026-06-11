@@ -15,6 +15,7 @@ export const apiArgType: ArgTypes = {
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
+      "http://localhost:8080/api/",
     ],
     description:
       "The API instance for the API call.<br><br> " +
@@ -53,15 +54,7 @@ Toggle between OLS3 (legacy) and OLS4 API versions.
     control: { type: "boolean" } as const,
   },
 };
-export const contentArgType: ArgTypes = {
-  content: {
-    required: true,
-    description: "Content to pass to the widget.",
-    table: {
-      type: { summary: "string" },
-    },
-  },
-};
+
 export const iriArgType: ArgTypes = {
   iri: {
     required: true,
@@ -1074,5 +1067,15 @@ export const hideLegendArgType = {
   hideLegend: {
     required: false,
     description: "Hide the graph legend. Default is false/undefined",
+  },
+};
+
+export const mathPorpertyArgType = {
+  iri: {
+    required: true,
+    description: "The target property that holds the MathMl content",
+    table: {
+      type: { summary: "string" },
+    },
   },
 };
