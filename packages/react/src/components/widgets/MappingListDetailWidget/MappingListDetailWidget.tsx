@@ -62,8 +62,8 @@ const predicateIcons: Record<string, ReactNode> = {
       <path d="M 4 15 Q 8 11 12 15 T 20 15" />
     </>
   ),
-  broadMatch: <path d="M6 6h8a6 6 0 0 1 0 12H6" />,
-  narrowMatch: <path d="M18 6H10a6 6 0 0 0 0 12h8" />,
+  broadMatch: <polyline points="8 6 16 12 8 18" />,
+  narrowMatch: <polyline points="16 6 8 12 16 18" />,
   relatedMatch: (
     <>
       <line x1="3" y1="12" x2="21" y2="12" />
