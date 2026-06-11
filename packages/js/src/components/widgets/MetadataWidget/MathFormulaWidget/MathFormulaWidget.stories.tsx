@@ -4,9 +4,11 @@ import {
   MathFormulaWidgetProps,
 } from "@ts4nfdi/terminology-service-suite/src";
 import {
-  MathFormulaWidgetDefaultArgs,
+  commonMathFormulaWidgetPlay,
   MathFormulaWidgetStoryArgs,
   MathFormulaWidgetStoryArgTypes,
+  MathmodP983StoryArgs,
+  MathmodP989StoryArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MathFormulaWidget/MathFormulaWidgetStories";
 import "./index";
 
@@ -33,7 +35,9 @@ const meta: Meta<MathFormulaWidgetProps> = {
 <script type="text/javascript">
 window['ts4nfdiWidgets'].createMathFormula(
     {
-        content: "${args.content}",
+      ontologyId: "${args.ontologyId}",
+      iri: "${args.iri}",
+      mathProperty: "${args.mathProperty}",
     },
     document.querySelector('#math_formula_widget_container_${num}')
 )
@@ -48,6 +52,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const MathFormulaWidgetDefault: Story = {
-  args: MathFormulaWidgetDefaultArgs,
+export const MathmodP983: Story = {
+  args: MathmodP983StoryArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonMathFormulaWidgetPlay,
+};
+
+export const MathmodP989: Story = {
+  args: MathmodP989StoryArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonMathFormulaWidgetPlay,
 };
