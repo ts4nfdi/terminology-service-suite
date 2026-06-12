@@ -98,49 +98,6 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
   );
 });
 
-const columns: Array<EuiBasicTableColumn<MappingRow>> = [
-  {
-    field: "type",
-    name: <strong style={{ fontSize: "14px" }}>Type</strong>,
-    truncateText: true,
-    sortable: true,
-
-    /**
-     * Render both the custom SVG icon and the text side-by-side
-     */
-    render: (type: string) => (
-      <span
-        style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
-      >
-        <PredicateIcon type={type} />
-        <span>{type}</span>
-      </span>
-    ),
-  },
-  {
-    field: "to",
-    name: <strong style={{ fontSize: "14px" }}>Target</strong>,
-    truncateText: true,
-    sortable: true,
-    render: (to: string, item: MappingRow) => (
-      <span title={item.toUri}>{to}</span>
-    ),
-  },
-  {
-    field: "creator",
-    name: <strong style={{ fontSize: "14px" }}>Creator</strong>,
-    truncateText: true,
-    sortable: true,
-  },
-  {
-    field: "created",
-    name: <strong style={{ fontSize: "14px" }}>Created</strong>,
-    truncateText: true,
-    sortable: true,
-    render: (_created: string, item: MappingRow) => item.createdLabel,
-  },
-];
-
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, iri } = props;
 
@@ -161,6 +118,108 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
    *   }
    */
   const [labels, setLabels] = useState<Record<string, string>>({});
+
+  const [isTargetFilterOpen, setIsTargetFilterOpen] = useState(false);
+
+  /**
+   * Prevent clicks on the filter icon from triggering the column sort.
+   */
+  function stopHeaderSort(event: React.MouseEvent | React.KeyboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const targetFilterTypeColumnButton = (
+    <span
+      role="button"
+      tabIndex={0}
+      aria-label="Filter Type Column"
+      onClick={(event) => {
+        stopHeaderSort(event);
+        setIsTargetFilterOpen((isOpen) => !isOpen);
+      }}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "24px",
+        height: "24px",
+        border: "1px solid #98a2b3",
+        borderRadius: "6px",
+        cursor: "pointer",
+      }}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M 4 6 H 20 L 14 13 V 19 L 10 17 V 13 Z" />
+      </svg>
+    </span>
+  );
+
+  const typeColumnHeader = (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "14px",
+      }}
+    >
+      {targetFilterTypeColumnButton}
+      <span>Type</span>
+    </span>
+  );
+
+  const columns: Array<EuiBasicTableColumn<MappingRow>> = [
+    {
+      field: "type",
+      name: <strong style={{ fontSize: "14px" }}>{typeColumnHeader}</strong>,
+      truncateText: true,
+      sortable: true,
+
+      /**
+       * Render both the custom SVG icon and the text side-by-side
+       */
+      render: (type: string) => (
+        <span
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          <PredicateIcon type={type} />
+          <span>{type}</span>
+        </span>
+      ),
+    },
+    {
+      field: "to",
+      name: <strong style={{ fontSize: "14px" }}>Target</strong>,
+      truncateText: true,
+      sortable: true,
+      render: (to: string, item: MappingRow) => (
+        <span title={item.toUri}>{to}</span>
+      ),
+    },
+    {
+      field: "creator",
+      name: <strong style={{ fontSize: "14px" }}>Creator</strong>,
+      truncateText: true,
+      sortable: true,
+    },
+    {
+      field: "created",
+      name: <strong style={{ fontSize: "14px" }}>Created</strong>,
+      truncateText: true,
+      sortable: true,
+      render: (_created: string, item: MappingRow) => item.createdLabel,
+    },
+  ];
 
   useEffect(() => {
     if (!data) return;
