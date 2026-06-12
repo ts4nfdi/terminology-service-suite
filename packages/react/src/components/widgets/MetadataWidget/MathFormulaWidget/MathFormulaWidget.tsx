@@ -1,10 +1,9 @@
 "use client";
-import { EuiPanel, EuiProvider } from "@elastic/eui";
+import { EuiLoadingSpinner, EuiPanel, EuiProvider } from "@elastic/eui";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import DOMPurify from "dompurify";
 import "katex/dist/katex.min.css";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-// import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 import { MathFormulaWidgetProps } from "../../../../app/types";
 import { Thing } from "../../../../model/interfaces";
@@ -51,7 +50,6 @@ const ALLOWED_ATTR = [
 function MathFormulaWidget(props: MathFormulaWidgetProps) {
   const { api, ontologyId, iri, mathProperty } = props;
 
-  // const olsApi = new OlsThingApi(api);
   const olsApi = new OlsEntityApi(api);
   const { data, isLoading, isSuccess, isLoadingError, error } = useQuery<Thing>(
     ["mathFormulaWidget", api, iri, ontologyId],
@@ -95,13 +93,20 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
 
   return (
     <EuiPanel data-testid="math-formula">
-      <MathJaxContext>
-        <MathJax dynamic>
-          <span
-            dangerouslySetInnerHTML={{ __html: sanitizeMathML(mathContent) }}
-          />
-        </MathJax>
-      </MathJaxContext>
+      {isLoading && <EuiLoadingSpinner size="s" />}
+      {!isLoading && mathContent !== "" && (
+        <MathJaxContext>
+          <MathJax dynamic>
+            <span
+              dangerouslySetInnerHTML={{ __html: sanitizeMathML(mathContent) }}
+            />
+          </MathJax>
+        </MathJaxContext>
+      )}
+      {!isLoading && !error && mathContent === "" && (
+        <div>No math formula available.</div>
+      )}
+      {isLoadingError && <div>Error loading math formula.</div>}
     </EuiPanel>
   );
 }

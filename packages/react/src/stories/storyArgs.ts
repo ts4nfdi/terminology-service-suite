@@ -1073,7 +1073,7 @@ export const hideLegendArgType = {
 export const mathPorpertyArgType = {
   iri: {
     required: true,
-    description: "The target property that holds the MathMl content",
+    description: "The target property URI that holds the MathMl content",
     table: {
       type: { summary: "string" },
     },
