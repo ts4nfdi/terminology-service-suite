@@ -2,7 +2,6 @@
 import { EuiLoadingSpinner, EuiPanel, EuiProvider } from "@elastic/eui";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import DOMPurify from "dompurify";
-import "katex/dist/katex.min.css";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
 import { MathFormulaWidgetProps } from "../../../../app/types";

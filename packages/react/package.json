@@ -59,11 +59,9 @@
     "react-query": "^3.39.2"
   },
   "dependencies": {
-    "@elastic/eui-theme-borealis": "^8.0.0",
     "@google/model-viewer": "^4.0.0",
     "better-react-mathjax": "^3.0.1",
     "dompurify": "^3.4.9",
-    "react-katex": "^3.1.0",
     "react-router": "^6.3.0",
     "three": "^0.182.0",
     "vis-data": "^7.1.9",
