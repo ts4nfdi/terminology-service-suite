@@ -128,6 +128,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
    * includes types: exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch and mappingRelation
    */
   const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
+  const [appliedTypeFilters, setAppliedTypeFilters] = useState<string[]>([]);
 
   const toggleTypeFilter = (type: string) => {
     if (selectedTypeFilters.includes(type)) {
@@ -257,7 +258,13 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         <EuiSpacer size="m" />
 
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <EuiButton size="s" onClick={() => setIsTypeFilterOpen(false)}>
+          <EuiButton
+            size="s"
+            onClick={() => {
+              setAppliedTypeFilters(selectedTypeFilters);
+              setIsTypeFilterOpen(false);
+            }}
+          >
             Apply
           </EuiButton>
         </div>
@@ -369,19 +376,19 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   );
 
   const filteredRows: MappingRow[] = useMemo(() => {
-    if (selectedTypeFilters.length === 0) {
+    if (appliedTypeFilters.length === 0) {
       return rows;
     }
 
     const filteredItems = rows.filter((row) => {
       const rowType = row.type;
-      const isSelected = selectedTypeFilters.includes(rowType);
+      const isSelected = appliedTypeFilters.includes(rowType);
 
       return isSelected;
     });
 
     return filteredItems;
-  }, [rows, selectedTypeFilters]);
+  }, [rows, appliedTypeFilters]);
 
   const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
