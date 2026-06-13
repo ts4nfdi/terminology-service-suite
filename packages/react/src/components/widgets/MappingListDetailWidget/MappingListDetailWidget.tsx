@@ -368,6 +368,21 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     [data, labels],
   );
 
+  const filteredRows: MappingRow[] = useMemo(() => {
+    if (selectedTypeFilters.length === 0) {
+      return rows;
+    }
+
+    const filteredItems = rows.filter((row) => {
+      const rowType = row.type;
+      const isSelected = selectedTypeFilters.includes(rowType);
+
+      return isSelected;
+    });
+
+    return filteredItems;
+  }, [rows, selectedTypeFilters]);
+
   const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
   /**
@@ -518,7 +533,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         `}
         tableCaption="Mapping list"
         responsiveBreakpoint={false}
-        items={rows}
+        items={filteredRows}
         sorting={{
           sort: {
             field: "to",
