@@ -114,14 +114,19 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   );
 
   /**
-   * For example:
+   * Maps each URI to its readable label text.
+   * Example:
    * {
-   *     "http://uri.gbv.de/terminology/bk/86.69": "Agricultural law. Water law. Hunting law"
-   *   }
+   *   "http://uri.gbv.de/terminology/bk/86.69": "Agricultural law. Water law. Hunting law"
+   * }
    */
   const [labels, setLabels] = useState<Record<string, string>>({});
 
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+
+  /**
+   * includes types: exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch and mappingRelation
+   */
   const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
 
   const toggleTypeFilter = (type: string) => {
@@ -144,6 +149,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     event.stopPropagation();
   }
 
+  /**
+   * Renders the filter icon button for the Type column.
+   * Clicking it stops the column sort event and toggles the type filter popover.
+   */
   const targetFilterTypeColumnButton = (
     <span
       role="button"
@@ -180,7 +189,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     </span>
   );
 
-
+  /**
+   * Shows the type filter options inside a popover when the user clicks
+   * the filter button next to the Type column.
+   */
   const typeFilterCheckboxList = (
     <EuiPopover
       button={targetFilterTypeColumnButton}
@@ -265,8 +277,6 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       <span>Type</span>
     </span>
   );
-
-
 
   const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     {
