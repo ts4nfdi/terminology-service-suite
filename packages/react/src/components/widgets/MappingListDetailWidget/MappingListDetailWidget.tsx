@@ -150,6 +150,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     event.stopPropagation();
   }
 
+  function stopPopoverSort(event: React.MouseEvent | React.KeyboardEvent) {
+    event.stopPropagation();
+  }
+
   /**
    * Renders the filter icon button for the Type column.
    * Clicking it stops the column sort event and toggles the type filter popover.
@@ -202,7 +206,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       anchorPosition="downLeft"
       panelPaddingSize="s"
     >
-      <div style={{ width: "200px" }}>
+      <div
+        style={{ width: "200px" }}
+        onClick={stopPopoverSort}
+        onMouseDown={stopPopoverSort}
+        onKeyDown={stopPopoverSort}
+      >
         <EuiCheckbox
           id="exactMatch"
           label={
