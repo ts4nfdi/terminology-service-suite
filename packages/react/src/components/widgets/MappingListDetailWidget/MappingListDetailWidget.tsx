@@ -119,7 +119,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
    */
   const [labels, setLabels] = useState<Record<string, string>>({});
 
-  const [isTargetFilterOpen, setIsTargetFilterOpen] = useState(false);
+  const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
 
   /**
    * Prevent clicks on the filter icon from triggering the column sort.
@@ -136,7 +136,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       aria-label="Filter Type Column"
       onClick={(event) => {
         stopHeaderSort(event);
-        setIsTargetFilterOpen((isOpen) => !isOpen);
+        setIsTypeFilterOpen((isOpen) => !isOpen);
       }}
       style={{
         display: "inline-flex",
