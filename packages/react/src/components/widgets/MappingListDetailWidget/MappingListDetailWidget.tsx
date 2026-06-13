@@ -207,11 +207,21 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       panelPaddingSize="s"
     >
       <div
-        style={{ width: "200px" }}
+        style={{ width: "180px" }}
         onClick={stopPopoverSort}
         onMouseDown={stopPopoverSort}
         onKeyDown={stopPopoverSort}
+        className="custom-filter-wrapper"
       >
+        <style>{`
+        .custom-filter-wrapper .euiCheckbox__square {
+          transform: scale(1.1);
+          transform-origin: center;
+        }
+        .custom-filter-wrapper .euiCheckbox__label {
+          padding-left: 12px;
+        }
+      `}</style>
         <EuiCheckbox
           id="exactMatch"
           label={
@@ -330,7 +340,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
           onChange={() => toggleTypeFilter("mappingRelation")}
         />
 
-        <EuiSpacer size="m" />
+        <EuiSpacer size="l" />
 
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <EuiButton
