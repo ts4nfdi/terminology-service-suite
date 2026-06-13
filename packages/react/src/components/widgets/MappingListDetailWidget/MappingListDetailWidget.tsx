@@ -205,7 +205,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       <div style={{ width: "200px" }}>
         <EuiCheckbox
           id="exactMatch"
-          label="exactMatch"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>exactMatch</span>
+              <PredicateIcon type="exactMatch" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("exactMatch")}
           onChange={() => toggleTypeFilter("exactMatch")}
         />
@@ -214,7 +225,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiCheckbox
           id="closeMatch"
-          label="closeMatch"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>closeMatch</span>
+              <PredicateIcon type="closeMatch" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("closeMatch")}
           onChange={() => toggleTypeFilter("closeMatch")}
         />
@@ -223,7 +245,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiCheckbox
           id="broadMatch"
-          label="broadMatch"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>broadMatch</span>
+              <PredicateIcon type="broadMatch" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("broadMatch")}
           onChange={() => toggleTypeFilter("broadMatch")}
         />
@@ -232,7 +265,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiCheckbox
           id="narrowMatch"
-          label="narrowMatch"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>narrowMatch</span>
+              <PredicateIcon type="narrowMatch" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("narrowMatch")}
           onChange={() => toggleTypeFilter("narrowMatch")}
         />
@@ -241,7 +285,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiCheckbox
           id="relatedMatch"
-          label="relatedMatch"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>relatedMatch</span>
+              <PredicateIcon type="relatedMatch" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("relatedMatch")}
           onChange={() => toggleTypeFilter("relatedMatch")}
         />
@@ -250,7 +305,18 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiCheckbox
           id="mappingRelation"
-          label="mappingRelation"
+          label={
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span>mappingRelation</span>
+              <PredicateIcon type="mappingRelation" />
+            </span>
+          }
           checked={selectedTypeFilters.includes("mappingRelation")}
           onChange={() => toggleTypeFilter("mappingRelation")}
         />
