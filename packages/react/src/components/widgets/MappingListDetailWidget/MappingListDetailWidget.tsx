@@ -202,7 +202,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
       anchorPosition="downLeft"
       panelPaddingSize="s"
     >
-      <div style={{ width: "220px" }}>
+      <div style={{ width: "200px" }}>
         <EuiCheckbox
           id="exactMatch"
           label="exactMatch"
