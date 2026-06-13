@@ -180,6 +180,79 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     </span>
   );
 
+
+  const typeFilterCheckboxList = (
+    <EuiPopover
+      button={targetFilterTypeColumnButton}
+      isOpen={isTypeFilterOpen}
+      closePopover={() => setIsTypeFilterOpen(false)}
+      anchorPosition="downLeft"
+      panelPaddingSize="s"
+    >
+      <div style={{ width: "220px" }}>
+        <EuiCheckbox
+          id="exactMatch"
+          label="exactMatch"
+          checked={selectedTypeFilters.includes("exactMatch")}
+          onChange={() => toggleTypeFilter("exactMatch")}
+        />
+
+        <EuiSpacer size="s" />
+
+        <EuiCheckbox
+          id="closeMatch"
+          label="closeMatch"
+          checked={selectedTypeFilters.includes("closeMatch")}
+          onChange={() => toggleTypeFilter("closeMatch")}
+        />
+
+        <EuiSpacer size="s" />
+
+        <EuiCheckbox
+          id="broadMatch"
+          label="broadMatch"
+          checked={selectedTypeFilters.includes("broadMatch")}
+          onChange={() => toggleTypeFilter("broadMatch")}
+        />
+
+        <EuiSpacer size="s" />
+
+        <EuiCheckbox
+          id="narrowMatch"
+          label="narrowMatch"
+          checked={selectedTypeFilters.includes("narrowMatch")}
+          onChange={() => toggleTypeFilter("narrowMatch")}
+        />
+
+        <EuiSpacer size="s" />
+
+        <EuiCheckbox
+          id="relatedMatch"
+          label="relatedMatch"
+          checked={selectedTypeFilters.includes("relatedMatch")}
+          onChange={() => toggleTypeFilter("relatedMatch")}
+        />
+
+        <EuiSpacer size="s" />
+
+        <EuiCheckbox
+          id="mappingRelation"
+          label="mappingRelation"
+          checked={selectedTypeFilters.includes("mappingRelation")}
+          onChange={() => toggleTypeFilter("mappingRelation")}
+        />
+
+        <EuiSpacer size="m" />
+
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <EuiButton size="s" onClick={() => setIsTypeFilterOpen(false)}>
+            Apply
+          </EuiButton>
+        </div>
+      </div>
+    </EuiPopover>
+  );
+
   const typeColumnHeader = (
     <span
       style={{
@@ -188,10 +261,12 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         gap: "14px",
       }}
     >
-      {targetFilterTypeColumnButton}
+      {typeFilterCheckboxList}
       <span>Type</span>
     </span>
   );
+
+
 
   const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     {
