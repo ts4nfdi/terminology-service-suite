@@ -1,6 +1,8 @@
 import {
   EuiBasicTableColumn,
+  EuiButton,
   EuiButtonIcon,
+  EuiCheckbox,
   EuiInMemoryTable,
   EuiPanel,
   EuiPopover,
@@ -120,6 +122,19 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const [labels, setLabels] = useState<Record<string, string>>({});
 
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+  const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
+
+  const toggleTypeFilter = (type: string) => {
+    if (selectedTypeFilters.includes(type)) {
+      setSelectedTypeFilters(
+        selectedTypeFilters.filter((selectedType) => {
+          return selectedType !== type;
+        }),
+      );
+    } else {
+      setSelectedTypeFilters((prevState) => [...prevState, type]);
+    }
+  };
 
   /**
    * Prevent clicks on the filter icon from triggering the column sort.
