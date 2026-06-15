@@ -1,5 +1,5 @@
 "use client";
-import { EuiLoadingSpinner, EuiPanel, EuiProvider } from "@elastic/eui";
+import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 import DOMPurify from "dompurify";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -91,7 +91,10 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
   }
 
   return (
-    <EuiPanel data-testid="math-formula">
+    <EuiText
+      data-testid="math-formula"
+      style={{ marginTop: "10px", marginBottom: "10px" }}
+    >
       {isLoading && <EuiLoadingSpinner size="s" />}
       {!isLoading && mathContent !== "" && (
         <MathJaxContext>
@@ -106,7 +109,7 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
         <div>No math formula available.</div>
       )}
       {isLoadingError && <div>Error loading math formula.</div>}
-    </EuiPanel>
+    </EuiText>
   );
 }
 

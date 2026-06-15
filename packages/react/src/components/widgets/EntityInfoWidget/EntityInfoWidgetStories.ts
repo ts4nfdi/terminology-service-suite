@@ -135,6 +135,14 @@ export const SkosmosImportArgs = {
   iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
 };
 
+export const InfoEntityWithMathFormulaArgs = {
+  ...EntityInfoWidgetStoryArgs,
+  api: "http://localhost:8080/api/",
+  useLegacy: false,
+  iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
+  ontologyId: "mathmod",
+};
+
 export const commonEntityInfoWidgetPlay = async ({
   canvasElement,
 }: {

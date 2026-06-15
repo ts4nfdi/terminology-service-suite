@@ -6,6 +6,7 @@ import {
   EntityInfoWidgetStoryArgs,
   EntityInfoWidgetStoryArgTypes,
   IndividualInfoWidgetArgs,
+  InfoEntityWithMathFormulaArgs,
   InfoWidgetBadgesArgs,
   InfoWidgetDomainArgs,
   InfoWidgetPropertyAssertionArgs,
@@ -90,5 +91,10 @@ export const NavigateToEBIPage: Story = {
 
 export const SkosmosImport: Story = {
   args: SkosmosImportArgs,
+  play: commonEntityInfoWidgetPlay,
+};
+
+export const InfoEntityWithMathFormula: Story = {
+  args: InfoEntityWithMathFormulaArgs,
   play: commonEntityInfoWidgetPlay,
 };

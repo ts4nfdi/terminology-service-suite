@@ -15,7 +15,6 @@ export const MathFormulaWidgetStoryArgTypes = {
 
 export const MathFormulaWidgetStoryArgs = {
   api: "",
-  content: "",
   ontologyId: "",
   iri: "",
 } as const;
