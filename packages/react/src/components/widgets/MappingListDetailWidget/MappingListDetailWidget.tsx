@@ -487,7 +487,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     },
     box: {
       incremental: true,
-      placeholder: "Search ColiConc target or creator",
+      placeholder: "Search Target or Creator",
     },
   };
 
