@@ -350,9 +350,24 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 
         <EuiSpacer size="l" />
 
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <EuiButton
             size="s"
+            color="accent"
+            style={{ minWidth: "72px" }}
+            onClick={() => {
+              setSelectedTypeFilters([]);
+              setAppliedTypeFilters([]);
+              setIsTypeFilterOpen(false);
+            }}
+          >
+            Clear
+          </EuiButton>
+
+          <EuiButton
+            size="s"
+            color="success"
+            style={{ minWidth: "72px" }}
             onClick={() => {
               setAppliedTypeFilters(selectedTypeFilters);
               setIsTypeFilterOpen(false);
