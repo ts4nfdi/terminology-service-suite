@@ -6,6 +6,7 @@ import {
   EuiInMemoryTable,
   EuiPanel,
   EuiPopover,
+  EuiSearchBarProps,
   EuiSpacer,
   EuiText,
   EuiTitle,
@@ -17,6 +18,7 @@ import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListDetailWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
+import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 
 type MappingRow = {
   to: string;
@@ -25,6 +27,7 @@ type MappingRow = {
   type: string;
   created: string;
   createdLabel: string;
+  targetFromColiConc: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -123,6 +126,11 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const [labels, setLabels] = useState<Record<string, string>>({});
 
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+
+  /**
+   * Stores what the user searched in the search bar.
+   */
+  const [searchedQuery, setSearchedQuery] = useState("");
 
   /**
    * includes types: exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch and mappingRelation
@@ -444,36 +452,64 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     });
   }, [data, labels, olsApi]);
 
+  /**
+   * Builds table rows from the ColiConc mapping data.
+   */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any) => ({
-        to:
-          labels[item.to?.memberSet?.[0]?.uri] ??
-          item.to?.memberSet?.[0]?.notation?.[0] ??
-          "—",
-        toUri: item.to?.memberSet?.[0]?.uri ?? "—",
-        creator: item.creator?.[0]?.prefLabel?.en ?? "—",
-        type: item.type?.[0]?.split("#").pop() ?? "—",
-        created: item.created ?? "—",
-        createdLabel: formatMappingDate(item.created ?? "—"),
-      })),
+      (data ?? []).map((item: any) => {
+        const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
+        // Keeps the original target notation from ColiConc for searching.
+        const targetFromColiConc =
+          item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
+
+        return {
+          to: labels[toUri] ?? targetFromColiConc,
+          toUri,
+          targetFromColiConc,
+          creator: item.creator?.[0]?.prefLabel?.en ?? "—",
+          type: item.type?.[0]?.split("#").pop() ?? "—",
+          created: item.created ?? "—",
+          createdLabel: formatMappingDate(item.created ?? "—"),
+        };
+      }),
     [data, labels],
   );
 
+  /**
+   * Configures the EUI search bar for filtering ColiConc target and creator.
+   */
+  const search: EuiSearchBarProps = {
+    onChange: ({ query }) => {
+      const normalizedQuery = normalizeSearchText(query?.text ?? "");
+
+      setSearchedQuery(normalizedQuery);
+    },
+    box: {
+      incremental: true,
+      placeholder: "Search ColiConc target or creator",
+    },
+  };
+
+  /**
+   * Apply both the type-filter and the search-filter to the table rows
+   */
   const filteredRows: MappingRow[] = useMemo(() => {
-    if (appliedTypeFilters.length === 0) {
-      return rows;
-    }
+    const normalizedSearchQuery = searchedQuery.toLowerCase();
 
-    const filteredItems = rows.filter((row) => {
-      const rowType = row.type;
-      const isSelected = appliedTypeFilters.includes(rowType);
+    return rows.filter((row) => {
+      const matchesTypeFilter =
+        appliedTypeFilters.length === 0 ||
+        appliedTypeFilters.includes(row.type);
 
-      return isSelected;
+      const matchesSearch =
+        normalizedSearchQuery === "" ||
+        row.targetFromColiConc.toLowerCase().includes(normalizedSearchQuery) ||
+        row.creator.toLowerCase().includes(normalizedSearchQuery);
+
+      return matchesTypeFilter && matchesSearch;
     });
-
-    return filteredItems;
-  }, [rows, appliedTypeFilters]);
+  }, [rows, appliedTypeFilters, searchedQuery]);
 
   const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
@@ -626,6 +662,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
         tableCaption="Mapping list"
         responsiveBreakpoint={false}
         items={filteredRows}
+        search={search}
         sorting={{
           sort: {
             field: "to",
