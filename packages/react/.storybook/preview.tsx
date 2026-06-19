@@ -69,6 +69,34 @@ function isSafeDecodedArgs(value: unknown): value is Record<string, unknown> {
   return true;
 }
 
+function buildCleanURL(url: URL): string {
+  const params = [];
+
+  /**
+   *   Keep the Storybook path readable without encoding:
+   *   path=/story/search-exampleWidget--classes
+   */
+  const path = url.searchParams.get("path");
+  if (path) {
+    params.push(`path=${path}`);
+  }
+
+  /**
+   *  Encode other params so special characters are safe in the URL:
+   *  "red & blue" -> "red%20%26%20blue"
+   */
+  url.searchParams.forEach((value, key) => {
+    if (key !== "path") {
+      params.push(`${key}=${encodeURIComponent(value)}`);
+    }
+  });
+
+  const baseUrl = url.origin + url.pathname;
+  const queryString = params.join("&");
+
+  return baseUrl + "?" + queryString;
+}
+
 const queryClient = new QueryClient();
 
 const decorators = [
