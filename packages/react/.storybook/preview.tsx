@@ -1,4 +1,8 @@
 import { Preview } from "@storybook/react-vite";
+import { EuiProvider } from "@elastic/eui";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { useArgs } from "@storybook/preview-api";
+import { useEffect, useState } from "react";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -24,8 +28,13 @@ export const parameters = {
   },
 };
 
-import { EuiProvider } from "@elastic/eui";
-import { QueryClient, QueryClientProvider } from "react-query";
+function hasSpecialChars(value: unknown) {
+  if (typeof value !== "string") {
+    return false;
+  }
+  return /[^a-zA-Z0-9 _-]/.test(value);
+}
+
 
 const queryClient = new QueryClient();
 
