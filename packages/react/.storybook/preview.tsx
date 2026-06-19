@@ -33,6 +33,9 @@ function hasSpecialChars(value: unknown) {
   return /[^a-zA-Z0-9 _-]/.test(value);
 }
 
+/**
+ * Returns only the args that the user changed AND contain special characters
+ */
 function getChangedSpecialArgs(
   currentArgs: Record<string, unknown>,
   initialArgs: Record<string, unknown>,
