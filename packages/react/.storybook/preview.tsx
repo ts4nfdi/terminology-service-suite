@@ -52,6 +52,23 @@ function getChangedSpecialArgs(
   return changedSpecialArgs;
 }
 
+/**
+ *  Validates decoded args to prevent prototype pollution attacks
+ */
+function isSafeDecodedArgs(value: unknown): value is Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  for (const key of Object.keys(value)) {
+    if (key === "__proto__" || key === "constructor" || key === "prototype") {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 const queryClient = new QueryClient();
 
 const decorators = [
