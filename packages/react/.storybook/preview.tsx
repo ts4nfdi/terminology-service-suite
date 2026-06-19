@@ -1,8 +1,6 @@
-import { Preview } from "@storybook/react-vite";
 import { EuiProvider } from "@elastic/eui";
+import { Preview } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useArgs } from "@storybook/preview-api";
-import { useEffect, useState } from "react";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -35,6 +33,21 @@ function hasSpecialChars(value: unknown) {
   return /[^a-zA-Z0-9 _-]/.test(value);
 }
 
+function getChangedSpecialArgs(
+  currentArgs: Record<string, unknown>,
+  initialArgs: Record<string, unknown>,
+): Record<string, unknown> {
+  const changedSpecialArgs: Record<string, unknown> = {};
+  for (const arg in currentArgs) {
+    if (
+      currentArgs[arg] !== initialArgs[arg] &&
+      hasSpecialChars(currentArgs[arg])
+    ) {
+      changedSpecialArgs[arg] = currentArgs[arg];
+    }
+  }
+  return changedSpecialArgs;
+}
 
 const queryClient = new QueryClient();
 
