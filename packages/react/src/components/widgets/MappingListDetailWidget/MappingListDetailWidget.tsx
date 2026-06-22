@@ -69,14 +69,13 @@ const predicateIcons: Record<string, ReactNode> = {
   ),
   broadMatch: <polyline points="8 6 16 12 8 18" />,
   narrowMatch: <polyline points="16 6 8 12 16 18" />,
-  relatedMatch: (
+  relatedMatch: <path d="M 4 13 Q 8 7 12 13 T 20 13" />,
+  mappingRelation: (
     <>
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <polyline points="7 8 3 12 7 16" />
-      <polyline points="17 8 21 12 17 16" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <polyline points="15 7 20 12 15 17" />
     </>
   ),
-  mappingRelation: <path d="M 4 12 Q 8 8 12 12 T 20 12" />,
 };
 
 const PredicateIcon = memo(({ type }: { type: string }) => {
