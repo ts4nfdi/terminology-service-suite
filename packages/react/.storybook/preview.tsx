@@ -1,5 +1,7 @@
 import { EuiProvider } from "@elastic/eui";
+import { useArgs } from "@storybook/preview-api";
 import { Preview } from "@storybook/react-vite";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 export const parameters = {
@@ -70,7 +72,7 @@ function isSafeDecodedArgs(value: unknown): value is Record<string, unknown> {
 }
 
 function buildCleanURL(url: URL): string {
-  const params = [];
+  const params: string[] = [];
 
   /**
    *   Keep the Storybook path readable without encoding:
@@ -99,7 +101,41 @@ function buildCleanURL(url: URL): string {
 
 const queryClient = new QueryClient();
 
+function StoryArgsUrlSyncManager({
+  args,
+  initialArgs,
+  SetArgs,
+  storyElement,
+}: any) {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(function () {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) {
+    return null;
+  }
+
+  return <>{storyElement}</>;
+}
+
+function syncStoryArgsWithUrl(story: any, context: any) {
+  const [args, SetArgs] = useArgs();
+  const initialArgs = context.initialArgs ?? {};
+
+  return (
+    <StoryArgsUrlSyncManager
+      args={args}
+      initialArgs={initialArgs}
+      SetArgs={SetArgs}
+      storyElement={story()}
+    />
+  );
+}
+
 const decorators = [
+  syncStoryArgsWithUrl,
   (story: any) => (
     <>
       <EuiProvider colorMode="light">
