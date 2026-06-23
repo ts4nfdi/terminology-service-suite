@@ -110,7 +110,36 @@ function StoryArgsUrlSyncManager({
   const [isReady, setIsReady] = useState(false);
 
   useEffect(function () {
-    setIsReady(true);
+    try {
+      const topWindow = window.top || window;
+      const params = new URLSearchParams(topWindow.location.search);
+
+      const encodedArgs = params.get("tss_args");
+      const isSharedLink = params.get("encode") === "true";
+
+      if (isSharedLink && encodedArgs) {
+        let decoded: string | null = null;
+        let decodedArgs: unknown = null;
+
+        try {
+          decoded = atob(encodedArgs);
+        } catch {
+          console.error("Failed to read shared Storybook args.");
+        }
+
+        if (decoded !== null) {
+          try {
+            decodedArgs = JSON.parse(decodeURIComponent(decoded));
+          } catch {
+            console.error("Failed to read shared Storybook args.");
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Failed to read shared Storybook args.");
+    } finally {
+      setIsReady(true);
+    }
   }, []);
 
   if (!isReady) {
