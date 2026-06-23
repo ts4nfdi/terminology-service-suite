@@ -153,6 +153,41 @@ function StoryArgsUrlSyncManager({
     }
   }, []);
 
+  useEffect(
+    function () {
+      if (!isReady) return;
+
+      const timer = setTimeout(function () {
+        try {
+          const topWindow = window.top || window;
+          const currentURL = new URL(topWindow.location.href);
+          const changedSpecialArgs = getChangedSpecialArgs(args, initialArgs);
+
+          if (Object.keys(changedSpecialArgs).length > 0) {
+            const encoded = btoa(
+              encodeURIComponent(JSON.stringify(changedSpecialArgs)),
+            );
+
+            currentURL.searchParams.set("tss_args", encoded);
+            currentURL.searchParams.set("encode", "true");
+          } else {
+            currentURL.searchParams.delete("tss_args");
+            currentURL.searchParams.delete("encode");
+          }
+
+          topWindow.history.replaceState({}, "", buildCleanURL(currentURL));
+        } catch {
+          console.error("Failed to update shared Storybook args.");
+        }
+      }, 400);
+
+      return function () {
+        clearTimeout(timer);
+      };
+    },
+    [args, initialArgs, isReady],
+  );
+
   if (!isReady) {
     return null;
   }
