@@ -32,6 +32,7 @@ function hasSpecialChars(value: unknown) {
   if (typeof value !== "string") {
     return false;
   }
+
   return /[^a-zA-Z0-9 _-]/.test(value);
 }
 
@@ -43,6 +44,7 @@ function getChangedSpecialArgs(
   initialArgs: Record<string, unknown>,
 ): Record<string, unknown> {
   const changedSpecialArgs: Record<string, unknown> = {};
+
   for (const arg in currentArgs) {
     if (
       currentArgs[arg] !== initialArgs[arg] &&
@@ -51,11 +53,12 @@ function getChangedSpecialArgs(
       changedSpecialArgs[arg] = currentArgs[arg];
     }
   }
+
   return changedSpecialArgs;
 }
 
 /**
- *  Validates decoded args to prevent prototype pollution attacks
+ * Validates decoded args to prevent prototype pollution attacks
  */
 function isSafeDecodedArgs(value: unknown): value is Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -75,8 +78,8 @@ function buildCleanURL(url: URL): string {
   const params: string[] = [];
 
   /**
-   *   Keep the Storybook path readable without encoding:
-   *   path=/story/search-exampleWidget--classes
+   * Keep the Storybook path readable without encoding:
+   * path=/story/search-exampleWidget--classes
    */
   const path = url.searchParams.get("path");
   if (path) {
@@ -84,8 +87,8 @@ function buildCleanURL(url: URL): string {
   }
 
   /**
-   *  Encode other params so special characters are safe in the URL:
-   *  "red & blue" -> "red%20%26%20blue"
+   * Encode other params so special characters are safe in the URL:
+   * "red & blue" -> "red%20%26%20blue"
    */
   url.searchParams.forEach((value, key) => {
     if (key !== "path") {
@@ -134,8 +137,16 @@ function StoryArgsUrlSyncManager({
             console.error("Failed to read shared Storybook args.");
           }
         }
+
+        if (
+          decodedArgs !== null &&
+          isSafeDecodedArgs(decodedArgs) &&
+          Object.keys(decodedArgs).length > 0
+        ) {
+          SetArgs(decodedArgs);
+        }
       }
-    } catch (error) {
+    } catch {
       console.error("Failed to read shared Storybook args.");
     } finally {
       setIsReady(true);
