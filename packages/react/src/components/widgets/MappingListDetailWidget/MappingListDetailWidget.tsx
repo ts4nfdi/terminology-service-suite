@@ -1,7 +1,6 @@
 import {
   EuiBasicTableColumn,
   EuiButton,
-  EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
   EuiPanel,
@@ -473,7 +472,6 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     () =>
       (data ?? []).map((item: any) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
-        // Keeps the original target notation from ColiConc for searching.
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
 
@@ -538,19 +536,40 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
    * Custom help button trigger with adjusted stroke width
    */
   const helpButton = (
-    <EuiButtonIcon
-      iconType="iInCircle"
-      color="primary"
+    <button
+      type="button"
       aria-label="Help"
       onClick={onButtonClick}
-      css={css`
-        svg {
-          stroke: currentColor;
-          stroke-width: 0.5px;
-          color: #0645ad;
-        }
-      `}
-    />
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "32px",
+        height: "32px",
+        padding: 0,
+        color: "#0645ad",
+        backgroundColor: "transparent",
+        border: "none",
+        borderRadius: "50%",
+        cursor: "pointer",
+      }}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <line x1="12" y1="10.5" x2="12" y2="16" />
+        <circle cx="12" cy="7.8" r="0.75" fill="currentColor" stroke="none" />
+      </svg>
+    </button>
   );
 
   return isLoading ? (
