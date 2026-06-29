@@ -102,15 +102,15 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
 });
 
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
-  const { api, iri } = props;
+  const { api, source } = props;
 
   const coliConcApi = useMemo(() => new ColiConcApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["mappings", iri],
+    ["mappings", source],
     () => {
-      return coliConcApi.getMappingsByFrom(iri);
+      return coliConcApi.getMappingsByFrom(source);
     },
   );
 
@@ -712,7 +712,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
 export function WrappedMappingListDetailWidget(
   props: MappingListDetailWidgetProps,
 ) {
-  return <MappingListDetailWidget api={props.api} iri={props.iri} />;
+  return <MappingListDetailWidget api={props.api} source={props.source} />;
 }
 
 export { MappingListDetailWidget };

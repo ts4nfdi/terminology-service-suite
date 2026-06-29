@@ -876,5 +876,5 @@ export type EntityListWidgetProps = {
 
 export type MappingListDetailWidgetProps = {
   api: string;
-  iri: string;
+  source: string;
 };
