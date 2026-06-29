@@ -13,7 +13,7 @@ import {
 import { css } from "@emotion/react";
 import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
-import { ColiConcApi } from "../../../api/coli-conc/ColiConcAPI";
+import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListDetailWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
@@ -104,13 +104,13 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
 function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   const { api, source } = props;
 
-  const coliConcApi = useMemo(() => new ColiConcApi(api), [api]);
+  const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
     ["mappings", source],
     () => {
-      return coliConcApi.getMappingsByFrom(source);
+      return jskosMappingApi.getMappingsByFrom(source);
     },
   );
 

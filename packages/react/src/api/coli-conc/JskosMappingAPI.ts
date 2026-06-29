@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
-export class ColiConcApi {
+export class JskosMappingApi {
   protected axiosInstance: AxiosInstance;
 
   constructor(api: string | AxiosInstance) {
