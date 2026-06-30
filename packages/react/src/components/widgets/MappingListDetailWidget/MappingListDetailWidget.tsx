@@ -657,7 +657,7 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
                 <br />
                 <li>
                   <strong>Type:</strong> The relationship or attribute linking
-                  the source to the object
+                  the source to the target
                 </li>
                 <br />
                 <li>
