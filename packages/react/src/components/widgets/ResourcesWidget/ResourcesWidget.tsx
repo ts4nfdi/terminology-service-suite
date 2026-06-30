@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Comparators,
-  CriteriaWithPagination,
   EuiBasicTableColumn,
   EuiButtonIcon,
   EuiCallOut,
@@ -19,25 +17,17 @@ import { css, SerializedStyles } from "@emotion/react";
 import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
-import { OlsResource, ResourcesWidgetProps } from "../../../app/types";
+import { OlsResource, ResourcesWidgetProps } from "../../../app";
 import { OBO_FOUNDRY_REPO_URL_RAW } from "../../../app/util";
 import { Ontologies } from "../../../model/interfaces";
 import { OLS4Ontology } from "../../../model/ols4-model";
 import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
 
-const DEFAULT_INITIAL_ENTRIES_PER_PAGE = 10;
-const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
-const DEFAULT_INITIAL_SORT_FIELD = "config.preferredPrefix";
-const DEFAULT_INITIAL_SORT_DIR = "asc" as const;
 const DEFAULT_USE_LEGACY = true as const;
 
 function ResourcesWidget(props: ResourcesWidgetProps) {
   const {
     api,
-    initialEntriesPerPage = DEFAULT_INITIAL_ENTRIES_PER_PAGE,
-    pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
-    initialSortField = DEFAULT_INITIAL_SORT_FIELD,
-    initialSortDir = DEFAULT_INITIAL_SORT_DIR,
     onNavigate,
     parameter,
     useLegacy = DEFAULT_USE_LEGACY,
@@ -46,11 +36,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     ...rest
   } = props;
   const olsApi = new OlsOntologyApi(api);
-
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(initialEntriesPerPage);
-  const [sortField, setSortField] = useState<string | number>(initialSortField);
-  const [sortDirection, setSortDirection] = useState(initialSortDir);
 
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
     Record<string, ReactNode>
@@ -113,7 +98,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Description",
       field: "config.description",
-      // width: "30%",
       css: css`
         display: block;
         max-height: 200px;
@@ -156,7 +140,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       width: "2%",
       actions: [
-        ...(props.actions || []),
+        ...(actions || []),
         {
           render: (item: OlsResource) => (
             <EuiButtonIcon
@@ -174,21 +158,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       ],
     },
   ];
-
-  const onTableChange = ({
-    page,
-    sort,
-  }: CriteriaWithPagination<OlsResource>) => {
-    const { index: pageIndex, size: pageSize } = page;
-    setPageIndex(pageIndex);
-    setPageSize(pageSize);
-
-    if (sort) {
-      const { field: sortField, direction: sortDirection } = sort;
-      setSortField(sortField);
-      setSortDirection(sortDirection);
-    }
-  };
 
   const {
     data: ontologiesData,
@@ -232,70 +201,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       })) || []
     : ontologiesData?.properties.map((ontology) => v2toOlsResource(ontology)) ||
       [];
-
-  const findOntologies = (
-    ontologies: any[],
-    pageIndex: number,
-    pageSize: number,
-    sortField: any,
-    sortDirection: "asc" | "desc",
-  ) => {
-    let items;
-
-    if (sortField) {
-      items = ontologies
-        .slice(0)
-        .sort(
-          Comparators.property(sortField, Comparators.default(sortDirection)),
-        );
-    } else {
-      items = ontologies;
-    }
-
-    let pageOfItems;
-
-    if (!pageIndex && !pageSize) {
-      pageOfItems = items;
-    } else {
-      const startIndex = pageIndex * pageSize;
-      pageOfItems = items.slice(
-        startIndex,
-        Math.min(startIndex + pageSize, ontologies.length),
-      );
-    }
-
-    return {
-      pageOfItems,
-      totalItemCount: ontologies.length,
-    };
-  };
-
-  const { pageOfItems, totalItemCount } = findOntologies(
-    ontos,
-    pageIndex,
-    pageSize,
-    sortField,
-    sortDirection,
-  );
-
-  const pagination = {
-    pageIndex,
-    pageSize,
-    totalItemCount,
-    pageSizeOptions,
-  };
-
-  const resultsCount =
-    pageSize === 0 ? (
-      <strong>All</strong>
-    ) : (
-      <>
-        <strong>
-          {pageSize * pageIndex + 1}-{pageSize * pageIndex + pageSize}
-        </strong>{" "}
-        of {totalItemCount}
-      </>
-    );
 
   const toggleDetails = (resource: any) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
@@ -392,8 +297,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       },
     },
   ];
-  console.log(pageOfItems);
-  // @ts-ignore
+
   return (
     <div className={finalClassName} data-testid="resources">
       {isSuccess && (
@@ -408,16 +312,15 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           </EuiCallOut>
           <EuiSpacer size="s" />
           <EuiText size="xs">
-            Showing {resultsCount} <strong>Ontologies</strong>
+            Showing <strong>{ontos.length}</strong> <strong>Ontologies</strong>
           </EuiText>
           <EuiSpacer size="s" />
           <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
           <EuiInMemoryTable
             columns={columnsWithExpandingRowToggle}
-            items={pageOfItems}
-            onChange={onTableChange}
-            pagination={pagination}
+            items={ontos}
+            pagination={true}
             sorting={true}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             itemId={"ontologyId"}
@@ -428,9 +331,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       {isLoading && (
         <EuiInMemoryTable
           columns={columnsWithExpandingRowToggle}
-          items={pageOfItems}
-          onChange={onTableChange}
-          pagination={pagination}
+          items={ontos}
+          pagination={true}
           sorting={true}
           loading
           {...rest}
@@ -439,9 +341,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       {isError && (
         <EuiInMemoryTable
           columns={columns}
-          items={pageOfItems}
-          onChange={onTableChange}
-          pagination={pagination}
+          items={ontos}
+          pagination={true}
           sorting={true}
           {...rest}
           /*
