@@ -3,12 +3,12 @@
 import {
   Comparators,
   CriteriaWithPagination,
-  EuiBasicTable,
   EuiBasicTableColumn,
   EuiButtonIcon,
   EuiCallOut,
   EuiDescriptionList,
   EuiHorizontalRule,
+  EuiInMemoryTable,
   EuiLink,
   EuiProvider,
   EuiScreenReaderOnly,
@@ -297,13 +297,6 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       </>
     );
 
-  const sorting = {
-    sort: {
-      field: sortField,
-      direction: sortDirection,
-    },
-  };
-
   const toggleDetails = (resource: any) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap };
 
@@ -399,6 +392,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       },
     },
   ];
+  console.log(pageOfItems);
   // @ts-ignore
   return (
     <div className={finalClassName} data-testid="resources">
@@ -419,12 +413,12 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
           <EuiSpacer size="s" />
           <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
-          <EuiBasicTable
+          <EuiInMemoryTable
             columns={columnsWithExpandingRowToggle}
             items={pageOfItems}
             onChange={onTableChange}
             pagination={pagination}
-            sorting={sorting}
+            sorting={true}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             itemId={"ontologyId"}
             {...rest}
@@ -432,23 +426,23 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         </>
       )}
       {isLoading && (
-        <EuiBasicTable
+        <EuiInMemoryTable
           columns={columnsWithExpandingRowToggle}
           items={pageOfItems}
           onChange={onTableChange}
           pagination={pagination}
-          sorting={sorting}
+          sorting={true}
           loading
           {...rest}
         />
       )}
       {isError && (
-        <EuiBasicTable
+        <EuiInMemoryTable
           columns={columns}
           items={pageOfItems}
           onChange={onTableChange}
           pagination={pagination}
-          sorting={sorting}
+          sorting={true}
           {...rest}
           /*
                           error={getErrorMessageToDisplay(error, "resources")}
