@@ -123,6 +123,13 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
    */
   const [labels, setLabels] = useState<Record<string, string>>({});
 
+  /**
+   * Maps each source (from) URI to its readable label text, fetched from
+   * the OLS gateway API the same way target labels are. Falls back to the
+   * raw JSKOS notation whenever no OLS label is found.
+   */
+  const [fromLabels, setFromLabels] = useState<Record<string, string>>({});
+
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
 
   /**
@@ -465,6 +472,37 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     });
   }, [data, labels, olsApi]);
 
+  useEffect(() => {
+    if (!data) return;
+
+    data.forEach(async (item: any) => {
+      const fromUri = item.from?.memberSet?.[0]?.uri;
+      const fromScheme = item.fromScheme?.notation?.[0]?.toLowerCase();
+
+      if (!fromScheme || !fromUri || fromLabels[fromUri]) return;
+
+      try {
+        const entityResponse = await olsApi.getEntity(
+          undefined,
+          undefined,
+          { ontologyId: fromScheme, termIri: fromUri },
+          undefined,
+          false,
+        );
+
+        const label = entityResponse?.elements?.[0]?.label ?? null;
+
+        if (!label) return;
+
+        setFromLabels((prevState) => ({ ...prevState, [fromUri]: label }));
+      } catch {
+        /**
+         * Keep the fallback notation when the OLS label cannot be loaded.
+         */
+      }
+    });
+  }, [data, fromLabels, olsApi]);
+
   /**
    * Builds table rows from the ColiConc mapping data.
    */
@@ -523,7 +561,10 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
     });
   }, [rows, appliedTypeFilters, searchedQuery]);
 
-  const fromLabel = data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
+  const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
+  const sourceFromColiConc =
+    data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
+  const fromLabel = fromLabels[fromUri] ?? sourceFromColiConc;
 
   /**
    * State and handlers for the contextual help popover.
