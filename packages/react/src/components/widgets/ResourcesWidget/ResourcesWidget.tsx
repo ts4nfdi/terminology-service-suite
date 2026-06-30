@@ -310,7 +310,8 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
               conditions in the respective countries.
             </p>
           </EuiCallOut>
-          <EuiSpacer size="s" />
+
+          <EuiSpacer size="l" />
           <EuiText size="xs">
             Showing <strong>{ontos.length}</strong> <strong>Ontologies</strong>
           </EuiText>
