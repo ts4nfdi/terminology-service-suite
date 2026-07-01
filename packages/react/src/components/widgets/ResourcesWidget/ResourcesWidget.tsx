@@ -339,7 +339,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
             </p>
           </EuiCallOut>
 
-          <EuiSpacer size="l" />
+          <EuiSpacer size="m" />
           <EuiText size="xs">
             Showing <strong>{filteredOntos.length}</strong>{" "}
             <strong>Ontologies</strong>
