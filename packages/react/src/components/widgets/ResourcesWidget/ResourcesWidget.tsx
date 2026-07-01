@@ -10,9 +10,9 @@ import {
   EuiLink,
   EuiProvider,
   EuiScreenReaderOnly,
+  EuiSearchBarProps,
   EuiSpacer,
   EuiText,
-  EuiSearchBarProps,
 } from "@elastic/eui";
 import { css, SerializedStyles } from "@emotion/react";
 import { ReactNode, useState } from "react";
@@ -310,10 +310,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     },
   };
 
-  const filteredOntos = ontos.filter((onto)=>{
-    if(searchQuery===""){
-      return true
-    }else {
+  const filteredOntos = ontos.filter((onto) => {
+    if (searchQuery === "") {
+      return true;
+    } else {
       const searchedItem = searchQuery.trim().toLowerCase();
 
       const searchedShortName = (onto.ontologyId || "").toLowerCase();
@@ -324,7 +324,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
         searchedShortName.includes(searchedItem)
       );
     }
-  })
+  });
 
   return (
     <div className={finalClassName} data-testid="resources">
