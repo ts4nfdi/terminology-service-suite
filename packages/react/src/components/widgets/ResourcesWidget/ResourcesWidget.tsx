@@ -12,6 +12,7 @@ import {
   EuiScreenReaderOnly,
   EuiSpacer,
   EuiText,
+  EuiSearchBarProps,
 } from "@elastic/eui";
 import { css, SerializedStyles } from "@emotion/react";
 import { ReactNode, useState } from "react";
@@ -40,6 +41,7 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<
     Record<string, ReactNode>
   >({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   const finalClassName = className || "ts4nfdi-resources-style";
 
@@ -298,6 +300,32 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     },
   ];
 
+  const search: EuiSearchBarProps = {
+    box: {
+      incremental: true,
+      placeholder: "Search by ontology or resource name",
+    },
+    onChange: ({ queryText }) => {
+      setSearchQuery(queryText);
+    },
+  };
+
+  const filteredOntos = ontos.filter((onto)=>{
+    if(searchQuery===""){
+      return true
+    }else {
+      const searchedItem = searchQuery.trim().toLowerCase();
+
+      const searchedShortName = (onto.ontologyId || "").toLowerCase();
+      const searchedResourceName = (onto.config?.title || "").toLowerCase();
+
+      return (
+        searchedResourceName.includes(searchedItem) ||
+        searchedShortName.includes(searchedItem)
+      );
+    }
+  })
+
   return (
     <div className={finalClassName} data-testid="resources">
       {isSuccess && (
@@ -313,16 +341,18 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
 
           <EuiSpacer size="l" />
           <EuiText size="xs">
-            Showing <strong>{ontos.length}</strong> <strong>Ontologies</strong>
+            Showing <strong>{filteredOntos.length}</strong>{" "}
+            <strong>Ontologies</strong>
           </EuiText>
           <EuiSpacer size="s" />
           <EuiHorizontalRule margin="none" style={{ height: 2 }} />
 
           <EuiInMemoryTable
             columns={columnsWithExpandingRowToggle}
-            items={ontos}
+            items={filteredOntos}
             pagination={true}
             sorting={true}
+            search={search}
             itemIdToExpandedRowMap={itemIdToExpandedRowMap}
             itemId={"ontologyId"}
             {...rest}
@@ -332,9 +362,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       {isLoading && (
         <EuiInMemoryTable
           columns={columnsWithExpandingRowToggle}
-          items={ontos}
+          items={filteredOntos}
           pagination={true}
           sorting={true}
+          search={search}
           loading
           {...rest}
         />
@@ -342,9 +373,10 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
       {isError && (
         <EuiInMemoryTable
           columns={columns}
-          items={ontos}
+          items={filteredOntos}
           pagination={true}
           sorting={true}
+          search={search}
           {...rest}
           /*
                           error={getErrorMessageToDisplay(error, "resources")}
