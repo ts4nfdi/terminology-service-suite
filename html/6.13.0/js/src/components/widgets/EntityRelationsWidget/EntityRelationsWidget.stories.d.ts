@@ -1,0 +1,16 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { EntityRelationsWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+declare const meta: Meta<EntityRelationsWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const SubEntityOf: Story;
+export declare const AllValuesFrom: Story;
+export declare const DifferentFrom: Story;
+export declare const EquivalentTo: Story;
+export declare const SingleValue: Story;
+export declare const InverseOf: Story;
+export declare const PropertyChain: Story;
+export declare const Instances: Story;
+export declare const Axioms: Story;
+export declare const QualifiedCardinality: Story;
+export declare const NavigateToEBIPage: Story;
