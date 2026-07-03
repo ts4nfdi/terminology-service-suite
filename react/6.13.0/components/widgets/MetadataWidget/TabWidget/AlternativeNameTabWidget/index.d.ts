@@ -1,0 +1,1 @@
+export { AlternativeNameTabWidget } from './AlternativeNameTabWidget';
