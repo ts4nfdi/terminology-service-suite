@@ -22,3 +22,4 @@ export declare const SearchBarDescription: string;
 export declare const SearchResultsListDescription: string;
 export declare const TermDepictionDescription: string;
 export declare const EntityListDescription: string;
+export declare const MappingListDetailDescription: string;
