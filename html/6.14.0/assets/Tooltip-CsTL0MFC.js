@@ -1,0 +1,1 @@
+import{j as o}from"./client-DFp2fd_t.js";import{E as i}from"./icon_tip-COigf1dI.js";function e({text:t}){return o.jsx(i,{css:{maxWidth:"580px",backgroundColor:"rgba(0,0,0,0.8)",font:"menu"},type:"info",color:"subdued",position:"right",content:o.jsx("div",{style:{whiteSpace:"pre-line"},children:t})})}export{e as T};
