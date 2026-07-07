@@ -20,14 +20,14 @@ export const MathFormulaWidgetStoryArgs = {
 } as const;
 
 export const MathmodP983StoryArgs = {
-  api: "http://localhost:8080/api/",
+  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
   ontologyId: "mathmod",
   iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
   mathProperty: "https://portal.mardi4nfdi.de/wiki/entity/P983",
 };
 
 export const MathmodP989StoryArgs = {
-  api: "http://localhost:8080/api/",
+  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
   ontologyId: "mathmod",
   iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
   mathProperty: "https://portal.mardi4nfdi.de/wiki/entity/P989",

@@ -41,11 +41,7 @@ export class Ts4nfdiSearchResult implements SelectResult {
   }
 
   getTypePlural():
-    | "ontologies"
-    | "classes"
-    | "properties"
-    | "individuals"
-    | "terms" {
+    "ontologies" | "classes" | "properties" | "individuals" | "terms" {
     const type = this.getType();
 
     switch (type) {

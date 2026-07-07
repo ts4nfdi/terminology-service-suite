@@ -553,8 +553,7 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+    ((entityType: string, entity?: EntityData) => void) | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &

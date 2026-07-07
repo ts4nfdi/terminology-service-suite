@@ -137,7 +137,7 @@ export const SkosmosImportArgs = {
 
 export const InfoEntityWithMathFormulaArgs = {
   ...EntityInfoWidgetStoryArgs,
-  api: "http://localhost:8080/api/",
+  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
   useLegacy: false,
   iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
   ontologyId: "mathmod",

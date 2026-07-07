@@ -12,11 +12,7 @@ export class OLS3Ontology extends OLS3Thing implements Ontology {
   }
 
   getTypePlural():
-    | "ontologies"
-    | "classes"
-    | "terms"
-    | "properties"
-    | "individuals" {
+    "ontologies" | "classes" | "terms" | "properties" | "individuals" {
     return "ontologies";
   }
 

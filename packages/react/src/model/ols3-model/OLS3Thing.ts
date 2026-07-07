@@ -29,11 +29,7 @@ export abstract class OLS3Thing implements Thing {
   abstract getType(): ThingTypeName;
 
   getTypePlural():
-    | "ontologies"
-    | "classes"
-    | "terms"
-    | "properties"
-    | "individuals" {
+    "ontologies" | "classes" | "terms" | "properties" | "individuals" {
     return pluralizeType(this.getType());
   }
 
