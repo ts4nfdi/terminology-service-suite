@@ -482,3 +482,30 @@ Supports efficient inspection of extensive ontology content without overwhelming
 - **Known limitation**:
 The widget currently does not work correctly for **properties**. This is due to an issue in the **OLS4 API** where the required parameter for property-based queries is not properly handled, resulting in incomplete or non-functional results.
 `.trim();
+
+export const MappingListDetailDescription = `
+The MappingListDetailWidget is a table-based visualization component designed to display mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. The widget fetches mapping relations dynamically using a provided API endpoint and a source entity IRI, allowing users to inspect how a specific concept is connected to related target concepts across terminologies.
+
+#### Key Features:
+
+- **Dynamic mapping retrieval**:
+Fetches mappings directly from the ColiConc mapping endpoint using a provided source entity IRI and displays all related target mappings in real time.
+
+- **Human-readable target display**:
+Uses the OLS Gateway API to resolve target entity labels when available, while keeping the original ColiConc target notation as a fallback.
+
+- **Structured mapping table**:
+Displays mapping results in a clean tabular layout with key metadata such as target, creator, mapping type, and creation date.
+
+- **ColiConc-based search**:
+Provides a search bar for filtering mappings by the original ColiConc target notation and creator. The search is applied only to data returned by the ColiConc mapping endpoint, not to labels resolved later through the OLS Gateway API.
+
+- **Mapping type filtering**:
+Allows users to filter mappings by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, \`broadMatch\`, \`narrowMatch\`, \`relatedMatch\`, and \`mappingRelation\`.
+
+- **Mapping type visualization**:
+Displays semantic mapping relations with compact visual icons, making different SKOS mapping types easier to identify in the table.
+
+- **Cross-terminology exploration**:
+Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
+`.trim();

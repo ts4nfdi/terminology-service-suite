@@ -879,3 +879,8 @@ export type EntityListWidgetProps = {
   entityType: EntityTypeName;
   parameter?: string;
 };
+
+export type MappingListDetailWidgetProps = {
+  api: string;
+  source: string;
+};

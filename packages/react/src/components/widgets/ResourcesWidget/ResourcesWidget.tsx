@@ -135,21 +135,24 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
     {
       name: "Terms",
       field: "numberOfTerms",
-      render: (value: number) => <>{value.toLocaleString()}</>,
+      render: (value?: number) =>
+        value ? <>{value.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },
     {
       name: "Properties",
       field: "numberOfProperties",
-      render: (value: number) => <>{value.toLocaleString()}</>,
+      render: (value?: number) =>
+        value ? <>{value.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },
     {
       name: "Individuals",
       field: "numberOfIndividuals",
-      render: (value: number) => <>{value.toLocaleString()}</>,
+      render: (value?: number) =>
+        value ? <>{value.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },

@@ -69,7 +69,11 @@ export class OlsOntologyApi extends OlsBaseApi {
         }
 
         pageNum += 1;
-      } while (pageNum < response["page"]["totalPages"]);
+      } while (
+        response["page"] &&
+        response["page"]["totalPages"] != null &&
+        pageNum < response["page"]["totalPages"]
+      );
 
       return new OLS3Ontologies(ontologiesData);
     } else {
@@ -93,7 +97,11 @@ export class OlsOntologyApi extends OlsBaseApi {
         }
 
         pageNum += 1;
-      } while (pageNum < response["totalPages"]);
+      } while (
+        response["page"] &&
+        response["page"]["totalPages"] != null &&
+        pageNum < response["page"]["totalPages"]
+      );
 
       return new OLS4Ontologies(ontologiesData);
     }

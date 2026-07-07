@@ -18,12 +18,14 @@ export function createModelObject(response: any) {
   let useLegacy: boolean;
   if (
     response["_embedded"] !== undefined ||
-    response["numberOfTerms"] !== undefined
+    response["numberOfTerms"] !== undefined ||
+    response["config"] !== undefined
   )
     useLegacy = true;
   else if (
     response["elements"] !== undefined ||
-    response["numberOfClasses"] !== undefined
+    response["numberOfClasses"] !== undefined ||
+    response["config"] === undefined
   )
     useLegacy = false;
   else
@@ -35,7 +37,7 @@ export function createModelObject(response: any) {
 
   let entityType: ThingTypeName | undefined = undefined;
   if (useLegacy) {
-    if (response["_embedded"] === undefined) {
+    if (response["_embedded"] == null || response["_embedded"] === undefined) {
       entityType = "ontology";
     } else {
       if (response["_embedded"]["terms"] !== undefined) entityType = "term";
@@ -45,7 +47,7 @@ export function createModelObject(response: any) {
         entityType = "individual";
     }
   } else {
-    if (response["elements"] === undefined) {
+    if (response["elements"] == null || response["elements"] === undefined) {
       entityType = "ontology";
     } else {
       if (response["elements"][0] === undefined) throw Error("Empty response.");
