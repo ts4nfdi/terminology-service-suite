@@ -182,6 +182,19 @@ export declare const SkosmosImportArgs: {
     onNavigateToOntology: string;
     onNavigateToDisambiguate: string;
 };
+export declare const InfoEntityWithMathFormulaArgs: {
+    api: string;
+    useLegacy: boolean;
+    iri: string;
+    ontologyId: string;
+    entityType: EntityTypeName;
+    hasTitle: boolean;
+    showBadges: boolean;
+    parameter: string;
+    onNavigateToEntity: string;
+    onNavigateToOntology: string;
+    onNavigateToDisambiguate: string;
+};
 export declare const commonEntityInfoWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;

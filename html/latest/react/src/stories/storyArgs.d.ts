@@ -325,3 +325,14 @@ export declare const hideLegendArgType: {
         description: string;
     };
 };
+export declare const mathPorpertyArgType: {
+    iri: {
+        required: boolean;
+        description: string;
+        table: {
+            type: {
+                summary: string;
+            };
+        };
+    };
+};

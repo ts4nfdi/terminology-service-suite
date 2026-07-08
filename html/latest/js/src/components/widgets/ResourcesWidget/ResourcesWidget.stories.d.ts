@@ -26,7 +26,7 @@ export declare const WithActions: {
     };
     WithActionsArgs: {
         actions: {
-            render: (item: import('@ts4nfdi/terminology-service-suite/src').OlsResource) => import("react/jsx-runtime").JSX.Element;
+            render: (item: import('@ts4nfdi/terminology-service-suite/src').OlsResource) => import("react").JSX.Element;
         }[];
         api: string;
         initialEntriesPerPage: number;
