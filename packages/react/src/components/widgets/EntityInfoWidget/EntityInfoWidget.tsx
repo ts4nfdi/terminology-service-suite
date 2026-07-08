@@ -37,6 +37,7 @@ import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
 import Tooltip from "../../helperComponents/Tooltip";
+import { MathFormulaWidget } from "../MetadataWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
@@ -559,6 +560,22 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           const annos = thing.getAnnotationById(annoKey);
           if (annos.length == 0) return <></>;
 
+          if (annos.length && "value" in annos[0] && isMathML(annos[0].value)) {
+            return (
+              <EuiFlexItem grow={false} key={annoKey}>
+                <b>
+                  {capitalize(
+                    deUnderscore(
+                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                    ),
+                  )}
+                  :
+                </b>
+                {renderMathFormulaIfMathMl(annoKey)}
+              </EuiFlexItem>
+            );
+          }
+
           return (
             <>
               <EuiFlexItem grow={false} key={annoKey}>
@@ -603,6 +620,29 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           );
         })}
       </>
+    );
+  }
+
+  function isMathML(str: string): boolean {
+    const doc = new DOMParser().parseFromString(str, "application/xml");
+
+    if (doc.querySelector("parsererror")) return false;
+
+    const root = doc.documentElement;
+    return (
+      root?.localName === "math" &&
+      root.namespaceURI === "http://www.w3.org/1998/Math/MathML"
+    );
+  }
+
+  function renderMathFormulaIfMathMl(mathProperty: string) {
+    return (
+      <MathFormulaWidget
+        iri={iri}
+        api={api}
+        ontologyId={entity?.getOntologyId() ?? ""}
+        mathProperty={mathProperty}
+      />
     );
   }
 

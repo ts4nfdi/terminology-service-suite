@@ -3,6 +3,7 @@ import { createDescription } from "./DescriptionWidget";
 import { createEntityDefinedBy } from "./EntityDefinedByWidget";
 import { createEntityOntoList } from "./EntityOntoListWidget";
 import { createIri } from "./IriWidget";
+import { createMathFormula } from "./MathFormulaWidget";
 import { createMetadata } from "./MetadataWidget";
 import {
   createAlternativeNameTab,
@@ -24,6 +25,7 @@ import { createTitle } from "./TitleWidget";
   createEntityDefinedBy,
   createEntityOntoList,
   createIri,
+  createMathFormula,
   createTitle,
 };
 
@@ -36,6 +38,7 @@ export {
   createEntityOntoList,
   createHierarchy,
   createIri,
+  createMathFormula,
   createMetadata,
   createTab,
   createTitle,

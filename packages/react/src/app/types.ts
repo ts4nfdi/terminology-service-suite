@@ -353,6 +353,15 @@ export type DescriptionPresentationProps = DescTextObj &
     error?: string | unknown;
   };
 
+export type MathFormulaWidgetProps = ForcedIriObj &
+  ApiObj &
+  ForcedOntologyIdObj & {
+    /**
+     * The math property URI to render for the target term
+     */
+    mathProperty: string;
+  };
+
 export type IriWidgetProps = ForcedIriObj &
   CssClassNameObj & {
     /**
@@ -544,8 +553,7 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+    ((entityType: string, entity?: EntityData) => void) | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
