@@ -846,6 +846,28 @@ export const rootWalkArgType: ArgTypes = {
   },
 };
 
+export const irisListArgType: ArgTypes = {
+  irisList: {
+    required: false,
+    description:
+      "A list of IRIs for which the graph should be rendered. The graph renders in the hierarchy mode in this case.",
+    table: {
+      type: { summary: "string[]" },
+    },
+  },
+};
+
+export const hierarchyDirectionArgType: ArgTypes = {
+  hierarchyDirection: {
+    required: false,
+    description:
+      'The direction of the hierarchy. It is used on the hierarchy mode and the irisList mode. The default value is "DU". Valid values are "LR" (Left to Right), "RL" (Right to Left), "DU" (Down to Up) and "UD" (Up to Down).',
+    table: {
+      type: { summary: `"LR" | "RL" | "DU" | "UD"` },
+    },
+  },
+};
+
 export const hierarchyArgType: ArgTypes = {
   hierarchy: {
     required: false,
@@ -856,6 +878,9 @@ export const hierarchyArgType: ArgTypes = {
       type: { summary: "boolean" },
     },
     control: { type: "boolean" },
+    defaultValue: {
+      summary: "DU",
+    },
   },
 };
 

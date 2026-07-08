@@ -805,10 +805,24 @@ export type TermDepictionWidgetProps = ApiObj &
   UseLegacyObj;
 
 export type GraphViewWidgetProps = ApiObj &
-  ForcedIriObj &
   ForcedOntologyIdObj &
   CssClassNameObj &
   ParameterObj & {
+    /**
+     * The Iri of the term to show in the graph.
+     */
+    iri: string;
+
+    /**
+     * The list of Iris of the terms to show in the graph. The graph renders in the hierarchy mode in this case.
+     */
+    irisList?: string[];
+
+    /**
+     * The direction of the hierarchy. It is used on the hierarchy mode and the irisList mode. The default value is "DU". Valid values are "LR" (Left to Right), "RL" (Right to Left), "DU" (Down to Up) and "UD" (Up to Down).
+     */
+    hierarchyDirection?: "LR" | "RL" | "DU" | "UD";
+
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
      */

@@ -68,6 +68,26 @@ export async function fetchHierarchyModeData(
   return { treeData: termTree, termRelations: termRelation } as GraphFetchData;
 }
 
+export async function fetchMultiIriHierarchyModeData(
+  props: Omit<GraphFetchFunctionInput, "iri"> & { iris: string[] },
+): Promise<GraphFetchData> {
+  const hierarchyData = await Promise.all(
+    props.iris.map((iri) =>
+      fetchHierarchyModeData({
+        ...props,
+        iri,
+        targetIri: undefined,
+        dbClicked: false,
+      }),
+    ),
+  );
+
+  return {
+    treeData: hierarchyData.flatMap((data) => data.treeData ?? []),
+    termRelations: { nodes: [], edges: [] },
+  } as GraphFetchData;
+}
+
 export async function fetchNormalModeData(
   props: GraphFetchFunctionInput,
 ): Promise<GraphFetchData> {
