@@ -1,3 +1,3 @@
 import { CrossRefPresentationProps } from '../../../../../app/types';
-declare function CrossRefTabPresentation(props: CrossRefPresentationProps): import("react/jsx-runtime").JSX.Element;
+declare function CrossRefTabPresentation(props: CrossRefPresentationProps): import("react").JSX.Element;
 export { CrossRefTabPresentation };

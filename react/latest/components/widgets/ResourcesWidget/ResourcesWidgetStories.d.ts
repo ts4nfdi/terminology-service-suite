@@ -23,7 +23,7 @@ export declare const ResourcesWidget1Args: {
 };
 export declare const WithActionsArgs: {
     actions: {
-        render: (item: OlsResource) => import("react/jsx-runtime").JSX.Element;
+        render: (item: OlsResource) => import("react").JSX.Element;
     }[];
     api: string;
     initialEntriesPerPage: number;

@@ -1,3 +1,3 @@
 import { TabPresentationProps } from '../../../../app';
-declare function TabPresentation(props: TabPresentationProps): import("react/jsx-runtime").JSX.Element;
+declare function TabPresentation(props: TabPresentationProps): import("react").JSX.Element;
 export { TabPresentation };

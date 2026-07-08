@@ -1,3 +1,3 @@
 import { MetadataCompactProps } from '../../../app';
-declare function MetadataCompact(props: MetadataCompactProps): import("react/jsx-runtime").JSX.Element;
+declare function MetadataCompact(props: MetadataCompactProps): import("react").JSX.Element;
 export { MetadataCompact };

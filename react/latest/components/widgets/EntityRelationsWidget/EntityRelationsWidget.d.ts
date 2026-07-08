@@ -12,6 +12,6 @@ import { Thing } from '../../../model/interfaces';
  * @param onNavigates.onNavigateToDisambiguate function defining the action when clicking on a disambiguation badge
  */
 export declare function getSectionListJSX(parentEntity: Thing, array: any[], showBadges: boolean | undefined, onNavigates: OnNavigates): ReactElement;
-declare function EntityRelationsWidget(props: EntityRelationsWidgetProps): import("react/jsx-runtime").JSX.Element;
-declare function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps): import("react/jsx-runtime").JSX.Element;
+declare function EntityRelationsWidget(props: EntityRelationsWidgetProps): import("react").JSX.Element;
+declare function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps): import("react").JSX.Element;
 export { EntityRelationsWidget, WrappedEntityRelationsWidget };

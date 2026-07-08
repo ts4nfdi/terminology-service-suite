@@ -1,3 +1,3 @@
 import { EntityOntoListPresentationProps } from '../../../../app';
-declare function EntityOntoListPresentation(props: EntityOntoListPresentationProps): import("react/jsx-runtime").JSX.Element;
+declare function EntityOntoListPresentation(props: EntityOntoListPresentationProps): import("react").JSX.Element;
 export { EntityOntoListPresentation };

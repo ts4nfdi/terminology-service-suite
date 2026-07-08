@@ -273,6 +273,12 @@ export type DescriptionPresentationProps = DescTextObj & CssClassNameObj & {
     isLoading?: boolean;
     error?: string | unknown;
 };
+export type MathFormulaWidgetProps = ForcedIriObj & ApiObj & ForcedOntologyIdObj & {
+    /**
+     * The math property URI to render for the target term
+     */
+    mathProperty: string;
+};
 export type IriWidgetProps = ForcedIriObj & CssClassNameObj & {
     /**
      * Set your own text manually, which will show as a clickable link instead of the IRI.

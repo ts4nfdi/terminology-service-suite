@@ -42,7 +42,7 @@ export declare const ResourcesWidget1: {
 export declare const WithActions: {
     args: {
         actions: {
-            render: (item: import('../../..').OlsResource) => import("react/jsx-runtime").JSX.Element;
+            render: (item: import('../../..').OlsResource) => import("react").JSX.Element;
         }[];
         api: string;
         initialEntriesPerPage: number;
