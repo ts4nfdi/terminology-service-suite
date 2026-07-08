@@ -1,0 +1,29 @@
+"use client";import{j as i}from"./iframe-Cdh1mNhJ.js";import{u as E}from"./useQuery-Osnf6a3n.js";import{O as L,E as I,g as S,Q as v}from"./OlsEntityApi-DeSzVYq3.js";/* empty css                  */import{E as N}from"./ExpandableOntologyBadgeList-Bocn1E4i.js";import{E as b}from"./text-BO6s6G_y.js";function f(t){const a=t.className||"ts4nfdi-entity-onto-list-style";return i.jsx("div",{className:a,children:t.ontolist&&t.ontolist.length>0&&i.jsxs(b,{style:{fontWeight:"normal"},children:["Also appears in ",i.jsx(N,{iri:t.iri,label:t.label,ontolist:t.ontolist,onNavigateToOntology:t.onNavigateToOntology,entityType:t.entityType})]})})}f.__docgenInfo={description:"",methods:[],displayName:"EntityOntoListPresentation",props:{onNavigateToOntology:{required:!1,tsType:{name:"union",raw:`| ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+| string`,elements:[{name:"unknown"},{name:"string"}]},description:`This function is called every time an entity link is clicked
+@param ontologyId obtains the ontologyId of the clicked badge
+@param entityType obtains the entityType of the clicked badge
+@param entity.iri obtains the iri of the clicked badge (can be empty)
+@param entity.label obtains the label of the clicked badge
+@param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+@param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+@param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+@param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)`},entityType:{required:!1,tsType:{name:"unknown[number]",raw:"(typeof entityTypeNames)[number]"},description:"Sets the type of the entity whose information you want to fetch."},iri:{required:!1,tsType:{name:"string"},description:"Entity IRI whose information you want to fetch."},label:{required:!1,tsType:{name:"string"},description:""},ontolist:{required:!0,tsType:{name:"Array",elements:[{name:"any"}],raw:"any[]"},description:""},className:{required:!1,tsType:{name:"string"},description:"CSS class for styling"},color:{required:!1,tsType:{name:"union",raw:"EuiLinkColor | string",elements:[{name:"EuiLinkColor"},{name:"string"}]},description:"Color object, can be primary, accent, success, warning, danger, ghost, text, subdued or a hex / rgb value"}}};function j(t){const{iri:a,api:g,parameter:y,entityType:o,ontologyId:d,useLegacy:r,className:u}=t,h=new L(g),{data:l,isLoading:T,isSuccess:k,isError:w,error:O}=E(["entityOntoList",g,y,o,a,d,r],async()=>{let s,c,m;if(r){const e=(await h.getEntityResponse(a,o,void 0,y,r))._embedded,p=e[Object.keys(e)[0]].filter(n=>n.is_defining_ontology).map(n=>n.ontology_name);s=e[Object.keys(e)[0]].map(n=>n.ontology_name).filter(n=>!p.includes(n)),c=o||v(Object.keys(e)[0]),m=e[Object.keys(e)[0]][0].label}else{const e=await h.getEntityObject(a,o,d,y,r);s=e.getAppearsIn().filter(p=>!e.getDefinedBy().includes(p)),c=o||e.getType(),m=e.getLabel()||""}return s=s.filter(e=>e!=d).sort(),{ontoList:s,entityType:c,label:m}});return i.jsxs("div",{"data-testid":"entity-onto-list",children:[k&&l&&i.jsx(f,{ontolist:l.ontoList,entityType:l.entityType,label:l.label,iri:a,onNavigateToOntology:t.onNavigateToOntology,className:u}),T&&i.jsx(I,{}),w&&i.jsx(b,{children:S(O,"ontology list")})]})}j.__docgenInfo={description:"",methods:[],displayName:"EntityOntoListWidget",props:{api:{required:!0,tsType:{name:"string"},description:"The API instance for the API call."},entityType:{required:!1,tsType:{name:"unknown[number]",raw:"(typeof entityTypeNames)[number]"},description:"Sets the type of the entity whose information you want to fetch."},ontologyId:{required:!0,tsType:{name:"string"},description:"Select a specific ontology by id"},iri:{required:!0,tsType:{name:"string"},description:"Entity IRI whose information you want to fetch."},parameter:{required:!1,tsType:{name:"string"},description:`Additional parameters to pass to the API.
+
+Each parameter can be combined via
+the special character <i><b>&</b></i>. The values of a parameter key can be combined with a comma sign
+<i><b>,</b></i>. The following keys could be used:<br/> <br/>
+ <table>
+ <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+ <tr><td>lang</td><td>Set the language for the response e.g. <b><i>en</i></b>, <b><i>de</i></b>, <b><i>fr</i></b>. The default value is <b><i>en</i></b>.</td></tr>
+ <tr><td>collection</td><td>Restrict a search to a terminology subset e.g. <b><i>collection=nfdi4health</i></b></td></tr>
+ <tr><td>database</td><td>Restrict a search via the API Gateway to specific terminology software stacks, choose from <b><i>ols</i></b>, <b><i>ontoportal</i></b>, or <b><i>skosmos</i></b></td></tr>
+</table>`},useLegacy:{required:!1,tsType:{name:"boolean"},description:"Toggle between OLS3 (legacy) and OLS4 API versions."},className:{required:!1,tsType:{name:"string"},description:"CSS class for styling"},onNavigateToOntology:{required:!1,tsType:{name:"union",raw:`| ((ontologyId: string, entityType?: string, entity?: EntityData) => void)
+| string`,elements:[{name:"unknown"},{name:"string"}]},description:`This function is called every time an entity link is clicked
+@param ontologyId obtains the ontologyId of the clicked badge
+@param entityType obtains the entityType of the clicked badge
+@param entity.iri obtains the iri of the clicked badge (can be empty)
+@param entity.label obtains the label of the clicked badge
+@param entity.definedBy obtains the list of ontologies the clicked entity is defined in (only OLS)
+@param entity.hasChildren obtains a boolean indicating whether the clicked entity has child entities
+@param entity.numDescendants obtains the number of hierarchical descendants of the clicked entity (only OLS)
+@param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)`}}};export{j as E,f as a};
