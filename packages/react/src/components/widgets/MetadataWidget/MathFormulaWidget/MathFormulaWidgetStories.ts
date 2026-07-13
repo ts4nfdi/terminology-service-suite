@@ -23,14 +23,14 @@ export const MathmodP983StoryArgs = {
   api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
   ontologyId: "mathmod",
   iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
-  mathProperty: "https://portal.mardi4nfdi.de/wiki/entity/P983",
+  mathProperty: "https://portal.mardi4nfdi.de/entity/P983",
 };
 
 export const MathmodP989StoryArgs = {
   api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
   ontologyId: "mathmod",
   iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
-  mathProperty: "https://portal.mardi4nfdi.de/wiki/entity/P989",
+  mathProperty: "https://portal.mardi4nfdi.de/entity/P989",
 };
 
 export const commonMathFormulaWidgetPlay = async ({
