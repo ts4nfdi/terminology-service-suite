@@ -19,7 +19,7 @@ npm install @ts4nfdi/terminology-service-suite
 2. Install peer dependencies
 
 ```
-npm install @elastic/eui@113.3.0 @elastic/eui-theme-borealis @emotion/react @emotion/css moment @elastic/datemath react@18.3 react-dom@18.3 react-query@3.39.2 axios@1.1.2
+npm install @elastic/eui@115.0.0 @emotion/react@11.13.5 react@18.3.0 react-dom@18.3.0 react-query@3.39.2 axios@1.1.2 moment@2.30.1 @elastic/datemath@5.0.3 @emotion/css@11.13.5 @elastic/eui-theme-borealis@7.0.0
 ```
 
 3. In the 'Docs' tab of the widgets in the React Storybook, a code snippet is provided in the `Show code` drop-down below the sample widget. Copy the snippet, add into your app and replace with your parameters. See example below:
