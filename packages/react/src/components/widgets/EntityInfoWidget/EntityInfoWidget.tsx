@@ -481,7 +481,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   <>
                     {renderMathML(v.value)}
                     {asArray(v.axioms).map((axiom) => (
-                      <div key={randomString()}>{JSON.stringify(axiom)}</div>
+                      <div key={randomString()}>
+                        {Object.keys(axiom).map((axiomIri) => (
+                          <div key={randomString()}>
+                            {axiomIri}: {axiom[axiomIri]}
+                          </div>
+                        ))}
+                      </div>
                     ))}
                   </>
                 ) : typeof v === "string" && v.trim().startsWith("<math") ? (
