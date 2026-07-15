@@ -41,6 +41,10 @@ import { MathFormulaWidget } from "../MetadataWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
+function renderMathML(mathML: string): ReactElement {
+  return <span dangerouslySetInnerHTML={{ __html: mathML }} />;
+}
+
 function isReifiedAssertion(value: any, useLegacy?: boolean): boolean {
   return (
     useLegacy === false &&
@@ -474,7 +478,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </span>
                 &nbsp;
                 {isReifiedAssertion(v, useLegacy) ? (
-                  <>{v.value}</>
+                  <>{renderMathML(v.value)}</>
                 ) : (
                   <EntityLink
                     parentEntity={individual}
