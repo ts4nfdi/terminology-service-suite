@@ -376,10 +376,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   ): ReactElement {
     const propertyIris = Object.keys(individual.properties);
 
-    // console.log(individual.properties);
-    // console.log(propertyIris); including 37 items
-    // console.log(individual.properties["https://portal.mardi4nfdi.de/entity/P983"]);
-
     console.log(
       individual
         .getLinkedEntities()
@@ -397,7 +393,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("objectProperty") !== -1,
     );
-    // console.log(objectProperties); // =>[]
 
     const dataProperties = propertyIris.filter(
       (key) =>
@@ -407,7 +402,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("dataProperty") !== -1,
     );
-    // console.log(dataProperties); //["https://portal.mardi4nfdi.de/entity/P983", "https://portal.mardi4nfdi.de/entity/P989"]
 
     const propertyAssertions: ReactElement[] = [];
 
@@ -453,14 +447,10 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
       }
     }
-    // console.log(propertyAssertions);  // =>[]
 
     for (const iri of dataProperties) {
       const values = asArray(individual.properties[iri]);
       for (const v of values) {
-        // console.log(values); //including math + types
-        // console.log(v); // math
-
         propertyAssertions.push(
           <>
             <ClassExpression
@@ -520,9 +510,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
           </>,
         );
-        // console.log("iri", iri);
-        // console.log("v", v);
-        console.log("axioms", v.axioms);
       }
     }
 
