@@ -478,7 +478,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </span>
                 &nbsp;
                 {isReifiedAssertion(v, useLegacy) ? (
-                  renderMathML(v.value)
+                  <>
+                    {renderMathML(v.value)}
+                    {asArray(v.axioms).map((axiom) => (
+                      <div key={randomString()}>{JSON.stringify(axiom)}</div>
+                    ))}
+                  </>
                 ) : typeof v === "string" && v.trim().startsWith("<math") ? (
                   renderMathML(v)
                 ) : (
@@ -494,8 +499,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
           </>,
         );
-        console.log("iri", iri);
-        console.log("v", v);
+        // console.log("iri", iri);
+        // console.log("v", v);
+        console.log("axioms", v.axioms);
       }
     }
 
