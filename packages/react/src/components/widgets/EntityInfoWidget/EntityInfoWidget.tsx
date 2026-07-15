@@ -607,7 +607,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                         return (
                           <li
                             key={randomString()}
-                            style={{ marginBottom: "16px" }}
+                            style={{ marginBottom: "24px" }}
                           >
                             {pa}
                           </li>
