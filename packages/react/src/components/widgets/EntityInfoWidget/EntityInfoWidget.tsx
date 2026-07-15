@@ -484,7 +484,22 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       <div key={randomString()}>
                         {Object.keys(axiom).map((axiomIri) => (
                           <div key={randomString()}>
-                            {axiomIri}: {axiom[axiomIri]}
+                            <ClassExpression
+                              parentEntity={individual}
+                              linkedEntities={individual.getLinkedEntities()}
+                              currentResponsePath={axiomIri}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
+                            :{" "}
+                            <EntityLink
+                              parentEntity={individual}
+                              linkedEntities={individual.getLinkedEntities()}
+                              iri={axiom[axiomIri]}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
+                            {/*https://portal.mardi4nfdi.de/entity/P984 :  https://portal.mardi4nfdi.de/entity/Q6673756*/}
                           </div>
                         ))}
                       </div>
