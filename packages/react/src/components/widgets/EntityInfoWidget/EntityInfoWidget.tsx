@@ -41,6 +41,15 @@ import { MathFormulaWidget } from "../MetadataWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
+function isReifiedAssertion(value: any, useLegacy?: boolean): boolean {
+  return (
+    useLegacy === false &&
+    typeof value === "object" &&
+    Array.isArray(value.type) &&
+    value.type.includes("reification")
+  );
+}
+
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
@@ -362,6 +371,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     individual: Individual,
   ): ReactElement {
     const propertyIris = Object.keys(individual.properties);
+
+    // console.log(individual.properties);
+    // console.log(propertyIris); including 37 items
+    // console.log(individual.properties["https://portal.mardi4nfdi.de/entity/P983"]);
+
+    console.log(
+      individual
+        .getLinkedEntities()
+        .get("https://portal.mardi4nfdi.de/entity/P983"),
+    );
+
     const negativeProperties = propertyIris.filter((key) =>
       key.startsWith("negativePropertyAssertion+"),
     );
@@ -373,6 +393,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("objectProperty") !== -1,
     );
+    // console.log(objectProperties); // =>[]
+
     const dataProperties = propertyIris.filter(
       (key) =>
         individual.getLinkedEntities().get(key) &&
@@ -381,6 +403,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("dataProperty") !== -1,
     );
+    // console.log(dataProperties); //["https://portal.mardi4nfdi.de/entity/P983", "https://portal.mardi4nfdi.de/entity/P989"]
+
     const propertyAssertions: ReactElement[] = [];
 
     for (const iri of objectProperties) {
@@ -425,10 +449,14 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         );
       }
     }
+    // console.log(propertyAssertions);  // =>[]
 
     for (const iri of dataProperties) {
       const values = asArray(individual.properties[iri]);
       for (const v of values) {
+        // console.log(values); //including math + types
+        // console.log(v); // math
+
         propertyAssertions.push(
           <>
             <ClassExpression
@@ -445,13 +473,17 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                <EntityLink
-                  parentEntity={individual}
-                  linkedEntities={individual.getLinkedEntities()}
-                  iri={v}
-                  showBadges={showBadges}
-                  onNavigates={onNavigates}
-                />
+                {isReifiedAssertion(v, useLegacy) ? (
+                  <>{v.value}</>
+                ) : (
+                  <EntityLink
+                    parentEntity={individual}
+                    linkedEntities={individual.getLinkedEntities()}
+                    iri={v}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                )}
               </>
             }
           </>,
