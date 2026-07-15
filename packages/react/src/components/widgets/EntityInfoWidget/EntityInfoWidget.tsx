@@ -478,7 +478,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 </span>
                 &nbsp;
                 {isReifiedAssertion(v, useLegacy) ? (
-                  <>{renderMathML(v.value)}</>
+                  renderMathML(v.value)
+                ) : typeof v === "string" && v.trim().startsWith("<math") ? (
+                  renderMathML(v)
                 ) : (
                   <EntityLink
                     parentEntity={individual}
@@ -492,6 +494,8 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
             }
           </>,
         );
+        console.log("iri", iri);
+        console.log("v", v);
       }
     }
 
@@ -573,7 +577,14 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   <ul>
                     {propertyAssertions
                       .map((pa) => {
-                        return <li key={randomString()}>{pa}</li>;
+                        return (
+                          <li
+                            key={randomString()}
+                            style={{ marginBottom: "16px" }}
+                          >
+                            {pa}
+                          </li>
+                        );
                       })
                       .sort()}
                   </ul>
