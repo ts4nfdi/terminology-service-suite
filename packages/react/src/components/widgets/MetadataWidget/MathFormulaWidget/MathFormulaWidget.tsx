@@ -47,7 +47,7 @@ const ALLOWED_ATTR = [
 ];
 
 function MathFormulaWidget(props: MathFormulaWidgetProps) {
-  const { api, ontologyId, iri, mathProperty } = props;
+  const { api, ontologyId, iri, mathProperty, mathML } = props;
 
   const olsApi = new OlsEntityApi(api);
   const { data, isLoading, isSuccess, isLoadingError, error } = useQuery<Thing>(
@@ -81,8 +81,8 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
     });
   }
 
-  let mathContent = "";
-  if (data && isSuccess) {
+  let mathContent = props.mathML ?? "";
+  if (!props.mathML && data && isSuccess) {
     let mathValue = data.getAnnotationById(mathProperty);
     if (mathValue && mathValue.length && "value" in mathValue[0]) {
       mathContent = mathValue[0].value;

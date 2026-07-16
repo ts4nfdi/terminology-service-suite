@@ -469,7 +469,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 &nbsp;
                 {isReifiedAssertion(v, useLegacy) ? (
                   <>
-                    {renderMathML(v.value)}
+                    <MathFormulaWidget
+                      api={api}
+                      iri={iri}
+                      ontologyId={entity?.getOntologyId() ?? ""}
+                      mathML={v.value}
+                    />
                     {asArray(v.axioms).map((axiom) => (
                       <div key={randomString()}>
                         {Object.keys(axiom).map((axiomIri) => (
@@ -496,7 +501,12 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     ))}
                   </>
                 ) : typeof v === "string" && v.trim().startsWith("<math") ? (
-                  renderMathML(v)
+                  <MathFormulaWidget
+                    api={api}
+                    iri={iri}
+                    ontologyId={entity?.getOntologyId() ?? ""}
+                    mathML={v}
+                  />
                 ) : (
                   <EntityLink
                     parentEntity={individual}

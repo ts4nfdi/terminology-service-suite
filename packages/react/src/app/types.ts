@@ -359,7 +359,8 @@ export type MathFormulaWidgetProps = ForcedIriObj &
     /**
      * The math property URI to render for the target term
      */
-    mathProperty: string;
+    mathProperty?: string;
+    mathML?: string;
   };
 
 export type IriWidgetProps = ForcedIriObj &
