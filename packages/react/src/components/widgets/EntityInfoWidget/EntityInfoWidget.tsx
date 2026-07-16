@@ -471,9 +471,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   <>
                     {renderMathML(v.value)}
                     {asArray(v.axioms).map((axiom) => (
-                      <div key={randomString()}>
+                      <ul style={{ listStyleType: "circle" }}>
                         {Object.keys(axiom).map((axiomIri) => (
-                          <div key={randomString()}>
+                          <li key={randomString()}>
                             <ClassExpression
                               parentEntity={individual}
                               linkedEntities={individual.getLinkedEntities()}
@@ -490,9 +490,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                               onNavigates={onNavigates}
                             />
                             {/*https://portal.mardi4nfdi.de/entity/P984 :  https://portal.mardi4nfdi.de/entity/Q6673756*/}
-                          </div>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     ))}
                   </>
                 ) : typeof v === "string" && v.trim().startsWith("<math") ? (
