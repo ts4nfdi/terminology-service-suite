@@ -41,10 +41,6 @@ import { MathFormulaWidget } from "../MetadataWidget";
 
 const DEFAULT_HAS_TITLE = true;
 
-function renderMathML(mathML: string): ReactElement {
-  return <span dangerouslySetInnerHTML={{ __html: mathML }} />;
-}
-
 function isReifiedAssertion(value: any, useLegacy?: boolean): boolean {
   return (
     useLegacy === false &&
@@ -469,7 +465,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                 &nbsp;
                 {isReifiedAssertion(v, useLegacy) ? (
                   <>
-                    {renderMathML(v.value)}
                     {asArray(v.axioms).map((axiom) => (
                       <ul style={{ listStyleType: "circle" }}>
                         {Object.keys(axiom).map((axiomIri) => (
@@ -495,8 +490,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                       </ul>
                     ))}
                   </>
-                ) : typeof v === "string" && v.trim().startsWith("<math") ? (
-                  renderMathML(v)
                 ) : (
                   <EntityLink
                     parentEntity={individual}
