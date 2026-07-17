@@ -4,8 +4,7 @@ import { MathJax, MathJaxContext } from "better-react-mathjax";
 import DOMPurify from "dompurify";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
-import { MathFormulaWidgetProps } from "../../../../app/types";
-import { Thing } from "../../../../model/interfaces";
+import { MathFormulaWidgetProps } from "../../../../app";
 
 const ALLOWED_TAGS = [
   "math",
@@ -47,11 +46,13 @@ const ALLOWED_ATTR = [
 ];
 
 function MathFormulaWidget(props: MathFormulaWidgetProps) {
-  const { api, ontologyId, iri, mathProperty } = props;
+  const { api, ontologyId, iri, mathProperty, mathML } = props;
+
+  const hasInlineMathML = typeof mathML === "string" && mathML.trim() !== "";
 
   const olsApi = new OlsEntityApi(api);
-  const { data, isLoading, isSuccess, isLoadingError, error } = useQuery<Thing>(
-    ["mathFormulaWidget", api, iri, ontologyId],
+  const { data, isLoading, isSuccess, isLoadingError, error } = useQuery(
+    ["mathFormula", iri, ontologyId, mathProperty],
     async () => {
       return olsApi.getEntityObject(
         iri,
@@ -60,6 +61,9 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
         "",
         false,
       );
+    },
+    {
+      enabled: !hasInlineMathML && Boolean(mathProperty),
     },
   );
 
@@ -81,8 +85,8 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
     });
   }
 
-  let mathContent = "";
-  if (data && isSuccess) {
+  let mathContent = hasInlineMathML ? mathML.trim() : "";
+  if (data && isSuccess && !hasInlineMathML && mathProperty) {
     let mathValue = data.getAnnotationById(mathProperty);
     if (mathValue && mathValue.length && "value" in mathValue[0]) {
       mathContent = mathValue[0].value;
@@ -123,6 +127,7 @@ function WrappedMathFormulaWidget(props: MathFormulaWidgetProps) {
           iri={props.iri}
           mathProperty={props.mathProperty}
           api={props.api}
+          mathML={props.mathML}
         />
       </QueryClientProvider>
     </EuiProvider>
