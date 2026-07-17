@@ -435,6 +435,40 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
       },
     ];
 
+    function renderFormulaMeaningValue(valueIri: string): ReactElement {
+      if (valueIri === individual.getIri()) {
+        return (
+          <button
+            className="clickable"
+            onClick={() => {
+              if (typeof onNavigates.onNavigateToEntity === "function") {
+                onNavigates.onNavigateToEntity(
+                  individual.getOntologyId(),
+                  individual.getType(),
+                  {
+                    iri: valueIri,
+                    label: individual.getLabel(),
+                  },
+                );
+              }
+            }}
+          >
+            {individual.getLabel()}
+          </button>
+        );
+      }
+
+      return (
+        <EntityLink
+          parentEntity={individual}
+          linkedEntities={individual.getLinkedEntities()}
+          iri={valueIri}
+          showBadges={showBadges}
+          onNavigates={onNavigates}
+        />
+      );
+    }
+
     for (const iri of objectProperties) {
       const values = asArray(individual.properties[iri]);
       for (const v of values) {
@@ -499,14 +533,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                     showBadges={showBadges}
                     onNavigates={onNavigates}
                   />
-                  :{" "}
-                  <EntityLink
-                    parentEntity={individual}
-                    linkedEntities={individual.getLinkedEntities()}
-                    iri={axiom[axiomIri]}
-                    showBadges={showBadges}
-                    onNavigates={onNavigates}
-                  />
+                  : {renderFormulaMeaningValue(axiom[axiomIri])}
                 </span>,
               );
             });
