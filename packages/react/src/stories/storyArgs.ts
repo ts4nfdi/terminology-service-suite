@@ -1073,4 +1073,8 @@ export const TermRequestWidgetStoryArgTypes = {
     required: true,
     description: "The ontology ID to request terms from.",
   },
+  aiAssistUrl: {
+    required: false,
+    description: "Base URL of the AI assistance backend.",
+  },
 };

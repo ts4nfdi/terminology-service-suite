@@ -2,6 +2,7 @@ import { expect, waitFor, within } from "storybook/test";
 
 export const TermRequestWidgetStoryArgs = {
   ontologyId: "",
+  aiAssistUrl: "http://localhost",
 };
 
 export const TermRequestVibsoExampleArgs = {

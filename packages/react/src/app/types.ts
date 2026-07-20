@@ -803,6 +803,8 @@ export type TermRequestProps = {
    * Id of the ontology where term requests should be submitted to.
    */
   ontologyId: string;
+  /** Base HTTP URL of the Django service providing AI assistance. */
+  aiAssistUrl?: string;
 };
 
 export type GraphViewWidgetProps = ApiObj &
