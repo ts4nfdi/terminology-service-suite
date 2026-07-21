@@ -216,6 +216,19 @@ Allows for a custom URL prefix (\`urlPrefix\`) to be applied to the IRI before d
 Supports flexible color customization for the IRI link text, using either hex, RGB, or predefined color options.
 `.trim();
 
+export const MathFormulaDescription = `
+The MathFormulaWidget renders MathML formulas for ontology entities.
+It can either fetch MathML from a configured math property or render MathML that is passed directly through the \`mathML\` prop.
+
+#### Usage:
+
+- Use \`mathProperty\` when the MathML is stored as an annotation/property value on the target entity.
+- Use \`mathML\` when the MathML content is already available and should be rendered directly.
+- The \`mathML\` value must be valid MathML markup, not an entity IRI or plain text.
+- Plain text can be rendered only when it is wrapped in valid MathML, for example inside an \`mtext\` element.
+
+`.trim();
+
 export const MetadataDescription = `
 The MetadataWidget provides detailed metadata for a given entity (such as a class, property, or individual) within an ontology. 
 The widget displays the entity's title, breadcrumb, IRI, description, and lists of ontologies where the entity appears 
