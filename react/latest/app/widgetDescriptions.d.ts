@@ -10,6 +10,7 @@ export declare const DescriptionDescription: string;
 export declare const EntityDefinedByDescription: string;
 export declare const EntityOntoListDescription: string;
 export declare const IriDescription: string;
+export declare const MathFormulaDescription: string;
 export declare const MetadataDescription: string;
 export declare const AlternativeNameTabDescription: string;
 export declare const CrossRefTabDescription: string;

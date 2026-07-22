@@ -54,6 +54,21 @@ export declare const ontologyIdArgTypeHierarchy: {
         };
     };
 };
+export declare const mathFormulaIriArgType: ArgTypes;
+export declare const mathFormulaOntologyIdArgType: {
+    ontologyId: {
+        required: boolean;
+        description: string;
+        table: {
+            defaultValue: {
+                summary: string;
+            };
+            type: {
+                summary: string;
+            };
+        };
+    };
+};
 export declare const entityTypeArgType: {
     entityType: {
         required: boolean;
@@ -326,8 +341,22 @@ export declare const hideLegendArgType: {
     };
 };
 export declare const mathPorpertyArgType: {
-    iri: {
+    mathProperty: {
         required: boolean;
+        description: string;
+        table: {
+            type: {
+                summary: string;
+            };
+        };
+    };
+};
+export declare const mathMLArgType: {
+    mathML: {
+        required: boolean;
+        control: {
+            readonly type: "text";
+        };
         description: string;
         table: {
             type: {

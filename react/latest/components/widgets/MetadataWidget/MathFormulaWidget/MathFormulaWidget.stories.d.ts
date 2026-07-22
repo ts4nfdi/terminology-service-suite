@@ -5,30 +5,13 @@ declare const meta: {
     component: typeof MathFormulaWidget;
     parameters: {
         layout: string;
-    };
-    argTypes: {
-        iri: {
-            required: boolean;
-            description: string;
-            table: {
-                type: {
-                    summary: string;
-                };
-            };
-        };
-        ontologyId: {
-            required: boolean;
-            description: string;
-            table: {
-                defaultValue: {
-                    summary: string;
-                };
-                type: {
-                    summary: string;
-                };
+        docs: {
+            description: {
+                component: string;
             };
         };
     };
+    argTypes: import('@storybook/react-vite').ArgTypes<import('@storybook/react-vite').Args>;
     args: {
         readonly api: "";
         readonly ontologyId: "";
@@ -39,3 +22,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const MathmodP983: Story;
 export declare const MathmodP989: Story;
+export declare const MathMLInput: Story;
+export declare const MathMLTextInput: Story;
+export declare const MathMLFractionInput: Story;
