@@ -353,9 +353,9 @@ export type DescriptionPresentationProps = DescTextObj &
     error?: string | unknown;
   };
 
-export type MathFormulaWidgetProps = ForcedIriObj &
+export type MathFormulaWidgetProps = OptionalIriObj &
   ApiObj &
-  ForcedOntologyIdObj & {
+  OptionalOntologyIdObj & {
     /**
      * The math property URI to render for the target term
      */
