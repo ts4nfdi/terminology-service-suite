@@ -1079,3 +1079,17 @@ export const mathPorpertyArgType = {
     },
   },
 };
+
+export const mathMLArgType = {
+  mathML: {
+    required: false,
+    control: { type: "text" } as const,
+    description:
+      "Inline MathML string to render directly. This should be MathML markup, not an entity IRI. " +
+      "When provided, mathProperty is not required.<br><br>" +
+      'Example: `<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>1</mn></math>`',
+    table: {
+      type: { summary: "string" },
+    },
+  },
+};

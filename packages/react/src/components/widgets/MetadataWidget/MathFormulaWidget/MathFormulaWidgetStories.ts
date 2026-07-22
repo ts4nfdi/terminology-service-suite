@@ -2,6 +2,7 @@ import { expect, waitFor, within } from "storybook/test";
 import {
   apiArgType,
   iriArgType,
+  mathMLArgType,
   mathPorpertyArgType,
   ontologyIdArgType,
 } from "../../../../stories/storyArgs";
@@ -24,15 +25,7 @@ export const MathFormulaWidgetStoryArgTypes = {
   ...iriArgType,
   ...ontologyIdArgType,
   ...mathPorpertyArgType,
-  mathML: {
-    control: { type: "text" } as const,
-    description:
-      "Inline MathML string to render directly. This should be MathML markup, not an entity IRI. When provided, mathProperty is not required.",
-    table: {
-      type: { summary: "string" },
-      defaultValue: { summary: SimpleMathMLExample },
-    },
-  },
+  ...mathMLArgType,
 };
 
 export const MathMLInputStoryArgs = {
