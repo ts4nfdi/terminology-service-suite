@@ -1,1 +1,0 @@
-import{c as r,j as a}from"./client-DFp2fd_t.js";import{W as i}from"./MathFormulaWidget-CfpEeDAR.js";const e=new WeakMap;function d(s,o){let t=e.get(o);t||(t=r.createRoot(o),e.set(o,t)),t.render(a.jsx(i,{...s}))}window.ts4nfdiWidgets={...window.ts4nfdiWidgets,createMathFormula:d};export{d as c};
