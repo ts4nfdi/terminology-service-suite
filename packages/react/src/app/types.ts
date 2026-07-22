@@ -353,13 +353,18 @@ export type DescriptionPresentationProps = DescTextObj &
     error?: string | unknown;
   };
 
-export type MathFormulaWidgetProps = ForcedIriObj &
+export type MathFormulaWidgetProps = OptionalIriObj &
   ApiObj &
-  ForcedOntologyIdObj & {
+  OptionalOntologyIdObj & {
     /**
-     * The math property URI to render for the target term
+     * The math property URI to render for the target term.
+     * Required when mathML is not provided.
      */
     mathProperty?: string;
+    /**
+     * Inline MathML string to render directly.
+     * When provided, iri, ontologyId, and mathProperty are not required.
+     */
     mathML?: string;
   };
 

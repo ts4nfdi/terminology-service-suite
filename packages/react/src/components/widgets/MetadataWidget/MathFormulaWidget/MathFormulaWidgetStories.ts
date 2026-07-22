@@ -1,16 +1,53 @@
+import type { ArgTypes } from "@storybook/react";
 import { expect, waitFor, within } from "storybook/test";
 import {
   apiArgType,
-  iriArgType,
+  mathFormulaIriArgType,
+  mathFormulaOntologyIdArgType,
+  mathMLArgType,
   mathPorpertyArgType,
-  ontologyIdArgType,
 } from "../../../../stories/storyArgs";
 
-export const MathFormulaWidgetStoryArgTypes = {
+const mathmodApi = "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/";
+const mathmodOntologyId = "mathmod";
+const mathmodEntityIri = "https://portal.mardi4nfdi.de/entity/Q6674137";
+
+export const SimpleMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>1</mn></math>';
+
+export const TextMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>formula example</mtext></math>';
+
+export const FractionMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></math>';
+
+export const MathFormulaWidgetStoryArgTypes: ArgTypes = {
   ...apiArgType,
-  ...iriArgType,
-  ...ontologyIdArgType,
+  ...mathFormulaIriArgType,
+  ...mathFormulaOntologyIdArgType,
   ...mathPorpertyArgType,
+  ...mathMLArgType,
+};
+
+export const MathMLInputStoryArgs = {
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
+  mathML: SimpleMathMLExample,
+};
+
+export const MathMLTextInputStoryArgs = {
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
+  mathML: TextMathMLExample,
+};
+
+export const MathMLFractionInputStoryArgs = {
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
+  mathML: FractionMathMLExample,
 };
 
 export const MathFormulaWidgetStoryArgs = {
@@ -20,16 +57,16 @@ export const MathFormulaWidgetStoryArgs = {
 } as const;
 
 export const MathmodP983StoryArgs = {
-  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
-  ontologyId: "mathmod",
-  iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
   mathProperty: "https://portal.mardi4nfdi.de/entity/P983",
 };
 
 export const MathmodP989StoryArgs = {
-  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
-  ontologyId: "mathmod",
-  iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
   mathProperty: "https://portal.mardi4nfdi.de/entity/P989",
 };
 
