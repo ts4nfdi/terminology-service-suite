@@ -218,12 +218,12 @@ Supports flexible color customization for the IRI link text, using either hex, R
 
 export const MathFormulaDescription = `
 The MathFormulaWidget renders MathML formulas for ontology entities.
-It can either fetch MathML from a configured math property or render MathML that is passed directly through the \`mathML\` prop.
+It supports two input modes: fetching MathML from an entity property, or rendering MathML that is passed directly through the \`mathML\` prop.
 
 #### Usage:
 
-- Use \`mathProperty\` when the MathML is stored as an annotation/property value on the target entity.
-- Use \`mathML\` when the MathML content is already available and should be rendered directly.
+- Use \`mathProperty\` together with \`iri\` and \`ontologyId\` when the MathML is stored as an annotation/property value on the target entity.
+- Use \`mathML\` when the MathML content is already available and should be rendered directly. In this mode, \`iri\`, \`ontologyId\`, and \`mathProperty\` are not required.
 - The \`mathML\` value must be valid MathML markup, not an entity IRI or plain text.
 - Plain text can be rendered only when it is wrapped in valid MathML, for example inside an \`mtext\` element.
 
