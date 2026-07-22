@@ -1,10 +1,11 @@
+import type { ArgTypes } from "@storybook/react";
 import { expect, waitFor, within } from "storybook/test";
 import {
   apiArgType,
-  iriArgType,
+  mathFormulaIriArgType,
+  mathFormulaOntologyIdArgType,
   mathMLArgType,
   mathPorpertyArgType,
-  ontologyIdArgType,
 } from "../../../../stories/storyArgs";
 
 const mathmodApi = "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/";
@@ -20,10 +21,10 @@ export const TextMathMLExample =
 export const FractionMathMLExample =
   '<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></math>';
 
-export const MathFormulaWidgetStoryArgTypes = {
+export const MathFormulaWidgetStoryArgTypes: ArgTypes = {
   ...apiArgType,
-  ...iriArgType,
-  ...ontologyIdArgType,
+  ...mathFormulaIriArgType,
+  ...mathFormulaOntologyIdArgType,
   ...mathPorpertyArgType,
   ...mathMLArgType,
 };

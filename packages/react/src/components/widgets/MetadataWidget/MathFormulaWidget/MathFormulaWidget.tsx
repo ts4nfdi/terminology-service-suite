@@ -54,6 +54,8 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
   const { data, isLoading, isSuccess, isLoadingError, error } = useQuery(
     ["mathFormula", iri, ontologyId, mathProperty],
     async () => {
+      if (!iri || !ontologyId) return undefined;
+
       return olsApi.getEntityObject(
         iri,
         "class",
@@ -63,7 +65,11 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
       );
     },
     {
-      enabled: !hasInlineMathML && Boolean(mathProperty),
+      enabled:
+        !hasInlineMathML &&
+        Boolean(mathProperty) &&
+        Boolean(iri) &&
+        Boolean(ontologyId),
     },
   );
 
