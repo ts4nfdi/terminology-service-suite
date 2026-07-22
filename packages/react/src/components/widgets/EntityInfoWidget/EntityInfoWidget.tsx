@@ -1,6 +1,8 @@
 "use client";
 
+import type { EuiBasicTableColumn } from "@elastic/eui";
 import {
+  EuiBasicTable,
   EuiCard,
   EuiFlexItem,
   EuiLoadingSpinner,
@@ -40,6 +42,21 @@ import Tooltip from "../../helperComponents/Tooltip";
 import { MathFormulaWidget } from "../MetadataWidget";
 
 const DEFAULT_HAS_TITLE = true;
+
+type FormulaSymbolRow = {
+  symbol: ReactElement;
+  meanings: ReactElement[];
+  sortValue: string;
+};
+
+function isReifiedAssertion(value: any, useLegacy?: boolean): boolean {
+  return (
+    useLegacy === false &&
+    typeof value === "object" &&
+    Array.isArray(value.type) &&
+    value.type.includes("reification")
+  );
+}
 
 function EntityInfoWidget(props: EntityInfoWidgetProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -362,6 +379,13 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     individual: Individual,
   ): ReactElement {
     const propertyIris = Object.keys(individual.properties);
+
+    // console.log(
+    //   individual
+    //     .getLinkedEntities()
+    //     .get("https://portal.mardi4nfdi.de/entity/P983"),
+    // );
+
     const negativeProperties = propertyIris.filter((key) =>
       key.startsWith("negativePropertyAssertion+"),
     );
@@ -373,6 +397,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("objectProperty") !== -1,
     );
+
     const dataProperties = propertyIris.filter(
       (key) =>
         individual.getLinkedEntities().get(key) &&
@@ -381,7 +406,68 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
           .get(key)
           ?.type.indexOf("dataProperty") !== -1,
     );
+
     const propertyAssertions: ReactElement[] = [];
+    const formulaAssertions: ReactElement[] = [];
+    const formulaSymbolRows: {
+      symbol: ReactElement;
+      meanings: ReactElement[];
+      sortValue: string;
+    }[] = [];
+    const formulaSymbolColumns: Array<EuiBasicTableColumn<FormulaSymbolRow>> = [
+      {
+        field: "symbol",
+        name: "Symbol",
+        width: "120px",
+        render: (symbol: ReactElement) => symbol,
+      },
+      {
+        field: "meanings",
+        name: "Meaning",
+        width: "520px",
+        render: (meanings: ReactElement[]) => (
+          <>
+            {meanings.map((meaning) => (
+              <div key={randomString()}>{meaning}</div>
+            ))}
+          </>
+        ),
+      },
+    ];
+
+    function renderFormulaMeaningValue(valueIri: string): ReactElement {
+      if (valueIri === individual.getIri()) {
+        return (
+          <button
+            className="clickable"
+            onClick={() => {
+              if (typeof onNavigates.onNavigateToEntity === "function") {
+                onNavigates.onNavigateToEntity(
+                  individual.getOntologyId(),
+                  individual.getType(),
+                  {
+                    iri: valueIri,
+                    label: individual.getLabel(),
+                  },
+                );
+              }
+            }}
+          >
+            {individual.getLabel()}
+          </button>
+        );
+      }
+
+      return (
+        <EntityLink
+          parentEntity={individual}
+          linkedEntities={individual.getLinkedEntities()}
+          iri={valueIri}
+          showBadges={showBadges}
+          onNavigates={onNavigates}
+        />
+      );
+    }
 
     for (const iri of objectProperties) {
       const values = asArray(individual.properties[iri]);
@@ -429,6 +515,58 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     for (const iri of dataProperties) {
       const values = asArray(individual.properties[iri]);
       for (const v of values) {
+        if (
+          isReifiedAssertion(v, useLegacy) &&
+          typeof v.value === "string" &&
+          isMathML(v.value)
+        ) {
+          const meanings: ReactElement[] = [];
+
+          asArray(v.axioms).forEach((axiom) => {
+            Object.keys(axiom).forEach((axiomIri) => {
+              meanings.push(
+                <span key={randomString()}>
+                  <ClassExpression
+                    parentEntity={individual}
+                    linkedEntities={individual.getLinkedEntities()}
+                    currentResponsePath={axiomIri}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                  : {renderFormulaMeaningValue(axiom[axiomIri])}
+                </span>,
+              );
+            });
+          });
+
+          formulaSymbolRows.push({
+            symbol: (
+              <MathFormulaWidget
+                iri={iri}
+                api={api}
+                ontologyId={individual.getOntologyId()}
+                mathML={v.value}
+              />
+            ),
+            meanings,
+            sortValue: v.value,
+          });
+          continue;
+        }
+
+        if (typeof v === "string" && isMathML(v)) {
+          formulaAssertions.push(
+            <MathFormulaWidget
+              key={randomString()}
+              iri={iri}
+              api={api}
+              ontologyId={individual.getOntologyId()}
+              mathML={v}
+            />,
+          );
+          continue;
+        }
+
         propertyAssertions.push(
           <>
             <ClassExpression
@@ -445,13 +583,42 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
                   &#9656;
                 </span>
                 &nbsp;
-                <EntityLink
-                  parentEntity={individual}
-                  linkedEntities={individual.getLinkedEntities()}
-                  iri={v}
-                  showBadges={showBadges}
-                  onNavigates={onNavigates}
-                />
+                {isReifiedAssertion(v, useLegacy) ? (
+                  <>
+                    {asArray(v.axioms).map((axiom) => (
+                      <ul style={{ listStyleType: "circle" }}>
+                        {Object.keys(axiom).map((axiomIri) => (
+                          <li key={randomString()}>
+                            <ClassExpression
+                              parentEntity={individual}
+                              linkedEntities={individual.getLinkedEntities()}
+                              currentResponsePath={axiomIri}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
+                            :{" "}
+                            <EntityLink
+                              parentEntity={individual}
+                              linkedEntities={individual.getLinkedEntities()}
+                              iri={axiom[axiomIri]}
+                              showBadges={showBadges}
+                              onNavigates={onNavigates}
+                            />
+                            {/*https://portal.mardi4nfdi.de/entity/P984 :  https://portal.mardi4nfdi.de/entity/Q6673756*/}
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </>
+                ) : (
+                  <EntityLink
+                    parentEntity={individual}
+                    linkedEntities={individual.getLinkedEntities()}
+                    iri={v}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                )}
               </>
             }
           </>,
@@ -528,23 +695,59 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
 
     return (
       <>
-        {propertyAssertions.length > 0 && (
+        {(formulaAssertions.length > 0 ||
+          formulaSymbolRows.length > 0 ||
+          propertyAssertions.length > 0) && (
           <>
             <EuiFlexItem>
               <b>Property assertions:</b>
+              {formulaAssertions.length > 0 && (
+                <div style={{ marginTop: "12px", marginBottom: "16px" }}>
+                  <b>Formula:</b>
+                  {formulaAssertions}
+                </div>
+              )}
+              {formulaSymbolRows.length > 0 && (
+                <div
+                  style={{
+                    marginTop: "12px",
+                    marginBottom: "20px",
+                    maxWidth: "720px",
+                  }}
+                >
+                  <EuiBasicTable<FormulaSymbolRow>
+                    tableCaption="Formula symbols"
+                    responsiveBreakpoint={false}
+                    tableLayout="auto"
+                    items={[...formulaSymbolRows].sort((a, b) =>
+                      a.sortValue.localeCompare(b.sortValue),
+                    )}
+                    columns={formulaSymbolColumns}
+                  />
+                </div>
+              )}
               {propertyAssertions.length > 1 ? (
                 <>
                   <ul>
                     {propertyAssertions
                       .map((pa) => {
-                        return <li key={randomString()}>{pa}</li>;
+                        return (
+                          <li
+                            key={randomString()}
+                            style={{ marginBottom: "24px" }}
+                          >
+                            {pa}
+                          </li>
+                        );
                       })
                       .sort()}
                   </ul>
                   <p></p>
                 </>
-              ) : (
+              ) : propertyAssertions.length === 1 ? (
                 <p>{propertyAssertions[0]}</p>
+              ) : (
+                <></>
               )}
             </EuiFlexItem>
           </>

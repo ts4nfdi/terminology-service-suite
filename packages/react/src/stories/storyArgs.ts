@@ -105,6 +105,25 @@ export const ontologyIdArgTypeHierarchy = {
     `,
   },
 };
+
+export const mathFormulaIriArgType: ArgTypes = {
+  iri: {
+    ...iriArgType.iri,
+    required: false,
+    description:
+      "Entity IRI whose information you want to fetch. Required when mathML is not provided.",
+  },
+};
+
+export const mathFormulaOntologyIdArgType = {
+  ontologyId: {
+    ...ontologyIdArgType.ontologyId,
+    required: false,
+    description:
+      "Select a specific ontology by ID. Required when mathML is not provided.",
+  },
+};
+
 export const entityTypeArgType = {
   entityType: {
     required: false,
@@ -1071,9 +1090,24 @@ export const hideLegendArgType = {
 };
 
 export const mathPorpertyArgType = {
-  iri: {
-    required: true,
-    description: "The target property URI that holds the MathMl content",
+  mathProperty: {
+    required: false,
+    description:
+      "The math property URI to render for the target term. Required when mathML is not provided.",
+    table: {
+      type: { summary: "string" },
+    },
+  },
+};
+
+export const mathMLArgType = {
+  mathML: {
+    required: false,
+    control: { type: "text" } as const,
+    description:
+      "Inline MathML string to render directly. This should be MathML markup, not an entity IRI. " +
+      "When provided, mathProperty is not required.<br><br>" +
+      'Example: `<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>1</mn></math>`',
     table: {
       type: { summary: "string" },
     },
