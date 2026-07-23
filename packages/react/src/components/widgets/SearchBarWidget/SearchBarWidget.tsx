@@ -66,11 +66,21 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
       )
       .then((response) => {
         if (response.response && response.response.docs) {
+          const seenLabels = new Set<string>();
           setOptions(
-            response.response.docs.map((suggestion: any) => ({
-              label: suggestion.autosuggest,
-              type: { color: "tint1", iconType: "" },
-            })),
+            response.response.docs
+              .map((suggestion: any) => ({
+                label: suggestion.autosuggest,
+                type: { color: "tint1", iconType: "" },
+              }))
+              .filter((option: EuiComboBoxOptionOption<any>) => {
+                const normalizedLabel = option.label.trim().toLowerCase();
+                if (seenLabels.has(normalizedLabel)) {
+                  return false;
+                }
+                seenLabels.add(normalizedLabel);
+                return true;
+              }),
           );
         }
       });
