@@ -10,7 +10,6 @@ export const apiArgType: ArgTypes = {
     },
     options: [
       "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/",
-      "https://terminology.services.base4nfdi.de/api-gateway/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
@@ -20,8 +19,6 @@ export const apiArgType: ArgTypes = {
       "The API instance for the API call.<br><br> " +
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
       "TS4NFDI API Gateway OLS4 endpoints: [https://terminology.services.base4nfdi.de/api-gateway/ols4/api/](https://terminology.services.base4nfdi.de/api-gateway/ols4/api/)<br> " +
-      "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
-      "**[TIB:](https://www.tib.eu/de/)**<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
       "**[ZB MED:](https://www.zbmed.de/)**<br> " +
       "SemLookP API (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/ols/api/)<br> " +
@@ -295,7 +292,7 @@ export const showApiSourceArgType: ArgTypes = {
   showApiSource: {
     required: false,
     description:
-      "Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.",
+      "Whether to show the api source in the result list or not. Default is true. Only when the API Gateway is selected.",
     table: {
       type: { summary: "boolean" },
     },
