@@ -225,7 +225,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
      */
     singleSuggestionRow?: boolean;
     /**
-     * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
+     * Whether to show the api source in the result list or not. Default is true. Only when the API Gateway is selected.
      */
     showApiSource?: boolean;
     /**
