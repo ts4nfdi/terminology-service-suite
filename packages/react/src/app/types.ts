@@ -225,10 +225,6 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
      */
     singleSuggestionRow?: boolean;
     /**
-     * Use the TS4NFDI Gateway API
-     */
-    ts4nfdiGateway?: boolean;
-    /**
      * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
      */
     showApiSource?: boolean;

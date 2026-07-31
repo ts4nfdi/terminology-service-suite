@@ -291,16 +291,6 @@ export const singleSuggestionRowArgType: ArgTypes = {
     },
   },
 };
-export const ts4nfdiGatewayArgType: ArgTypes = {
-  ts4nfdiGateway: {
-    required: false,
-    description: "Use the TS4NFDI Gateway API",
-    table: {
-      defaultValue: { summary: "-" },
-      type: { summary: "boolean" },
-    },
-  },
-};
 export const showApiSourceArgType: ArgTypes = {
   showApiSource: {
     required: false,

@@ -54,7 +54,6 @@ export function buildParamsForSearch(
   paginationParams?: PaginationParams,
   contentParams?: ContentParams,
   parameter?: string,
-  ts4nfdiGateway?: boolean,
 ) {
   const hasSearchEndpointParams =
     Boolean((queryParams as any).queryFields) ||
@@ -73,11 +72,7 @@ export function buildParamsForSearch(
       : queryParams.showObsoleteTerms,
   };
 
-  if (ts4nfdiGateway) {
-    params.query = queryParams.query;
-  } else {
-    params.q = queryParams.query;
-  }
+  params.q = queryParams.query;
 
   if (queryParams.groupByIri) {
     params.groupField = queryParams.groupByIri;

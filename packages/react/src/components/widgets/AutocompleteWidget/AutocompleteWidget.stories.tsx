@@ -7,15 +7,11 @@ import {
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgTypes,
   AutocompleteWidgetStoryArgsReact,
-  HideApiSourceApiGatewayArgs,
   InitialSearchQueryArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
   TibDataPlantArgs,
   TibNFDI4CHEMArgs,
-  UseAPIGatewayWithOLSArgs,
-  UseAPIGatewayWithOntoPortalArgs,
-  UseAPIGatewayWithSkosmosArgs,
   WithCustomValueArgs,
   WithDefaultsArgs,
   WithDefaultsCompactArgs,
@@ -51,26 +47,6 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: WithDefaultsArgs,
-  play: commonAutocompleteWidgetPlay,
-};
-
-export const UseAPIGatewayWithOLS: Story = {
-  args: UseAPIGatewayWithOLSArgs,
-  play: commonAutocompleteWidgetPlay,
-};
-
-export const UseAPIGatewayWithOntoPortal: Story = {
-  args: UseAPIGatewayWithOntoPortalArgs,
-  play: commonAutocompleteWidgetPlay,
-};
-
-export const UseAPIGatewayWithSkosmos: Story = {
-  args: UseAPIGatewayWithSkosmosArgs,
-  play: commonAutocompleteWidgetPlay,
-};
-
-export const HideApiSourceApiGateway: Story = {
-  args: HideApiSourceApiGatewayArgs,
   play: commonAutocompleteWidgetPlay,
 };
 
