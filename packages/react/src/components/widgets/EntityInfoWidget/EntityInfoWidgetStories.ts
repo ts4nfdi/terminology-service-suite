@@ -1,5 +1,6 @@
 import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
+import { TIB_API_ENDPOINT } from "../../../app/globals";
 import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import {
   apiArgType,
@@ -137,10 +138,10 @@ export const SkosmosImportArgs = {
 
 export const InfoEntityWithMathFormulaArgs = {
   ...EntityInfoWidgetStoryArgs,
-  api: "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
+  api: TIB_API_ENDPOINT,
   useLegacy: false,
-  iri: "https://portal.mardi4nfdi.de/entity/Q6674137",
-  ontologyId: "mathmod",
+  iri: "https://portal.mardi4nfdi.de/entity/Q6674140",
+  ontologyId: "mathmoddb",
 };
 
 export const commonEntityInfoWidgetPlay = async ({

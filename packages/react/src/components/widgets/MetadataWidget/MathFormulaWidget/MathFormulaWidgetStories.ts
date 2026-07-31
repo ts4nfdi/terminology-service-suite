@@ -1,5 +1,6 @@
 import type { ArgTypes } from "@storybook/react";
 import { expect, waitFor, within } from "storybook/test";
+import { TIB_API_ENDPOINT } from "../../../../app/globals";
 import {
   apiArgType,
   mathFormulaIriArgType,
@@ -8,8 +9,8 @@ import {
   mathPorpertyArgType,
 } from "../../../../stories/storyArgs";
 
-const mathmodApi = "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/";
-const mathmodOntologyId = "mathmod";
+const mathmodApi = TIB_API_ENDPOINT;
+const mathmodOntologyId = "mathmoddb";
 const mathmodEntityIri = "https://portal.mardi4nfdi.de/entity/Q6674137";
 
 export const SimpleMathMLExample =
@@ -30,23 +31,14 @@ export const MathFormulaWidgetStoryArgTypes: ArgTypes = {
 };
 
 export const MathMLInputStoryArgs = {
-  api: mathmodApi,
-  ontologyId: mathmodOntologyId,
-  iri: mathmodEntityIri,
   mathML: SimpleMathMLExample,
 };
 
 export const MathMLTextInputStoryArgs = {
-  api: mathmodApi,
-  ontologyId: mathmodOntologyId,
-  iri: mathmodEntityIri,
   mathML: TextMathMLExample,
 };
 
 export const MathMLFractionInputStoryArgs = {
-  api: mathmodApi,
-  ontologyId: mathmodOntologyId,
-  iri: mathmodEntityIri,
   mathML: FractionMathMLExample,
 };
 

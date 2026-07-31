@@ -15,11 +15,11 @@ export const apiArgType: ArgTypes = {
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
-      "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
     ],
     description:
       "The API instance for the API call.<br><br> " +
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
+      "TS4NFDI API Gateway OLS4 endpoints: [https://terminology.services.base4nfdi.de/api-gateway/ols4/api/](https://terminology.services.base4nfdi.de/api-gateway/ols4/api/)<br> " +
       "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
       "**[TIB:](https://www.tib.eu/de/)**<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
