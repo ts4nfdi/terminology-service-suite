@@ -882,7 +882,7 @@ export type EntityListWidgetProps = {
   parameter?: string;
 };
 
-export type MappingListDetailWidgetProps = {
+export type MappingListWidgetProps = {
   api: string;
   source: string;
 };

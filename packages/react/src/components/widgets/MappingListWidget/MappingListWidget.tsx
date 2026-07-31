@@ -15,7 +15,7 @@ import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
-import { MappingListDetailWidgetProps } from "../../../app";
+import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 
@@ -101,7 +101,7 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
   );
 });
 
-function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
+function MappingListWidget(props: MappingListWidgetProps) {
   const { api, source } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
@@ -750,11 +750,9 @@ function MappingListDetailWidget(props: MappingListDetailWidgetProps) {
   );
 }
 
-export function WrappedMappingListDetailWidget(
-  props: MappingListDetailWidgetProps,
-) {
-  return <MappingListDetailWidget api={props.api} source={props.source} />;
+export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+  return <MappingListWidget api={props.api} source={props.source} />;
 }
 
-export { MappingListDetailWidget };
-export default WrappedMappingListDetailWidget;
+export { MappingListWidget };
+export default WrappedMappingListWidget;
