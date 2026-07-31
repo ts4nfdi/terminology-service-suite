@@ -53,7 +53,6 @@ export const AutocompleteWidgetStoryArgsReact = {
 
 export const AutocompleteWidgetStoryArgsHTML = {
   api: globals.ZBMED_OLS4_API,
-  ts4nfdiGateway: false,
   singleSelection: true,
   allowCustomTerms: false,
   selectionChangedEvent: () => {
