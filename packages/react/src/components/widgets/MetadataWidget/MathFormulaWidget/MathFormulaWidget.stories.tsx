@@ -8,8 +8,8 @@ import {
   MathMLFractionInputStoryArgs,
   MathMLInputStoryArgs,
   MathMLTextInputStoryArgs,
-  MathmodP983StoryArgs,
-  MathmodP989StoryArgs,
+  MathmoddbDefiningFormulaStoryArgs,
+  MathmoddbInDefiningFormulaStoryArgs,
 } from "./MathFormulaWidgetStories";
 
 const meta = {
@@ -31,13 +31,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const MathmodP983: Story = {
-  args: MathmodP983StoryArgs,
+export const MathmoddbDefiningFormula: Story = {
+  args: MathmoddbDefiningFormulaStoryArgs,
   play: commonMathFormulaWidgetPlay,
 };
 
-export const MathmodP989: Story = {
-  args: MathmodP989StoryArgs,
+export const MathmoddbInDefiningFormula: Story = {
+  args: MathmoddbInDefiningFormulaStoryArgs,
   play: commonMathFormulaWidgetPlay,
 };
 

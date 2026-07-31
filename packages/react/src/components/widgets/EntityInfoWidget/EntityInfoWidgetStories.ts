@@ -136,7 +136,7 @@ export const SkosmosImportArgs = {
   iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
 };
 
-export const InfoEntityWithMathFormulaArgs = {
+export const MathFormularRepresentationArgs = {
   ...EntityInfoWidgetStoryArgs,
   api: TIB_API_ENDPOINT,
   useLegacy: false,
