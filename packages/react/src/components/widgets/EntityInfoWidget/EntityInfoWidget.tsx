@@ -112,6 +112,22 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     );
   }
 
+  function getDescriptionSection(entity: Entity): ReactElement {
+    return (
+      <>
+        {entity.getDescription() && (
+          <>
+            <EuiFlexItem>
+              <b>Description:</b>
+              {entity.getDescription()}
+            </EuiFlexItem>
+            <EuiSpacer />
+          </>
+        )}
+      </>
+    );
+  }
+
   function getSynonymsSection(entity: Entity): ReactElement {
     return (
       <>
@@ -379,12 +395,6 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     individual: Individual,
   ): ReactElement {
     const propertyIris = Object.keys(individual.properties);
-
-    // console.log(
-    //   individual
-    //     .getLinkedEntities()
-    //     .get("https://portal.mardi4nfdi.de/entity/P983"),
-    // );
 
     const negativeProperties = propertyIris.filter((key) =>
       key.startsWith("negativePropertyAssertion+"),
@@ -868,6 +878,7 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
         {isSuccessEntity && entity !== undefined && (
           <EuiText {...rest}>
             {getLabelSection(entity)}
+            {getDescriptionSection(entity)}
             {getSynonymsSection(entity)}
             {isClass(entity) && (
               <>
