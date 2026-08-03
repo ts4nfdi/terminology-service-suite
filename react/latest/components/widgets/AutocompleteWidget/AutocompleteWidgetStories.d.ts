@@ -26,7 +26,6 @@ export declare const AutocompleteWidgetStoryArgTypes: {
 };
 export declare const AutocompleteWidgetStoryArgsReact: {
     api: string;
-    ts4nfdiGateway: boolean;
     singleSelection: boolean;
     allowCustomTerms: boolean;
     selectionChangedEvent: import('storybook/actions').HandlerFunction;
@@ -43,7 +42,6 @@ export declare const AutocompleteWidgetStoryArgsReact: {
 };
 export declare const AutocompleteWidgetStoryArgsHTML: {
     api: string;
-    ts4nfdiGateway: boolean;
     singleSelection: boolean;
     allowCustomTerms: boolean;
     selectionChangedEvent: () => void;
@@ -58,10 +56,6 @@ export declare const AutocompleteWidgetStoryArgsHTML: {
     onNavigateToOntology: string;
 };
 export declare const WithDefaultsArgs: {};
-export declare const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps;
-export declare const UseAPIGatewayWithOntoPortalArgs: AutocompleteWidgetProps;
-export declare const UseAPIGatewayWithSkosmosArgs: AutocompleteWidgetProps;
-export declare const HideApiSourceApiGatewayArgs: AutocompleteWidgetProps;
 export declare const WithDefaultsCompactArgs: AutocompleteWidgetProps;
 export declare const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps;
 export declare const WithPreselectedValueAndUnresolvedIriOLS3Args: AutocompleteWidgetProps;

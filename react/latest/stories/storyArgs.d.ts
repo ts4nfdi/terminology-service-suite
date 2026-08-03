@@ -160,7 +160,6 @@ export declare const hasShortSelectedLabelArgType: {
 export declare const allowCustomTermsArgType: ArgTypes;
 export declare const singleSelectionArgType: ArgTypes;
 export declare const singleSuggestionRowArgType: ArgTypes;
-export declare const ts4nfdiGatewayArgType: ArgTypes;
 export declare const showApiSourceArgType: ArgTypes;
 export declare const hasTitleArgType: ArgTypes;
 export declare const showBadgesArgType: ArgTypes;

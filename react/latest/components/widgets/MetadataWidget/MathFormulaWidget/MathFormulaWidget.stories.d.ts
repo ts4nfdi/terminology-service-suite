@@ -20,8 +20,8 @@ declare const meta: {
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const MathmodP983: Story;
-export declare const MathmodP989: Story;
+export declare const MathmoddbDefiningFormula: Story;
+export declare const MathmoddbInDefiningFormula: Story;
 export declare const MathMLInput: Story;
 export declare const MathMLTextInput: Story;
 export declare const MathMLFractionInput: Story;
