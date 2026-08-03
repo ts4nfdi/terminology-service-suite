@@ -39,7 +39,6 @@ declare const meta: {
     };
     args: {
         api: string;
-        ts4nfdiGateway: boolean;
         singleSelection: boolean;
         allowCustomTerms: boolean;
         selectionChangedEvent: () => void;
@@ -57,10 +56,6 @@ declare const meta: {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const WithDefaults: Story;
-export declare const UseAPIGatewayWithOLS: Story;
-export declare const UseAPIGatewayWithOntoPortal: Story;
-export declare const UseAPIGatewayWithSkosmos: Story;
-export declare const HideApiSourceApiGateway: Story;
 export declare const WithDefaultsCompact: Story;
 export declare const WithPreselectedValueOLS4v2: Story;
 export declare const WithPreselectedValueAndUnresolvedIriOLS3: Story;

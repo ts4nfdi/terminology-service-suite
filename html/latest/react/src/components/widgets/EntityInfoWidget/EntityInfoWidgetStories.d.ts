@@ -182,7 +182,7 @@ export declare const SkosmosImportArgs: {
     onNavigateToOntology: string;
     onNavigateToDisambiguate: string;
 };
-export declare const InfoEntityWithMathFormulaArgs: {
+export declare const MathFormularRepresentationArgs: {
     api: string;
     useLegacy: boolean;
     iri: string;

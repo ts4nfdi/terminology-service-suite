@@ -66,4 +66,4 @@ export declare const InfoWidgetPropertyAssertion: Story;
 export declare const InfoWidgetPropertyCharacteristics: Story;
 export declare const NavigateToEBIPage: Story;
 export declare const SkosmosImport: Story;
-export declare const InfoEntityWithMathFormula: Story;
+export declare const MathFormularRepresentation: Story;

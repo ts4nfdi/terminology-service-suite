@@ -4,21 +4,12 @@ export declare const TextMathMLExample = "<math xmlns=\"http://www.w3.org/1998/M
 export declare const FractionMathMLExample = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></math>";
 export declare const MathFormulaWidgetStoryArgTypes: ArgTypes;
 export declare const MathMLInputStoryArgs: {
-    api: string;
-    ontologyId: string;
-    iri: string;
     mathML: string;
 };
 export declare const MathMLTextInputStoryArgs: {
-    api: string;
-    ontologyId: string;
-    iri: string;
     mathML: string;
 };
 export declare const MathMLFractionInputStoryArgs: {
-    api: string;
-    ontologyId: string;
-    iri: string;
     mathML: string;
 };
 export declare const MathFormulaWidgetStoryArgs: {
@@ -26,13 +17,13 @@ export declare const MathFormulaWidgetStoryArgs: {
     readonly ontologyId: "";
     readonly iri: "";
 };
-export declare const MathmodP983StoryArgs: {
+export declare const MathmoddbInDefiningFormulaStoryArgs: {
     api: string;
     ontologyId: string;
     iri: string;
     mathProperty: string;
 };
-export declare const MathmodP989StoryArgs: {
+export declare const MathmoddbDefiningFormulaStoryArgs: {
     api: string;
     ontologyId: string;
     iri: string;

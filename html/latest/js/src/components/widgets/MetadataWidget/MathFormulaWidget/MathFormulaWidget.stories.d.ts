@@ -3,5 +3,5 @@ import { MathFormulaWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
 declare const meta: Meta<MathFormulaWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export declare const MathmodP983: Story;
-export declare const MathmodP989: Story;
+export declare const MathmoddbDefiningFormula: Story;
+export declare const MathmoddbInDefiningFormula: Story;

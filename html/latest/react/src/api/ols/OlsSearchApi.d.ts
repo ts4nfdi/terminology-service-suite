@@ -4,7 +4,6 @@ import { OlsBaseApi } from './OlsBaseApi';
 export declare class OlsSearchApi extends OlsBaseApi {
     search: (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal) => Promise<any>;
     select: (queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
-    searchTs4nfdiGateway: (queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string, ts4nfdiGateway?: boolean) => Promise<any>;
     /**
      * Fetch select data.
      * @param queryParams
@@ -12,7 +11,7 @@ export declare class OlsSearchApi extends OlsBaseApi {
      * @param contentParams
      * @param parameter
      */
-    getSelectData(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string, ts4nfdiGateway?: boolean): Promise<Select>;
+    getSelectData(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<Select>;
     suggest: (queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
 }
 export declare function splitAndApplyParams(url: URL, raw: string): void;
