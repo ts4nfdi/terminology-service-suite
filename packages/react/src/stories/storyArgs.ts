@@ -10,18 +10,15 @@ export const apiArgType: ArgTypes = {
     },
     options: [
       "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/",
-      "https://terminology.services.base4nfdi.de/api-gateway/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
       "https://www.ebi.ac.uk/ols4/api/",
-      "https://ols4-mathmod.qa.km.k8s.zbmed.de/ols/api/",
     ],
     description:
       "The API instance for the API call.<br><br> " +
       "**[TS4NFDI:](https://base4nfdi.de/projects/ts4nfdi)**<br> " +
-      "TS4NFDI API Gateway: [https://terminology.services.base4nfdi.de/api-gateway/](https://terminology.services.base4nfdi.de/api-gateway/)<br><br> " +
-      "**[TIB:](https://www.tib.eu/de/)**<br> " +
+      "TS4NFDI API Gateway OLS4 endpoints: [https://terminology.services.base4nfdi.de/api-gateway/ols4/api/](https://terminology.services.base4nfdi.de/api-gateway/ols4/api/)<br> " +
       "TIB Terminology Service (OLS4): [https://api.terminology.tib.eu/api/](https://api.terminology.tib.eu/api/)<br><br> " +
       "**[ZB MED:](https://www.zbmed.de/)**<br> " +
       "SemLookP API (OLS3): [https://ols3-semanticlookup.zbmed.de/ols/api/](https://ols3-semanticlookup.zbmed.de/ols/api/)<br> " +
@@ -291,21 +288,11 @@ export const singleSuggestionRowArgType: ArgTypes = {
     },
   },
 };
-export const ts4nfdiGatewayArgType: ArgTypes = {
-  ts4nfdiGateway: {
-    required: false,
-    description: "Use the TS4NFDI Gateway API",
-    table: {
-      defaultValue: { summary: "-" },
-      type: { summary: "boolean" },
-    },
-  },
-};
 export const showApiSourceArgType: ArgTypes = {
   showApiSource: {
     required: false,
     description:
-      "Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.",
+      "Whether to show the api source in the result list or not. Default is true. Only when the API Gateway is selected.",
     table: {
       type: { summary: "boolean" },
     },

@@ -35,7 +35,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     placeholder,
     singleSelection,
     singleSuggestionRow,
-    ts4nfdiGateway = false,
     showApiSource = true,
     className,
     useLegacy,
@@ -344,7 +343,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         undefined,
         undefined,
         parameter,
-        ts4nfdiGateway,
       );
 
       if (!response) return;
@@ -458,7 +456,6 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             undefined,
             undefined,
             parameter,
-            ts4nfdiGateway,
           )
           .then((response) => {
             if (response) {
@@ -669,7 +666,6 @@ function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
           placeholder={props.placeholder}
           hasShortSelectedLabel={props.hasShortSelectedLabel}
           allowCustomTerms={props.allowCustomTerms}
-          ts4nfdiGateway={props.ts4nfdiGateway}
           singleSuggestionRow={props.singleSuggestionRow}
           showApiSource={props.showApiSource}
           className={props.className}

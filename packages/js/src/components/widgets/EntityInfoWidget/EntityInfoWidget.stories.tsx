@@ -9,12 +9,12 @@ import {
   EntityInfoWidgetStoryArgs,
   EntityInfoWidgetStoryArgTypes,
   IndividualInfoWidgetArgs,
-  InfoEntityWithMathFormulaArgs,
   InfoWidgetBadgesArgs,
   InfoWidgetDomainArgs,
   InfoWidgetPropertyAssertionArgs,
   InfoWidgetPropertyCharacteristicsArgs,
   InfoWidgetRangeArgs,
+  MathFormularRepresentationArgs,
   NavigateToEBIPageArgs,
   OptionalEntityTypeLegacyAPIArgs,
   PropertyInfoWidgetArgs,
@@ -132,7 +132,7 @@ export const SkosmosImport: Story = {
   play: commonEntityInfoWidgetPlay,
 };
 
-export const InfoEntityWithMathFormula: Story = {
-  args: InfoEntityWithMathFormulaArgs,
+export const MathFormularRepresentation: Story = {
+  args: MathFormularRepresentationArgs,
   play: commonEntityInfoWidgetPlay,
 };
