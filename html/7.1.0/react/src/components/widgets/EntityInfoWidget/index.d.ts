@@ -1,0 +1,1 @@
+export { EntityInfoWidget } from './EntityInfoWidget';
