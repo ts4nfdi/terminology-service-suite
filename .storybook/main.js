@@ -37,11 +37,11 @@ module.exports = {
     return {
       react: {
         title: "REACT",
-        url: "https://ts4nfdi.github.io/terminology-service-suite/react/latest",
+        url: "https://terminology.services.base4nfdi.de/tss/react/latest",
       },
       html: {
         title: "Plain JavaScript",
-        url: "https://ts4nfdi.github.io/terminology-service-suite/html/latest",
+        url: "https://terminology.services.base4nfdi.de/tss/html/latest",
       },
     };
   },
