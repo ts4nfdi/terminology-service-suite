@@ -35,12 +35,14 @@ export const emptyInDefiningOntologyArgs = {
   api: globals.EBI_API_ENDPOINT,
   entityType: "term",
   ontologyId: "efo",
+  useLegacy: true,
 } as const;
 
 export const v2ApiFOODONArgs = {
   iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090",
   api: globals.ZBMED_OLS4_API,
   ontologyId: "foodon",
+  useLegacy: true,
 } as const;
 
 export const legacyApiArgs = {
