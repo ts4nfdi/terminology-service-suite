@@ -522,3 +522,7 @@ Displays semantic mapping relations with compact visual icons, making different 
 - **Cross-terminology exploration**:
 Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
 `.trim();
+
+export const MappingDetailCardDescription = `
+The MappingDetailCardWidget shows one mapping in a compact card view. It is used to display the most important metadata for a selected mapping, such as source and target information, mapping type, creator, and identifiers. This helps users inspect a single mapping in more detail without leaving the mapping list.
+`.trim();

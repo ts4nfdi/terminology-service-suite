@@ -886,3 +886,9 @@ export type MappingListWidgetProps = {
   api: string;
   source: string;
 };
+
+export type MappingDetailCardWidgetProps = {
+  api: string;
+  source: string;
+  // identifier: string;
+};
