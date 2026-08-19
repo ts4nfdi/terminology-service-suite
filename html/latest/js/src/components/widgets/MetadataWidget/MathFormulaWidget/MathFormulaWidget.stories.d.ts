@@ -4,4 +4,3 @@ declare const meta: Meta<MathFormulaWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const MathmoddbDefiningFormula: Story;
-export declare const MathmoddbInDefiningFormula: Story;
