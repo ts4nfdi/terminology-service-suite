@@ -17,12 +17,6 @@ export declare const MathFormulaWidgetStoryArgs: {
     readonly ontologyId: "";
     readonly iri: "";
 };
-export declare const MathmoddbInDefiningFormulaStoryArgs: {
-    api: string;
-    ontologyId: string;
-    iri: string;
-    mathProperty: string;
-};
 export declare const MathmoddbDefiningFormulaStoryArgs: {
     api: string;
     ontologyId: string;

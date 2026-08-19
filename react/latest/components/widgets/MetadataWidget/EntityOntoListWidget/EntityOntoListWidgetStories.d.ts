@@ -39,11 +39,13 @@ export declare const v2ApiNCBITaxonArgs: {
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly entityType: "term";
     readonly ontologyId: "ncbitaxon";
+    readonly useLegacy: false;
 };
 export declare const v2ApiFOODONArgs: {
     readonly iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090";
     readonly api: "https://semanticlookup.zbmed.de/ols/api/";
     readonly ontologyId: "foodon";
+    readonly useLegacy: false;
 };
 export declare const legacyApiArgs: {
     readonly iri: "http://purl.obolibrary.org/obo/MONDO_0005015";
@@ -56,6 +58,7 @@ export declare const exceedsMaxDisplayArgs: {
     readonly iri: "http://purl.obolibrary.org/obo/HP_0000819";
     readonly api: "https://www.ebi.ac.uk/ols4/api/";
     readonly ontologyId: "hp";
+    readonly useLegacy: true;
 };
 export declare const commonEntityOntoListWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
