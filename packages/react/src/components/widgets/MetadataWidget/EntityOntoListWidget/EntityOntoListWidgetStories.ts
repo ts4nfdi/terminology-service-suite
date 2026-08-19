@@ -35,7 +35,7 @@ export const v2ApiNCBITaxonArgs = {
   api: globals.ZBMED_OLS4_API,
   entityType: "term",
   ontologyId: "ncbitaxon",
-  useLegacy: true,
+  useLegacy: false,
 } as const;
 
 export const v2ApiFOODONArgs = {
