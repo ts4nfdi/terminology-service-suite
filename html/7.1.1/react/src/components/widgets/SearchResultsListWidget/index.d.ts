@@ -1,0 +1,1 @@
+export { SearchResultsListWidget } from './SearchResultsListWidget';
