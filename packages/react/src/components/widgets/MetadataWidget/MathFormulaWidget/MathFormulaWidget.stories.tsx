@@ -9,7 +9,6 @@ import {
   MathMLInputStoryArgs,
   MathMLTextInputStoryArgs,
   MathmoddbDefiningFormulaStoryArgs,
-  MathmoddbInDefiningFormulaStoryArgs,
 } from "./MathFormulaWidgetStories";
 
 const meta = {
@@ -33,11 +32,6 @@ type Story = StoryObj<typeof meta>;
 
 export const MathmoddbDefiningFormula: Story = {
   args: MathmoddbDefiningFormulaStoryArgs,
-  play: commonMathFormulaWidgetPlay,
-};
-
-export const MathmoddbInDefiningFormula: Story = {
-  args: MathmoddbInDefiningFormulaStoryArgs,
   play: commonMathFormulaWidgetPlay,
 };
 
