@@ -42,7 +42,7 @@ export const v2ApiFOODONArgs = {
   iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090",
   api: globals.ZBMED_OLS4_API,
   ontologyId: "foodon",
-  useLegacy: true,
+  useLegacy: false,
 } as const;
 
 export const legacyApiArgs = {
