@@ -762,6 +762,37 @@ function MappingListWidget(props: MappingListWidgetProps) {
               tbody .euiTableRow:nth-of-type(even) {
                 background-color: #fff5fa;
               }
+              tbody .euiTableRow td {
+                transition:
+                  background-color 150ms ease,
+                  box-shadow 150ms ease;
+              }
+              /**
+               * Blue ring around the row whose detail card is open.
+               * Drawn with inset box-shadows instead of a border so no cell
+               * shifts when a row gets selected, and applied per cell because
+               * a table row itself does not paint a box-shadow reliably.
+               */
+              tbody .euiTableRow.mappingRowSelected td {
+                background-color: #eaf2ff;
+                box-shadow:
+                  inset 0 2px 0 0 #2f6fed,
+                  inset 0 -2px 0 0 #2f6fed;
+              }
+              tbody .euiTableRow.mappingRowSelected td:first-of-type {
+                border-radius: 6px 0 0 6px;
+                box-shadow:
+                  inset 2px 0 0 0 #2f6fed,
+                  inset 0 2px 0 0 #2f6fed,
+                  inset 0 -2px 0 0 #2f6fed;
+              }
+              tbody .euiTableRow.mappingRowSelected td:last-of-type {
+                border-radius: 0 6px 6px 0;
+                box-shadow:
+                  inset -2px 0 0 0 #2f6fed,
+                  inset 0 2px 0 0 #2f6fed,
+                  inset 0 -2px 0 0 #2f6fed;
+              }
             `}
             tableCaption="Mapping list"
             responsiveBreakpoint={false}
@@ -775,6 +806,15 @@ function MappingListWidget(props: MappingListWidgetProps) {
             }}
             columns={columns}
             pagination={true}
+            /**
+             * Highlight the row whose detail card is currently open.
+             */
+            rowProps={(row: MappingRow) => ({
+              className:
+                isDetailCardOpen && row.toUri === mappingDetailData.target
+                  ? "mappingRowSelected"
+                  : undefined,
+            })}
           />
         </div>
 
