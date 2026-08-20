@@ -1,6 +1,7 @@
 import {
   EuiBasicTableColumn,
   EuiButton,
+  EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
   EuiPanel,
@@ -438,6 +439,19 @@ function MappingListWidget(props: MappingListWidgetProps) {
       truncateText: true,
       sortable: true,
       render: (_created: string, item: MappingRow) => item.createdLabel,
+    },
+    {
+      field: "info",
+      name: <strong style={{ fontSize: "14px" }}>Info</strong>,
+      width: "68px",
+      align: "right",
+      render: () => (
+        <EuiButtonIcon
+          iconType="arrowRight"
+          aria-label="Detail"
+          title="Detail"
+        />
+      ),
     },
   ];
 
