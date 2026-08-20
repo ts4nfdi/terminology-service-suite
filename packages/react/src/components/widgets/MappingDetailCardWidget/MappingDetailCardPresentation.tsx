@@ -1,4 +1,10 @@
-import { EuiIcon, EuiPanel, EuiText, EuiTitle } from "@elastic/eui";
+import {
+  EuiButtonIcon,
+  EuiIcon,
+  EuiPanel,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import type { ReactNode } from "react";
 
 type MappingDetailCardField = {
@@ -8,12 +14,13 @@ type MappingDetailCardField = {
 
 type MappingDetailCardPresentationProps = {
   fields: MappingDetailCardField[];
+  onClose?: () => void;
 };
 
 export default function MappingDetailCardPresentation(
   props: MappingDetailCardPresentationProps,
 ) {
-  const { fields } = props;
+  const { fields, onClose } = props;
 
   return (
     <EuiPanel
@@ -44,7 +51,17 @@ export default function MappingDetailCardPresentation(
           </EuiText>
         </div>
 
-        <EuiIcon type="iInCircle" size="m" color="primary" />
+        {onClose ? (
+          <EuiButtonIcon
+            iconType="cross"
+            aria-label="Close mapping details"
+            title="Close"
+            color="text"
+            onClick={onClose}
+          />
+        ) : (
+          <EuiIcon type="iInCircle" size="m" color="primary" />
+        )}
       </div>
 
       <div

@@ -19,6 +19,7 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
+import { MappingDetailCardWidget } from "../MappingDetailCardWidget";
 
 type MappingRow = {
   to: string;
@@ -156,6 +157,15 @@ function MappingListWidget(props: MappingListWidgetProps) {
     }
   };
 
+  const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
+  const [mappingDetailData, setMappingDetailData] = useState<
+    Record<string, string>
+  >({});
+
+  function handleDetailCardOpen(source: string, target: string) {
+    setMappingDetailData({ source, target });
+    setIsDetailCardOpen(true);
+  }
   /**
    * Prevent clicks on the filter icon from triggering the column sort.
    */
@@ -445,11 +455,12 @@ function MappingListWidget(props: MappingListWidgetProps) {
       name: <strong style={{ fontSize: "14px" }}>Info</strong>,
       width: "68px",
       align: "right",
-      render: () => (
+      render: (_info: unknown, item: MappingRow) => (
         <EuiButtonIcon
           iconType="arrowRight"
           aria-label="Detail"
           title="Detail"
+          onClick={() => handleDetailCardOpen(fromLabel, item.toUri)}
         />
       ),
     },
@@ -738,28 +749,45 @@ function MappingListWidget(props: MappingListWidgetProps) {
 
       <EuiSpacer size="xl" />
 
-      <EuiInMemoryTable<MappingRow>
-        css={css`
-          tbody .euiTableRow:nth-of-type(odd) {
-            background-color: #ffffff;
-          }
-          tbody .euiTableRow:nth-of-type(even) {
-            background-color: #fff5fa;
-          }
-        `}
-        tableCaption="Mapping list"
-        responsiveBreakpoint={false}
-        items={filteredRows}
-        search={search}
-        sorting={{
-          sort: {
-            field: "to",
-            direction: "asc",
-          },
-        }}
-        columns={columns}
-        pagination={true}
-      />
+      {/**
+       * Table on the left, detail card next to it on the right.
+       */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <EuiInMemoryTable<MappingRow>
+            css={css`
+              tbody .euiTableRow:nth-of-type(odd) {
+                background-color: #ffffff;
+              }
+              tbody .euiTableRow:nth-of-type(even) {
+                background-color: #fff5fa;
+              }
+            `}
+            tableCaption="Mapping list"
+            responsiveBreakpoint={false}
+            items={filteredRows}
+            search={search}
+            sorting={{
+              sort: {
+                field: "to",
+                direction: "asc",
+              },
+            }}
+            columns={columns}
+            pagination={true}
+          />
+        </div>
+
+        {isDetailCardOpen && (
+          <div style={{ width: "300px", flexShrink: 0 }}>
+            <MappingDetailCardWidget
+              source={mappingDetailData.source}
+              target={mappingDetailData.target}
+              onClose={() => setIsDetailCardOpen(false)}
+            />
+          </div>
+        )}
+      </div>
     </EuiPanel>
   );
 }

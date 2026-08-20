@@ -4,12 +4,12 @@ import { MappingDetailCardWidgetProps } from "../../../app";
 import MappingDetailCardPresentation from "./MappingDetailCardPresentation";
 
 function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
-  const { api, source } = props;
+  const { target, source, onClose } = props;
 
   const fields = [
     {
       label: "API",
-      value: api || "—",
+      value: target || "—",
     },
     {
       label: "Source",
@@ -31,11 +31,11 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
     },
   ];
 
-  return <MappingDetailCardPresentation fields={fields} />;
+  return <MappingDetailCardPresentation fields={fields} onClose={onClose} />;
 }
 
 export function WrappedMappingDetailCardWidget() {
-  return <MappingDetailCardWidget api={""} source={""} />;
+  return <MappingDetailCardWidget target={""} source={""} />;
 }
 
 export { MappingDetailCardWidget };

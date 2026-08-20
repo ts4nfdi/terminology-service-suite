@@ -888,7 +888,8 @@ export type MappingListWidgetProps = {
 };
 
 export type MappingDetailCardWidgetProps = {
-  api: string;
+  target: string;
   source: string;
+  onClose?: () => void;
   // identifier: string;
 };
