@@ -1,67 +1,101 @@
-import {
-  EuiDescriptionList,
-  EuiLink,
-  EuiPanel,
-  EuiSpacer,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiIcon, EuiLink, EuiPanel, EuiText, EuiTitle } from "@elastic/eui";
 
 import { MappingDetailCardWidgetProps } from "../../../app";
-
-type MappingDetailCardRowTypes = {
-  SourceVocabulary: string;
-  SourceConcept: string;
-  TargetVocabulary: string;
-  TargetConcept: string;
-  MappingType: string;
-  Creator: string;
-  CreationDate: string;
-  // ModificationDate: string  -> we don't have it in the JSkos card
-  Concordance: string;
-  Identifier: string; //added by me
-  MappingURI: string;
-  Download: string;
-  AdditionalIdentifiers: string;
-  DownloadLinks: string;
-};
 
 function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
   const { api, source } = props;
 
+  const fields = [
+    {
+      label: "API",
+      value: api || "—",
+    },
+    {
+      label: "Source",
+      value: source ? (
+        <EuiLink href={source} target="_blank" rel="noreferrer">
+          {source}
+        </EuiLink>
+      ) : (
+        "—"
+      ),
+    },
+    {
+      label: "Identifier",
+      value: "This is an Identifier",
+    },
+    {
+      label: "Status",
+      value: "This is a simple version of the card.",
+    },
+  ];
+
   return (
-    <EuiPanel paddingSize="m">
-      <EuiTitle size="s">
-        <h2>Mapping details</h2>
-      </EuiTitle>
+    <EuiPanel
+      hasShadow={false}
+      paddingSize="m"
+      style={{
+        overflow: "hidden",
+        border: "none",
+        borderRadius: 14,
+        background: "#fff5fa",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "16px",
+          marginBottom: "16px",
+        }}
+      >
+        <div>
+          <EuiTitle size="xs">
+            <h2 style={{ margin: 0 }}>Mapping details</h2>
+          </EuiTitle>
+          <EuiText size="xs" color="subdued">
+            Selected mapping summary
+          </EuiText>
+        </div>
 
-      <EuiSpacer size="l" />
+        <EuiIcon type="iInCircle" size="m" color="primary" />
+      </div>
 
-      <EuiDescriptionList
-        listItems={[
-          {
-            title: "API",
-            description: api || "-",
-          },
-          {
-            title: "Source",
-            description: source ? (
-              <EuiLink href={source} target="_blank" rel="noreferrer">
-                {source}
-              </EuiLink>
-            ) : (
-              "—"
-            ),
-          },
-          {
-            title: "Identifier",
-            description: "This is an Identifier",
-          },
-          {
-            title: "Status",
-            description: "This is the second simple version of the card.",
-          },
-        ]}
-      />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: "12px",
+        }}
+      >
+        {fields.map((field) => (
+          <div
+            key={field.label}
+            style={{
+              borderRadius: 12,
+              backgroundColor: "rgba(255, 255, 255, 0.65)",
+              padding: "14px 16px",
+              minHeight: 84,
+            }}
+          >
+            <EuiText size="xs" color="subdued">
+              {field.label}
+            </EuiText>
+            <div
+              style={{
+                marginTop: "8px",
+                color: "#172237",
+                fontSize: "14px",
+                lineHeight: 1.5,
+                wordBreak: "break-word",
+              }}
+            >
+              {field.value}
+            </div>
+          </div>
+        ))}
+      </div>
     </EuiPanel>
   );
 }
