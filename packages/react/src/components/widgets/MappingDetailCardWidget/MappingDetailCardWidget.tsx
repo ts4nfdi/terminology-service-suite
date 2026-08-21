@@ -1,59 +1,90 @@
+import { EuiLink } from "@elastic/eui";
+
 import { MappingDetailCardWidgetProps } from "../../../app";
 import MappingDetailCardPresentation from "./MappingDetailCardPresentation";
 
+/**
+ * Serialisations the JSKOS server offers for a single mapping
+ * via the ?download= query parameter.
+ */
+const downloadFormats = ["json", "csv", "tsv"];
+
+/**
+ * Address mapping feedback is sent to.
+ */
+const feedbackEmail = "coli-conc@gbv.de";
+
 function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
-  const { target, source, onClose } = props;
+  const { fromScheme, toScheme, identifier, modified, uri, partOf, onClose } =
+    props;
+
+  /**
+   * The concordance URI ends with its notation, e.g. ".../concordances/nsk-bk".
+   */
+  const concordanceNotation = partOf?.split("/").pop();
 
   const fields = [
     {
       label: "Source Scheme:",
-      value: "",
+      value: fromScheme || "—",
     },
     {
       label: "Target Scheme:",
-      value: "",
+      value: toScheme || "—",
     },
     {
       label: "Description:",
       value: "",
     },
     {
-      label: "Creator:",
-      value: "",
-    },
-    // {
-    //   label: "Contributors:",
-    //   value: source ? (
-    //     <EuiLink href={source} target="_blank" rel="noreferrer">
-    //       {source}
-    //     </EuiLink>
-    //   ) : (
-    //     "—"
-    //   ),
-    // },
-    {
-      label: "Created:",
-      value: "",
-    },
-    {
       label: "Modified:",
-      value: "",
+      value: modified || "—",
     },
     {
       label: "Download:",
-      value: "",
-    },
-    {
-      label: "Mappings:",
-      value: "",
+      value:
+        uri && uri !== "—" ? (
+          <span style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {downloadFormats.map((format) => (
+              <EuiLink
+                key={format}
+                href={`${uri}?download=${format}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                .{format}
+              </EuiLink>
+            ))}
+          </span>
+        ) : (
+          "—"
+        ),
     },
     {
       label: "Identifier:",
-      value: "",
+      value: identifier || "—",
     },
     {
-      label: "Source:",
-      value: "",
+      label: "Part of:",
+      value:
+        partOf && partOf !== "—" ? (
+          <EuiLink href={partOf} target="_blank" rel="noreferrer">
+            {concordanceNotation}
+          </EuiLink>
+        ) : (
+          "—"
+        ),
+    },
+    {
+      label: "Feedback:",
+      value: (
+        <>
+          <EuiLink href={`mailto:${feedbackEmail}`}>
+            provide feedback via email
+          </EuiLink>{" "}
+          ({feedbackEmail})
+        </>
+      ),
     },
   ];
 

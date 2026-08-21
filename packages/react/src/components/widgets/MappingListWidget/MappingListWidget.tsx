@@ -29,6 +29,12 @@ type MappingRow = {
   created: string;
   createdLabel: string;
   targetFromColiConc: string;
+  fromScheme: string;
+  toScheme: string;
+  identifier: string;
+  modified: string;
+  uri: string;
+  partOf: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -162,8 +168,17 @@ function MappingListWidget(props: MappingListWidgetProps) {
     Record<string, string>
   >({});
 
-  function handleDetailCardOpen(source: string, target: string) {
-    setMappingDetailData({ source, target });
+  function handleDetailCardOpen(source: string, row: MappingRow) {
+    setMappingDetailData({
+      source,
+      target: row.toUri,
+      fromScheme: row.fromScheme,
+      toScheme: row.toScheme,
+      identifier: row.identifier,
+      modified: row.modified,
+      uri: row.uri,
+      partOf: row.partOf,
+    });
     setIsDetailCardOpen(true);
   }
   /**
@@ -460,7 +475,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
           iconType="arrowRight"
           aria-label="Detail"
           title="Detail"
-          onClick={() => handleDetailCardOpen(fromLabel, item.toUri)}
+          onClick={() => handleDetailCardOpen(fromLabel, item)}
         />
       ),
     },
@@ -546,6 +561,12 @@ function MappingListWidget(props: MappingListWidgetProps) {
           type: item.type?.[0]?.split("#").pop() ?? "—",
           created: item.created ?? "—",
           createdLabel: formatMappingDate(item.created ?? "—"),
+          fromScheme: item.fromScheme?.notation?.[0] ?? "—",
+          toScheme: item.toScheme?.notation?.[0] ?? "—",
+          identifier: item.identifier?.[0] ?? "—",
+          modified: formatMappingDate(item.modified ?? "—"),
+          uri: item.uri ?? "—",
+          partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
     [data, labels],
@@ -821,8 +842,12 @@ function MappingListWidget(props: MappingListWidgetProps) {
         {isDetailCardOpen && (
           <div style={{ width: "300px", flexShrink: 0 }}>
             <MappingDetailCardWidget
-              source={mappingDetailData.source}
-              target={mappingDetailData.target}
+              fromScheme={mappingDetailData.fromScheme}
+              toScheme={mappingDetailData.toScheme}
+              identifier={mappingDetailData.identifier}
+              modified={mappingDetailData.modified}
+              uri={mappingDetailData.uri}
+              partOf={mappingDetailData.partOf}
               onClose={() => setIsDetailCardOpen(false)}
             />
           </div>
