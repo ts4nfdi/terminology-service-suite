@@ -1,5 +1,3 @@
-import { EuiLink } from "@elastic/eui";
-
 import { MappingDetailCardWidgetProps } from "../../../app";
 import MappingDetailCardPresentation from "./MappingDetailCardPresentation";
 
@@ -8,26 +6,54 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
 
   const fields = [
     {
-      label: "API",
-      value: target || "—",
+      label: "Source Scheme:",
+      value: "",
     },
     {
-      label: "Source",
-      value: source ? (
-        <EuiLink href={source} target="_blank" rel="noreferrer">
-          {source}
-        </EuiLink>
-      ) : (
-        "—"
-      ),
+      label: "Target Scheme:",
+      value: "",
     },
     {
-      label: "Identifier",
-      value: "This is an Identifier",
+      label: "Description:",
+      value: "",
     },
     {
-      label: "Status",
-      value: "This is a simple version of the card.",
+      label: "Creator:",
+      value: "",
+    },
+    // {
+    //   label: "Contributors:",
+    //   value: source ? (
+    //     <EuiLink href={source} target="_blank" rel="noreferrer">
+    //       {source}
+    //     </EuiLink>
+    //   ) : (
+    //     "—"
+    //   ),
+    // },
+    {
+      label: "Created:",
+      value: "",
+    },
+    {
+      label: "Modified:",
+      value: "",
+    },
+    {
+      label: "Download:",
+      value: "",
+    },
+    {
+      label: "Mappings:",
+      value: "",
+    },
+    {
+      label: "Identifier:",
+      value: "",
+    },
+    {
+      label: "Source:",
+      value: "",
     },
   ];
 
