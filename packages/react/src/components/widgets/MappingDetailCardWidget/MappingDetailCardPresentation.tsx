@@ -60,7 +60,7 @@ export default function MappingDetailCardPresentation(
             onClick={onClose}
           />
         ) : (
-          <EuiIcon type="iInCircle" size="m" color="primary" />
+          <EuiIcon type="info" size="m" color="primary" />
         )}
       </div>
 

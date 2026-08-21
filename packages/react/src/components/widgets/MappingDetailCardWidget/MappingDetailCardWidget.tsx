@@ -92,7 +92,7 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
 }
 
 export function WrappedMappingDetailCardWidget() {
-  return <MappingDetailCardWidget target={""} source={""} />;
+  return <MappingDetailCardWidget />;
 }
 
 export { MappingDetailCardWidget };

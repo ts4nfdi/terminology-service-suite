@@ -4,6 +4,7 @@ import {
   EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
+  EuiModal,
   EuiPanel,
   EuiPopover,
   EuiSearchBarProps,
@@ -472,9 +473,10 @@ function MappingListWidget(props: MappingListWidgetProps) {
       align: "right",
       render: (_info: unknown, item: MappingRow) => (
         <EuiButtonIcon
-          iconType="arrowRight"
-          aria-label="Detail"
-          title="Detail"
+          iconType="inspect"
+          color="primary"
+          aria-label="Show mapping details"
+          title="Show mapping details"
           onClick={() => handleDetailCardOpen(fromLabel, item)}
         />
       ),
@@ -771,76 +773,78 @@ function MappingListWidget(props: MappingListWidgetProps) {
       <EuiSpacer size="xl" />
 
       {/**
-       * Table on the left, detail card next to it on the right.
+       * Table, with the mapping details shown in a modal on top of it.
        */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <EuiInMemoryTable<MappingRow>
-            css={css`
-              tbody .euiTableRow:nth-of-type(odd) {
-                background-color: #ffffff;
-              }
-              tbody .euiTableRow:nth-of-type(even) {
-                background-color: #fff5fa;
-              }
-              tbody .euiTableRow td {
-                transition:
-                  background-color 150ms ease,
-                  box-shadow 150ms ease;
-              }
-              /**
+      <div>
+        <EuiInMemoryTable<MappingRow>
+          css={css`
+            tbody .euiTableRow:nth-of-type(odd) {
+              background-color: #ffffff;
+            }
+            tbody .euiTableRow:nth-of-type(even) {
+              background-color: #fff5fa;
+            }
+            tbody .euiTableRow td {
+              transition:
+                background-color 150ms ease,
+                box-shadow 150ms ease;
+            }
+            /**
                * Blue ring around the row whose detail card is open.
                * Drawn with inset box-shadows instead of a border so no cell
                * shifts when a row gets selected, and applied per cell because
                * a table row itself does not paint a box-shadow reliably.
                */
-              tbody .euiTableRow.mappingRowSelected td {
-                background-color: #eaf2ff;
-                box-shadow:
-                  inset 0 2px 0 0 #2f6fed,
-                  inset 0 -2px 0 0 #2f6fed;
-              }
-              tbody .euiTableRow.mappingRowSelected td:first-of-type {
-                border-radius: 6px 0 0 6px;
-                box-shadow:
-                  inset 2px 0 0 0 #2f6fed,
-                  inset 0 2px 0 0 #2f6fed,
-                  inset 0 -2px 0 0 #2f6fed;
-              }
-              tbody .euiTableRow.mappingRowSelected td:last-of-type {
-                border-radius: 0 6px 6px 0;
-                box-shadow:
-                  inset -2px 0 0 0 #2f6fed,
-                  inset 0 2px 0 0 #2f6fed,
-                  inset 0 -2px 0 0 #2f6fed;
-              }
-            `}
-            tableCaption="Mapping list"
-            responsiveBreakpoint={false}
-            items={filteredRows}
-            search={search}
-            sorting={{
-              sort: {
-                field: "to",
-                direction: "asc",
-              },
-            }}
-            columns={columns}
-            pagination={true}
-            /**
-             * Highlight the row whose detail card is currently open.
-             */
-            rowProps={(row: MappingRow) => ({
-              className:
-                isDetailCardOpen && row.toUri === mappingDetailData.target
-                  ? "mappingRowSelected"
-                  : undefined,
-            })}
-          />
-        </div>
+            tbody .euiTableRow.mappingRowSelected td {
+              background-color: #eaf2ff;
+              box-shadow:
+                inset 0 2px 0 0 #2f6fed,
+                inset 0 -2px 0 0 #2f6fed;
+            }
+            tbody .euiTableRow.mappingRowSelected td:first-of-type {
+              border-radius: 6px 0 0 6px;
+              box-shadow:
+                inset 2px 0 0 0 #2f6fed,
+                inset 0 2px 0 0 #2f6fed,
+                inset 0 -2px 0 0 #2f6fed;
+            }
+            tbody .euiTableRow.mappingRowSelected td:last-of-type {
+              border-radius: 0 6px 6px 0;
+              box-shadow:
+                inset -2px 0 0 0 #2f6fed,
+                inset 0 2px 0 0 #2f6fed,
+                inset 0 -2px 0 0 #2f6fed;
+            }
+          `}
+          tableCaption="Mapping list"
+          responsiveBreakpoint={false}
+          items={filteredRows}
+          search={search}
+          sorting={{
+            sort: {
+              field: "to",
+              direction: "asc",
+            },
+          }}
+          columns={columns}
+          pagination={true}
+          /**
+           * Highlight the row whose detail card is currently open.
+           */
+          rowProps={(row: MappingRow) => ({
+            className:
+              isDetailCardOpen && row.toUri === mappingDetailData.target
+                ? "mappingRowSelected"
+                : undefined,
+          })}
+        />
 
         {isDetailCardOpen && (
-          <div style={{ width: "300px", flexShrink: 0 }}>
+          <EuiModal
+            onClose={() => setIsDetailCardOpen(false)}
+            aria-label="Mapping details"
+            style={{ width: "640px", maxWidth: "90vw" }}
+          >
             <MappingDetailCardWidget
               fromScheme={mappingDetailData.fromScheme}
               toScheme={mappingDetailData.toScheme}
@@ -848,9 +852,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
               modified={mappingDetailData.modified}
               uri={mappingDetailData.uri}
               partOf={mappingDetailData.partOf}
-              onClose={() => setIsDetailCardOpen(false)}
             />
-          </div>
+          </EuiModal>
         )}
       </div>
     </EuiPanel>
