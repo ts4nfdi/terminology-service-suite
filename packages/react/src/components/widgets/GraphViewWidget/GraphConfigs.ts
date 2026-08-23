@@ -1,11 +1,17 @@
-import { OlsGraphEdge, OlsGraphNode } from "../../../app/types";
+import { OlsGraphEdge } from "../../../app/types";
+import { HierarchyConfigT, VisGraphNode } from "./types";
+import {
+  DEFAULT_HIERARCHY_DIRECTION,
+  DEFAULT_NODE_BG_COLOR,
+  NODE_TEXT_COLOR,
+} from "./vars";
 
-export const hierarchicalConfig = {
+export const hierarchicalConfig: HierarchyConfigT = {
   enabled: true,
-  //@ts-ignore
-  direction: "DU",
-  //@ts-ignore
+  direction: DEFAULT_HIERARCHY_DIRECTION,
   sortMethod: "directed",
+  levelSeparation: 100,
+  nodeSpacing: 100,
 };
 
 export const graphNetworkConfig = {
@@ -22,6 +28,8 @@ export const graphNetworkConfig = {
     clusterThreshold: 150,
     hierarchical: {
       enabled: false,
+      levelSeparation: 100,
+      nodeSpacing: 200,
     },
   },
   physics: {
@@ -61,7 +69,11 @@ export class GraphNode {
   };
   label?: string;
 
-  constructor(node: OlsGraphNode, bgColor = "#455469", color = "white") {
+  constructor(
+    node: VisGraphNode,
+    bgColor = DEFAULT_NODE_BG_COLOR,
+    color = NODE_TEXT_COLOR,
+  ) {
     /**
      * for more options have a look at: https://visjs.github.io/vis-network/docs/network/nodes.html
      */
@@ -104,7 +116,7 @@ export class GraphEdge {
       /**
        * for more options have a look at: https://visjs.github.io/vis-network/docs/network/edges.html
        */
-      this.id = edge["source"] + edge["target"] + "&uri=" + edge["uri"];
+      this.id = generateEdgeId(edge);
       this.from = edge["source"];
       this.to = edge["target"];
       this.label = edgeLabel;
@@ -119,4 +131,11 @@ export class GraphEdge {
       };
     }
   }
+}
+
+export function generateEdgeId(edge: OlsGraphEdge) {
+  if (!edge["source"] || !edge["target"] || !edge["uri"]) {
+    return "";
+  }
+  return edge["source"] + edge["target"] + "&uri=" + edge["uri"];
 }

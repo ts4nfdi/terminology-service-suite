@@ -8,6 +8,7 @@ import {
   ChebiIonArgs,
   ChebiIonComparisonArgs,
   ChebiIonRootWalkArgs,
+  ChebiMultiIriHierarchyArgs,
   ChebiWaterArgs,
   ChebiWaterRootWalkArgs,
   GraphViewWidgetStoryArgTypes,
@@ -31,6 +32,9 @@ const meta = {
   },
   argTypes: GraphViewWidgetStoryArgTypes,
   args: GraphViewWidgetStoryArgs,
+  render: (args) => (
+    <GraphViewWidget key={JSON.stringify(args.iri)} {...args} />
+  ),
 } satisfies Meta<typeof GraphViewWidget>;
 
 export default meta;
@@ -83,6 +87,16 @@ export const ChebiWaterRootWalk: Story = {
 
 export const ChebiCaffeineHierarchy: Story = {
   args: ChebiCaffeineHierarchyArgs,
+  parameters: {
+    docs: {
+      disable: true,
+    },
+  },
+  play: commonGraphViewWidgetPlay,
+};
+
+export const ChebiMultiIriHierarchy: Story = {
+  args: ChebiMultiIriHierarchyArgs,
   parameters: {
     docs: {
       disable: true,
