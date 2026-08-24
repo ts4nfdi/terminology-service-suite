@@ -7,6 +7,7 @@ import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite
 import {
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
+  NavigateToSearchResultArgs,
   NFDI4HealthArgs,
   OpenEnergyPlatformArgs,
   SearchResultsListWidgetStoryArgs,
@@ -51,6 +52,7 @@ window['ts4nfdiWidgets'].createSearchResultsList(
         targetLink:"${args.targetLink}",
         useLegacy:"${args.useLegacy}",
         onNavigateToOntology:${args.onNavigateToOntology},
+        OnNavigateToSearchResult:${args.OnNavigateToSearchResult},
         className:"${args.className}"
     },
     document.querySelector('#search_results_list_widget_container_${num}')
@@ -68,6 +70,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const NavigateToSearchResult: Story = {
+  args: NavigateToSearchResultArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 

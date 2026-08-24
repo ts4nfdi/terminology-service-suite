@@ -38,6 +38,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     targetLink,
     preselected,
     onNavigateToOntology,
+    OnNavigateToSearchResult,
     useLegacy = true,
     className,
     ...rest
@@ -481,6 +482,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                       ontologyId={result.ontology_name}
                       useLegacy={useLegacy}
                       onNavigateToOntology={onNavigateToOntology}
+                      OnNavigateToSearchResult={OnNavigateToSearchResult}
                     />
                     <EuiSpacer />
                   </React.Fragment>
@@ -505,6 +507,7 @@ function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
           initialItemsPerPage={props.initialItemsPerPage}
           itemsPerPageOptions={props.itemsPerPageOptions}
           targetLink={props.targetLink}
+          OnNavigateToSearchResult={props.OnNavigateToSearchResult}
         />
       </QueryClientProvider>
     </EuiProvider>

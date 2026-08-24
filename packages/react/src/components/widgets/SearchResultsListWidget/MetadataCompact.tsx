@@ -35,6 +35,7 @@ function MetadataCompact(props: MetadataCompactProps) {
     ontologyId,
     useLegacy,
     onNavigateToOntology,
+    OnNavigateToSearchResult,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
@@ -104,6 +105,15 @@ function MetadataCompact(props: MetadataCompactProps) {
     <div className={className}>
       <EuiCard
         textAlign="left"
+        onClick={
+          typeof OnNavigateToSearchResult === "function"
+            ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                event.stopPropagation();
+                OnNavigateToSearchResult(result);
+              }
+            : undefined
+        }
         {...rest}
         href={
           targetLink
