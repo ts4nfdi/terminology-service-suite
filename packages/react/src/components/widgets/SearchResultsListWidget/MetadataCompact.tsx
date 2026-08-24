@@ -1,4 +1,4 @@
-import { EuiCard, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCard, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MetadataCompactProps } from "../../../app";
@@ -105,6 +105,15 @@ function MetadataCompact(props: MetadataCompactProps) {
     <div className={className}>
       <EuiCard
         textAlign="left"
+        onClick={
+          typeof OnNavigateToSearchResult === "function"
+            ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                event.stopPropagation();
+                OnNavigateToSearchResult(result);
+              }
+            : undefined
+        }
         {...rest}
         href={
           targetLink
@@ -124,21 +133,7 @@ function MetadataCompact(props: MetadataCompactProps) {
           <div>
             <EuiSpacer size="m" />
             <EuiTitle>
-              <h2>
-                {typeof OnNavigateToSearchResult === "function" ? (
-                  <EuiLink
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      OnNavigateToSearchResult(result);
-                    }}
-                  >
-                    {result.label}
-                  </EuiLink>
-                ) : (
-                  result.label
-                )}
-              </h2>
+              <h2>{result.label}</h2>
             </EuiTitle>
           </div>
         }
