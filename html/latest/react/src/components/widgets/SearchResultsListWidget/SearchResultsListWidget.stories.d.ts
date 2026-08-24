@@ -23,11 +23,13 @@ declare const meta: {
         targetLink: string;
         parameter: string;
         onNavigateToOntology: string;
+        OnNavigateToSearchResult: string;
     };
 };
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const Default: Story;
+export declare const NavigateToSearchResult: Story;
 export declare const NFDI4Health: Story;
 export declare const TibNFDI4CHEM: Story;
 export declare const TibDataPlant: Story;

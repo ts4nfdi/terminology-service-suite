@@ -188,6 +188,7 @@ export declare const titleTextArgType: ArgTypes;
 export declare const defaultValueArgType: ArgTypes;
 export declare const classNameArgType: ArgTypes;
 export declare const onNavigateToEntityArgType: ArgTypes;
+export declare const OnNavigateToSearchResultArgType: ArgTypes;
 export declare const onNavigateToOntologyArgType: ArgTypes;
 export declare const onNavigateToDisambiguateArgType: ArgTypes;
 export declare const onNavigateArgType: ArgTypes;

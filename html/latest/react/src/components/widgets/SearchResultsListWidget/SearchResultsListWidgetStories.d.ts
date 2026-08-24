@@ -11,8 +11,17 @@ export declare const SearchResultsListWidgetStoryArgs: {
     targetLink: string;
     parameter: string;
     onNavigateToOntology: string;
+    OnNavigateToSearchResult: string;
 };
 export declare const DefaultArgs: {
+    api: string;
+    query: string;
+    targetLink: string;
+    parameter: string;
+    useLegacy: boolean;
+};
+export declare const NavigateToSearchResultArgs: {
+    OnNavigateToSearchResult: string;
     api: string;
     query: string;
     targetLink: string;
