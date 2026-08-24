@@ -1,4 +1,4 @@
-import { EuiCard, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCard, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MetadataCompactProps } from "../../../app";
@@ -35,6 +35,7 @@ function MetadataCompact(props: MetadataCompactProps) {
     ontologyId,
     useLegacy,
     onNavigateToOntology,
+    OnNavigateToSearchResult,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
@@ -123,7 +124,21 @@ function MetadataCompact(props: MetadataCompactProps) {
           <div>
             <EuiSpacer size="m" />
             <EuiTitle>
-              <h2>{result.label}</h2>
+              <h2>
+                {typeof OnNavigateToSearchResult === "function" ? (
+                  <EuiLink
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      OnNavigateToSearchResult(result);
+                    }}
+                  >
+                    {result.label}
+                  </EuiLink>
+                ) : (
+                  result.label
+                )}
+              </h2>
             </EuiTitle>
           </div>
         }

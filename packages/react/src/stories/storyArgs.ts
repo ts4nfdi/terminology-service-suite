@@ -685,6 +685,21 @@ export const onNavigateToEntityArgType: ArgTypes = {
     },
   },
 };
+export const OnNavigateToSearchResultArgType: ArgTypes = {
+  OnNavigateToSearchResult: {
+    required: false,
+    table: { type: { summary: "(result: SearchResultProps) => void" } },
+    action: "OnNavigateToSearchResult",
+    description:
+      "This function is called when a search result title is clicked.",
+    control: { type: "radio" },
+    options: ["None", "Console message"],
+    mapping: {
+      None: undefined,
+      "Console message": (result: unknown) => console.log(result),
+    },
+  },
+};
 export const onNavigateToOntologyArgType: ArgTypes = {
   onNavigateToOntology: {
     required: false,

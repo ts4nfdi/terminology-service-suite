@@ -543,6 +543,13 @@ export type OnNavigateToOntology = {
     | string;
 };
 
+export type OnNavigateToSearchResult = {
+  /**
+   * This function is called when a search result title is clicked.
+   */
+  OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
+};
+
 export type OnNavigateToDisambiguate = {
   /**
    * This function is called every time a disambiguation badge is clicked
@@ -555,7 +562,8 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    ((entityType: string, entity?: EntityData) => void) | string;
+    | ((entityType: string, entity?: EntityData) => void)
+    | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -754,6 +762,7 @@ export type SearchResultsListWidgetProps = Partial<
   ParameterObj &
   UseLegacyObj &
   OnNavigateToOntology &
+  OnNavigateToSearchResult &
   CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
@@ -795,6 +804,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   CssClassNameObj &
   OptionalEntityTypeObj &
   OnNavigateToOntology & {
+    OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
     result: SearchResultProps;
     iri: string;
     ontologyId: string;

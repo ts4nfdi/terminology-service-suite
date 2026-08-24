@@ -6,6 +6,7 @@ import {
   initialItemsPerPageArgType,
   itemsPerPageOptionsArgType,
   onNavigateToOntologyArgType,
+  OnNavigateToSearchResultArgType,
   parameterArgType,
   preselectedArgType,
   queryArgType,
@@ -23,6 +24,7 @@ export const SearchResultsListWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...parameterArgType,
   ...onNavigateToOntologyArgType,
+  ...OnNavigateToSearchResultArgType,
 };
 
 export const SearchResultsListWidgetStoryArgs = {
@@ -35,6 +37,7 @@ export const SearchResultsListWidgetStoryArgs = {
   targetLink: "",
   parameter: "",
   onNavigateToOntology: "Console message",
+  OnNavigateToSearchResult: "None",
 };
 
 export const DefaultArgs = {
@@ -43,6 +46,11 @@ export const DefaultArgs = {
   targetLink: "",
   parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   useLegacy: false,
+};
+
+export const NavigateToSearchResultArgs = {
+  ...DefaultArgs,
+  OnNavigateToSearchResult: "Console message",
 };
 
 export const NFDI4HealthArgs = {

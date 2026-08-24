@@ -4,6 +4,7 @@ import { SearchResultsListWidget } from "./SearchResultsListWidget";
 import {
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
+  NavigateToSearchResultArgs,
   NFDI4HealthArgs,
   OpenEnergyPlatformArgs,
   SearchResultsListWidgetStoryArgs,
@@ -32,6 +33,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const NavigateToSearchResult: Story = {
+  args: NavigateToSearchResultArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 
