@@ -415,6 +415,12 @@ export type OnNavigateToOntology = {
      */
     onNavigateToOntology?: ((ontologyId: string, entityType?: string, entity?: EntityData) => void) | string;
 };
+export type OnNavigateToSearchResult = {
+    /**
+     * This function is called when a search result title is clicked.
+     */
+    OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
+};
 export type OnNavigateToDisambiguate = {
     /**
      * This function is called every time a disambiguation badge is clicked
@@ -563,7 +569,7 @@ export type SearchBarWidgetProps = ApiObj & ParameterObj & {
         type?: string;
     }[]) => void;
 };
-export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj & OnNavigateToOntology & CssClassNameObj & {
+export type SearchResultsListWidgetProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & UseLegacyObj & OnNavigateToOntology & OnNavigateToSearchResult & CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
      */
@@ -596,6 +602,7 @@ export type SearchResultProps = {
     type: ThingTypeName;
 };
 export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiObj & TargetLinkObj & ParameterObj & CssClassNameObj & OptionalEntityTypeObj & OnNavigateToOntology & {
+    OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
     result: SearchResultProps;
     iri: string;
     ontologyId: string;
