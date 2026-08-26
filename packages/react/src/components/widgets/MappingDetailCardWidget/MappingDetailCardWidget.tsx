@@ -98,6 +98,21 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
       value: modified || "—",
     },
     {
+      label: "Identifier:",
+      value: identifier || "—",
+    },
+    {
+      label: "Part of:",
+      value:
+        partOf && partOf !== "—" ? (
+          <EuiLink href={partOf} target="_blank" rel="noreferrer">
+            {concordanceNotation}
+          </EuiLink>
+        ) : (
+          "—"
+        ),
+    },
+    {
       label: "Download:",
       value:
         uri && uri !== "—" ? (
@@ -116,21 +131,6 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
               </EuiLink>
             ))}
           </span>
-        ) : (
-          "—"
-        ),
-    },
-    {
-      label: "Identifier:",
-      value: identifier || "—",
-    },
-    {
-      label: "Part of:",
-      value:
-        partOf && partOf !== "—" ? (
-          <EuiLink href={partOf} target="_blank" rel="noreferrer">
-            {concordanceNotation}
-          </EuiLink>
         ) : (
           "—"
         ),
