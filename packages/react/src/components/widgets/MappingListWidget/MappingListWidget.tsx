@@ -4,6 +4,10 @@ import {
   EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
+  EuiModal,
+  EuiModalBody,
+  EuiModalHeader,
+  EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
   EuiSearchBarProps,
@@ -12,7 +16,14 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+  type SVGProps,
+} from "react";
 import { useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
@@ -20,6 +31,7 @@ import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 import { MappingDetailCardWidget } from "../MappingDetailCardWidget";
+import { MetadataWidget } from "../MetadataWidget";
 
 type MappingRow = {
   /**
@@ -120,6 +132,35 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
   );
 });
 
+/**
+ * Magnifier over two lines of text: "look this target up in its terminology".
+ * Drawn by hand like the predicate and filter icons above, because the icons
+ * EUI ships are solid shapes and would not match the outline style the rest of
+ * this widget uses. Size and colour are left to the button rendering it.
+ */
+const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    /**
+     * EuiIcon paints `fill: currentColor` through a class, and a class beats a
+     * `fill="none"` attribute, which fills the lens in. An inline style wins
+     * over that class instead. No shape below carries a `fill` attribute of
+     * its own either, so EUI's `*[fill]` overrides match nothing here.
+     */
+    style={{ ...style, fill: "none" }}
+    {...props}
+  >
+    <circle cx="10" cy="10" r="6" />
+    <line x1="7" y1="8.5" x2="13" y2="8.5" />
+    <line x1="7" y1="11.5" x2="11" y2="11.5" />
+    <path d="M14.5 14.5 20 20" strokeWidth={2.1} />
+  </svg>
+));
+
 function MappingListWidget(props: MappingListWidgetProps) {
   const { api, source } = props;
 
@@ -150,6 +191,16 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [fromLabels, setFromLabels] = useState<Record<string, string>>({});
 
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+
+  /**
+   * Target entity whose metadata popup is currently open. Null while no popup
+   * is shown. The gateway only resolves an entity on its ontology route, so
+   * the scheme is kept next to the IRI.
+   */
+  const [metadataTarget, setMetadataTarget] = useState<{
+    iri: string;
+    ontologyId: string;
+  } | null>(null);
 
   /**
    * Stores what the user searched in the search bar.
@@ -452,8 +503,35 @@ function MappingListWidget(props: MappingListWidgetProps) {
       field: "to",
       name: <strong style={{ fontSize: "14px" }}>Target</strong>,
       sortable: true,
+      /**
+       * Target label, followed by a button that opens the metadata of that
+       * entity in a popup. Deliberately not the circled "i" of the table help
+       * button in the header: this one looks a single entity up rather than
+       * explaining the table. The button is only shown once the gateway resolved
+       * a label for the target, because those are exactly the entities it can
+       * also return metadata for.
+       */
       render: (to: string, item: MappingRow) => (
-        <span title={item.toUri}>{to}</span>
+        <span
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          <span title={item.toUri}>{to}</span>
+
+          {labels[item.toUri] && (
+            <EuiButtonIcon
+              iconType={MetadataIcon}
+              color="primary"
+              aria-label={`Show metadata of ${to}`}
+              title={`Show metadata of ${to}`}
+              onClick={() =>
+                setMetadataTarget({
+                  iri: item.toUri,
+                  ontologyId: item.toScheme.toLowerCase(),
+                })
+              }
+            />
+          )}
+        </span>
       ),
     },
     {
@@ -911,6 +989,28 @@ function MappingListWidget(props: MappingListWidgetProps) {
           })}
         />
       </div>
+
+      {/**
+       * Metadata of the target entity the user asked information about. Asks
+       * the gateway the same way the target labels are fetched: the v2 route
+       * of the ontology the target belongs to, so `useLegacy` has to be off.
+       */}
+      {metadataTarget && (
+        <EuiModal onClose={() => setMetadataTarget(null)} maxWidth={800}>
+          <EuiModalHeader>
+            <EuiModalHeaderTitle size="s">Entity metadata</EuiModalHeaderTitle>
+          </EuiModalHeader>
+
+          <EuiModalBody>
+            <MetadataWidget
+              api={GATEWAY_API_OLS_ENDPOINT}
+              iri={metadataTarget.iri}
+              ontologyId={metadataTarget.ontologyId}
+              useLegacy={false}
+            />
+          </EuiModalBody>
+        </EuiModal>
+      )}
     </EuiPanel>
   );
 }
