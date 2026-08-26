@@ -894,5 +894,16 @@ export type MappingDetailCardWidgetProps = {
   modified?: string;
   uri?: string;
   partOf?: string;
+  /**
+   * Values of the mapping row the card belongs to. Not shown on the card
+   * itself, but included in its CSV and TSV downloads.
+   */
+  type?: string;
+  from?: string;
+  fromUri?: string;
+  to?: string;
+  toUri?: string;
+  creator?: string;
+  created?: string;
   onClose?: () => void;
 };

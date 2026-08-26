@@ -38,6 +38,8 @@ type MappingRow = {
    * Stable identifier the table uses to keep track of which rows are expanded.
    */
   id: string;
+  from: string;
+  fromUri: string;
   to: string;
   toUri: string;
   creator: string;
@@ -654,9 +656,14 @@ function MappingListWidget(props: MappingListWidgetProps) {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
+        const rowFromUri = item.from?.memberSet?.[0]?.uri ?? "—";
+        const sourceFromColiConc =
+          item.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
         return {
           id: `${index}-${item.uri ?? toUri}`,
+          from: fromLabels[rowFromUri] ?? sourceFromColiConc,
+          fromUri: rowFromUri,
           to: labels[toUri] ?? targetFromColiConc,
           toUri,
           targetFromColiConc,
@@ -672,7 +679,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
           partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
-    [data, labels],
+    [data, labels, fromLabels],
   );
 
   /**
@@ -728,6 +735,13 @@ function MappingListWidget(props: MappingListWidgetProps) {
           modified={row.modified}
           uri={row.uri}
           partOf={row.partOf}
+          type={row.type}
+          from={row.from}
+          fromUri={row.fromUri}
+          to={row.to}
+          toUri={row.toUri}
+          creator={row.creator}
+          created={row.createdLabel}
           onClose={() => toggleRowExpansion(row)}
         />
       );
