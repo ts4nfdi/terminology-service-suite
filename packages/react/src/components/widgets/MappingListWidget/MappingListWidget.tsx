@@ -4,7 +4,6 @@ import {
   EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
-  EuiModal,
   EuiPanel,
   EuiPopover,
   EuiSearchBarProps,
@@ -23,6 +22,10 @@ import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 import { MappingDetailCardWidget } from "../MappingDetailCardWidget";
 
 type MappingRow = {
+  /**
+   * Stable identifier the table uses to keep track of which rows are expanded.
+   */
+  id: string;
   to: string;
   toUri: string;
   creator: string;
@@ -37,6 +40,13 @@ type MappingRow = {
   uri: string;
   partOf: string;
 };
+
+/**
+ * Width of the trailing "Mapping info" column. Just enough for its header and
+ * the expand toggle underneath it, so the rest of the table width is shared
+ * between the auto-sized columns.
+ */
+const MAPPING_INFO_COLUMN_WIDTH = "120px";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -164,23 +174,17 @@ function MappingListWidget(props: MappingListWidgetProps) {
     }
   };
 
-  const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
-  const [mappingDetailData, setMappingDetailData] = useState<
-    Record<string, string>
-  >({});
+  /**
+   * Ids of the rows whose detail card is currently expanded underneath them.
+   */
+  const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
 
-  function handleDetailCardOpen(source: string, row: MappingRow) {
-    setMappingDetailData({
-      source,
-      target: row.toUri,
-      fromScheme: row.fromScheme,
-      toScheme: row.toScheme,
-      identifier: row.identifier,
-      modified: row.modified,
-      uri: row.uri,
-      partOf: row.partOf,
-    });
-    setIsDetailCardOpen(true);
+  function toggleRowExpansion(row: MappingRow) {
+    setExpandedRowIds((prevState) =>
+      prevState.includes(row.id)
+        ? prevState.filter((expandedId) => expandedId !== row.id)
+        : [...prevState, row.id],
+    );
   }
   /**
    * Prevent clicks on the filter icon from triggering the column sort.
@@ -447,7 +451,6 @@ function MappingListWidget(props: MappingListWidgetProps) {
     {
       field: "to",
       name: <strong style={{ fontSize: "14px" }}>Target</strong>,
-      truncateText: true,
       sortable: true,
       render: (to: string, item: MappingRow) => (
         <span title={item.toUri}>{to}</span>
@@ -467,19 +470,38 @@ function MappingListWidget(props: MappingListWidgetProps) {
       render: (_created: string, item: MappingRow) => item.createdLabel,
     },
     {
-      field: "info",
-      name: <strong style={{ fontSize: "14px" }}>Info</strong>,
-      width: "68px",
-      align: "right",
-      render: (_info: unknown, item: MappingRow) => (
-        <EuiButtonIcon
-          iconType="inspect"
-          color="primary"
-          aria-label="Show mapping details"
-          title="Show mapping details"
-          onClick={() => handleDetailCardOpen(fromLabel, item)}
-        />
-      ),
+      name: <strong style={{ fontSize: "14px" }}>Mapping info</strong>,
+      align: "center",
+
+      /**
+       * Only as wide as its own content needs to be. Because the table uses a
+       * fixed layout, giving this column an explicit width lets the browser
+       * spread the remaining space across the columns that have none.
+       */
+      width: MAPPING_INFO_COLUMN_WIDTH,
+
+      /**
+       * Expand toggle for the mapping details. Clicking it opens the detail
+       * card in a row underneath the mapping.
+       */
+      render: (item: MappingRow) => {
+        const isExpanded = expandedRowIds.includes(item.id);
+
+        return (
+          <EuiButtonIcon
+            iconType={isExpanded ? "arrowUp" : "arrowDown"}
+            color="text"
+            aria-label={
+              isExpanded
+                ? `Collapse details of ${item.to}`
+                : `Expand details of ${item.to}`
+            }
+            aria-expanded={isExpanded}
+            title={isExpanded ? "Hide mapping details" : "Show mapping details"}
+            onClick={() => toggleRowExpansion(item)}
+          />
+        );
+      },
     },
   ];
 
@@ -550,12 +572,13 @@ function MappingListWidget(props: MappingListWidgetProps) {
    */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any) => {
+      (data ?? []).map((item: any, index: number) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
 
         return {
+          id: `${index}-${item.uri ?? toUri}`,
           to: labels[toUri] ?? targetFromColiConc,
           toUri,
           targetFromColiConc,
@@ -608,6 +631,32 @@ function MappingListWidget(props: MappingListWidgetProps) {
       return matchesTypeFilter && matchesSearch;
     });
   }, [rows, appliedTypeFilters, searchedQuery]);
+
+  /**
+   * Detail card rendered underneath every expanded row. EUI looks the row up
+   * by its id, so only rows currently visible in the table need an entry.
+   */
+  const itemIdToExpandedRowMap = useMemo(() => {
+    const expandedRows: Record<string, ReactNode> = {};
+
+    filteredRows.forEach((row) => {
+      if (!expandedRowIds.includes(row.id)) return;
+
+      expandedRows[row.id] = (
+        <MappingDetailCardWidget
+          fromScheme={row.fromScheme}
+          toScheme={row.toScheme}
+          identifier={row.identifier}
+          modified={row.modified}
+          uri={row.uri}
+          partOf={row.partOf}
+          onClose={() => toggleRowExpansion(row)}
+        />
+      );
+    });
+
+    return expandedRows;
+  }, [filteredRows, expandedRowIds]);
 
   const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
   const sourceFromColiConc =
@@ -773,7 +822,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
       <EuiSpacer size="xl" />
 
       {/**
-       * Table, with the mapping details shown in a modal on top of it.
+       * Table, with the mapping details shown in a row expanded underneath
+       * the target entity the user clicked.
        */}
       <div>
         <EuiInMemoryTable<MappingRow>
@@ -784,41 +834,64 @@ function MappingListWidget(props: MappingListWidgetProps) {
             tbody .euiTableRow:nth-of-type(even) {
               background-color: #fff5fa;
             }
+            /**
+               * Keep the zebra striping counting mapping rows only, so the
+               * detail row of an expanded mapping does not flip the colour of
+               * every row below it. Browsers without \`nth-child(... of ...)\`
+               * fall back to the plain nth-of-type rules above.
+               */
+            tbody
+              .euiTableRow:nth-child(odd of :not(.euiTableRow-isExpandedRow)) {
+              background-color: #ffffff;
+            }
+            tbody
+              .euiTableRow:nth-child(even of :not(.euiTableRow-isExpandedRow)) {
+              background-color: #fff5fa;
+            }
             tbody .euiTableRow td {
               transition:
                 background-color 150ms ease,
                 box-shadow 150ms ease;
             }
             /**
-               * Blue ring around the row whose detail card is open.
-               * Drawn with inset box-shadows instead of a border so no cell
-               * shifts when a row gets selected, and applied per cell because
-               * a table row itself does not paint a box-shadow reliably.
+               * Blue ring around an expanded row and the detail row that
+               * follows it, so both read as one block. Drawn with inset
+               * box-shadows instead of a border so no cell shifts when a row
+               * gets expanded, and applied per cell because a table row itself
+               * does not paint a box-shadow reliably.
                */
-            tbody .euiTableRow.mappingRowSelected td {
+            tbody .euiTableRow.mappingRowSelected td,
+            tbody .euiTableRow.mappingRowSelected + tr td {
               background-color: #eaf2ff;
-              box-shadow:
-                inset 0 2px 0 0 #2f6fed,
-                inset 0 -2px 0 0 #2f6fed;
+            }
+            tbody .euiTableRow.mappingRowSelected td {
+              box-shadow: inset 0 2px 0 0 #2f6fed;
             }
             tbody .euiTableRow.mappingRowSelected td:first-of-type {
-              border-radius: 6px 0 0 6px;
+              border-radius: 6px 0 0 0;
               box-shadow:
                 inset 2px 0 0 0 #2f6fed,
-                inset 0 2px 0 0 #2f6fed,
-                inset 0 -2px 0 0 #2f6fed;
+                inset 0 2px 0 0 #2f6fed;
             }
             tbody .euiTableRow.mappingRowSelected td:last-of-type {
-              border-radius: 0 6px 6px 0;
+              border-radius: 0 6px 0 0;
               box-shadow:
                 inset -2px 0 0 0 #2f6fed,
-                inset 0 2px 0 0 #2f6fed,
+                inset 0 2px 0 0 #2f6fed;
+            }
+            tbody .euiTableRow.mappingRowSelected + tr td {
+              border-radius: 0 0 6px 6px;
+              box-shadow:
+                inset 2px 0 0 0 #2f6fed,
+                inset -2px 0 0 0 #2f6fed,
                 inset 0 -2px 0 0 #2f6fed;
             }
           `}
           tableCaption="Mapping list"
           responsiveBreakpoint={false}
           items={filteredRows}
+          itemId="id"
+          itemIdToExpandedRowMap={itemIdToExpandedRowMap}
           search={search}
           sorting={{
             sort: {
@@ -829,32 +902,14 @@ function MappingListWidget(props: MappingListWidgetProps) {
           columns={columns}
           pagination={true}
           /**
-           * Highlight the row whose detail card is currently open.
+           * Highlight the row whose detail card is currently expanded.
            */
           rowProps={(row: MappingRow) => ({
-            className:
-              isDetailCardOpen && row.toUri === mappingDetailData.target
-                ? "mappingRowSelected"
-                : undefined,
+            className: expandedRowIds.includes(row.id)
+              ? "mappingRowSelected"
+              : undefined,
           })}
         />
-
-        {isDetailCardOpen && (
-          <EuiModal
-            onClose={() => setIsDetailCardOpen(false)}
-            aria-label="Mapping details"
-            style={{ width: "640px", maxWidth: "90vw" }}
-          >
-            <MappingDetailCardWidget
-              fromScheme={mappingDetailData.fromScheme}
-              toScheme={mappingDetailData.toScheme}
-              identifier={mappingDetailData.identifier}
-              modified={mappingDetailData.modified}
-              uri={mappingDetailData.uri}
-              partOf={mappingDetailData.partOf}
-            />
-          </EuiModal>
-        )}
       </div>
     </EuiPanel>
   );
