@@ -1,10 +1,4 @@
-import {
-  EuiButtonIcon,
-  EuiIcon,
-  EuiPanel,
-  EuiText,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiButtonIcon, EuiIcon, EuiPanel, EuiText } from "@elastic/eui";
 import type { ReactNode } from "react";
 
 type MappingDetailCardField = {
@@ -36,21 +30,10 @@ export default function MappingDetailCardPresentation(
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-          marginBottom: "16px",
+          justifyContent: "flex-end",
+          marginBottom: "8px",
         }}
       >
-        <div>
-          <EuiTitle size="xs">
-            <h2 style={{ margin: 0 }}>Mapping details</h2>
-          </EuiTitle>
-          <EuiText size="xs" color="subdued">
-            Selected mapping summary
-          </EuiText>
-        </div>
-
         {onClose ? (
           <EuiButtonIcon
             iconType="cross"
