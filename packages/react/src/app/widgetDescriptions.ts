@@ -497,30 +497,42 @@ The widget currently does not work correctly for **properties**. This is due to 
 `.trim();
 
 export const MappingListDetailDescription = `
-The MappingListWidget is a table-based visualization component designed to display mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. The widget fetches mapping relations dynamically using a provided API endpoint and a source entity IRI, allowing users to inspect how a specific concept is connected to related target concepts across terminologies.
+The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and a source entity IRI, it fetches every mapping of that concept and shows how it is connected to target concepts across terminologies.
 
 #### Key Features:
 
 - **Dynamic mapping retrieval**:
-Fetches mappings directly from the ColiConc mapping endpoint using a provided source entity IRI and displays all related target mappings in real time.
+Fetches all mappings of the given source IRI from the ColiConc mapping endpoint and displays them in real time.
 
-- **Human-readable target display**:
-Uses the OLS Gateway API to resolve target entity labels when available, while keeping the original ColiConc target notation as a fallback.
+- **Human-readable labels**:
+Resolves both the source and the target entities to readable labels through the OLS Gateway API, and falls back to their original ColiConc notation when no label is found.
 
 - **Structured mapping table**:
-Displays mapping results in a clean tabular layout with key metadata such as target, creator, mapping type, and creation date.
+Lists each mapping with its type, target, creator and creation date. The table can be sorted by any of these four columns, and long result sets are paginated.
 
 - **ColiConc-based search**:
-Provides a search bar for filtering mappings by the original ColiConc target notation and creator. The search is applied only to data returned by the ColiConc mapping endpoint, not to labels resolved later through the OLS Gateway API.
+Filters the table by target notation and creator. The search runs on the data returned by ColiConc, not on the labels resolved later through the OLS Gateway API.
 
 - **Mapping type filtering**:
-Allows users to filter mappings by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, \`broadMatch\`, \`narrowMatch\`, \`relatedMatch\`, and \`mappingRelation\`.
+Filters the table by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, \`broadMatch\`, \`narrowMatch\`, \`relatedMatch\` and \`mappingRelation\`.
 
 - **Mapping type visualization**:
-Displays semantic mapping relations with compact visual icons, making different SKOS mapping types easier to identify in the table.
+Marks every mapping type with a compact icon, making the different SKOS relations easier to tell apart at a glance.
+
+- **Expandable mapping details**:
+A toggle in the Mapping info column opens a detail card under the row, holding the schemes, dates, identifier and concordance of that mapping. The row stays highlighted while its card is open.
+
+- **Mapping downloads**:
+The detail card offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
+
+- **Target entity metadata**:
+A magnifier next to a target opens that entity's metadata in a popup, loaded from the OLS Gateway API by its IRI. It is shown only for targets the gateway could resolve, and closes on its close button, a click outside it, or the Escape key.
+
+- **Built-in help**:
+An info button in the header explains what source, type and target mean, together with a small diagram of the relation between them.
 
 - **Cross-terminology exploration**:
-Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
+Shows how a single source concept is connected to concepts in other terminologies or classification systems.
 `.trim();
 
 export const MappingDetailCardDescription = `
