@@ -62,6 +62,11 @@ type MappingRow = {
  */
 const MAPPING_DETAILS_COLUMN_WIDTH = "140px";
 
+/**
+ * Background of every other table row when the caller does not pick one.
+ */
+const DEFAULT_ROW_COLOR = "#fff5fa";
+
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
   month: "short",
@@ -164,7 +169,7 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 ));
 
 function MappingListWidget(props: MappingListWidgetProps) {
-  const { api, source } = props;
+  const { api, source, rowColor = DEFAULT_ROW_COLOR } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -924,7 +929,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
               background-color: #ffffff;
             }
             tbody .euiTableRow:nth-of-type(even) {
-              background-color: #fff5fa;
+              background-color: ${rowColor};
             }
             /**
                * Keep the zebra striping counting mapping rows only, so the
@@ -938,7 +943,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
             }
             tbody
               .euiTableRow:nth-child(even of :not(.euiTableRow-isExpandedRow)) {
-              background-color: #fff5fa;
+              background-color: ${rowColor};
             }
             tbody .euiTableRow td {
               transition:
@@ -1034,7 +1039,13 @@ function MappingListWidget(props: MappingListWidgetProps) {
 }
 
 export function WrappedMappingListWidget(props: MappingListWidgetProps) {
-  return <MappingListWidget api={props.api} source={props.source} />;
+  return (
+    <MappingListWidget
+      api={props.api}
+      source={props.source}
+      rowColor={props.rowColor}
+    />
+  );
 }
 
 export { MappingListWidget };

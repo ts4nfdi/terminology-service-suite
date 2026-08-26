@@ -885,6 +885,7 @@ export type EntityListWidgetProps = {
 export type MappingListWidgetProps = {
   api: string;
   source: string;
+  rowColor?: string;
 };
 
 export type MappingDetailCardWidgetProps = {
