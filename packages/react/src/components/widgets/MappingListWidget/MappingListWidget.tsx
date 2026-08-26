@@ -996,7 +996,11 @@ function MappingListWidget(props: MappingListWidgetProps) {
        * of the ontology the target belongs to, so `useLegacy` has to be off.
        */}
       {metadataTarget && (
-        <EuiModal onClose={() => setMetadataTarget(null)} maxWidth={800}>
+        <EuiModal
+          onClose={() => setMetadataTarget(null)}
+          maxWidth={800}
+          outsideClickCloses
+        >
           <EuiModalHeader>
             <EuiModalHeaderTitle size="s">Entity metadata</EuiModalHeaderTitle>
           </EuiModalHeader>
