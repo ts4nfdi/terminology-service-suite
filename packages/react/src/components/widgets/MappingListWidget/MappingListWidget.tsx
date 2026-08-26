@@ -56,11 +56,11 @@ type MappingRow = {
 };
 
 /**
- * Width of the trailing "Mapping info" column. Just enough for its header and
- * the expand toggle underneath it, so the rest of the table width is shared
- * between the auto-sized columns.
+ * Width of the trailing "Mapping details" column. Just enough for its header
+ * and the expand toggle underneath it, so the rest of the table width is
+ * shared between the auto-sized columns.
  */
-const MAPPING_INFO_COLUMN_WIDTH = "120px";
+const MAPPING_DETAILS_COLUMN_WIDTH = "140px";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -550,7 +550,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
       render: (_created: string, item: MappingRow) => item.createdLabel,
     },
     {
-      name: <strong style={{ fontSize: "14px" }}>Mapping info</strong>,
+      name: <strong style={{ fontSize: "14px" }}>Mapping details</strong>,
       align: "center",
 
       /**
@@ -558,7 +558,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
        * fixed layout, giving this column an explicit width lets the browser
        * spread the remaining space across the columns that have none.
        */
-      width: MAPPING_INFO_COLUMN_WIDTH,
+      width: MAPPING_DETAILS_COLUMN_WIDTH,
 
       /**
        * Expand toggle for the mapping details. Clicking it opens the detail

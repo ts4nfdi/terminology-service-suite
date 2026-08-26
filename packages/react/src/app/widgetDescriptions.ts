@@ -520,7 +520,7 @@ Filters the table by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, 
 Marks every mapping type with a compact icon, making the different SKOS relations easier to tell apart at a glance.
 
 - **Expandable mapping details**:
-A toggle in the Mapping info column opens a detail card under the row, holding the schemes, dates, identifier and concordance of that mapping. The row stays highlighted while its card is open.
+A toggle in the Mapping details column opens a detail card under the row, holding the schemes, dates, identifier and concordance of that mapping. The row stays highlighted while its card is open.
 
 - **Mapping downloads**:
 The detail card offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
