@@ -142,7 +142,7 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
  */
 const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
   <svg
-    viewBox="0 0 24 24"
+    viewBox="2 2 20 20"
     stroke="currentColor"
     strokeWidth={1.8}
     strokeLinecap="round"
