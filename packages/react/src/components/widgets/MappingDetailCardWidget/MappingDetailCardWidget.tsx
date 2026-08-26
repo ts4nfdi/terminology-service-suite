@@ -33,10 +33,6 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
       value: toScheme || "—",
     },
     {
-      label: "Description:",
-      value: "",
-    },
-    {
       label: "Modified:",
       value: modified || "—",
     },
