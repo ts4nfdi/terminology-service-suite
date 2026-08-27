@@ -66,6 +66,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setSearchValue(query);
   }, [query]);
 
+  useEffect(() => {
+    setFilterByTypeOptions([]);
+    setFilterByOntologyOptions([]);
+  }, [api]);
+
   const [isResetting, setIsResetting] = useState(false);
 
   async function resetToInitialSearch() {
