@@ -204,11 +204,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           signal,
         )
         .then((response) => {
-          if (
-            response["response"] &&
-            response["response"]["docs"] != null &&
-            response["response"]["numFound"] != null
-          ) {
+          if (response["response"] && response["response"]["docs"] != null) {
             if (
               response["facet_counts"] &&
               response["facet_counts"]["facet_fields"]
@@ -221,7 +217,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                   (currentValue: string) =>
                     `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`,
                 );
+              } else {
+                setFilterByTypeOptions([]);
               }
+
               if (useLegacy) {
                 if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
                   updateFilterOptions(
@@ -230,6 +229,8 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               } else {
                 if (response["facet_counts"]["facet_fields"]["ontologyId"]) {
@@ -239,8 +240,13 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               }
+            } else {
+              setFilterByOntologyOptions([]);
+              setFilterByTypeOptions([]);
             }
 
             setTotalItems(response["response"]["numFound"]);
@@ -436,9 +442,18 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               <EuiSpacer size="m" />
 
               <EuiText size="xs" style={{ padding: "0 8px" }}>
-                Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
-                {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
-                {totalItems} results
+                {Number.isFinite(activePage) &&
+                Number.isFinite(itemsPerPage) &&
+                Number.isFinite(totalItems) ? (
+                  <>
+                    Showing{" "}
+                    {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
+                    {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
+                    {totalItems} results
+                  </>
+                ) : (
+                  "Result number not available"
+                )}
               </EuiText>
 
               <EuiSpacer size="s" />
