@@ -103,11 +103,13 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             array: any[],
           ) => {
             if (currentIndex % 2 === 0) {
+              if (array[currentIndex + 1] == 0) {
+                return accumulator;
+              }
               accumulator.push({
                 label: render ? render(currentValue) : currentValue,
                 key: currentValue,
                 append: "(" + array[currentIndex + 1] + ")",
-                disabled: array[currentIndex + 1] == 0,
                 data: { totalCount: array[currentIndex + 1] },
               });
             }
@@ -119,7 +121,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     } else {
       const newOptions: EuiSelectableOption[] = [];
       for (let i = 0; i < currentOptions.length; i++) {
-        newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
+        newOptions.push(Object.assign({}, currentOptions[i]));
       }
 
       optionCounts.forEach(
@@ -129,19 +131,23 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               (option: EuiSelectableOption) => option.key == currentValue,
             );
             if (option) {
-              option.append = "(" + array[currentIndex + 1];
-              if (
-                option.data &&
-                array[currentIndex + 1] < option.data.totalCount
-              ) {
-                option.append += "/" + option.data.totalCount;
+              if (array[currentIndex + 1] == 0) {
+                (option as any)._hide = true;
+              } else {
+                option.append = "(" + array[currentIndex + 1];
+                if (
+                  option.data &&
+                  array[currentIndex + 1] < option.data.totalCount
+                ) {
+                  option.append += "/" + option.data.totalCount;
+                }
+                option.append += ")";
               }
-              option.append += ")";
             }
           }
         },
       );
-      setOptions(newOptions);
+      setOptions(newOptions.filter((option: any) => !option._hide));
     }
   }
 
