@@ -928,60 +928,62 @@ function MappingListWidget(props: MappingListWidgetProps) {
             tbody .euiTableRow:nth-of-type(odd) {
               background-color: #ffffff;
             }
+
             tbody .euiTableRow:nth-of-type(even) {
               background-color: ${rowColor};
             }
+
             /**
                * Keep the zebra striping counting mapping rows only, so the
                * detail row of an expanded mapping does not flip the colour of
                * every row below it. Browsers without \`nth-child(... of ...)\`
                * fall back to the plain nth-of-type rules above.
                */
+
             tbody
               .euiTableRow:nth-child(odd of :not(.euiTableRow-isExpandedRow)) {
               background-color: #ffffff;
             }
+
             tbody
               .euiTableRow:nth-child(even of :not(.euiTableRow-isExpandedRow)) {
               background-color: ${rowColor};
             }
+
             tbody .euiTableRow td {
               transition:
                 background-color 150ms ease,
                 box-shadow 150ms ease;
             }
-            /**
-               * Blue ring around an expanded row and the detail row that
-               * follows it, so both read as one block. Drawn with inset
-               * box-shadows instead of a border so no cell shifts when a row
-               * gets expanded, and applied per cell because a table row itself
-               * does not paint a box-shadow reliably.
-               */
-            tbody .euiTableRow.mappingRowSelected td,
+
             tbody .euiTableRow.mappingRowSelected + tr td {
-              background-color: #eaf2ff;
+              background-color: #ffffff;
             }
+
             tbody .euiTableRow.mappingRowSelected td {
-              box-shadow: inset 0 2px 0 0 #2f6fed;
+              box-shadow: inset 0 2px 0 0 #ceced3;
             }
+
             tbody .euiTableRow.mappingRowSelected td:first-of-type {
               border-radius: 6px 0 0 0;
               box-shadow:
-                inset 2px 0 0 0 #2f6fed,
-                inset 0 2px 0 0 #2f6fed;
+                inset 2px 0 0 0 #ceced3,
+                inset 0 2px 0 0 #ceced3;
             }
+
             tbody .euiTableRow.mappingRowSelected td:last-of-type {
               border-radius: 0 6px 0 0;
               box-shadow:
-                inset -2px 0 0 0 #2f6fed,
-                inset 0 2px 0 0 #2f6fed;
+                inset -2px 0 0 0 #ceced3,
+                inset 0 2px 0 0 #ceced3;
             }
+
             tbody .euiTableRow.mappingRowSelected + tr td {
               border-radius: 0 0 6px 6px;
               box-shadow:
-                inset 2px 0 0 0 #2f6fed,
-                inset -2px 0 0 0 #2f6fed,
-                inset 0 -2px 0 0 #2f6fed;
+                inset 2px 0 0 0 #ceced3,
+                inset -2px 0 0 0 #ceced3,
+                inset 0 -2px 0 0 #ceced3;
             }
           `}
           tableCaption="Mapping list"
