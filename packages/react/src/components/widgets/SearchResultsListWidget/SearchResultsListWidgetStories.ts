@@ -29,7 +29,7 @@ export const SearchResultsListWidgetStoryArgTypes = {
 
 export const SearchResultsListWidgetStoryArgs = {
   api: "",
-  useLegacy: true,
+  useLegacy: false,
   query: "",
   initialItemsPerPage: 10,
   itemsPerPageOptions: [10, 25, 50, 100],
@@ -67,7 +67,7 @@ export const NFDI4HealthArgs = {
   targetLink: "",
   parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   preselected: [{ label: "diabetes" }],
-  useLegacy: true,
+  useLegacy: false,
 };
 
 export const TibNFDI4CHEMArgs = {
