@@ -542,6 +542,10 @@ function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <SearchResultsListWidget
+          useLegacy={props.useLegacy}
+          preselected={props.preselected}
+          className={props.className}
+          onNavigateToOntology={props.onNavigateToOntology}
           api={props.api}
           query={props.query}
           parameter={props.parameter}
