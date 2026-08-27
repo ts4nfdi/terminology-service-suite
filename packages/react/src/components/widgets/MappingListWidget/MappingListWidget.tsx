@@ -168,7 +168,7 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 ));
 
 function MappingListWidget(props: MappingListWidgetProps) {
-  const { api, source, rowColor } = props;
+  const { api, source, rowColor, MappingDetailCardBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -746,13 +746,14 @@ function MappingListWidget(props: MappingListWidgetProps) {
           toUri={row.toUri}
           creator={row.creator}
           created={row.createdLabel}
+          MappingDetailCardBackgroundColor={MappingDetailCardBackgroundColor}
           onClose={() => toggleRowExpansion(row)}
         />
       );
     });
 
     return expandedRows;
-  }, [filteredRows, expandedRowIds]);
+  }, [filteredRows, expandedRowIds, MappingDetailCardBackgroundColor]);
 
   const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
   const sourceFromColiConc =
@@ -1043,6 +1044,7 @@ export function WrappedMappingListWidget(props: MappingListWidgetProps) {
       api={props.api}
       source={props.source}
       rowColor={props.rowColor}
+      MappingDetailCardBackgroundColor={props.MappingDetailCardBackgroundColor}
     />
   );
 }

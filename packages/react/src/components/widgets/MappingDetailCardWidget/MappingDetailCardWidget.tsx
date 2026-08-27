@@ -28,6 +28,7 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
     toUri,
     creator,
     created,
+    MappingDetailCardBackgroundColor,
     onClose,
   } = props;
 
@@ -148,7 +149,13 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
     },
   ];
 
-  return <MappingDetailCardPresentation fields={fields} onClose={onClose} />;
+  return (
+    <MappingDetailCardPresentation
+      fields={fields}
+      MappingDetailCardBackgroundColor={MappingDetailCardBackgroundColor}
+      onClose={onClose}
+    />
+  );
 }
 
 export function WrappedMappingDetailCardWidget() {

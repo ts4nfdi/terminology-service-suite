@@ -8,13 +8,18 @@ type MappingDetailCardField = {
 
 type MappingDetailCardPresentationProps = {
   fields: MappingDetailCardField[];
+  MappingDetailCardBackgroundColor?: string;
   onClose?: () => void;
 };
 
 export default function MappingDetailCardPresentation(
   props: MappingDetailCardPresentationProps,
 ) {
-  const { fields, onClose } = props;
+  const {
+    fields,
+    MappingDetailCardBackgroundColor = "#fff5fa",
+    onClose,
+  } = props;
 
   return (
     <EuiPanel
@@ -24,7 +29,7 @@ export default function MappingDetailCardPresentation(
         overflow: "hidden",
         border: "none",
         borderRadius: 14,
-        background: "#fff5fa",
+        background: MappingDetailCardBackgroundColor,
       }}
     >
       <div

@@ -886,6 +886,7 @@ export type MappingListWidgetProps = {
   api: string;
   source: string;
   rowColor?: string;
+  MappingDetailCardBackgroundColor?: string;
 };
 
 export type MappingDetailCardWidgetProps = {
@@ -906,5 +907,9 @@ export type MappingDetailCardWidgetProps = {
   toUri?: string;
   creator?: string;
   created?: string;
+  /**
+   * Background of the card, as any CSS color value.
+   */
+  MappingDetailCardBackgroundColor?: string;
   onClose?: () => void;
 };
