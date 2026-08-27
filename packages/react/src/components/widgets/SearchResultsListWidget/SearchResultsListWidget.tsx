@@ -233,10 +233,25 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                   setFilterByOntologyOptions([]);
                 }
               } else {
-                if (response["facet_counts"]["facet_fields"]["ontologyId"]) {
+                const ontologyFacet =
+                  response["facet_counts"]["facet_fields"]["ontologyId"];
+
+                if (ontologyFacet) {
+                  const flattenedOntologyCounts: any[] = Array.isArray(
+                    ontologyFacet,
+                  )
+                    ? ontologyFacet
+                    : Object.values(ontologyFacet).reduce(
+                        (accumulator: any[], chunk: any) =>
+                          Array.isArray(chunk)
+                            ? accumulator.concat(chunk)
+                            : accumulator,
+                        [],
+                      );
+
                   updateFilterOptions(
                     filterByOntologyOptions,
-                    response["facet_counts"]["facet_fields"]["ontologyId"],
+                    flattenedOntologyCounts,
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
