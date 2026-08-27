@@ -7,6 +7,7 @@ export const MappingListWidgetStoryArgTypes = {
 export const MappingListWidgetStoryArgs_OEO_00000150 = {
   api: "https://coli-conc.gbv.de/api/",
   source: "https://openenergyplatform.org/ontology/oeo/OEO_00000150",
+  rowColor: "#fff5fa",
 } as const;
 
 export const MappingListWidgetStoryArgs_Q259745 = {
@@ -18,19 +19,19 @@ export const MappingListWidgetStoryArgs_Q259745 = {
 export const MappingListWidgetStoryArgs_Energy = {
   api: "https://coli-conc.gbv.de/api/",
   source: "https://schema.org/Energy",
-  rowColor: "#fae0e5",
+  rowColor: "#faf8e0",
 } as const;
 
 export const MappingListWidgetStoryArgs_Rec_B_2000 = {
   api: "https://coli-conc.gbv.de/api/",
   source: "http://uri.gbv.de/terminology/nsk/Rec%20B%202000",
-  rowColor: "#f8e0f4",
+  rowColor: "#ffe9dc",
 } as const;
 
 export const MappingListWidgetStoryArgs_Ges_C_2700 = {
   api: "https://coli-conc.gbv.de/api/",
   source: "http://uri.gbv.de/terminology/nsk/Ges%20C%202700",
-  rowColor: "#ffd5ea",
+  rowColor: "#ffd5d5",
 } as const;
 
 export const MappingListWidgetStoryArgs_B14C4A = {

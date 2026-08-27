@@ -510,6 +510,9 @@ Resolves both the source and the target entities to readable labels through the 
 - **Structured mapping table**:
 Lists each mapping with its type, target, creator and creation date. The table can be sorted by any of these four columns, and long result sets are paginated.
 
+- **Custom row color**:
+The optional \`rowColor\` parameter sets the background of every other row. It defaults to a light pink.
+
 - **ColiConc-based search**:
 Filters the table by target notation and creator. The search runs on the data returned by ColiConc, not on the labels resolved later through the OLS Gateway API.
 
