@@ -48,6 +48,14 @@ export const DefaultArgs = {
   useLegacy: false,
 };
 
+export const ApiGatewayArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
+  parameter: "collectionId=b9503ef6-c201-4418-8e30-37a4f7ef0677",
+  useLegacy: false,
+};
+
 export const NavigateToSearchResultArgs = {
   ...DefaultArgs,
   OnNavigateToSearchResult: "Console message",
