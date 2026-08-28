@@ -21,10 +21,74 @@ import Tooltip from "../../helperComponents/Tooltip";
 import { BreadcrumbPresentation } from "../MetadataWidget";
 import { getConstrainedSynonym } from "./utils";
 
+export interface EntityValue {
+  iri?: string;
+  label?: string;
+  ontology_name?: string;
+  type?: string;
+  short_form?: string;
+  description?: string;
+  provider_name?: string;
+  provider_type?: string;
+  provider_api?: string;
+  synonyms?: string[];
+}
+
+const EMPTY_ENTITY_VALUE: EntityValue = {
+  iri: "",
+  label: "",
+  ontology_name: "",
+  type: "",
+  short_form: "",
+  description: "",
+  provider_name: "",
+  provider_type: "",
+  provider_api: "",
+  synonyms: [],
+};
+
+function buildValueFromGetters(
+  source: any,
+  overrides: Partial<EntityValue> = {},
+): EntityValue {
+  return {
+    iri: source?.getIri?.() ?? "",
+    label: source?.getLabel?.() ?? "",
+    ontology_name: source?.getOntologyId?.() ?? "",
+    type: source?.getType?.() ?? "",
+    short_form: source?.getShortForm?.() ?? "",
+    description: source?.getDescription?.() ?? "",
+    provider_name: source?.getProviderName?.() ?? "",
+    provider_type: source?.getProviderType?.() ?? "",
+    provider_api: source?.getProviderApi?.() ?? "",
+    synonyms: source?.getSynonyms?.() ?? [],
+    ...overrides,
+  };
+}
+
+function buildValueFromPlainObject(
+  source: any,
+  overrides: Partial<EntityValue> = {},
+): EntityValue {
+  return {
+    ...EMPTY_ENTITY_VALUE,
+    iri: source?.iri ?? "",
+    label: source?.label ?? "",
+    ontology_name: source?.ontology_name ?? "",
+    type: source?.type ?? "",
+    short_form: source?.short_form ?? "",
+    description: source?.description ?? "",
+    provider_name: source?.provider_name ?? "",
+    provider_type: source?.provider_type ?? "",
+    provider_api: source?.provider_api ?? "",
+    ...overrides,
+  };
+}
+
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */
-function AutocompleteWidget(props: AutocompleteWidgetProps) {
+function AutocompleteWidget(props: AutocompleteWidgetProps): JSX.Element {
   const {
     api,
     parameter,
@@ -40,6 +104,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     useLegacy,
     initialSearchQuery,
     onNavigateToOntology,
+    showApiRequestButton = true,
     ...rest
   } = props;
 
@@ -58,20 +123,43 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   /**
    * The set of available options
    */
-  const [options, setOptions] = useState<Array<EuiComboBoxOptionOption<any>>>(
-    [],
-  );
+  const [options, setOptions] = useState<
+    Array<EuiComboBoxOptionOption<EntityValue>>
+  >([]);
 
   /**
    * Store current set of select Options. A subset of options.
    */
   const [selectedOptions, setSelectedOptions] = useState<
-    Array<EuiComboBoxOptionOption<any>>
+    Array<EuiComboBoxOptionOption<EntityValue>>
   >([]);
 
   const finalClassName = className || "ts4nfdi-autocomplete-style";
 
   const [displaySuggestions, setDisplaySuggestions] = useState<boolean>(false);
+
+  const [currentJsonUrl, setCurrentJsonUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      setCurrentJsonUrl(
+        olsApi.getSelectRequestUrl(
+          { query: searchValue },
+          undefined,
+          undefined,
+          parameter,
+        ),
+      );
+    } else {
+      setCurrentJsonUrl("");
+    }
+  }, [searchValue, parameter]);
+
+  function openJsonInNewWindow(): void {
+    if (currentJsonUrl) {
+      window.open(currentJsonUrl, "_blank", "noopener,noreferrer");
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -227,16 +315,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     return {
       label: preselectedElement.label,
       key: preselectedElement.label,
-      value: {
-        iri: preselectedElement.iri || "",
-        label: preselectedElement.label,
-        ontology_name: preselectedElement.ontology_name ?? "",
-        type: preselectedElement.type ?? "",
-        short_form: preselectedElement.short_form ?? "",
-        description: preselectedElement.description ?? "",
-        source: preselectedElement.source ?? "",
-        source_url: preselectedElement.source_url ?? "",
-      },
+      value: buildValueFromPlainObject(preselectedElement),
     };
   }
 
@@ -251,14 +330,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
         ? selection.getLabel()
         : generateDisplayLabel(selection),
       key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
-      value: {
-        iri: selection.getIri(),
-        label: selection.getLabel(),
-        ontology_name: selection.getOntologyId(),
-        type: selection.getType(),
-        short_form: selection.getShortForm(),
-        description: selection.getDescription(),
-      },
+      value: buildValueFromGetters(selection),
     };
   }
 
@@ -266,26 +338,18 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
    * For preselected property
    * Creates option from OLS4 API entity response
    * @param entity The Entity object response
-   * @param customeMetadata custom metadata to be added to the option. This metadata comes from the provided preselected object by the client. if an metadata exists in the custom metadata, the component should give a higher priority to it than the target TS resonse.
+   * @param customMetadata custom metadata to be added to the option. This metadata comes from the provided preselected object by the client. if an metadata exists in the custom metadata, the component should give a higher priority to it than the target TS resonse.
    */
   function createEntityOption(
     entity: Entity,
-    customeMetadata: any,
+    customMetadata: any,
   ): EuiComboBoxOptionOption<any> {
     return {
       label: hasShortSelectedLabel
         ? entity.getLabel()
         : generateDisplayLabel(entity),
       key: `${entity.getOntologyId()}::${entity.getIri()}::${entity.getType()}`,
-      value: {
-        iri: entity.getIri(),
-        label: entity.getLabel(),
-        ontology_name: entity.getOntologyId(),
-        type: entity.getType(),
-        short_form: entity.getShortForm(),
-        description: entity.getDescription(),
-        ...customeMetadata,
-      },
+      value: buildValueFromGetters(entity, customMetadata),
     };
   }
 
@@ -407,7 +471,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   const { isLoading: isLoadingOnMount } = useQuery(
     ["onMount", preselected],
     async () => {
-      let preselectedOptions: EuiComboBoxOptionOption<any>[] = [];
+      const preselectedOptions: EuiComboBoxOptionOption<any>[] = [];
 
       let uniqueValues = [...new Set(preselected ?? [])].filter(
         (option) => (allowCustomTerms && option.label) || option.iri,
@@ -461,60 +525,30 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
             if (response) {
               setOptions(
                 response.properties.map((selection: any) => {
-                  const type = selection.getType();
+                  const type = selection.getType
+                    ? selection.getType()
+                    : "ontology";
+                  const isOntology = type === "ontology";
 
-                  if (type === "ontology") {
-                    const label =
-                      (selection.getLabel && selection.getLabel()) ||
+                  const label = isOntology
+                    ? (selection.getLabel && selection.getLabel()) ||
                       (selection.getOntologyId && selection.getOntologyId()) ||
-                      "Unknown ontology name";
+                      "Unknown ontology name"
+                    : hasShortSelectedLabel
+                      ? selection.getLabel()
+                      : generateDisplayLabel(selection);
 
-                    return {
-                      label: hasShortSelectedLabel ? label : label,
-                      key: `${selection.getOntologyId ? selection.getOntologyId() : "unknown"}::${selection.getIri ? selection.getIri() : "unknown"}::unknown`,
-                      value: {
-                        iri: selection.getIri ? selection.getIri() : "",
-                        label: label,
-                        ontology_name: selection.getOntologyId
-                          ? selection.getOntologyId()
-                          : "",
-                        type: "ontology",
-                        short_form: "",
-                        description: selection.getDescription
-                          ? selection.getDescription()
-                          : "",
-                        source: selection.getApiSourceName
-                          ? selection.getApiSourceName()
-                          : "",
-                        source_url: selection.getApiSourceEndpoint
-                          ? selection.getApiSourceEndpoint()
-                          : "",
-                        synonyms: selection.getSynonyms()
-                          ? selection.getSynonyms()
-                          : [],
-                      },
-                    };
-                  } else {
-                    return {
-                      label: hasShortSelectedLabel
-                        ? selection.getLabel()
-                        : generateDisplayLabel(selection),
-                      key: `${selection.getOntologyId()}::${selection.getIri()}::${selection.getType()}`,
-                      value: {
-                        iri: selection.getIri(),
-                        label: selection.getLabel(),
-                        ontology_name: selection.getOntologyId(),
-                        type: selection.getType(),
-                        short_form: selection.getShortForm(),
-                        description: selection.getDescription(),
-                        source: selection.getApiSourceName(),
-                        source_url: selection.getApiSourceEndpoint(),
-                        synonyms: selection.getSynonyms()
-                          ? selection.getSynonyms()
-                          : [],
-                      },
-                    };
-                  }
+                  return {
+                    label,
+                    key: `${selection.getOntologyId ? selection.getOntologyId() : "unknown"}::${
+                      selection.getIri ? selection.getIri() : "unknown"
+                    }::${isOntology ? "unknown" : type}`,
+                    value: buildValueFromGetters(selection, {
+                      label,
+                      type: isOntology ? "ontology" : type,
+                      short_form: isOntology ? "" : selection.getShortForm(),
+                    }),
+                  };
                 }),
               );
             }
@@ -545,41 +579,14 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     if (isMounted) {
       selectionChangedEvent(
         selectedOptions.map((x) => {
-          // return the value object with the raw values from OLS to a client
-          if (allowCustomTerms && x.value.iri == "") {
-            return {
-              iri: "",
-              label: x.label,
-              ontology_name: "",
-              type: "",
-              short_form: x.value.short_form,
-              description: x.value.description,
-              source: x.value.source,
-              synonyms: x.value.synonyms,
-            };
-          } else if (x.value.iri == "") {
-            return {
-              iri: "",
-              label: "",
-              ontology_name: "",
-              type: "",
-              short_form: "",
-              description: "",
-              source: "",
-              synonyms: [],
-            };
-          } else {
-            return {
-              iri: x.value.iri,
-              label: x.value.label,
-              ontology_name: x.value.ontology_name,
-              type: x.value.type,
-              short_form: x.value.short_form,
-              description: x.value.description,
-              source: x.value.source,
-              synonyms: x.value.synonyms,
-            };
+          const value: EntityValue = x.value ?? EMPTY_ENTITY_VALUE;
+
+          if (value.iri === "") {
+            return allowCustomTerms
+              ? { ...value, label: x.label ?? "" }
+              : { ...EMPTY_ENTITY_VALUE };
           }
+          return { ...value };
         }),
       );
     }
@@ -609,16 +616,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
     const newOption = {
       label: searchValue,
       key: searchValue,
-      value: {
-        iri: "",
-        label: "",
-        ontology_name: "",
-        type: "",
-        short_form: "",
-        description: "",
-        source: "",
-        synonyms: [],
-      },
+      value: { ...EMPTY_ENTITY_VALUE },
     };
 
     setOptions([...options, newOption]);
@@ -652,7 +650,9 @@ function AutocompleteWidget(props: AutocompleteWidgetProps) {
   );
 }
 
-function WrappedAutocompleteWidget(props: AutocompleteWidgetProps) {
+function WrappedAutocompleteWidget(
+  props: AutocompleteWidgetProps,
+): JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
