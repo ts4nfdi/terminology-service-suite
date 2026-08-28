@@ -29,7 +29,7 @@ export const SearchResultsListWidgetStoryArgTypes = {
 
 export const SearchResultsListWidgetStoryArgs = {
   api: "",
-  useLegacy: true,
+  useLegacy: false,
   query: "",
   initialItemsPerPage: 10,
   itemsPerPageOptions: [10, 25, 50, 100],
@@ -48,6 +48,21 @@ export const DefaultArgs = {
   useLegacy: false,
 };
 
+export const ApiGatewayArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
+  useLegacy: false,
+};
+
+export const ApiGatewayWithCollectionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
+  parameter: "collectionId=b9503ef6-c201-4418-8e30-37a4f7ef0677",
+  useLegacy: false,
+};
+
 export const NavigateToSearchResultArgs = {
   ...DefaultArgs,
   OnNavigateToSearchResult: "Console message",
@@ -59,7 +74,7 @@ export const NFDI4HealthArgs = {
   targetLink: "",
   parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   preselected: [{ label: "diabetes" }],
-  useLegacy: true,
+  useLegacy: false,
 };
 
 export const TibNFDI4CHEMArgs = {

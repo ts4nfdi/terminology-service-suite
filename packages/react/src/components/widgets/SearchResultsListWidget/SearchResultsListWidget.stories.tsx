@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 import { SearchResultsListWidget } from "./SearchResultsListWidget";
 import {
+  ApiGatewayArgs,
+  ApiGatewayWithCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
   NavigateToSearchResultArgs,
@@ -33,6 +35,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGateway: Story = {
+  args: ApiGatewayArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithCollection: Story = {
+  args: ApiGatewayWithCollectionArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 

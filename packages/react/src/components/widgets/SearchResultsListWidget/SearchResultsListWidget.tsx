@@ -66,6 +66,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     setSearchValue(query);
   }, [query]);
 
+  useEffect(() => {
+    setFilterByTypeOptions([]);
+    setFilterByOntologyOptions([]);
+  }, [api]);
+
   const [isResetting, setIsResetting] = useState(false);
 
   async function resetToInitialSearch() {
@@ -98,11 +103,13 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             array: any[],
           ) => {
             if (currentIndex % 2 === 0) {
+              if (array[currentIndex + 1] == 0) {
+                return accumulator;
+              }
               accumulator.push({
                 label: render ? render(currentValue) : currentValue,
                 key: currentValue,
                 append: "(" + array[currentIndex + 1] + ")",
-                disabled: array[currentIndex + 1] == 0,
                 data: { totalCount: array[currentIndex + 1] },
               });
             }
@@ -114,7 +121,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     } else {
       const newOptions: EuiSelectableOption[] = [];
       for (let i = 0; i < currentOptions.length; i++) {
-        newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
+        newOptions.push(Object.assign({}, currentOptions[i]));
       }
 
       optionCounts.forEach(
@@ -124,19 +131,23 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               (option: EuiSelectableOption) => option.key == currentValue,
             );
             if (option) {
-              option.append = "(" + array[currentIndex + 1];
-              if (
-                option.data &&
-                array[currentIndex + 1] < option.data.totalCount
-              ) {
-                option.append += "/" + option.data.totalCount;
+              if (array[currentIndex + 1] == 0) {
+                (option as any)._hide = true;
+              } else {
+                option.append = "(" + array[currentIndex + 1];
+                if (
+                  option.data &&
+                  array[currentIndex + 1] < option.data.totalCount
+                ) {
+                  option.append += "/" + option.data.totalCount;
+                }
+                option.append += ")";
               }
-              option.append += ")";
             }
           }
         },
       );
-      setOptions(newOptions);
+      setOptions(newOptions.filter((option: any) => !option._hide));
     }
   }
 
@@ -193,11 +204,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           signal,
         )
         .then((response) => {
-          if (
-            response["response"] &&
-            response["response"]["docs"] != null &&
-            response["response"]["numFound"] != null
-          ) {
+          if (response["response"] && response["response"]["docs"] != null) {
             if (
               response["facet_counts"] &&
               response["facet_counts"]["facet_fields"]
@@ -210,7 +217,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                   (currentValue: string) =>
                     `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`,
                 );
+              } else {
+                setFilterByTypeOptions([]);
               }
+
               if (useLegacy) {
                 if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
                   updateFilterOptions(
@@ -219,17 +229,39 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               } else {
-                if (response["facet_counts"]["facet_fields"]["ontologyId"]) {
+                const ontologyFacet =
+                  response["facet_counts"]["facet_fields"]["ontologyId"];
+
+                if (ontologyFacet) {
+                  const flattenedOntologyCounts: any[] = Array.isArray(
+                    ontologyFacet,
+                  )
+                    ? ontologyFacet
+                    : Object.values(ontologyFacet).reduce(
+                        (accumulator: any[], chunk: any) =>
+                          Array.isArray(chunk)
+                            ? accumulator.concat(chunk)
+                            : accumulator,
+                        [],
+                      );
+
                   updateFilterOptions(
                     filterByOntologyOptions,
-                    response["facet_counts"]["facet_fields"]["ontologyId"],
+                    flattenedOntologyCounts,
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               }
+            } else {
+              setFilterByOntologyOptions([]);
+              setFilterByTypeOptions([]);
             }
 
             setTotalItems(response["response"]["numFound"]);
@@ -425,9 +457,18 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               <EuiSpacer size="m" />
 
               <EuiText size="xs" style={{ padding: "0 8px" }}>
-                Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
-                {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
-                {totalItems} results
+                {Number.isFinite(activePage) &&
+                Number.isFinite(itemsPerPage) &&
+                Number.isFinite(totalItems) ? (
+                  <>
+                    Showing{" "}
+                    {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
+                    {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
+                    {totalItems} results
+                  </>
+                ) : (
+                  "Result number not available"
+                )}
               </EuiText>
 
               <EuiSpacer size="s" />
@@ -501,6 +542,10 @@ function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <SearchResultsListWidget
+          useLegacy={props.useLegacy}
+          preselected={props.preselected}
+          className={props.className}
+          onNavigateToOntology={props.onNavigateToOntology}
           api={props.api}
           query={props.query}
           parameter={props.parameter}
