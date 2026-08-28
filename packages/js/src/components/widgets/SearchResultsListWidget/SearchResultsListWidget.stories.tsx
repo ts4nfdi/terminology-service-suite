@@ -5,6 +5,8 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src";
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
+  ApiGatewayArgs,
+  ApiGatewayWithCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
   NavigateToSearchResultArgs,
@@ -70,6 +72,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGateway: Story = {
+  args: ApiGatewayArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithCollection: Story = {
+  args: ApiGatewayWithCollectionArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 

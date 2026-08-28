@@ -52,6 +52,13 @@ export const ApiGatewayArgs = {
   api: globals.GATEWAY_API_OLS_ENDPOINT,
   query: "diabetes",
   targetLink: "",
+  useLegacy: false,
+};
+
+export const ApiGatewayWithCollectionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
   parameter: "collectionId=b9503ef6-c201-4418-8e30-37a4f7ef0677",
   useLegacy: false,
 };

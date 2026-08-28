@@ -3,6 +3,7 @@ import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 import { SearchResultsListWidget } from "./SearchResultsListWidget";
 import {
   ApiGatewayArgs,
+  ApiGatewayWithCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
   NavigateToSearchResultArgs,
@@ -39,6 +40,11 @@ export const Default: Story = {
 
 export const ApiGateway: Story = {
   args: ApiGatewayArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithCollection: Story = {
+  args: ApiGatewayWithCollectionArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 
