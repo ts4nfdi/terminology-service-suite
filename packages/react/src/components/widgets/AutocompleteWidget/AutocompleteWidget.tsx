@@ -3,11 +3,15 @@
 import { useEffect, useState } from "react";
 
 import {
+  EuiButton,
   EuiComboBox,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiHealth,
   EuiHighlight,
   euiPaletteColorBlind,
   EuiProvider,
+  EuiToolTip,
 } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -627,25 +631,52 @@ function AutocompleteWidget(props: AutocompleteWidgetProps): JSX.Element {
 
   return (
     <div className={finalClassName}>
-      <EuiComboBox
-        data-testid="autocomplete"
-        isClearable
-        aria-label="searchBar"
-        fullWidth={true}
-        {...rest} // items above can be overridden by a client
-        async={true}
-        isLoading={isLoadingTerms || isLoadingOnMount}
-        singleSelection={singleSelection ? { asPlainText: true } : false}
-        placeholder={placeholder ? placeholder : ""}
-        options={options}
-        selectedOptions={selectedOptions}
-        onSearchChange={setSearchValue}
-        onChange={onChangeHandler}
-        renderOption={renderOption}
-        onCreateOption={allowCustomTerms ? onCreateOptionHandler : undefined}
-        rowHeight={singleSuggestionRow ? 30 : 50}
-        noSuggestions={!displaySuggestions}
-      />
+      <EuiFlexGroup gutterSize="xs" alignItems="center" responsive={false}>
+        <EuiFlexItem>
+          <EuiComboBox<EntityValue>
+            data-testid="autocomplete"
+            isClearable
+            aria-label="searchBar"
+            fullWidth={true}
+            {...rest} // items above can be overridden by a client
+            async={true}
+            isLoading={isLoadingTerms || isLoadingOnMount}
+            singleSelection={singleSelection ? { asPlainText: true } : false}
+            placeholder={placeholder ? placeholder : ""}
+            options={options}
+            selectedOptions={selectedOptions}
+            onSearchChange={setSearchValue}
+            onChange={onChangeHandler}
+            renderOption={renderOption}
+            onCreateOption={
+              allowCustomTerms ? onCreateOptionHandler : undefined
+            }
+            rowHeight={singleSuggestionRow ? 30 : 50}
+            noSuggestions={!displaySuggestions}
+          />
+        </EuiFlexItem>
+        {showApiRequestButton && (
+          <EuiFlexItem grow={false}>
+            <EuiToolTip
+              content="Open current search request as JSON in a new tab"
+              delay={"regular"}
+            >
+              <EuiButton
+                iconType="document"
+                iconSide="left"
+                aria-label="Open current search request as JSON"
+                onClick={openJsonInNewWindow}
+                isDisabled={!currentJsonUrl}
+                size={"s"}
+                color="text"
+                textProps={{ style: { marginLeft: -6 } }}
+              >
+                JSON
+              </EuiButton>
+            </EuiToolTip>
+          </EuiFlexItem>
+        )}
+      </EuiFlexGroup>
     </div>
   );
 }
