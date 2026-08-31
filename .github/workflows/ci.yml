@@ -70,6 +70,7 @@ jobs:
         run: |
           npm config get registry
           npm config get @ts4nfdi:registry
+          npm --version
           output=$(npx semantic-release)
           sanitized_output=$(echo "$output" | tr '\n' ' ')
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
