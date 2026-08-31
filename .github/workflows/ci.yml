@@ -26,12 +26,19 @@ jobs:
         with:
           persist-credentials: false # Make sure semantic-release uses its own credentials
 
-      - name: Set up Node.js (GitHub registry) # for install and build
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://npm.pkg.github.com/'
-          scope: '@ts4nfdi'
+
+      - name: Configure GitHub Packages authentication
+        run: |
+          cat > "$HOME/.npmrc" <<'EOF'
+          @ts4nfdi:registry=https://npm.pkg.github.com/
+          //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+          EOF
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Install root dependencies
         run: npm ci
@@ -48,14 +55,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@ts4nfdi'
+
+      - name: Configure npmjs registry for publishing
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm config delete @ts4nfdi:registry || true
+          npm config get registry
+          npm config get @ts4nfdi:registry || echo "@ts4nfdi:registry not set"
 
       - name: Run semantic release for React package and capture output
         if: github.ref == 'refs/heads/main'
         id: semantic_release
         continue-on-error: true
         run: |
+          npm config get registry
+          npm config get @ts4nfdi:registry
           output=$(npx semantic-release)
           sanitized_output=$(echo "$output" | tr '\n' ' ')
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
@@ -63,6 +77,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
           NPM_CONFIG_PROVENANCE: "true"
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
         working-directory: packages/react
 
       - name: Parse semantic-release output
