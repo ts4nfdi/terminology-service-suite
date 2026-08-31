@@ -15,7 +15,7 @@
   "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
   "homepage": "https://terminology.services.base4nfdi.de/tss/comp/latest/?path=/docs/overview--docs",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/",
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "exports": {
