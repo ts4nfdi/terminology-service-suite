@@ -76,7 +76,7 @@ jobs:
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # for access to the repo
           NPM_CONFIG_PROVENANCE: "true"
           NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
         working-directory: packages/react
