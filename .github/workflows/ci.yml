@@ -16,7 +16,7 @@ jobs:
       id-token: write   # to enable use of OIDC for trusted publishing and npm provenance
     strategy:
       matrix:
-        node-version: [ 22.x ]
+        node-version: [ 24.x ]
     outputs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
       srrelease: ${{ steps.setoutput.outputs.srrelease }}
