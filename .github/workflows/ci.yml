@@ -96,7 +96,7 @@ jobs:
           echo "$output"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
+          NPM_TOKEN: ${{ secrets.NPM_AUTO }}
         working-directory: packages/react
 
       - name: Parse semantic-release output
@@ -137,7 +137,7 @@ jobs:
           npm run build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Change version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
@@ -149,8 +149,10 @@ jobs:
       - name: Publish JS package
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
         run: |
-          NODE_AUTH_TOKEN="" npm publish
+          npm publish
         working-directory: packages/js
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_AUTO }}
 
       - name: Update package.json with new version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
