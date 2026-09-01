@@ -12,7 +12,11 @@
   "main": "./dist/index.es.js",
   "module": "./dist/index.es.js",
   "types": "./dist/js/src/index.d.ts",
-  "repository": "https://github.com/ts4nfdi/terminology-service-suite.git",
+  "repository": {
+    "url": "https://github.com/ts4nfdi/terminology-service-suite.git",
+    "type": "git",
+    "directory": "packages/js"
+  },
   "homepage": "https://terminology.services.base4nfdi.de/tss/comp/latest/?path=/docs/overview--docs",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
