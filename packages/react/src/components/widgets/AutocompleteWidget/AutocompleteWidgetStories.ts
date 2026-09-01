@@ -13,6 +13,7 @@ import {
   placeholderArgType,
   preselectedArgType,
   selectionChangedEventArgType,
+  showApiRequestButton,
   showApiSourceArgType,
   singleSelectionArgType,
   singleSuggestionRowArgType,
@@ -31,6 +32,7 @@ export const AutocompleteWidgetStoryArgTypes = {
   ...showApiSourceArgType,
   ...classNameArgType,
   ...onNavigateToOntologyArgType,
+  ...showApiRequestButton,
 };
 
 export const AutocompleteWidgetStoryArgsReact = {
@@ -49,6 +51,7 @@ export const AutocompleteWidgetStoryArgsReact = {
     "fieldList=description,label,iri,ontology_name,type,short_form,synonym",
   initialSearchQuery: "",
   onNavigateToOntology: "Console message",
+  showApiRequestButton: true,
 };
 
 export const AutocompleteWidgetStoryArgsHTML = {
@@ -85,7 +88,7 @@ export const WithPreselectedValueOLS4v2Args: AutocompleteWidgetProps = {
     {
       label: "COVID-19",
       iri: "http://purl.bioontology.org/ontology/MESH/D000086382",
-      source: "zbmed",
+      provider_name: "zbmed",
     },
   ],
   parameter:
@@ -210,7 +213,9 @@ export const InitialSearchQueryArgs: AutocompleteWidgetProps = {
   api: globals.ZBMED_OLS4_API,
   parameter:
     "ontology=iso3166&type=class&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => {},
+  selectionChangedEvent: () => {
+    /* empty */
+  },
   initialSearchQuery: "spain/france/germany",
   useLegacy: false,
 };
