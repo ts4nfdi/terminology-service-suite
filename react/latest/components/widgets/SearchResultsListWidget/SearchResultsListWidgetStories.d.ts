@@ -20,6 +20,19 @@ export declare const DefaultArgs: {
     parameter: string;
     useLegacy: boolean;
 };
+export declare const ApiGatewayArgs: {
+    api: string;
+    query: string;
+    targetLink: string;
+    useLegacy: boolean;
+};
+export declare const ApiGatewayWithCollectionArgs: {
+    api: string;
+    query: string;
+    targetLink: string;
+    parameter: string;
+    useLegacy: boolean;
+};
 export declare const NavigateToSearchResultArgs: {
     OnNavigateToSearchResult: string;
     api: string;

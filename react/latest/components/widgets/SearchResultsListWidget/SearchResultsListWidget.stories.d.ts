@@ -29,6 +29,8 @@ declare const meta: {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const Default: Story;
+export declare const ApiGateway: Story;
+export declare const ApiGatewayWithCollection: Story;
 export declare const NavigateToSearchResult: Story;
 export declare const NFDI4Health: Story;
 export declare const TibNFDI4CHEM: Story;
