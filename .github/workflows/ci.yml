@@ -75,6 +75,13 @@ jobs:
         working-directory: packages/react
         run: env | grep -i ACTIONS_ID_TOKEN || echo "NOT SET — id-token permission isn't reaching this step"
 
+      - name: Raw npm OIDC diagnostic (react)
+        working-directory: packages/react
+        run: |
+          npm --version
+          npm whoami --registry https://registry.npmjs.org/ || true
+          npm publish --dry-run --registry https://registry.npmjs.org/
+
       - name: Run semantic release for React package and capture output
         if: github.ref == 'refs/heads/main'
         id: semantic_release
