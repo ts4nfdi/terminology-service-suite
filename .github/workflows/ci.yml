@@ -131,9 +131,7 @@ jobs:
       - name: Publish React package to npm
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
         working-directory: packages/react
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ""
+        run: NODE_AUTH_TOKEN="" npm publish
 
       - name: Install and build JS package
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
@@ -155,10 +153,8 @@ jobs:
       - name: Publish JS package
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
         run: |
-          npm publish
+          NODE_AUTH_TOKEN="" npm publish
         working-directory: packages/js
-        env:
-          NODE_AUTH_TOKEN: ""
 
       - name: Update package.json with new version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
