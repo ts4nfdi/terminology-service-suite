@@ -64,6 +64,17 @@ jobs:
           npm config get registry
           npm config get @ts4nfdi:registry || echo "@ts4nfdi:registry not set"
 
+      - name: Strip GitHub Packages scope before publishing to npm
+        run: |
+          sed -i '/@ts4nfdi:registry/d' "$HOME/.npmrc"
+          sed -i '\#//npm.pkg.github.com/:_authToken#d' "$HOME/.npmrc"
+          echo "--- Effective $HOME/.npmrc ---"
+          cat "$HOME/.npmrc"
+
+      - name: Debug OIDC context
+        working-directory: packages/react
+        run: env | grep -i ACTIONS_ID_TOKEN || echo "NOT SET — id-token permission isn't reaching this step"
+
       - name: Run semantic release for React package and capture output
         if: github.ref == 'refs/heads/main'
         id: semantic_release
