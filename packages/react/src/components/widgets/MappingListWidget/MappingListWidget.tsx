@@ -1,8 +1,13 @@
 import {
   EuiBasicTableColumn,
   EuiButton,
+  EuiButtonIcon,
   EuiCheckbox,
   EuiInMemoryTable,
+  EuiModal,
+  EuiModalBody,
+  EuiModalHeader,
+  EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
   EuiSearchBarProps,
@@ -11,15 +16,30 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+  type SVGProps,
+} from "react";
 import { useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
+import { MappingDetailCardWidget } from "../MappingDetailCardWidget";
+import { MetadataWidget } from "../MetadataWidget";
 
 type MappingRow = {
+  /**
+   * Stable identifier the table uses to keep track of which rows are expanded.
+   */
+  id: string;
+  from: string;
+  fromUri: string;
   to: string;
   toUri: string;
   creator: string;
@@ -27,7 +47,24 @@ type MappingRow = {
   created: string;
   createdLabel: string;
   targetFromColiConc: string;
+  fromScheme: string;
+  toScheme: string;
+  identifier: string;
+  modified: string;
+  uri: string;
+  partOf: string;
 };
+
+/**
+ * Width of the trailing "Mapping details" column. Just enough for its header
+ * and the expand toggle underneath it, so the rest of the table width is
+ * shared between the auto-sized columns.
+ */
+const MAPPING_DETAILS_COLUMN_WIDTH = "140px";
+
+/**
+ * Background of every other table row when the caller does not pick one.
+ */
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -101,8 +138,37 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
   );
 });
 
+/**
+ * Magnifier over two lines of text: "look this target up in its terminology".
+ * Drawn by hand like the predicate and filter icons above, because the icons
+ * EUI ships are solid shapes and would not match the outline style the rest of
+ * this widget uses. Size and colour are left to the button rendering it.
+ */
+const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="2 2 20 20"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    /**
+     * EuiIcon paints `fill: currentColor` through a class, and a class beats a
+     * `fill="none"` attribute, which fills the lens in. An inline style wins
+     * over that class instead. No shape below carries a `fill` attribute of
+     * its own either, so EUI's `*[fill]` overrides match nothing here.
+     */
+    style={{ ...style, fill: "none" }}
+    {...props}
+  >
+    <circle cx="10" cy="10" r="6" />
+    <line x1="7" y1="8.5" x2="13" y2="8.5" />
+    <line x1="7" y1="11.5" x2="11" y2="11.5" />
+    <path d="M14.5 14.5 20 20" strokeWidth={2.1} />
+  </svg>
+));
+
 function MappingListWidget(props: MappingListWidgetProps) {
-  const { api, source } = props;
+  const { api, source, rowColor, MappingDetailCardBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -133,6 +199,16 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
 
   /**
+   * Target entity whose metadata popup is currently open. Null while no popup
+   * is shown. The gateway only resolves an entity on its ontology route, so
+   * the scheme is kept next to the IRI.
+   */
+  const [metadataTarget, setMetadataTarget] = useState<{
+    iri: string;
+    ontologyId: string;
+  } | null>(null);
+
+  /**
    * Stores what the user searched in the search bar.
    */
   const [searchedQuery, setSearchedQuery] = useState("");
@@ -155,6 +231,18 @@ function MappingListWidget(props: MappingListWidgetProps) {
     }
   };
 
+  /**
+   * Ids of the rows whose detail card is currently expanded underneath them.
+   */
+  const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
+
+  function toggleRowExpansion(row: MappingRow) {
+    setExpandedRowIds((prevState) =>
+      prevState.includes(row.id)
+        ? prevState.filter((expandedId) => expandedId !== row.id)
+        : [...prevState, row.id],
+    );
+  }
   /**
    * Prevent clicks on the filter icon from triggering the column sort.
    */
@@ -420,10 +508,36 @@ function MappingListWidget(props: MappingListWidgetProps) {
     {
       field: "to",
       name: <strong style={{ fontSize: "14px" }}>Target</strong>,
-      truncateText: true,
       sortable: true,
+      /**
+       * Target label, followed by a button that opens the metadata of that
+       * entity in a popup. Deliberately not the circled "i" of the table help
+       * button in the header: this one looks a single entity up rather than
+       * explaining the table. The button is only shown once the gateway resolved
+       * a label for the target, because those are exactly the entities it can
+       * also return metadata for.
+       */
       render: (to: string, item: MappingRow) => (
-        <span title={item.toUri}>{to}</span>
+        <span
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          <span title={item.toUri}>{to}</span>
+
+          {labels[item.toUri] && (
+            <EuiButtonIcon
+              iconType={MetadataIcon}
+              color="primary"
+              aria-label={`Show metadata of ${to}`}
+              title={`Show metadata of ${to}`}
+              onClick={() =>
+                setMetadataTarget({
+                  iri: item.toUri,
+                  ontologyId: item.toScheme.toLowerCase(),
+                })
+              }
+            />
+          )}
+        </span>
       ),
     },
     {
@@ -438,6 +552,40 @@ function MappingListWidget(props: MappingListWidgetProps) {
       truncateText: true,
       sortable: true,
       render: (_created: string, item: MappingRow) => item.createdLabel,
+    },
+    {
+      name: <strong style={{ fontSize: "14px" }}>Mapping details</strong>,
+      align: "center",
+
+      /**
+       * Only as wide as its own content needs to be. Because the table uses a
+       * fixed layout, giving this column an explicit width lets the browser
+       * spread the remaining space across the columns that have none.
+       */
+      width: MAPPING_DETAILS_COLUMN_WIDTH,
+
+      /**
+       * Expand toggle for the mapping details. Clicking it opens the detail
+       * card in a row underneath the mapping.
+       */
+      render: (item: MappingRow) => {
+        const isExpanded = expandedRowIds.includes(item.id);
+
+        return (
+          <EuiButtonIcon
+            iconType={isExpanded ? "arrowUp" : "arrowDown"}
+            color="text"
+            aria-label={
+              isExpanded
+                ? `Collapse details of ${item.to}`
+                : `Expand details of ${item.to}`
+            }
+            aria-expanded={isExpanded}
+            title={isExpanded ? "Hide mapping details" : "Show mapping details"}
+            onClick={() => toggleRowExpansion(item)}
+          />
+        );
+      },
     },
   ];
 
@@ -508,12 +656,18 @@ function MappingListWidget(props: MappingListWidgetProps) {
    */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any) => {
+      (data ?? []).map((item: any, index: number) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
+        const rowFromUri = item.from?.memberSet?.[0]?.uri ?? "—";
+        const sourceFromColiConc =
+          item.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
         return {
+          id: `${index}-${item.uri ?? toUri}`,
+          from: fromLabels[rowFromUri] ?? sourceFromColiConc,
+          fromUri: rowFromUri,
           to: labels[toUri] ?? targetFromColiConc,
           toUri,
           targetFromColiConc,
@@ -521,9 +675,15 @@ function MappingListWidget(props: MappingListWidgetProps) {
           type: item.type?.[0]?.split("#").pop() ?? "—",
           created: item.created ?? "—",
           createdLabel: formatMappingDate(item.created ?? "—"),
+          fromScheme: item.fromScheme?.notation?.[0] ?? "—",
+          toScheme: item.toScheme?.notation?.[0] ?? "—",
+          identifier: item.identifier?.[0] ?? "—",
+          modified: formatMappingDate(item.modified ?? "—"),
+          uri: item.uri ?? "—",
+          partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
-    [data, labels],
+    [data, labels, fromLabels],
   );
 
   /**
@@ -560,6 +720,40 @@ function MappingListWidget(props: MappingListWidgetProps) {
       return matchesTypeFilter && matchesSearch;
     });
   }, [rows, appliedTypeFilters, searchedQuery]);
+
+  /**
+   * Detail card rendered underneath every expanded row. EUI looks the row up
+   * by its id, so only rows currently visible in the table need an entry.
+   */
+  const itemIdToExpandedRowMap = useMemo(() => {
+    const expandedRows: Record<string, ReactNode> = {};
+
+    filteredRows.forEach((row) => {
+      if (!expandedRowIds.includes(row.id)) return;
+
+      expandedRows[row.id] = (
+        <MappingDetailCardWidget
+          fromScheme={row.fromScheme}
+          toScheme={row.toScheme}
+          identifier={row.identifier}
+          modified={row.modified}
+          uri={row.uri}
+          partOf={row.partOf}
+          type={row.type}
+          from={row.from}
+          fromUri={row.fromUri}
+          to={row.to}
+          toUri={row.toUri}
+          creator={row.creator}
+          created={row.createdLabel}
+          MappingDetailCardBackgroundColor={MappingDetailCardBackgroundColor}
+          onClose={() => toggleRowExpansion(row)}
+        />
+      );
+    });
+
+    return expandedRows;
+  }, [filteredRows, expandedRowIds, MappingDetailCardBackgroundColor]);
 
   const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
   const sourceFromColiConc =
@@ -724,34 +918,137 @@ function MappingListWidget(props: MappingListWidgetProps) {
 
       <EuiSpacer size="xl" />
 
-      <EuiInMemoryTable<MappingRow>
-        css={css`
-          tbody .euiTableRow:nth-of-type(odd) {
-            background-color: #ffffff;
-          }
-          tbody .euiTableRow:nth-of-type(even) {
-            background-color: #fff5fa;
-          }
-        `}
-        tableCaption="Mapping list"
-        responsiveBreakpoint={false}
-        items={filteredRows}
-        search={search}
-        sorting={{
-          sort: {
-            field: "to",
-            direction: "asc",
-          },
-        }}
-        columns={columns}
-        pagination={true}
-      />
+      {/**
+       * Table, with the mapping details shown in a row expanded underneath
+       * the target entity the user clicked.
+       */}
+      <div>
+        <EuiInMemoryTable<MappingRow>
+          css={css`
+            tbody .euiTableRow:nth-of-type(odd) {
+              background-color: #ffffff;
+            }
+
+            tbody .euiTableRow:nth-of-type(even) {
+              background-color: ${rowColor};
+            }
+
+            /**
+               * Keep the zebra striping counting mapping rows only, so the
+               * detail row of an expanded mapping does not flip the colour of
+               * every row below it. Browsers without \`nth-child(... of ...)\`
+               * fall back to the plain nth-of-type rules above.
+               */
+
+            tbody
+              .euiTableRow:nth-child(odd of :not(.euiTableRow-isExpandedRow)) {
+              background-color: #ffffff;
+            }
+
+            tbody
+              .euiTableRow:nth-child(even of :not(.euiTableRow-isExpandedRow)) {
+              background-color: ${rowColor};
+            }
+
+            tbody .euiTableRow td {
+              transition:
+                background-color 150ms ease,
+                box-shadow 150ms ease;
+            }
+
+            tbody .euiTableRow.mappingRowSelected + tr td {
+              background-color: #ffffff;
+            }
+
+            tbody .euiTableRow.mappingRowSelected td {
+              box-shadow: inset 0 2px 0 0 #ceced3;
+            }
+
+            tbody .euiTableRow.mappingRowSelected td:first-of-type {
+              border-radius: 6px 0 0 0;
+              box-shadow:
+                inset 2px 0 0 0 #ceced3,
+                inset 0 2px 0 0 #ceced3;
+            }
+
+            tbody .euiTableRow.mappingRowSelected td:last-of-type {
+              border-radius: 0 6px 0 0;
+              box-shadow:
+                inset -2px 0 0 0 #ceced3,
+                inset 0 2px 0 0 #ceced3;
+            }
+
+            tbody .euiTableRow.mappingRowSelected + tr td {
+              border-radius: 0 0 6px 6px;
+              box-shadow:
+                inset 2px 0 0 0 #ceced3,
+                inset -2px 0 0 0 #ceced3,
+                inset 0 -2px 0 0 #ceced3;
+            }
+          `}
+          tableCaption="Mapping list"
+          responsiveBreakpoint={false}
+          items={filteredRows}
+          itemId="id"
+          itemIdToExpandedRowMap={itemIdToExpandedRowMap}
+          search={search}
+          sorting={{
+            sort: {
+              field: "to",
+              direction: "asc",
+            },
+          }}
+          columns={columns}
+          pagination={true}
+          /**
+           * Highlight the row whose detail card is currently expanded.
+           */
+          rowProps={(row: MappingRow) => ({
+            className: expandedRowIds.includes(row.id)
+              ? "mappingRowSelected"
+              : undefined,
+          })}
+        />
+      </div>
+
+      {/**
+       * Metadata of the target entity the user asked information about. Asks
+       * the gateway the same way the target labels are fetched: the v2 route
+       * of the ontology the target belongs to, so `useLegacy` has to be off.
+       */}
+      {metadataTarget && (
+        <EuiModal
+          onClose={() => setMetadataTarget(null)}
+          maxWidth={800}
+          outsideClickCloses
+        >
+          <EuiModalHeader>
+            <EuiModalHeaderTitle size="s">Entity metadata</EuiModalHeaderTitle>
+          </EuiModalHeader>
+
+          <EuiModalBody>
+            <MetadataWidget
+              api={GATEWAY_API_OLS_ENDPOINT}
+              iri={metadataTarget.iri}
+              ontologyId={metadataTarget.ontologyId}
+              useLegacy={false}
+            />
+          </EuiModalBody>
+        </EuiModal>
+      )}
     </EuiPanel>
   );
 }
 
 export function WrappedMappingListWidget(props: MappingListWidgetProps) {
-  return <MappingListWidget api={props.api} source={props.source} />;
+  return (
+    <MappingListWidget
+      api={props.api}
+      source={props.source}
+      rowColor={props.rowColor}
+      MappingDetailCardBackgroundColor={props.MappingDetailCardBackgroundColor}
+    />
+  );
 }
 
 export { MappingListWidget };

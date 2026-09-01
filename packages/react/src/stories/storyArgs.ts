@@ -445,6 +445,34 @@ export const itemsPerPageOptionsArgType: ArgTypes = {
     },
   },
 };
+export const rowColorArgType: ArgTypes = {
+  rowColor: {
+    required: false,
+    description:
+      "Background color of every other table row, as any CSS color value.",
+    table: {
+      type: { summary: "string" },
+      defaultValue: { summary: "#fff5fa" },
+    },
+    control: {
+      type: "color",
+    },
+  },
+};
+export const MappingDetailCardBackgroundColorArgType: ArgTypes = {
+  MappingDetailCardBackgroundColor: {
+    required: false,
+    description:
+      "Background color of the detail card opened underneath an expanded row, as any CSS color value.",
+    table: {
+      type: { summary: "string" },
+      defaultValue: { summary: "#fff5fa" },
+    },
+    control: {
+      type: "color",
+    },
+  },
+};
 export const colorFirstArgType: ArgTypes = {
   colorFirst: {
     required: false,

@@ -895,4 +895,31 @@ export type EntityListWidgetProps = {
 export type MappingListWidgetProps = {
   api: string;
   source: string;
+  rowColor?: string;
+  MappingDetailCardBackgroundColor?: string;
+};
+
+export type MappingDetailCardWidgetProps = {
+  fromScheme?: string;
+  toScheme?: string;
+  identifier?: string;
+  modified?: string;
+  uri?: string;
+  partOf?: string;
+  /**
+   * Values of the mapping row the card belongs to. Not shown on the card
+   * itself, but included in its CSV and TSV downloads.
+   */
+  type?: string;
+  from?: string;
+  fromUri?: string;
+  to?: string;
+  toUri?: string;
+  creator?: string;
+  created?: string;
+  /**
+   * Background of the card, as any CSS color value.
+   */
+  MappingDetailCardBackgroundColor?: string;
+  onClose?: () => void;
 };
