@@ -26,4 +26,16 @@ export class OlsBaseApi {
     ).data;
     return check_for_errors(response);
   }
+
+  public getFullUrl(
+    url: string,
+    config: AxiosRequestConfig<any> | undefined,
+    useLegacy: boolean,
+  ): string {
+    const apiVersionPrefix = getUseLegacy(useLegacy) ? "" : "v2/";
+    return this.axiosInstance.getUri({
+      ...config,
+      url: apiVersionPrefix + url,
+    });
+  }
 }

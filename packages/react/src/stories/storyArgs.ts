@@ -1115,3 +1115,13 @@ export const mathMLArgType = {
     },
   },
 };
+export const showApiRequestButton: ArgTypes = {
+  showApiRequestButton: {
+    required: true,
+    description: "If true, shows a button to open the current API request.",
+    table: {
+      defaultValue: { summary: "true" },
+      type: { summary: "boolean" },
+    },
+  },
+};

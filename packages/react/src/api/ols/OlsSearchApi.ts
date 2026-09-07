@@ -112,6 +112,25 @@ export class OlsSearchApi extends OlsBaseApi {
       true,
     );
   };
+  public getSelectRequestUrl(
+    queryParams: SelectQueryParams,
+    paginationParams?: PaginationParams,
+    contentParams?: ContentParams,
+    parameter?: string,
+  ): string {
+    return this.getFullUrl(
+      "select",
+      {
+        params: buildParamsForSelect(
+          queryParams,
+          paginationParams,
+          contentParams,
+          parameter,
+        ),
+      },
+      true,
+    );
+  }
 }
 
 export function splitAndApplyParams(url: URL, raw: string) {

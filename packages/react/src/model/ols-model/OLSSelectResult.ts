@@ -58,12 +58,14 @@ export class OLSSelectResult implements SelectResult {
     return this.properties["short_form"];
   }
 
-  getApiSourceName(): string {
-    return "";
+  getProviderName(): string {
+    return this.properties?.provider?.provider_name ?? "";
   }
-
-  getApiSourceEndpoint(): string {
-    return "";
+  getProviderApi(): string {
+    return this.properties?.provider?.provider_api ?? "";
+  }
+  getProviderType(): string {
+    return this.properties?.provider?.provider_type ?? "";
   }
 
   getSynonyms(): [] {
