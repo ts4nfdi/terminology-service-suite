@@ -733,6 +733,11 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const fromLabel = fromLabels[fromUri] ?? sourceFromColiConc;
 
   /**
+   * Whether the view direction menu (shown by arrow icon) is open.
+   */
+  const [isViewDirectionOpen, setIsViewDirectionOpen] = useState(false);
+
+  /**
    * State and handlers for the contextual help popover.
    */
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -802,8 +807,33 @@ function MappingListWidget(props: MappingListWidgetProps) {
       >
         <EuiTitle size="s">
           <h2>
-            <strong>Source:</strong>
-            <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
+            <strong>Search Query:</strong>
+            <span style={{ fontWeight: "normal" }}>
+              &nbsp;{fromLabel} &nbsp;
+            </span>
+            <EuiPopover
+              button={
+                <EuiButtonIcon
+                  iconType="arrowDown"
+                  color="text"
+                  aria-label="Choose view direction"
+                  aria-expanded={isViewDirectionOpen}
+                  onClick={() => setIsViewDirectionOpen((isOpen) => !isOpen)}
+                  css={css`
+                    svg {
+                      stroke: currentColor;
+                      stroke-width: 1px;
+                      transform: rotate(${isViewDirectionOpen ? 180 : 0}deg);
+                      transition: transform 150ms ease-in-out;
+                    }
+                  `}
+                />
+              }
+              isOpen={isViewDirectionOpen}
+              closePopover={() => setIsViewDirectionOpen(false)}
+              anchorPosition="downLeft"
+              panelPaddingSize="m"
+            ></EuiPopover>
           </h2>
         </EuiTitle>
 
