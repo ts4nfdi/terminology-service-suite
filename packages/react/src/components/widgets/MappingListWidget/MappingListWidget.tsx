@@ -10,6 +10,7 @@ import {
   EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
+  EuiPopoverTitle,
   EuiRadioGroup,
   EuiSearchBarProps,
   EuiSpacer,
@@ -839,8 +840,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
               isOpen={isViewDirectionOpen}
               closePopover={() => setIsViewDirectionOpen(false)}
               anchorPosition="downLeft"
-              panelPaddingSize="m"
+              panelPaddingSize="s"
             >
+              <EuiPopoverTitle>Choose View Direction</EuiPopoverTitle>
               <EuiRadioGroup
                 options={[
                   {
@@ -856,8 +858,20 @@ function MappingListWidget(props: MappingListWidgetProps) {
                 idSelected={mappingDirectionValue}
                 onChange={(id) => {
                   setMappingDirectionValue(id);
+                  setIsViewDirectionOpen(false);
                 }}
-                name="Mapping Direction"
+                name="mappingDirection"
+                css={css`
+                  > * + * {
+                    margin-top: 12px;
+                  }
+
+                  .euiRadioGroup__item label {
+                    font-size: 14px;
+                    font-weight: 400;
+                    white-space: nowrap;
+                  }
+                `}
               ></EuiRadioGroup>
             </EuiPopover>
           </h2>
