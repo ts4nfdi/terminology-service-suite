@@ -10,6 +10,7 @@ import {
   EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
+  EuiRadioGroup,
   EuiSearchBarProps,
   EuiSpacer,
   EuiText,
@@ -738,6 +739,12 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [isViewDirectionOpen, setIsViewDirectionOpen] = useState(false);
 
   /**
+   * mappingDirectionValue could be mappingsTo or mappingsFROM or bidirectional
+   */
+  const [mappingDirectionValue, setMappingDirectionValue] =
+    useState("mappingsTo");
+
+  /**
    * State and handlers for the contextual help popover.
    */
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -833,7 +840,26 @@ function MappingListWidget(props: MappingListWidgetProps) {
               closePopover={() => setIsViewDirectionOpen(false)}
               anchorPosition="downLeft"
               panelPaddingSize="m"
-            ></EuiPopover>
+            >
+              <EuiRadioGroup
+                options={[
+                  {
+                    id: "mappingsTo",
+                    label: `Mappings TO ${fromLabel} (Target)`,
+                  },
+                  {
+                    id: "mappingsFrom",
+                    label: `Mappings FROM ${fromLabel} (Source)`,
+                  },
+                  { id: "bidirectional", label: "Bidirectional Mappings" },
+                ]}
+                idSelected={mappingDirectionValue}
+                onChange={(id) => {
+                  setMappingDirectionValue(id);
+                }}
+                name="Mapping Direction"
+              ></EuiRadioGroup>
+            </EuiPopover>
           </h2>
         </EuiTitle>
 
