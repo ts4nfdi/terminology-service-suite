@@ -1,6 +1,6 @@
 import { OlsResource } from '../../../app/types';
 export declare const ResourcesWidgetStoryArgTypes: {
-    [x: string]: import('storybook/internal/csf').InputType;
+    [x: string]: any;
 };
 export declare const ResourcesWidgetStoryArgs: {
     api: string;

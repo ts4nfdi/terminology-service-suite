@@ -13,7 +13,7 @@ declare const meta: {
     };
     component: typeof DataContentWidget;
     argTypes: {
-        [x: string]: import('storybook/internal/csf').InputType;
+        [x: string]: any;
     };
     args: {
         api: string;

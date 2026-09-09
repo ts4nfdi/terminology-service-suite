@@ -1,5 +1,5 @@
 import { ArgTypes } from '@storybook/react';
-export declare const apiArgType: ArgTypes;
+export declare const apiArgType: Record<string, any>;
 export declare const useLegacyArgType: ArgTypes;
 export declare const useLegacyArgTypeHierarchy: {
     useLegacy: {
