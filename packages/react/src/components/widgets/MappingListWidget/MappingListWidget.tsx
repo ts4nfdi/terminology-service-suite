@@ -808,8 +808,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
         aria-hidden="true"
       >
         <circle cx="12" cy="12" r="9" />
-        <line x1="12" y1="10.5" x2="12" y2="16" />
-        <circle cx="12" cy="7.8" r="0.75" fill="currentColor" stroke="none" />
+        <path d="M9.4 9.3a2.7 2.7 0 0 1 5.25 0.9c0 1.8-2.7 2.7-2.7 2.7" />
+        <circle cx="12" cy="16.2" r="0.75" fill="currentColor" stroke="none" />
       </svg>
     </button>
   );
