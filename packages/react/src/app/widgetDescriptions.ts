@@ -532,15 +532,35 @@ A toggle in the Mapping details column opens a detail card under the row, holdin
 The detail card offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
 
 - **Target entity metadata**:
-A magnifier next to a target opens that entity's metadata in a popup, loaded from the OLS Gateway API by its IRI. It is shown only for targets the gateway could resolve, and closes on its close button, a click outside it, or the Escape key.
+An information icon next to a target opens that entity's metadata in a popup, loaded from the OLS Gateway API by its IRI. It is shown only for targets the gateway could resolve, and closes on its close button, a click outside it, or the Escape key.
 
 - **Built-in help**:
-An info button in the header explains what source, type and target mean, together with a small diagram of the relation between them.
+A question mark button in the header explains what source, type and target mean, together with a small diagram of the relation between them.
 
 - **Cross-terminology exploration**:
 Shows how a single source concept is connected to concepts in other terminologies or classification systems.
 `.trim();
 
 export const MappingDetailDescription = `
-The MappingDetailWidget shows one mapping in a compact card view. It is used to display the most important metadata for a selected mapping, such as source and target information, mapping type, creator, and identifiers. This helps users inspect a single mapping in more detail without leaving the mapping list.
+The MappingDetailWidget shows one mapping of the ColiConc Concordance API in a compact card view. The MappingListWidget opens it underneath an expanded row, and it can also be used on its own, as this story does, by passing the values of a single mapping to it directly.
+
+#### Key Features:
+
+- **Mapping metadata at a glance**:
+Shows the source and the target scheme, the date the mapping was last modified, its identifier, and the concordance it is part of. Each field falls back to a dash when the mapping does not carry it, the way mappings outside a concordance have no "Part of" value.
+
+- **Values carried for the downloads only**:
+The \`type\`, \`from\`, \`fromUri\`, \`to\`, \`toUri\`, \`creator\` and \`created\` parameters are not displayed on the card. They are passed in because the CSV and TSV downloads write them as columns, so that a downloaded mapping is complete while the card itself stays compact. Leaving them out keeps the card looking the same, but their columns come out empty in the downloaded file.
+
+- **Mapping downloads**:
+Offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget out of the parameters above, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
+
+- **Custom card color**:
+The optional \`MappingDetailBackgroundColor\` parameter sets the background of the card, as any CSS color value. It defaults to a light pink.
+
+- **Mapping feedback**:
+Links to the ColiConc address a questionable mapping can be reported to, right where that mapping is shown.
+
+- **Optional close button**:
+When an \`onClose\` handler is given, the card shows a close button in its corner, which the mapping list uses to collapse the expanded row again. Without one, the corner carries an info icon instead.
 `.trim();
