@@ -30,7 +30,8 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
-import { MappingDetailWidget } from "../MappingDetailWidget";
+import MappingDetailPresentation from "../MappingDetailWidget/MappingDetailPresentation";
+import { formatMappingDate } from "../MappingDetailWidget/MappingDetailWidget";
 import { MetadataWidget } from "../MetadataWidget";
 
 type MappingRow = {
@@ -65,27 +66,6 @@ const MAPPING_DETAILS_COLUMN_WIDTH = "140px";
 /**
  * Background of every other table row when the caller does not pick one.
  */
-
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
-const timeFormatter = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const formatMappingDate = (created: string) => {
-  if (created === "—") return "—";
-
-  const date = new Date(created);
-
-  if (isNaN(date.getTime())) return "—";
-
-  return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
-};
 
 /**
  * Dictionary mapping each type to its inner SVG elements.
@@ -140,10 +120,8 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
 
 /**
  * Circled "i": "there is more information about this target". Drawn by hand
- * like the predicate and filter icons above, because the icons EUI ships are
- * solid shapes and would not match the outline style the rest of this widget
- * uses. Same circle as the help button in the header, which carries a question
- * mark instead. Size and colour are left to the button rendering it.
+ * like the icons above, because the ones EUI ships are solid shapes. Same
+ * circle as the help button in the header, which carries a question mark.
  */
 const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
   <svg
@@ -738,20 +716,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
       if (!expandedRowIds.includes(row.id)) return;
 
       expandedRows[row.id] = (
-        <MappingDetailWidget
-          fromScheme={row.fromScheme}
-          toScheme={row.toScheme}
-          identifier={row.identifier}
-          modified={row.modified}
-          uri={row.uri}
-          partOf={row.partOf}
-          type={row.type}
-          from={row.from}
-          fromUri={row.fromUri}
-          to={row.to}
-          toUri={row.toUri}
-          creator={row.creator}
-          created={row.createdLabel}
+        <MappingDetailPresentation
+          mapping={{ ...row, created: row.createdLabel }}
           MappingDetailBackgroundColor={MappingDetailBackgroundColor}
           onClose={() => toggleRowExpansion(row)}
         />
