@@ -9,7 +9,7 @@ export const apiArgType: Record<string, any> = {
       type: "radio",
     },
     options: [
-      "http://tsag.qa.km.k8s.zbmed.de/api-gateway/ols4/api/",
+      "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",
