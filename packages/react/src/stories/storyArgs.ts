@@ -2,14 +2,14 @@ import { ArgTypes } from "@storybook/react";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../api/ols/OlsHierarchyApi";
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
-export const apiArgType: ArgTypes = {
+export const apiArgType: Record<string, any> = {
   api: {
     required: true,
     control: {
       type: "radio",
     },
     options: [
-      "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/",
+      "http://tsag.qa.km.k8s.zbmed.de/api-gateway/ols4/api/",
       "https://api.terminology.tib.eu/api/",
       "https://ols3-semanticlookup.zbmed.de/ols/api/",
       "https://semanticlookup.zbmed.de/ols/api/",

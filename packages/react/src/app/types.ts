@@ -562,8 +562,7 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+    ((entityType: string, entity?: EntityData) => void) | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -895,4 +894,76 @@ export type EntityListWidgetProps = {
 export type MappingListWidgetProps = {
   api: string;
   source: string;
+};
+
+/**
+ * Information about the terminology backend that actually served an entity.
+ *
+ * The TS4NFDI API Gateway federates several terminology software stacks (OLS,
+ * OntoPortal, Skosmos) and reports the responsible one per entity in a
+ * `provider` block. Plain (non-gateway) OLS instances do not return it, in
+ * which case no provider can be resolved.
+ */
+export type EntityProvider = {
+  /**
+   * Name of the providing terminology service, e.g. `"tib"`, `"agrovoc"`.
+   * Taken from `provider_name`.
+   */
+  name?: string;
+  /**
+   * Software stack behind the provider, e.g. `"ols2"`, `"ontoportal"`,
+   * `"skosmos"`. Taken from `provider_type`.
+   */
+  type?: string;
+  /**
+   * Base URL of the provider's own API, e.g.
+   * `"https://api.terminology.tib.eu/api"`. Taken from `provider_api`.
+   */
+  api?: string;
+  /**
+   * Id of the ontology this provider was reported for. Relevant when an IRI
+   * resolves in several ontologies, since each may have a different provider.
+   */
+  ontologyId?: string;
+  /**
+   * The unmodified `provider` block from the API response, so that fields
+   * added by future gateway versions stay accessible.
+   */
+  raw: Record<string, any>;
+};
+
+export type EntityProviderWidgetProps = ForcedIriObj &
+  OptionalOntologyIdObj & {
+    /**
+     * The API instance for the API call. Defaults to the TS4NFDI API Gateway
+     * OLS endpoint, as the provider information is specific to the gateway.
+     */
+    api?: string;
+    /**
+     * If false, no request is made and the result stays empty. Useful to defer
+     * fetching until an IRI is known. Default is true.
+     */
+    enabled?: boolean;
+  };
+
+export type UseEntityProviderResult = {
+  /**
+   * Provider of the entity in its defining ontology, or of the first
+   * occurrence if none is marked as defining. Undefined while loading, on
+   * error, or if the entity could not be resolved.
+   */
+  provider?: EntityProvider;
+  /**
+   * Providers of all ontologies the IRI resolves in. Contains at most one
+   * element if `ontologyId` was provided, and is empty if the entity could not
+   * be resolved.
+   */
+  providers: EntityProvider[];
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  /**
+   * The error that made the request fail, if any.
+   */
+  error?: Error;
 };

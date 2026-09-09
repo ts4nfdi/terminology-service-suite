@@ -522,3 +522,79 @@ Displays semantic mapping relations with compact visual icons, making different 
 - **Cross-terminology exploration**:
 Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
 `.trim();
+
+export const EntityProviderDescription = `
+The EntityProviderWidget reports which terminology backend provides a given entity. Unlike the other widgets it renders nothing:
+it is a **data hook** plus a plain asynchronous function, so the consuming application keeps full control over the presentation.
+
+The [TS4NFDI API Gateway](https://base4nfdi.de/projects/ts4nfdi) federates several terminology software stacks
+(OLS, OntoPortal, Skosmos) and reports the responsible one per entity in a \`provider\` block:
+
+\`\`\`json
+{
+  "provider_type": "skosmos",
+  "provider_api": "https://semanticlookup.zbmed.de/skosmos/rest/v1",
+  "provider_name": "zbmed-skosmos"
+}
+\`\`\`
+
+This information is specific to the gateway, which is why \`api\` defaults to the gateway OLS endpoint. Plain OLS instances do not
+return a \`provider\` block, so no provider can be resolved against them.
+
+#### Usage
+
+Inside a React component, via the \`useEntityProvider\` hook:
+
+\`\`\`tsx
+import { useEntityProvider } from "@ts4nfdi/terminology-service-suite";
+
+function ProviderLabel() {
+  const { provider, isLoading, isError } = useEntityProvider({
+    ontologyId: "voc4cat",
+    iri: "https://w3id.org/nfdi4cat/voc4cat_0000151",
+  });
+
+  if (isLoading) return <span>Loading…</span>;
+  if (isError) return <span>Provider unavailable</span>;
+  return <span>{provider ? provider.name : "Unknown provider"}</span>;
+}
+\`\`\`
+
+Outside of React — in a service, loader or non-React application — via the plain function:
+
+\`\`\`ts
+import { getEntityProvider } from "@ts4nfdi/terminology-service-suite";
+
+const provider = await getEntityProvider({
+  ontologyId: "voc4cat",
+  iri: "https://w3id.org/nfdi4cat/voc4cat_0000151",
+});
+console.log(provider?.name, provider?.type, provider?.api);
+\`\`\`
+
+#### Key Features:
+
+- **No provider setup required**:
+Deliberately implemented without \`react-query\`, so the hook can be dropped into any React application without mounting a
+\`QueryClientProvider\` first. All the other widgets create their own client internally, which a hook cannot do.
+
+- **Usable without React**:
+\`getEntityProvider\` returns a single provider and \`getEntityProviders\` returns all of them, both as plain promises, so the same
+logic serves React components, server code and vanilla JavaScript alike.
+
+- **Multi-ontology aware**:
+One IRI can resolve in several ontologies, each potentially served by a different backend. \`providers\` therefore lists every
+occurrence, while \`provider\` offers the preferred one: the defining ontology if marked as such, otherwise the first result.
+
+- **Unresolvable entities are not errors**:
+If the IRI does not exist in the requested ontology, \`provider\` is undefined, \`providers\` is empty and \`isSuccess\` stays true.
+Only genuine request failures set \`isError\`.
+
+- **Request cancellation**:
+In-flight requests are aborted when the inputs change or the component unmounts, so a superseded response can never overwrite a
+newer one. Setting \`enabled\` to false defers fetching until an IRI is known.
+
+- **Forward compatible**:
+Besides the mapped \`name\`, \`type\` and \`api\` fields, the unmodified \`provider\` block is exposed as \`raw\`, so fields added by
+future gateway versions remain accessible.
+`.trim();
