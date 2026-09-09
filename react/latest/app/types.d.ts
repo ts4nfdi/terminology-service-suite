@@ -3,6 +3,7 @@ import { Action } from '@elastic/eui/src/components/basic_table/action_types';
 import { EuiComboBoxProps } from '@elastic/eui/src/components/combo_box/combo_box';
 import { EuiLinkColor } from '@elastic/eui/src/components/link/link';
 import { EuiTextProps } from '@elastic/eui/src/components/text/text';
+import { EntityValue } from '../components/widgets/AutocompleteWidget/AutocompleteWidget';
 import { Thing } from '../model/interfaces';
 import { BuildHierarchyProps, HierarchyIriProp } from '../model/interfaces/HierarchyBuilder';
 import { EntityTypeName, ThingTypeName } from '../model/ModelTypeCheck';
@@ -146,36 +147,15 @@ type TabList = {
      * */
     initialSelectedTab?: string;
 };
-export type AutocompleteWidgetSelectedOptions = {
-    /**
-     * The terms metadata that autocomplete selection change event returns to the client.
-     */
-    iri?: string;
-    description?: string;
-    label: string;
-    ontology_name?: string;
-    short_form?: string;
-    source?: string;
-    type?: string;
-};
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & ApiObj & CssClassNameObj & UseLegacyObj & OnNavigateToOntology & {
+export type AutocompleteWidgetProps = Partial<EuiComboBoxProps<EntityValue>> & ParameterObj & ApiObj & CssClassNameObj & UseLegacyObj & OnNavigateToOntology & {
     /**
      * A method that is called once the set of selection changes
      */
-    selectionChangedEvent: (selectedOptions: AutocompleteWidgetSelectedOptions[]) => void;
+    selectionChangedEvent: (selectedOptions: EntityValue[]) => void;
     /**
      * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
      */
-    preselected?: {
-        label?: string;
-        iri?: string;
-        description?: string;
-        ontology_name?: string;
-        type?: string;
-        short_form?: string;
-        source?: string;
-        source_url?: string;
-    }[];
+    preselected?: EntityValue[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -204,6 +184,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> & ParameterObj & 
      * Initial search value to show results on first render.
      */
     initialSearchQuery?: string;
+    /**
+     * Show a button to open the search request.
+     */
+    showApiRequestButton?: boolean;
 };
 export type DataContentWidgetProps = ApiObj & ParameterObj;
 export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & OnNavigates;

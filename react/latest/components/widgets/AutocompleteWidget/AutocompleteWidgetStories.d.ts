@@ -39,6 +39,7 @@ export declare const AutocompleteWidgetStoryArgsReact: {
     parameter: string;
     initialSearchQuery: string;
     onNavigateToOntology: string;
+    showApiRequestButton: boolean;
 };
 export declare const AutocompleteWidgetStoryArgsHTML: {
     api: string;

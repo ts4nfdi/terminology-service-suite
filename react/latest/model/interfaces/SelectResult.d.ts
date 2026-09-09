@@ -8,7 +8,8 @@ export interface SelectResult {
     getDescription(): string;
     getOntologyId(): string;
     getShortForm(): string;
-    getApiSourceName(): string;
-    getApiSourceEndpoint(): string;
+    getProviderName(): string;
+    getProviderApi(): string;
+    getProviderType(): string;
     getSynonyms(): [];
 }

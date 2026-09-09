@@ -13,6 +13,7 @@ export declare class OlsSearchApi extends OlsBaseApi {
      */
     getSelectData(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<Select>;
     suggest: (queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
+    getSelectRequestUrl(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): string;
 }
 export declare function splitAndApplyParams(url: URL, raw: string): void;
 export declare function normalizeBaseApi(api: string): string;
