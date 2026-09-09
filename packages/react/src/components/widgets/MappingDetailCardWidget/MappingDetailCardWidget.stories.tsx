@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MappingDetailCardDescription } from "../../../app/widgetDescriptions";
-import { WrappedMappingDetailCardWidget } from "./MappingDetailCardWidget";
+import { MappingDetailCardWidget } from "./MappingDetailCardWidget";
 import {
-  MappingDetailCardWidgetStoryArgs_OEO_00000150,
+  MappingDetailCardWidgetStoryArgs_Rec_B_2000,
   MappingDetailCardWidgetStoryArgTypes,
 } from "./MappingDetailCardWidgetStories";
 
 const meta: Meta = {
   title: "Mapping/MappingDetailCardWidget",
-  component: WrappedMappingDetailCardWidget,
+  component: MappingDetailCardWidget,
   argTypes: MappingDetailCardWidgetStoryArgTypes,
-  args: MappingDetailCardWidgetStoryArgs_OEO_00000150,
+  args: MappingDetailCardWidgetStoryArgs_Rec_B_2000,
   parameters: {
     layout: "centered",
     docs: {
@@ -24,6 +24,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const OEO_00000150: Story = {
-  args: MappingDetailCardWidgetStoryArgs_OEO_00000150,
+export const Rec_B_2000: Story = {
+  args: MappingDetailCardWidgetStoryArgs_Rec_B_2000,
 };
