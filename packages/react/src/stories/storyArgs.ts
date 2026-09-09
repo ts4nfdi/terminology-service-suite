@@ -2,7 +2,7 @@ import { ArgTypes } from "@storybook/react";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../api/ols/OlsHierarchyApi";
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
-export const apiArgType: ArgTypes = {
+export const apiArgType: Record<string, any> = {
   api: {
     required: true,
     control: {
