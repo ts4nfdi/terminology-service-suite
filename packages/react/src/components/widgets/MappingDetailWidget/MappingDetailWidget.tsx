@@ -1,165 +1,131 @@
-import { EuiLink } from "@elastic/eui";
-
+import { EuiPanel, EuiText } from "@elastic/eui";
+import { useMemo } from "react";
+import { useQuery } from "react-query";
+import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { MappingDetailWidgetProps } from "../../../app";
+import type { MappingDetail } from "./MappingDetailPresentation";
 import MappingDetailPresentation from "./MappingDetailPresentation";
 
 /**
- * Formats the card writes itself, and the column separator each one uses.
+ * Turns a JSKOS timestamp into "11 May 2026, 12:48", or a dash when it cannot
+ * be read. MappingListWidget formats its table dates with it too.
  */
-const separators: Record<string, string> = { csv: ",", tsv: "\t" };
+export function formatMappingDate(value?: string) {
+  const date = new Date(value ?? "");
+
+  if (isNaN(date.getTime())) return "—";
+
+  return date.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 /**
- * Address mapping feedback is sent to.
+ * One mapping can point at several entities, so both readers keep every member
+ * instead of only the first. For the two targets of the B14C4A mapping:
+ *
+ *   [{ uri: ".../gnd/4113427-8", notation: ["4113427-8"] },
+ *    { uri: ".../gnd/4152060-9", notation: ["4152060-9"] }]
+ *
+ * notationsOf() gives "4113427-8, 4152060-9" and urisOf() the two IRIs. A
+ * member without a notation keeps its IRI, an empty side becomes a dash.
  */
-const feedbackEmail = "coli-conc@gbv.de";
+function notationsOf(members: any[] = []) {
+  return (
+    members.map((member) => member.notation?.[0] ?? member.uri).join(", ") ||
+    "—"
+  );
+}
+
+function urisOf(members: any[] = []) {
+  return members.map((member) => member.uri).join(", ") || "—";
+}
+
+/**
+ * Reads the values the card needs out of one JSKOS mapping, with a dash for
+ * whatever the server left out.
+ */
+function toMappingDetail(mapping: any): MappingDetail {
+  return {
+    type: mapping.type?.[0]?.split("#").pop() ?? "—",
+    from: notationsOf(mapping.from?.memberSet),
+    fromUri: urisOf(mapping.from?.memberSet),
+    fromScheme: mapping.fromScheme?.notation?.[0] ?? "—",
+    to: notationsOf(mapping.to?.memberSet),
+    toUri: urisOf(mapping.to?.memberSet),
+    toScheme: mapping.toScheme?.notation?.[0] ?? "—",
+    creator: mapping.creator?.[0]?.prefLabel?.en ?? "—",
+    created: formatMappingDate(mapping.created),
+    modified: formatMappingDate(mapping.modified),
+    identifier: mapping.identifier?.[0] ?? "—",
+    partOf: mapping.partOf?.[0]?.uri ?? "—",
+    uri: mapping.uri ?? "—",
+  };
+}
 
 function MappingDetailWidget(props: MappingDetailWidgetProps) {
-  const {
-    fromScheme,
-    toScheme,
-    identifier,
-    modified,
-    uri,
-    partOf,
-    type,
-    from,
-    fromUri,
-    to,
-    toUri,
-    creator,
-    created,
-    MappingDetailBackgroundColor,
-    onClose,
-  } = props;
+  const { api, source, target, MappingDetailBackgroundColor } = props;
+
+  const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
+
+  const { data, isLoading, isError, error } = useQuery(
+    ["mappings", api, source],
+    () => {
+      return jskosMappingApi.getMappingsByFrom(source);
+    },
+  );
 
   /**
-   * The concordance URI ends with its notation, e.g. ".../concordances/nsk-bk".
+   * ColiConc returns every mapping of the source, so the target picks which of
+   * them this card is about.
    */
-  const concordanceNotation = partOf?.split("/").pop();
+  const mapping = (data ?? []).find((item: any) => {
+    return (item.to?.memberSet ?? []).some((member: any) => {
+      return member.uri === target;
+    });
+  });
 
-  /**
-   * Everything the card knows about the mapping, as one flat row: the column
-   * names are these key names. The JSKOS server's own CSV keeps just the
-   * scheme and notation columns, so the CSV and TSV downloads are written
-   * here rather than linked to. Its JSON is complete, so that one stays a
-   * plain link.
-   */
-  const downloadFields = {
-    type,
-    from,
-    fromUri,
-    fromScheme,
-    to,
-    toUri,
-    toScheme,
-    creator,
-    created,
-    modified,
-    identifier,
-    partOf,
-    uri,
-  };
-
-  /**
-   * Wraps a value in quotes the way the JSKOS server does, so that a comma or
-   * a quote inside a label cannot break the columns apart.
-   */
-  function quote(value?: string) {
-    return `"${(value || "—").replace(/"/g, '""')}"`;
-  }
-
-  function download(format: string, separator: string) {
-    const content = [
-      Object.keys(downloadFields).map(quote).join(separator),
-      Object.values(downloadFields).map(quote).join(separator),
-    ].join("\n");
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(
-      new Blob([content], { type: "text/plain;charset=utf-8" }),
+  if (isLoading) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText>Loading mapping...</EuiText>
+      </EuiPanel>
     );
-    link.download = `mapping_${uri?.split("/").pop()}.${format}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
   }
 
-  const fields = [
-    {
-      label: "Source Scheme:",
-      value: fromScheme || "—",
-    },
-    {
-      label: "Target Scheme:",
-      value: toScheme || "—",
-    },
-    {
-      label: "Modified:",
-      value: modified || "—",
-    },
-    {
-      label: "Identifier:",
-      value: identifier || "—",
-    },
-    {
-      label: "Part of:",
-      value:
-        partOf && partOf !== "—" ? (
-          <EuiLink href={partOf} target="_blank" rel="noreferrer">
-            {concordanceNotation}
-          </EuiLink>
-        ) : (
-          "—"
-        ),
-    },
-    {
-      label: "Download:",
-      value:
-        uri && uri !== "—" ? (
-          <span style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            <EuiLink
-              href={`${uri}?download=json`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              .json
-            </EuiLink>
+  if (isError) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText color="danger">
+          Failed to load mapping:{" "}
+          {error instanceof Error ? error.message : String(error)}
+        </EuiText>
+      </EuiPanel>
+    );
+  }
 
-            {Object.entries(separators).map(([format, separator]) => (
-              <EuiLink key={format} onClick={() => download(format, separator)}>
-                .{format}
-              </EuiLink>
-            ))}
-          </span>
-        ) : (
-          "—"
-        ),
-    },
-    {
-      label: "Feedback:",
-      value: (
-        <>
-          <EuiLink href={`mailto:${feedbackEmail}`}>
-            provide feedback via email
-          </EuiLink>{" "}
-          ({feedbackEmail})
-        </>
-      ),
-    },
-  ];
+  if (!mapping) {
+    return (
+      <EuiPanel paddingSize="m">
+        <EuiText>No mapping found from this source to this target.</EuiText>
+      </EuiPanel>
+    );
+  }
 
   return (
     <MappingDetailPresentation
-      fields={fields}
+      mapping={toMappingDetail(mapping)}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
-      onClose={onClose}
     />
   );
 }
 
-export function WrappedMappingDetailWidget() {
-  return <MappingDetailWidget />;
+export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
+  return <MappingDetailWidget {...props} />;
 }
 
 export { MappingDetailWidget };
