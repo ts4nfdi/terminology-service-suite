@@ -10,7 +10,8 @@ export declare class OLSSelectResult implements SelectResult {
     getType(): ThingTypeName;
     getTypePlural(): "ontologies" | "classes" | "properties" | "individuals" | "terms";
     getShortForm(): string;
-    getApiSourceName(): string;
-    getApiSourceEndpoint(): string;
+    getProviderName(): string;
+    getProviderApi(): string;
+    getProviderType(): string;
     getSynonyms(): [];
 }

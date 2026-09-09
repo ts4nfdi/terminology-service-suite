@@ -51,6 +51,7 @@ declare const meta: {
         parameter: string;
         initialSearchQuery: string;
         onNavigateToOntology: string;
+        showApiRequestButton: boolean;
     };
 };
 export default meta;

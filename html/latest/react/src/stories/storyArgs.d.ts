@@ -365,3 +365,4 @@ export declare const mathMLArgType: {
         };
     };
 };
+export declare const showApiRequestButton: ArgTypes;
