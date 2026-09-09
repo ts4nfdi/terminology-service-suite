@@ -1,0 +1,1 @@
+function i(e){return e.trim().replace(/\s+/g," ")}function a(e,n){const r=e==null?"":String(e),t=n==null?"":String(n);return r.localeCompare(t,void 0,{numeric:!0,sensitivity:"base"})}export{a as c,i as n};
