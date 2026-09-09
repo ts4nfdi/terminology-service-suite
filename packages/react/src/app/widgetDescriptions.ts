@@ -524,11 +524,11 @@ Enables users to inspect how a single source concept is connected to concepts fr
 `.trim();
 
 export const EntityProviderDescription = `
-The EntityProviderWidget reports which terminology backend provides a given entity. Unlike the other widgets it renders nothing:
+The EntityProviderWidget specifies which terminology provider is responsible for a given entity. Unlike the other widgets it renders nothing:
 it is a **data hook** plus a plain asynchronous function, so the consuming application keeps full control over the presentation.
 
-The [TS4NFDI API Gateway](https://base4nfdi.de/projects/ts4nfdi) federates several terminology software stacks
-(OLS, OntoPortal, Skosmos) and reports the responsible one per entity in a \`provider\` block:
+The [TS4NFDI API Gateway](https://terminology.services.base4nfdi.de/documentation#gateway) federates several terminology software stacks
+(e.g. OLS, OntoPortal, Skosmos) and reports the responsible one per entity in a \`provider\` block:
 
 \`\`\`json
 {
@@ -538,7 +538,7 @@ The [TS4NFDI API Gateway](https://base4nfdi.de/projects/ts4nfdi) federates sever
 }
 \`\`\`
 
-This information is specific to the gateway, which is why \`api\` defaults to the gateway OLS endpoint. Plain OLS instances do not
+This information is specific to the TS4NFDI API Gateway, which is why \`api\` defaults to the gateway OLS endpoint. Plain OLS instances do not
 return a \`provider\` block, so no provider can be resolved against them.
 
 #### Usage
@@ -583,7 +583,7 @@ Deliberately implemented without \`react-query\`, so the hook can be dropped int
 logic serves React components, server code and vanilla JavaScript alike.
 
 - **Multi-ontology aware**:
-One IRI can resolve in several ontologies, each potentially served by a different backend. \`providers\` therefore lists every
+One IRI can resolve in several ontologies, each potentially served by a different provider. \`providers\` therefore lists every
 occurrence, while \`provider\` offers the preferred one: the defining ontology if marked as such, otherwise the first result.
 
 - **Unresolvable entities are not errors**:
