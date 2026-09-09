@@ -99,7 +99,7 @@ code snippets are provided in the `Show code` drop-down in the Storybook.
 
 ## Usage of the EntityProviderWidget
 
-The EntityProviderWidget reports which terminology backend provides a given entity. It renders nothing, so instead of a
+The EntityProviderWidget specifies which terminology provider is responsible for a given entity. It renders nothing, so instead of a
 `create...(props, container)` function it exposes two promise-returning functions and leaves the presentation to you.
 `getEntityProvider` returns the provider of the defining ontology, `getEntityProviders` returns one entry per ontology the IRI
 resolves in.

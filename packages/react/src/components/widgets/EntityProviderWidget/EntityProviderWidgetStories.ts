@@ -45,9 +45,9 @@ export const EntityProviderWidgetStoryArgs = {
 } as const;
 
 /**
- * An entity that resolves in voc4cat via the gateway. At the time of writing
- * the gateway serves it through Skosmos, but which backend answers is a
- * property of the gateway configuration and may change - the story renders
+ * An entity that resolves in voc4cat via the TS4NFDI API Gateway. At the time of writing
+ * the gateway serves it through Skosmos, but which provider answers is a
+ * property of the API Gateway configuration and may change - the story renders
  * whatever the API reports rather than asserting a specific provider.
  */
 export const withOntologyIdArgs = {

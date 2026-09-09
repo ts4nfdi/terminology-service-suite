@@ -75,7 +75,7 @@ function pickPreferredProvider(
  * OLS4 API, without requiring React.
  *
  * As one IRI can resolve in several ontologies, each potentially served by a
- * different backend, this returns one entry per ontology the IRI was found in.
+ * different provider, this returns one entry per ontology the IRI was found in.
  * Providing an `ontologyId` restricts the result to that single ontology.
  *
  * Returns an empty array if the entity could not be resolved, or if the API

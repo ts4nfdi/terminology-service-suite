@@ -20,7 +20,7 @@ const IDLE: UseEntityProviderResult = {
 };
 
 /**
- * React hook returning information about the terminology backend that provides
+ * React hook returning information about the terminology provider that specifies
  * an entity, as reported by the `provider` block of the TS4NFDI API Gateway.
  *
  * Deliberately implemented without `react-query`, so that it can be dropped
