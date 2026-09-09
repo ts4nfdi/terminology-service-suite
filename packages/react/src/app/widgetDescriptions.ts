@@ -542,18 +542,18 @@ Shows how a single source concept is connected to concepts in other terminologie
 `.trim();
 
 export const MappingDetailDescription = `
-The MappingDetailWidget shows one mapping of the ColiConc Concordance API in a compact card view. The MappingListWidget opens it underneath an expanded row, and it can also be used on its own, as this story does, by passing the values of a single mapping to it directly.
+The MappingDetailWidget shows one mapping of the ColiConc Concordance API in a compact card view. It takes an API endpoint, the IRI of the source entity and the IRI of the target entity, and fetches that mapping itself.
 
 #### Key Features:
+
+- **One mapping, picked by source and target**:
+A source is usually mapped to several targets, so the source alone does not identify a mapping. The widget asks ColiConc for every mapping of the source and shows the one that points at the given target. When the source is not mapped to that target, the card says so instead of showing an empty mapping.
 
 - **Mapping metadata at a glance**:
 Shows the source and the target scheme, the date the mapping was last modified, its identifier, and the concordance it is part of. Each field falls back to a dash when the mapping does not carry it, the way mappings outside a concordance have no "Part of" value.
 
-- **Values carried for the downloads only**:
-The \`type\`, \`from\`, \`fromUri\`, \`to\`, \`toUri\`, \`creator\` and \`created\` parameters are not displayed on the card. They are passed in because the CSV and TSV downloads write them as columns, so that a downloaded mapping is complete while the card itself stays compact. Leaving them out keeps the card looking the same, but their columns come out empty in the downloaded file.
-
 - **Mapping downloads**:
-Offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget out of the parameters above, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
+Offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI. Those two files hold the whole mapping, including the values the card itself does not show: the mapping type, both entities with their IRIs, the creator and the creation date.
 
 - **Custom card color**:
 The optional \`MappingDetailBackgroundColor\` parameter sets the background of the card, as any CSS color value. It defaults to a light pink.
@@ -561,6 +561,6 @@ The optional \`MappingDetailBackgroundColor\` parameter sets the background of t
 - **Mapping feedback**:
 Links to the ColiConc address a questionable mapping can be reported to, right where that mapping is shown.
 
-- **Optional close button**:
-When an \`onClose\` handler is given, the card shows a close button in its corner, which the mapping list uses to collapse the expanded row again. Without one, the corner carries an info icon instead.
+- **Shared with the mapping list**:
+MappingListWidget shows the same card underneath an expanded row. It renders the card directly out of the row the user expanded, so the table is not fetched a second time, and the card there carries a close button that collapses the row again.
 `.trim();
