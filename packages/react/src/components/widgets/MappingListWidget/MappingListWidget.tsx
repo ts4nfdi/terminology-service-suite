@@ -139,31 +139,31 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
 });
 
 /**
- * Magnifier over two lines of text: "look this target up in its terminology".
- * Drawn by hand like the predicate and filter icons above, because the icons
- * EUI ships are solid shapes and would not match the outline style the rest of
- * this widget uses. Size and colour are left to the button rendering it.
+ * Circled "i": "there is more information about this target". Drawn by hand
+ * like the predicate and filter icons above, because the icons EUI ships are
+ * solid shapes and would not match the outline style the rest of this widget
+ * uses. Same circle as the help button in the header, which carries a question
+ * mark instead. Size and colour are left to the button rendering it.
  */
 const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
   <svg
-    viewBox="2 2 20 20"
+    viewBox="0 0 24 24"
     stroke="currentColor"
     strokeWidth={1.8}
     strokeLinecap="round"
     strokeLinejoin="round"
     /**
      * EuiIcon paints `fill: currentColor` through a class, and a class beats a
-     * `fill="none"` attribute, which fills the lens in. An inline style wins
-     * over that class instead. No shape below carries a `fill` attribute of
-     * its own either, so EUI's `*[fill]` overrides match nothing here.
+     * `fill="none"` attribute, which fills the circle in. An inline style wins
+     * over that class instead. The dot below keeps its own `fill`, because it
+     * is meant to be solid.
      */
     style={{ ...style, fill: "none" }}
     {...props}
   >
-    <circle cx="10" cy="10" r="6" />
-    <line x1="7" y1="8.5" x2="13" y2="8.5" />
-    <line x1="7" y1="11.5" x2="11" y2="11.5" />
-    <path d="M14.5 14.5 20 20" strokeWidth={2.1} />
+    <circle cx="12" cy="12" r="9" />
+    <line x1="12" y1="10.5" x2="12" y2="16" />
+    <circle cx="12" cy="7.8" r="0.75" fill="currentColor" stroke="none" />
   </svg>
 ));
 
@@ -519,9 +519,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
 
       /**
        * Target label, followed by a button that opens the metadata of that
-       * entity in a popup. Deliberately not the circled "i" of the table help
-       * button in the header. The button is only shown once the gateway resolved
-       * a label for the target, because those are exactly the entities it can
+       * entity in a popup. The button is only shown once the gateway resolved a
+       * label for the target, because those are exactly the entities it can
        * also return metadata for
        */
       render: (to: string, item: MappingRow) => (
