@@ -30,7 +30,7 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
-import { MappingDetailCardWidget } from "../MappingDetailCardWidget";
+import { MappingDetailWidget } from "../MappingDetailWidget";
 import { MetadataWidget } from "../MetadataWidget";
 
 type MappingRow = {
@@ -168,7 +168,7 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 ));
 
 function MappingListWidget(props: MappingListWidgetProps) {
-  const { api, source, rowColor, MappingDetailCardBackgroundColor } = props;
+  const { api, source, rowColor, MappingDetailBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -738,7 +738,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
       if (!expandedRowIds.includes(row.id)) return;
 
       expandedRows[row.id] = (
-        <MappingDetailCardWidget
+        <MappingDetailWidget
           fromScheme={row.fromScheme}
           toScheme={row.toScheme}
           identifier={row.identifier}
@@ -752,14 +752,14 @@ function MappingListWidget(props: MappingListWidgetProps) {
           toUri={row.toUri}
           creator={row.creator}
           created={row.createdLabel}
-          MappingDetailCardBackgroundColor={MappingDetailCardBackgroundColor}
+          MappingDetailBackgroundColor={MappingDetailBackgroundColor}
           onClose={() => toggleRowExpansion(row)}
         />
       );
     });
 
     return expandedRows;
-  }, [filteredRows, expandedRowIds, MappingDetailCardBackgroundColor]);
+  }, [filteredRows, expandedRowIds, MappingDetailBackgroundColor]);
 
   const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
   const sourceFromColiConc =
@@ -1052,7 +1052,7 @@ export function WrappedMappingListWidget(props: MappingListWidgetProps) {
       api={props.api}
       source={props.source}
       rowColor={props.rowColor}
-      MappingDetailCardBackgroundColor={props.MappingDetailCardBackgroundColor}
+      MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
     />
   );
 }

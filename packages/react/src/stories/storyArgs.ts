@@ -459,8 +459,8 @@ export const rowColorArgType: ArgTypes = {
     },
   },
 };
-export const MappingDetailCardBackgroundColorArgType: ArgTypes = {
-  MappingDetailCardBackgroundColor: {
+export const MappingDetailBackgroundColorArgType: ArgTypes = {
+  MappingDetailBackgroundColor: {
     required: false,
     description:
       "Background color of the detail card opened underneath an expanded row, as any CSS color value.",

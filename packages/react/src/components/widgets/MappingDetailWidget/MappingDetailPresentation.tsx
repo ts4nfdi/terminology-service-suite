@@ -1,25 +1,21 @@
 import { EuiButtonIcon, EuiIcon, EuiPanel, EuiText } from "@elastic/eui";
 import type { ReactNode } from "react";
 
-type MappingDetailCardField = {
+type MappingDetailField = {
   label: string;
   value: ReactNode;
 };
 
-type MappingDetailCardPresentationProps = {
-  fields: MappingDetailCardField[];
-  MappingDetailCardBackgroundColor?: string;
+type MappingDetailPresentationProps = {
+  fields: MappingDetailField[];
+  MappingDetailBackgroundColor?: string;
   onClose?: () => void;
 };
 
-export default function MappingDetailCardPresentation(
-  props: MappingDetailCardPresentationProps,
+export default function MappingDetailPresentation(
+  props: MappingDetailPresentationProps,
 ) {
-  const {
-    fields,
-    MappingDetailCardBackgroundColor = "#fff5fa",
-    onClose,
-  } = props;
+  const { fields, MappingDetailBackgroundColor = "#fff5fa", onClose } = props;
 
   return (
     <EuiPanel
@@ -29,7 +25,7 @@ export default function MappingDetailCardPresentation(
         overflow: "hidden",
         border: "none",
         borderRadius: 14,
-        background: MappingDetailCardBackgroundColor,
+        background: MappingDetailBackgroundColor,
       }}
     >
       <div

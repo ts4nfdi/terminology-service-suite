@@ -514,7 +514,7 @@ Lists each mapping with its type, target, creator and creation date. The table c
 The optional \`rowColor\` parameter sets the background of every other row. It defaults to a light pink.
 
 - **Custom detail card color**:
-The optional \`MappingDetailCardBackgroundColor\` parameter sets the background of the detail card opened underneath an expanded row. It defaults to a light pink.
+The optional \`MappingDetailBackgroundColor\` parameter sets the background of the detail card opened underneath an expanded row. It defaults to a light pink.
 
 - **ColiConc-based search**:
 Filters the table by target notation and creator. The search runs on the data returned by ColiConc, not on the labels resolved later through the OLS Gateway API.
@@ -541,6 +541,6 @@ An info button in the header explains what source, type and target mean, togethe
 Shows how a single source concept is connected to concepts in other terminologies or classification systems.
 `.trim();
 
-export const MappingDetailCardDescription = `
-The MappingDetailCardWidget shows one mapping in a compact card view. It is used to display the most important metadata for a selected mapping, such as source and target information, mapping type, creator, and identifiers. This helps users inspect a single mapping in more detail without leaving the mapping list.
+export const MappingDetailDescription = `
+The MappingDetailWidget shows one mapping in a compact card view. It is used to display the most important metadata for a selected mapping, such as source and target information, mapping type, creator, and identifiers. This helps users inspect a single mapping in more detail without leaving the mapping list.
 `.trim();

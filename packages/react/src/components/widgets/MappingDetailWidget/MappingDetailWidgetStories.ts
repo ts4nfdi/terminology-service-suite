@@ -1,10 +1,10 @@
-import { MappingDetailCardBackgroundColorArgType } from "../../../stories/storyArgs";
+import { MappingDetailBackgroundColorArgType } from "../../../stories/storyArgs";
 
-export const MappingDetailCardWidgetStoryArgTypes = {
-  ...MappingDetailCardBackgroundColorArgType,
+export const MappingDetailWidgetStoryArgTypes = {
+  ...MappingDetailBackgroundColorArgType,
 };
 
-export const MappingDetailCardWidgetStoryArgs_Rec_B_2000 = {
+export const MappingDetailWidgetStoryArgs_Rec_B_2000 = {
   type: "narrowMatch",
   from: "Rec B 2000",
   fromUri: "http://uri.gbv.de/terminology/nsk/Rec%20B%202000",
@@ -19,5 +19,5 @@ export const MappingDetailCardWidgetStoryArgs_Rec_B_2000 = {
     "mapping:3da011a5661ef018f0f67049f3de2a97e2ca18e2c5c322d62a9bd16594c8c17c",
   partOf: "https://coli-conc.gbv.de/api/concordances/nsk-bk",
   uri: "https://coli-conc.gbv.de/api/mappings/6e94f948-dd66-4910-aa96-174d1acce95a",
-  MappingDetailCardBackgroundColor: "#ebedef",
+  MappingDetailBackgroundColor: "#ebedef",
 } as const;

@@ -1,7 +1,7 @@
 import { EuiLink } from "@elastic/eui";
 
-import { MappingDetailCardWidgetProps } from "../../../app";
-import MappingDetailCardPresentation from "./MappingDetailCardPresentation";
+import { MappingDetailWidgetProps } from "../../../app";
+import MappingDetailPresentation from "./MappingDetailPresentation";
 
 /**
  * Formats the card writes itself, and the column separator each one uses.
@@ -13,7 +13,7 @@ const separators: Record<string, string> = { csv: ",", tsv: "\t" };
  */
 const feedbackEmail = "coli-conc@gbv.de";
 
-function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
+function MappingDetailWidget(props: MappingDetailWidgetProps) {
   const {
     fromScheme,
     toScheme,
@@ -28,7 +28,7 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
     toUri,
     creator,
     created,
-    MappingDetailCardBackgroundColor,
+    MappingDetailBackgroundColor,
     onClose,
   } = props;
 
@@ -150,17 +150,17 @@ function MappingDetailCardWidget(props: MappingDetailCardWidgetProps) {
   ];
 
   return (
-    <MappingDetailCardPresentation
+    <MappingDetailPresentation
       fields={fields}
-      MappingDetailCardBackgroundColor={MappingDetailCardBackgroundColor}
+      MappingDetailBackgroundColor={MappingDetailBackgroundColor}
       onClose={onClose}
     />
   );
 }
 
-export function WrappedMappingDetailCardWidget() {
-  return <MappingDetailCardWidget />;
+export function WrappedMappingDetailWidget() {
+  return <MappingDetailWidget />;
 }
 
-export { MappingDetailCardWidget };
-export default WrappedMappingDetailCardWidget;
+export { MappingDetailWidget };
+export default WrappedMappingDetailWidget;
