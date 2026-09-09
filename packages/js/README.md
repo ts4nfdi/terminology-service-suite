@@ -97,6 +97,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 code snippets are provided in the `Show code` drop-down in the Storybook.
 
+## Usage of the EntityProviderWidget
+
+The EntityProviderWidget reports which terminology backend provides a given entity. It renders nothing, so instead of a
+`create...(props, container)` function it exposes two promise-returning functions and leaves the presentation to you.
+`getEntityProvider` returns the provider of the defining ontology, `getEntityProviders` returns one entry per ontology the IRI
+resolves in.
+
+The provider information is specific to the [TS4NFDI API Gateway](https://github.com/ts4nfdi/api-gateway), which is why `api`
+defaults to its OLS endpoint. Plain OLS instances do not report a provider, so nothing can be resolved against them. An entity
+that cannot be resolved is not an error: the result is simply undefined resp. an empty array.
+
+NPM package:
+
+```
+import * as ts4nfdiWidgets from '@ts4nfdi/terminology-service-suite-js';
+
+const provider = await ts4nfdiWidgets.getEntityProvider({
+    ontologyId: "voc4cat",
+    iri: "https://w3id.org/nfdi4cat/voc4cat_0000151",
+});
+console.log(provider?.name, provider?.type, provider?.api);
+```
+
+IIFE:
+
+```
+<script src="https://cdn.jsdelivr.net/npm/@ts4nfdi/terminology-service-suite-js/dist/index.iife.js"></script>
+
+<script type="text/javascript">
+    window['ts4nfdiWidgets'].getEntityProvider({
+        ontologyId: "voc4cat",
+        iri: "https://w3id.org/nfdi4cat/voc4cat_0000151",
+    }).then((provider) => {
+        document.getElementById('provider').textContent = provider ? provider.name : "Unknown provider";
+    });
+</script>
+```
+
 ## Usage of older versions
 
 Versions older than 5.0 are published at GitHub.
