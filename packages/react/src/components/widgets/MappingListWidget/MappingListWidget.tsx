@@ -508,14 +508,21 @@ function MappingListWidget(props: MappingListWidgetProps) {
     {
       field: "to",
       name: <strong style={{ fontSize: "14px" }}>Target</strong>,
-      sortable: true,
+
+      /**
+       * Sort on the ColiConc notation instead of on the cell value. `to` starts
+       * out as that notation and is replaced by the OLS label a moment later,
+       * so sorting on it would reshuffle the whole table once the labels
+       * arrive
+       */
+      sortable: (row: MappingRow) => row.targetFromColiConc,
+
       /**
        * Target label, followed by a button that opens the metadata of that
        * entity in a popup. Deliberately not the circled "i" of the table help
-       * button in the header: this one looks a single entity up rather than
-       * explaining the table. The button is only shown once the gateway resolved
+       * button in the header. The button is only shown once the gateway resolved
        * a label for the target, because those are exactly the entities it can
-       * also return metadata for.
+       * also return metadata for
        */
       render: (to: string, item: MappingRow) => (
         <span
