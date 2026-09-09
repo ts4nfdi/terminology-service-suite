@@ -16,7 +16,7 @@ declare const meta: {
         };
     };
     argTypes: {
-        [x: string]: import('storybook/internal/csf').InputType;
+        [x: string]: any;
     };
     args: {
         api: string;

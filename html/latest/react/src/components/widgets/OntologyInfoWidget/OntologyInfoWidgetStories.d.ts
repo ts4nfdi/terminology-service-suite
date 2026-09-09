@@ -1,5 +1,5 @@
 export declare const OntologyInfoWidgetStoryArgTypes: {
-    [x: string]: import('storybook/internal/csf').InputType;
+    [x: string]: any;
 };
 export declare const OntologyInfoWidgetStoryArgs: {
     api: string;

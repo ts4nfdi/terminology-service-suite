@@ -1,5 +1,5 @@
 export declare const GraphViewWidgetStoryArgTypes: {
-    [x: string]: import('storybook/internal/csf').InputType;
+    [x: string]: any;
 };
 export declare const GraphViewWidgetStoryArgs: {
     api: string;

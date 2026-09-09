@@ -1,5 +1,5 @@
 export declare const TermDepictionWidgetStoryArgTypes: {
-    [x: string]: import('storybook/internal/csf').InputType;
+    [x: string]: any;
 };
 export declare const TermDepictionWidgetStoryArgs: {
     api: string;

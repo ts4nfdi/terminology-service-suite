@@ -1,6 +1,7 @@
 import { createAutocomplete } from './AutocompleteWidget';
 import { createDataContent } from './DataContentWidget';
 import { createEntityInfo } from './EntityInfoWidget';
+import { getEntityProvider, getEntityProviders } from './EntityProviderWidget';
 import { createEntityRelations } from './EntityRelationsWidget';
 import { createGraphView } from './GraphViewWidget';
 import { createJsonApi } from './JsonApiWidget';
@@ -10,4 +11,5 @@ import { createResources } from './ResourcesWidget';
 import { createSearchBar } from './SearchBarWidget';
 import { createSearchResultsList } from './SearchResultsListWidget';
 import { createDepiction } from './TermDepictionWidget';
-export { createAlternativeNameTab, createAutocomplete, createBreadcrumb, createCrossRefTab, createDataContent, createDepiction, createDescription, createEntityDefinedBy, createEntityInfo, createEntityOntoList, createEntityRelations, createGraphView, createHierarchy, createIri, createJsonApi, createMathFormula, createMetadata, createOntologyInfo, createResources, createSearchBar, createSearchResultsList, createTab, createTitle, };
+export { createAlternativeNameTab, createAutocomplete, createBreadcrumb, createCrossRefTab, createDataContent, createDepiction, createDescription, createEntityDefinedBy, createEntityInfo, createEntityOntoList, createEntityRelations, createGraphView, createHierarchy, createIri, createJsonApi, createMathFormula, createMetadata, createOntologyInfo, createResources, createSearchBar, createSearchResultsList, createTab, createTitle, getEntityProvider, getEntityProviders, };
+export type { EntityProvider, GetEntityProviderParams, } from './EntityProviderWidget';

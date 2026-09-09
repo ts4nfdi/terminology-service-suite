@@ -1,5 +1,5 @@
 export declare const SearchResultsListWidgetStoryArgTypes: {
-    [x: string]: import('storybook/internal/csf').InputType;
+    [x: string]: any;
 };
 export declare const SearchResultsListWidgetStoryArgs: {
     api: string;
