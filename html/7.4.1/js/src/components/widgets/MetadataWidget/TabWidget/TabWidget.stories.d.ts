@@ -1,0 +1,13 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { TabWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+declare const meta: Meta<TabWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const Default: Story;
+export declare const TabWidgetOLS3: Story;
+export declare const TabWidgetOLS4V1: Story;
+export declare const TabWidgetOLS4V2: Story;
+export declare const SelectingDefiningOntology: Story;
+export declare const DefiningOntologyUnavailable: Story;
+export declare const TabWidgetLarge: Story;
+export declare const HiddenTabs: Story;
