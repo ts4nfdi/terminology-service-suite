@@ -5,7 +5,7 @@ import { EntityProviderWidgetProps } from '../../../app/types';
  * that Storybook has something to show: it calls the hook and dumps the result.
  * It is intentionally local to this file and not exported from the package.
  */
-declare function EntityProviderDemo(props: EntityProviderWidgetProps): JSX.Element;
+declare function EntityProviderDemo(props: EntityProviderWidgetProps): React.JSX.Element;
 declare const meta: {
     title: string;
     component: typeof EntityProviderDemo;
