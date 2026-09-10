@@ -8,7 +8,7 @@ import {
 } from "./interfaces";
 
 // READONLY arrays containing the strings defining a Model Object Type
-export const classTypeNames = ["class", "term"] as const;
+export const classTypeNames = ["class", "term", "skos:Concept"] as const;
 export const propertyTypeNames = [
   "property",
   "annotationProperty",

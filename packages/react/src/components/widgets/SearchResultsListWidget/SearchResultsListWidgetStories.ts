@@ -37,7 +37,7 @@ export const SearchResultsListWidgetStoryArgs = {
   targetLink: "",
   parameter: "",
   onNavigateToOntology: "Console message",
-  OnNavigateToSearchResult: "None",
+  OnNavigateToSearchResult: "Console message",
 };
 
 export const DefaultArgs = {
@@ -55,7 +55,15 @@ export const ApiGatewayArgs = {
   useLegacy: false,
 };
 
-export const ApiGatewayWithCollectionArgs = {
+export const ApiGatewayWithFAIRAgroCollectionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "planet",
+  targetLink: "",
+  parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
+  useLegacy: false,
+};
+
+export const ApiGatewayWithNFDI4HealthCollectionArgs = {
   api: globals.GATEWAY_API_OLS_ENDPOINT,
   query: "diabetes",
   targetLink: "",

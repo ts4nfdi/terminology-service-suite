@@ -16,12 +16,14 @@ import {
   EuiSwitch,
   EuiTablePagination,
   EuiText,
+  EuiTitle,
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { SearchResultsListWidgetProps } from "../../../app";
 import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
+import ErrorBoundary from "../../helperComponents/ErrorBoundary";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from "./MetadataCompact";
 
@@ -510,23 +512,37 @@ function SearchResultsListWidget(
               )}
 
               {searchResults &&
-                searchResults.map((result: any) => (
+                searchResults.map((result: any, index: number) => (
                   <React.Fragment
-                    key={result.iri + result.ontology_name + result.type}
+                    key={`${result.iri}-${result.ontology_name}-${result.type}-${index}`}
                   >
-                    <MetadataCompact
-                      api={api}
-                      result={result}
-                      targetLink={targetLink}
-                      className={`${finalClassName}-metadata-compact`}
-                      parameter={parameter}
-                      entityType={result.type}
-                      iri={result.iri}
-                      ontologyId={result.ontology_name}
-                      useLegacy={useLegacy}
-                      onNavigateToOntology={onNavigateToOntology}
-                      OnNavigateToSearchResult={OnNavigateToSearchResult}
-                    />
+                    <ErrorBoundary
+                      fallback={
+                        <EuiPanel>
+                          <EuiTitle size="xs">
+                            <h2>{result.label || result.iri}</h2>
+                          </EuiTitle>
+                          <EuiSpacer size="s" />
+                          <EuiText size="s" color="subdued">
+                            This result could not be displayed.
+                          </EuiText>
+                        </EuiPanel>
+                      }
+                    >
+                      <MetadataCompact
+                        api={api}
+                        result={result}
+                        targetLink={targetLink}
+                        className={`${finalClassName}-metadata-compact`}
+                        parameter={parameter}
+                        entityType={result.type}
+                        iri={result.iri}
+                        ontologyId={result.ontology_name}
+                        useLegacy={useLegacy}
+                        onNavigateToOntology={onNavigateToOntology}
+                        OnNavigateToSearchResult={OnNavigateToSearchResult}
+                      />
+                    </ErrorBoundary>
                     <EuiSpacer />
                   </React.Fragment>
                 ))}

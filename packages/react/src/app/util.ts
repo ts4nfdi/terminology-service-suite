@@ -106,6 +106,29 @@ export function pluralizeType(
   throw new Error("No thingType found to pluralize in provided typeArray.");
 }
 
+/**
+ * Like {@link pluralizeType}, but returns undefined instead of throwing if no thingType
+ * is contained in {@link typeArray}. Use in render paths, where a throw would unmount the
+ * whole React tree.
+ */
+export function tryPluralizeType(
+  typeArray: string[] | string,
+  useLegacy?: boolean,
+):
+  | "terms"
+  | "classes"
+  | "properties"
+  | "individuals"
+  | "ontologies"
+  | undefined {
+  try {
+    return pluralizeType(typeArray, useLegacy);
+  } catch (error) {
+    console.warn(error);
+    return undefined;
+  }
+}
+
 export function singularizeType(
   typeArray: string[] | string,
   useLegacy?: boolean,
@@ -209,6 +232,7 @@ export function inferTypeFromTypeArray(types: string[]) {
     ...new Set<
       | "class"
       | "term"
+      | "skos:Concept"
       | "individual"
       | "property"
       | "annotationProperty"
@@ -229,6 +253,21 @@ export function inferTypeFromTypeArray(types: string[]) {
         res,
       )}`,
     );
+}
+
+/**
+ * Like {@link inferTypeFromTypeArray}, but returns undefined instead of throwing if the type
+ * cannot be inferred. Use in render paths, where a throw would unmount the whole React tree.
+ */
+export function tryInferTypeFromTypeArray(
+  types: string[],
+): ThingTypeName | undefined {
+  try {
+    return inferTypeFromTypeArray(types);
+  } catch (error) {
+    console.warn(error);
+    return undefined;
+  }
 }
 
 export function manuallyEmbedOnNavigate(
