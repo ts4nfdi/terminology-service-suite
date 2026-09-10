@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MappingDetailDescription } from "../../../app/widgetDescriptions";
-import { MappingDetailWidget } from "./MappingDetailWidget";
+import { WrappedMappingDetailWidget } from "./MappingDetailWidget";
 import {
   MappingDetailWidgetStoryArgs_Rec_B_2000,
   MappingDetailWidgetStoryArgTypes,
@@ -8,7 +8,7 @@ import {
 
 const meta: Meta = {
   title: "Mapping/MappingDetailWidget",
-  component: MappingDetailWidget,
+  component: WrappedMappingDetailWidget,
   argTypes: MappingDetailWidgetStoryArgTypes,
   args: MappingDetailWidgetStoryArgs_Rec_B_2000,
   parameters: {
