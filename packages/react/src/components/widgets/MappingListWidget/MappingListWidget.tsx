@@ -18,7 +18,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
-import {
+import React, {
   memo,
   useEffect,
   useMemo,
@@ -147,7 +147,7 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
   </svg>
 ));
 
-function MappingListWidget(props: MappingListWidgetProps) {
+function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const { api, source, rowColor, MappingDetailBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
@@ -1082,7 +1082,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
   );
 }
 
-export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+export function WrappedMappingListWidget(
+  props: MappingListWidgetProps,
+): React.JSX.Element {
   return (
     <MappingListWidget
       api={props.api}

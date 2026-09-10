@@ -1,5 +1,5 @@
 import { EuiPanel, EuiText } from "@elastic/eui";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { MappingDetailWidgetProps } from "../../../app";
@@ -67,7 +67,9 @@ function toMappingDetail(mapping: any): MappingDetail {
   };
 }
 
-function MappingDetailWidget(props: MappingDetailWidgetProps) {
+function MappingDetailWidget(
+  props: MappingDetailWidgetProps,
+): React.JSX.Element {
   const { api, source, target, MappingDetailBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
@@ -124,7 +126,9 @@ function MappingDetailWidget(props: MappingDetailWidgetProps) {
   );
 }
 
-export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
+export function WrappedMappingDetailWidget(
+  props: MappingDetailWidgetProps,
+): React.JSX.Element {
   return <MappingDetailWidget {...props} />;
 }
 
