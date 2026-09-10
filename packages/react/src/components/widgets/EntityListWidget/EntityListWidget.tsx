@@ -69,7 +69,7 @@ function getSearchEntityType(
   return "class";
 }
 
-function EntityListWidget(props: EntityListWidgetProps) {
+function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
   const { api, ontologyId, parameter, entityType } = props;
 
   const normalizedEntityType: EntityTypeName | undefined =
@@ -646,7 +646,9 @@ async function fetchListPage(
 
 const queryClient = new QueryClient();
 
-export function WrappedEntityListWidget(props: EntityListWidgetProps) {
+export function WrappedEntityListWidget(
+  props: EntityListWidgetProps,
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>

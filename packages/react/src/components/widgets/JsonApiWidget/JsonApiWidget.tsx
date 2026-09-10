@@ -4,7 +4,7 @@ import { EuiButton, EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { JsonApiWidgetProps } from "../../../app/types";
 
-function JsonApiWidget(props: JsonApiWidgetProps) {
+function JsonApiWidget(props: JsonApiWidgetProps): React.JSX.Element {
   const { apiQuery, buttonText, buttonSize } = props;
 
   return (
@@ -19,7 +19,7 @@ function JsonApiWidget(props: JsonApiWidgetProps) {
   );
 }
 
-function WrappedJsonApiWidget(props: JsonApiWidgetProps) {
+function WrappedJsonApiWidget(props: JsonApiWidgetProps): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

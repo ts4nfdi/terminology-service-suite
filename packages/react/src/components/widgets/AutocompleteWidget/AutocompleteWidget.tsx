@@ -92,7 +92,7 @@ function buildValueFromPlainObject(
 /**
  * A React component to provide Autosuggestion based on SemLookP.
  */
-function AutocompleteWidget(props: AutocompleteWidgetProps): JSX.Element {
+function AutocompleteWidget(props: AutocompleteWidgetProps): React.JSX.Element {
   const {
     api,
     parameter,
@@ -683,7 +683,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps): JSX.Element {
 
 function WrappedAutocompleteWidget(
   props: AutocompleteWidgetProps,
-): JSX.Element {
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

@@ -26,7 +26,7 @@ import "../../../style/ts4nfdiStyles/ts4nfdiResourcesStyle.css";
 
 const DEFAULT_USE_LEGACY = true as const;
 
-function ResourcesWidget(props: ResourcesWidgetProps) {
+function ResourcesWidget(props: ResourcesWidgetProps): React.JSX.Element {
   const {
     api,
     onNavigate,
@@ -390,7 +390,9 @@ function ResourcesWidget(props: ResourcesWidgetProps) {
   );
 }
 
-function WrappedResourcesWidget(props: ResourcesWidgetProps) {
+function WrappedResourcesWidget(
+  props: ResourcesWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

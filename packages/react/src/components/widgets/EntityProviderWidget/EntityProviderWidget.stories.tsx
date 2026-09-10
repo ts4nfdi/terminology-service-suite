@@ -16,7 +16,9 @@ import { useEntityProvider } from "./useEntityProvider";
  * that Storybook has something to show: it calls the hook and dumps the result.
  * It is intentionally local to this file and not exported from the package.
  */
-function EntityProviderDemo(props: EntityProviderWidgetProps): JSX.Element {
+function EntityProviderDemo(
+  props: EntityProviderWidgetProps,
+): React.JSX.Element {
   const { provider, providers, isLoading, isSuccess, isError, error } =
     useEntityProvider(props);
 

@@ -23,7 +23,7 @@ type MetadataInfo = {
   definedBy: string[];
 };
 
-function MetadataCompact(props: MetadataCompactProps) {
+function MetadataCompact(props: MetadataCompactProps): React.JSX.Element {
   const {
     api,
     result,
@@ -146,6 +146,8 @@ function MetadataCompact(props: MetadataCompactProps) {
             ontologyId={result.ontology_name}
             className={`${className}-breadcrumb`}
             onNavigateToOntology={onNavigateToOntology}
+            useLegacy={useLegacy}
+            parameter={parameter}
           />
         )}
 
@@ -186,6 +188,8 @@ function MetadataCompact(props: MetadataCompactProps) {
           iri={result.iri}
           thingType={result.type}
           className={`${className}-description`}
+          useLegacy={useLegacy}
+          parameter={parameter}
         />
       </EuiCard>
     </div>

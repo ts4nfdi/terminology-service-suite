@@ -45,7 +45,7 @@ const ALLOWED_ATTR = [
   "class",
 ];
 
-function MathFormulaWidget(props: MathFormulaWidgetProps) {
+function MathFormulaWidget(props: MathFormulaWidgetProps): React.JSX.Element {
   const { api, ontologyId, iri, mathProperty, mathML } = props;
 
   const hasInlineMathML = typeof mathML === "string" && mathML.trim() !== "";
@@ -123,7 +123,9 @@ function MathFormulaWidget(props: MathFormulaWidgetProps) {
   );
 }
 
-function WrappedMathFormulaWidget(props: MathFormulaWidgetProps) {
+function WrappedMathFormulaWidget(
+  props: MathFormulaWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

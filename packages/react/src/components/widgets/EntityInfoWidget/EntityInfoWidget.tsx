@@ -58,8 +58,7 @@ function isReifiedAssertion(value: any, useLegacy?: boolean): boolean {
   );
 }
 
-function EntityInfoWidget(props: EntityInfoWidgetProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+function EntityInfoWidget(props: EntityInfoWidgetProps): React.JSX.Element {
   const {
     api,
     iri,
@@ -69,13 +68,16 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
     parameter,
     showBadges,
     useLegacy,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
     ...rest
   } = props;
 
   const onNavigates = {
-    onNavigateToEntity: props.onNavigateToEntity,
-    onNavigateToOntology: props.onNavigateToOntology,
-    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
   };
 
   const olsApi = new OlsEntityApi(api);
@@ -911,7 +913,9 @@ function EntityInfoWidget(props: EntityInfoWidgetProps) {
   );
 }
 
-function WrappedEntitiyInfoWidget(props: EntityInfoWidgetProps) {
+function WrappedEntitiyInfoWidget(
+  props: EntityInfoWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

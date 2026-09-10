@@ -34,7 +34,7 @@ type MetadataInfo = {
   definedBy: string[];
 };
 
-function MetadataWidget(props: MetadataWidgetProps) {
+function MetadataWidget(props: MetadataWidgetProps): React.JSX.Element {
   const {
     iri,
     api,
@@ -258,7 +258,7 @@ function MetadataWidget(props: MetadataWidgetProps) {
   );
 }
 
-function WrappedMetadataWidget(props: MetadataWidgetProps) {
+function WrappedMetadataWidget(props: MetadataWidgetProps): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

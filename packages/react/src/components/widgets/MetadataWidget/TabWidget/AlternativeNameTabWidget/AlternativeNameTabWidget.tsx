@@ -8,7 +8,9 @@ import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";
 
-function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
+function AlternativeNameTabWidget(
+  props: AlternativeNameTabWidgetProps,
+): React.JSX.Element {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
     props;
   const olsApi = new OlsEntityApi(api);
@@ -52,7 +54,9 @@ function AlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
   );
 }
 
-function WrappedAlternativeNameTabWidget(props: AlternativeNameTabWidgetProps) {
+function WrappedAlternativeNameTabWidget(
+  props: AlternativeNameTabWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

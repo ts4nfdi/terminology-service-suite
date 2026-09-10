@@ -12,7 +12,9 @@ import { EntityTypeName } from "../../../../model/ModelTypeCheck";
 import "../../../../style/tssStyles.css";
 import { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
 
-function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
+function EntityDefinedByWidget(
+  props: EntityDefinedByWidgetProps,
+): React.JSX.Element {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
     props;
   const olsApi = new OlsEntityApi(api);
@@ -85,7 +87,9 @@ function EntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
   );
 }
 
-function WrappedEntityDefinedByWidget(props: EntityDefinedByWidgetProps) {
+function WrappedEntityDefinedByWidget(
+  props: EntityDefinedByWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

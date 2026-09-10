@@ -7,7 +7,7 @@ import { IriWidgetProps } from "../../../../app/types";
 import { isHexColor, isRgbColor } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiIriStyle.css";
 
-function IriWidget(props: IriWidgetProps) {
+function IriWidget(props: IriWidgetProps): React.JSX.Element {
   const {
     iri,
     iriText,
@@ -85,7 +85,7 @@ function IriWidget(props: IriWidgetProps) {
   );
 }
 
-function WrappedIriWidget(props: IriWidgetProps) {
+function WrappedIriWidget(props: IriWidgetProps): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

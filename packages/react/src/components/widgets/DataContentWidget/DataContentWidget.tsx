@@ -6,7 +6,7 @@ import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { DataContentWidgetProps } from "../../../app/types";
 import { Ontologies } from "../../../model/interfaces";
 
-function DataContentWidget(props: DataContentWidgetProps) {
+function DataContentWidget(props: DataContentWidgetProps): React.JSX.Element {
   const { api, parameter, ...rest } = props;
   const olsApi = new OlsOntologyApi(api);
 
@@ -86,7 +86,9 @@ function DataContentWidget(props: DataContentWidgetProps) {
   );
 }
 
-function WrappedDataContentWidget(props: DataContentWidgetProps) {
+function WrappedDataContentWidget(
+  props: DataContentWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

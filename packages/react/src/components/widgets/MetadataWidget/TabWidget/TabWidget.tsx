@@ -10,7 +10,7 @@ import { Entity } from "../../../../model/interfaces";
 import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
 import { TabPresentation } from "./TabPresentation";
 
-function TabWidget(props: TabWidgetProps) {
+function TabWidget(props: TabWidgetProps): React.JSX.Element {
   const {
     iri,
     api,
@@ -91,7 +91,7 @@ function TabWidget(props: TabWidgetProps) {
   );
 }
 
-function WrappedTabWidget(props: TabWidgetProps) {
+function WrappedTabWidget(props: TabWidgetProps): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

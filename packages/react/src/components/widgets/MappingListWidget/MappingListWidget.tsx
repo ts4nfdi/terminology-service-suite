@@ -101,7 +101,7 @@ const PredicateIcon = memo(({ type }: { type: string }) => {
   );
 });
 
-function MappingListWidget(props: MappingListWidgetProps) {
+function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const { api, source } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
@@ -750,7 +750,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
   );
 }
 
-export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+export function WrappedMappingListWidget(
+  props: MappingListWidgetProps,
+): React.JSX.Element {
   return <MappingListWidget api={props.api} source={props.source} />;
 }
 

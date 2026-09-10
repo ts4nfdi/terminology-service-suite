@@ -28,7 +28,9 @@ import { MetadataCompact } from "./MetadataCompact";
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
-function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
+function SearchResultsListWidget(
+  props: SearchResultsListWidgetProps,
+): React.JSX.Element {
   const {
     api,
     query,
@@ -536,7 +538,9 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   );
 }
 
-function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
+function WrappedSearchResultsListWidget(
+  props: SearchResultsListWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">
