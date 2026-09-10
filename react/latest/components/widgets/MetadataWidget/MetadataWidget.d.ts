@@ -1,4 +1,4 @@
 import { MetadataWidgetProps } from '../../../app';
-declare function MetadataWidget(props: MetadataWidgetProps): import("react").JSX.Element;
-declare function WrappedMetadataWidget(props: MetadataWidgetProps): import("react").JSX.Element;
+declare function MetadataWidget(props: MetadataWidgetProps): React.JSX.Element;
+declare function WrappedMetadataWidget(props: MetadataWidgetProps): React.JSX.Element;
 export { MetadataWidget, WrappedMetadataWidget };
