@@ -57,11 +57,11 @@ type MappingRow = {
 };
 
 /**
- * Width of the trailing "Mapping details" column. Just enough for its header
- * and the expand toggle underneath it, so the rest of the table width is
- * shared between the auto-sized columns.
+ * Share of the table width for the trailing "Mapping details" column. Being
+ * relative, it shrinks with the table on small screens, where its header
+ * breaks onto two lines instead of squeezing the other columns.
  */
-const MAPPING_DETAILS_COLUMN_WIDTH = "140px";
+const MAPPING_DETAILS_COLUMN_WIDTH = "12%";
 
 /**
  * Background of every other table row when the caller does not pick one.
@@ -468,7 +468,6 @@ function MappingListWidget(props: MappingListWidgetProps) {
     {
       field: "type",
       name: <strong style={{ fontSize: "14px" }}>{typeColumnHeader}</strong>,
-      truncateText: true,
       sortable: true,
 
       /**
@@ -527,13 +526,11 @@ function MappingListWidget(props: MappingListWidgetProps) {
     {
       field: "creator",
       name: <strong style={{ fontSize: "14px" }}>Creator</strong>,
-      truncateText: true,
       sortable: true,
     },
     {
       field: "created",
       name: <strong style={{ fontSize: "14px" }}>Created</strong>,
-      truncateText: true,
       sortable: true,
       render: (_created: string, item: MappingRow) => item.createdLabel,
     },
@@ -542,9 +539,8 @@ function MappingListWidget(props: MappingListWidgetProps) {
       align: "center",
 
       /**
-       * Only as wide as its own content needs to be. Because the table uses a
-       * fixed layout, giving this column an explicit width lets the browser
-       * spread the remaining space across the columns that have none.
+       * The table uses a fixed layout, so the rest of its width is spread
+       * across the columns that have no width of their own.
        */
       width: MAPPING_DETAILS_COLUMN_WIDTH,
 
@@ -897,6 +893,16 @@ function MappingListWidget(props: MappingListWidgetProps) {
       <div>
         <EuiInMemoryTable<MappingRow>
           css={css`
+            /**
+             * EUI cuts every header title off with an ellipsis, using
+             * !important. Let them break onto more lines instead, even inside
+             * a word on phones, so small screens still show the whole title.
+             */
+            thead .euiTableHeaderCell .eui-textTruncate {
+              white-space: normal !important;
+              overflow-wrap: anywhere;
+            }
+
             tbody .euiTableRow:nth-of-type(odd) {
               background-color: #ffffff;
             }
