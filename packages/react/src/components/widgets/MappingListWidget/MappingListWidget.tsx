@@ -6,7 +6,7 @@ import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
-import { formatMappingDate } from "../MappingDetailWidget/MappingDetailWidget";
+import { formatMappingDate } from "../MappingDetailWidget/Utils/mappingUtils";
 import type { MappingRow } from "./MappingListPresentation";
 import MappingListPresentation from "./MappingListPresentation";
 
