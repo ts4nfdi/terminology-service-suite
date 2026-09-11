@@ -66,6 +66,7 @@ const MAPPING_DETAILS_COLUMN_WIDTH = "12%";
 /**
  * Background of every other table row when the caller does not pick one.
  */
+const DEFAULT_ROW_COLOR = "#fff5fa";
 
 /**
  * Dictionary mapping each type to its inner SVG elements.
@@ -146,7 +147,12 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 ));
 
 function MappingListWidget(props: MappingListWidgetProps) {
-  const { api, source, rowColor, MappingDetailBackgroundColor } = props;
+  const {
+    api,
+    source,
+    rowColor = DEFAULT_ROW_COLOR,
+    MappingDetailBackgroundColor,
+  } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
