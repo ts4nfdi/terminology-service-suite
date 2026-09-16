@@ -1,10 +1,4 @@
-import {
-  EuiButtonIcon,
-  EuiIcon,
-  EuiLink,
-  EuiPanel,
-  EuiText,
-} from "@elastic/eui";
+import { EuiButtonIcon, EuiLink, EuiPanel, EuiText } from "@elastic/eui";
 import type { ReactNode } from "react";
 
 /**
@@ -47,7 +41,7 @@ type MappingDetailPresentationProps = {
   mapping: MappingDetail;
   MappingDetailBackgroundColor?: string;
   /**
-   * Puts a close button in the corner instead of the info icon.
+   * Puts a close button in the top corner of the card.
    * MappingListWidget uses it to collapse the row again.
    */
   onClose?: () => void;
@@ -190,14 +184,14 @@ export default function MappingDetailPresentation(
         background: MappingDetailBackgroundColor,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "8px",
-        }}
-      >
-        {onClose ? (
+      {onClose && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "8px",
+          }}
+        >
           <EuiButtonIcon
             iconType="cross"
             aria-label="Close mapping details"
@@ -205,10 +199,8 @@ export default function MappingDetailPresentation(
             color="text"
             onClick={onClose}
           />
-        ) : (
-          <EuiIcon type="info" size="m" color="primary" />
-        )}
-      </div>
+        </div>
+      )}
 
       <div
         style={{
