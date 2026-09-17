@@ -173,11 +173,27 @@ function MappingListWidget(props: MappingListWidgetProps) {
   }, [data, fromLabels, olsApi]);
 
   /**
+   * Drops mappings that appear more than once, e.g. a self-mapping (a → a)
+   * that matches both the "from" and the "to" side in "both" mode.
+   */
+  const uniqueMappings = useMemo(() => {
+    const seenUris = new Set<string>();
+
+    return (data ?? []).filter((item: any) => {
+      if (!item.uri) return true;
+      if (seenUris.has(item.uri)) return false;
+
+      seenUris.add(item.uri);
+      return true;
+    });
+  }, [data]);
+
+  /**
    * Builds table rows from the ColiConc mapping data.
    */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any, index: number) => {
+      uniqueMappings.map((item: any, index: number) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
@@ -204,7 +220,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
           partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
-    [data, labels, fromLabels],
+    [uniqueMappings, labels, fromLabels],
   );
 
   /**
