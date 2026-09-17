@@ -37,9 +37,13 @@ function MappingListWidget(props: MappingListWidgetProps) {
       if (viewDirection === "to") {
         return jskosMappingApi.getMappingsByTo(iri);
       }
+      if (viewDirection === "both") {
+        return jskosMappingApi.getMappingsInBothDirections(iri);
+      }
       return jskosMappingApi.getMappingsByFrom(iri);
     },
   );
+
   /**
    * Maps each URI to its readable label text.
    * Example:
