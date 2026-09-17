@@ -36,4 +36,13 @@ export class JskosMappingApi {
       },
     });
   }
+
+  async getMappingsInBothDirections(iri: string) {
+    return this.makeCall("/mappings", {
+      params: {
+        from: iri,
+        direction: "both",
+      },
+    });
+  }
 }
