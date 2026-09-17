@@ -3,6 +3,8 @@ import {
   EuiButton,
   EuiButtonIcon,
   EuiCheckbox,
+  EuiContextMenuItem,
+  EuiContextMenuPanel,
   EuiInMemoryTable,
   EuiModal,
   EuiModalBody,
@@ -47,6 +49,9 @@ export type MappingRow = {
   uri: string;
   partOf: string;
 };
+
+/** Which side of the mappings the source sits on. */
+export type ViewDirection = "from" | "to" | "both";
 
 /** Relative, so the column shrinks on small screens and its header wraps. */
 const MAPPING_DETAILS_COLUMN_WIDTH = "12%";
@@ -157,6 +162,10 @@ type MappingListPresentationProps = {
   isPopoverOpen: boolean;
   onButtonClick: () => void;
   closePopover: () => void;
+  isDirectionMenuOpen: boolean;
+  setIsDirectionMenuOpen: Dispatch<SetStateAction<boolean>>;
+  viewDirection: ViewDirection;
+  setViewDirection: Dispatch<SetStateAction<ViewDirection>>;
 };
 
 /** UI of the mapping list; all state and data come from MappingListWidget. */
@@ -183,6 +192,10 @@ export default function MappingListPresentation(
     isPopoverOpen,
     onButtonClick,
     closePopover,
+    isDirectionMenuOpen,
+    setIsDirectionMenuOpen,
+    viewDirection,
+    setViewDirection,
   } = props;
 
   /** Keeps a click on the filter icon from also sorting the column. */
@@ -570,7 +583,55 @@ export default function MappingListPresentation(
       iconSize="l"
       aria-label="Choose view direction"
       title="Choose view direction"
+      onClick={() => setIsDirectionMenuOpen((isOpen) => !isOpen)}
     />
+  );
+
+  const directionMenuItems = (
+    <EuiPopover
+      button={directionButton}
+      isOpen={isDirectionMenuOpen}
+      closePopover={() => setIsDirectionMenuOpen(false)}
+      anchorPosition="downRight"
+      panelPaddingSize="none"
+    >
+      <EuiContextMenuPanel
+        title="Choose View Direction"
+        size="s"
+        items={[
+          <EuiContextMenuItem
+            key="from"
+            icon={viewDirection === "from" ? "check" : "empty"}
+            onClick={() => {
+              setViewDirection("from");
+              setIsDirectionMenuOpen(false);
+            }}
+          >
+            Mappings FROM source (Source)
+          </EuiContextMenuItem>,
+          <EuiContextMenuItem
+            key="to"
+            icon={viewDirection === "to" ? "check" : "empty"}
+            onClick={() => {
+              setViewDirection("to");
+              setIsDirectionMenuOpen(false);
+            }}
+          >
+            Mappings TO source (Target)
+          </EuiContextMenuItem>,
+          <EuiContextMenuItem
+            key="both"
+            icon={viewDirection === "both" ? "check" : "empty"}
+            onClick={() => {
+              setViewDirection("both");
+              setIsDirectionMenuOpen(false);
+            }}
+          >
+            Both directions
+          </EuiContextMenuItem>,
+        ]}
+      />
+    </EuiPopover>
   );
 
   return (
@@ -674,6 +735,11 @@ export default function MappingListPresentation(
       <div>
         <EuiInMemoryTable<MappingRow>
           css={css`
+            .euiSearchBar__searchHolder {
+              flex: 0 1 50%;
+              min-width: 220px;
+            }
+
             thead .euiTableHeaderCell .eui-textTruncate {
               white-space: normal !important;
               overflow-wrap: anywhere;
@@ -738,7 +804,7 @@ export default function MappingListPresentation(
           items={filteredRows}
           itemId="id"
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-          search={{ ...search, toolsRight: directionButton }}
+          search={{ ...search, toolsRight: directionMenuItems }}
           sorting={{
             sort: {
               field: "to",

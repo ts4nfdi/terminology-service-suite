@@ -7,7 +7,7 @@ import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 import { formatMappingDate } from "../MappingDetailWidget/Utils/mappingUtils";
-import type { MappingRow } from "./MappingListPresentation";
+import type { MappingRow, ViewDirection } from "./MappingListPresentation";
 import MappingListPresentation from "./MappingListPresentation";
 
 /**
@@ -50,6 +50,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [fromLabels, setFromLabels] = useState<Record<string, string>>({});
 
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+
+  const [isDirectionMenuOpen, setIsDirectionMenuOpen] = useState(false);
+  const [viewDirection, setViewDirection] = useState<ViewDirection>("from");
 
   /**
    * Target entity whose metadata popup is currently open. Null while no popup
@@ -273,6 +276,10 @@ function MappingListWidget(props: MappingListWidgetProps) {
       isPopoverOpen={isPopoverOpen}
       onButtonClick={onButtonClick}
       closePopover={closePopover}
+      isDirectionMenuOpen={isDirectionMenuOpen}
+      setIsDirectionMenuOpen={setIsDirectionMenuOpen}
+      viewDirection={viewDirection}
+      setViewDirection={setViewDirection}
     />
   );
 }
