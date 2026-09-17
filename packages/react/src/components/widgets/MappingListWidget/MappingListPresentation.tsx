@@ -554,8 +554,8 @@ export default function MappingListPresentation(
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "32px",
-        height: "32px",
+        width: "36px",
+        height: "36px",
         padding: 0,
         color: "#0645ad",
         backgroundColor: "transparent",
@@ -566,8 +566,8 @@ export default function MappingListPresentation(
     >
       <svg
         viewBox="0 0 24 24"
-        width="20"
-        height="20"
+        width="24"
+        height="24"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.8"
