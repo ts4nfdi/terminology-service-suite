@@ -142,7 +142,7 @@ type MetadataTarget = { iri: string; ontologyId: string } | null;
 
 /** Everything the list shows or changes, passed down by MappingListWidget. */
 type MappingListPresentationProps = {
-  fromLabel: string;
+  entityLabel: string;
   rowColor: string;
   MappingDetailBackgroundColor?: string;
   labels: Record<string, string>;
@@ -172,7 +172,7 @@ export default function MappingListPresentation(
   props: MappingListPresentationProps,
 ) {
   const {
-    fromLabel,
+    entityLabel,
     rowColor,
     MappingDetailBackgroundColor,
     labels,
@@ -614,7 +614,7 @@ export default function MappingListPresentation(
               setIsDirectionMenuOpen(false);
             }}
           >
-            Mappings FROM source (Source)
+            Mappings FROM <strong>{entityLabel}</strong> (Source)
           </EuiContextMenuItem>,
           <EuiContextMenuItem
             key="to"
@@ -624,7 +624,7 @@ export default function MappingListPresentation(
               setIsDirectionMenuOpen(false);
             }}
           >
-            Mappings TO source (Target)
+            Mappings TO <strong>{entityLabel}</strong> (Target)
           </EuiContextMenuItem>,
           <EuiContextMenuItem
             key="both"

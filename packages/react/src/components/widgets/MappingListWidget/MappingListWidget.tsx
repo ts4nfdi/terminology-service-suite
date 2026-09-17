@@ -15,6 +15,24 @@ import MappingListPresentation from "./MappingListPresentation";
  */
 const DEFAULT_ROW_COLOR = "#fff5fa";
 
+/**
+ * Last part of an IRI, used as its name when no readable label is found.
+ * Example: "http://www.wikidata.org/entity/Q259745" → "Q259745"
+ */
+function getIriShortName(iri: string): string {
+  const lastPart =
+    iri
+      .replace(/[/#]+$/, "")
+      .split(/[/#]/)
+      .pop() ?? iri;
+
+  try {
+    return decodeURIComponent(lastPart);
+  } catch {
+    return lastPart;
+  }
+}
+
 function MappingListWidget(props: MappingListWidgetProps) {
   const {
     api,
@@ -258,10 +276,11 @@ function MappingListWidget(props: MappingListWidgetProps) {
     });
   }, [rows, appliedTypeFilters, searchedQuery]);
 
-  const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
-  const sourceFromColiConc =
-    data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
-  const fromLabel = fromLabels[fromUri] ?? sourceFromColiConc;
+  /**
+   * Readable name of the entity the user asked for: its Gateway API label
+   * when one was found, otherwise the last part of its IRI.
+   */
+  const entityLabel = fromLabels[iri] ?? labels[iri] ?? getIriShortName(iri);
 
   /**
    * State and handlers for the contextual help popover.
@@ -283,7 +302,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
     </EuiPanel>
   ) : (
     <MappingListPresentation
-      fromLabel={fromLabel}
+      entityLabel={entityLabel}
       rowColor={rowColor}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
       labels={labels}
