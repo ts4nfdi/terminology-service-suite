@@ -114,6 +114,26 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
   </svg>
 ));
 
+/** Source and target nodes linked both ways, for choosing the mapping direction. */
+const DirectionIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ ...style, fill: "none" }}
+    {...props}
+  >
+    <circle cx="5" cy="5.5" r="2.5" />
+    <circle cx="19" cy="18.5" r="2.5" />
+    <path d="M7.5 5.5h6a4 4 0 0 1 4 4v6.5" />
+    <polyline points="15 13.5 17.5 16 20 13.5" />
+    <path d="M16.5 18.5h-6a4 4 0 0 1-4-4V8" />
+    <polyline points="4 10.5 6.5 8 9 10.5" />
+  </svg>
+));
+
 type MetadataTarget = { iri: string; ontologyId: string } | null;
 
 /** Everything the list shows or changes, passed down by MappingListWidget. */
@@ -542,6 +562,17 @@ export default function MappingListPresentation(
     </button>
   );
 
+  const directionButton = (
+    <EuiButtonIcon
+      iconType={DirectionIcon}
+      display="base"
+      size="m"
+      iconSize="l"
+      aria-label="Choose view direction"
+      title="Choose view direction"
+    />
+  );
+
   return (
     <EuiPanel paddingSize="m">
       <div
@@ -707,7 +738,7 @@ export default function MappingListPresentation(
           items={filteredRows}
           itemId="id"
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-          search={search}
+          search={{ ...search, toolsRight: directionButton }}
           sorting={{
             sort: {
               field: "to",
