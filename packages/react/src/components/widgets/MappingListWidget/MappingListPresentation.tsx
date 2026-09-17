@@ -15,7 +15,6 @@ import {
   EuiSearchBarProps,
   EuiSpacer,
   EuiText,
-  EuiTitle,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
 import {
@@ -435,6 +434,14 @@ export default function MappingListPresentation(
 
   const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     {
+      field: "from",
+      name: <strong style={{ fontSize: "14px" }}>Source</strong>,
+      sortable: (row: MappingRow) => row.fromUri,
+      render: (from: string, item: MappingRow) => (
+        <span title={item.fromUri}>{from}</span>
+      ),
+    },
+    {
       field: "type",
       name: <strong style={{ fontSize: "14px" }}>{typeColumnHeader}</strong>,
       sortable: true,
@@ -639,18 +646,11 @@ export default function MappingListPresentation(
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           alignItems: "flex-start",
           width: "100%",
         }}
       >
-        <EuiTitle size="s">
-          <h2>
-            <strong>Source:</strong>
-            <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
-          </h2>
-        </EuiTitle>
-
         <EuiPopover
           button={helpButton}
           isOpen={isPopoverOpen}
