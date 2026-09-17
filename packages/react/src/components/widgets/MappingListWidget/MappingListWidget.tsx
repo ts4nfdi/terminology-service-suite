@@ -18,7 +18,7 @@ const DEFAULT_ROW_COLOR = "#fff5fa";
 function MappingListWidget(props: MappingListWidgetProps) {
   const {
     api,
-    source,
+    iri,
     rowColor = DEFAULT_ROW_COLOR,
     MappingDetailBackgroundColor,
   } = props;
@@ -27,9 +27,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["mappings", source],
+    ["mappings", iri],
     () => {
-      return jskosMappingApi.getMappingsByFrom(source);
+      return jskosMappingApi.getMappingsByFrom(iri);
     },
   );
 
@@ -288,7 +288,7 @@ export function WrappedMappingListWidget(props: MappingListWidgetProps) {
   return (
     <MappingListWidget
       api={props.api}
-      source={props.source}
+      iri={props.iri}
       rowColor={props.rowColor}
       MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
     />
