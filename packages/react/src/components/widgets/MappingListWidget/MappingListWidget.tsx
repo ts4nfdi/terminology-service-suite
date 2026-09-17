@@ -23,16 +23,23 @@ function MappingListWidget(props: MappingListWidgetProps) {
     MappingDetailBackgroundColor,
   } = props;
 
+  /**
+   * The state of Mapping icon, next to the searchbar
+   */
+  const [viewDirection, setViewDirection] = useState<ViewDirection>("from");
+
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["mappings", iri],
+    ["mappings", iri, viewDirection],
     () => {
+      if (viewDirection === "to") {
+        return jskosMappingApi.getMappingsByTo(iri);
+      }
       return jskosMappingApi.getMappingsByFrom(iri);
     },
   );
-
   /**
    * Maps each URI to its readable label text.
    * Example:
@@ -52,7 +59,6 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
 
   const [isDirectionMenuOpen, setIsDirectionMenuOpen] = useState(false);
-  const [viewDirection, setViewDirection] = useState<ViewDirection>("from");
 
   /**
    * Target entity whose metadata popup is currently open. Null while no popup
