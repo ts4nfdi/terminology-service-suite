@@ -142,6 +142,8 @@ type MetadataTarget = { iri: string; ontologyId: string } | null;
 
 /** Everything the list shows or changes, passed down by MappingListWidget. */
 type MappingListPresentationProps = {
+  /** The entity the user asked for; its cells are shown in bold. */
+  iri: string;
   entityLabel: string;
   rowColor: string;
   MappingDetailBackgroundColor?: string;
@@ -172,6 +174,7 @@ export default function MappingListPresentation(
   props: MappingListPresentationProps,
 ) {
   const {
+    iri,
     entityLabel,
     rowColor,
     MappingDetailBackgroundColor,
@@ -438,7 +441,9 @@ export default function MappingListPresentation(
       name: <strong style={{ fontSize: "14px" }}>Source</strong>,
       sortable: (row: MappingRow) => row.fromUri,
       render: (from: string, item: MappingRow) => (
-        <span title={item.fromUri}>{from}</span>
+        <span title={item.fromUri}>
+          {item.fromUri === iri ? <strong>{from}</strong> : from}
+        </span>
       ),
     },
     {
@@ -467,7 +472,9 @@ export default function MappingListPresentation(
         <span
           style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
         >
-          <span title={item.toUri}>{to}</span>
+          <span title={item.toUri}>
+            {item.toUri === iri ? <strong>{to}</strong> : to}
+          </span>
 
           {labels[item.toUri] && (
             <EuiButtonIcon

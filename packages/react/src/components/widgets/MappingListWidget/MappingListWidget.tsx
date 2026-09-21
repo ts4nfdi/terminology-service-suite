@@ -302,6 +302,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
     </EuiPanel>
   ) : (
     <MappingListPresentation
+      iri={iri}
       entityLabel={entityLabel}
       rowColor={rowColor}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
