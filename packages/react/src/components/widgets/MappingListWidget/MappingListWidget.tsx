@@ -42,7 +42,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
   } = props;
 
   /**
-   * The state of Mapping icon, next to the searchbar
+   * View direction chosen in the Filters panel next to the search bar
    */
   const [viewDirection, setViewDirection] = useState<ViewDirection>("from");
 
@@ -78,9 +78,10 @@ function MappingListWidget(props: MappingListWidgetProps) {
    */
   const [fromLabels, setFromLabels] = useState<Record<string, string>>({});
 
-  const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
-
-  const [isDirectionMenuOpen, setIsDirectionMenuOpen] = useState(false);
+  /**
+   * Whether the Filters panel (view direction and mapping types) is open.
+   */
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   /**
    * Target entity whose metadata popup is currently open. Null while no popup
@@ -98,21 +99,17 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [searchedQuery, setSearchedQuery] = useState("");
 
   /**
-   * includes types: exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch and mappingRelation
+   * Mapping types the table is limited to, e.g. ["exactMatch", "closeMatch"].
+   * Empty means every type is shown. A change applies right away.
    */
-  const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
-  const [appliedTypeFilters, setAppliedTypeFilters] = useState<string[]>([]);
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
 
   const toggleTypeFilter = (type: string) => {
-    if (selectedTypeFilters.includes(type)) {
-      setSelectedTypeFilters(
-        selectedTypeFilters.filter((selectedType) => {
-          return selectedType !== type;
-        }),
-      );
-    } else {
-      setSelectedTypeFilters((prevState) => [...prevState, type]);
-    }
+    setTypeFilters((prevState) =>
+      prevState.includes(type)
+        ? prevState.filter((selectedType) => selectedType !== type)
+        : [...prevState, type],
+    );
   };
 
   /**
@@ -264,8 +261,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
 
     return rows.filter((row) => {
       const matchesTypeFilter =
-        appliedTypeFilters.length === 0 ||
-        appliedTypeFilters.includes(row.type);
+        typeFilters.length === 0 || typeFilters.includes(row.type);
 
       const matchesSearch =
         normalizedSearchQuery === "" ||
@@ -274,7 +270,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
 
       return matchesTypeFilter && matchesSearch;
     });
-  }, [rows, appliedTypeFilters, searchedQuery]);
+  }, [rows, typeFilters, searchedQuery]);
 
   /**
    * Readable name of the entity the user asked for: its Gateway API label
@@ -313,17 +309,14 @@ function MappingListWidget(props: MappingListWidgetProps) {
       toggleRowExpansion={toggleRowExpansion}
       metadataTarget={metadataTarget}
       setMetadataTarget={setMetadataTarget}
-      isTypeFilterOpen={isTypeFilterOpen}
-      setIsTypeFilterOpen={setIsTypeFilterOpen}
-      selectedTypeFilters={selectedTypeFilters}
-      setSelectedTypeFilters={setSelectedTypeFilters}
-      setAppliedTypeFilters={setAppliedTypeFilters}
+      typeFilters={typeFilters}
+      setTypeFilters={setTypeFilters}
       toggleTypeFilter={toggleTypeFilter}
       isPopoverOpen={isPopoverOpen}
       onButtonClick={onButtonClick}
       closePopover={closePopover}
-      isDirectionMenuOpen={isDirectionMenuOpen}
-      setIsDirectionMenuOpen={setIsDirectionMenuOpen}
+      isFilterOpen={isFilterOpen}
+      setIsFilterOpen={setIsFilterOpen}
       viewDirection={viewDirection}
       setViewDirection={setViewDirection}
     />
