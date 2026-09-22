@@ -84,9 +84,9 @@ function MappingListWidget(props: MappingListWidgetProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   /**
-   * Target entity whose metadata popup is currently open. Null while no popup
-   * is shown. The gateway only resolves an entity on its ontology route, so
-   * the scheme is kept next to the IRI.
+   * Source or target entity whose metadata popup is currently open. Null
+   * while no popup is shown. The gateway only resolves an entity on its
+   * ontology route, so the scheme is kept next to the IRI.
    */
   const [metadataTarget, setMetadataTarget] = useState<{
     iri: string;
@@ -303,6 +303,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
       rowColor={rowColor}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
       labels={labels}
+      fromLabels={fromLabels}
       filteredRows={filteredRows}
       search={search}
       expandedRowIds={expandedRowIds}

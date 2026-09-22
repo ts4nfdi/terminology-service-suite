@@ -135,6 +135,7 @@ type MappingListPresentationProps = {
   rowColor: string;
   MappingDetailBackgroundColor?: string;
   labels: Record<string, string>;
+  fromLabels: Record<string, string>;
   filteredRows: MappingRow[];
   search: EuiSearchBarProps;
   expandedRowIds: string[];
@@ -163,6 +164,7 @@ export default function MappingListPresentation(
     rowColor,
     MappingDetailBackgroundColor,
     labels,
+    fromLabels,
     filteredRows,
     search,
     expandedRowIds,
@@ -184,16 +186,51 @@ export default function MappingListPresentation(
   /** Keeps checkbox and radio ids unique when the widget appears twice. */
   const filterIdPrefix = useGeneratedHtmlId({ prefix: "mappingFilter" });
 
+  /**
+   * Source or target cell: its label, bold when it is the requested entity,
+   * plus a metadata button when OLS could resolve it.
+   */
+  function renderEntityCell(
+    label: string,
+    uri: string,
+    scheme: string,
+    hasMetadata: boolean,
+  ) {
+    return (
+      <span
+        style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+      >
+        <span title={uri}>
+          {uri === iri ? <strong>{label}</strong> : label}
+        </span>
+
+        {hasMetadata && scheme !== "—" && (
+          <EuiButtonIcon
+            iconType={MetadataIcon}
+            color="primary"
+            aria-label={`Show metadata of ${label}`}
+            title={`Show metadata of ${label}`}
+            onClick={() =>
+              setMetadataTarget({ iri: uri, ontologyId: scheme.toLowerCase() })
+            }
+          />
+        )}
+      </span>
+    );
+  }
+
   const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     {
       field: "from",
       name: <strong style={{ fontSize: "14px" }}>Source</strong>,
       sortable: (row: MappingRow) => row.fromUri,
-      render: (from: string, item: MappingRow) => (
-        <span title={item.fromUri}>
-          {item.fromUri === iri ? <strong>{from}</strong> : from}
-        </span>
-      ),
+      render: (from: string, item: MappingRow) =>
+        renderEntityCell(
+          from,
+          item.fromUri,
+          item.fromScheme,
+          Boolean(fromLabels[item.fromUri]),
+        ),
     },
     {
       field: "type",
@@ -216,31 +253,13 @@ export default function MappingListPresentation(
       /** Sort by notation, not label: labels arrive later and reorder rows. */
       sortable: (row: MappingRow) => row.targetFromColiConc,
 
-      /** Label plus a metadata button, only for targets OLS could resolve. */
-      render: (to: string, item: MappingRow) => (
-        <span
-          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
-        >
-          <span title={item.toUri}>
-            {item.toUri === iri ? <strong>{to}</strong> : to}
-          </span>
-
-          {labels[item.toUri] && (
-            <EuiButtonIcon
-              iconType={MetadataIcon}
-              color="primary"
-              aria-label={`Show metadata of ${to}`}
-              title={`Show metadata of ${to}`}
-              onClick={() =>
-                setMetadataTarget({
-                  iri: item.toUri,
-                  ontologyId: item.toScheme.toLowerCase(),
-                })
-              }
-            />
-          )}
-        </span>
-      ),
+      render: (to: string, item: MappingRow) =>
+        renderEntityCell(
+          to,
+          item.toUri,
+          item.toScheme,
+          Boolean(labels[item.toUri]),
+        ),
     },
     {
       field: "creator",
@@ -349,7 +368,6 @@ export default function MappingListPresentation(
         iconSide="left"
         isSelected={isFilterOpen}
         hasActiveFilters={activeFilterCount > 0}
-        numActiveFilters={activeFilterCount}
         onClick={() => setIsFilterOpen((isOpen) => !isOpen)}
       >
         Filters
