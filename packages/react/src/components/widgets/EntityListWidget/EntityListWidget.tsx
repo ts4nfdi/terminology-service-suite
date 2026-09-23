@@ -26,13 +26,7 @@ import {
   entityTypeToEntityTypeName,
   isEntityTypeName,
 } from "../../../model/ModelTypeCheck";
-import {
-  buildSolrPrefixQuery,
-  compareValues,
-  getPreferredIdFromSearchDoc,
-  getPreferredLabelFromSearchDoc,
-  normalizeSearchText,
-} from "./Utils/searchUtils";
+import { compareValues, normalizeSearchText } from "./Utils/searchUtils";
 
 type EntityRow = {
   name: string;
@@ -526,64 +520,6 @@ function extractTotal(response: any, fallback: number) {
   }
 
   return fallback;
-}
-
-async function searchEntitiesPage(
-  searchApi: OlsSearchApi,
-  entityType: EntityTypeName,
-  ontologyId: string,
-  pageIndex: number,
-  pageSize: number,
-  searchText: string,
-  parameter: string,
-  signal?: AbortSignal,
-): Promise<QueryResult> {
-  const start = pageIndex * pageSize;
-  const type = getSearchEntityType(entityType);
-
-  /**
-   * Use a single Solr prefix query so the typed value appears only once in the
-   * request while still supporting search-as-you-type across the whole dataset.
-   */
-  const solrQuery = buildSolrPrefixQuery(searchText);
-
-  const json: any = await searchApi.search(
-    {
-      query: solrQuery,
-      types: type,
-      ontology: ontologyId,
-      exactMatch: false,
-      showObsoleteTerms: false,
-    } as any,
-    {
-      page: String(pageIndex),
-      size: String(pageSize),
-    } as any,
-    undefined,
-    parameter,
-    signal,
-  );
-
-  const docs: any[] = Array.isArray(json?.response?.docs)
-    ? json.response.docs
-    : [];
-  const total =
-    typeof json?.response?.numFound === "number" &&
-    Number.isFinite(json.response.numFound)
-      ? json.response.numFound
-      : docs.length;
-
-  return {
-    rows: docs.map((d, i) => ({
-      name: getPreferredLabelFromSearchDoc(d),
-      id: getPreferredIdFromSearchDoc(d),
-      rowIndex: start + i,
-      domain: isPropertyEntityType(entityType) ? pickDomain(d) : undefined,
-      range: isPropertyEntityType(entityType) ? pickRange(d) : undefined,
-      type: isIndividualEntityType(entityType) ? pickType(d) : undefined,
-    })),
-    totalItemCount: total,
-  };
 }
 
 async function fetchListPage(
