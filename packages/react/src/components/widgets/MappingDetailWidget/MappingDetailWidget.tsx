@@ -1,6 +1,6 @@
-import { EuiPanel, EuiText } from "@elastic/eui";
+import { EuiPanel, EuiProvider, EuiText } from "@elastic/eui";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { MappingDetailWidgetProps } from "../../../app";
 import MappingDetailPresentation from "./MappingDetailPresentation";
@@ -63,8 +63,20 @@ function MappingDetailWidget(props: MappingDetailWidgetProps) {
   );
 }
 
+/**
+ * Brings its own EUI and react-query providers, the way the other widgets do,
+ * so the widget also renders and fetches inside a plain host application.
+ */
 export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
-  return <MappingDetailWidget {...props} />;
+  const queryClient = new QueryClient();
+
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <MappingDetailWidget {...props} />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { MappingDetailWidget };
