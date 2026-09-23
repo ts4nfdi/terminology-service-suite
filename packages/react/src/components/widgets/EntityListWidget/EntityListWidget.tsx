@@ -45,9 +45,6 @@ type EntityRow = {
 
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
-const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
-type PageSize = (typeof PAGE_SIZE_OPTIONS)[number];
-
 function isPropertyEntityType(entityType: EntityTypeName | undefined) {
   return (
     entityType === "property" ||
@@ -91,7 +88,7 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
   }, [apiBase]);
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState<PageSize>(10);
+  const [pageSize, setPageSize] = useState(10);
 
   const [searchText, setSearchText] = useState("");
   /**
@@ -274,16 +271,8 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
     sort?: { field: keyof EntityRow; direction: "asc" | "desc" };
   }) => {
     if (page) {
-      const nextSize = (
-        PAGE_SIZE_OPTIONS.includes(page.size as any) ? page.size : 10
-      ) as PageSize;
-
-      if (nextSize !== pageSize) {
-        setPageSize(nextSize);
-        setPageIndex(0);
-      } else if (page.index !== pageIndex) {
-        setPageIndex(page.index);
-      }
+      setPageIndex(page.index);
+      setPageSize(page.size);
     }
 
     if (sort) {
@@ -355,7 +344,6 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
           pageIndex,
           pageSize,
           totalItemCount,
-          pageSizeOptions: [...PAGE_SIZE_OPTIONS],
         }}
         sorting={{
           sort: { field: sortField, direction: sortDirection },
