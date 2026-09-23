@@ -1,6 +1,11 @@
-import { EuiPanel, EuiSearchBarProps, EuiText } from "@elastic/eui";
+import {
+  EuiPanel,
+  EuiProvider,
+  EuiSearchBarProps,
+  EuiText,
+} from "@elastic/eui";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
@@ -324,14 +329,24 @@ function MappingListWidget(props: MappingListWidgetProps) {
   );
 }
 
+/**
+ * Brings its own EUI and react-query providers, the way the other widgets do,
+ * so the widget also renders and fetches inside a plain host application.
+ */
 export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+  const queryClient = new QueryClient();
+
   return (
-    <MappingListWidget
-      api={props.api}
-      iri={props.iri}
-      rowColor={props.rowColor}
-      MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
-    />
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <MappingListWidget
+          api={props.api}
+          iri={props.iri}
+          rowColor={props.rowColor}
+          MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
   );
 }
 
