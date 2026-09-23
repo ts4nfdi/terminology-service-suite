@@ -1,45 +1,24 @@
 "use client";
-import type { EuiBasicTableColumn } from "@elastic/eui";
-import {
-  EuiBasicTable,
-  EuiFieldSearch,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiLoadingSpinner,
-  EuiPanel,
-  EuiProvider,
-  EuiSpacer,
-  EuiText,
-} from "@elastic/eui";
-import { css } from "@emotion/react";
+import { EuiProvider } from "@elastic/eui";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import {
   getEntitiesWithEntityTypeProvided,
   OlsEntityApi,
 } from "../../../api/ols/OlsEntityApi";
-import { normalizeBaseApi, OlsSearchApi } from "../../../api/ols/OlsSearchApi";
-import { EntityListWidgetProps } from "../../../app";
-import { getErrorMessageToDisplay } from "../../../app/util";
+import { normalizeBaseApi } from "../../../api/ols/OlsSearchApi";
+import { EntityListWidgetProps, EntityRow } from "../../../app";
 import {
   EntityTypeName,
   entityTypeToEntityTypeName,
   isEntityTypeName,
 } from "../../../model/ModelTypeCheck";
-import { compareValues, normalizeSearchText } from "./Utils/searchUtils";
-
-type EntityRow = {
-  name: string;
-  id: string;
-  rowIndex: number;
-  domain?: string;
-  range?: string;
-  type?: string;
-};
+import { EntityListPresentation } from "./EntityListPresentation";
+import { normalizeSearchText } from "./Utils/searchUtils";
 
 type QueryResult = { rows: EntityRow[]; totalItemCount: number };
 
-function isPropertyEntityType(entityType: EntityTypeName | undefined) {
+export function isPropertyEntityType(entityType: EntityTypeName | undefined) {
   return (
     entityType === "property" ||
     entityType === "annotationProperty" ||
@@ -48,7 +27,7 @@ function isPropertyEntityType(entityType: EntityTypeName | undefined) {
   );
 }
 
-function isIndividualEntityType(entityType: EntityTypeName | undefined) {
+export function isIndividualEntityType(entityType: EntityTypeName | undefined) {
   return entityType === "individual";
 }
 
@@ -66,11 +45,6 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
   const entityApi = useMemo(() => {
     if (!apiBase) return undefined;
     return new OlsEntityApi(apiBase);
-  }, [apiBase]);
-
-  const searchApi = useMemo(() => {
-    if (!apiBase) return undefined;
-    return new OlsSearchApi(apiBase);
   }, [apiBase]);
 
   const [pageIndex, setPageIndex] = useState(0);
@@ -159,13 +133,7 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
   const queryFn = async (): Promise<QueryResult> => {
     const signal = controllerRef.current.signal;
 
-    if (
-      !apiBase ||
-      !entityApi ||
-      !searchApi ||
-      !ontologyId ||
-      !normalizedEntityType
-    ) {
+    if (!apiBase || !entityApi || !ontologyId || !normalizedEntityType) {
       return { rows: [], totalItemCount: 0 };
     }
 
@@ -210,45 +178,6 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
 
   const totalItemCount = data?.totalItemCount ?? 0;
 
-  const rowsSorted = useMemo(() => {
-    const rows = data?.rows ?? [];
-    const sorted = [...rows].sort((a, b) => {
-      const r = compareValues(a[sortField], b[sortField]);
-      return sortDirection === "asc" ? r : -r;
-    });
-    return sorted;
-  }, [data?.rows, sortField, sortDirection]);
-
-  const columns: Array<EuiBasicTableColumn<EntityRow>> = useMemo(() => {
-    const baseColumns: Array<EuiBasicTableColumn<EntityRow>> = [
-      { field: "name", name: "Name", truncateText: true, sortable: true },
-      { field: "id", name: "ID", truncateText: true, sortable: true },
-    ];
-
-    if (isPropertyEntityType(normalizedEntityType)) {
-      baseColumns.push(
-        {
-          field: "domain",
-          name: "Domain",
-          truncateText: true,
-          sortable: true,
-        },
-        { field: "range", name: "Range", truncateText: true, sortable: true },
-      );
-    }
-
-    if (isIndividualEntityType(normalizedEntityType)) {
-      baseColumns.push({
-        field: "type",
-        name: "Type",
-        truncateText: true,
-        sortable: true,
-      });
-    }
-
-    return baseColumns;
-  }, [normalizedEntityType]);
-
   const onTableChange = ({
     page,
     sort,
@@ -267,75 +196,22 @@ function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <EuiLoadingSpinner size="s" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div>
-        <EuiText color="danger">{getErrorMessageToDisplay(error)}</EuiText>
-      </div>
-    );
-  }
-
   return (
-    <EuiPanel paddingSize="m">
-      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-        <EuiFlexItem grow={false}>
-          <EuiText size="s" color="subdued">
-            Loaded: {rowsSorted.length}
-            {totalItemCount ? ` / ${totalItemCount}` : ""}
-            {isFetching ? " (loading…)" : ""}
-          </EuiText>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-
-      <EuiSpacer size="s" />
-
-      <EuiFieldSearch
-        fullWidth
-        incremental
-        placeholder="Search by Name or ID"
-        value={searchText}
-        onChange={(e) => {
-          setSearchText(e.target.value);
-        }}
-        isClearable
-        aria-label="Search by Name or ID"
-      />
-
-      <EuiSpacer size="m" />
-
-      <EuiBasicTable<EntityRow>
-        css={css`
-          tbody .euiTableRow:nth-of-type(odd) {
-            background-color: #ffffff;
-          }
-          tbody .euiTableRow:nth-of-type(even) {
-            background-color: #f0f6ff;
-          }
-        `}
-        tableCaption="Entity list"
-        responsiveBreakpoint={false}
-        items={rowsSorted}
-        columns={columns}
-        loading={isFetching}
-        onChange={onTableChange}
-        pagination={{
-          pageIndex,
-          pageSize,
-          totalItemCount,
-        }}
-        sorting={{
-          sort: { field: sortField, direction: sortDirection },
-        }}
-      />
-    </EuiPanel>
+    <EntityListPresentation
+      isLoading={isLoading}
+      isFetching={isFetching}
+      totalItemCount={totalItemCount}
+      searchText={searchText}
+      onSearchTextChange={setSearchText}
+      onTableChange={onTableChange}
+      pageIndex={pageIndex}
+      pageSize={pageSize}
+      sortField={sortField}
+      sortDirection={sortDirection}
+      entityType={normalizedEntityType}
+      error={isError ? error : undefined}
+      rows={data?.rows ?? []}
+    />
   );
 }
 
