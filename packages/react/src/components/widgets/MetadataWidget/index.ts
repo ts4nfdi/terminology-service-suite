@@ -4,6 +4,7 @@ export * from "./EntityDefinedByWidget";
 export * from "./EntityOntoListWidget";
 export * from "./IriWidget";
 export * from "./MathFormulaWidget";
+export { MetadataPresentation } from "./MetadataPresentation";
 export { MetadataWidget } from "./MetadataWidget";
 export * from "./TabWidget";
 export { TitleWidget } from "./TitleWidget";
