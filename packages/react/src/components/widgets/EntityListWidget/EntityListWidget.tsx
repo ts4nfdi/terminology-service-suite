@@ -52,14 +52,6 @@ function isIndividualEntityType(entityType: EntityTypeName | undefined) {
   return entityType === "individual";
 }
 
-function getSearchEntityType(
-  entityType: EntityTypeName,
-): "class" | "property" | "individual" {
-  if (isPropertyEntityType(entityType)) return "property";
-  if (isIndividualEntityType(entityType)) return "individual";
-  return "class";
-}
-
 function EntityListWidget(props: EntityListWidgetProps): React.JSX.Element {
   const { api, ontologyId, parameter, entityType } = props;
 
