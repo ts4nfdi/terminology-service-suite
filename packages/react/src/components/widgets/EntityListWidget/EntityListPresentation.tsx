@@ -7,6 +7,7 @@ import {
   EuiFlexItem,
   EuiLoadingSpinner,
   EuiPanel,
+  EuiProvider,
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
@@ -147,4 +148,12 @@ function EntityListPresentation(props: EntityListPresentationProps) {
   );
 }
 
-export { EntityListPresentation };
+function WrappedEntityListPresentation(props: EntityListPresentationProps) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <EntityListPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { EntityListPresentation, WrappedEntityListPresentation };

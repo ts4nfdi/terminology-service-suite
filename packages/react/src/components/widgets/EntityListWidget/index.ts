@@ -1,2 +1,5 @@
-export { EntityListPresentation } from "./EntityListPresentation";
+export {
+  EntityListPresentation,
+  WrappedEntityListPresentation,
+} from "./EntityListPresentation";
 export { EntityListWidget, WrappedEntityListWidget } from "./EntityListWidget";
