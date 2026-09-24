@@ -4,7 +4,13 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
-import { Entity, Thing, Ontologies, Individual } from "../model/interfaces";
+import {
+  Entity,
+  Ontology,
+  Ontologies,
+  Individual,
+  Thing,
+} from "../model/interfaces";
 import {
   BuildHierarchyProps,
   HierarchyIriProp,
@@ -457,7 +463,7 @@ export type TabWidgetProps = TabSubwidgetsProps &
     edgeLabel?: string;
 
     /**
-     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * Callback function for double-clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
     showHeader?: boolean;
@@ -765,6 +771,16 @@ export type MetadataWidgetProps = TabWidgetProps &
     enableComparisonMode?: boolean;
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
+  };
+
+export type OntologyInfoPresentationProps = HasTitleObj &
+  ShowBadgesObj &
+  ContainerWidthObj &
+  OnNavigates &
+  CssClassNameObj & {
+    ontology?: Ontology;
+    isLoading?: boolean;
+    error?: string | unknown;
   };
 
 export type OntologyInfoWidgetProps = ApiObj &
