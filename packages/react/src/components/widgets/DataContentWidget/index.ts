@@ -1,1 +1,8 @@
-export { DataContentWidget } from "./DataContentWidget";
+export {
+  DataContentPresentation,
+  WrappedDataContentPresentation,
+} from "./DataContentPresentation";
+export {
+  DataContentWidget,
+  WrappedDataContentWidget,
+} from "./DataContentWidget";
