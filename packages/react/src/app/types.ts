@@ -1,4 +1,4 @@
-import { EuiCardProps } from "@elastic/eui";
+import { Criteria, EuiCardProps } from "@elastic/eui";
 import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
@@ -863,6 +863,31 @@ export type ComparisonInputProps = {
   onTargetIriChange: (iri: string | undefined) => void;
   initialTargetIri?: string;
   className?: string;
+};
+
+export type EntityListPresentationProps = {
+  isLoading?: boolean;
+  isFetching?: boolean;
+  totalItemCount: number;
+  searchText: string;
+  onSearchTextChange: (searchText: string) => void;
+  onTableChange: (criteria: Criteria<EntityRow>) => void;
+  pageIndex: number;
+  pageSize: number;
+  sortField: keyof EntityRow;
+  sortDirection: "asc" | "desc";
+  entityType?: EntityTypeName;
+  error?: string | unknown;
+  rows: EntityRow[];
+};
+
+export type EntityRow = {
+  name: string;
+  id: string;
+  rowIndex: number;
+  domain?: string;
+  range?: string;
+  type?: string;
 };
 
 export type EntityListWidgetProps = {
