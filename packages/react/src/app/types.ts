@@ -609,6 +609,70 @@ export type TitlePresentationProps = TitleTextObj &
     href?: string;
   };
 
+export type MetadataPresentationProps = ForcedIriObj &
+  OptionalOntologyIdObj &
+  OptionalEntityTypeObj &
+  OnNavigateToOntology &
+  CssClassNameObj &
+  ColorFirstObj &
+  ColorSecondObj &
+  DescTextObj & {
+    /**
+     * Label of the already resolved entity, shown as the title.
+     */
+    label?: string;
+    /**
+     * Short form of the already resolved entity, e.g. "format_2332". Shown in the breadcrumb.
+     */
+    shortForm?: string;
+    /**
+     * Description of the already resolved entity.
+     */
+    description?: string;
+    /**
+     * Other ontologies the entity appears in.
+     */
+    ontoList?: string[];
+    /**
+     * Ontologies the entity is defined by.
+     */
+    definedBy?: string[];
+    /**
+     * Show a loading state instead of the passed values, for example while the caller resolves them.
+     */
+    isLoading?: boolean;
+    /**
+     * Error of a lookup performed by the caller, shown instead of the passed values.
+     */
+    error?: string | unknown;
+    /**
+     * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+     */
+    termLink?: string;
+    /**
+     * Set your own text manually, which will show as a clickable link instead of the IRI.
+     */
+    iriText?: string;
+    /**
+     * Indicates that the target iri is external and needs an icon.
+     */
+    externalIcon?: boolean;
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
+    /**
+     * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+     * left/right means showing the button on the left or right side of the iri link.
+     */
+    copyButton?: "right" | "left" | "none";
+    /**
+     * Props of the tab section. Tabs fetch their own data, so when this is not provided no tabs are rendered
+     * and the component performs no request at all.
+     */
+    tabProps?: TabWidgetProps;
+  };
+
 export type MetadataWidgetProps = TabWidgetProps &
   CssClassNameObj &
   ColorFirstObj &
