@@ -1,5 +1,5 @@
 "use client";
-import { EuiFlexGroup, EuiFlexItem, EuiLink } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiLink, EuiProvider } from "@elastic/eui";
 import { MetadataPresentationProps } from "../../../app";
 import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
 import "../../../style/tssStyles.css";
@@ -62,12 +62,12 @@ function MetadataPresentation(props: MetadataPresentationProps) {
         <EuiFlexItem grow={false}>
           <span>
             <BreadcrumbPresentation
-              onNavigateToOntology={props.onNavigateToOntology}
+              onNavigateToOntology={onNavigateToOntology}
               ontologyId={ontologyId}
               shortForm={shortForm}
               className={`${finalClassName}-breadcrumb`}
-              colorFirst={props.colorFirst}
-              colorSecond={props.colorSecond}
+              colorFirst={colorFirst}
+              colorSecond={colorSecond}
             />
           </span>
         </EuiFlexItem>
@@ -79,10 +79,10 @@ function MetadataPresentation(props: MetadataPresentationProps) {
                   <IriWidget
                     iri={iri}
                     className={`${finalClassName}-iri`}
-                    iriText={props.iriText}
-                    urlPrefix={props.urlPrefix}
-                    externalIcon={props.externalIcon}
-                    copyButton={props.copyButton}
+                    iriText={iriText}
+                    urlPrefix={urlPrefix}
+                    externalIcon={externalIcon}
+                    copyButton={copyButton}
                   />
                 </EuiFlexItem>
               </EuiFlexGroup>
@@ -95,14 +95,14 @@ function MetadataPresentation(props: MetadataPresentationProps) {
             className={`${finalClassName}-description`}
             isLoading={isLoading}
             error={error}
-            descText={props.descText}
+            descText={descText}
           />
         </EuiFlexItem>
 
         {((ontoList ?? []).length > 0 || (definedBy ?? []).length > 0) && (
           <div style={{ margin: "0 12px 0" }}>
             <EntityOntoListPresentation
-              iri={props.iri}
+              iri={iri}
               label={label || ""}
               ontolist={ontoList ?? []}
               entityType={entityType}
@@ -110,7 +110,7 @@ function MetadataPresentation(props: MetadataPresentationProps) {
               className={`${finalClassName}-entity-onto-list`}
             />
             <EntityDefinedByPresentation
-              iri={props.iri}
+              iri={iri}
               ontolist={definedBy ?? []}
               label={label || ""}
               entityType={entityType}
@@ -129,4 +129,13 @@ function MetadataPresentation(props: MetadataPresentationProps) {
     </div>
   );
 }
-export { MetadataPresentation };
+
+function WrappedMetadataPresentation(props: MetadataPresentationProps) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <MetadataPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { MetadataPresentation, WrappedMetadataPresentation };
