@@ -4,7 +4,7 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
-import { Thing } from "../model/interfaces";
+import { Ontology, Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
   HierarchyIriProp,
@@ -648,6 +648,16 @@ export type MetadataWidgetProps = TabWidgetProps &
     enableComparisonMode?: boolean;
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
+  };
+
+export type OntologyInfoPresentationProps = HasTitleObj &
+  ShowBadgesObj &
+  ContainerWidthObj &
+  OnNavigates &
+  CssClassNameObj & {
+    ontology?: Ontology;
+    isLoading?: boolean;
+    error?: string | unknown;
   };
 
 export type OntologyInfoWidgetProps = ApiObj &
