@@ -13,6 +13,7 @@ import {
   EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
+  EuiProvider,
   EuiRadioGroup,
   EuiSearchBarProps,
   EuiSpacer,
@@ -29,6 +30,7 @@ import {
   type SetStateAction,
   type SVGProps,
 } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import MappingDetailPresentation from "../MappingDetailWidget/MappingDetailPresentation";
 import { MetadataWidget } from "../MetadataWidget";
@@ -128,7 +130,7 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 type MetadataTarget = { iri: string; ontologyId: string } | null;
 
 /** Everything the list shows or changes, passed down by MappingListWidget. */
-type MappingListPresentationProps = {
+export type MappingListPresentationProps = {
   /** The entity the user asked for; its cells are shown in bold. */
   iri: string;
   entityLabel: string;
@@ -155,9 +157,7 @@ type MappingListPresentationProps = {
 };
 
 /** UI of the mapping list; all state and data come from MappingListWidget. */
-export default function MappingListPresentation(
-  props: MappingListPresentationProps,
-) {
+function MappingListPresentation(props: MappingListPresentationProps) {
   const {
     iri,
     entityLabel,
@@ -667,3 +667,22 @@ export default function MappingListPresentation(
     </EuiPanel>
   );
 }
+
+/**
+ * Brings its own EUI and react-query providers, the way the widgets do, so the
+ * list also renders inside a plain host application. The react-query provider is
+ * needed because the metadata popup renders a MetadataWidget, which fetches.
+ */
+function WrappedMappingListPresentation(props: MappingListPresentationProps) {
+  const queryClient = new QueryClient();
+
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <MappingListPresentation {...props} />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { MappingListPresentation, WrappedMappingListPresentation };

@@ -13,7 +13,7 @@ import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 import { formatMappingDate } from "../MappingDetailWidget/Utils/mappingUtils";
 import type { MappingRow, ViewDirection } from "./MappingListPresentation";
-import MappingListPresentation from "./MappingListPresentation";
+import { MappingListPresentation } from "./MappingListPresentation";
 
 /**
  * Background of every other table row when the caller does not pick one.
@@ -333,7 +333,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
  * Brings its own EUI and react-query providers, the way the other widgets do,
  * so the widget also renders and fetches inside a plain host application.
  */
-export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+function WrappedMappingListWidget(props: MappingListWidgetProps) {
   const queryClient = new QueryClient();
 
   return (
@@ -350,5 +350,4 @@ export function WrappedMappingListWidget(props: MappingListWidgetProps) {
   );
 }
 
-export { MappingListWidget };
-export default WrappedMappingListWidget;
+export { MappingListWidget, WrappedMappingListWidget };
