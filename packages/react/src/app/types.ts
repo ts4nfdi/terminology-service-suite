@@ -4,7 +4,7 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
-import { Ontologies, Thing } from "../model/interfaces";
+import { Entity, Thing, Ontologies } from "../model/interfaces";
 import {
   BuildHierarchyProps,
   HierarchyIriProp,
@@ -233,6 +233,28 @@ export type EntityInfoWidgetProps = ApiObj &
   ParameterObj &
   UseLegacyObj &
   OnNavigates;
+
+export type EntityInfoPresentationProps = ApiObj &
+  ForcedIriObj &
+  OptionalEntityTypeObj &
+  HasTitleObj &
+  ShowBadgesObj &
+  UseLegacyObj &
+  OnNavigates &
+  EuiTextProps & {
+    /**
+     * The already resolved entity whose information is shown.
+     */
+    entity?: Entity;
+    /**
+     * Shows a loading spinner instead of the information.
+     */
+    isLoading?: boolean;
+    /**
+     * Error of a lookup performed by the caller, shown instead of the information.
+     */
+    error?: string | unknown;
+  };
 
 export type EntityRelationsWidgetProps = ApiObj &
   OptionalEntityTypeObj &
