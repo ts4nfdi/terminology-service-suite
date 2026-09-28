@@ -1,1 +1,8 @@
-export { EntityRelationsWidget } from "./EntityRelationsWidget";
+export {
+  EntityRelationsPresentation,
+  WrappedEntityRelationsPresentation,
+} from "./EntityRelationsPresentation";
+export {
+  EntityRelationsWidget,
+  WrappedEntityRelationsWidget,
+} from "./EntityRelationsWidget";

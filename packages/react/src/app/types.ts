@@ -4,7 +4,7 @@ import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_bo
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
-import { Entity, Thing, Ontologies } from "../model/interfaces";
+import { Entity, Thing, Ontologies, Individual } from "../model/interfaces";
 import {
   BuildHierarchyProps,
   HierarchyIriProp,
@@ -264,6 +264,30 @@ export type EntityRelationsWidgetProps = ApiObj &
   ShowBadgesObj &
   ParameterObj &
   OnNavigates;
+
+export type EntityRelationsPresentationProps = OptionalEntityTypeObj &
+  HasTitleObj &
+  ShowBadgesObj &
+  OnNavigates &
+  EuiTextProps & {
+    /**
+     * The already resolved entity whose relations are shown.
+     */
+    entity?: Entity;
+    /**
+     * Instances of the entity, shown in the instances section of a class.
+     */
+    instances?: Individual[];
+    /**
+     * Shows a loading spinner instead of the relations.
+     */
+    isLoading?: boolean;
+    /**
+     * True when a lookup performed by the caller failed. A message is shown
+     * instead of the relations.
+     */
+    isError?: boolean;
+  };
 
 export type JsonApiWidgetProps = {
   /**
