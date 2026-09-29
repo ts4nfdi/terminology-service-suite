@@ -956,6 +956,27 @@ export type GraphViewWidgetProps = ApiObj &
     onNavigateTo?: (target: string) => void;
   };
 
+export type GraphViewPresentationProps = CssClassNameObj & {
+  downloadGraphData: () => void;
+  reset: () => void;
+  isLoading: boolean;
+  isError: boolean;
+  error?: string | unknown;
+  removeNodeFromGraph: () => void;
+  hideLegend?: boolean;
+  sourceNodeBgColor: string;
+  sourceLabel: string;
+  targetIri: string;
+  commonNodesBgColor: string;
+  targetNodeBgColor: string;
+  targetLabel: string;
+  exclusiveToTargetIriColor: string;
+  stopFullWidth?: boolean;
+  showNothingToAddMessage: boolean;
+  showNodeNotSelectedMessage: boolean;
+  container: React.RefObject<HTMLDivElement>;
+};
+
 export type OlsGraphNode = {
   /**
    * Used in the GraphView widget for rendering a graph's node
