@@ -12,21 +12,19 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   const shortForm = props.entity?.properties?.shortForm || props.shortForm;
 
   return (
-    <>
-      <span className={finalClassName}>
-        <OntologyBadge
-          ontologyId={ontologyId}
-          onNavigateToOntology={props.onNavigateToOntology}
-          color={props.colorFirst || "primary"}
-        />
-        <span style={{ margin: "0 0.1em" }} />
-        <EuiIcon type="arrowRight" color={"black"} />
-        <span style={{ margin: "0 0.1em" }} />
-        <Badge color={props.colorSecond || "success"}>
-          {shortForm ? shortForm.toUpperCase() : "No short form available"}
-        </Badge>
-      </span>
-    </>
+    <span className={finalClassName}>
+      <OntologyBadge
+        ontologyId={ontologyId}
+        onNavigateToOntology={props.onNavigateToOntology}
+        color={props.colorFirst || "primary"}
+      />
+      <span style={{ margin: "0 0.1em" }} />
+      <EuiIcon type="arrowRight" color={"black"} />
+      <span style={{ margin: "0 0.1em" }} />
+      <Badge color={props.colorSecond || "success"}>
+        {shortForm ? shortForm.toUpperCase() : "No short form available"}
+      </Badge>
+    </span>
   );
 }
 
