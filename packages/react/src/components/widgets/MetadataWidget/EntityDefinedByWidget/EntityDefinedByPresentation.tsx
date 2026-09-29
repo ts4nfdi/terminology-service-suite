@@ -1,4 +1,4 @@
-import { EuiText } from "@elastic/eui";
+import { EuiProvider, EuiText } from "@elastic/eui";
 import { EntityOntoListPresentationProps } from "../../../../app";
 import "../../../../style/ts4nfdiStyles/ts4nfdiEntityDefinedByStyle.css";
 import ExpandableOntologyBadgeList from "../../../helperComponents/ExpandableOntologyBadgeList";
@@ -24,4 +24,14 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
   );
 }
 
-export { EntityDefinedByPresentation };
+function WrappedEntityDefinedByPresentation(
+  props: EntityOntoListPresentationProps,
+) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <EntityDefinedByPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { EntityDefinedByPresentation, WrappedEntityDefinedByPresentation };
