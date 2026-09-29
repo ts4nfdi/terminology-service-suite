@@ -1,1 +1,8 @@
-export { DescriptionWidget } from "./DescriptionWidget";
+export {
+  DescriptionPresentation,
+  WrappedDescriptionPresentation,
+} from "./DescriptionPresentation";
+export {
+  DescriptionWidget,
+  WrappedDescriptionWidget,
+} from "./DescriptionWidget";

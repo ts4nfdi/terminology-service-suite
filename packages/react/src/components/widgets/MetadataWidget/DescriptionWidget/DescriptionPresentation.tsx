@@ -1,5 +1,5 @@
-import { EuiLoadingSpinner, EuiText } from "@elastic/eui";
-import { DescriptionPresentationProps } from "../../../../app/types";
+import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
+import { DescriptionPresentationProps } from "../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiDescriptionStyle.css";
 
@@ -33,4 +33,12 @@ function DescriptionPresentation(props: DescriptionPresentationProps) {
   );
 }
 
-export { DescriptionPresentation };
+function WrappedDescriptionPresentation(props: DescriptionPresentationProps) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <DescriptionPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { DescriptionPresentation, WrappedDescriptionPresentation };
