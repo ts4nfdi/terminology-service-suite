@@ -3,7 +3,7 @@
 import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
-import { AlternativeNameTabWidgetProps } from "../../../../../app/types";
+import { AlternativeNameTabWidgetProps } from "../../../../../app/";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import { AlternativeNameTabPresentation } from "./AlternativeNameTabPresentation";

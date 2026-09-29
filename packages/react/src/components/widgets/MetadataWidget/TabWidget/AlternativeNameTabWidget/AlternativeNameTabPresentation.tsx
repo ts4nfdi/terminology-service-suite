@@ -3,9 +3,10 @@ import {
   EuiFlexItem,
   EuiLoadingSpinner,
   EuiPanel,
+  EuiProvider,
   EuiText,
 } from "@elastic/eui";
-import { AlternativeNameTabWidgetPresentationProps } from "../../../../../app/types";
+import { AlternativeNameTabWidgetPresentationProps } from "../../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../../app/util";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiAltNameTabStyle.css";
 
@@ -43,4 +44,17 @@ function AlternativeNameTabPresentation(
   );
 }
 
-export { AlternativeNameTabPresentation };
+function WrappedAlternativeNameTabPresentation(
+  props: AlternativeNameTabWidgetPresentationProps,
+) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <AlternativeNameTabPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export {
+  AlternativeNameTabPresentation,
+  WrappedAlternativeNameTabPresentation,
+};

@@ -1,1 +1,8 @@
-export { AlternativeNameTabWidget } from "./AlternativeNameTabWidget";
+export {
+  AlternativeNameTabPresentation,
+  WrappedAlternativeNameTabPresentation,
+} from "./AlternativeNameTabPresentation";
+export {
+  AlternativeNameTabWidget,
+  WrappedAlternativeNameTabWidget,
+} from "./AlternativeNameTabWidget";
