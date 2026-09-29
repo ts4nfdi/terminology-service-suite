@@ -3,7 +3,7 @@
 import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../../api/ols/OlsEntityApi";
-import { CrossRefWidgetProps } from "../../../../../app/types";
+import { CrossRefWidgetProps } from "../../../../../app/";
 import { Thing } from "../../../../../model/interfaces";
 import { isEntity } from "../../../../../model/ModelTypeCheck";
 import Reified from "../../../../../model/Reified";
