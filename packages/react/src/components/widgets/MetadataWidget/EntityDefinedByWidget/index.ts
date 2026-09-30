@@ -1,8 +1,2 @@
-export {
-  EntityDefinedByPresentation,
-  WrappedEntityDefinedByPresentation,
-} from "./EntityDefinedByPresentation";
-export {
-  EntityDefinedByWidget,
-  WrappedEntityDefinedByWidget,
-} from "./EntityDefinedByWidget";
+export { EntityDefinedByPresentation } from "./EntityDefinedByPresentation";
+export { EntityDefinedByWidget } from "./EntityDefinedByWidget";
