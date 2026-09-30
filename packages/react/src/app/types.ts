@@ -970,6 +970,22 @@ export type TermDepictionWidgetProps = ApiObj &
   ForcedOntologyIdObj &
   UseLegacyObj;
 
+export type TermDepictionPresentationProps = {
+  /**
+   * Urls of the already resolved depictions. A url ending in .glb is shown as a
+   * 3D model, every other one as an image.
+   */
+  depictionUrls?: string[];
+  /**
+   * Shows a loading spinner instead of the depictions.
+   */
+  isLoading?: boolean;
+  /**
+   * Error of a lookup performed by the caller, shown instead of the depictions.
+   */
+  error?: string | unknown;
+};
+
 export type GraphViewWidgetProps = ApiObj &
   ForcedIriObj &
   ForcedOntologyIdObj &
