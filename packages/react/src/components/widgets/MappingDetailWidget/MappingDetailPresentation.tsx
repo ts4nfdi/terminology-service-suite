@@ -7,21 +7,12 @@ import {
 } from "@elastic/eui";
 import type { ReactNode } from "react";
 
-/**
- * Formats the card writes itself, and the column separator each one uses.
- */
+/** Formats the card writes itself, with the column separator each one uses. */
 const separators: Record<string, string> = { csv: ",", tsv: "\t" };
 
-/**
- * Address mapping feedback is sent to.
- */
 const feedbackEmail = "coli-conc@gbv.de";
 
-/**
- * One mapping, flattened to the strings the card shows and downloads.
- * MappingDetailWidget builds it from what it fetches, MappingListWidget from
- * the row the user expanded.
- */
+/** One mapping, flattened to the strings the card shows and downloads. */
 export type MappingDetail = {
   type?: string;
   from?: string;
@@ -46,17 +37,11 @@ type MappingDetailField = {
 export type MappingDetailPresentationProps = {
   mapping: MappingDetail;
   MappingDetailBackgroundColor?: string;
-  /**
-   * Puts a close button in the top corner of the card.
-   * MappingListWidget uses it to collapse the row again.
-   */
+  /** Shows a close button; the list widget uses it to collapse the row. */
   onClose?: () => void;
 };
 
-/**
- * The card itself: its fields, downloads and layout. It renders the mapping it
- * is handed and fetches nothing, so both mapping widgets can show it.
- */
+/** Renders the mapping it is handed, so both mapping widgets can show it. */
 export default function MappingDetailPresentation(
   props: MappingDetailPresentationProps,
 ) {
@@ -64,15 +49,13 @@ export default function MappingDetailPresentation(
 
   const { fromScheme, toScheme, modified, identifier, partOf, uri } = mapping;
 
-  /**
-   * The concordance URI ends with its notation, e.g. ".../concordances/nsk-bk".
-   */
+  /** The concordance URI ends with its notation, e.g. ".../concordances/nsk-bk". */
   const concordanceNotation = partOf?.split("/").pop();
 
   /**
-   * The mapping as one row, these keys being the column names. The server's own
-   * CSV leaves out the dates, the identifier and the concordance, so CSV and
-   * TSV are written here; its JSON is complete and stays a plain link.
+   * The mapping as one row, the keys being the column names. The server's CSV
+   * leaves out the dates, the identifier and the concordance, so CSV and TSV are
+   * written here; its JSON is complete and stays a plain link.
    */
   const downloadFields = {
     type: mapping.type,
@@ -90,10 +73,7 @@ export default function MappingDetailPresentation(
     uri,
   };
 
-  /**
-   * Quotes a value the way the JSKOS server does, so a comma or a quote inside
-   * a label cannot break the columns apart.
-   */
+  /** Quotes like the JSKOS server, so a comma in a label cannot break a column. */
   function quote(value?: string) {
     return `"${(value || "—").replace(/"/g, '""')}"`;
   }
