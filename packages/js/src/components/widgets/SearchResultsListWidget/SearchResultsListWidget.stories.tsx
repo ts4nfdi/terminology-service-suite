@@ -6,7 +6,8 @@ import {
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
   ApiGatewayArgs,
-  ApiGatewayWithCollectionArgs,
+  ApiGatewayWithFAIRAgroCollectionArgs,
+  ApiGatewayWithNFDI4HealthCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
   NavigateToSearchResultArgs,
@@ -80,8 +81,13 @@ export const ApiGateway: Story = {
   play: commonSearchResultsListWidgetPlay,
 };
 
-export const ApiGatewayWithCollection: Story = {
-  args: ApiGatewayWithCollectionArgs,
+export const ApiGatewayWithFAIRAgroCollection: Story = {
+  args: ApiGatewayWithFAIRAgroCollectionArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithNFDI4HealthCollection: Story = {
+  args: ApiGatewayWithNFDI4HealthCollectionArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 
