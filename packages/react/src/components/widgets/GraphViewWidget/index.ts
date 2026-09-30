@@ -1,5 +1,2 @@
-export {
-  GraphViewPresentation,
-  WrappedGraphViewPresentation,
-} from "./GraphViewPresentation";
-export { GraphViewWidget, WrappedGraphViewWidget } from "./GraphViewWidget";
+export { GraphViewPresentation } from "./GraphViewPresentation";
+export { GraphViewWidget } from "./GraphViewWidget";
