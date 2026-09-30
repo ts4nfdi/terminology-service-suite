@@ -828,6 +828,47 @@ export type ResourcesWidgetProps = ApiObj &
     onNavigate?: ((ontologyId: string) => void) | string;
   };
 
+export type ResourcesPresentationProps = UseLegacyObj &
+  CssClassNameObj & {
+    /**
+     * The already resolved resources shown in the table.
+     */
+    resources: OlsResource[];
+    /**
+     * Shows the table in its loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * True when a lookup performed by the caller failed. The license notice and
+     * the resource count are then hidden.
+     */
+    isError?: boolean;
+    /**
+     * Initial number of entries displayed per page.
+     */
+    initialEntriesPerPage?: number;
+    /**
+     * Possible values for number of entries displayed per page.
+     */
+    pageSizeOptions?: number[];
+    /**
+     * Column the table is sorted by initially.
+     */
+    initialSortField?: string;
+    /**
+     * Initial sorting direction.
+     */
+    initialSortDir?: "asc" | "desc";
+    /**
+     * Pass actions to each item in the table.
+     */
+    actions?: Array<Action<OlsResource>>;
+    /**
+     * This function is called every time an ontology link is clicked.
+     */
+    onNavigate?: ((ontologyId: string) => void) | string;
+  };
+
 export type OlsResource = ForcedOntologyIdObj & {
   loaded: string;
   numberOfTerms: number;
