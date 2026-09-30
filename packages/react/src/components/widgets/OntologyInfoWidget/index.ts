@@ -1,5 +1,2 @@
-export {
-  OntologyInfoPresentation,
-  WrappedOntologyInfoPresentation,
-} from "./OntologyInfoPresentation";
+export { OntologyInfoPresentation } from "./OntologyInfoPresentation";
 export { OntologyInfoWidget } from "./OntologyInfoWidget";
