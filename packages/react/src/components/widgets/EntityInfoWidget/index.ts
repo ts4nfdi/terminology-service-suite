@@ -1,5 +1,2 @@
-export {
-  EntityInfoPresentation,
-  WrappedEntityInfoPresentation,
-} from "./EntityInfoPresentation";
-export { EntityInfoWidget, WrappedEntitiyInfoWidget } from "./EntityInfoWidget";
+export { EntityInfoPresentation } from "./EntityInfoPresentation";
+export { EntityInfoWidget } from "./EntityInfoWidget";
