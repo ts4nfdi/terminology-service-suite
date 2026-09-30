@@ -921,6 +921,13 @@ export type EntityProviderWidgetProps = ForcedIriObj &
      */
     api?: string;
     /**
+     * Additional parameters in URL format, e.g.
+     * `collectionId=dc45621d-7e40-47ce-9616-4133f0b54edf`, passed on to the
+     * API. With a `collectionId`, the TS4NFDI API Gateway only returns
+     * providers of the terminologies configured in that collection.
+     */
+    parameter?: string;
+    /**
      * If false, no request is made and the result stays empty. Useful to defer
      * fetching until an IRI is known. Default is true.
      */

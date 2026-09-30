@@ -1,17 +1,12 @@
 import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
-import {
-  apiArgType,
-  iriArgType,
-  ontologyIdArgType,
-} from "../../../stories/storyArgs";
+import { iriArgType, ontologyIdArgType } from "../../../stories/storyArgs";
 
 export const EntityProviderWidgetStoryArgTypes = {
-  ...apiArgType,
   ...iriArgType,
   ...ontologyIdArgType,
   api: {
-    ...apiArgType.api,
+    api: globals.GATEWAY_API_OLS_ENDPOINT,
     required: false,
     description:
       "The API instance for the API call.<br><br>" +
@@ -35,6 +30,17 @@ export const EntityProviderWidgetStoryArgTypes = {
       type: { summary: "boolean" },
     },
   },
+  parameter: {
+    required: false,
+    description:
+      "Additional parameters in URL format, e.g. " +
+      "`collectionId=dc45621d-7e40-47ce-9616-4133f0b54edf` If a `collectionId` " +
+      "is provided, only providers of the terminologies configured in that " +
+      "TS4NFDI API Gateway collection are returned.",
+    table: {
+      type: { summary: "string" },
+    },
+  },
 };
 
 export const EntityProviderWidgetStoryArgs = {
@@ -42,6 +48,7 @@ export const EntityProviderWidgetStoryArgs = {
   iri: "",
   ontologyId: "",
   enabled: true,
+  parameter: "",
 } as const;
 
 /**
@@ -52,8 +59,9 @@ export const EntityProviderWidgetStoryArgs = {
  */
 export const withOntologyIdArgs = {
   api: globals.GATEWAY_API_OLS_ENDPOINT,
-  ontologyId: "voc4cat",
-  iri: "https://w3id.org/nfdi4cat/voc4cat_0000151",
+  ontologyId: "agrovoc",
+  iri: "http://aims.fao.org/aos/agrovoc/c_12332",
+  parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
 } as const;
 
 /**

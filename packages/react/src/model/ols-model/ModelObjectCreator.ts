@@ -79,6 +79,7 @@ function createModelObjectWithEntityTypeWithUseLegacy(
 
     case "term":
     case "skos:Concept":
+    case "http://www.w3.org/2004/02/skos/core#Concept":
     case "class": // allow BOTH, even if it should actually be "term"
       return useLegacy
         ? new OLS3Class(

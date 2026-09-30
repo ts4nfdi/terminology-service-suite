@@ -34,7 +34,7 @@ async function fetchEntityProviders(
   params: GetEntityProviderParams,
   abortSignal?: AbortSignal,
 ): Promise<{ element: any; provider: EntityProvider }[]> {
-  const { iri, ontologyId, api } = params;
+  const { iri, ontologyId, api, parameter } = params;
   if (!iri) throw Error("No IRI provided");
 
   const olsApi = new OlsEntityApi(api || GATEWAY_API_OLS_ENDPOINT);
@@ -42,7 +42,7 @@ async function fetchEntityProviders(
     undefined,
     undefined,
     { ontologyId: ontologyId, termIri: iri },
-    "",
+    parameter || "",
     false,
     abortSignal,
   );

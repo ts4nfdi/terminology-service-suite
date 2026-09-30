@@ -41,7 +41,7 @@ const IDLE: UseEntityProviderResult = {
 export function useEntityProvider(
   props: EntityProviderWidgetProps,
 ): UseEntityProviderResult {
-  const { iri, ontologyId, api, enabled = true } = props;
+  const { iri, ontologyId, api, parameter, enabled = true } = props;
   const [state, setState] = useState<UseEntityProviderResult>(IDLE);
 
   useEffect(() => {
@@ -57,7 +57,10 @@ export function useEntityProvider(
 
     setState({ ...IDLE, isLoading: true });
 
-    fetchEntityProviders({ iri, ontologyId, api }, controller.signal).then(
+    fetchEntityProviders(
+      { iri, ontologyId, api, parameter },
+      controller.signal,
+    ).then(
       (entries) => {
         if (ignore) return;
         setState({
@@ -84,7 +87,7 @@ export function useEntityProvider(
       ignore = true;
       controller.abort();
     };
-  }, [iri, ontologyId, api, enabled]);
+  }, [iri, ontologyId, api, parameter, enabled]);
 
   return state;
 }
