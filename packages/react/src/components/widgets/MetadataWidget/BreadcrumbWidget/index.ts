@@ -1,5 +1,2 @@
-export {
-  BreadcrumbPresentation,
-  WrappedBreadcrumbPresentation,
-} from "./BreadcrumbPresentation/BreadcrumbPresentation";
-export { BreadcrumbWidget, WrappedBreadcrumbWidget } from "./BreadcrumbWidget";
+export { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
+export { BreadcrumbWidget } from "./BreadcrumbWidget";
