@@ -668,11 +668,6 @@ function MappingListPresentation(props: MappingListPresentationProps) {
   );
 }
 
-/**
- * Brings its own EUI and react-query providers, the way the widgets do, so the
- * list also renders inside a plain host application. The react-query provider is
- * needed because the metadata popup renders a MetadataWidget, which fetches.
- */
 function WrappedMappingListPresentation(props: MappingListPresentationProps) {
   const queryClient = new QueryClient();
 
