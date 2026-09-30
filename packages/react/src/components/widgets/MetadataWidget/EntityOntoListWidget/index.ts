@@ -1,8 +1,2 @@
-export {
-  EntityOntoListPresentation,
-  WrappedEntityOntoListPresentation,
-} from "./EntityOntoListPresentation";
-export {
-  EntityOntoListWidget,
-  WrappedEntityOntoListWidget,
-} from "./EntityOntoListWidget";
+export { EntityOntoListPresentation } from "./EntityOntoListPresentation";
+export { EntityOntoListWidget } from "./EntityOntoListWidget";
