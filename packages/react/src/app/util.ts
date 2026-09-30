@@ -239,6 +239,7 @@ export function inferTypeFromTypeArray(types: string[]) {
       | "dataProperty"
       | "objectProperty"
       | "ontology"
+      | "http://www.w3.org/2004/02/skos/core#Concept"
     >(res),
   ]; // remove duplicates
 
