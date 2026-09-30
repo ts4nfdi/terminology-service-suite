@@ -1,8 +1,2 @@
-export {
-  DescriptionPresentation,
-  WrappedDescriptionPresentation,
-} from "./DescriptionPresentation";
-export {
-  DescriptionWidget,
-  WrappedDescriptionWidget,
-} from "./DescriptionWidget";
+export { DescriptionPresentation } from "./DescriptionPresentation";
+export { DescriptionWidget } from "./DescriptionWidget";
