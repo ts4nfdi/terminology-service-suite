@@ -1,8 +1,2 @@
-export {
-  CrossRefTabPresentation,
-  WrappedCrossRefTabPresentation,
-} from "./CrossRefTabPresentation";
-export {
-  CrossRefTabWidget,
-  WrappedCrossRefTabWidget,
-} from "./CrossRefTabWidget";
+export { CrossRefTabPresentation } from "./CrossRefTabPresentation";
+export { CrossRefTabWidget } from "./CrossRefTabWidget";
