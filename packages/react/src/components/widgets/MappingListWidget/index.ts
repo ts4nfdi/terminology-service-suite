@@ -1,8 +1,2 @@
-export {
-  MappingListPresentation,
-  WrappedMappingListPresentation,
-} from "./MappingListPresentation";
-export {
-  MappingListWidget,
-  WrappedMappingListWidget,
-} from "./MappingListWidget";
+export { MappingListPresentation } from "./MappingListPresentation";
+export { MappingListWidget } from "./MappingListWidget";
