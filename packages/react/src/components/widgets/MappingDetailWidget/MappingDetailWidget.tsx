@@ -63,11 +63,7 @@ function MappingDetailWidget(props: MappingDetailWidgetProps) {
   );
 }
 
-/**
- * Brings its own EUI and react-query providers, the way the other widgets do,
- * so the widget also renders and fetches inside a plain host application.
- */
-export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
+function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
   const queryClient = new QueryClient();
 
   return (
@@ -79,5 +75,4 @@ export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
   );
 }
 
-export { MappingDetailWidget };
-export default WrappedMappingDetailWidget;
+export { MappingDetailWidget, WrappedMappingDetailWidget };

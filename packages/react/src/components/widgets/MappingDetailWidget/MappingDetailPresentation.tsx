@@ -1,4 +1,10 @@
-import { EuiButtonIcon, EuiLink, EuiPanel, EuiText } from "@elastic/eui";
+import {
+  EuiButtonIcon,
+  EuiLink,
+  EuiPanel,
+  EuiProvider,
+  EuiText,
+} from "@elastic/eui";
 import type { ReactNode } from "react";
 
 /**
@@ -37,7 +43,7 @@ type MappingDetailField = {
   value: ReactNode;
 };
 
-type MappingDetailPresentationProps = {
+export type MappingDetailPresentationProps = {
   mapping: MappingDetail;
   MappingDetailBackgroundColor?: string;
   /**
@@ -239,3 +245,15 @@ export default function MappingDetailPresentation(
     </EuiPanel>
   );
 }
+
+function WrappedMappingDetailPresentation(
+  props: MappingDetailPresentationProps,
+): React.JSX.Element {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <MappingDetailPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { MappingDetailPresentation, WrappedMappingDetailPresentation };
