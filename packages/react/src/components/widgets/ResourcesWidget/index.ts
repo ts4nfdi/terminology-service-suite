@@ -1,5 +1,2 @@
-export {
-  ResourcesPresentation,
-  WrappedResourcesPresentation,
-} from "./ResourcesPresentation";
-export { ResourcesWidget, WrappedResourcesWidget } from "./ResourcesWidget";
+export { ResourcesPresentation } from "./ResourcesPresentation";
+export { ResourcesWidget } from "./ResourcesWidget";
