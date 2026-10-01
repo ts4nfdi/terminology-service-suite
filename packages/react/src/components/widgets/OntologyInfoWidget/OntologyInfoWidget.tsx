@@ -27,7 +27,7 @@ import RenderedReified from "../../helperComponents/RenderedReified";
 
 const DEFAULT_HAS_TITLE = true;
 
-function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
+function OntologyInfoWidget(props: OntologyInfoWidgetProps): React.JSX.Element {
   const {
     ontologyId,
     api,
@@ -36,14 +36,17 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
     useLegacy,
     showBadges,
     className,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
     ...rest
   } = props;
   const olsApi = new OlsOntologyApi(api);
 
   const onNavigates = {
-    onNavigateToEntity: props.onNavigateToEntity,
-    onNavigateToOntology: props.onNavigateToOntology,
-    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
   };
 
   const finalClassName = className || "ts4nfdi-ontologyy-info-style";
@@ -321,7 +324,9 @@ function OntologyInfoWidget(props: OntologyInfoWidgetProps) {
   );
 }
 
-function WrappedOntologyInfoWidget(props: OntologyInfoWidgetProps) {
+function WrappedOntologyInfoWidget(
+  props: OntologyInfoWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

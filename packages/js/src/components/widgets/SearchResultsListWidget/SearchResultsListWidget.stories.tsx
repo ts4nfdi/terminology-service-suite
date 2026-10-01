@@ -5,8 +5,12 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src";
 import { SearchResultsListDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
+  ApiGatewayArgs,
+  ApiGatewayWithFAIRAgroCollectionArgs,
+  ApiGatewayWithNFDI4HealthCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
+  NavigateToSearchResultArgs,
   NFDI4HealthArgs,
   OpenEnergyPlatformArgs,
   SearchResultsListWidgetStoryArgs,
@@ -51,6 +55,7 @@ window['ts4nfdiWidgets'].createSearchResultsList(
         targetLink:"${args.targetLink}",
         useLegacy:"${args.useLegacy}",
         onNavigateToOntology:${args.onNavigateToOntology},
+        OnNavigateToSearchResult:${args.OnNavigateToSearchResult},
         className:"${args.className}"
     },
     document.querySelector('#search_results_list_widget_container_${num}')
@@ -68,6 +73,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGateway: Story = {
+  args: ApiGatewayArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithFAIRAgroCollection: Story = {
+  args: ApiGatewayWithFAIRAgroCollectionArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithNFDI4HealthCollection: Story = {
+  args: ApiGatewayWithNFDI4HealthCollectionArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const NavigateToSearchResult: Story = {
+  args: NavigateToSearchResultArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 

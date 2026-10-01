@@ -2,7 +2,7 @@ import { ArgTypes } from "@storybook/react";
 import { HIERARCHY_WIDGET_DEFAULT_VALUES } from "../api/ols/OlsHierarchyApi";
 import { entityTypeNames, thingTypeNames } from "../model/ModelTypeCheck";
 
-export const apiArgType: ArgTypes = {
+export const apiArgType: Record<string, any> = {
   api: {
     required: true,
     control: {
@@ -713,6 +713,21 @@ export const onNavigateToEntityArgType: ArgTypes = {
     },
   },
 };
+export const OnNavigateToSearchResultArgType: ArgTypes = {
+  OnNavigateToSearchResult: {
+    required: false,
+    table: { type: { summary: "(result: SearchResultProps) => void" } },
+    action: "OnNavigateToSearchResult",
+    description:
+      "This function is called when a search result title is clicked.",
+    control: { type: "radio" },
+    options: ["None", "Console message"],
+    mapping: {
+      None: undefined,
+      "Console message": (result: unknown) => console.log(result),
+    },
+  },
+};
 export const onNavigateToOntologyArgType: ArgTypes = {
   onNavigateToOntology: {
     required: false,
@@ -1125,6 +1140,16 @@ export const mathMLArgType = {
       'Example: `<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>1</mn></math>`',
     table: {
       type: { summary: "string" },
+    },
+  },
+};
+export const showApiRequestButton: ArgTypes = {
+  showApiRequestButton: {
+    required: true,
+    description: "If true, shows a button to open the current API request.",
+    table: {
+      defaultValue: { summary: "true" },
+      type: { summary: "boolean" },
     },
   },
 };

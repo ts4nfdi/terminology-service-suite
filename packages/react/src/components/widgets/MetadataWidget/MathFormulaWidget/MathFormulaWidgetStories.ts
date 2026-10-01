@@ -48,13 +48,6 @@ export const MathFormulaWidgetStoryArgs = {
   iri: "",
 } as const;
 
-export const MathmoddbInDefiningFormulaStoryArgs = {
-  api: mathmodApi,
-  ontologyId: mathmodOntologyId,
-  iri: mathmodEntityIri,
-  mathProperty: "https://portal.mardi4nfdi.de/entity/P983",
-};
-
 export const MathmoddbDefiningFormulaStoryArgs = {
   api: mathmodApi,
   ontologyId: mathmodOntologyId,

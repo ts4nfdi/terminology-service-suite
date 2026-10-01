@@ -16,19 +16,23 @@ import {
   EuiSwitch,
   EuiTablePagination,
   EuiText,
+  EuiTitle,
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { SearchResultsListWidgetProps } from "../../../app";
 import "../../../style/ts4nfdiStyles/ts4nfdiSearchResultStyle.css";
+import ErrorBoundary from "../../helperComponents/ErrorBoundary";
 import { SearchBarWidget } from "../SearchBarWidget";
 import { MetadataCompact } from "./MetadataCompact";
 
 const DEFAULT_INITIAL_ITEMS_PER_PAGE = 10;
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
-function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
+function SearchResultsListWidget(
+  props: SearchResultsListWidgetProps,
+): React.JSX.Element {
   const {
     api,
     query,
@@ -38,6 +42,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     targetLink,
     preselected,
     onNavigateToOntology,
+    OnNavigateToSearchResult,
     useLegacy = true,
     className,
     ...rest
@@ -64,6 +69,11 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   useEffect(() => {
     setSearchValue(query);
   }, [query]);
+
+  useEffect(() => {
+    setFilterByTypeOptions([]);
+    setFilterByOntologyOptions([]);
+  }, [api]);
 
   const [isResetting, setIsResetting] = useState(false);
 
@@ -97,11 +107,13 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
             array: any[],
           ) => {
             if (currentIndex % 2 === 0) {
+              if (array[currentIndex + 1] == 0) {
+                return accumulator;
+              }
               accumulator.push({
                 label: render ? render(currentValue) : currentValue,
                 key: currentValue,
                 append: "(" + array[currentIndex + 1] + ")",
-                disabled: array[currentIndex + 1] == 0,
                 data: { totalCount: array[currentIndex + 1] },
               });
             }
@@ -113,7 +125,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
     } else {
       const newOptions: EuiSelectableOption[] = [];
       for (let i = 0; i < currentOptions.length; i++) {
-        newOptions.push(Object.assign({}, currentOptions[i])); // using Object.assign to pass by value, not by reference
+        newOptions.push(Object.assign({}, currentOptions[i]));
       }
 
       optionCounts.forEach(
@@ -123,19 +135,23 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               (option: EuiSelectableOption) => option.key == currentValue,
             );
             if (option) {
-              option.append = "(" + array[currentIndex + 1];
-              if (
-                option.data &&
-                array[currentIndex + 1] < option.data.totalCount
-              ) {
-                option.append += "/" + option.data.totalCount;
+              if (array[currentIndex + 1] == 0) {
+                (option as any)._hide = true;
+              } else {
+                option.append = "(" + array[currentIndex + 1];
+                if (
+                  option.data &&
+                  array[currentIndex + 1] < option.data.totalCount
+                ) {
+                  option.append += "/" + option.data.totalCount;
+                }
+                option.append += ")";
               }
-              option.append += ")";
             }
           }
         },
       );
-      setOptions(newOptions);
+      setOptions(newOptions.filter((option: any) => !option._hide));
     }
   }
 
@@ -192,11 +208,7 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
           signal,
         )
         .then((response) => {
-          if (
-            response["response"] &&
-            response["response"]["docs"] != null &&
-            response["response"]["numFound"] != null
-          ) {
+          if (response["response"] && response["response"]["docs"] != null) {
             if (
               response["facet_counts"] &&
               response["facet_counts"]["facet_fields"]
@@ -209,7 +221,10 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                   (currentValue: string) =>
                     `${currentValue[0].toUpperCase()}${currentValue.slice(1)}`,
                 );
+              } else {
+                setFilterByTypeOptions([]);
               }
+
               if (useLegacy) {
                 if (response["facet_counts"]["facet_fields"]["ontology_name"]) {
                   updateFilterOptions(
@@ -218,17 +233,39 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               } else {
-                if (response["facet_counts"]["facet_fields"]["ontologyId"]) {
+                const ontologyFacet =
+                  response["facet_counts"]["facet_fields"]["ontologyId"];
+
+                if (ontologyFacet) {
+                  const flattenedOntologyCounts: any[] = Array.isArray(
+                    ontologyFacet,
+                  )
+                    ? ontologyFacet
+                    : Object.values(ontologyFacet).reduce(
+                        (accumulator: any[], chunk: any) =>
+                          Array.isArray(chunk)
+                            ? accumulator.concat(chunk)
+                            : accumulator,
+                        [],
+                      );
+
                   updateFilterOptions(
                     filterByOntologyOptions,
-                    response["facet_counts"]["facet_fields"]["ontologyId"],
+                    flattenedOntologyCounts,
                     setFilterByOntologyOptions,
                     (currentValue: string) => currentValue.toUpperCase(),
                   );
+                } else {
+                  setFilterByOntologyOptions([]);
                 }
               }
+            } else {
+              setFilterByOntologyOptions([]);
+              setFilterByTypeOptions([]);
             }
 
             setTotalItems(response["response"]["numFound"]);
@@ -424,9 +461,18 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               <EuiSpacer size="m" />
 
               <EuiText size="xs" style={{ padding: "0 8px" }}>
-                Showing {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
-                {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
-                {totalItems} results
+                {Number.isFinite(activePage) &&
+                Number.isFinite(itemsPerPage) &&
+                Number.isFinite(totalItems) ? (
+                  <>
+                    Showing{" "}
+                    {Math.min(activePage * itemsPerPage + 1, totalItems)} to{" "}
+                    {Math.min((activePage + 1) * itemsPerPage, totalItems)} of{" "}
+                    {totalItems} results
+                  </>
+                ) : (
+                  "Result number not available"
+                )}
               </EuiText>
 
               <EuiSpacer size="s" />
@@ -466,22 +512,37 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
               )}
 
               {searchResults &&
-                searchResults.map((result: any) => (
+                searchResults.map((result: any, index: number) => (
                   <React.Fragment
-                    key={result.iri + result.ontology_name + result.type}
+                    key={`${result.iri}-${result.ontology_name}-${result.type}-${index}`}
                   >
-                    <MetadataCompact
-                      api={api}
-                      result={result}
-                      targetLink={targetLink}
-                      className={`${finalClassName}-metadata-compact`}
-                      parameter={parameter}
-                      entityType={result.type}
-                      iri={result.iri}
-                      ontologyId={result.ontology_name}
-                      useLegacy={useLegacy}
-                      onNavigateToOntology={onNavigateToOntology}
-                    />
+                    <ErrorBoundary
+                      fallback={
+                        <EuiPanel>
+                          <EuiTitle size="xs">
+                            <h2>{result.label || result.iri}</h2>
+                          </EuiTitle>
+                          <EuiSpacer size="s" />
+                          <EuiText size="s" color="subdued">
+                            This result could not be displayed.
+                          </EuiText>
+                        </EuiPanel>
+                      }
+                    >
+                      <MetadataCompact
+                        api={api}
+                        result={result}
+                        targetLink={targetLink}
+                        className={`${finalClassName}-metadata-compact`}
+                        parameter={parameter}
+                        entityType={result.type}
+                        iri={result.iri}
+                        ontologyId={result.ontology_name}
+                        useLegacy={useLegacy}
+                        onNavigateToOntology={onNavigateToOntology}
+                        OnNavigateToSearchResult={OnNavigateToSearchResult}
+                      />
+                    </ErrorBoundary>
                     <EuiSpacer />
                   </React.Fragment>
                 ))}
@@ -493,18 +554,25 @@ function SearchResultsListWidget(props: SearchResultsListWidgetProps) {
   );
 }
 
-function WrappedSearchResultsListWidget(props: SearchResultsListWidgetProps) {
+function WrappedSearchResultsListWidget(
+  props: SearchResultsListWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">
       <QueryClientProvider client={queryClient}>
         <SearchResultsListWidget
+          useLegacy={props.useLegacy}
+          preselected={props.preselected}
+          className={props.className}
+          onNavigateToOntology={props.onNavigateToOntology}
           api={props.api}
           query={props.query}
           parameter={props.parameter}
           initialItemsPerPage={props.initialItemsPerPage}
           itemsPerPageOptions={props.itemsPerPageOptions}
           targetLink={props.targetLink}
+          OnNavigateToSearchResult={props.OnNavigateToSearchResult}
         />
       </QueryClientProvider>
     </EuiProvider>

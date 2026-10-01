@@ -1,8 +1,9 @@
-import { ReactElement } from "react";
 import { OntologyBadgeProps } from "../../app";
 import Badge from "./Badge";
 
-export default function OntologyBadge(props: OntologyBadgeProps): ReactElement {
+export default function OntologyBadge(
+  props: OntologyBadgeProps,
+): React.JSX.Element {
   return (
     <Badge
       onClick={

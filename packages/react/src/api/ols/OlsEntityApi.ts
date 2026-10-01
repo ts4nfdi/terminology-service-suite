@@ -194,6 +194,7 @@ export class OlsEntityApi extends OlsBaseApi {
     contentParams,
     parameter,
     useLegacy?: boolean,
+    abortSignal?: AbortSignal,
   ) => {
     const queryPrefix = contentParams?.ontologyId
       ? "ontologies/" + contentParams?.ontologyId + "/"
@@ -205,7 +206,7 @@ export class OlsEntityApi extends OlsBaseApi {
     };
     return this.makeCall(
       queryPrefix + "entities",
-      { params: params },
+      { params: params, signal: abortSignal },
       getUseLegacy(useLegacy),
     );
   };

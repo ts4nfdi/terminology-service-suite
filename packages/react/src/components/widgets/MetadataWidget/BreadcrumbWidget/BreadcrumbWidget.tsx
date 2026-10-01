@@ -6,7 +6,7 @@ import { isEntity } from "../../../../model/ModelTypeCheck";
 import Badge from "../../../helperComponents/Badge";
 import { BreadcrumbPresentation } from "./BreadcrumbPresentation/BreadcrumbPresentation";
 
-function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
+function BreadcrumbWidget(props: BreadcrumbWidgetProps): React.JSX.Element {
   const {
     api,
     ontologyId,
@@ -99,7 +99,9 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps) {
   );
 }
 
-function WrappedBreadcrumbWidget(props: BreadcrumbWidgetProps) {
+function WrappedBreadcrumbWidget(
+  props: BreadcrumbWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

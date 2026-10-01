@@ -15,13 +15,8 @@ import MappingListPresentation from "./MappingListPresentation";
  */
 const DEFAULT_ROW_COLOR = "#fff5fa";
 
-function MappingListWidget(props: MappingListWidgetProps) {
-  const {
-    api,
-    source,
-    rowColor = DEFAULT_ROW_COLOR,
-    MappingDetailBackgroundColor,
-  } = props;
+function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
+  const { api, source } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -277,7 +272,7 @@ function MappingListWidget(props: MappingListWidgetProps) {
   );
 }
 
-export function WrappedMappingListWidget(props: MappingListWidgetProps) {
+export function WrappedMappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   return (
     <MappingListWidget
       api={props.api}
@@ -286,7 +281,6 @@ export function WrappedMappingListWidget(props: MappingListWidgetProps) {
       MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
     />
   );
-}
 
 export { MappingListWidget };
 export default WrappedMappingListWidget;

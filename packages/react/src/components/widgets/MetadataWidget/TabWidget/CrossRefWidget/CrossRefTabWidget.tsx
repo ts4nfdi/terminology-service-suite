@@ -9,7 +9,7 @@ import { isEntity } from "../../../../../model/ModelTypeCheck";
 import Reified from "../../../../../model/Reified";
 import { CrossRefTabPresentation } from "./CrossRefTabPresentation";
 
-function CrossRefTabWidget(props: CrossRefWidgetProps) {
+function CrossRefTabWidget(props: CrossRefWidgetProps): React.JSX.Element {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
     props;
   const olsApi = new OlsEntityApi(api);
@@ -47,7 +47,9 @@ function CrossRefTabWidget(props: CrossRefWidgetProps) {
   );
 }
 
-function WrappedCrossRefTabWidget(props: CrossRefWidgetProps) {
+function WrappedCrossRefTabWidget(
+  props: CrossRefWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

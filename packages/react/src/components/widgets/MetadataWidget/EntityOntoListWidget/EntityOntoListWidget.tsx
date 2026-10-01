@@ -13,7 +13,9 @@ import "../../../../style/tssStyles.css";
 import { EntityOntoListPresentation } from "./EntityOntoListPresentation";
 
 // TODO: exclude ontologies in which the entity is defined from the badge list
-function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
+function EntityOntoListWidget(
+  props: EntityOntoListWidgetProps,
+): React.JSX.Element {
   const { iri, api, parameter, entityType, ontologyId, useLegacy, className } =
     props;
   const olsApi = new OlsEntityApi(api);
@@ -92,7 +94,9 @@ function EntityOntoListWidget(props: EntityOntoListWidgetProps) {
   );
 }
 
-function WrappedEntityOntoListWidget(props: EntityOntoListWidgetProps) {
+function WrappedEntityOntoListWidget(
+  props: EntityOntoListWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

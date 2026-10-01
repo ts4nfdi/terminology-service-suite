@@ -1,8 +1,8 @@
-import { EuiCard, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCard, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MetadataCompactProps } from "../../../app";
-import { pluralizeType } from "../../../app/util";
+import { getErrorMessageToDisplay, tryPluralizeType } from "../../../app/util";
 import { Entity } from "../../../model/interfaces";
 import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import {
@@ -23,7 +23,7 @@ type MetadataInfo = {
   definedBy: string[];
 };
 
-function MetadataCompact(props: MetadataCompactProps) {
+function MetadataCompact(props: MetadataCompactProps): React.JSX.Element {
   const {
     api,
     result,
@@ -35,11 +35,12 @@ function MetadataCompact(props: MetadataCompactProps) {
     ontologyId,
     useLegacy,
     onNavigateToOntology,
+    OnNavigateToSearchResult,
     ...rest
   } = props;
   const olsApi = new OlsEntityApi(api);
 
-  const { data } = useQuery<MetadataInfo>(
+  const { data, isError, error } = useQuery<MetadataInfo>(
     ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       let entity: Entity, ontoList: string[], definedBy: string[];
@@ -100,24 +101,36 @@ function MetadataCompact(props: MetadataCompactProps) {
     },
   );
 
+  const ontologyHref = targetLink
+    ? targetLink + "ontologies/" + result.ontology_name
+    : undefined;
+  // undefined for results carrying an unknown type - those link to the ontology instead
+  const pluralizedType =
+    result.type != "ontology" ? tryPluralizeType(result.type, true) : undefined;
+  const resultHref =
+    ontologyHref && pluralizedType
+      ? ontologyHref +
+        "/" +
+        pluralizedType +
+        "?iri=" +
+        encodeURIComponent(result.iri)
+      : ontologyHref;
+
   return (
     <div className={className}>
       <EuiCard
         textAlign="left"
-        {...rest}
-        href={
-          targetLink
-            ? result.type != "ontology"
-              ? targetLink +
-                "ontologies/" +
-                result.ontology_name +
-                "/" +
-                pluralizeType(result.type, true) +
-                "?iri=" +
-                encodeURIComponent(result.iri)
-              : targetLink + "ontologies/" + result.ontology_name
+        onClick={
+          typeof OnNavigateToSearchResult === "function"
+            ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+                event.preventDefault();
+                event.stopPropagation();
+                OnNavigateToSearchResult(result);
+              }
             : undefined
         }
+        {...rest}
+        href={resultHref}
         titleElement={"span"}
         title={
           <div>
@@ -136,6 +149,8 @@ function MetadataCompact(props: MetadataCompactProps) {
             ontologyId={result.ontology_name}
             className={`${className}-breadcrumb`}
             onNavigateToOntology={onNavigateToOntology}
+            useLegacy={useLegacy}
+            parameter={parameter}
           />
         )}
 
@@ -146,6 +161,12 @@ function MetadataCompact(props: MetadataCompactProps) {
         ) : undefined}
 
         <EuiSpacer size="s" />
+
+        {isError && (
+          <EuiText size="xs" color="subdued">
+            {getErrorMessageToDisplay(error, "ontology information")}
+          </EuiText>
+        )}
 
         {data && (
           <div style={{ maxWidth: 600 }}>
@@ -176,6 +197,8 @@ function MetadataCompact(props: MetadataCompactProps) {
           iri={result.iri}
           thingType={result.type}
           className={`${className}-description`}
+          useLegacy={useLegacy}
+          parameter={parameter}
         />
       </EuiCard>
     </div>

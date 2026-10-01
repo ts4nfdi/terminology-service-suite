@@ -14,24 +14,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # to enable use of OIDC for trusted publishing and npm provenance
+      contents: write
     strategy:
       matrix:
-        node-version: [ 22.x ]
+        node-version: [ 24.x ]
     outputs:
       srversion: ${{ steps.setoutput.outputs.srversion }}
       srrelease: ${{ steps.setoutput.outputs.srrelease }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false # Make sure semantic-release uses its own credentials
 
-      - name: Set up Node.js (GitHub registry) # for install and build
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://npm.pkg.github.com/'
-          scope: '@ts4nfdi'
+
+      - name: Configure GitHub Packages authentication
+        run: |
+          cat > "$HOME/.npmrc" <<'EOF'
+          @ts4nfdi:registry=https://npm.pkg.github.com/
+          //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+          EOF
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Install root dependencies
         run: npm ci
@@ -43,26 +49,47 @@ jobs:
         run: |
           npm ci
           npm run build
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@ts4nfdi'
+
+      - name: Configure npmjs registry for publishing
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm config delete @ts4nfdi:registry || true
+          npm config get registry
+          npm config get @ts4nfdi:registry || echo "@ts4nfdi:registry not set"
+
+      - name: Strip GitHub Packages scope before publishing to npm
+        run: |
+          sed -i '/@ts4nfdi:registry/d' "$HOME/.npmrc"
+          sed -i '\#//npm.pkg.github.com/:_authToken#d' "$HOME/.npmrc"
+          echo "--- Effective $HOME/.npmrc ---"
+          cat "$HOME/.npmrc"
+
+      - name: Debug OIDC context
+        working-directory: packages/react
+        run: env | grep -i ACTIONS_ID_TOKEN || echo "NOT SET — id-token permission isn't reaching this step"
 
       - name: Run semantic release for React package and capture output
         if: github.ref == 'refs/heads/main'
         id: semantic_release
         continue-on-error: true
         run: |
+          npm config get registry
+          npm config get @ts4nfdi:registry
+          npm --version
           output=$(npx semantic-release)
           sanitized_output=$(echo "$output" | tr '\n' ' ')
           echo "release_output=$sanitized_output" >> $GITHUB_OUTPUT
           echo "$output"
         env:
-          GITHUB_TOKEN: ${{ secrets.KM }} # for access to the repo
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_AUTO }}
         working-directory: packages/react
 
       - name: Parse semantic-release output
@@ -103,6 +130,7 @@ jobs:
           npm run build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
+          NODE_AUTH_TOKEN: ${{ secrets.KM }}
 
       - name: Change version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'
@@ -117,7 +145,7 @@ jobs:
           npm publish
         working-directory: packages/js
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTO }}
+          NPM_TOKEN: ${{ secrets.NPM_AUTO }}
 
       - name: Update package.json with new version
         if: github.ref == 'refs/heads/main' && env.SRRELEASE == 'release'

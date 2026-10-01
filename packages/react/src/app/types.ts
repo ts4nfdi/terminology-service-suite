@@ -3,6 +3,7 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
+import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
 import { Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
@@ -166,20 +167,7 @@ type TabList = {
   initialSelectedTab?: string;
 };
 
-export type AutocompleteWidgetSelectedOptions = {
-  /**
-   * The terms metadata that autocomplete selection change event returns to the client.
-   */
-  iri?: string;
-  description?: string;
-  label: string;
-  ontology_name?: string;
-  short_form?: string;
-  source?: string;
-  type?: string;
-};
-
-export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
+export type AutocompleteWidgetProps = Partial<EuiComboBoxProps<EntityValue>> &
   ParameterObj &
   ApiObj &
   CssClassNameObj &
@@ -188,22 +176,11 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
     /**
      * A method that is called once the set of selection changes
      */
-    selectionChangedEvent: (
-      selectedOptions: AutocompleteWidgetSelectedOptions[],
-    ) => void;
+    selectionChangedEvent: (selectedOptions: EntityValue[]) => void;
     /**
      * Pass pre-selected values. If `singleSelection == true`, only the first one is displayed.
      */
-    preselected?: {
-      label?: string;
-      iri?: string;
-      description?: string;
-      ontology_name?: string;
-      type?: string;
-      short_form?: string;
-      source?: string;
-      source_url?: string;
-    }[];
+    preselected?: EntityValue[];
     /**
      * Placeholder to show if no user input nor selection is performed.
      */
@@ -232,6 +209,10 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
      * Initial search value to show results on first render.
      */
     initialSearchQuery?: string;
+    /**
+     * Show a button to open the search request.
+     */
+    showApiRequestButton?: boolean;
   };
 
 export type DataContentWidgetProps = ApiObj & ParameterObj;
@@ -543,6 +524,13 @@ export type OnNavigateToOntology = {
     | string;
 };
 
+export type OnNavigateToSearchResult = {
+  /**
+   * This function is called when a search result title is clicked.
+   */
+  OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
+};
+
 export type OnNavigateToDisambiguate = {
   /**
    * This function is called every time a disambiguation badge is clicked
@@ -754,6 +742,7 @@ export type SearchResultsListWidgetProps = Partial<
   ParameterObj &
   UseLegacyObj &
   OnNavigateToOntology &
+  OnNavigateToSearchResult &
   CssClassNameObj & {
     /**
      * The terms to search. By default, the search is performed over term labels, synonyms, descriptions, identifiers and annotation properties.
@@ -795,6 +784,7 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> &
   CssClassNameObj &
   OptionalEntityTypeObj &
   OnNavigateToOntology & {
+    OnNavigateToSearchResult?: ((result: SearchResultProps) => void) | string;
     result: SearchResultProps;
     iri: string;
     ontologyId: string;
@@ -894,4 +884,83 @@ export type MappingDetailWidgetProps = {
   source: string;
   target: string;
   MappingDetailBackgroundColor?: string;
+};
+
+/**
+ * Information about the terminology backend that actually served an entity.
+ *
+ * The TS4NFDI API Gateway federates several terminology software stacks (OLS,
+ * OntoPortal, Skosmos) and reports the responsible one per entity in a
+ * `provider` block. Plain (non-gateway) OLS instances do not return it, in
+ * which case no provider can be resolved.
+ */
+export type EntityProvider = {
+  /**
+   * Name of the providing terminology service, e.g. `"tib"`, `"agrovoc"`.
+   * Taken from `provider_name`.
+   */
+  name?: string;
+  /**
+   * Software stack behind the provider, e.g. `"ols2"`, `"ontoportal"`,
+   * `"skosmos"`. Taken from `provider_type`.
+   */
+  type?: string;
+  /**
+   * Base URL of the provider's own API, e.g.
+   * `"https://api.terminology.tib.eu/api"`. Taken from `provider_api`.
+   */
+  api?: string;
+  /**
+   * Id of the ontology this provider was reported for. Relevant when an IRI
+   * resolves in several ontologies, since each may have a different provider.
+   */
+  ontologyId?: string;
+  /**
+   * The unmodified `provider` block from the API response, so that fields
+   * added by future gateway versions stay accessible.
+   */
+  raw: Record<string, any>;
+};
+
+export type EntityProviderWidgetProps = ForcedIriObj &
+  OptionalOntologyIdObj & {
+    /**
+     * The API instance for the API call. Defaults to the TS4NFDI API Gateway
+     * OLS endpoint, as the provider information is specific to the gateway.
+     */
+    api?: string;
+    /**
+     * Additional parameters in URL format, e.g.
+     * `collectionId=dc45621d-7e40-47ce-9616-4133f0b54edf`, passed on to the
+     * API. With a `collectionId`, the TS4NFDI API Gateway only returns
+     * providers of the terminologies configured in that collection.
+     */
+    parameter?: string;
+    /**
+     * If false, no request is made and the result stays empty. Useful to defer
+     * fetching until an IRI is known. Default is true.
+     */
+    enabled?: boolean;
+  };
+
+export type UseEntityProviderResult = {
+  /**
+   * Provider of the entity in its defining ontology, or of the first
+   * occurrence if none is marked as defining. Undefined while loading, on
+   * error, or if the entity could not be resolved.
+   */
+  provider?: EntityProvider;
+  /**
+   * Providers of all ontologies the IRI resolves in. Contains at most one
+   * element if `ontologyId` was provided, and is empty if the entity could not
+   * be resolved.
+   */
+  providers: EntityProvider[];
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  /**
+   * The error that made the request fail, if any.
+   */
+  error?: Error;
 };

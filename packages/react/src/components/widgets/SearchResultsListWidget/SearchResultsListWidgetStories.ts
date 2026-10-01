@@ -6,6 +6,7 @@ import {
   initialItemsPerPageArgType,
   itemsPerPageOptionsArgType,
   onNavigateToOntologyArgType,
+  OnNavigateToSearchResultArgType,
   parameterArgType,
   preselectedArgType,
   queryArgType,
@@ -23,11 +24,12 @@ export const SearchResultsListWidgetStoryArgTypes = {
   ...useLegacyArgType,
   ...parameterArgType,
   ...onNavigateToOntologyArgType,
+  ...OnNavigateToSearchResultArgType,
 };
 
 export const SearchResultsListWidgetStoryArgs = {
   api: "",
-  useLegacy: true,
+  useLegacy: false,
   query: "",
   initialItemsPerPage: 10,
   itemsPerPageOptions: [10, 25, 50, 100],
@@ -35,6 +37,7 @@ export const SearchResultsListWidgetStoryArgs = {
   targetLink: "",
   parameter: "",
   onNavigateToOntology: "Console message",
+  OnNavigateToSearchResult: "Console message",
 };
 
 export const DefaultArgs = {
@@ -45,13 +48,41 @@ export const DefaultArgs = {
   useLegacy: false,
 };
 
+export const ApiGatewayArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
+  useLegacy: false,
+};
+
+export const ApiGatewayWithFAIRAgroCollectionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "planet",
+  targetLink: "",
+  parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
+  useLegacy: false,
+};
+
+export const ApiGatewayWithNFDI4HealthCollectionArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  query: "diabetes",
+  targetLink: "",
+  parameter: "collectionId=b9503ef6-c201-4418-8e30-37a4f7ef0677",
+  useLegacy: false,
+};
+
+export const NavigateToSearchResultArgs = {
+  ...DefaultArgs,
+  OnNavigateToSearchResult: "Console message",
+};
+
 export const NFDI4HealthArgs = {
   api: globals.ZBMED_OLS4_API,
   query: "d*",
   targetLink: "",
   parameter: "fieldList=description,label,iri,ontology_name,type,short_form",
   preselected: [{ label: "diabetes" }],
-  useLegacy: true,
+  useLegacy: false,
 };
 
 export const TibNFDI4CHEMArgs = {

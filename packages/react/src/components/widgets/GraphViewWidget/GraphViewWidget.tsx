@@ -44,7 +44,7 @@ const SUBCLASS_OF_URIS = [
 ];
 const HAS_PART_EDGE_LABEL = "has part";
 
-function GraphViewWidget(props: GraphViewWidgetProps) {
+function GraphViewWidget(props: GraphViewWidgetProps): React.JSX.Element {
   const {
     api,
     iri,
@@ -889,7 +889,9 @@ function GraphViewWidget(props: GraphViewWidgetProps) {
     </div>
   );
 }
-function WrappedGraphViewWidget(props: GraphViewWidgetProps) {
+function WrappedGraphViewWidget(
+  props: GraphViewWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsSearchApi } from "../../../api/ols/OlsSearchApi";
 import { SearchBarWidgetProps } from "../../../app/types";
 
-function SearchBarWidget(props: SearchBarWidgetProps) {
+function SearchBarWidget(props: SearchBarWidgetProps): React.JSX.Element {
   const { api, query, selectionChangedEvent, ...rest } = props;
   const olsApi = new OlsSearchApi(api);
 
@@ -122,7 +122,9 @@ function SearchBarWidget(props: SearchBarWidgetProps) {
   );
 }
 
-function WrappedSearchBarWidget(props: SearchBarWidgetProps) {
+function WrappedSearchBarWidget(
+  props: SearchBarWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

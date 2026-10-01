@@ -2,8 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchResultsListDescription } from "../../../app/widgetDescriptions";
 import { SearchResultsListWidget } from "./SearchResultsListWidget";
 import {
+  ApiGatewayArgs,
+  ApiGatewayWithFAIRAgroCollectionArgs,
+  ApiGatewayWithNFDI4HealthCollectionArgs,
   commonSearchResultsListWidgetPlay,
   DefaultArgs,
+  NavigateToSearchResultArgs,
   NFDI4HealthArgs,
   OpenEnergyPlatformArgs,
   SearchResultsListWidgetStoryArgs,
@@ -32,6 +36,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: DefaultArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGateway: Story = {
+  args: ApiGatewayArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithFAIRAgroCollection: Story = {
+  args: ApiGatewayWithFAIRAgroCollectionArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const ApiGatewayWithNFDI4HealthCollection: Story = {
+  args: ApiGatewayWithNFDI4HealthCollectionArgs,
+  play: commonSearchResultsListWidgetPlay,
+};
+
+export const NavigateToSearchResult: Story = {
+  args: NavigateToSearchResultArgs,
   play: commonSearchResultsListWidgetPlay,
 };
 

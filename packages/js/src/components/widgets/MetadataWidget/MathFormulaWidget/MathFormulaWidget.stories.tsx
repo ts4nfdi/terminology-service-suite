@@ -5,9 +5,9 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src";
 import {
   commonMathFormulaWidgetPlay,
+  MathFormulaWidgetStoryArgs,
   MathFormulaWidgetStoryArgTypes,
   MathmoddbDefiningFormulaStoryArgs,
-  MathmoddbInDefiningFormulaStoryArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MathFormulaWidget/MathFormulaWidgetStories";
 import "./index";
 
@@ -45,7 +45,7 @@ window['ts4nfdiWidgets'].createMathFormula(
         `;
   },
   argTypes: MathFormulaWidgetStoryArgTypes,
-  args: MathmoddbInDefiningFormulaStoryArgs,
+  args: MathFormulaWidgetStoryArgs,
 } satisfies Meta<typeof MathFormulaWidget>;
 
 export default meta;
@@ -54,10 +54,5 @@ type Story = StoryObj<typeof meta>;
 
 export const MathmoddbDefiningFormula: Story = {
   args: MathmoddbDefiningFormulaStoryArgs,
-  play: commonMathFormulaWidgetPlay,
-};
-
-export const MathmoddbInDefiningFormula: Story = {
-  args: MathmoddbInDefiningFormulaStoryArgs,
   play: commonMathFormulaWidgetPlay,
 };

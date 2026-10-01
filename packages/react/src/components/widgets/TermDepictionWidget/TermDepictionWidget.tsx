@@ -13,7 +13,9 @@ import { TermDepictionWidgetProps } from "../../../app/types";
 import { getErrorMessageToDisplay } from "../../../app/util";
 import { Thing } from "../../../model/interfaces";
 
-function TermDepictionWidget(props: TermDepictionWidgetProps) {
+function TermDepictionWidget(
+  props: TermDepictionWidgetProps,
+): React.JSX.Element {
   const { api, iri, ontologyId, useLegacy } = props;
   const olsApi = new OlsThingApi(api);
 
@@ -76,7 +78,9 @@ function TermDepictionWidget(props: TermDepictionWidgetProps) {
   );
 }
 
-function WrappedTermDepictionWidget(props: TermDepictionWidgetProps) {
+function WrappedTermDepictionWidget(
+  props: TermDepictionWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

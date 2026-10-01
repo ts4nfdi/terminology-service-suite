@@ -39,7 +39,7 @@ import { HierarchyBuilder } from "../../../../../model/interfaces/HierarchyBuild
 import { isIndividualTypeName } from "../../../../../model/ModelTypeCheck";
 import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
-function HierarchyWidget(props: HierarchyWidgetProps) {
+function HierarchyWidget(props: HierarchyWidgetProps): React.JSX.Element {
   const {
     apiUrl,
     backendType,
@@ -511,7 +511,9 @@ function HierarchyWidget(props: HierarchyWidgetProps) {
   );
 }
 
-function WrappedHierarchyWidget(props: HierarchyWidgetProps) {
+function WrappedHierarchyWidget(
+  props: HierarchyWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

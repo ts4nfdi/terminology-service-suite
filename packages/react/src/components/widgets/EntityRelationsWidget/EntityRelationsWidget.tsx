@@ -476,8 +476,9 @@ function getClassInstancesSectionJSX(
   }
 }
 
-function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+function EntityRelationsWidget(
+  props: EntityRelationsWidgetProps,
+): React.JSX.Element {
   const {
     api,
     iri,
@@ -486,13 +487,16 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
     showBadges,
     entityType,
     parameter,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
     ...rest
   } = props;
 
   const onNavigates = {
-    onNavigateToEntity: props.onNavigateToEntity,
-    onNavigateToOntology: props.onNavigateToOntology,
-    onNavigateToDisambiguate: props.onNavigateToDisambiguate,
+    onNavigateToEntity,
+    onNavigateToOntology,
+    onNavigateToDisambiguate,
   };
 
   const olsApi = new OlsEntityApi(api);
@@ -619,7 +623,9 @@ function EntityRelationsWidget(props: EntityRelationsWidgetProps) {
   );
 }
 
-function WrappedEntityRelationsWidget(props: EntityRelationsWidgetProps) {
+function WrappedEntityRelationsWidget(
+  props: EntityRelationsWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light">

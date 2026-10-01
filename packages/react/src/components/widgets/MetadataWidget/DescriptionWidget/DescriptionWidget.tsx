@@ -9,7 +9,7 @@ import { DescriptionPresentation } from "./DescriptionPresentation";
 
 const NO_DESCRIPTION = "No description available.";
 
-function DescriptionWidget(props: DescriptionWidgetProps) {
+function DescriptionWidget(props: DescriptionWidgetProps): React.JSX.Element {
   const {
     api,
     ontologyId,
@@ -48,7 +48,9 @@ function DescriptionWidget(props: DescriptionWidgetProps) {
   );
 }
 
-function WrappedDescriptionWidget(props: DescriptionWidgetProps) {
+function WrappedDescriptionWidget(
+  props: DescriptionWidgetProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>

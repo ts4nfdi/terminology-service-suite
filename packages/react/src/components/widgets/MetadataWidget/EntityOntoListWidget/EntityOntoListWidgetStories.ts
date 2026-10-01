@@ -35,12 +35,14 @@ export const v2ApiNCBITaxonArgs = {
   api: globals.ZBMED_OLS4_API,
   entityType: "term",
   ontologyId: "ncbitaxon",
+  useLegacy: false,
 } as const;
 
 export const v2ApiFOODONArgs = {
   iri: "http://purl.obolibrary.org/obo/NCBITaxon_10090",
   api: globals.ZBMED_OLS4_API,
   ontologyId: "foodon",
+  useLegacy: false,
 } as const;
 
 export const legacyApiArgs = {
@@ -55,6 +57,7 @@ export const exceedsMaxDisplayArgs = {
   iri: "http://purl.obolibrary.org/obo/HP_0000819",
   api: globals.EBI_API_ENDPOINT,
   ontologyId: "hp",
+  useLegacy: true,
 } as const;
 
 export const commonEntityOntoListWidgetPlay = async ({

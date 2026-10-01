@@ -8,7 +8,7 @@ import { isOntology } from "../../../../model/ModelTypeCheck";
 import { Thing } from "../../../../model/interfaces";
 import { TitlePresentation } from "./TitlePresentation";
 
-function TitleWidget(props: TitleWidgetProps) {
+function TitleWidget(props: TitleWidgetProps): React.JSX.Element {
   const {
     iri,
     ontologyId,
@@ -60,7 +60,7 @@ function TitleWidget(props: TitleWidgetProps) {
   );
 }
 
-function WrappedTitleWidget(props: TitleWidgetProps) {
+function WrappedTitleWidget(props: TitleWidgetProps): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
