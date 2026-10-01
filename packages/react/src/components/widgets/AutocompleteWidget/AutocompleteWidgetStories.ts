@@ -16,7 +16,6 @@ import {
   showApiSourceArgType,
   singleSelectionArgType,
   singleSuggestionRowArgType,
-  ts4nfdiGatewayArgType,
 } from "../../../stories/storyArgs";
 
 export const AutocompleteWidgetStoryArgTypes = {
@@ -28,7 +27,6 @@ export const AutocompleteWidgetStoryArgTypes = {
   ...hasShortSelectedLabelArgType,
   ...allowCustomTermsArgType,
   ...singleSelectionArgType,
-  ...ts4nfdiGatewayArgType,
   ...singleSuggestionRowArgType,
   ...showApiSourceArgType,
   ...classNameArgType,
@@ -37,7 +35,6 @@ export const AutocompleteWidgetStoryArgTypes = {
 
 export const AutocompleteWidgetStoryArgsReact = {
   api: globals.ZBMED_OLS4_API,
-  ts4nfdiGateway: false,
   singleSelection: true,
   allowCustomTerms: false,
   selectionChangedEvent: action("selectionChangedEvent"),
@@ -56,7 +53,6 @@ export const AutocompleteWidgetStoryArgsReact = {
 
 export const AutocompleteWidgetStoryArgsHTML = {
   api: globals.ZBMED_OLS4_API,
-  ts4nfdiGateway: false,
   singleSelection: true,
   allowCustomTerms: false,
   selectionChangedEvent: () => {
@@ -75,39 +71,6 @@ export const AutocompleteWidgetStoryArgsHTML = {
 };
 
 export const WithDefaultsArgs = {};
-
-export const UseAPIGatewayWithOLSArgs: AutocompleteWidgetProps = {
-  api: globals.GATEWAY_API_ENDPOINT,
-  ts4nfdiGateway: true,
-  parameter:
-    "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-  selectionChangedEvent: () => {},
-};
-
-export const UseAPIGatewayWithOntoPortalArgs: AutocompleteWidgetProps = {
-  ...AutocompleteWidgetStoryArgsReact,
-  api: globals.GATEWAY_API_ENDPOINT,
-  ts4nfdiGateway: true,
-  parameter:
-    "database=ontoportal&fieldList=description,label,iri,ontology_name,type,short_form",
-};
-
-export const UseAPIGatewayWithSkosmosArgs: AutocompleteWidgetProps = {
-  ...AutocompleteWidgetStoryArgsReact,
-  api: globals.GATEWAY_API_ENDPOINT,
-  ts4nfdiGateway: true,
-  parameter:
-    "database=skosmos&fieldList=description,label,iri,ontology_name,type,short_form",
-};
-
-export const HideApiSourceApiGatewayArgs: AutocompleteWidgetProps = {
-  ...AutocompleteWidgetStoryArgsReact,
-  api: globals.GATEWAY_API_ENDPOINT,
-  ts4nfdiGateway: true,
-  showApiSource: false,
-  parameter:
-    "database=ols&fieldList=description,label,iri,ontology_name,type,short_form",
-};
 
 export const WithDefaultsCompactArgs: AutocompleteWidgetProps = {
   ...AutocompleteWidgetStoryArgsReact,

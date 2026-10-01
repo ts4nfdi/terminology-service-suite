@@ -145,3 +145,4 @@ fabric.properties
 
 .vscode/
 dist/
+.codex/

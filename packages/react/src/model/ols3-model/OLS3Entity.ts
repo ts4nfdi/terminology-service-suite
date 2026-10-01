@@ -120,7 +120,7 @@ export abstract class OLS3Entity extends OLS3Thing implements Entity {
     /* ols4 excludes "has preferred root term",
        properties without an IRI and anything in rdf, rdfs and owl namespaces,
        but this is not possible here as the labels are keys here, not the IRI's */
-    return asArray<string>(Object.keys(this.properties["annotation"]));
+    return asArray<string>(Object.keys(this.properties?.annotation ?? {}));
   }
 
   getAnnotationTitleById(id: string): string {

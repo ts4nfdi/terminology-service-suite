@@ -89,7 +89,7 @@ export default function RenderedReified({
 
       linksToSplice.sort((a, b) => a.start - b.start);
 
-      removeOverlapping: for (let n = 0; n < linksToSplice.length; ) {
+      removeOverlapping: for (let n = 0; n < linksToSplice.length;) {
         for (let n2 = n + 1; n2 < linksToSplice.length; ++n2) {
           const spliceA = linksToSplice[n];
           const spliceB = linksToSplice[n2];

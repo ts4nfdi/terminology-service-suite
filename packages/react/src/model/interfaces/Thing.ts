@@ -10,11 +10,7 @@ export interface Thing {
   getIri(): string;
   getType(): ThingTypeName;
   getTypePlural():
-    | "ontologies"
-    | "classes"
-    | "terms"
-    | "properties"
-    | "individuals";
+    "ontologies" | "classes" | "terms" | "properties" | "individuals";
   getRdfTypes(): string[];
   getName(): string;
   getNames(): string[];

@@ -9,14 +9,10 @@ import {
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
   AutocompleteWidgetStoryArgTypes,
-  HideApiSourceApiGatewayArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
   TibDataPlantArgs,
   TibNFDI4CHEMArgs,
-  UseAPIGatewayWithOLSArgs,
-  UseAPIGatewayWithOntoPortalArgs,
-  UseAPIGatewayWithSkosmosArgs,
   WithCustomValueArgs,
   WithDefaultsArgs,
   WithDefaultsCompactArgs,
@@ -70,7 +66,6 @@ const meta = {
         hasShortSelectedLabel:${args.hasShortSelectedLabel},
         allowCustomTerms:${args.allowCustomTerms},
         singleSelection:${args.singleSelection},
-        ts4nfdiGateway:${args.ts4nfdiGateway},
         singleSuggestionRow:${args.singleSuggestionRow},
         showApiSource:${args.showApiSource},
         className: "${args.className}",
@@ -93,22 +88,6 @@ type Story = StoryObj<typeof meta>;
 
 export const WithDefaults: Story = {
   args: WithDefaultsArgs,
-};
-
-export const UseAPIGatewayWithOLS: Story = {
-  args: UseAPIGatewayWithOLSArgs,
-};
-
-export const UseAPIGatewayWithOntoPortal: Story = {
-  args: UseAPIGatewayWithOntoPortalArgs,
-};
-
-export const UseAPIGatewayWithSkosmos: Story = {
-  args: UseAPIGatewayWithSkosmosArgs,
-};
-
-export const HideApiSourceApiGateway: Story = {
-  args: HideApiSourceApiGatewayArgs,
 };
 
 export const WithDefaultsCompact: Story = {

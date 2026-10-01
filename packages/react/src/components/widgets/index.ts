@@ -5,7 +5,7 @@ export * from "./EntityListWidget";
 export * from "./EntityRelationsWidget";
 export * from "./GraphViewWidget";
 export * from "./JsonApiWidget";
-export * from "./MappingListDetailWidget";
+export * from "./MappingListWidget";
 export * from "./MetadataWidget";
 export * from "./OntologyInfoWidget";
 export * from "./ResourcesWidget";

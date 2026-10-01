@@ -13,6 +13,7 @@ import {
   createEntityOntoList,
   createHierarchy,
   createIri,
+  createMathFormula,
   createMetadata,
   createTab,
   createTitle,
@@ -46,6 +47,7 @@ import { createDepiction } from "./TermDepictionWidget";
   createEntityDefinedBy,
   createEntityOntoList,
   createIri,
+  createMathFormula,
   createTitle,
 };
 
@@ -65,6 +67,7 @@ export {
   createHierarchy,
   createIri,
   createJsonApi,
+  createMathFormula,
   createMetadata,
   createOntologyInfo,
   createResources,

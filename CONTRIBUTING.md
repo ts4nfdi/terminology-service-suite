@@ -16,7 +16,7 @@ Thank you for your interest in contributing! Your contributions help improve the
 
 Here are some quick links to essential project resources:
 
-- **Documentation:** [Latest](https://ts4nfdi.github.io/terminology-service-suite/comp/latest/) | [All Versions](https://ts4nfdi.github.io/terminology-service-suite/)
+- **Documentation:** [Latest](https://terminology.services.base4nfdi.de/tss/comp/latest/) | [All Versions](https://terminology.services.base4nfdi.de/tss/)
 - **Development instructions:** [Wiki](https://github.com/ts4nfdi/terminology-service-suite/wiki/Development-instructions)
 
 ## Reporting Bugs

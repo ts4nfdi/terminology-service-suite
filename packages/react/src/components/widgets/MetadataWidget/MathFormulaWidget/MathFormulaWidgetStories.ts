@@ -1,0 +1,81 @@
+import type { ArgTypes } from "@storybook/react";
+import { expect, waitFor, within } from "storybook/test";
+import { TIB_API_ENDPOINT } from "../../../../app/globals";
+import {
+  apiArgType,
+  mathFormulaIriArgType,
+  mathFormulaOntologyIdArgType,
+  mathMLArgType,
+  mathPorpertyArgType,
+} from "../../../../stories/storyArgs";
+
+const mathmodApi = TIB_API_ENDPOINT;
+const mathmodOntologyId = "mathmoddb";
+const mathmodEntityIri = "https://portal.mardi4nfdi.de/entity/Q6674137";
+
+export const SimpleMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>1</mn></math>';
+
+export const TextMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>formula example</mtext></math>';
+
+export const FractionMathMLExample =
+  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>c</mi></mfrac></math>';
+
+export const MathFormulaWidgetStoryArgTypes: ArgTypes = {
+  ...apiArgType,
+  ...mathFormulaIriArgType,
+  ...mathFormulaOntologyIdArgType,
+  ...mathPorpertyArgType,
+  ...mathMLArgType,
+};
+
+export const MathMLInputStoryArgs = {
+  mathML: SimpleMathMLExample,
+};
+
+export const MathMLTextInputStoryArgs = {
+  mathML: TextMathMLExample,
+};
+
+export const MathMLFractionInputStoryArgs = {
+  mathML: FractionMathMLExample,
+};
+
+export const MathFormulaWidgetStoryArgs = {
+  api: "",
+  ontologyId: "",
+  iri: "",
+} as const;
+
+export const MathmoddbInDefiningFormulaStoryArgs = {
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
+  mathProperty: "https://portal.mardi4nfdi.de/entity/P983",
+};
+
+export const MathmoddbDefiningFormulaStoryArgs = {
+  api: mathmodApi,
+  ontologyId: mathmodOntologyId,
+  iri: mathmodEntityIri,
+  mathProperty: "https://portal.mardi4nfdi.de/entity/P989",
+};
+
+export const commonMathFormulaWidgetPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
+  const canvas = within(canvasElement);
+
+  await waitFor(
+    async () => {
+      const content = canvas.getByTestId("math-formula");
+      await expect(content).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+    },
+  );
+};

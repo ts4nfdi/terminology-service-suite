@@ -3,8 +3,6 @@ import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { EuiLinkColor } from "@elastic/eui/src/components/link/link";
 import { EuiTextProps } from "@elastic/eui/src/components/text/text";
-import { OlsEntityApi } from "../api/ols/OlsEntityApi";
-import { OlsOntologyApi } from "../api/ols/OlsOntologyApi";
 import { Thing } from "../model/interfaces";
 import {
   BuildHierarchyProps,
@@ -227,11 +225,7 @@ export type AutocompleteWidgetProps = EuiComboBoxProps<string> &
      */
     singleSuggestionRow?: boolean;
     /**
-     * Use the TS4NFDI Gateway API
-     */
-    ts4nfdiGateway?: boolean;
-    /**
-     * Whether to show the api source in the result list or not. Default is true. Only when the API gateway is selected.
+     * Whether to show the api source in the result list or not. Default is true. Only when the API Gateway is selected.
      */
     showApiSource?: boolean;
     /**
@@ -353,6 +347,21 @@ export type DescriptionPresentationProps = DescTextObj &
     description: string;
     isLoading?: boolean;
     error?: string | unknown;
+  };
+
+export type MathFormulaWidgetProps = OptionalIriObj &
+  ApiObj &
+  OptionalOntologyIdObj & {
+    /**
+     * The math property URI to render for the target term.
+     * Required when mathML is not provided.
+     */
+    mathProperty?: string;
+    /**
+     * Inline MathML string to render directly.
+     * When provided, iri, ontologyId, and mathProperty are not required.
+     */
+    mathML?: string;
   };
 
 export type IriWidgetProps = ForcedIriObj &
@@ -546,8 +555,7 @@ export type OnNavigateToDisambiguate = {
    * @param entity.parents obtains the list of parent entities of the clicked entity (only OLS, Skosmos)
    */
   onNavigateToDisambiguate?:
-    | ((entityType: string, entity?: EntityData) => void)
-    | string;
+    ((entityType: string, entity?: EntityData) => void) | string;
 };
 
 export type OnNavigates = OnNavigateToEntity &
@@ -868,13 +876,22 @@ export type ComparisonInputProps = {
 };
 
 export type EntityListWidgetProps = {
-  api: { entityApi: OlsEntityApi; ontologyApi: OlsOntologyApi };
+  api: string;
   ontologyId: string;
   entityType: EntityTypeName;
   parameter?: string;
 };
 
-export type MappingListDetailWidgetProps = {
+export type MappingListWidgetProps = {
+  api: string;
+  iri: string;
+  rowColor?: string;
+  MappingDetailBackgroundColor?: string;
+};
+
+export type MappingDetailWidgetProps = {
   api: string;
   source: string;
+  target: string;
+  MappingDetailBackgroundColor?: string;
 };

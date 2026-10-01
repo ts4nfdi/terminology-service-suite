@@ -38,20 +38,38 @@ export default function EntityLink({
   showBadges?: boolean;
   onNavigates: OnNavigates;
 }): ReactElement {
+  const iriString =
+    typeof iri === "string"
+      ? iri
+      : typeof iri === "object" &&
+          iri !== null &&
+          "value" in iri &&
+          typeof (iri as any).value === "string"
+        ? (iri as any).value
+        : "";
   const label =
-    linkedEntities.getLabelForIri(iri) || iri.split("/").pop() || iri;
-  const linkedEntity = linkedEntities.get(iri);
+    linkedEntities.getLabelForIri(iriString) ||
+    iriString.split("/").pop() ||
+    iriString;
+  const linkedEntity = linkedEntities.get(iriString);
   const localOntology = parentEntity.getOntologyId();
 
+  if (!iriString) {
+    return <span>Invalid value</span>;
+  }
+
   // reference to self: just display label because we are already on that page
-  if (parentEntity.getType() !== "ontology" && iri === parentEntity?.getIri()) {
+  if (
+    parentEntity.getType() !== "ontology" &&
+    iriString === parentEntity?.getIri()
+  ) {
     return <span className="highlight">{parentEntity.getLabel()}</span>;
   }
 
   if (!linkedEntity) {
-    if (iri.startsWith("http")) {
+    if (iriString.startsWith("http")) {
       return (
-        <a className="clickable" href={iri}>
+        <a className="clickable" href={iriString}>
           {label}
         </a>
       );
@@ -95,7 +113,7 @@ export default function EntityLink({
             <>
               &nbsp;
               <ExpandableOntologyBadgeList
-                iri={iri}
+                iri={iriString}
                 label={label}
                 ontolist={otherDefinedBy}
                 onNavigateToOntology={onNavigates.onNavigateToOntology}
@@ -128,7 +146,7 @@ export default function EntityLink({
             <>
               &nbsp;
               <ExpandableOntologyBadgeList
-                iri={iri}
+                iri={iriString}
                 label={label}
                 ontolist={otherDefinedBy}
                 onNavigateToOntology={onNavigates.onNavigateToOntology}
@@ -163,7 +181,7 @@ export default function EntityLink({
             <>
               &nbsp;
               <ExpandableOntologyBadgeList
-                iri={iri}
+                iri={iriString}
                 label={label}
                 ontolist={otherDefinedBy}
                 onNavigateToOntology={onNavigates.onNavigateToOntology}
@@ -179,7 +197,7 @@ export default function EntityLink({
       // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
       return (
         <>
-          <a className="clickable" href={iri}>
+          <a className="clickable" href={iriString}>
             {label}
           </a>
           {showBadges && (
@@ -233,7 +251,7 @@ export default function EntityLink({
         // show <label><ICON> where <label> links to the terms' iri and <ICON> links to disambiguation page
         return (
           <>
-            <a className="clickable" href={iri}>
+            <a className="clickable" href={iriString}>
               {label}
             </a>
             {showBadges && (
@@ -267,7 +285,7 @@ export default function EntityLink({
         // show raw iri
         return (
           <>
-            <a className="clickable" href={linkedEntity["url"] || iri}>
+            <a className="clickable" href={linkedEntity["url"] || iriString}>
               {label}
             </a>
           </>

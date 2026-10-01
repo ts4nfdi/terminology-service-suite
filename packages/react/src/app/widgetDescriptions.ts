@@ -216,6 +216,19 @@ Allows for a custom URL prefix (\`urlPrefix\`) to be applied to the IRI before d
 Supports flexible color customization for the IRI link text, using either hex, RGB, or predefined color options.
 `.trim();
 
+export const MathFormulaDescription = `
+The MathFormulaWidget renders MathML formulas for ontology entities.
+It supports two input modes: fetching MathML from an entity property, or rendering MathML that is passed directly through the \`mathML\` prop.
+
+#### Usage:
+
+- Use \`mathProperty\` together with \`iri\` and \`ontologyId\` when the MathML is stored as an annotation/property value on the target entity.
+- Use \`mathML\` when the MathML content is already available and should be rendered directly. In this mode, \`iri\`, \`ontologyId\`, and \`mathProperty\` are not required.
+- The \`mathML\` value must be valid MathML markup, not an entity IRI or plain text.
+- Plain text can be rendered only when it is wrapped in valid MathML, for example inside an \`mtext\` element.
+
+`.trim();
+
 export const MetadataDescription = `
 The MetadataWidget provides detailed metadata for a given entity (such as a class, property, or individual) within an ontology. 
 The widget displays the entity's title, breadcrumb, IRI, description, and lists of ontologies where the entity appears 
@@ -484,28 +497,76 @@ The widget currently does not work correctly for **properties**. This is due to 
 `.trim();
 
 export const MappingListDetailDescription = `
-The MappingListDetailWidget is a table-based visualization component designed to display mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. The widget fetches mapping relations dynamically using a provided API endpoint and a source entity IRI, allowing users to inspect how a specific concept is connected to related target concepts across terminologies.
+The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and an entity IRI, it fetches the mappings of that concept and shows how it is connected to other concepts across terminologies.
 
 #### Key Features:
 
 - **Dynamic mapping retrieval**:
-Fetches mappings directly from the ColiConc mapping endpoint using a provided source entity IRI and displays all related target mappings in real time.
+Fetches the mappings of the given IRI from the ColiConc mapping endpoint and displays them in real time.
 
-- **Human-readable target display**:
-Uses the OLS Gateway API to resolve target entity labels when available, while keeping the original ColiConc target notation as a fallback.
+- **View direction**:
+The icon next to the search bar lets the user choose which mappings to show: those where the IRI is the **source**, those where it is the **target**, or **both directions**. The menu shows the entity's readable label in bold, or the last part of its IRI when no label is found.
+
+- **No duplicate mappings**:
+A mapping that appears more than once, such as a self-mapping (a → a) in both directions, is shown only once.
+
+- **Human-readable labels**:
+Resolves both the source and the target entities to readable labels through the OLS Gateway API, and falls back to their original ColiConc notation when no label is found.
 
 - **Structured mapping table**:
-Displays mapping results in a clean tabular layout with key metadata such as target, creator, mapping type, and creation date.
+Lists each mapping with its source, type, target, creator and creation date. The table can be sorted by any of these five columns, and long result sets are paginated.
+
+- **Custom row color**:
+The optional \`rowColor\` parameter sets the background of every other row. It defaults to a light pink.
+
+- **Custom detail card color**:
+The optional \`MappingDetailBackgroundColor\` parameter sets the background of the detail card opened underneath an expanded row. It defaults to a light pink.
 
 - **ColiConc-based search**:
-Provides a search bar for filtering mappings by the original ColiConc target notation and creator. The search is applied only to data returned by the ColiConc mapping endpoint, not to labels resolved later through the OLS Gateway API.
+Filters the table by target notation and creator. The search runs on the data returned by ColiConc, not on the labels resolved later through the OLS Gateway API.
 
 - **Mapping type filtering**:
-Allows users to filter mappings by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, \`broadMatch\`, \`narrowMatch\`, \`relatedMatch\`, and \`mappingRelation\`.
+Filters the table by SKOS mapping types such as \`exactMatch\`, \`closeMatch\`, \`broadMatch\`, \`narrowMatch\`, \`relatedMatch\` and \`mappingRelation\`.
 
 - **Mapping type visualization**:
-Displays semantic mapping relations with compact visual icons, making different SKOS mapping types easier to identify in the table.
+Marks every mapping type with a compact icon, making the different SKOS relations easier to tell apart at a glance.
+
+- **Expandable mapping details**:
+A toggle in the Mapping details column opens a detail card under the row, holding the schemes, dates, identifier and concordance of that mapping. The row stays highlighted while its card is open.
+
+- **Mapping downloads**:
+The detail card offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI.
+
+- **Target entity metadata**:
+An information icon next to a target opens that entity's metadata in a popup, loaded from the OLS Gateway API by its IRI. It is shown only for targets the gateway could resolve, and closes on its close button, a click outside it, or the Escape key.
+
+- **Built-in help**:
+A question mark button in the header explains what source, type and target mean, together with a small diagram of the relation between them.
 
 - **Cross-terminology exploration**:
-Enables users to inspect how a single source concept is connected to concepts from other terminologies or classification systems.
+Shows how a single source concept is connected to concepts in other terminologies or classification systems.
+`.trim();
+
+export const MappingDetailDescription = `
+The MappingDetailWidget shows one mapping of the ColiConc Concordance API in a compact card view. It takes an API endpoint, the IRI of the source entity and the IRI of the target entity, and fetches that mapping itself.
+
+#### Key Features:
+
+- **One mapping, picked by source and target**:
+A source is usually mapped to several targets, so the source alone does not identify a mapping. The widget asks ColiConc for every mapping of the source and shows the one that points at the given target. When the source is not mapped to that target, the card says so instead of showing an empty mapping.
+
+- **Mapping metadata at a glance**:
+Shows the source and the target scheme, the date the mapping was last modified, its identifier, and the concordance it is part of. Each field falls back to a dash when the mapping does not carry it, the way mappings outside a concordance have no "Part of" value.
+
+- **Mapping downloads**:
+Offers the mapping as JSON, CSV or TSV. The JSON links to the ColiConc server, while the CSV and TSV are written by the widget, because the server's own CSV leaves out the dates, the identifier, the concordance and the mapping URI. Those two files hold the whole mapping, including the values the card itself does not show: the mapping type, both entities with their IRIs, the creator and the creation date.
+
+- **Custom card color**:
+The optional \`MappingDetailBackgroundColor\` parameter sets the background of the card, as any CSS color value. It defaults to a light pink.
+
+- **Mapping feedback**:
+Links to the ColiConc address a questionable mapping can be reported to, right where that mapping is shown.
+
+- **Shared with the mapping list**:
+MappingListWidget shows the same card underneath an expanded row. It renders the card directly out of the row the user expanded, so the table is not fetched a second time, and the card there carries a close button that collapses the row again.
 `.trim();

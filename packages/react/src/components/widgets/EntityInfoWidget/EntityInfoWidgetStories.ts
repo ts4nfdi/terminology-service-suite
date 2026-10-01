@@ -1,5 +1,6 @@
 import { expect, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
+import { TIB_API_ENDPOINT } from "../../../app/globals";
 import { EntityTypeName } from "../../../model/ModelTypeCheck";
 import {
   apiArgType,
@@ -133,6 +134,14 @@ export const SkosmosImportArgs = {
   api: globals.ZBMED_OLS4_API,
   useLegacy: true,
   iri: "http://id.loc.gov/vocabulary/iso639-1/zh",
+};
+
+export const MathFormularRepresentationArgs = {
+  ...EntityInfoWidgetStoryArgs,
+  api: TIB_API_ENDPOINT,
+  useLegacy: false,
+  iri: "https://portal.mardi4nfdi.de/entity/Q6674140",
+  ontologyId: "mathmoddb",
 };
 
 export const commonEntityInfoWidgetPlay = async ({

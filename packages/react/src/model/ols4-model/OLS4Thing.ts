@@ -39,11 +39,7 @@ export abstract class OLS4Thing implements Thing {
   }
 
   getTypePlural():
-    | "ontologies"
-    | "classes"
-    | "properties"
-    | "individuals"
-    | "terms" {
+    "ontologies" | "classes" | "properties" | "individuals" | "terms" {
     const type = this.getType();
 
     switch (type) {
