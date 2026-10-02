@@ -1,3 +1,4 @@
-import { DescriptionPresentationProps } from '../../../../app/types';
+import { DescriptionPresentationProps } from '../../../../app/';
 declare function DescriptionPresentation(props: DescriptionPresentationProps): import("react").JSX.Element;
-export { DescriptionPresentation };
+declare function WrappedDescriptionPresentation(props: DescriptionPresentationProps): import("react").JSX.Element;
+export { DescriptionPresentation, WrappedDescriptionPresentation };

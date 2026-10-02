@@ -1,3 +1,4 @@
 import { TabPresentationProps } from '../../../../app';
 declare function TabPresentation(props: TabPresentationProps): import("react").JSX.Element;
-export { TabPresentation };
+declare function WrappedTabPresentation(props: TabPresentationProps): import("react").JSX.Element;
+export { TabPresentation, WrappedTabPresentation };

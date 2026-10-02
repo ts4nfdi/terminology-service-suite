@@ -1,3 +1,4 @@
-import { AlternativeNameTabWidgetPresentationProps } from '../../../../../app/types';
+import { AlternativeNameTabWidgetPresentationProps } from '../../../../../app/';
 declare function AlternativeNameTabPresentation(props: AlternativeNameTabWidgetPresentationProps): import("react").JSX.Element;
-export { AlternativeNameTabPresentation };
+declare function WrappedAlternativeNameTabPresentation(props: AlternativeNameTabWidgetPresentationProps): import("react").JSX.Element;
+export { AlternativeNameTabPresentation, WrappedAlternativeNameTabPresentation, };
