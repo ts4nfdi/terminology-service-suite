@@ -175,6 +175,8 @@ export declare const actionsArgType: ArgTypes;
 export declare const queryArgType: ArgTypes;
 export declare const initialItemsPerPageArgType: ArgTypes;
 export declare const itemsPerPageOptionsArgType: ArgTypes;
+export declare const rowColorArgType: ArgTypes;
+export declare const MappingDetailBackgroundColorArgType: ArgTypes;
 export declare const colorFirstArgType: ArgTypes;
 export declare const colorSecondArgType: ArgTypes;
 export declare const colorArgType: ArgTypes;

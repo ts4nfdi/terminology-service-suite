@@ -31,6 +31,12 @@ export declare function getFrontEndApi(api: string): string;
  */
 export declare function getEntityInOntologySuffix(ontologyId: string, entityTypeArray: string[] | string, iri?: string, useLegacy?: boolean): string;
 export declare function pluralizeType(typeArray: string[] | string, useLegacy?: boolean): "terms" | "classes" | "properties" | "individuals" | "ontologies";
+/**
+ * Like {@link pluralizeType}, but returns undefined instead of throwing if no thingType
+ * is contained in {@link typeArray}. Use in render paths, where a throw would unmount the
+ * whole React tree.
+ */
+export declare function tryPluralizeType(typeArray: string[] | string, useLegacy?: boolean): "terms" | "classes" | "properties" | "individuals" | "ontologies" | undefined;
 export declare function singularizeType(typeArray: string[] | string, useLegacy?: boolean): ThingTypeName;
 /**
  * Returns a random string used mainly for component keys.
@@ -42,6 +48,11 @@ export declare function isEuiLinkColor(str: string): str is EuiLinkColor;
 export declare function withAlpha(color: string, alpha: number): string;
 export declare function isEuiButtonColor(str: string): str is EuiLinkColor;
 export declare function getErrorMessageToDisplay(error: any, messagePlaceholder?: string): string;
-export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology";
+export declare function inferTypeFromTypeArray(types: string[]): "class" | "term" | "skos:Concept" | "http://www.w3.org/2004/02/skos/core#Concept" | "individual" | "property" | "annotationProperty" | "dataProperty" | "objectProperty" | "ontology";
+/**
+ * Like {@link inferTypeFromTypeArray}, but returns undefined instead of throwing if the type
+ * cannot be inferred. Use in render paths, where a throw would unmount the whole React tree.
+ */
+export declare function tryInferTypeFromTypeArray(types: string[]): ThingTypeName | undefined;
 export declare function manuallyEmbedOnNavigate(code: string, storyContext: StoryContext): string;
 export declare function dictFromParamString(parameter?: string): any;

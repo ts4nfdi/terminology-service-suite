@@ -18,7 +18,19 @@ declare const meta: {
         };
     };
     argTypes: {
-        api: any;
+        api: {
+            api: string;
+            required: boolean;
+            description: string;
+            table: {
+                defaultValue: {
+                    summary: string;
+                };
+                type: {
+                    summary: string;
+                };
+            };
+        };
         enabled: {
             required: boolean;
             description: string;
@@ -29,6 +41,15 @@ declare const meta: {
                 defaultValue: {
                     summary: string;
                 };
+                type: {
+                    summary: string;
+                };
+            };
+        };
+        parameter: {
+            required: boolean;
+            description: string;
+            table: {
                 type: {
                     summary: string;
                 };
@@ -52,6 +73,7 @@ declare const meta: {
         readonly iri: "";
         readonly ontologyId: "";
         readonly enabled: true;
+        readonly parameter: "";
     };
 };
 export default meta;

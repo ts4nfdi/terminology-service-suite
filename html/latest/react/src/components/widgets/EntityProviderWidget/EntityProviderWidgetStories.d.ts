@@ -1,5 +1,17 @@
 export declare const EntityProviderWidgetStoryArgTypes: {
-    api: any;
+    api: {
+        api: string;
+        required: boolean;
+        description: string;
+        table: {
+            defaultValue: {
+                summary: string;
+            };
+            type: {
+                summary: string;
+            };
+        };
+    };
     enabled: {
         required: boolean;
         description: string;
@@ -10,6 +22,15 @@ export declare const EntityProviderWidgetStoryArgTypes: {
             defaultValue: {
                 summary: string;
             };
+            type: {
+                summary: string;
+            };
+        };
+    };
+    parameter: {
+        required: boolean;
+        description: string;
+        table: {
             type: {
                 summary: string;
             };
@@ -33,6 +54,7 @@ export declare const EntityProviderWidgetStoryArgs: {
     readonly iri: "";
     readonly ontologyId: "";
     readonly enabled: true;
+    readonly parameter: "";
 };
 /**
  * An entity that resolves in voc4cat via the TS4NFDI API Gateway. At the time of writing
@@ -42,8 +64,9 @@ export declare const EntityProviderWidgetStoryArgs: {
  */
 export declare const withOntologyIdArgs: {
     readonly api: "https://terminology.services.base4nfdi.de/api-gateway/ols4/api/";
-    readonly ontologyId: "voc4cat";
-    readonly iri: "https://w3id.org/nfdi4cat/voc4cat_0000151";
+    readonly ontologyId: "agrovoc";
+    readonly iri: "http://aims.fao.org/aos/agrovoc/c_12332";
+    readonly parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097";
 };
 /**
  * An IRI that does not exist in the requested ontology. The API answers with an
