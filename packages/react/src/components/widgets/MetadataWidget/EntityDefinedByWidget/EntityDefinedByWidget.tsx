@@ -3,7 +3,7 @@
 import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
-import { EntityDefinedByWidgetProps } from "../../../../app/types";
+import { EntityDefinedByWidgetProps } from "../../../../app/";
 import {
   getErrorMessageToDisplay,
   singularizeType,

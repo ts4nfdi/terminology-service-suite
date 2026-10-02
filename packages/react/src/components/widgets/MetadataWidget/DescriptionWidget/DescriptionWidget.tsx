@@ -3,7 +3,7 @@
 import { EuiProvider } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsThingApi } from "../../../../api/ols/OlsThingApi";
-import { DescriptionWidgetProps } from "../../../../app/types";
+import { DescriptionWidgetProps } from "../../../../app";
 import { Thing } from "../../../../model/interfaces";
 import { DescriptionPresentation } from "./DescriptionPresentation";
 

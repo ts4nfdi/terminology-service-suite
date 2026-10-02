@@ -21,7 +21,7 @@ function BreadcrumbWidget(props: BreadcrumbWidgetProps): React.JSX.Element {
   } = props;
   const olsApi = new OlsEntityApi(api);
 
-  const { data, isLoading, isSuccess, isError, error } = useQuery(
+  const { data, isLoading, isSuccess, isError } = useQuery(
     ["breadcrumb", api, parameter, entityType, iri, ontologyId, useLegacy],
     async () => {
       return await olsApi.getEntityObject(

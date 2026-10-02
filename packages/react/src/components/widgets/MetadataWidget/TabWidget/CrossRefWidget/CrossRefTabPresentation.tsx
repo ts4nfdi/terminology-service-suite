@@ -3,9 +3,10 @@ import {
   EuiFlexItem,
   EuiLoadingSpinner,
   EuiPanel,
+  EuiProvider,
   EuiText,
 } from "@elastic/eui";
-import { CrossRefPresentationProps } from "../../../../../app/types";
+import { CrossRefPresentationProps } from "../../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../../app/util";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiCrossRefStyle.css";
 
@@ -44,4 +45,12 @@ function CrossRefTabPresentation(props: CrossRefPresentationProps) {
   );
 }
 
-export { CrossRefTabPresentation };
+function WrappedCrossRefTabPresentation(props: CrossRefPresentationProps) {
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <CrossRefTabPresentation {...props} />
+    </EuiProvider>
+  );
+}
+
+export { CrossRefTabPresentation, WrappedCrossRefTabPresentation };

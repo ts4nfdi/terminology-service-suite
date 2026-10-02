@@ -1,11 +1,13 @@
 import {
   EuiFlexGroup,
   EuiFlexItem,
+  EuiProvider,
   EuiSpacer,
   EuiSwitch,
   EuiTabbedContent,
 } from "@elastic/eui";
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { TabPresentationProps } from "../../../../app";
 import { Entity } from "../../../../model/interfaces";
 import {
@@ -313,4 +315,16 @@ function TabPresentation(props: TabPresentationProps) {
   );
 }
 
-export { TabPresentation };
+function WrappedTabPresentation(props: TabPresentationProps) {
+  const queryClient = new QueryClient();
+
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <TabPresentation {...props} />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { TabPresentation, WrappedTabPresentation };

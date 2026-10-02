@@ -1,13 +1,4 @@
-"use client";
-
-import {
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiLink,
-  EuiLoadingSpinner,
-  EuiProvider,
-  EuiText,
-} from "@elastic/eui";
+import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MetadataWidgetProps } from "../../../app";
@@ -18,15 +9,7 @@ import {
   createModelObject,
   getPreferredOntologyJSON,
 } from "../../../model/ols-model/ModelObjectCreator";
-import "../../../style/ts4nfdiStyles/ts4nfdiMetadataStyle.css";
-import "../../../style/tssStyles.css";
-import { BreadcrumbPresentation } from "./BreadcrumbWidget";
-import { DescriptionPresentation } from "./DescriptionWidget/DescriptionPresentation";
-import { EntityDefinedByPresentation } from "./EntityDefinedByWidget/EntityDefinedByPresentation";
-import { EntityOntoListPresentation } from "./EntityOntoListWidget/EntityOntoListPresentation";
-import { IriWidget } from "./IriWidget";
-import { TabWidget } from "./TabWidget";
-import { TitlePresentation } from "./TitleWidget/TitlePresentation";
+import { MetadataPresentation } from "./MetadataPresentation";
 
 type MetadataInfo = {
   entity: Entity;
@@ -35,25 +18,8 @@ type MetadataInfo = {
 };
 
 function MetadataWidget(props: MetadataWidgetProps): React.JSX.Element {
-  const {
-    iri,
-    api,
-    ontologyId,
-    entityType,
-    parameter,
-    useLegacy,
-    onNavigateToOntology,
-    hierarchyTab,
-    crossRefTab,
-    terminologyInfoTab,
-    graphViewTab,
-    termDepictionTab,
-    altNamesTab,
-    termLink,
-    className,
-  } = props;
+  const { iri, api, ontologyId, entityType, parameter, useLegacy } = props;
   const olsApi = new OlsEntityApi(api);
-  const finalClassName = className || "ts4nfdi-metadata-style";
 
   const { data, isLoading, isSuccess, isError, error } = useQuery<MetadataInfo>(
     ["metadata", api, parameter, entityType, iri, ontologyId, useLegacy],
@@ -116,144 +82,46 @@ function MetadataWidget(props: MetadataWidgetProps): React.JSX.Element {
     },
   );
 
-  function render(data: MetadataInfo) {
-    return (
-      <div className={finalClassName} data-testid="metadata">
-        <EuiFlexGroup direction="column" gutterSize={"m"}>
-          <EuiFlexItem grow={false}>
-            {termLink ? (
-              <EuiLink href={termLink} target="_blank" external={false}>
-                <TitlePresentation
-                  title={data.entity.getLabel()}
-                  className={`${finalClassName}-title`}
-                  isLoading={isLoading}
-                  error={error}
-                />
-              </EuiLink>
-            ) : (
-              <TitlePresentation
-                title={data.entity.getLabel()}
-                className={`${finalClassName}-title`}
-                isLoading={isLoading}
-                error={error}
-              />
-            )}
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <span>
-              <BreadcrumbPresentation
-                onNavigateToOntology={props.onNavigateToOntology}
-                ontologyId={ontologyId || data.entity.getOntologyId()}
-                shortForm={data.entity.getShortForm()}
-                className={`${finalClassName}-breadcrumb`}
-                colorFirst={props.colorFirst}
-                colorSecond={props.colorSecond}
-              />
-            </span>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiFlexGroup direction="column">
-              <EuiFlexItem>
-                <EuiFlexGroup>
-                  <EuiFlexItem grow={false}>
-                    <IriWidget
-                      iri={iri}
-                      className={`${finalClassName}-iri`}
-                      iriText={props.iriText}
-                      urlPrefix={props.urlPrefix}
-                      externalIcon={props.externalIcon}
-                      copyButton={props.copyButton}
-                    />
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <DescriptionPresentation
-              description={data.entity.getDescription()}
-              className={`${finalClassName}-description`}
-              isLoading={isLoading}
-              error={error}
-              descText={props.descText}
-            />
-          </EuiFlexItem>
-
-          {(data.ontoList.length > 0 || data.definedBy.length > 0) && (
-            <div style={{ margin: "0 12px 0" }}>
-              <EntityOntoListPresentation
-                iri={props.iri}
-                label={data.entity.getLabel() || ""}
-                ontolist={data.ontoList}
-                entityType={
-                  entityType || (data.entity.getType() as EntityTypeName)
-                }
-                onNavigateToOntology={onNavigateToOntology}
-                className={`${finalClassName}-entity-onto-list`}
-              />
-              <EntityDefinedByPresentation
-                iri={props.iri}
-                ontolist={data.definedBy}
-                label={data.entity.getLabel() || ""}
-                entityType={
-                  entityType || (data.entity.getType() as EntityTypeName)
-                }
-                onNavigateToOntology={onNavigateToOntology}
-                className={`${finalClassName}-entity-defined-by`}
-              />
-            </div>
-          )}
-
-          <EuiFlexItem>
-            <TabWidget
-              iri={iri}
-              entityType={props.entityType}
-              api={api}
-              ontologyId={
-                props.ontologyId
-                  ? props.ontologyId
-                  : data.entity.getOntologyId()
-              }
-              useLegacy={useLegacy}
-              hierarchyTab={hierarchyTab}
-              crossRefTab={crossRefTab}
-              terminologyInfoTab={terminologyInfoTab}
-              termDepictionTab={termDepictionTab}
-              graphViewTab={graphViewTab}
-              altNamesTab={altNamesTab}
-              entityInfoTab={props.entityInfoTab}
-              entityRelationTab={props.entityRelationTab}
-              hierarchyPreferredRoots={props.hierarchyPreferredRoots}
-              hierarchyShowSiblingsOnInit={props.hierarchyShowSiblingsOnInit}
-              hierarchyKeepExpansionStates={props.hierarchyKeepExpansionStates}
-              onNavigateToEntity={props.onNavigateToEntity}
-              onNavigateToOntology={props.onNavigateToOntology}
-              onNavigateToDisambiguate={props.onNavigateToDisambiguate}
-              className={`${finalClassName}-tab`}
-              hierarchyWrap={props.hierarchyWrap}
-              rootWalk={props.rootWalk}
-              edgeLabel={props.edgeLabel}
-              onNodeClick={props.onNodeClick}
-              graphHierarchy={props.graphHierarchy}
-              initialSelectedTab={props.initialSelectedTab}
-              showHeader={props.showHeader}
-              enableComparisonMode={props.enableComparisonMode}
-              showComparisonTitleInHeader={props.showComparisonTitleInHeader}
-              targetIri={props.targetIri}
-            />
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      </div>
-    );
-  }
-
   return (
     <>
       {isLoading && <EuiLoadingSpinner />}
       {isError && (
         <EuiText>{getErrorMessageToDisplay(error, "metadata")}</EuiText>
       )}
-      {isSuccess && data && <>{isEntity(data.entity) ? render(data) : null}</>}
+      {isSuccess && data && (
+        <>
+          {isEntity(data.entity) ? (
+            <MetadataPresentation
+              iri={iri}
+              label={data.entity.getLabel()}
+              ontologyId={ontologyId || data.entity.getOntologyId()}
+              shortForm={data.entity.getShortForm()}
+              description={data.entity.getDescription()}
+              entityType={
+                entityType || (data.entity.getType() as EntityTypeName)
+              }
+              ontoList={data.ontoList}
+              definedBy={data.definedBy}
+              isLoading={isLoading}
+              error={error}
+              className={props.className}
+              termLink={props.termLink}
+              iriText={props.iriText}
+              urlPrefix={props.urlPrefix}
+              externalIcon={props.externalIcon}
+              copyButton={props.copyButton}
+              descText={props.descText}
+              colorFirst={props.colorFirst}
+              colorSecond={props.colorSecond}
+              onNavigateToOntology={props.onNavigateToOntology}
+              tabProps={{
+                ...props,
+                ontologyId: ontologyId || data.entity.getOntologyId(),
+              }}
+            />
+          ) : null}
+        </>
+      )}{" "}
     </>
   );
 }

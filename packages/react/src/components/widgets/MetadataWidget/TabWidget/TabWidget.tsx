@@ -4,7 +4,7 @@ import { EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { OlsEntityApi } from "../../../../api/ols/OlsEntityApi";
-import { TabWidgetProps } from "../../../../app/types";
+import { TabWidgetProps } from "../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import { Entity } from "../../../../model/interfaces";
 import { EntityTypeName, isEntity } from "../../../../model/ModelTypeCheck";
