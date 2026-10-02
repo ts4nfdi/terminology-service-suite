@@ -26,7 +26,14 @@ export declare const ApiGatewayArgs: {
     targetLink: string;
     useLegacy: boolean;
 };
-export declare const ApiGatewayWithCollectionArgs: {
+export declare const ApiGatewayWithFAIRAgroCollectionArgs: {
+    api: string;
+    query: string;
+    targetLink: string;
+    parameter: string;
+    useLegacy: boolean;
+};
+export declare const ApiGatewayWithNFDI4HealthCollectionArgs: {
     api: string;
     query: string;
     targetLink: string;

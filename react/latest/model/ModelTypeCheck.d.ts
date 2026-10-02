@@ -1,10 +1,10 @@
 import { Class, Entity, Individual, Ontology, Property, Thing } from './interfaces';
-export declare const classTypeNames: readonly ["class", "term"];
+export declare const classTypeNames: readonly ["class", "term", "skos:Concept", "http://www.w3.org/2004/02/skos/core#Concept"];
 export declare const propertyTypeNames: readonly ["property", "annotationProperty", "dataProperty", "objectProperty"];
 export declare const individualTypeNames: readonly ["individual"];
 export declare const ontologyTypeNames: readonly ["ontology"];
-export declare const entityTypeNames: readonly ["class", "term", "individual", "property", "annotationProperty", "dataProperty", "objectProperty"];
-export declare const thingTypeNames: readonly ["class", "term", "individual", "property", "annotationProperty", "dataProperty", "objectProperty", "ontology"];
+export declare const entityTypeNames: readonly ["class", "term", "skos:Concept", "http://www.w3.org/2004/02/skos/core#Concept", "individual", "property", "annotationProperty", "dataProperty", "objectProperty"];
+export declare const thingTypeNames: readonly ["class", "term", "skos:Concept", "http://www.w3.org/2004/02/skos/core#Concept", "individual", "property", "annotationProperty", "dataProperty", "objectProperty", "ontology"];
 export type ClassTypeName = (typeof classTypeNames)[number];
 export type PropertyTypeName = (typeof propertyTypeNames)[number];
 export type IndividualTypeName = (typeof individualTypeNames)[number];
