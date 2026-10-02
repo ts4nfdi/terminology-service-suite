@@ -875,6 +875,15 @@ export type EntityListWidgetProps = {
 export type MappingListWidgetProps = {
   api: string;
   source: string;
+  rowColor?: string;
+  MappingDetailBackgroundColor?: string;
+};
+
+export type MappingDetailWidgetProps = {
+  api: string;
+  source: string;
+  target: string;
+  MappingDetailBackgroundColor?: string;
 };
 
 /**

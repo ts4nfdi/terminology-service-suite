@@ -1,108 +1,27 @@
-import {
-  EuiBasicTableColumn,
-  EuiButton,
-  EuiCheckbox,
-  EuiInMemoryTable,
-  EuiPanel,
-  EuiPopover,
-  EuiSearchBarProps,
-  EuiSpacer,
-  EuiText,
-  EuiTitle,
-} from "@elastic/eui";
-import { css } from "@emotion/react";
-import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
+import { EuiPanel, EuiSearchBarProps, EuiText } from "@elastic/eui";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
-
-type MappingRow = {
-  to: string;
-  toUri: string;
-  creator: string;
-  type: string;
-  created: string;
-  createdLabel: string;
-  targetFromColiConc: string;
-};
-
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
-const timeFormatter = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-});
-
-const formatMappingDate = (created: string) => {
-  if (created === "—") return "—";
-
-  const date = new Date(created);
-
-  if (isNaN(date.getTime())) return "—";
-
-  return `${dateFormatter.format(date)}, ${timeFormatter.format(date)}`;
-};
+import { formatMappingDate } from "../MappingDetailWidget/Utils/mappingUtils";
+import type { MappingRow } from "./MappingListPresentation";
+import MappingListPresentation from "./MappingListPresentation";
 
 /**
- * Dictionary mapping each type to its inner SVG elements.
+ * Background of every other table row when the caller does not pick one.
  */
-const predicateIcons: Record<string, ReactNode> = {
-  exactMatch: (
-    <>
-      <line x1="5" y1="9" x2="19" y2="9" />
-      <line x1="5" y1="15" x2="19" y2="15" />
-    </>
-  ),
-  closeMatch: (
-    <>
-      <path d="M 4 9 Q 8 5 12 9 T 20 9" />
-      <path d="M 4 15 Q 8 11 12 15 T 20 15" />
-    </>
-  ),
-  broadMatch: <polyline points="8 6 16 12 8 18" />,
-  narrowMatch: <polyline points="16 6 8 12 16 18" />,
-  relatedMatch: <path d="M 4 13 Q 8 7 12 13 T 20 13" />,
-  mappingRelation: (
-    <>
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <polyline points="15 7 20 12 15 17" />
-    </>
-  ),
-};
-
-const PredicateIcon = memo(({ type }: { type: string }) => {
-  const iconContent = predicateIcons[type];
-
-  /**
-   * Return nothing if the type doesn't exist in our dictionary
-   */
-  if (!iconContent) return null;
-
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      stroke="currentColor"
-      strokeWidth={2}
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {iconContent}
-    </svg>
-  );
-});
+const DEFAULT_ROW_COLOR = "#fff5fa";
 
 function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
-  const { api, source } = props;
+  const {
+    api,
+    source,
+    rowColor = DEFAULT_ROW_COLOR,
+    MappingDetailBackgroundColor,
+  } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
@@ -133,6 +52,16 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
 
   /**
+   * Target entity whose metadata popup is currently open. Null while no popup
+   * is shown. The gateway only resolves an entity on its ontology route, so
+   * the scheme is kept next to the IRI.
+   */
+  const [metadataTarget, setMetadataTarget] = useState<{
+    iri: string;
+    ontologyId: string;
+  } | null>(null);
+
+  /**
    * Stores what the user searched in the search bar.
    */
   const [searchedQuery, setSearchedQuery] = useState("");
@@ -156,290 +85,17 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   };
 
   /**
-   * Prevent clicks on the filter icon from triggering the column sort.
+   * Ids of the rows whose detail card is currently expanded underneath them.
    */
-  function stopHeaderSort(event: React.MouseEvent | React.KeyboardEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  const [expandedRowIds, setExpandedRowIds] = useState<string[]>([]);
+
+  function toggleRowExpansion(row: MappingRow) {
+    setExpandedRowIds((prevState) =>
+      prevState.includes(row.id)
+        ? prevState.filter((expandedId) => expandedId !== row.id)
+        : [...prevState, row.id],
+    );
   }
-
-  function stopPopoverSort(event: React.MouseEvent | React.KeyboardEvent) {
-    event.stopPropagation();
-  }
-
-  /**
-   * Renders the filter icon button for the Type column.
-   * Clicking it stops the column sort event and toggles the type filter popover.
-   */
-  const targetFilterTypeColumnButton = (
-    <span
-      role="button"
-      tabIndex={0}
-      aria-label="Filter Type Column"
-      onClick={(event) => {
-        stopHeaderSort(event);
-        setIsTypeFilterOpen((isOpen) => !isOpen);
-      }}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "24px",
-        height: "24px",
-        border: "1px solid #98a2b3",
-        borderRadius: "6px",
-        cursor: "pointer",
-      }}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="16"
-        height="16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M 4 6 H 20 L 14 13 V 19 L 10 17 V 13 Z" />
-      </svg>
-    </span>
-  );
-
-  /**
-   * Shows the type filter options inside a popover when the user clicks
-   * the filter button next to the Type column.
-   */
-  const typeFilterCheckboxList = (
-    <EuiPopover
-      button={targetFilterTypeColumnButton}
-      isOpen={isTypeFilterOpen}
-      closePopover={() => setIsTypeFilterOpen(false)}
-      anchorPosition="downLeft"
-      panelPaddingSize="s"
-    >
-      <div
-        style={{ width: "180px" }}
-        onClick={stopPopoverSort}
-        onMouseDown={stopPopoverSort}
-        onKeyDown={stopPopoverSort}
-        className="custom-filter-wrapper"
-      >
-        <style>{`
-        .custom-filter-wrapper .euiCheckbox__square {
-          transform: scale(1.1);
-          transform-origin: center;
-        }
-        .custom-filter-wrapper .euiCheckbox__label {
-          padding-left: 12px;
-        }
-      `}</style>
-        <EuiCheckbox
-          id="exactMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>exactMatch</span>
-              <PredicateIcon type="exactMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("exactMatch")}
-          onChange={() => toggleTypeFilter("exactMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="closeMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>closeMatch</span>
-              <PredicateIcon type="closeMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("closeMatch")}
-          onChange={() => toggleTypeFilter("closeMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="broadMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>broadMatch</span>
-              <PredicateIcon type="broadMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("broadMatch")}
-          onChange={() => toggleTypeFilter("broadMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="narrowMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>narrowMatch</span>
-              <PredicateIcon type="narrowMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("narrowMatch")}
-          onChange={() => toggleTypeFilter("narrowMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="relatedMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>relatedMatch</span>
-              <PredicateIcon type="relatedMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("relatedMatch")}
-          onChange={() => toggleTypeFilter("relatedMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="mappingRelation"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>mappingRelation</span>
-              <PredicateIcon type="mappingRelation" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("mappingRelation")}
-          onChange={() => toggleTypeFilter("mappingRelation")}
-        />
-
-        <EuiSpacer size="l" />
-
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <EuiButton
-            size="s"
-            color="accent"
-            style={{ minWidth: "72px" }}
-            onClick={() => {
-              setSelectedTypeFilters([]);
-              setAppliedTypeFilters([]);
-              setIsTypeFilterOpen(false);
-            }}
-          >
-            Clear
-          </EuiButton>
-
-          <EuiButton
-            size="s"
-            color="success"
-            style={{ minWidth: "72px" }}
-            onClick={() => {
-              setAppliedTypeFilters(selectedTypeFilters);
-              setIsTypeFilterOpen(false);
-            }}
-          >
-            Apply
-          </EuiButton>
-        </div>
-      </div>
-    </EuiPopover>
-  );
-
-  const typeColumnHeader = (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "14px",
-      }}
-    >
-      {typeFilterCheckboxList}
-      <span>Type</span>
-    </span>
-  );
-
-  const columns: Array<EuiBasicTableColumn<MappingRow>> = [
-    {
-      field: "type",
-      name: <strong style={{ fontSize: "14px" }}>{typeColumnHeader}</strong>,
-      truncateText: true,
-      sortable: true,
-
-      /**
-       * Render both the custom SVG icon and the text side-by-side
-       */
-      render: (type: string) => (
-        <span
-          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
-        >
-          <PredicateIcon type={type} />
-          <span>{type}</span>
-        </span>
-      ),
-    },
-    {
-      field: "to",
-      name: <strong style={{ fontSize: "14px" }}>Target</strong>,
-      truncateText: true,
-      sortable: true,
-      render: (to: string, item: MappingRow) => (
-        <span title={item.toUri}>{to}</span>
-      ),
-    },
-    {
-      field: "creator",
-      name: <strong style={{ fontSize: "14px" }}>Creator</strong>,
-      truncateText: true,
-      sortable: true,
-    },
-    {
-      field: "created",
-      name: <strong style={{ fontSize: "14px" }}>Created</strong>,
-      truncateText: true,
-      sortable: true,
-      render: (_created: string, item: MappingRow) => item.createdLabel,
-    },
-  ];
 
   useEffect(() => {
     if (!data) return;
@@ -508,12 +164,18 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
    */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any) => {
+      (data ?? []).map((item: any, index: number) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
+        const rowFromUri = item.from?.memberSet?.[0]?.uri ?? "—";
+        const sourceFromColiConc =
+          item.from?.memberSet?.[0]?.notation?.[0] ?? "—";
 
         return {
+          id: `${index}-${item.uri ?? toUri}`,
+          from: fromLabels[rowFromUri] ?? sourceFromColiConc,
+          fromUri: rowFromUri,
           to: labels[toUri] ?? targetFromColiConc,
           toUri,
           targetFromColiConc,
@@ -521,9 +183,15 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
           type: item.type?.[0]?.split("#").pop() ?? "—",
           created: item.created ?? "—",
           createdLabel: formatMappingDate(item.created ?? "—"),
+          fromScheme: item.fromScheme?.notation?.[0] ?? "—",
+          toScheme: item.toScheme?.notation?.[0] ?? "—",
+          identifier: item.identifier?.[0] ?? "—",
+          modified: formatMappingDate(item.modified ?? "—"),
+          uri: item.uri ?? "—",
+          partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
-    [data, labels],
+    [data, labels, fromLabels],
   );
 
   /**
@@ -573,46 +241,6 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const onButtonClick = () => setIsPopoverOpen((isOpen) => !isOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
-  /**
-   * Custom help button trigger with adjusted stroke width
-   */
-  const helpButton = (
-    <button
-      type="button"
-      aria-label="Help"
-      onClick={onButtonClick}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "32px",
-        height: "32px",
-        padding: 0,
-        color: "#0645ad",
-        backgroundColor: "transparent",
-        border: "none",
-        borderRadius: "50%",
-        cursor: "pointer",
-      }}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="9" />
-        <line x1="12" y1="10.5" x2="12" y2="16" />
-        <circle cx="12" cy="7.8" r="0.75" fill="currentColor" stroke="none" />
-      </svg>
-    </button>
-  );
-
   return isLoading ? (
     <EuiPanel paddingSize="m">
       <EuiText>Loading mappings...</EuiText>
@@ -625,135 +253,41 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
       </EuiText>
     </EuiPanel>
   ) : (
-    <EuiPanel paddingSize="m">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          width: "100%",
-        }}
-      >
-        <EuiTitle size="s">
-          <h2>
-            <strong>Source:</strong>
-            <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
-          </h2>
-        </EuiTitle>
-
-        <EuiPopover
-          button={helpButton}
-          isOpen={isPopoverOpen}
-          closePopover={closePopover}
-          anchorPosition="downRight"
-        >
-          <div style={{ width: "320px", padding: "8px" }}>
-            <EuiText size="s">
-              <EuiSpacer size="s" />
-              <ul>
-                <li>
-                  <strong>Source:</strong> The main entity being described
-                </li>
-                <br />
-                <li>
-                  <strong>Type:</strong> The relationship or attribute linking
-                  the source to the target
-                </li>
-                <br />
-                <li>
-                  <strong>Target:</strong> The piece of information the source
-                  is linked to.
-                </li>
-              </ul>
-              <EuiSpacer size="m" />
-
-              {/**
-               * Visual representation of a source-type-target relationship.
-               */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "12px",
-                  backgroundColor: "#f5f7fa",
-                  padding: "16px 8px",
-                  borderRadius: "4px",
-                }}
-              >
-                <span>Source</span>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      marginBottom: "4px",
-                      color: "#333",
-                    }}
-                  >
-                    Type
-                  </span>
-                  <svg width="100" height="10" viewBox="0 0 100 10">
-                    <line
-                      x1="0"
-                      y1="5"
-                      x2="95"
-                      y2="5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                    <polyline
-                      points="88,1 95,5 88,9"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
-                </div>
-                <span>Target</span>
-              </div>
-            </EuiText>
-          </div>
-        </EuiPopover>
-      </div>
-
-      <EuiSpacer size="xl" />
-
-      <EuiInMemoryTable<MappingRow>
-        css={css`
-          tbody .euiTableRow:nth-of-type(odd) {
-            background-color: #ffffff;
-          }
-          tbody .euiTableRow:nth-of-type(even) {
-            background-color: #fff5fa;
-          }
-        `}
-        tableCaption="Mapping list"
-        responsiveBreakpoint={false}
-        items={filteredRows}
-        search={search}
-        sorting={{
-          sort: {
-            field: "to",
-            direction: "asc",
-          },
-        }}
-        columns={columns}
-        pagination={true}
-      />
-    </EuiPanel>
+    <MappingListPresentation
+      fromLabel={fromLabel}
+      rowColor={rowColor}
+      MappingDetailBackgroundColor={MappingDetailBackgroundColor}
+      labels={labels}
+      filteredRows={filteredRows}
+      search={search}
+      expandedRowIds={expandedRowIds}
+      toggleRowExpansion={toggleRowExpansion}
+      metadataTarget={metadataTarget}
+      setMetadataTarget={setMetadataTarget}
+      isTypeFilterOpen={isTypeFilterOpen}
+      setIsTypeFilterOpen={setIsTypeFilterOpen}
+      selectedTypeFilters={selectedTypeFilters}
+      setSelectedTypeFilters={setSelectedTypeFilters}
+      setAppliedTypeFilters={setAppliedTypeFilters}
+      toggleTypeFilter={toggleTypeFilter}
+      isPopoverOpen={isPopoverOpen}
+      onButtonClick={onButtonClick}
+      closePopover={closePopover}
+    />
   );
 }
 
 export function WrappedMappingListWidget(
   props: MappingListWidgetProps,
 ): React.JSX.Element {
-  return <MappingListWidget api={props.api} source={props.source} />;
+  return (
+    <MappingListWidget
+      api={props.api}
+      source={props.source}
+      rowColor={props.rowColor}
+      MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
+    />
+  );
 }
 
 export { MappingListWidget };
