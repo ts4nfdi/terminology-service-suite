@@ -1,0 +1,30 @@
+import { Ontology } from '../interfaces';
+import { OLS4Thing } from './OLS4Thing';
+export declare class OLS4Ontology extends OLS4Thing implements Ontology {
+    getOntologyId(): string;
+    getName(): string;
+    getDescription(): string;
+    getCreators(): string[];
+    getSourceFileTimestamp(): string;
+    getNumEntities(): number;
+    getNumClasses(): number;
+    getNumProperties(): number;
+    getNumIndividuals(): number;
+    getLogoURL(): string | undefined;
+    getOntologyPurl(): string;
+    getHomepage(): string;
+    getMailingList(): string;
+    getTracker(): string;
+    getVersionIri(): string;
+    getVersion(): string;
+    getVersionFromIri(): string;
+    getLoaded(): string;
+    getAnnotationPredicates(): string[];
+    getPreferredRoots(): string[];
+    getPreferredPrefix(): string;
+    getLanguages(): string[];
+    getImportsFrom(): string[];
+    getExportsTo(): string[];
+    getLicense(): string[];
+    getAllowDownload(): boolean;
+}

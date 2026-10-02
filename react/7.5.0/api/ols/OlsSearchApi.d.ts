@@ -1,0 +1,19 @@
+import { Select } from '../../model/interfaces/Select';
+import { ContentParams, PaginationParams, SearchQueryParams, SelectQueryParams, SuggestQueryParams } from '../../utils/olsApiTypes';
+import { OlsBaseApi } from './OlsBaseApi';
+export declare class OlsSearchApi extends OlsBaseApi {
+    search: (queryParams: SearchQueryParams, paginationParams: PaginationParams, contentParams?: ContentParams, parameter?: string, abortSignal?: AbortSignal) => Promise<any>;
+    select: (queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
+    /**
+     * Fetch select data.
+     * @param queryParams
+     * @param paginationParams
+     * @param contentParams
+     * @param parameter
+     */
+    getSelectData(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): Promise<Select>;
+    suggest: (queryParams: SuggestQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string) => Promise<any>;
+    getSelectRequestUrl(queryParams: SelectQueryParams, paginationParams?: PaginationParams, contentParams?: ContentParams, parameter?: string): string;
+}
+export declare function splitAndApplyParams(url: URL, raw: string): void;
+export declare function normalizeBaseApi(api: string): string;
