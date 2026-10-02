@@ -1,10 +1,10 @@
-import { EuiCardProps } from '@elastic/eui';
+import { Criteria, EuiCardProps } from '@elastic/eui';
 import { Action } from '@elastic/eui/src/components/basic_table/action_types';
 import { EuiComboBoxProps } from '@elastic/eui/src/components/combo_box/combo_box';
 import { EuiLinkColor } from '@elastic/eui/src/components/link/link';
 import { EuiTextProps } from '@elastic/eui/src/components/text/text';
 import { EntityValue } from '../components/widgets/AutocompleteWidget/AutocompleteWidget';
-import { Thing } from '../model/interfaces';
+import { Entity, Ontology, Ontologies, Individual, Thing } from '../model/interfaces';
 import { BuildHierarchyProps, HierarchyIriProp } from '../model/interfaces/HierarchyBuilder';
 import { EntityTypeName, ThingTypeName } from '../model/ModelTypeCheck';
 import { default as Reified } from '../model/Reified';
@@ -190,8 +190,47 @@ export type AutocompleteWidgetProps = Partial<EuiComboBoxProps<EntityValue>> & P
     showApiRequestButton?: boolean;
 };
 export type DataContentWidgetProps = ApiObj & ParameterObj;
+export type DataContentPresentationProps = EuiTextProps & {
+    ontologiesData?: Ontologies;
+    isLoading?: boolean;
+    isError?: boolean;
+    dataUpdatedAt?: number;
+};
 export type EntityInfoWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & OnNavigates;
+export type EntityInfoPresentationProps = ApiObj & ForcedIriObj & OptionalEntityTypeObj & HasTitleObj & ShowBadgesObj & UseLegacyObj & OnNavigates & EuiTextProps & {
+    /**
+     * The already resolved entity whose information is shown.
+     */
+    entity?: Entity;
+    /**
+     * Shows a loading spinner instead of the information.
+     */
+    isLoading?: boolean;
+    /**
+     * Error of a lookup performed by the caller, shown instead of the information.
+     */
+    error?: string | unknown;
+};
 export type EntityRelationsWidgetProps = ApiObj & OptionalEntityTypeObj & OptionalOntologyIdObj & ForcedIriObj & HasTitleObj & ShowBadgesObj & ParameterObj & OnNavigates;
+export type EntityRelationsPresentationProps = OptionalEntityTypeObj & HasTitleObj & ShowBadgesObj & OnNavigates & EuiTextProps & {
+    /**
+     * The already resolved entity whose relations are shown.
+     */
+    entity?: Entity;
+    /**
+     * Instances of the entity, shown in the instances section of a class.
+     */
+    instances?: Individual[];
+    /**
+     * Shows a loading spinner instead of the relations.
+     */
+    isLoading?: boolean;
+    /**
+     * True when a lookup performed by the caller failed. A message is shown
+     * instead of the relations.
+     */
+    isError?: boolean;
+};
 export type JsonApiWidgetProps = {
     /**
      * The API query whose response JSON should be displayed on click.
@@ -307,7 +346,7 @@ export type TabWidgetProps = TabSubwidgetsProps & TabList & OnNavigates & CssCla
      */
     edgeLabel?: string;
     /**
-     * Callback function for double clicking on a node in graph. The default behaviour is to expand the node.
+     * Callback function for double-clicking on a node in graph. The default behaviour is to expand the node.
      * */
     onNodeClick?: (iri: string) => void;
     showHeader?: boolean;
@@ -460,6 +499,62 @@ export type TitlePresentationProps = TitleTextObj & CssClassNameObj & OptionalTh
     onNavigateTo?: (iri: string, ontologyId: string, thingType: string) => void;
     href?: string;
 };
+export type MetadataPresentationProps = ForcedIriObj & OptionalOntologyIdObj & OptionalEntityTypeObj & OnNavigateToOntology & CssClassNameObj & ColorFirstObj & ColorSecondObj & DescTextObj & {
+    /**
+     * Label of the already resolved entity, shown as the title.
+     */
+    label?: string;
+    /**
+     * Short form of the already resolved entity, e.g. "format_2332". Shown in the breadcrumb.
+     */
+    shortForm?: string;
+    /**
+     * Description of the already resolved entity.
+     */
+    description?: string;
+    /**
+     * Other ontologies the entity appears in.
+     */
+    ontoList?: string[];
+    /**
+     * Ontologies the entity is defined by.
+     */
+    definedBy?: string[];
+    /**
+     * Show a loading state instead of the passed values, for example while the caller resolves them.
+     */
+    isLoading?: boolean;
+    /**
+     * Error of a lookup performed by the caller, shown instead of the passed values.
+     */
+    error?: string | unknown;
+    /**
+     * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
+     */
+    termLink?: string;
+    /**
+     * Set your own text manually, which will show as a clickable link instead of the IRI.
+     */
+    iriText?: string;
+    /**
+     * Indicates that the target iri is external and needs an icon.
+     */
+    externalIcon?: boolean;
+    /**
+     * The iri should get appended to the urlPrefix or not. When provided, the iri gets encoded and appended to the urlPrefix.
+     */
+    urlPrefix?: string;
+    /**
+     * Position a copy to clipboard button for the iri link. 'none' or not providing the option means hiding the button.
+     * left/right means showing the button on the left or right side of the iri link.
+     */
+    copyButton?: "right" | "left" | "none";
+    /**
+     * Props of the tab section. Tabs fetch their own data, so when this is not provided no tabs are rendered
+     * and the component performs no request at all.
+     */
+    tabProps?: TabWidgetProps;
+};
 export type MetadataWidgetProps = TabWidgetProps & CssClassNameObj & ColorFirstObj & ColorSecondObj & DescTextObj & TitleTextObj & {
     /**
      * The term backlink. User can use this to make the term's label a link. For example, a link to the term page on a terminology service.
@@ -493,8 +588,52 @@ export type MetadataWidgetProps = TabWidgetProps & CssClassNameObj & ColorFirstO
     showHeader?: boolean;
     showComparisonTitleInHeader?: boolean;
 };
+export type OntologyInfoPresentationProps = HasTitleObj & ShowBadgesObj & ContainerWidthObj & OnNavigates & CssClassNameObj & {
+    ontology?: Ontology;
+    isLoading?: boolean;
+    error?: string | unknown;
+};
 export type OntologyInfoWidgetProps = ApiObj & ForcedOntologyIdObj & HasTitleObj & ShowBadgesObj & ParameterObj & UseLegacyObj & ContainerWidthObj & OnNavigates & CssClassNameObj;
 export type ResourcesWidgetProps = ApiObj & ParameterObj & UseLegacyObj & CssClassNameObj & {
+    /**
+     * Initial number of entries displayed per page.
+     */
+    initialEntriesPerPage?: number;
+    /**
+     * Possible values for number of entries displayed per page.
+     */
+    pageSizeOptions?: number[];
+    /**
+     * Column the table is sorted by initially.
+     */
+    initialSortField?: string;
+    /**
+     * Initial sorting direction.
+     */
+    initialSortDir?: "asc" | "desc";
+    /**
+     * Pass actions to each item in the table.
+     */
+    actions?: Array<Action<OlsResource>>;
+    /**
+     * This function is called every time an ontology link is clicked.
+     */
+    onNavigate?: ((ontologyId: string) => void) | string;
+};
+export type ResourcesPresentationProps = UseLegacyObj & CssClassNameObj & {
+    /**
+     * The already resolved resources shown in the table.
+     */
+    resources: OlsResource[];
+    /**
+     * Shows the table in its loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * True when a lookup performed by the caller failed. The license notice and
+     * the resource count are then hidden.
+     */
+    isError?: boolean;
     /**
      * Initial number of entries displayed per page.
      */
@@ -593,6 +732,21 @@ export type MetadataCompactProps = Partial<Omit<EuiCardProps, "layout">> & ApiOb
     useLegacy: boolean;
 };
 export type TermDepictionWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & UseLegacyObj;
+export type TermDepictionPresentationProps = {
+    /**
+     * Urls of the already resolved depictions. A url ending in .glb is shown as a
+     * 3D model, every other one as an image.
+     */
+    depictionUrls?: string[];
+    /**
+     * Shows a loading spinner instead of the depictions.
+     */
+    isLoading?: boolean;
+    /**
+     * Error of a lookup performed by the caller, shown instead of the depictions.
+     */
+    error?: string | unknown;
+};
 export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj & CssClassNameObj & ParameterObj & {
     /**
      * The target iri. used in the hierarchy mode to compare two terms in one graph.
@@ -627,6 +781,26 @@ export type GraphViewWidgetProps = ApiObj & ForcedIriObj & ForcedOntologyIdObj &
      */
     onNavigateTo?: (target: string) => void;
 };
+export type GraphViewPresentationProps = CssClassNameObj & {
+    downloadGraphData: () => void;
+    reset: () => void;
+    isLoading: boolean;
+    isError: boolean;
+    error?: string | unknown;
+    removeNodeFromGraph: () => void;
+    hideLegend?: boolean;
+    sourceNodeBgColor: string;
+    sourceLabel: string;
+    targetIri: string;
+    commonNodesBgColor: string;
+    targetNodeBgColor: string;
+    targetLabel: string;
+    exclusiveToTargetIriColor: string;
+    stopFullWidth?: boolean;
+    showNothingToAddMessage: boolean;
+    showNodeNotSelectedMessage: boolean;
+    container: React.RefObject<HTMLDivElement>;
+};
 export type OlsGraphNode = {
     /**
      * Used in the GraphView widget for rendering a graph's node
@@ -649,6 +823,29 @@ export type ComparisonInputProps = {
     onTargetIriChange: (iri: string | undefined) => void;
     initialTargetIri?: string;
     className?: string;
+};
+export type EntityListPresentationProps = {
+    isLoading?: boolean;
+    isFetching?: boolean;
+    totalItemCount: number;
+    searchText: string;
+    onSearchTextChange: (searchText: string) => void;
+    onTableChange: (criteria: Criteria<EntityRow>) => void;
+    pageIndex: number;
+    pageSize: number;
+    sortField: keyof EntityRow;
+    sortDirection: "asc" | "desc";
+    entityType?: EntityTypeName;
+    error?: string | unknown;
+    rows: EntityRow[];
+};
+export type EntityRow = {
+    name: string;
+    id: string;
+    rowIndex: number;
+    domain?: string;
+    range?: string;
+    type?: string;
 };
 export type EntityListWidgetProps = {
     api: string;
