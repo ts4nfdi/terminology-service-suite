@@ -657,10 +657,7 @@ function AutocompleteWidget(props: AutocompleteWidgetProps): React.JSX.Element {
         </EuiFlexItem>
         {showApiRequestButton && (
           <EuiFlexItem grow={false}>
-            <EuiToolTip
-              content="Open current search request as JSON in a new tab"
-              delay={"regular"}
-            >
+            <EuiToolTip content="Open current search request as JSON in a new tab">
               <EuiButton
                 iconType="document"
                 iconSide="left"
