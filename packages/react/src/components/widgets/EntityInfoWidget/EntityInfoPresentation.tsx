@@ -98,6 +98,22 @@ function EntityInfoPresentation(
     );
   }
 
+  function getCurieSection(entity: Entity): ReactElement {
+    return (
+      <>
+        {entity.getShortForm() && (
+          <>
+            <EuiFlexItem>
+              <b>CURIE:</b>
+              {entity.getShortForm()}
+            </EuiFlexItem>
+            <EuiSpacer />
+          </>
+        )}
+      </>
+    );
+  }
+
   function getDescriptionSection(entity: Entity): ReactElement {
     return (
       <>
@@ -888,6 +904,7 @@ function EntityInfoPresentation(
       {entity !== undefined && (
         <EuiText {...rest}>
           {getLabelSection(entity)}
+          {getCurieSection(entity)}
           {getDescriptionSection(entity)}
           {getSynonymsSection(entity)}
           {isClass(entity) && (
