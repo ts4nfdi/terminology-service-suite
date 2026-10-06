@@ -51,6 +51,18 @@ export const DefiningOntologyUnavailableArgs = {
   parameter: "",
 } as const;
 
+/**
+ * Points at a host that does not answer, so the tab shows the error message
+ * instead of its empty state.
+ */
+export const RequestFailedArgs = {
+  api: "https://example.com/nonexistent/",
+  iri: "http://purl.obolibrary.org/obo/NCIT_C2985",
+  entityType: "term",
+  ontologyId: "ncit",
+  parameter: "",
+} as const;
+
 export const commonAlternativeNameTabWidgetPlay = async ({
   canvasElement,
 }: {

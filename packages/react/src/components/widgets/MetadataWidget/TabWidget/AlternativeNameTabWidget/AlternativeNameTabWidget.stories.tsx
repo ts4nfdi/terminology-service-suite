@@ -7,6 +7,7 @@ import {
   AlternativeNameTabWidgetStoryArgTypes,
   commonAlternativeNameTabWidgetPlay,
   DefiningOntologyUnavailableArgs,
+  RequestFailedArgs,
   SelectingDefiningOntologyArgs,
 } from "./AlternativeNameTabWidgetStories";
 const meta = {
@@ -40,5 +41,10 @@ export const SelectingDefiningOntology: Story = {
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
+  play: commonAlternativeNameTabWidgetPlay,
+};
+
+export const RequestFailed: Story = {
+  args: RequestFailedArgs,
   play: commonAlternativeNameTabWidgetPlay,
 };
