@@ -7,6 +7,7 @@ import {
   CrossRefWidgetStoryArgs,
   CrossRefWidgetStoryArgTypes,
   DefiningOntologyUnavailableArgs,
+  RequestFailedArgs,
   SelectingDefiningOntologyArgs,
 } from "./CrossRefWidgetStories";
 
@@ -41,5 +42,10 @@ export const SelectingDefiningOntology: Story = {
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
+  play: commonCrossRefWidgetPlay,
+};
+
+export const RequestFailed: Story = {
+  args: RequestFailedArgs,
   play: commonCrossRefWidgetPlay,
 };
