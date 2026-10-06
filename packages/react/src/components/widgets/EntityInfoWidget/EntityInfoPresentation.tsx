@@ -104,7 +104,17 @@ function EntityInfoPresentation(
         {entity.getDescription() && (
           <>
             <EuiFlexItem>
-              <b>Description:</b>
+              <span>
+                <b>Description:</b>
+                {asArray(entity.properties["definitionProperty"]).length >
+                  0 && (
+                  <Tooltip
+                    text={asArray(entity.properties["definitionProperty"]).join(
+                      "\n",
+                    )}
+                  />
+                )}
+              </span>
               {entity.getDescription()}
             </EuiFlexItem>
             <EuiSpacer />
@@ -120,7 +130,16 @@ function EntityInfoPresentation(
         {entity.getSynonyms().length > 0 && (
           <>
             <EuiFlexItem>
-              <b>Synonyms:</b>
+              <span>
+                <b>Synonyms:</b>
+                {asArray(entity.properties["synonymProperty"]).length > 0 && (
+                  <Tooltip
+                    text={asArray(entity.properties["synonymProperty"]).join(
+                      "\n",
+                    )}
+                  />
+                )}
+              </span>
               {entity.getSynonyms().length > 1 ? (
                 <>
                   <ul>
@@ -762,14 +781,17 @@ function EntityInfoPresentation(
           if (annos.length && "value" in annos[0] && isMathML(annos[0].value)) {
             return (
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  <Tooltip text={annoKey} />
+                </span>
                 {renderMathFormulaIfMathMl(annoKey)}
               </EuiFlexItem>
             );
@@ -778,14 +800,17 @@ function EntityInfoPresentation(
           return (
             <>
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  <Tooltip text={annoKey} />
+                </span>
                 {annos.length > 1 ? (
                   <>
                     <ul>
