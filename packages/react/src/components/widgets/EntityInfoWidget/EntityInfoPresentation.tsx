@@ -131,7 +131,30 @@ function EntityInfoPresentation(
                   />
                 )}
               </span>
-              {entity.getDescription()}
+              {entity.getDescriptionAsArray().map((description) => (
+                <div key={randomString()}>
+                  <p>{description.value}</p>
+                  {description.hasMetadata() && (
+                    <ul>
+                      {Object.entries(description.getMetadata() ?? {}).map(
+                        ([axiomIri, values]) => {
+                          const label =
+                            entity
+                              .getLinkedEntities()
+                              .getLabelForIri(axiomIri) || axiomIri;
+                          return (
+                            <li key={axiomIri}>
+                              {capitalize(label.replaceAll("_", " "))}
+                              <Tooltip text={axiomIri} />:{" "}
+                              {asArray(values).join(", ")}
+                            </li>
+                          );
+                        },
+                      )}
+                    </ul>
+                  )}
+                </div>
+              ))}
             </EuiFlexItem>
             <EuiSpacer />
           </>
