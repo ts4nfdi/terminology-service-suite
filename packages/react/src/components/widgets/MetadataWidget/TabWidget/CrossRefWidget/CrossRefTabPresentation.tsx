@@ -6,6 +6,7 @@ import {
   EuiProvider,
   EuiText,
 } from "@elastic/eui";
+import { useEffect } from "react";
 import { CrossRefPresentationProps } from "../../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../../app/util";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiCrossRefStyle.css";
@@ -13,15 +14,27 @@ import "../../../../../style/ts4nfdiStyles/ts4nfdiCrossRefStyle.css";
 function CrossRefTabPresentation(props: CrossRefPresentationProps) {
   const finalClassName = props.className || "ts4nfdi-altNameTab-style";
 
+  /**
+   * The message shown to the user stays short, so the details of the failure are
+   * logged for whoever develops the host application.
+   */
+  useEffect(() => {
+    if (props.error) {
+      console.error("Loading the cross references failed:", props.error);
+    }
+  }, [props.error]);
+
   function renderCrossRefs(crossrefs: any) {
     if (props.isLoading) {
       return <EuiLoadingSpinner />;
     }
 
     if (props.error) {
-      <EuiText>
-        {getErrorMessageToDisplay(props.error, "cross references")}
-      </EuiText>;
+      return (
+        <EuiText>
+          {getErrorMessageToDisplay(props.error, "cross references")}
+        </EuiText>
+      );
     }
 
     if (crossrefs && crossrefs.length > 0) {
