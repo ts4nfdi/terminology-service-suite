@@ -124,11 +124,15 @@ function EntityInfoPresentation(
                 <b>Description:</b>
                 {asArray(entity.properties["definitionProperty"]).length >
                   0 && (
-                  <Tooltip
-                    text={asArray(entity.properties["definitionProperty"]).join(
-                      "\n",
-                    )}
-                  />
+                  <>
+                    &nbsp;
+                    <Tooltip
+                      text={asArray(
+                        entity.properties["definitionProperty"],
+                      ).join("\n")}
+                    />
+                    &nbsp;
+                  </>
                 )}
               </span>
               {entity.getDescriptionAsArray().map((description) => (
@@ -145,8 +149,9 @@ function EntityInfoPresentation(
                           return (
                             <li key={axiomIri}>
                               {capitalize(label.replaceAll("_", " "))}
-                              <Tooltip text={axiomIri} />:{" "}
-                              {asArray(values).join(", ")}
+                              &nbsp;
+                              <Tooltip text={axiomIri} />
+                              &nbsp;: {asArray(values).join(", ")}
                             </li>
                           );
                         },
@@ -172,11 +177,15 @@ function EntityInfoPresentation(
               <span>
                 <b>Synonyms:</b>
                 {asArray(entity.properties["synonymProperty"]).length > 0 && (
-                  <Tooltip
-                    text={asArray(entity.properties["synonymProperty"]).join(
-                      "\n",
-                    )}
-                  />
+                  <>
+                    &nbsp;
+                    <Tooltip
+                      text={asArray(entity.properties["synonymProperty"]).join(
+                        "\n",
+                      )}
+                    />
+                    &nbsp;
+                  </>
                 )}
               </span>
               {entity.getSynonyms().length > 1 ? (
@@ -829,7 +838,9 @@ function EntityInfoPresentation(
                     )}
                     :
                   </b>
+                  &nbsp;
                   <Tooltip text={annoKey} />
+                  &nbsp;
                 </span>
                 {renderMathFormulaIfMathMl(annoKey)}
               </EuiFlexItem>
@@ -848,7 +859,9 @@ function EntityInfoPresentation(
                     )}
                     :
                   </b>
+                  &nbsp;
                   <Tooltip text={annoKey} />
+                  &nbsp;
                 </span>
                 {annos.length > 1 ? (
                   <>
