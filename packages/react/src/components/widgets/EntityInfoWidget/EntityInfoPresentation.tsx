@@ -99,14 +99,19 @@ function EntityInfoPresentation(
     );
   }
 
+  /**
+   * Shows the CURIE, which only the v2 API provides. getShortForm() is not used
+   * because it falls back to the short form (e.g. "altLabel"), which is no CURIE.
+   */
   function getCurieSection(entity: Entity): ReactElement {
+    const curie = entity.properties["curie"];
     return (
       <>
-        {entity.getShortForm() && (
+        {curie && (
           <>
             <EuiFlexItem>
               <b>CURIE:</b>
-              {entity.getShortForm()}
+              {curie}
             </EuiFlexItem>
             <EuiSpacer />
           </>
@@ -116,11 +121,30 @@ function EntityInfoPresentation(
   }
 
   /**
+   * Renders an info icon which shows the IRI of a property on hover. Renders
+   * nothing if there is no IRI: the legacy API only has names as keys (e.g.
+   * "Display_Name") and the v2 API adds keys of its own (e.g. "oboSynonymTypeName").
+   * @param iris the IRI(s) of the property
+   */
+  function getIriTooltip(iris: string | string[]): ReactElement {
+    const validIris = asArray(iris).filter((iri) => iri.includes("://"));
+    if (validIris.length === 0) return <></>;
+
+    return (
+      <>
+        &nbsp;
+        <Tooltip text={validIris.join("\n")} />
+        &nbsp;
+      </>
+    );
+  }
+
+  /**
    * Lists the axioms (metadata) of one value, e.g. of a description. Each axiom
-   * shows its readable name with an info icon (the axiom property IRI on hover)
-   * and its values. The name is the label of the axiom property (the IRI if the
-   * API gives no label). Duplicate values are removed, e.g. "SY, SY, SY" becomes "SY".
-   * @param thing the entity the axioms exist in, used to look up readable names
+   * shows the label of its property, an info icon with the property IRI and its
+   * values. A value can itself be a list (e.g. several cross references), so the
+   * values are flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
+   * @param thing the entity the axioms exist in, used to look up the labels
    * @param axioms the axioms as { [axiomIri]: values }, e.g.
    * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
    */
@@ -128,15 +152,12 @@ function EntityInfoPresentation(
     return (
       <ul>
         {Object.keys(axioms).map((axiomIri) => {
-          const label =
-            thing.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
-          const values = [...new Set(asArray(axioms[axiomIri]))];
+          const label = thing.getLinkedEntities().getLabelForIri(axiomIri);
+          const values = [...new Set(asArray(axioms[axiomIri]).flat())];
           return (
             <li key={axiomIri}>
-              {capitalize(label.replaceAll("_", " "))}
-              &nbsp;
-              <Tooltip text={axiomIri} />
-              &nbsp;: {values.join(", ")}
+              {label ? capitalize(label.replaceAll("_", " ")) : axiomIri}
+              {getIriTooltip(axiomIri)}: {values.join(", ")}
             </li>
           );
         })}
@@ -172,18 +193,7 @@ function EntityInfoPresentation(
             <EuiFlexItem>
               <span>
                 <b>Description:</b>
-                {asArray(entity.properties["definitionProperty"]).length >
-                  0 && (
-                  <>
-                    &nbsp;
-                    <Tooltip
-                      text={asArray(
-                        entity.properties["definitionProperty"],
-                      ).join("\n")}
-                    />
-                    &nbsp;
-                  </>
-                )}
+                {getIriTooltip(entity.properties["definitionProperty"])}
               </span>
               {entity.getDescriptionAsArray().map((description) => (
                 <div key={randomString()}>
@@ -208,17 +218,7 @@ function EntityInfoPresentation(
             <EuiFlexItem>
               <span>
                 <b>Synonyms:</b>
-                {asArray(entity.properties["synonymProperty"]).length > 0 && (
-                  <>
-                    &nbsp;
-                    <Tooltip
-                      text={asArray(entity.properties["synonymProperty"]).join(
-                        "\n",
-                      )}
-                    />
-                    &nbsp;
-                  </>
-                )}
+                {getIriTooltip(entity.properties["synonymProperty"])}
               </span>
               {entity.getSynonyms().length > 1 ? (
                 <>
@@ -861,9 +861,7 @@ function EntityInfoPresentation(
                     )}
                     :
                   </b>
-                  &nbsp;
-                  <Tooltip text={annoKey} />
-                  &nbsp;
+                  {getIriTooltip(annoKey)}
                 </span>
                 {renderMathFormulaIfMathMl(annoKey)}
               </EuiFlexItem>
@@ -882,9 +880,7 @@ function EntityInfoPresentation(
                     )}
                     :
                   </b>
-                  &nbsp;
-                  <Tooltip text={annoKey} />
-                  &nbsp;
+                  {getIriTooltip(annoKey)}
                 </span>
                 {annos.length > 1 ? (
                   <>
