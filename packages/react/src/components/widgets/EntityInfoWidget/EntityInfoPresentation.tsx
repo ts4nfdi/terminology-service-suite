@@ -115,24 +115,21 @@ function EntityInfoPresentation(
     );
   }
 
-  // Lists the axioms (metadata) of one value, e.g. of a description.
-  // axioms: { [axiomIri]: values }, e.g.
-  //   {
-  //     "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"],
-  //     "http://purl.org/dc/terms/source": ["https://doi.org/10.1351/goldbook.M03748"],
-  //   }
-  // axiomIri: the key, the IRI of the axiom property, e.g. "http://purl.org/dc/terms/license"
-  //           (shown in the info icon)
-  // label:    readable name of the axiom property, e.g. "license"
-  //           (falls back to axiomIri if the API gives no label)
-  // values:   the axiom's values as array, e.g. ["https://creativecommons.org/licenses/by-sa/4.0/"]
+  /**
+   * Lists the axioms (metadata) of one value, e.g. of a description. Each axiom
+   * shows its readable name with an info icon (the axiom property IRI on hover)
+   * and its values. The name is the label of the axiom property (the IRI if the
+   * API gives no label). Duplicate values are removed, e.g. "SY, SY, SY" becomes "SY".
+   * @param thing the entity the axioms exist in, used to look up readable names
+   * @param axioms the axioms as { [axiomIri]: values }, e.g.
+   * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
+   */
   function getAxiomList(thing: Thing, axioms: any): ReactElement {
     return (
       <ul>
         {Object.keys(axioms).map((axiomIri) => {
           const label =
             thing.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
-          // Set removes duplicate values, e.g. "SY, SY, SY" -> "SY"
           const values = [...new Set(asArray(axioms[axiomIri]))];
           return (
             <li key={axiomIri}>
@@ -147,7 +144,11 @@ function EntityInfoPresentation(
     );
   }
 
-  // A value (e.g. a synonym) followed by its axioms as a list
+  /**
+   * Renders a value (e.g. a synonym) followed by its axioms as a list.
+   * @param thing the entity the value exists in
+   * @param value the value including its axioms
+   */
   function getValueWithAxioms(thing: Thing, value: Reified<any>): ReactElement {
     return (
       <>
