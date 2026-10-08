@@ -34,6 +34,7 @@ import {
   isIndividual,
   isProperty,
 } from "../../../model/ModelTypeCheck";
+import Reified from "../../../model/Reified";
 import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
@@ -125,12 +126,12 @@ function EntityInfoPresentation(
   // label:    readable name of the axiom property, e.g. "license"
   //           (falls back to axiomIri if the API gives no label)
   // values:   the axiom's values as array, e.g. ["https://creativecommons.org/licenses/by-sa/4.0/"]
-  function getAxiomList(entity: Entity, axioms: any): ReactElement {
+  function getAxiomList(thing: Thing, axioms: any): ReactElement {
     return (
       <ul>
         {Object.keys(axioms).map((axiomIri) => {
           const label =
-            entity.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
+            thing.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
           return (
             <li key={axiomIri}>
               {capitalize(label.replaceAll("_", " "))}
@@ -141,6 +142,22 @@ function EntityInfoPresentation(
           );
         })}
       </ul>
+    );
+  }
+
+  // A value (e.g. a synonym) followed by its axioms as a list
+  function getValueWithAxioms(thing: Thing, value: Reified<any>): ReactElement {
+    return (
+      <>
+        <RenderedReified
+          parentEntity={thing}
+          reified={value}
+          showBadges={showBadges}
+          showAxiomsTooltip={false}
+          onNavigates={onNavigates}
+        />
+        {value.hasMetadata() && getAxiomList(thing, value.getMetadata())}
+      </>
     );
   }
 
@@ -206,12 +223,7 @@ function EntityInfoPresentation(
                     {entity.getSynonyms().map((synonym) => {
                       return (
                         <li key={randomString()} id={synonym.value}>
-                          <RenderedReified
-                            parentEntity={entity}
-                            reified={synonym}
-                            showBadges={showBadges}
-                            onNavigates={onNavigates}
-                          />
+                          {getValueWithAxioms(entity, synonym)}
                         </li>
                       );
                     })}
@@ -219,14 +231,7 @@ function EntityInfoPresentation(
                   <p></p>
                 </>
               ) : (
-                <p>
-                  <RenderedReified
-                    parentEntity={entity}
-                    reified={entity.getSynonyms()[0]}
-                    showBadges={showBadges}
-                    onNavigates={onNavigates}
-                  />
-                </p>
+                <div>{getValueWithAxioms(entity, entity.getSynonyms()[0])}</div>
               )}
             </EuiFlexItem>
           </>
@@ -881,12 +886,7 @@ function EntityInfoPresentation(
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                            <RenderedReified
-                              parentEntity={thing}
-                              reified={annotation}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
-                            />
+                            {getValueWithAxioms(thing, annotation)}
                           </li>
                         );
                       })}
@@ -894,14 +894,9 @@ function EntityInfoPresentation(
                     <p></p>
                   </>
                 ) : (
-                  <p key={randomString()}>
-                    <RenderedReified
-                      parentEntity={thing}
-                      reified={annos[0]}
-                      showBadges={showBadges}
-                      onNavigates={onNavigates}
-                    />
-                  </p>
+                  <div key={randomString()}>
+                    {getValueWithAxioms(thing, annos[0])}
+                  </div>
                 )}
               </EuiFlexItem>
             </>
