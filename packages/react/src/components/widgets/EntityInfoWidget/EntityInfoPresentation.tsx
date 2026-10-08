@@ -132,12 +132,14 @@ function EntityInfoPresentation(
         {Object.keys(axioms).map((axiomIri) => {
           const label =
             thing.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
+          // Set removes duplicate values, e.g. "SY, SY, SY" -> "SY"
+          const values = [...new Set(asArray(axioms[axiomIri]))];
           return (
             <li key={axiomIri}>
               {capitalize(label.replaceAll("_", " "))}
               &nbsp;
               <Tooltip text={axiomIri} />
-              &nbsp;: {asArray(axioms[axiomIri]).join(", ")}
+              &nbsp;: {values.join(", ")}
             </li>
           );
         })}
