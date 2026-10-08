@@ -114,6 +114,36 @@ function EntityInfoPresentation(
     );
   }
 
+  // Lists the axioms (metadata) of one value, e.g. of a description.
+  // axioms: { [axiomIri]: values }, e.g.
+  //   {
+  //     "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"],
+  //     "http://purl.org/dc/terms/source": ["https://doi.org/10.1351/goldbook.M03748"],
+  //   }
+  // axiomIri: the key, the IRI of the axiom property, e.g. "http://purl.org/dc/terms/license"
+  //           (shown in the info icon)
+  // label:    readable name of the axiom property, e.g. "license"
+  //           (falls back to axiomIri if the API gives no label)
+  // values:   the axiom's values as array, e.g. ["https://creativecommons.org/licenses/by-sa/4.0/"]
+  function getAxiomList(entity: Entity, axioms: any): ReactElement {
+    return (
+      <ul>
+        {Object.keys(axioms).map((axiomIri) => {
+          const label =
+            entity.getLinkedEntities().getLabelForIri(axiomIri) || axiomIri;
+          return (
+            <li key={axiomIri}>
+              {capitalize(label.replaceAll("_", " "))}
+              &nbsp;
+              <Tooltip text={axiomIri} />
+              &nbsp;: {asArray(axioms[axiomIri]).join(", ")}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
   function getDescriptionSection(entity: Entity): ReactElement {
     return (
       <>
@@ -138,26 +168,8 @@ function EntityInfoPresentation(
               {entity.getDescriptionAsArray().map((description) => (
                 <div key={randomString()}>
                   <p>{description.value}</p>
-                  {description.hasMetadata() && (
-                    <ul>
-                      {Object.entries(description.getMetadata() ?? {}).map(
-                        ([axiomIri, values]) => {
-                          const label =
-                            entity
-                              .getLinkedEntities()
-                              .getLabelForIri(axiomIri) || axiomIri;
-                          return (
-                            <li key={axiomIri}>
-                              {capitalize(label.replaceAll("_", " "))}
-                              &nbsp;
-                              <Tooltip text={axiomIri} />
-                              &nbsp;: {asArray(values).join(", ")}
-                            </li>
-                          );
-                        },
-                      )}
-                    </ul>
-                  )}
+                  {description.hasMetadata() &&
+                    getAxiomList(entity, description.getMetadata())}
                 </div>
               ))}
             </EuiFlexItem>
