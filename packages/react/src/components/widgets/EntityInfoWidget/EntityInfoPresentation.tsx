@@ -186,7 +186,7 @@ function EntityInfoPresentation(
               </span>
               {entity.getDescriptionAsArray().map((description) => (
                 <div key={randomString()}>
-                  <p>{description.value}</p>
+                  <div>{description.value}</div>
                   {description.hasMetadata() &&
                     getAxiomList(entity, description.getMetadata())}
                 </div>
@@ -233,7 +233,10 @@ function EntityInfoPresentation(
                   <p></p>
                 </>
               ) : (
-                <div>{getValueWithAxioms(entity, entity.getSynonyms()[0])}</div>
+                <>
+                  {getValueWithAxioms(entity, entity.getSynonyms()[0])}
+                  <p></p>
+                </>
               )}
             </EuiFlexItem>
           </>
@@ -896,9 +899,10 @@ function EntityInfoPresentation(
                     <p></p>
                   </>
                 ) : (
-                  <div key={randomString()}>
+                  <>
                     {getValueWithAxioms(thing, annos[0])}
-                  </div>
+                    <p></p>
+                  </>
                 )}
               </EuiFlexItem>
             </>
