@@ -11,7 +11,7 @@ import { useCollectionStatistics } from "./useCollectionStatistics";
 
 function DataContentWidget(props: DataContentWidgetProps): React.JSX.Element {
   const { api, parameter, collectionId, ...rest } = props;
-  const olsApi = new OlsOntologyApi(api);
+  const olsApi = new OlsOntologyApi(api ?? "");
   const statisticsApi = GATEWAY_API_MOD_ENDPOINT;
 
   const {

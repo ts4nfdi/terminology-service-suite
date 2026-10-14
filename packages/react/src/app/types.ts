@@ -221,8 +221,12 @@ export type AutocompleteWidgetProps = Partial<EuiComboBoxProps<EntityValue>> &
     showApiRequestButton?: boolean;
   };
 
-export type DataContentWidgetProps = ApiObj &
-  ParameterObj & {
+export type DataContentWidgetProps = {
+  /**
+   * The API instance for the API call.
+   */
+  api?: string;
+} & ParameterObj & {
     /**
      * The id of a TS4NFDI API Gateway collection. If set, the statistics of
      * that collection are shown instead of the OLS ontologies data.
