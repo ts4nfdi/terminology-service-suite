@@ -9,7 +9,6 @@ import {
   DataContentWidgetStoryArgTypes,
   ErrorDataContentWidgetArgs,
   NFDI4HealthDataContentWidgetArgs,
-  SafetyDataContentWidgetArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/DataContentWidget/DataContentWidgetStories";
 import "./index";
 
@@ -58,10 +57,6 @@ type Story = StoryObj<typeof meta>;
 
 export const NFDI4HealthDataContentWidget: Story = {
   args: NFDI4HealthDataContentWidgetArgs,
-};
-
-export const SafetyDataContentWidget: Story = {
-  args: SafetyDataContentWidgetArgs,
 };
 
 export const ErrorDataContentWidget: Story = {

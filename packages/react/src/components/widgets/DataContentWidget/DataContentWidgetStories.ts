@@ -1,11 +1,14 @@
 import * as globals from "../../../app/globals";
 
 import { expect, waitFor, within } from "storybook/test";
-import { apiArgType, parameterArgType } from "../../../stories/storyArgs";
+import {
+  apiArgType,
+  dataContentParameterArgType,
+} from "../../../stories/storyArgs";
 
 export const DataContentWidgetStoryArgTypes = {
   ...apiArgType,
-  ...parameterArgType,
+  ...dataContentParameterArgType,
 };
 
 export const DataContentWidgetStoryArgs = {
@@ -18,16 +21,14 @@ export const NFDI4HealthDataContentWidgetArgs = {
   api: globals.ZBMED_OLS4_API,
 };
 
-export const SafetyDataContentWidgetArgs = {
-  ...DataContentWidgetStoryArgs,
-  api: globals.ZBMED_OLS4_API,
-  parameter: "collection=safety",
-};
-
 export const ErrorDataContentWidgetArgs = {
   ...DataContentWidgetStoryArgs,
-  api: globals.ZBMED_OLS4_API,
-  parameter: "collection=safety",
+  api: "",
+};
+
+export const DataContentFAIRagroCollectionArgs = {
+  ...DataContentWidgetStoryArgs,
+  collectionId: "ff5491d1-d0a9-481e-ac90-0fad065fa097",
 };
 
 export const commonDataContentWidgetPlay = async ({
