@@ -9,11 +9,12 @@ export declare const NFDI4HealthDataContentWidgetArgs: {
     api: string;
     parameter: string;
 };
-export declare const SafetyDataContentWidgetArgs: {
+export declare const ErrorDataContentWidgetArgs: {
     api: string;
     parameter: string;
 };
-export declare const ErrorDataContentWidgetArgs: {
+export declare const DataContentFAIRagroCollectionArgs: {
+    collectionId: string;
     api: string;
     parameter: string;
 };
