@@ -31,6 +31,11 @@ export const DataContentFAIRagroCollectionArgs = {
   collectionId: "ff5491d1-d0a9-481e-ac90-0fad065fa097",
 };
 
+export const DataContentCollectionWithoutPropertiesArgs = {
+  ...DataContentWidgetStoryArgs,
+  collectionId: "dc45621d-7e40-47ce-9616-4133f0b54edf",
+};
+
 export const commonDataContentWidgetPlay = async ({
   canvasElement,
 }: {
