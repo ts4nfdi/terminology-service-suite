@@ -53,6 +53,13 @@ function CountItem({
   );
 }
 
+function formatDateTime(timestamp: number): string {
+  const iso = new Date(timestamp).toISOString(); // e.g. 2026-10-15T13:08:00.000Z
+  const date = iso.slice(0, 10);
+  const time = iso.slice(11);
+  return time === "00:00:00.000Z" ? date : `${date} ${time.slice(0, 5)} UTC`;
+}
+
 function DataContentPresentation(
   props: DataContentPresentationProps,
 ): React.JSX.Element {
@@ -64,9 +71,7 @@ function DataContentPresentation(
         data-testid="data-content"
         title="Data Content"
         description={
-          dataUpdatedAt
-            ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}`
-            : ""
+          dataUpdatedAt ? `Updated ${formatDateTime(dataUpdatedAt)}` : ""
         }
         layout="horizontal"
       >
@@ -80,9 +85,7 @@ function DataContentPresentation(
       data-testid="data-content"
       title="Data Content"
       description={
-        dataUpdatedAt
-          ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}`
-          : ""
+        dataUpdatedAt ? `Updated at ${formatDateTime(dataUpdatedAt)}` : ""
       }
       layout="horizontal"
     >
