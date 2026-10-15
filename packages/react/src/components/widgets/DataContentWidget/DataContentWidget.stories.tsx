@@ -3,6 +3,7 @@ import { DataContentDescription } from "../../../app/widgetDescriptions";
 import { DataContentWidget } from "./DataContentWidget";
 import {
   commonDataContentWidgetPlay,
+  DataContentCollectionWithoutPropertiesArgs,
   DataContentFAIRagroCollectionArgs,
   DataContentWidgetStoryArgs,
   DataContentWidgetStoryArgTypes,
@@ -37,7 +38,7 @@ export const NFDI4HealthDataContentWidget: Story = {
 };
 
 export const ErrorDataContentWidget: Story = {
-  name: "Error",
+  name: "Wrong API URL",
   args: ErrorDataContentWidgetArgs,
   play: commonDataContentWidgetPlay,
 };
@@ -45,5 +46,11 @@ export const ErrorDataContentWidget: Story = {
 export const DataContentFAIRagroCollection: Story = {
   name: "FAIRagro Collection",
   args: DataContentFAIRagroCollectionArgs,
+  play: commonDataContentWidgetPlay,
+};
+
+export const DataContentCollectionWithoutProperties: Story = {
+  name: "Collection without properties",
+  args: DataContentCollectionWithoutPropertiesArgs,
   play: commonDataContentWidgetPlay,
 };

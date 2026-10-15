@@ -3,10 +3,77 @@
 import { EuiCard, EuiLoadingSpinner, EuiProvider, EuiText } from "@elastic/eui";
 import { DataContentPresentationProps } from "../../../app";
 
+type CountKey =
+  | "getTotalOntologies"
+  | "getNumClasses"
+  | "getNumProperties"
+  | "getNumIndividuals";
+
+const zeroMessages: Record<CountKey, string> = {
+  getTotalOntologies: "No ontologies or terminologies",
+  getNumClasses: "No terms",
+  getNumProperties: "No properties",
+  getNumIndividuals: "No individuals",
+};
+
+const unavailableMessages: Record<CountKey, string> = {
+  getTotalOntologies: "Ontology count unavailable",
+  getNumClasses: "Term count unavailable",
+  getNumProperties: "Property count unavailable",
+  getNumIndividuals: "Individual count unavailable",
+};
+
+function isCountUnavailable(count: number | undefined | null): boolean {
+  return count === undefined || count === null || Number.isNaN(count);
+}
+
+function CountItem({
+  count,
+  kind,
+  singular,
+  plural,
+}: {
+  count: number | undefined | null;
+  kind: CountKey;
+  singular: string;
+  plural: string;
+}) {
+  if (isCountUnavailable(count)) {
+    return <li style={{ fontStyle: "italic" }}>{unavailableMessages[kind]}</li>;
+  }
+
+  if (count === 0) {
+    return <li style={{ fontStyle: "italic" }}>{zeroMessages[kind]}</li>;
+  }
+
+  return (
+    <li>
+      {count?.toLocaleString()} {count === 1 ? singular : plural}
+    </li>
+  );
+}
+
 function DataContentPresentation(
   props: DataContentPresentationProps,
 ): React.JSX.Element {
   const { isError, isLoading, dataUpdatedAt, ontologiesData, ...rest } = props;
+
+  if (isError) {
+    return (
+      <EuiCard
+        data-testid="data-content"
+        title="Data Content"
+        description={
+          dataUpdatedAt
+            ? `Updated ${new Date(dataUpdatedAt).toLocaleString()}`
+            : ""
+        }
+        layout="horizontal"
+      >
+        <EuiText {...rest}>No data content available</EuiText>
+      </EuiCard>
+    );
+  }
 
   return (
     <EuiCard
@@ -20,47 +87,34 @@ function DataContentPresentation(
       layout="horizontal"
     >
       <EuiText {...rest}>
-        {isError && <EuiText>No data content available</EuiText>}
         {isLoading ? (
           <EuiLoadingSpinner size="s" />
         ) : (
           <ul>
-            {ontologiesData?.getTotalOntologies() ? (
-              <li>
-                {ontologiesData?.getTotalOntologies().toLocaleString()}{" "}
-                ontologies and terminologies
-              </li>
-            ) : (
-              <li style={{ fontStyle: "italic" }}>
-                ontology number not available
-              </li>
-            )}
-            {ontologiesData?.getNumClasses() ? (
-              <li>{ontologiesData?.getNumClasses().toLocaleString()} terms</li>
-            ) : (
-              <li style={{ fontStyle: "italic" }}>term number not available</li>
-            )}
-            {ontologiesData?.getNumProperties() ? (
-              <li>
-                {ontologiesData?.getNumProperties().toLocaleString()} properties
-              </li>
-            ) : (
-              <li style={{ fontStyle: "italic" }}>
-                property number not available
-              </li>
-            )}
-            {ontologiesData?.getNumIndividuals() ? (
-              <li>
-                {ontologiesData?.getNumIndividuals().toLocaleString()}{" "}
-                individuals
-              </li>
-            ) : (
-              <li style={{ fontStyle: "italic" }}>
-                individual number not available
-              </li>
-            )}
-            {/* <li>Version {NOT_AVAILABLE}</li> */}{" "}
-            {/* TODO how to get API version? */}
+            <CountItem
+              count={ontologiesData?.getTotalOntologies()}
+              kind="getTotalOntologies"
+              singular="ontology or terminology"
+              plural="ontologies and terminologies"
+            />
+            <CountItem
+              count={ontologiesData?.getNumClasses()}
+              kind="getNumClasses"
+              singular="term"
+              plural="terms"
+            />
+            <CountItem
+              count={ontologiesData?.getNumProperties()}
+              kind="getNumProperties"
+              singular="property"
+              plural="properties"
+            />
+            <CountItem
+              count={ontologiesData?.getNumIndividuals()}
+              kind="getNumIndividuals"
+              singular="individual"
+              plural="individuals"
+            />
           </ul>
         )}
       </EuiText>
