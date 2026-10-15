@@ -34,6 +34,7 @@ import {
   isIndividual,
   isProperty,
 } from "../../../model/ModelTypeCheck";
+import Reified from "../../../model/Reified";
 import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
@@ -98,14 +99,109 @@ function EntityInfoPresentation(
     );
   }
 
+  /**
+   * Shows the CURIE, which only the v2 API provides. getShortForm() is not used
+   * because it falls back to the short form (e.g. "altLabel"), which is no CURIE.
+   */
+  function getCurieSection(entity: Entity): ReactElement {
+    const curie = entity.properties["curie"];
+    return (
+      <>
+        {curie && (
+          <>
+            <EuiFlexItem>
+              <b>CURIE:</b>
+              {curie}
+            </EuiFlexItem>
+            <EuiSpacer />
+          </>
+        )}
+      </>
+    );
+  }
+
+  /**
+   * Renders an info icon which shows the IRI of a property on hover. Renders
+   * nothing if there is no IRI: the legacy API only has names as keys (e.g.
+   * "Display_Name") and the v2 API adds keys of its own (e.g. "oboSynonymTypeName").
+   * @param iris the IRI(s) of the property
+   */
+  function getIriTooltip(iris: string | string[]): ReactElement {
+    const validIris = asArray(iris).filter((iri) => iri.includes("://"));
+    if (validIris.length === 0) return <></>;
+
+    return (
+      <>
+        &nbsp;
+        <Tooltip text={validIris.join("\n")} />
+        &nbsp;
+      </>
+    );
+  }
+
+  /**
+   * Lists the axioms (metadata) of one value, e.g. of a description. Each axiom
+   * shows the label of its property, an info icon with the property IRI and its
+   * values. A value can itself be a list (e.g. several cross references), so the
+   * values are flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
+   * @param thing the entity the axioms exist in, used to look up the labels
+   * @param axioms the axioms as { [axiomIri]: values }, e.g.
+   * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
+   */
+  function getAxiomList(thing: Thing, axioms: any): ReactElement {
+    return (
+      <ul>
+        {Object.keys(axioms).map((axiomIri) => {
+          const label = thing.getLinkedEntities().getLabelForIri(axiomIri);
+          const values = [...new Set(asArray(axioms[axiomIri]).flat())];
+          return (
+            <li key={axiomIri}>
+              {label ? capitalize(label.replaceAll("_", " ")) : axiomIri}
+              {getIriTooltip(axiomIri)}: {values.join(", ")}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  /**
+   * Renders a value (e.g. a synonym) followed by its axioms as a list.
+   * @param thing the entity the value exists in
+   * @param value the value including its axioms
+   */
+  function getValueWithAxioms(thing: Thing, value: Reified<any>): ReactElement {
+    return (
+      <>
+        <RenderedReified
+          parentEntity={thing}
+          reified={value}
+          showBadges={showBadges}
+          showAxiomsTooltip={false}
+          onNavigates={onNavigates}
+        />
+        {value.hasMetadata() && getAxiomList(thing, value.getMetadata())}
+      </>
+    );
+  }
+
   function getDescriptionSection(entity: Entity): ReactElement {
     return (
       <>
         {entity.getDescription() && (
           <>
             <EuiFlexItem>
-              <b>Description:</b>
-              {entity.getDescription()}
+              <span>
+                <b>Description:</b>
+                {getIriTooltip(entity.properties["definitionProperty"])}
+              </span>
+              {entity.getDescriptionAsArray().map((description) => (
+                <div key={randomString()}>
+                  <div>{description.value}</div>
+                  {description.hasMetadata() &&
+                    getAxiomList(entity, description.getMetadata())}
+                </div>
+              ))}
             </EuiFlexItem>
             <EuiSpacer />
           </>
@@ -120,19 +216,17 @@ function EntityInfoPresentation(
         {entity.getSynonyms().length > 0 && (
           <>
             <EuiFlexItem>
-              <b>Synonyms:</b>
+              <span>
+                <b>Synonyms:</b>
+                {getIriTooltip(entity.properties["synonymProperty"])}
+              </span>
               {entity.getSynonyms().length > 1 ? (
                 <>
                   <ul>
                     {entity.getSynonyms().map((synonym) => {
                       return (
                         <li key={randomString()} id={synonym.value}>
-                          <RenderedReified
-                            parentEntity={entity}
-                            reified={synonym}
-                            showBadges={showBadges}
-                            onNavigates={onNavigates}
-                          />
+                          {getValueWithAxioms(entity, synonym)}
                         </li>
                       );
                     })}
@@ -140,14 +234,10 @@ function EntityInfoPresentation(
                   <p></p>
                 </>
               ) : (
-                <p>
-                  <RenderedReified
-                    parentEntity={entity}
-                    reified={entity.getSynonyms()[0]}
-                    showBadges={showBadges}
-                    onNavigates={onNavigates}
-                  />
-                </p>
+                <>
+                  {getValueWithAxioms(entity, entity.getSynonyms()[0])}
+                  <p></p>
+                </>
               )}
             </EuiFlexItem>
           </>
@@ -762,14 +852,17 @@ function EntityInfoPresentation(
           if (annos.length && "value" in annos[0] && isMathML(annos[0].value)) {
             return (
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  {getIriTooltip(annoKey)}
+                </span>
                 {renderMathFormulaIfMathMl(annoKey)}
               </EuiFlexItem>
             );
@@ -778,26 +871,24 @@ function EntityInfoPresentation(
           return (
             <>
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  {getIriTooltip(annoKey)}
+                </span>
                 {annos.length > 1 ? (
                   <>
                     <ul>
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                            <RenderedReified
-                              parentEntity={thing}
-                              reified={annotation}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
-                            />
+                            {getValueWithAxioms(thing, annotation)}
                           </li>
                         );
                       })}
@@ -805,14 +896,10 @@ function EntityInfoPresentation(
                     <p></p>
                   </>
                 ) : (
-                  <p key={randomString()}>
-                    <RenderedReified
-                      parentEntity={thing}
-                      reified={annos[0]}
-                      showBadges={showBadges}
-                      onNavigates={onNavigates}
-                    />
-                  </p>
+                  <>
+                    {getValueWithAxioms(thing, annos[0])}
+                    <p></p>
+                  </>
                 )}
               </EuiFlexItem>
             </>
@@ -863,6 +950,7 @@ function EntityInfoPresentation(
       {entity !== undefined && (
         <EuiText {...rest}>
           {getLabelSection(entity)}
+          {getCurieSection(entity)}
           {getDescriptionSection(entity)}
           {getSynonymsSection(entity)}
           {isClass(entity) && (
