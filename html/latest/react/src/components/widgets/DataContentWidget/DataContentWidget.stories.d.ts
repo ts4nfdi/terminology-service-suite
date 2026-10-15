@@ -25,3 +25,4 @@ type Story = StoryObj<typeof meta>;
 export declare const NFDI4HealthDataContentWidget: Story;
 export declare const ErrorDataContentWidget: Story;
 export declare const DataContentFAIRagroCollection: Story;
+export declare const DataContentCollectionWithoutProperties: Story;
