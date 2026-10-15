@@ -1,0 +1,23 @@
+export declare const DataContentWidgetStoryArgTypes: {
+    [x: string]: any;
+};
+export declare const DataContentWidgetStoryArgs: {
+    api: string;
+    parameter: string;
+};
+export declare const NFDI4HealthDataContentWidgetArgs: {
+    api: string;
+    parameter: string;
+};
+export declare const ErrorDataContentWidgetArgs: {
+    api: string;
+    parameter: string;
+};
+export declare const DataContentFAIRagroCollectionArgs: {
+    collectionId: string;
+    api: string;
+    parameter: string;
+};
+export declare const commonDataContentWidgetPlay: ({ canvasElement, }: {
+    canvasElement: HTMLElement;
+}) => Promise<void>;
