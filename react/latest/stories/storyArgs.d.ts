@@ -115,6 +115,7 @@ export declare const selectionChangedEventArgType: {
 export declare const placeholderArgType: ArgTypes;
 export declare const preselectedArgType: ArgTypes;
 export declare const parameterArgType: ArgTypes;
+export declare const dataContentParameterArgType: ArgTypes;
 export declare const parameterArgTypeHierarchy: {
     parameter: {
         required: boolean;

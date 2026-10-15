@@ -52,6 +52,17 @@ export declare const DefiningOntologyUnavailableArgs: {
     readonly entityType: "term";
     readonly parameter: "";
 };
+/**
+ * Points at a host that does not answer, so the tab shows the error message
+ * instead of its empty state.
+ */
+export declare const RequestFailedArgs: {
+    readonly api: "https://example.com/nonexistent/";
+    readonly iri: "http://purl.obolibrary.org/obo/RXNO_0000138";
+    readonly entityType: "term";
+    readonly ontologyId: "rxno";
+    readonly parameter: "";
+};
 export declare const commonCrossRefWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;

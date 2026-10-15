@@ -1,0 +1,13 @@
+import{u as O,p as C,t as W,v as _,q as D,j as S,ay as I}from"./storyArgs-DUK7Dmv-.js";import{C as h}from"./CrossRefTabWidget-DxishSGr.js";import{E as s}from"./globals-1uEo64sR.js";import"./iframe-CLq8Nv6q.js";import"./preload-helper-Dp1pzeXC.js";import"./useQuery-4FJurkOA.js";import"./panel-D_A-q6pE.js";import"./loading_spinner-D7xS8prv.js";import"./shadow-DzSNNLaN.js";import"./_button-DN-3Cksc.js";import"./flex_group-CEKKSo7V.js";import"./text-CAwFaY9P.js";import"./link.styles-DnobxAqS.js";import"./flex_item-C2DAtMf2.js";const{expect:x,waitFor:E,within:P}=__STORYBOOK_MODULE_TEST__,v={...S,...D,..._,...W,...C,...O},q={api:"",iri:"",useLegacy:!0,ontologyId:"",entityType:"term",parameter:""},F={iri:"http://purl.obolibrary.org/obo/RXNO_0000138",api:s,entityType:"term",ontologyId:"rxno",parameter:""},U={api:s,iri:"http://purl.obolibrary.org/obo/IAO_0000631",entityType:"term",parameter:""},w={api:s,iri:"http://identifiers.org/uniprot/Q9VAM9",entityType:"term",parameter:""},B={api:"https://example.com/nonexistent/",iri:"http://purl.obolibrary.org/obo/RXNO_0000138",entityType:"term",ontologyId:"rxno",parameter:""},a=async({canvasElement:R})=>{const b=P(R);await E(async()=>{const A=b.getByTestId("cross-ref");await x(A).toBeInTheDocument()},{timeout:3e3})},Z={title:"Additional Entity Metadata/CrossRefTabWidget",component:h,parameters:{layout:"centered",docs:{description:{component:I}}},argTypes:v,args:q},e={args:F,play:a},r={args:U,play:a},o={args:w,play:a},t={args:B,play:a};var i,n,p;e.parameters={...e.parameters,docs:{...(i=e.parameters)==null?void 0:i.docs,source:{originalSource:`{
+  args: CrossRefTabWidget1Args,
+  play: commonCrossRefWidgetPlay
+}`,...(p=(n=e.parameters)==null?void 0:n.docs)==null?void 0:p.source}}};var g,c,m;r.parameters={...r.parameters,docs:{...(g=r.parameters)==null?void 0:g.docs,source:{originalSource:`{
+  args: SelectingDefiningOntologyArgs,
+  play: commonCrossRefWidgetPlay
+}`,...(m=(c=r.parameters)==null?void 0:c.docs)==null?void 0:m.source}}};var y,l,d;o.parameters={...o.parameters,docs:{...(y=o.parameters)==null?void 0:y.docs,source:{originalSource:`{
+  args: DefiningOntologyUnavailableArgs,
+  play: commonCrossRefWidgetPlay
+}`,...(d=(l=o.parameters)==null?void 0:l.docs)==null?void 0:d.source}}};var f,u,T;t.parameters={...t.parameters,docs:{...(f=t.parameters)==null?void 0:f.docs,source:{originalSource:`{
+  args: RequestFailedArgs,
+  play: commonCrossRefWidgetPlay
+}`,...(T=(u=t.parameters)==null?void 0:u.docs)==null?void 0:T.source}}};const $=["CrossRefTabWidget1","SelectingDefiningOntology","DefiningOntologyUnavailable","RequestFailed"];export{e as CrossRefTabWidget1,o as DefiningOntologyUnavailable,t as RequestFailed,r as SelectingDefiningOntology,$ as __namedExportsOrder,Z as default};

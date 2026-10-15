@@ -52,3 +52,4 @@ type Story = StoryObj<typeof meta>;
 export declare const CrossRefTabWidget1: Story;
 export declare const SelectingDefiningOntology: Story;
 export declare const DefiningOntologyUnavailable: Story;
+export declare const RequestFailed: Story;
