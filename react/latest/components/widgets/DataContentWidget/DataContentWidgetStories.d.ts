@@ -18,6 +18,11 @@ export declare const DataContentFAIRagroCollectionArgs: {
     api: string;
     parameter: string;
 };
+export declare const DataContentCollectionWithoutPropertiesArgs: {
+    collectionId: string;
+    api: string;
+    parameter: string;
+};
 export declare const commonDataContentWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;
