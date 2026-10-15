@@ -3,11 +3,11 @@ import { DataContentDescription } from "../../../app/widgetDescriptions";
 import { DataContentWidget } from "./DataContentWidget";
 import {
   commonDataContentWidgetPlay,
+  DataContentFAIRagroCollectionArgs,
   DataContentWidgetStoryArgs,
   DataContentWidgetStoryArgTypes,
   ErrorDataContentWidgetArgs,
   NFDI4HealthDataContentWidgetArgs,
-  SafetyDataContentWidgetArgs,
 } from "./DataContentWidgetStories";
 
 const meta = {
@@ -31,16 +31,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NFDI4HealthDataContentWidget: Story = {
+  name: "SemLookP NFDI4Health",
   args: NFDI4HealthDataContentWidgetArgs,
   play: commonDataContentWidgetPlay,
 };
 
-export const SafetyDataContentWidget: Story = {
-  args: SafetyDataContentWidgetArgs,
+export const ErrorDataContentWidget: Story = {
+  name: "Error",
+  args: ErrorDataContentWidgetArgs,
   play: commonDataContentWidgetPlay,
 };
 
-export const ErrorDataContentWidget: Story = {
-  args: ErrorDataContentWidgetArgs,
+export const DataContentFAIRagroCollection: Story = {
+  name: "FAIRagro Collection",
+  args: DataContentFAIRagroCollectionArgs,
   play: commonDataContentWidgetPlay,
 };

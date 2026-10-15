@@ -214,6 +214,21 @@ These parameters can be used to filter the search results. Each parameter can be
     `,
   },
 };
+export const dataContentParameterArgType: ArgTypes = {
+  parameter: {
+    required: false,
+    table: {
+      type: { summary: "string" },
+      defaultValue: { summary: "-" },
+    },
+    description: `
+
+Additional parameters to pass to the API.
+
+These parameters can be used to filter the results. Each parameter can be combined with the special character **&**. The values of a parameter key can be combined with a comma (**,**).
+    `,
+  },
+};
 export const parameterArgTypeHierarchy = {
   parameter: {
     required: false,

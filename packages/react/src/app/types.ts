@@ -6,9 +6,9 @@ import { EuiTextProps } from "@elastic/eui/src/components/text/text";
 import { EntityValue } from "../components/widgets/AutocompleteWidget/AutocompleteWidget";
 import {
   Entity,
-  Ontology,
-  Ontologies,
   Individual,
+  Ontologies,
+  Ontology,
   Thing,
 } from "../model/interfaces";
 import {
@@ -221,7 +221,18 @@ export type AutocompleteWidgetProps = Partial<EuiComboBoxProps<EntityValue>> &
     showApiRequestButton?: boolean;
   };
 
-export type DataContentWidgetProps = ApiObj & ParameterObj;
+export type DataContentWidgetProps = {
+  /**
+   * The API instance for the API call.
+   */
+  api?: string;
+} & ParameterObj & {
+    /**
+     * The id of a TS4NFDI API Gateway collection. If set, the statistics of
+     * that collection are shown instead of the OLS ontologies data.
+     */
+    collectionId?: string;
+  };
 
 export type DataContentPresentationProps = EuiTextProps & {
   ontologiesData?: Ontologies;
@@ -1199,4 +1210,30 @@ export type UseEntityProviderResult = {
    * The error that made the request fail, if any.
    */
   error?: Error;
+};
+
+export type UseCollectionStatisticsProps = {
+  /**
+   * The API instance for the API call. Defaults to the TS4NFDI API Gateway.
+   */
+  api?: string;
+  /**
+   * The id of the collection whose statistics are shown.
+   */
+  collectionId?: string;
+  /**
+   * If false, no request is made and the result stays empty. Default is true.
+   */
+  enabled?: boolean;
+};
+
+export type UseCollectionStatisticsResult = {
+  /**
+   * The latest statistics of the collection, in the shape expected by the
+   * DataContentPresentation.
+   */
+  ontologiesData?: Ontologies;
+  isLoading: boolean;
+  isError: boolean;
+  dataUpdatedAt?: number;
 };
