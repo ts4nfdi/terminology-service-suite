@@ -113,13 +113,14 @@ export class OlsOntologyApi extends OlsBaseApi {
     contentParams,
     parameter,
     useLegacy?: boolean,
+    abortSignal?: AbortSignal,
   ) => {
     const params = {
       ...buildOtherParams(parameter),
     };
     return this.makeCall(
       "ontologies/" + contentParams?.ontologyId,
-      params,
+      { params: params, signal: abortSignal },
       getUseLegacy(useLegacy),
     );
   };
