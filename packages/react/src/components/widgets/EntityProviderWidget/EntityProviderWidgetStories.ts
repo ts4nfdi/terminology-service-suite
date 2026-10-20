@@ -1,10 +1,10 @@
 import { expect, waitFor, within } from "storybook/test";
 import {
   disabledArgs,
+  entityProviderArgs,
   EntityProviderHookStoryArgs,
   EntityProviderHookStoryArgTypes,
   notFoundArgs,
-  withOntologyIdArgs,
 } from "./EntityProviderHookStories";
 
 export const EntityProviderWidgetStoryArgTypes = {
@@ -30,10 +30,10 @@ export const EntityProviderWidgetStoryArgs = {
   showRaw: true,
 };
 
-export const WithOntologyIdArgs = { ...withOntologyIdArgs } as const;
+export const WithOntologyIdArgs = { ...entityProviderArgs } as const;
 
 export const WithoutRawArgs = {
-  ...withOntologyIdArgs,
+  ...entityProviderArgs,
   showRaw: false,
 } as const;
 
