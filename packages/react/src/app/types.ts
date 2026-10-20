@@ -1169,7 +1169,7 @@ export type EntityProvider = {
   raw: Record<string, any>;
 };
 
-export type EntityProviderWidgetProps = ForcedIriObj &
+export type EntityProviderWidgetProps = OptionalIriObj &
   OptionalOntologyIdObj & {
     /**
      * The API instance for the API call. Defaults to the TS4NFDI API Gateway
