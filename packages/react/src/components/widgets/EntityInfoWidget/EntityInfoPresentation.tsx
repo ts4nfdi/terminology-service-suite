@@ -496,6 +496,8 @@ function EntityInfoPresentation(
 
     const propertyAssertions: ReactElement[] = [];
     const formulaAssertions: ReactElement[] = [];
+    const formulaIris = new Set<string>();
+    const formulaSymbolIris = new Set<string>();
     const formulaSymbolRows: {
       symbol: ReactElement;
       meanings: ReactElement[];
@@ -521,6 +523,23 @@ function EntityInfoPresentation(
         ),
       },
     ];
+
+    /**
+     * Renders the title of the formulas from the labels of their properties,
+     * e.g. "Defining formula" or "In defining formula", with the info icon.
+     * @param iris the IRIs of the properties the formulas belong to
+     */
+    function getFormulaTitle(iris: Set<string>): ReactElement {
+      const labels = [...iris].map((iri) =>
+        capitalize(individual.getLinkedEntities().getLabelForIri(iri) || iri),
+      );
+      return (
+        <div>
+          <b>{labels.join(", ")}:</b>
+          {getIriTooltip([...iris])}
+        </div>
+      );
+    }
 
     function renderFormulaMeaningValue(valueIri: string): ReactElement {
       if (valueIri === individual.getIri()) {
@@ -626,6 +645,7 @@ function EntityInfoPresentation(
             });
           });
 
+          formulaSymbolIris.add(iri);
           formulaSymbolRows.push({
             symbol: (
               <MathFormulaWidget
@@ -642,6 +662,7 @@ function EntityInfoPresentation(
         }
 
         if (typeof v === "string" && isMathML(v)) {
+          formulaIris.add(iri);
           formulaAssertions.push(
             <MathFormulaWidget
               key={randomString()}
@@ -790,7 +811,7 @@ function EntityInfoPresentation(
               <b>Property assertions:</b>
               {formulaAssertions.length > 0 && (
                 <div style={{ marginTop: "12px", marginBottom: "16px" }}>
-                  <b>Formula:</b>
+                  {getFormulaTitle(formulaIris)}
                   {formulaAssertions}
                 </div>
               )}
@@ -802,6 +823,7 @@ function EntityInfoPresentation(
                     maxWidth: "720px",
                   }}
                 >
+                  {getFormulaTitle(formulaSymbolIris)}
                   <EuiBasicTable<FormulaSymbolRow>
                     tableCaption="Formula symbols"
                     responsiveBreakpoint={false}
