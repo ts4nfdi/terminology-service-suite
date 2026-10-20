@@ -603,15 +603,18 @@ function EntityInfoPresentation(
                 />
               </>
             ) : (
-              <Tooltip
-                text={
-                  typeof v === "string"
-                    ? v
-                    : typeof v === "object" && !Array.isArray(v) && v.value
-                      ? JSON.stringify(v.value)
-                      : JSON.stringify(v)
-                }
-              />
+              <>
+                &nbsp;
+                <Tooltip
+                  text={
+                    typeof v === "string"
+                      ? v
+                      : typeof v === "object" && !Array.isArray(v) && v.value
+                        ? JSON.stringify(v.value)
+                        : JSON.stringify(v)
+                  }
+                />
+              </>
             )}
           </>,
         );
@@ -639,7 +642,8 @@ function EntityInfoPresentation(
                     showBadges={showBadges}
                     onNavigates={onNavigates}
                   />
-                  : {renderFormulaMeaningValue(axiom[axiomIri])}
+                  {getIriTooltip(axiomIri)}:{" "}
+                  {renderFormulaMeaningValue(axiom[axiomIri])}
                 </span>,
               );
             });
@@ -769,15 +773,18 @@ function EntityInfoPresentation(
                 />
               </>
             ) : hasObjectProperty ? (
-              <Tooltip
-                text={
-                  typeof v === "string"
-                    ? v
-                    : typeof v === "object" && !Array.isArray(v) && v.value
-                      ? JSON.stringify(v.value)
-                      : JSON.stringify(v)
-                }
-              />
+              <>
+                &nbsp;
+                <Tooltip
+                  text={
+                    typeof v === "string"
+                      ? v
+                      : typeof v === "object" && !Array.isArray(v) && v.value
+                        ? JSON.stringify(v.value)
+                        : JSON.stringify(v)
+                  }
+                />
+              </>
             ) : hasDataProperty ? (
               <>
                 &nbsp;
@@ -810,9 +817,15 @@ function EntityInfoPresentation(
             <EuiFlexItem>
               <b>Property assertions:</b>
               {formulaAssertions.length > 0 && (
-                <div style={{ marginTop: "12px", marginBottom: "16px" }}>
+                <div
+                  style={{
+                    marginTop: "12px",
+                    marginBottom: "16px",
+                    marginLeft: "16px",
+                  }}
+                >
                   {getFormulaTitle(formulaIris)}
-                  {formulaAssertions}
+                  <div style={{ marginLeft: "16px" }}>{formulaAssertions}</div>
                 </div>
               )}
               {formulaSymbolRows.length > 0 && (
@@ -820,19 +833,22 @@ function EntityInfoPresentation(
                   style={{
                     marginTop: "12px",
                     marginBottom: "20px",
+                    marginLeft: "16px",
                     maxWidth: "720px",
                   }}
                 >
                   {getFormulaTitle(formulaSymbolIris)}
-                  <EuiBasicTable<FormulaSymbolRow>
-                    tableCaption="Formula symbols"
-                    responsiveBreakpoint={false}
-                    tableLayout="auto"
-                    items={[...formulaSymbolRows].sort((a, b) =>
-                      a.sortValue.localeCompare(b.sortValue),
-                    )}
-                    columns={formulaSymbolColumns}
-                  />
+                  <div style={{ marginLeft: "16px" }}>
+                    <EuiBasicTable<FormulaSymbolRow>
+                      tableCaption="Formula symbols"
+                      responsiveBreakpoint={false}
+                      tableLayout="auto"
+                      items={[...formulaSymbolRows].sort((a, b) =>
+                        a.sortValue.localeCompare(b.sortValue),
+                      )}
+                      columns={formulaSymbolColumns}
+                    />
+                  </div>
                 </div>
               )}
               {propertyAssertions.length > 1 ? (
