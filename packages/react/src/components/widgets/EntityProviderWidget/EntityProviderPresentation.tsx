@@ -11,7 +11,6 @@ import {
   EuiDescriptionList,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiIcon,
   EuiLink,
   EuiPanel,
   EuiProvider,
@@ -53,6 +52,35 @@ function ProviderCard({
   index: number;
 }) {
   const listItems = [
+    {
+      title: "Name",
+      description: entry.name ? (
+        <EuiFlexGroup
+          gutterSize="s"
+          alignItems="center"
+          responsive={false}
+          wrap
+        >
+          <EuiFlexItem grow={false}>
+            <EuiTitle size="xs">
+              <h4>{entry.name || "Unnamed provider"}</h4>
+            </EuiTitle>
+          </EuiFlexItem>
+          {/* Activate if feature is available */}
+          {/*{showPreferredBadge && isPreferred && (*/}
+          {/*  <EuiFlexItem grow={false}>*/}
+          {/*    <EuiBadge color="success" iconType="check">*/}
+          {/*      Defining ontology*/}
+          {/*    </EuiBadge>*/}
+          {/*  </EuiFlexItem>*/}
+          {/*)}*/}
+        </EuiFlexGroup>
+      ) : (
+        <EuiText size="s" color="subdued">
+          Not specified
+        </EuiText>
+      ),
+    },
     {
       title: "Type",
       description: entry.type ? (
@@ -101,18 +129,6 @@ function ProviderCard({
         </EuiText>
       ),
     },
-    ...(entry.ontologyId
-      ? [
-          {
-            title: "Ontology",
-            description: (
-              <EuiBadge color="primary">
-                {entry.ontologyId.toUpperCase()}
-              </EuiBadge>
-            ),
-          },
-        ]
-      : []),
   ];
 
   return (
@@ -122,27 +138,6 @@ function ProviderCard({
       paddingSize="m"
       data-testid="entity-provider-card"
     >
-      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false} wrap>
-        <EuiFlexItem grow={false}>
-          <EuiIcon type="database" size="m" aria-hidden="true" />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiTitle size="xs">
-            <h4>{entry.name || "Unnamed provider"}</h4>
-          </EuiTitle>
-        </EuiFlexItem>
-        {/* Activate if feature is available */}
-        {/*{showPreferredBadge && isPreferred && (*/}
-        {/*  <EuiFlexItem grow={false}>*/}
-        {/*    <EuiBadge color="success" iconType="check">*/}
-        {/*      Defining ontology*/}
-        {/*    </EuiBadge>*/}
-        {/*  </EuiFlexItem>*/}
-        {/*)}*/}
-      </EuiFlexGroup>
-
-      <EuiSpacer size="s" />
-
       <EuiDescriptionList
         type="column"
         compressed
