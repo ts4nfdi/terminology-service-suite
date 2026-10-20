@@ -140,28 +140,29 @@ function EntityInfoPresentation(
   }
 
   /**
-   * Lists the axioms (metadata) of one value, e.g. of a description. Each axiom
-   * shows the label of its property, an info icon with the property IRI and its
-   * values. A value can itself be a list (e.g. several cross references), so the
-   * values are flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
+   * Lists the axioms (metadata) of one value, e.g. of a description, in small
+   * text like the TIB Terminology Service. Each axiom shows the label of its
+   * property, an info icon with the property IRI and its values. A value can
+   * itself be a list (e.g. several cross refrences), so the values are
+   * flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
    * @param thing the entity the axioms exist in, used to look up the labels
    * @param axioms the axioms as { [axiomIri]: values }, e.g.
    * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
    */
   function getAxiomList(thing: Thing, axioms: any): ReactElement {
     return (
-      <ul>
+      <EuiText size="s" style={{ marginBottom: "8px" }}>
         {Object.keys(axioms).map((axiomIri) => {
           const label = thing.getLinkedEntities().getLabelForIri(axiomIri);
           const values = [...new Set(asArray(axioms[axiomIri]).flat())];
           return (
-            <li key={axiomIri}>
-              {label ? capitalize(label.replaceAll("_", " ")) : axiomIri}
+            <div key={axiomIri}>
+              <b>{label ? capitalize(label.replaceAll("_", " ")) : axiomIri}</b>
               {getIriTooltip(axiomIri)}: {values.join(", ")}
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </EuiText>
     );
   }
 
