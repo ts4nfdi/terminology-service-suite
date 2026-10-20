@@ -57,10 +57,19 @@ export const EntityProviderHookStoryArgs = {
  * property of the API Gateway configuration and may change - the story renders
  * whatever the API reports rather than asserting a specific provider.
  */
-export const withOntologyIdArgs = {
+export const entityProviderArgs = {
   api: globals.GATEWAY_API_OLS_ENDPOINT,
   ontologyId: "agrovoc",
   iri: "http://aims.fao.org/aos/agrovoc/c_12332",
+  parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
+} as const;
+
+/**
+ * If no IRI is provided, the ontology provider information is displayed
+ */
+export const ontologyProviderArgs = {
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  ontologyId: "agrovoc",
   parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
 } as const;
 

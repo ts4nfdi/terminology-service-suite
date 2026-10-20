@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { EntityProviderWidgetProps } from "../../../app/types";
 import { EntityProviderHookDescription } from "../../../app/widgetDescriptions";
 import {
-  commonEntityProviderWidgetPlay,
   disabledArgs,
+  entityProviderArgs,
   EntityProviderHookStoryArgs,
   EntityProviderHookStoryArgTypes,
   notFoundArgs,
-  withOntologyIdArgs,
+  ontologyProviderArgs,
 } from "./EntityProviderHookStories";
 import { useEntityProvider } from "./useEntityProvider";
 
@@ -61,17 +61,18 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const withOntologyId: Story = {
-  args: withOntologyIdArgs,
-  play: commonEntityProviderWidgetPlay,
+export const entityProvider: Story = {
+  args: entityProviderArgs,
+};
+
+export const ontologyProvider: Story = {
+  args: ontologyProviderArgs,
 };
 
 export const notFound: Story = {
   args: notFoundArgs,
-  play: commonEntityProviderWidgetPlay,
 };
 
 export const disabled: Story = {
   args: disabledArgs,
-  play: commonEntityProviderWidgetPlay,
 };
