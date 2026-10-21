@@ -810,72 +810,51 @@ function EntityInfoPresentation(
 
     return (
       <>
-        {(formulaAssertions.length > 0 ||
-          formulaSymbolRows.length > 0 ||
-          propertyAssertions.length > 0) && (
-          <>
-            <EuiFlexItem>
-              <b>Property assertions:</b>
-              {formulaAssertions.length > 0 && (
-                <div
-                  style={{
-                    marginTop: "12px",
-                    marginBottom: "16px",
-                    marginLeft: "16px",
-                  }}
-                >
-                  {getFormulaTitle(formulaIris)}
-                  <div style={{ marginLeft: "16px" }}>{formulaAssertions}</div>
-                </div>
+        {formulaAssertions.length > 0 && (
+          <EuiFlexItem style={{ marginBottom: "16px" }}>
+            {getFormulaTitle(formulaIris)}
+            {formulaAssertions}
+          </EuiFlexItem>
+        )}
+        {formulaSymbolRows.length > 0 && (
+          <EuiFlexItem style={{ marginBottom: "20px", maxWidth: "720px" }}>
+            {getFormulaTitle(formulaSymbolIris)}
+            <EuiBasicTable<FormulaSymbolRow>
+              tableCaption="Formula symbols"
+              responsiveBreakpoint={false}
+              tableLayout="auto"
+              items={[...formulaSymbolRows].sort((a, b) =>
+                a.sortValue.localeCompare(b.sortValue),
               )}
-              {formulaSymbolRows.length > 0 && (
-                <div
-                  style={{
-                    marginTop: "12px",
-                    marginBottom: "20px",
-                    marginLeft: "16px",
-                    maxWidth: "720px",
-                  }}
-                >
-                  {getFormulaTitle(formulaSymbolIris)}
-                  <div style={{ marginLeft: "16px" }}>
-                    <EuiBasicTable<FormulaSymbolRow>
-                      tableCaption="Formula symbols"
-                      responsiveBreakpoint={false}
-                      tableLayout="auto"
-                      items={[...formulaSymbolRows].sort((a, b) =>
-                        a.sortValue.localeCompare(b.sortValue),
-                      )}
-                      columns={formulaSymbolColumns}
-                    />
-                  </div>
-                </div>
-              )}
-              {propertyAssertions.length > 1 ? (
-                <>
-                  <ul>
-                    {propertyAssertions
-                      .map((pa) => {
-                        return (
-                          <li
-                            key={randomString()}
-                            style={{ marginBottom: "24px" }}
-                          >
-                            {pa}
-                          </li>
-                        );
-                      })
-                      .sort()}
-                  </ul>
-                  <p></p>
-                </>
-              ) : propertyAssertions.length === 1 ? (
-                <p>{propertyAssertions[0]}</p>
-              ) : (
-                <></>
-              )}
-            </EuiFlexItem>
-          </>
+              columns={formulaSymbolColumns}
+            />
+          </EuiFlexItem>
+        )}
+        {propertyAssertions.length > 0 && (
+          <EuiFlexItem>
+            <b>Property assertions:</b>
+            {propertyAssertions.length > 1 ? (
+              <>
+                <ul>
+                  {propertyAssertions
+                    .map((pa) => {
+                      return (
+                        <li
+                          key={randomString()}
+                          style={{ marginBottom: "24px" }}
+                        >
+                          {pa}
+                        </li>
+                      );
+                    })
+                    .sort()}
+                </ul>
+                <p></p>
+              </>
+            ) : (
+              <p>{propertyAssertions[0]}</p>
+            )}
+          </EuiFlexItem>
         )}
       </>
     );
