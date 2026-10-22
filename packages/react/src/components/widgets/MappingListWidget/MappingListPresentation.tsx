@@ -142,7 +142,7 @@ type MappingListPresentationProps = {
 /** UI of the mapping list; all state and data come from MappingListWidget. */
 export default function MappingListPresentation(
   props: MappingListPresentationProps,
-) {
+): React.JSX.Element {
   const {
     fromLabel,
     rowColor,
