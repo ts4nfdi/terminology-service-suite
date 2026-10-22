@@ -25,9 +25,7 @@ export declare const WithActions: {
         onNavigate: string;
     };
     WithActionsArgs: {
-        actions: {
-            render: (item: import('@ts4nfdi/terminology-service-suite/src').OlsResource) => import("react").JSX.Element;
-        }[];
+        actions: import('@elastic/eui/src/components/basic_table/action_types').Action<import('@ts4nfdi/terminology-service-suite/src').OlsResource>[];
         api: string;
         initialEntriesPerPage: number;
         pageSizeOptions: number[];
