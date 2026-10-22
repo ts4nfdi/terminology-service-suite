@@ -17,7 +17,7 @@ export function ComparisonInput({
   onTargetIriChange,
   initialTargetIri,
   className,
-}: ComparisonInputProps) {
+}: ComparisonInputProps): React.JSX.Element {
   const [inputValue, setInputValue] = useState(initialTargetIri || "");
   const [appliedIri, setAppliedIri] = useState<string | undefined>(
     initialTargetIri,

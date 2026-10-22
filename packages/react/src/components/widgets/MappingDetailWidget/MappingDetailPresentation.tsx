@@ -53,7 +53,7 @@ type MappingDetailPresentationProps = {
  */
 export default function MappingDetailPresentation(
   props: MappingDetailPresentationProps,
-) {
+): React.JSX.Element {
   const { mapping, MappingDetailBackgroundColor = "#fff5fa", onClose } = props;
 
   const { fromScheme, toScheme, modified, identifier, partOf, uri } = mapping;

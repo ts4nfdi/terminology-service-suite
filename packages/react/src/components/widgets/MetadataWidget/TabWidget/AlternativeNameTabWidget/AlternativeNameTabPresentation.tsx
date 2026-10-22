@@ -13,7 +13,7 @@ import "../../../../../style/ts4nfdiStyles/ts4nfdiAltNameTabStyle.css";
 
 function AlternativeNameTabPresentation(
   props: AlternativeNameTabWidgetPresentationProps,
-) {
+): React.JSX.Element {
   const finalClassName = props.className || "ts4nfdi-altNameTab-style";
 
   /**
@@ -59,7 +59,7 @@ function AlternativeNameTabPresentation(
 
 function WrappedAlternativeNameTabPresentation(
   props: AlternativeNameTabWidgetPresentationProps,
-) {
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <AlternativeNameTabPresentation {...props} />

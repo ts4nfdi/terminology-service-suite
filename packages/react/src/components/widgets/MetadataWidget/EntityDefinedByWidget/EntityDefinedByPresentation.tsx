@@ -3,7 +3,9 @@ import { EntityOntoListPresentationProps } from "../../../../app";
 import "../../../../style/ts4nfdiStyles/ts4nfdiEntityDefinedByStyle.css";
 import ExpandableOntologyBadgeList from "../../../helperComponents/ExpandableOntologyBadgeList";
 
-function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
+function EntityDefinedByPresentation(
+  props: EntityOntoListPresentationProps,
+): React.JSX.Element {
   const finalClassName = props.className || "ts4nfdi-entity-defined-by-style";
 
   return (
@@ -26,7 +28,7 @@ function EntityDefinedByPresentation(props: EntityOntoListPresentationProps) {
 
 function WrappedEntityDefinedByPresentation(
   props: EntityOntoListPresentationProps,
-) {
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <EntityDefinedByPresentation {...props} />

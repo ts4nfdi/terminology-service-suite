@@ -6,7 +6,9 @@ import { MappingDetailWidgetProps } from "../../../app";
 import MappingDetailPresentation from "./MappingDetailPresentation";
 import { toMappingDetail } from "./Utils/mappingUtils";
 
-function MappingDetailWidget(props: MappingDetailWidgetProps) {
+function MappingDetailWidget(
+  props: MappingDetailWidgetProps,
+): React.JSX.Element {
   const { api, source, target, MappingDetailBackgroundColor } = props;
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
@@ -63,7 +65,9 @@ function MappingDetailWidget(props: MappingDetailWidgetProps) {
   );
 }
 
-export function WrappedMappingDetailWidget(props: MappingDetailWidgetProps) {
+export function WrappedMappingDetailWidget(
+  props: MappingDetailWidgetProps,
+): React.JSX.Element {
   return <MappingDetailWidget {...props} />;
 }
 

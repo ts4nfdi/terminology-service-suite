@@ -3,7 +3,9 @@ import { DescriptionPresentationProps } from "../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiDescriptionStyle.css";
 
-function DescriptionPresentation(props: DescriptionPresentationProps) {
+function DescriptionPresentation(
+  props: DescriptionPresentationProps,
+): React.JSX.Element {
   const { descText, description, isLoading, error, className } = props;
   const finalClassName = className || "ts4nfdi-description-style";
 
@@ -33,7 +35,9 @@ function DescriptionPresentation(props: DescriptionPresentationProps) {
   );
 }
 
-function WrappedDescriptionPresentation(props: DescriptionPresentationProps) {
+function WrappedDescriptionPresentation(
+  props: DescriptionPresentationProps,
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <DescriptionPresentation {...props} />

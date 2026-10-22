@@ -22,12 +22,12 @@ import { EntityRelationsWidget } from "../../EntityRelationsWidget";
 import { GraphViewWidget } from "../../GraphViewWidget";
 import { OntologyInfoWidget } from "../../OntologyInfoWidget";
 import { TermDepictionWidget } from "../../TermDepictionWidget";
-import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget/AlternativeNameTabPresentation";
-import { CrossRefTabPresentation } from "./CrossRefWidget/CrossRefTabPresentation";
+import { AlternativeNameTabPresentation } from "./AlternativeNameTabWidget";
+import { CrossRefTabPresentation } from "./CrossRefWidget";
 import { HierarchyWidget } from "./HierarchyWidget";
 import { ComparisonInput } from "./HierarchyWidget/ComparisonInput";
 
-function TabPresentation(props: TabPresentationProps) {
+function TabPresentation(props: TabPresentationProps): React.JSX.Element {
   function render(data: Entity) {
     const finalClassName = props.className || "ts4nfdi-tab-style";
     const tabs = [];
@@ -315,7 +315,9 @@ function TabPresentation(props: TabPresentationProps) {
   );
 }
 
-function WrappedTabPresentation(props: TabPresentationProps) {
+function WrappedTabPresentation(
+  props: TabPresentationProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
 
   return (
