@@ -1,7 +1,8 @@
 import { EuiButton, EuiButtonIcon } from "@elastic/eui";
+import { Action } from "@elastic/eui/src/components/basic_table/action_types";
 import { expect, waitFor, within } from "storybook/test";
+import { OlsResource } from "../../../app/";
 import * as globals from "../../../app/globals";
-import { OlsResource } from "../../../app/types";
 import {
   actionsArgType,
   apiArgType,
@@ -47,7 +48,7 @@ export const ResourcesWidget1Args = {
   onNavigate: "Console message",
 };
 
-const actions = [
+const actions: Array<Action<OlsResource>> = [
   {
     render: (item: OlsResource) => (
       <EuiButtonIcon href="" iconType="search" aria-label="Search" />
