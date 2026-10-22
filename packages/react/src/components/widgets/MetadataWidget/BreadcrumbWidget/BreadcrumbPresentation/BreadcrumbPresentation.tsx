@@ -6,7 +6,9 @@ import "../../../../../style/ts4nfdiStyles/ts4nfdiBreadcrumbStyle.css";
 import Badge from "../../../../helperComponents/Badge";
 import OntologyBadge from "../../../../helperComponents/OntologyBadge";
 
-function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
+function BreadcrumbPresentation(
+  props: BreadcrumbPresentationProps,
+): React.JSX.Element {
   const finalClassName = props.className || "ts4nfdi-breadcrumb-style";
   const ontologyId = props.entity?.properties?.ontologyId || props.ontologyId;
   const shortForm = props.entity?.properties?.shortForm || props.shortForm;
@@ -28,7 +30,9 @@ function BreadcrumbPresentation(props: BreadcrumbPresentationProps) {
   );
 }
 
-function WrappedBreadcrumbPresentation(props: BreadcrumbPresentationProps) {
+function WrappedBreadcrumbPresentation(
+  props: BreadcrumbPresentationProps,
+): React.JSX.Element {
   const queryClient = new QueryClient();
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
