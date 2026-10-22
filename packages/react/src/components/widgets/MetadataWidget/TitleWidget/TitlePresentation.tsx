@@ -3,7 +3,7 @@ import { TitlePresentationProps } from "../../../../app";
 import { getErrorMessageToDisplay } from "../../../../app/util";
 import "../../../../style/ts4nfdiStyles/ts4nfdiTitleStyle.css";
 
-function TitlePresentation(props: TitlePresentationProps) {
+function TitlePresentation(props: TitlePresentationProps): React.JSX.Element {
   const {
     title,
     titleText,
