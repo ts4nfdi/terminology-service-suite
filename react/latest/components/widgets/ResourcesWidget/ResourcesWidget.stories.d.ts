@@ -41,9 +41,7 @@ export declare const ResourcesWidget1: {
 };
 export declare const WithActions: {
     args: {
-        actions: {
-            render: (item: import('../../..').OlsResource) => import("react").JSX.Element;
-        }[];
+        actions: import('@elastic/eui/src/components/basic_table/action_types').Action<import('../../..').OlsResource>[];
         api: string;
         initialEntriesPerPage: number;
         pageSizeOptions: number[];

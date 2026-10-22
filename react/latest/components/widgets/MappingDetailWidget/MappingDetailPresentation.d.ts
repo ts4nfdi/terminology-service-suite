@@ -31,5 +31,5 @@ type MappingDetailPresentationProps = {
  * The card itself: its fields, downloads and layout. It renders the mapping it
  * is handed and fetches nothing, so both mapping widgets can show it.
  */
-export default function MappingDetailPresentation(props: MappingDetailPresentationProps): import("react").JSX.Element;
+export default function MappingDetailPresentation(props: MappingDetailPresentationProps): React.JSX.Element;
 export {};

@@ -1,1 +1,1 @@
-export default function Spacer(): import("react").JSX.Element;
+export default function Spacer(): React.JSX.Element;

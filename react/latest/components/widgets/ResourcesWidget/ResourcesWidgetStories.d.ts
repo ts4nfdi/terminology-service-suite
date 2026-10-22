@@ -1,4 +1,5 @@
-import { OlsResource } from '../../../app/types';
+import { Action } from '@elastic/eui/src/components/basic_table/action_types';
+import { OlsResource } from '../../../app/';
 export declare const ResourcesWidgetStoryArgTypes: {
     [x: string]: any;
 };
@@ -22,9 +23,7 @@ export declare const ResourcesWidget1Args: {
     onNavigate: string;
 };
 export declare const WithActionsArgs: {
-    actions: {
-        render: (item: OlsResource) => import("react").JSX.Element;
-    }[];
+    actions: Action<OlsResource>[];
     api: string;
     initialEntriesPerPage: number;
     pageSizeOptions: number[];

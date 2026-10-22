@@ -46,5 +46,5 @@ type MappingListPresentationProps = {
     closePopover: () => void;
 };
 /** UI of the mapping list; all state and data come from MappingListWidget. */
-export default function MappingListPresentation(props: MappingListPresentationProps): import("react").JSX.Element;
+export default function MappingListPresentation(props: MappingListPresentationProps): React.JSX.Element;
 export {};
