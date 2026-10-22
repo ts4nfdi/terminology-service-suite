@@ -11,7 +11,9 @@ import { IriWidget } from "./IriWidget";
 import { TabWidget } from "./TabWidget";
 import { TitlePresentation } from "./TitleWidget/TitlePresentation";
 
-function MetadataPresentation(props: MetadataPresentationProps) {
+function MetadataPresentation(
+  props: MetadataPresentationProps,
+): React.JSX.Element {
   const {
     label,
     shortForm,
@@ -130,7 +132,9 @@ function MetadataPresentation(props: MetadataPresentationProps) {
   );
 }
 
-function WrappedMetadataPresentation(props: MetadataPresentationProps) {
+function WrappedMetadataPresentation(
+  props: MetadataPresentationProps,
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <MetadataPresentation {...props} />
