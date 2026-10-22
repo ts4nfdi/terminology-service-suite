@@ -3,7 +3,9 @@ import { EntityOntoListPresentationProps } from "../../../../app";
 import "../../../../style/ts4nfdiStyles/ts4nfdiEntityOntoListStyle.css";
 import ExpandableOntologyBadgeList from "../../../helperComponents/ExpandableOntologyBadgeList";
 
-function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
+function EntityOntoListPresentation(
+  props: EntityOntoListPresentationProps,
+): React.JSX.Element {
   const finalClassName = props.className || "ts4nfdi-entity-onto-list-style";
 
   return (
@@ -26,7 +28,7 @@ function EntityOntoListPresentation(props: EntityOntoListPresentationProps) {
 
 function WrappedEntityOntoListPresentation(
   props: EntityOntoListPresentationProps,
-) {
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <EntityOntoListPresentation {...props} />
