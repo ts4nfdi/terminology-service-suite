@@ -21,7 +21,9 @@ import {
 } from "./EntityListWidget";
 import { compareValues } from "./Utils/searchUtils";
 
-function EntityListPresentation(props: EntityListPresentationProps) {
+function EntityListPresentation(
+  props: EntityListPresentationProps,
+): React.JSX.Element {
   const {
     isLoading,
     isFetching,
@@ -148,7 +150,9 @@ function EntityListPresentation(props: EntityListPresentationProps) {
   );
 }
 
-function WrappedEntityListPresentation(props: EntityListPresentationProps) {
+function WrappedEntityListPresentation(
+  props: EntityListPresentationProps,
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <EntityListPresentation {...props} />
