@@ -11,7 +11,9 @@ import { CrossRefPresentationProps } from "../../../../../app/";
 import { getErrorMessageToDisplay } from "../../../../../app/util";
 import "../../../../../style/ts4nfdiStyles/ts4nfdiCrossRefStyle.css";
 
-function CrossRefTabPresentation(props: CrossRefPresentationProps) {
+function CrossRefTabPresentation(
+  props: CrossRefPresentationProps,
+): React.JSX.Element {
   const finalClassName = props.className || "ts4nfdi-altNameTab-style";
 
   /**
@@ -58,7 +60,9 @@ function CrossRefTabPresentation(props: CrossRefPresentationProps) {
   );
 }
 
-function WrappedCrossRefTabPresentation(props: CrossRefPresentationProps) {
+function WrappedCrossRefTabPresentation(
+  props: CrossRefPresentationProps,
+): React.JSX.Element {
   return (
     <EuiProvider colorMode="light" globalStyles={false}>
       <CrossRefTabPresentation {...props} />
