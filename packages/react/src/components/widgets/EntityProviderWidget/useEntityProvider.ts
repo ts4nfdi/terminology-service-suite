@@ -45,7 +45,7 @@ export function useEntityProvider(
   const [state, setState] = useState<UseEntityProviderResult>(IDLE);
 
   useEffect(() => {
-    if (!enabled || !iri) {
+    if (!enabled || (!iri && !ontologyId)) {
       setState(IDLE);
       return;
     }

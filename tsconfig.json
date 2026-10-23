@@ -12,7 +12,11 @@
     "module": "ESNext",
     "outDir": "dist/esm"
   },
-  "exclude": ["dist"],
+  "exclude": [
+    "dist",
+    "packages/react/src/**/*.stories.tsx",
+    "packages/react/src/**/*.stories.ts"
+  ],
   "include": [
     "./packages/**/*",
     ".storybook/**/*",

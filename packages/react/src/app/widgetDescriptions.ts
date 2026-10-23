@@ -565,7 +565,7 @@ Links to the ColiConc address a questionable mapping can be reported to, right w
 MappingListWidget shows the same card underneath an expanded row. It renders the card directly out of the row the user expanded, so the table is not fetched a second time, and the card there carries a close button that collapses the row again.
 `.trim();
 
-export const EntityProviderDescription = `
+export const EntityProviderHookDescription = `
 The EntityProviderWidget specifies which terminology provider is responsible for a given entity. Unlike the other widgets it renders nothing:
 it is a **data hook** plus a plain asynchronous function, so the consuming application keeps full control over the presentation.
 
@@ -639,4 +639,22 @@ newer one. Setting \`enabled\` to false defers fetching until an IRI is known.
 - **Forward compatible**:
 Besides the mapped \`name\`, \`type\` and \`api\` fields, the unmodified \`provider\` block is exposed as \`raw\`, so fields added by
 future gateway versions remain accessible.
+`.trim();
+
+export const EntityProviderWidgetDescription = `
+The EntityProviderWidget specifies which terminology provider is responsible for a given entity. 
+
+The [TS4NFDI API Gateway](https://terminology.services.base4nfdi.de/documentation#gateway) federates several terminology software stacks
+(e.g. OLS, OntoPortal, Skosmos) and reports the responsible one per entity in a \`provider\` block:
+
+\`\`\`json
+{
+  "provider_type": "skosmos",
+  "provider_api": "https://semanticlookup.zbmed.de/skosmos/rest/v1",
+  "provider_name": "zbmed-skosmos"
+}
+\`\`\`
+
+This information is specific to the TS4NFDI API Gateway, which is why \`api\` defaults to the gateway OLS endpoint. Plain OLS instances do not
+return a \`provider\` block, so no provider can be resolved against them.
 `.trim();
