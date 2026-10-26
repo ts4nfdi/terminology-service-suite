@@ -5,6 +5,7 @@ import { getEntityProvider, getEntityProviders } from "./EntityProviderWidget";
 import { createEntityRelations } from "./EntityRelationsWidget";
 import { createGraphView } from "./GraphViewWidget";
 import { createJsonApi } from "./JsonApiWidget";
+import { createMappingDetail } from "./MappingDetailWidget";
 import { createMappingList } from "./MappingListWidget";
 import {
   createAlternativeNameTab,
@@ -35,6 +36,7 @@ import { createDepiction } from "./TermDepictionWidget";
   createEntityRelations,
   createGraphView,
   createJsonApi,
+  createMappingDetail,
   createMappingList,
   createOntologyInfo,
   createResources,
@@ -72,6 +74,7 @@ export {
   createHierarchy,
   createIri,
   createJsonApi,
+  createMappingDetail,
   createMappingList,
   createMathFormula,
   createMetadata,
