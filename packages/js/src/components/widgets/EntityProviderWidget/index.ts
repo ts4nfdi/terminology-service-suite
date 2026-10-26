@@ -1,7 +1,12 @@
-import { getEntityProvider, getEntityProviders } from "./EntityProviderWidget";
+import {
+  createEntityProvider,
+  getEntityProvider,
+  getEntityProviders,
+} from "./EntityProviderWidget";
 
 (window as any)["ts4nfdiWidgets"] = {
   ...(window as any)["ts4nfdiWidgets"],
+  createEntityProvider,
   getEntityProvider,
   getEntityProviders,
 };
@@ -10,4 +15,4 @@ export type {
   EntityProvider,
   GetEntityProviderParams,
 } from "./EntityProviderWidget";
-export { getEntityProvider, getEntityProviders };
+export { createEntityProvider, getEntityProvider, getEntityProviders };
