@@ -1,6 +1,7 @@
 import { createAutocomplete } from "./AutocompleteWidget";
 import { createDataContent } from "./DataContentWidget";
 import { createEntityInfo } from "./EntityInfoWidget";
+import { createEntityList } from "./EntityListWidget";
 import { getEntityProvider, getEntityProviders } from "./EntityProviderWidget";
 import { createEntityRelations } from "./EntityRelationsWidget";
 import { createGraphView } from "./GraphViewWidget";
@@ -33,6 +34,7 @@ import { createDepiction } from "./TermDepictionWidget";
   createDataContent,
   createAutocomplete,
   createEntityInfo,
+  createEntityList,
   createEntityRelations,
   createGraphView,
   createJsonApi,
@@ -68,6 +70,7 @@ export {
   createDescription,
   createEntityDefinedBy,
   createEntityInfo,
+  createEntityList,
   createEntityOntoList,
   createEntityRelations,
   createGraphView,
