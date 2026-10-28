@@ -34,6 +34,7 @@ import {
   isIndividual,
   isProperty,
 } from "../../../model/ModelTypeCheck";
+import Reified from "../../../model/Reified";
 import ClassExpression from "../../helperComponents/ClassExpression";
 import EntityLink from "../../helperComponents/EntityLink";
 import RenderedReified from "../../helperComponents/RenderedReified";
@@ -98,14 +99,110 @@ function EntityInfoPresentation(
     );
   }
 
+  /**
+   * Shows the CURIE, which only the v2 API provides. getShortForm() is not used
+   * because it falls back to the short form (e.g. "altLabel"), which is no CURIE.
+   */
+  function getCurieSection(entity: Entity): ReactElement {
+    const curie = entity.properties["curie"];
+    return (
+      <>
+        {curie && (
+          <>
+            <EuiFlexItem>
+              <b>CURIE:</b>
+              {curie}
+            </EuiFlexItem>
+            <EuiSpacer />
+          </>
+        )}
+      </>
+    );
+  }
+
+  /**
+   * Renders an info icon which shows the IRI of a property on hover. Renders
+   * nothing if there is no IRI: the legacy API only has names as keys (e.g.
+   * "Display_Name") and the v2 API adds keys of its own (e.g. "oboSynonymTypeName").
+   * @param iris the IRI(s) of the property
+   */
+  function getIriTooltip(iris: string | string[]): ReactElement {
+    const validIris = asArray(iris).filter((iri) => iri.includes("://"));
+    if (validIris.length === 0) return <></>;
+
+    return (
+      <>
+        &nbsp;
+        <Tooltip text={validIris.join("\n")} />
+        &nbsp;
+      </>
+    );
+  }
+
+  /**
+   * Lists the axioms (metadata) of one value, e.g. of a description, in small
+   * text like the TIB Terminology Service. Each axiom shows the label of its
+   * property, an info icon with the property IRI and its values. A value can
+   * itself be a list (e.g. several cross refrences), so the values are
+   * flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
+   * @param thing the entity the axioms exist in, used to look up the labels
+   * @param axioms the axioms as { [axiomIri]: values }, e.g.
+   * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
+   */
+  function getAxiomList(thing: Thing, axioms: any): ReactElement {
+    return (
+      <EuiText size="s" style={{ marginBottom: "8px" }}>
+        {Object.keys(axioms).map((axiomIri) => {
+          const label = thing.getLinkedEntities().getLabelForIri(axiomIri);
+          const values = [...new Set(asArray(axioms[axiomIri]).flat())];
+          return (
+            <div key={axiomIri}>
+              <b>{label ? capitalize(label.replaceAll("_", " ")) : axiomIri}</b>
+              {getIriTooltip(axiomIri)}: {values.join(", ")}
+            </div>
+          );
+        })}
+      </EuiText>
+    );
+  }
+
+  /**
+   * Renders a value (e.g. a synonym) followed by its axioms as a list.
+   * @param thing the entity the value exists in
+   * @param value the value including its axioms
+   */
+  function getValueWithAxioms(thing: Thing, value: Reified<any>): ReactElement {
+    return (
+      <>
+        <RenderedReified
+          parentEntity={thing}
+          reified={value}
+          showBadges={showBadges}
+          showAxiomsTooltip={false}
+          onNavigates={onNavigates}
+        />
+        {value.hasMetadata() && getAxiomList(thing, value.getMetadata())}
+      </>
+    );
+  }
+
   function getDescriptionSection(entity: Entity): ReactElement {
     return (
       <>
         {entity.getDescription() && (
           <>
             <EuiFlexItem>
-              <b>Description:</b>
-              {entity.getDescription()}
+              <span>
+                <b>Description:</b>
+                {getIriTooltip(entity.properties["definitionProperty"])}
+              </span>
+              {entity.getDescriptionAsArray().map((description) => (
+                <div key={randomString()}>
+                  <div>{description.value}</div>
+                  {description.hasMetadata() &&
+                    getAxiomList(entity, description.getMetadata())}
+                </div>
+              ))}
             </EuiFlexItem>
             <EuiSpacer />
           </>
@@ -120,19 +217,17 @@ function EntityInfoPresentation(
         {entity.getSynonyms().length > 0 && (
           <>
             <EuiFlexItem>
-              <b>Synonyms:</b>
+              <span>
+                <b>Synonyms:</b>
+                {getIriTooltip(entity.properties["synonymProperty"])}
+              </span>
               {entity.getSynonyms().length > 1 ? (
                 <>
                   <ul>
                     {entity.getSynonyms().map((synonym) => {
                       return (
                         <li key={randomString()} id={synonym.value}>
-                          <RenderedReified
-                            parentEntity={entity}
-                            reified={synonym}
-                            showBadges={showBadges}
-                            onNavigates={onNavigates}
-                          />
+                          {getValueWithAxioms(entity, synonym)}
                         </li>
                       );
                     })}
@@ -140,14 +235,10 @@ function EntityInfoPresentation(
                   <p></p>
                 </>
               ) : (
-                <p>
-                  <RenderedReified
-                    parentEntity={entity}
-                    reified={entity.getSynonyms()[0]}
-                    showBadges={showBadges}
-                    onNavigates={onNavigates}
-                  />
-                </p>
+                <>
+                  {getValueWithAxioms(entity, entity.getSynonyms()[0])}
+                  <p></p>
+                </>
               )}
             </EuiFlexItem>
           </>
@@ -405,6 +496,8 @@ function EntityInfoPresentation(
 
     const propertyAssertions: ReactElement[] = [];
     const formulaAssertions: ReactElement[] = [];
+    const formulaIris = new Set<string>();
+    const formulaSymbolIris = new Set<string>();
     const formulaSymbolRows: {
       symbol: ReactElement;
       meanings: ReactElement[];
@@ -430,6 +523,23 @@ function EntityInfoPresentation(
         ),
       },
     ];
+
+    /**
+     * Renders the title of the formulas from the labels of their properties,
+     * e.g. "Defining formula" or "In defining formula", with the info icon.
+     * @param iris the IRIs of the properties the formulas belong to
+     */
+    function getFormulaTitle(iris: Set<string>): ReactElement {
+      const labels = [...iris].map((iri) =>
+        capitalize(individual.getLinkedEntities().getLabelForIri(iri) || iri),
+      );
+      return (
+        <div>
+          <b>{labels.join(", ")}:</b>
+          {getIriTooltip([...iris])}
+        </div>
+      );
+    }
 
     function renderFormulaMeaningValue(valueIri: string): ReactElement {
       if (valueIri === individual.getIri()) {
@@ -493,15 +603,18 @@ function EntityInfoPresentation(
                 />
               </>
             ) : (
-              <Tooltip
-                text={
-                  typeof v === "string"
-                    ? v
-                    : typeof v === "object" && !Array.isArray(v) && v.value
-                      ? JSON.stringify(v.value)
-                      : JSON.stringify(v)
-                }
-              />
+              <>
+                &nbsp;
+                <Tooltip
+                  text={
+                    typeof v === "string"
+                      ? v
+                      : typeof v === "object" && !Array.isArray(v) && v.value
+                        ? JSON.stringify(v.value)
+                        : JSON.stringify(v)
+                  }
+                />
+              </>
             )}
           </>,
         );
@@ -529,12 +642,14 @@ function EntityInfoPresentation(
                     showBadges={showBadges}
                     onNavigates={onNavigates}
                   />
-                  : {renderFormulaMeaningValue(axiom[axiomIri])}
+                  {getIriTooltip(axiomIri)}:{" "}
+                  {renderFormulaMeaningValue(axiom[axiomIri])}
                 </span>,
               );
             });
           });
 
+          formulaSymbolIris.add(iri);
           formulaSymbolRows.push({
             symbol: (
               <MathFormulaWidget
@@ -551,6 +666,7 @@ function EntityInfoPresentation(
         }
 
         if (typeof v === "string" && isMathML(v)) {
+          formulaIris.add(iri);
           formulaAssertions.push(
             <MathFormulaWidget
               key={randomString()}
@@ -657,15 +773,18 @@ function EntityInfoPresentation(
                 />
               </>
             ) : hasObjectProperty ? (
-              <Tooltip
-                text={
-                  typeof v === "string"
-                    ? v
-                    : typeof v === "object" && !Array.isArray(v) && v.value
-                      ? JSON.stringify(v.value)
-                      : JSON.stringify(v)
-                }
-              />
+              <>
+                &nbsp;
+                <Tooltip
+                  text={
+                    typeof v === "string"
+                      ? v
+                      : typeof v === "object" && !Array.isArray(v) && v.value
+                        ? JSON.stringify(v.value)
+                        : JSON.stringify(v)
+                  }
+                />
+              </>
             ) : hasDataProperty ? (
               <>
                 &nbsp;
@@ -691,62 +810,51 @@ function EntityInfoPresentation(
 
     return (
       <>
-        {(formulaAssertions.length > 0 ||
-          formulaSymbolRows.length > 0 ||
-          propertyAssertions.length > 0) && (
-          <>
-            <EuiFlexItem>
-              <b>Property assertions:</b>
-              {formulaAssertions.length > 0 && (
-                <div style={{ marginTop: "12px", marginBottom: "16px" }}>
-                  <b>Formula:</b>
-                  {formulaAssertions}
-                </div>
+        {formulaAssertions.length > 0 && (
+          <EuiFlexItem style={{ marginBottom: "16px" }}>
+            {getFormulaTitle(formulaIris)}
+            {formulaAssertions}
+          </EuiFlexItem>
+        )}
+        {formulaSymbolRows.length > 0 && (
+          <EuiFlexItem style={{ marginBottom: "20px", maxWidth: "720px" }}>
+            {getFormulaTitle(formulaSymbolIris)}
+            <EuiBasicTable<FormulaSymbolRow>
+              tableCaption="Formula symbols"
+              responsiveBreakpoint={false}
+              tableLayout="auto"
+              items={[...formulaSymbolRows].sort((a, b) =>
+                a.sortValue.localeCompare(b.sortValue),
               )}
-              {formulaSymbolRows.length > 0 && (
-                <div
-                  style={{
-                    marginTop: "12px",
-                    marginBottom: "20px",
-                    maxWidth: "720px",
-                  }}
-                >
-                  <EuiBasicTable<FormulaSymbolRow>
-                    tableCaption="Formula symbols"
-                    responsiveBreakpoint={false}
-                    tableLayout="auto"
-                    items={[...formulaSymbolRows].sort((a, b) =>
-                      a.sortValue.localeCompare(b.sortValue),
-                    )}
-                    columns={formulaSymbolColumns}
-                  />
-                </div>
-              )}
-              {propertyAssertions.length > 1 ? (
-                <>
-                  <ul>
-                    {propertyAssertions
-                      .map((pa) => {
-                        return (
-                          <li
-                            key={randomString()}
-                            style={{ marginBottom: "24px" }}
-                          >
-                            {pa}
-                          </li>
-                        );
-                      })
-                      .sort()}
-                  </ul>
-                  <p></p>
-                </>
-              ) : propertyAssertions.length === 1 ? (
-                <p>{propertyAssertions[0]}</p>
-              ) : (
-                <></>
-              )}
-            </EuiFlexItem>
-          </>
+              columns={formulaSymbolColumns}
+            />
+          </EuiFlexItem>
+        )}
+        {propertyAssertions.length > 0 && (
+          <EuiFlexItem>
+            <b>Property assertions:</b>
+            {propertyAssertions.length > 1 ? (
+              <>
+                <ul>
+                  {propertyAssertions
+                    .map((pa) => {
+                      return (
+                        <li
+                          key={randomString()}
+                          style={{ marginBottom: "24px" }}
+                        >
+                          {pa}
+                        </li>
+                      );
+                    })
+                    .sort()}
+                </ul>
+                <p></p>
+              </>
+            ) : (
+              <p>{propertyAssertions[0]}</p>
+            )}
+          </EuiFlexItem>
         )}
       </>
     );
@@ -762,14 +870,17 @@ function EntityInfoPresentation(
           if (annos.length && "value" in annos[0] && isMathML(annos[0].value)) {
             return (
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  {getIriTooltip(annoKey)}
+                </span>
                 {renderMathFormulaIfMathMl(annoKey)}
               </EuiFlexItem>
             );
@@ -778,26 +889,24 @@ function EntityInfoPresentation(
           return (
             <>
               <EuiFlexItem grow={false} key={annoKey}>
-                <b>
-                  {capitalize(
-                    deUnderscore(
-                      deCamelCase(thing.getAnnotationTitleById(annoKey)),
-                    ),
-                  )}
-                  :
-                </b>
+                <span>
+                  <b>
+                    {capitalize(
+                      deUnderscore(
+                        deCamelCase(thing.getAnnotationTitleById(annoKey)),
+                      ),
+                    )}
+                    :
+                  </b>
+                  {getIriTooltip(annoKey)}
+                </span>
                 {annos.length > 1 ? (
                   <>
                     <ul>
                       {annos.map((annotation) => {
                         return (
                           <li key={randomString()} id={annotation.value}>
-                            <RenderedReified
-                              parentEntity={thing}
-                              reified={annotation}
-                              showBadges={showBadges}
-                              onNavigates={onNavigates}
-                            />
+                            {getValueWithAxioms(thing, annotation)}
                           </li>
                         );
                       })}
@@ -805,14 +914,10 @@ function EntityInfoPresentation(
                     <p></p>
                   </>
                 ) : (
-                  <p key={randomString()}>
-                    <RenderedReified
-                      parentEntity={thing}
-                      reified={annos[0]}
-                      showBadges={showBadges}
-                      onNavigates={onNavigates}
-                    />
-                  </p>
+                  <>
+                    {getValueWithAxioms(thing, annos[0])}
+                    <p></p>
+                  </>
                 )}
               </EuiFlexItem>
             </>
@@ -863,6 +968,7 @@ function EntityInfoPresentation(
       {entity !== undefined && (
         <EuiText {...rest}>
           {getLabelSection(entity)}
+          {getCurieSection(entity)}
           {getDescriptionSection(entity)}
           {getSynonymsSection(entity)}
           {isClass(entity) && (
