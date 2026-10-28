@@ -10,6 +10,7 @@ import {
   CrossRefWidgetStoryArgs,
   CrossRefWidgetStoryArgTypes,
   DefiningOntologyUnavailableArgs,
+  RequestFailedArgs,
   SelectingDefiningOntologyArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/TabWidget/CrossRefWidget/CrossRefWidgetStories";
 import "./index";
@@ -74,5 +75,10 @@ export const SelectingDefiningOntology: Story = {
 
 export const DefiningOntologyUnavailable: Story = {
   args: DefiningOntologyUnavailableArgs,
+  play: commonCrossRefWidgetPlay,
+};
+
+export const RequestFailed: Story = {
+  args: RequestFailedArgs,
   play: commonCrossRefWidgetPlay,
 };
