@@ -1,4 +1,5 @@
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
+import { OlsOntologyApi } from "../../../api/ols/OlsOntologyApi";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { EntityProvider, EntityProviderWidgetProps } from "../../../app/types";
 
@@ -35,19 +36,38 @@ async function fetchEntityProviders(
   abortSignal?: AbortSignal,
 ): Promise<{ element: any; provider: EntityProvider }[]> {
   const { iri, ontologyId, api, parameter } = params;
-  if (!iri) throw Error("No IRI provided");
+  if (!iri && !ontologyId) throw Error("No IRI or ontologyId provided");
 
-  const olsApi = new OlsEntityApi(api || GATEWAY_API_OLS_ENDPOINT);
-  const response = await olsApi.getEntity(
-    undefined,
-    undefined,
-    { ontologyId: ontologyId, termIri: iri },
-    parameter || "",
-    false,
-    abortSignal,
-  );
+  const endpoint = api || GATEWAY_API_OLS_ENDPOINT;
+  let elements: any[];
 
-  const elements: any[] = response?.["elements"] || [];
+  if (!iri) {
+    try {
+      const response = await new OlsOntologyApi(endpoint).getOntology(
+        undefined,
+        undefined,
+        { ontologyId: ontologyId },
+        parameter || "",
+        false,
+        abortSignal,
+      );
+      elements = response ? [response] : [];
+    } catch (error: any) {
+      if (error?.response?.status === 404) return [];
+      throw error;
+    }
+  } else {
+    const response = await new OlsEntityApi(endpoint).getEntity(
+      undefined,
+      undefined,
+      { ontologyId: ontologyId, termIri: iri },
+      parameter || "",
+      false,
+      abortSignal,
+    );
+    elements = response?.["elements"] || [];
+  }
+
   return elements
     .map((element) => ({ element, provider: parseEntityProvider(element) }))
     .filter(
