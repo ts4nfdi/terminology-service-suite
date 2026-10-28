@@ -9,6 +9,7 @@ import {
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
   AutocompleteWidgetStoryArgTypes,
+  InitialSearchQueryArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
   TibDataPlantArgs,
@@ -152,4 +153,8 @@ export const SubtreeDirectSubtypes: Story = {
 
 export const SubtreeDirectAndIndirectSubtypes: Story = {
   args: SubtreeDirectAndIndirectSubtypesArgs,
+};
+
+export const InitialSearchQuery: Story = {
+  args: InitialSearchQueryArgs,
 };
