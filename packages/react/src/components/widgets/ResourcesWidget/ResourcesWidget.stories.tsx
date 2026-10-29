@@ -3,6 +3,7 @@ import { ResourcesDescription } from "../../../app/widgetDescriptions";
 import { ResourcesWidget } from "./ResourcesWidget";
 import {
   commonResourcesWidgetPlay,
+  FAIRagroCollectionArgs,
   ResourcesWidget1Args,
   ResourcesWidgetLogosArgs,
   ResourcesWidgetStoryArgs,
@@ -30,16 +31,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const ResourcesWidget1 = {
+  name: "Default",
   args: ResourcesWidget1Args,
   play: commonResourcesWidgetPlay,
 };
 
 export const WithActions = {
+  name: "With Actions",
   args: WithActionsArgs,
   play: commonResourcesWidgetPlay,
 };
 
 export const ResourcesWidgetLogos = {
+  name: "With Logos",
   args: ResourcesWidgetLogosArgs,
+  play: commonResourcesWidgetPlay,
+};
+
+export const FAIRagroCollection = {
+  name: "FAIRagro Collection",
+  args: FAIRagroCollectionArgs,
   play: commonResourcesWidgetPlay,
 };

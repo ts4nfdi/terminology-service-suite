@@ -7,6 +7,9 @@ import { asArray, deCamelCase } from "../../app/util";
 import { ThingTypeName } from "../ModelTypeCheck";
 
 export class OLS3Ontology extends OLS3Thing implements Ontology {
+  getStatisticsCount(): Record<string, number> | undefined {
+    throw new Error("Method not implemented.");
+  }
   getType(): ThingTypeName {
     return "ontology";
   }
