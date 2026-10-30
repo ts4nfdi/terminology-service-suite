@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-  MappingDetailWidget,
-  MappingDetailWidgetProps,
-} from "@ts4nfdi/terminology-service-suite/src";
+import { MappingDetailWidgetProps } from "@ts4nfdi/terminology-service-suite/src";
 import { MappingDetailDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
+import { MappingDetailWidget } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MappingDetailWidget/MappingDetailWidget";
 import {
   MappingDetailWidgetStoryArgs_Rec_B_2000,
   MappingDetailWidgetStoryArgTypes,
