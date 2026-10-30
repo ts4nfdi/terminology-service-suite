@@ -5,6 +5,9 @@ import {
 } from "@ts4nfdi/terminology-service-suite/src";
 import { DataContentDescription } from "@ts4nfdi/terminology-service-suite/src/app/widgetDescriptions";
 import {
+  commonDataContentWidgetPlay,
+  DataContentCollectionWithoutPropertiesArgs,
+  DataContentFAIRagroCollectionArgs,
   DataContentWidgetStoryArgs,
   DataContentWidgetStoryArgTypes,
   ErrorDataContentWidgetArgs,
@@ -20,7 +23,7 @@ function getIncNum() {
 
 // @ts-ignore
 const meta: Meta<DataContentWidgetProps> = {
-  title: "Search/DataContentWidget",
+  title: "Terminology Service/DataContentWidget",
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -41,6 +44,7 @@ window['ts4nfdiWidgets'].createDataContent(
     {
       api:"${args.api}",
       parameter:"${args.parameter}",
+      collectionId:"${args.collectionId ?? ""}",
     },
     document.querySelector('#data_content_widget_container_${num}')
 )
@@ -56,9 +60,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NFDI4HealthDataContentWidget: Story = {
+  name: "SemLookP NFDI4Health",
   args: NFDI4HealthDataContentWidgetArgs,
+  play: commonDataContentWidgetPlay,
 };
 
 export const ErrorDataContentWidget: Story = {
+  name: "Wrong API URL",
   args: ErrorDataContentWidgetArgs,
+  play: commonDataContentWidgetPlay,
+};
+
+export const DataContentFAIRagroCollection: Story = {
+  name: "FAIRagro Collection",
+  args: DataContentFAIRagroCollectionArgs,
+  play: commonDataContentWidgetPlay,
+};
+
+export const DataContentCollectionWithoutProperties: Story = {
+  name: "Collection without properties",
+  args: DataContentCollectionWithoutPropertiesArgs,
+  play: commonDataContentWidgetPlay,
 };
