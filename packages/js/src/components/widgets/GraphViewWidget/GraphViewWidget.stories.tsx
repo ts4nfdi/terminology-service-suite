@@ -57,7 +57,7 @@ window['ts4nfdiWidgets'].createGraphView(
         hierarchy: ${args.hierarchy},
         targetIri: "${args.targetIri}",
         onNodeClick: ${args.onNodeClick},
-        edgeLabel: ${args.edgeLabel},
+        edgeLabel: ${JSON.stringify(args.edgeLabel)},
         parameter: "${args.parameter}",
         hideLegend: ${args.hideLegend},
         stopFullWidth: ${args.stopFullWidth}
