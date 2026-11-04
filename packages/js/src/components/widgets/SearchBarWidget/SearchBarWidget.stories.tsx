@@ -32,6 +32,12 @@ const meta: Meta<SearchBarWidgetProps> = {
   //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: SearchBarWidgetProps) => {
     const num = getIncNum();
+    /**
+     * A function cannot be written into the HTML string, because it may use
+     * variables that do not exist on the page. It is passed through window.
+     */
+    (window as any)[`selectionChangedEvent_${num}`] =
+      args.selectionChangedEvent;
     return `
 <div id="search_bar_widget_container_${num}"></div>
 
@@ -40,9 +46,7 @@ window['ts4nfdiWidgets'].createSearchBar(
     {
       api:"${args.api}",
       query:"${args.query}",
-      selectionChangedEvent:${args.selectionChangedEvent
-        .toString()
-        .replace(/(\r\n|\n|\r)/gm, "")},
+      selectionChangedEvent:window['selectionChangedEvent_${num}'],
       parameter:"${args.parameter}",
     },
     document.querySelector('#search_bar_widget_container_${num}')
