@@ -1,6 +1,11 @@
-import { EuiPanel, EuiSearchBarProps, EuiText } from "@elastic/eui";
+import {
+  EuiPanel,
+  EuiProvider,
+  EuiSearchBarProps,
+  EuiText,
+} from "@elastic/eui";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { OlsEntityApi } from "../../../api/ols/OlsEntityApi";
 import { MappingListWidgetProps } from "../../../app";
@@ -280,13 +285,18 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
 export function WrappedMappingListWidget(
   props: MappingListWidgetProps,
 ): React.JSX.Element {
+  const queryClient = new QueryClient();
   return (
-    <MappingListWidget
-      api={props.api}
-      source={props.source}
-      rowColor={props.rowColor}
-      MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
-    />
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <MappingListWidget
+          api={props.api}
+          source={props.source}
+          rowColor={props.rowColor}
+          MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
+        />
+      </QueryClientProvider>
+    </EuiProvider>
   );
 }
 

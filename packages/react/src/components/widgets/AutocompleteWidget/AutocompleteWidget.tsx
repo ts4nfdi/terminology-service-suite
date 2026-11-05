@@ -698,6 +698,7 @@ function WrappedAutocompleteWidget(
           showApiSource={props.showApiSource}
           className={props.className}
           useLegacy={props.useLegacy}
+          initialSearchQuery={props.initialSearchQuery}
         />
       </QueryClientProvider>
     </EuiProvider>

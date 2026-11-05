@@ -16,6 +16,7 @@ import {
   OLS4V1Args,
   OLS4V2Args,
   SelectingDefiningOntologyArgs,
+  ShowComparisonInputFieldArgs,
   TermAsLinkArgs,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/MetadataWidget/MetadataWidgetStories";
 import "../../../../../react/src/style/ts4nfdiStyles/ts4nfdiAutocompleteStyle.css";
@@ -65,6 +66,12 @@ window['ts4nfdiWidgets'].createMetadata(
         hierarchyKeepExpansionStates:${args.hierarchyKeepExpansionStates},
         hierarchyShowSiblingsOnInit:${args.hierarchyShowSiblingsOnInit},
         hierarchyWrap:${args.hierarchyWrap},
+        copyButton:${JSON.stringify(args.copyButton)},
+        rootWalk:${args.rootWalk},
+        graphHierarchy:${args.graphHierarchy},
+        enableComparisonMode:${args.enableComparisonMode},
+        showComparisonTitleInHeader:${args.showComparisonTitleInHeader},
+        targetIri:${JSON.stringify(args.targetIri)},
         onNavigateToEntity:${args.onNavigateToEntity},
         onNavigateToOntology:${args.onNavigateToOntology},
         onNavigateToDisambiguate:${args.onNavigateToDisambiguate},
@@ -139,5 +146,14 @@ export const HiddenTabs: Story = {
 
 export const TermAsLink: Story = {
   args: { ...TermAsLinkArgs, className: "ts4nfdi-metadata-style" },
+  play: commonMetadataWidgetPlay,
+};
+
+export const ShowComparisonInputField: Story = {
+  name: "Comparison input field in hierarchy and graph tabs",
+  args: {
+    ...ShowComparisonInputFieldArgs,
+    className: "ts4nfdi-metadata-style",
+  },
   play: commonMetadataWidgetPlay,
 };

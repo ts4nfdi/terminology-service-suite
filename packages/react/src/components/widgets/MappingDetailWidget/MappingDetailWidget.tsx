@@ -1,6 +1,6 @@
-import { EuiPanel, EuiText } from "@elastic/eui";
+import { EuiPanel, EuiProvider, EuiText } from "@elastic/eui";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { JskosMappingApi } from "../../../api/coli-conc/JskosMappingAPI";
 import { MappingDetailWidgetProps } from "../../../app";
 import MappingDetailPresentation from "./MappingDetailPresentation";
@@ -68,7 +68,14 @@ function MappingDetailWidget(
 export function WrappedMappingDetailWidget(
   props: MappingDetailWidgetProps,
 ): React.JSX.Element {
-  return <MappingDetailWidget {...props} />;
+  const queryClient = new QueryClient();
+  return (
+    <EuiProvider colorMode="light">
+      <QueryClientProvider client={queryClient}>
+        <MappingDetailWidget {...props} />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
 }
 
 export { MappingDetailWidget };

@@ -9,9 +9,11 @@ import {
   NavigateToEBIPageArgs,
   OntologyInfoWidget1Args,
   OntologyInfoWidget2Args,
+  OntologyInfoWidgetOhdab,
   OntologyInfoWidgetOLS4APIArgs,
   OntologyInfoWidgetStoryArgs,
   OntologyInfoWidgetStoryArgTypes,
+  OntologyInfoWidgetUberon,
 } from "@ts4nfdi/terminology-service-suite/src/components/widgets/OntologyInfoWidget/OntologyInfoWidgetStories";
 import "./index";
 
@@ -84,5 +86,15 @@ export const OntologyInfoWidgetOLS4API: Story = {
 
 export const NavigateToEBIPage: Story = {
   args: NavigateToEBIPageArgs,
+  play: commonOntologyInfoWidgetPlay,
+};
+
+export const OntologyInfoUberon: Story = {
+  args: OntologyInfoWidgetUberon,
+  play: commonOntologyInfoWidgetPlay,
+};
+
+export const OntologyInfoOhdab: Story = {
+  args: OntologyInfoWidgetOhdab,
   play: commonOntologyInfoWidgetPlay,
 };

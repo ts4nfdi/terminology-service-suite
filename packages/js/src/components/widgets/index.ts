@@ -1,10 +1,17 @@
 import { createAutocomplete } from "./AutocompleteWidget";
 import { createDataContent } from "./DataContentWidget";
 import { createEntityInfo } from "./EntityInfoWidget";
-import { getEntityProvider, getEntityProviders } from "./EntityProviderWidget";
+import { createEntityList } from "./EntityListWidget";
+import {
+  createEntityProvider,
+  getEntityProvider,
+  getEntityProviders,
+} from "./EntityProviderWidget";
 import { createEntityRelations } from "./EntityRelationsWidget";
 import { createGraphView } from "./GraphViewWidget";
 import { createJsonApi } from "./JsonApiWidget";
+import { createMappingDetail } from "./MappingDetailWidget";
+import { createMappingList } from "./MappingListWidget";
 import {
   createAlternativeNameTab,
   createBreadcrumb,
@@ -31,9 +38,13 @@ import { createDepiction } from "./TermDepictionWidget";
   createDataContent,
   createAutocomplete,
   createEntityInfo,
+  createEntityList,
+  createEntityProvider,
   createEntityRelations,
   createGraphView,
   createJsonApi,
+  createMappingDetail,
+  createMappingList,
   createOntologyInfo,
   createResources,
   createSearchResultsList,
@@ -64,12 +75,16 @@ export {
   createDescription,
   createEntityDefinedBy,
   createEntityInfo,
+  createEntityList,
   createEntityOntoList,
+  createEntityProvider,
   createEntityRelations,
   createGraphView,
   createHierarchy,
   createIri,
   createJsonApi,
+  createMappingDetail,
+  createMappingList,
   createMathFormula,
   createMetadata,
   createOntologyInfo,

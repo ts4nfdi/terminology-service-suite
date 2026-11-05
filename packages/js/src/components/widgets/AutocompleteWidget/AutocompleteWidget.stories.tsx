@@ -9,6 +9,7 @@ import {
   AllowMultipleTermsArgs,
   AutocompleteWidgetStoryArgsHTML,
   AutocompleteWidgetStoryArgTypes,
+  InitialSearchQueryArgs,
   SubtreeDirectAndIndirectSubtypesArgs,
   SubtreeDirectSubtypesArgs,
   TibDataPlantArgs,
@@ -47,6 +48,12 @@ const meta = {
   //@ts-expect-error: You can either use a function to create DOM elements or use a plain html string!
   render: (args: AutocompleteWidgetProps) => {
     const num = getIncNum();
+    /**
+     * A function cannot be written into the HTML string, because it may use
+     * variables that do not exist on the page. It is passed through window.
+     */
+    (window as any)[`selectionChangedEvent_${num}`] =
+      args.selectionChangedEvent;
     return `
   <div id="autocomplete_widget_container_${num}"></div>
   
@@ -55,9 +62,7 @@ const meta = {
     {
         api:"${args.api}",
         parameter:"${args.parameter}",
-        selectionChangedEvent:${args.selectionChangedEvent
-          .toString()
-          .replace(/(\r\n|\n|\r)/gm, "")},
+        selectionChangedEvent:window['selectionChangedEvent_${num}'],
         preselected:${JSON.stringify(args.preselected).replace(
           /"([^"]+)":/g,
           "$1:",
@@ -152,4 +157,8 @@ export const SubtreeDirectSubtypes: Story = {
 
 export const SubtreeDirectAndIndirectSubtypes: Story = {
   args: SubtreeDirectAndIndirectSubtypesArgs,
+};
+
+export const InitialSearchQuery: Story = {
+  args: InitialSearchQueryArgs,
 };
