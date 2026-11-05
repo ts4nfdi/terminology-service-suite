@@ -1,0 +1,1 @@
+import{c as s,j as i}from"./client-DFp2fd_t.js";import{W as a}from"./HierarchyWidget-BCTG_TPS.js";const r=new WeakMap;function d(o,e){let t=r.get(e);t||(t=s.createRoot(e),r.set(e,t)),t.render(i.jsx(a,{...o}))}window.ts4nfdiWidgets={...window.ts4nfdiWidgets,createHierarchy:d};export{d as c};

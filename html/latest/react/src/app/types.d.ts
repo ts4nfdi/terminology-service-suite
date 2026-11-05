@@ -911,7 +911,7 @@ export type EntityProvider = {
      */
     raw: Record<string, any>;
 };
-export type EntityProviderWidgetProps = ForcedIriObj & OptionalOntologyIdObj & {
+export type EntityProviderWidgetProps = OptionalIriObj & OptionalOntologyIdObj & {
     /**
      * The API instance for the API call. Defaults to the TS4NFDI API Gateway
      * OLS endpoint, as the provider information is specific to the gateway.

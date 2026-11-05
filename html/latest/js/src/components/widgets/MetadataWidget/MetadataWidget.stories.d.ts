@@ -12,3 +12,4 @@ export declare const DefiningOntologyUnavailable: Story;
 export declare const DefinedByAlsoAppearsInWidgets: Story;
 export declare const HiddenTabs: Story;
 export declare const TermAsLink: Story;
+export declare const ShowComparisonInputField: Story;

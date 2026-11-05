@@ -72,3 +72,4 @@ export declare const TibNFDI4CHEM: Story;
 export declare const TibDataPlant: Story;
 export declare const SubtreeDirectSubtypes: Story;
 export declare const SubtreeDirectAndIndirectSubtypes: Story;
+export declare const InitialSearchQuery: Story;

@@ -25,4 +25,5 @@ export declare const TermDepictionDescription: string;
 export declare const EntityListDescription: string;
 export declare const MappingListDetailDescription: string;
 export declare const MappingDetailDescription: string;
-export declare const EntityProviderDescription: string;
+export declare const EntityProviderHookDescription: string;
+export declare const EntityProviderWidgetDescription: string;

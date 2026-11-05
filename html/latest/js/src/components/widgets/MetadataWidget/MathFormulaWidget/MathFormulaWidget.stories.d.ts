@@ -4,3 +4,6 @@ declare const meta: Meta<MathFormulaWidgetProps>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export declare const MathmoddbDefiningFormula: Story;
+export declare const MathMLInput: Story;
+export declare const MathMLTextInput: Story;
+export declare const MathMLFractionInput: Story;
