@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { EntityInfoPresentationProps } from "../../../app";
 import {
   asArray,
+  asReified,
   capitalize,
   deCamelCase,
   deUnderscore,
@@ -145,6 +146,7 @@ function EntityInfoPresentation(
    * property, an info icon with the property IRI and its values. A value can
    * itself be a list (e.g. several cross refrences), so the values are
    * flattened. Duplicates are removed, e.g. "SY, SY, SY" becomes "SY".
+   * Each value is rendered with RenderedReified, so links in it are clickable.
    * @param thing the entity the axioms exist in, used to look up the labels
    * @param axioms the axioms as { [axiomIri]: values }, e.g.
    * { "http://purl.org/dc/terms/license": ["https://creativecommons.org/licenses/by-sa/4.0/"] }
@@ -158,7 +160,18 @@ function EntityInfoPresentation(
           return (
             <div key={axiomIri}>
               <b>{label ? capitalize(label.replaceAll("_", " ")) : axiomIri}</b>
-              {getIriTooltip(axiomIri)}: {values.join(", ")}
+              {getIriTooltip(axiomIri)}:{" "}
+              {values.map((value, index) => (
+                <span key={index}>
+                  {index > 0 && ", "}
+                  <RenderedReified
+                    parentEntity={thing}
+                    reified={asReified(value)}
+                    showBadges={showBadges}
+                    onNavigates={onNavigates}
+                  />
+                </span>
+              ))}
             </div>
           );
         })}
@@ -198,9 +211,7 @@ function EntityInfoPresentation(
               </span>
               {entity.getDescriptionAsArray().map((description) => (
                 <div key={randomString()}>
-                  <div>{description.value}</div>
-                  {description.hasMetadata() &&
-                    getAxiomList(entity, description.getMetadata())}
+                  {getValueWithAxioms(entity, description)}
                 </div>
               ))}
             </EuiFlexItem>
