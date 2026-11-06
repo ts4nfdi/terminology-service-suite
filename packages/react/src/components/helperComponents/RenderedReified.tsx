@@ -53,6 +53,13 @@ export default function RenderedReified({
             n !== -1;
             n = text.indexOf(entityId, n)
           ) {
+            /** Only whole ids are links, e.g. not "MESH:A03" inside "MESH:A03.734.414". */
+            const end = n + entityId.length;
+            if (/^(\w|[._\-/]\w)/.test(text.slice(end, end + 2))) {
+              n = end;
+              continue;
+            }
+
             linksToSplice.push({
               start: n,
               end: n + entityId.length,
