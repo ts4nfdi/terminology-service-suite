@@ -93,6 +93,13 @@ export const ResourcesWidgetLogosArgs = {
   useLegacy: false,
 };
 
+export const FAIRagroCollectionArgs = {
+  ...ResourcesWidget1Args,
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
+  useLegacy: false,
+  parameter: "collectionId=ff5491d1-d0a9-481e-ac90-0fad065fa097",
+};
+
 export const commonResourcesWidgetPlay = async ({
   canvasElement,
 }: {

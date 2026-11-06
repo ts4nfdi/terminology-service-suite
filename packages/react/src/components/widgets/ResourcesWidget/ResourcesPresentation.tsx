@@ -118,7 +118,7 @@ function ResourcesPresentation(
       name: "Terms",
       field: "numberOfTerms",
       render: (value?: number) =>
-        value ? <>{value.toLocaleString()}</> : <></>,
+        Number.isFinite(value) ? <>{value!.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },
@@ -126,7 +126,7 @@ function ResourcesPresentation(
       name: "Properties",
       field: "numberOfProperties",
       render: (value?: number) =>
-        value ? <>{value.toLocaleString()}</> : <></>,
+        Number.isFinite(value) ? <>{value!.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },
@@ -134,7 +134,7 @@ function ResourcesPresentation(
       name: "Individuals",
       field: "numberOfIndividuals",
       render: (value?: number) =>
-        value ? <>{value.toLocaleString()}</> : <></>,
+        Number.isFinite(value) ? <>{value!.toLocaleString()}</> : <></>,
       width: "7%",
       sortable: true,
     },

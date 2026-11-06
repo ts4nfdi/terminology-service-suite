@@ -1,3 +1,5 @@
+export { EntityProviderPresentation } from "./EntityProviderPresentation";
+export { EntityProviderWidget } from "./EntityProviderWidget";
 export {
   getEntityProvider,
   getEntityProviders,
