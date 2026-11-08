@@ -3,6 +3,10 @@ import { useArgs } from "@storybook/preview-api";
 import { Preview } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  initializeGatewayAuth,
+  withGatewayAuth,
+} from "../../../.storybook/gateway-auth";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -227,7 +231,10 @@ function syncStoryArgsWithUrl(story: any, context: any) {
   );
 }
 
+void initializeGatewayAuth();
+
 const decorators = [
+  withGatewayAuth,
   syncStoryArgsWithUrl,
   (story: any) => (
     <>
