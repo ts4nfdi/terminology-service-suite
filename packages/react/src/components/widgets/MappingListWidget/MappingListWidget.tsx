@@ -12,29 +12,58 @@ import { MappingListWidgetProps } from "../../../app";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import { normalizeSearchText } from "../EntityListWidget/Utils/searchUtils";
 import { formatMappingDate } from "../MappingDetailWidget/Utils/mappingUtils";
-import type { MappingRow } from "./MappingListPresentation";
-import MappingListPresentation from "./MappingListPresentation";
+import type { MappingRow, ViewDirection } from "./MappingListPresentation";
+import { MappingListPresentation } from "./MappingListPresentation";
 
 /**
  * Background of every other table row when the caller does not pick one.
  */
 const DEFAULT_ROW_COLOR = "#fff5fa";
 
+/**
+ * Last part of an IRI, used as its name when no readable label is found.
+ * Example: "http://www.wikidata.org/entity/Q259745" → "Q259745"
+ */
+function getIriShortName(iri: string): string {
+  const lastPart =
+    iri
+      .replace(/[/#]+$/, "")
+      .split(/[/#]/)
+      .pop() ?? iri;
+
+  try {
+    return decodeURIComponent(lastPart);
+  } catch {
+    return lastPart;
+  }
+}
+
 function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const {
     api,
-    source,
+    iri,
     rowColor = DEFAULT_ROW_COLOR,
     MappingDetailBackgroundColor,
   } = props;
+
+  /**
+   * View direction chosen in the Filters panel next to the search bar
+   */
+  const [viewDirection, setViewDirection] = useState<ViewDirection>("from");
 
   const jskosMappingApi = useMemo(() => new JskosMappingApi(api), [api]);
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["mappings", source],
+    ["mappings", iri, viewDirection],
     () => {
-      return jskosMappingApi.getMappingsByFrom(source);
+      if (viewDirection === "to") {
+        return jskosMappingApi.getMappingsByTo(iri);
+      }
+      if (viewDirection === "both") {
+        return jskosMappingApi.getMappingsInBothDirections(iri);
+      }
+      return jskosMappingApi.getMappingsByFrom(iri);
     },
   );
 
@@ -54,12 +83,15 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
    */
   const [fromLabels, setFromLabels] = useState<Record<string, string>>({});
 
-  const [isTypeFilterOpen, setIsTypeFilterOpen] = useState(false);
+  /**
+   * Whether the Filters panel (view direction and mapping types) is open.
+   */
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   /**
-   * Target entity whose metadata popup is currently open. Null while no popup
-   * is shown. The gateway only resolves an entity on its ontology route, so
-   * the scheme is kept next to the IRI.
+   * Source or target entity whose metadata popup is currently open. Null
+   * while no popup is shown. The gateway only resolves an entity on its
+   * ontology route, so the scheme is kept next to the IRI.
    */
   const [metadataTarget, setMetadataTarget] = useState<{
     iri: string;
@@ -72,21 +104,17 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const [searchedQuery, setSearchedQuery] = useState("");
 
   /**
-   * includes types: exactMatch, closeMatch, broadMatch, narrowMatch, relatedMatch and mappingRelation
+   * Mapping types the table is limited to, e.g. ["exactMatch", "closeMatch"].
+   * Empty means every type is shown. A change applies right away.
    */
-  const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
-  const [appliedTypeFilters, setAppliedTypeFilters] = useState<string[]>([]);
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
 
   const toggleTypeFilter = (type: string) => {
-    if (selectedTypeFilters.includes(type)) {
-      setSelectedTypeFilters(
-        selectedTypeFilters.filter((selectedType) => {
-          return selectedType !== type;
-        }),
-      );
-    } else {
-      setSelectedTypeFilters((prevState) => [...prevState, type]);
-    }
+    setTypeFilters((prevState) =>
+      prevState.includes(type)
+        ? prevState.filter((selectedType) => selectedType !== type)
+        : [...prevState, type],
+    );
   };
 
   /**
@@ -165,11 +193,27 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   }, [data, fromLabels, olsApi]);
 
   /**
+   * Drops mappings that appear more than once, e.g. a self-mapping (a → a)
+   * that matches both the "from" and the "to" side in "both" mode.
+   */
+  const uniqueMappings = useMemo(() => {
+    const seenUris = new Set<string>();
+
+    return (data ?? []).filter((item: any) => {
+      if (!item.uri) return true;
+      if (seenUris.has(item.uri)) return false;
+
+      seenUris.add(item.uri);
+      return true;
+    });
+  }, [data]);
+
+  /**
    * Builds table rows from the ColiConc mapping data.
    */
   const rows: MappingRow[] = useMemo(
     () =>
-      (data ?? []).map((item: any, index: number) => {
+      uniqueMappings.map((item: any, index: number) => {
         const toUri = item.to?.memberSet?.[0]?.uri ?? "—";
         const targetFromColiConc =
           item.to?.memberSet?.[0]?.notation?.[0] ?? "—";
@@ -196,7 +240,7 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
           partOf: item.partOf?.[0]?.uri ?? "—",
         };
       }),
-    [data, labels, fromLabels],
+    [uniqueMappings, labels, fromLabels],
   );
 
   /**
@@ -222,8 +266,7 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
 
     return rows.filter((row) => {
       const matchesTypeFilter =
-        appliedTypeFilters.length === 0 ||
-        appliedTypeFilters.includes(row.type);
+        typeFilters.length === 0 || typeFilters.includes(row.type);
 
       const matchesSearch =
         normalizedSearchQuery === "" ||
@@ -232,12 +275,13 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
 
       return matchesTypeFilter && matchesSearch;
     });
-  }, [rows, appliedTypeFilters, searchedQuery]);
+  }, [rows, typeFilters, searchedQuery]);
 
-  const fromUri = data?.[0]?.from?.memberSet?.[0]?.uri ?? "—";
-  const sourceFromColiConc =
-    data?.[0]?.from?.memberSet?.[0]?.notation?.[0] ?? "—";
-  const fromLabel = fromLabels[fromUri] ?? sourceFromColiConc;
+  /**
+   * Readable name of the entity the user asked for: its Gateway API label
+   * when one was found, otherwise the last part of its IRI.
+   */
+  const entityLabel = fromLabels[iri] ?? labels[iri] ?? getIriShortName(iri);
 
   /**
    * State and handlers for the contextual help popover.
@@ -259,39 +303,47 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
     </EuiPanel>
   ) : (
     <MappingListPresentation
-      fromLabel={fromLabel}
+      iri={iri}
+      entityLabel={entityLabel}
       rowColor={rowColor}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
       labels={labels}
+      fromLabels={fromLabels}
       filteredRows={filteredRows}
       search={search}
       expandedRowIds={expandedRowIds}
       toggleRowExpansion={toggleRowExpansion}
       metadataTarget={metadataTarget}
       setMetadataTarget={setMetadataTarget}
-      isTypeFilterOpen={isTypeFilterOpen}
-      setIsTypeFilterOpen={setIsTypeFilterOpen}
-      selectedTypeFilters={selectedTypeFilters}
-      setSelectedTypeFilters={setSelectedTypeFilters}
-      setAppliedTypeFilters={setAppliedTypeFilters}
+      typeFilters={typeFilters}
+      setTypeFilters={setTypeFilters}
       toggleTypeFilter={toggleTypeFilter}
       isPopoverOpen={isPopoverOpen}
       onButtonClick={onButtonClick}
       closePopover={closePopover}
+      isFilterOpen={isFilterOpen}
+      setIsFilterOpen={setIsFilterOpen}
+      viewDirection={viewDirection}
+      setViewDirection={setViewDirection}
     />
   );
 }
 
-export function WrappedMappingListWidget(
+/**
+ * Brings its own EUI and react-query providers, the way the other widgets do,
+ * so the widget also renders and fetches inside a plain host application.
+ */
+function WrappedMappingListWidget(
   props: MappingListWidgetProps,
 ): React.JSX.Element {
   const queryClient = new QueryClient();
+
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <MappingListWidget
           api={props.api}
-          source={props.source}
+          iri={props.iri}
           rowColor={props.rowColor}
           MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
         />
@@ -300,5 +352,4 @@ export function WrappedMappingListWidget(
   );
 }
 
-export { MappingListWidget };
-export default WrappedMappingListWidget;
+export { MappingListWidget, WrappedMappingListWidget };

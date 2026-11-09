@@ -497,18 +497,24 @@ The widget currently does not work correctly for **properties**. This is due to 
 `.trim();
 
 export const MappingListDetailDescription = `
-The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and a source entity IRI, it fetches every mapping of that concept and shows how it is connected to target concepts across terminologies.
+The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and an entity IRI, it fetches the mappings of that concept and shows how it is connected to other concepts across terminologies.
 
 #### Key Features:
 
 - **Dynamic mapping retrieval**:
-Fetches all mappings of the given source IRI from the ColiConc mapping endpoint and displays them in real time.
+Fetches the mappings of the given IRI from the ColiConc mapping endpoint and displays them in real time.
+
+- **View direction**:
+The icon next to the search bar lets the user choose which mappings to show: those where the IRI is the **source**, those where it is the **target**, or **both directions**. The menu shows the entity's readable label in bold, or the last part of its IRI when no label is found.
+
+- **No duplicate mappings**:
+A mapping that appears more than once, such as a self-mapping (a → a) in both directions, is shown only once.
 
 - **Human-readable labels**:
 Resolves both the source and the target entities to readable labels through the OLS Gateway API, and falls back to their original ColiConc notation when no label is found.
 
 - **Structured mapping table**:
-Lists each mapping with its type, target, creator and creation date. The table can be sorted by any of these four columns, and long result sets are paginated.
+Lists each mapping with its source, type, target, creator and creation date. The table can be sorted by any of these five columns, and long result sets are paginated.
 
 - **Custom row color**:
 The optional \`rowColor\` parameter sets the background of every other row. It defaults to a light pink.

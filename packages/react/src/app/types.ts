@@ -1121,7 +1121,7 @@ export type EntityListWidgetProps = {
 
 export type MappingListWidgetProps = {
   api: string;
-  source: string;
+  iri: string;
   rowColor?: string;
   MappingDetailBackgroundColor?: string;
 };

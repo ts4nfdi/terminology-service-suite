@@ -1,8 +1,11 @@
 import {
   EuiBasicTableColumn,
-  EuiButton,
+  EuiButtonEmpty,
   EuiButtonIcon,
   EuiCheckbox,
+  EuiFilterButton,
+  EuiFilterGroup,
+  EuiHorizontalRule,
   EuiInMemoryTable,
   EuiModal,
   EuiModalBody,
@@ -10,10 +13,13 @@ import {
   EuiModalHeaderTitle,
   EuiPanel,
   EuiPopover,
+  EuiProvider,
+  EuiRadioGroup,
   EuiSearchBarProps,
   EuiSpacer,
   EuiText,
   EuiTitle,
+  useGeneratedHtmlId,
 } from "@elastic/eui";
 import { css } from "@emotion/react";
 import {
@@ -24,6 +30,7 @@ import {
   type SetStateAction,
   type SVGProps,
 } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { GATEWAY_API_OLS_ENDPOINT } from "../../../app/globals";
 import MappingDetailPresentation from "../MappingDetailWidget/MappingDetailPresentation";
 import { MetadataWidget } from "../MetadataWidget";
@@ -47,6 +54,9 @@ export type MappingRow = {
   uri: string;
   partOf: string;
 };
+
+/** Which side of the mappings the source sits on. */
+export type ViewDirection = "from" | "to" | "both";
 
 /** Relative, so the column shrinks on small screens and its header wraps. */
 const MAPPING_DETAILS_COLUMN_WIDTH = "12%";
@@ -75,6 +85,9 @@ const predicateIcons: Record<string, ReactNode> = {
     </>
   ),
 };
+
+/** Mapping types offered in the filter panel, in the order they are listed. */
+const MAPPING_TYPES = Object.keys(predicateIcons);
 
 const PredicateIcon = memo(({ type }: { type: string }) => {
   const iconContent = predicateIcons[type];
@@ -117,293 +130,113 @@ const MetadataIcon = memo(({ style, ...props }: SVGProps<SVGSVGElement>) => (
 type MetadataTarget = { iri: string; ontologyId: string } | null;
 
 /** Everything the list shows or changes, passed down by MappingListWidget. */
-type MappingListPresentationProps = {
-  fromLabel: string;
+export type MappingListPresentationProps = {
+  /** The entity the user asked for; its cells are shown in bold. */
+  iri: string;
+  entityLabel: string;
   rowColor: string;
   MappingDetailBackgroundColor?: string;
   labels: Record<string, string>;
+  fromLabels: Record<string, string>;
   filteredRows: MappingRow[];
   search: EuiSearchBarProps;
   expandedRowIds: string[];
   toggleRowExpansion: (row: MappingRow) => void;
   metadataTarget: MetadataTarget;
   setMetadataTarget: Dispatch<SetStateAction<MetadataTarget>>;
-  isTypeFilterOpen: boolean;
-  setIsTypeFilterOpen: Dispatch<SetStateAction<boolean>>;
-  selectedTypeFilters: string[];
-  setSelectedTypeFilters: Dispatch<SetStateAction<string[]>>;
-  setAppliedTypeFilters: Dispatch<SetStateAction<string[]>>;
+  typeFilters: string[];
+  setTypeFilters: Dispatch<SetStateAction<string[]>>;
   toggleTypeFilter: (type: string) => void;
   isPopoverOpen: boolean;
   onButtonClick: () => void;
   closePopover: () => void;
+  isFilterOpen: boolean;
+  setIsFilterOpen: Dispatch<SetStateAction<boolean>>;
+  viewDirection: ViewDirection;
+  setViewDirection: Dispatch<SetStateAction<ViewDirection>>;
 };
 
 /** UI of the mapping list; all state and data come from MappingListWidget. */
-export default function MappingListPresentation(
+function MappingListPresentation(
   props: MappingListPresentationProps,
 ): React.JSX.Element {
   const {
-    fromLabel,
+    iri,
+    entityLabel,
     rowColor,
     MappingDetailBackgroundColor,
     labels,
+    fromLabels,
     filteredRows,
     search,
     expandedRowIds,
     toggleRowExpansion,
     metadataTarget,
     setMetadataTarget,
-    isTypeFilterOpen,
-    setIsTypeFilterOpen,
-    selectedTypeFilters,
-    setSelectedTypeFilters,
-    setAppliedTypeFilters,
+    typeFilters,
+    setTypeFilters,
     toggleTypeFilter,
     isPopoverOpen,
     onButtonClick,
     closePopover,
+    isFilterOpen,
+    setIsFilterOpen,
+    viewDirection,
+    setViewDirection,
   } = props;
 
-  /** Keeps a click on the filter icon from also sorting the column. */
-  function stopHeaderSort(event: React.MouseEvent | React.KeyboardEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  /** Keeps checkbox and radio ids unique when the widget appears twice. */
+  const filterIdPrefix = useGeneratedHtmlId({ prefix: "mappingFilter" });
 
-  function stopPopoverSort(event: React.MouseEvent | React.KeyboardEvent) {
-    event.stopPropagation();
-  }
-
-  /** Filter button in the Type header; toggles the type filter popover. */
-  const targetFilterTypeColumnButton = (
-    <span
-      role="button"
-      tabIndex={0}
-      aria-label="Filter Type Column"
-      onClick={(event) => {
-        stopHeaderSort(event);
-        setIsTypeFilterOpen((isOpen) => !isOpen);
-      }}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "24px",
-        height: "24px",
-        border: "1px solid #98a2b3",
-        borderRadius: "6px",
-        cursor: "pointer",
-      }}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="16"
-        height="16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
+  /**
+   * Source or target cell: its label, bold when it is the requested entity,
+   * plus a metadata button when OLS could resolve it.
+   */
+  function renderEntityCell(
+    label: string,
+    uri: string,
+    scheme: string,
+    hasMetadata: boolean,
+  ) {
+    return (
+      <span
+        style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
       >
-        <path d="M 4 6 H 20 L 14 13 V 19 L 10 17 V 13 Z" />
-      </svg>
-    </span>
-  );
+        <span title={uri}>
+          {uri === iri ? <strong>{label}</strong> : label}
+        </span>
 
-  /** Popover with one checkbox per mapping type. */
-  const typeFilterCheckboxList = (
-    <EuiPopover
-      button={targetFilterTypeColumnButton}
-      isOpen={isTypeFilterOpen}
-      closePopover={() => setIsTypeFilterOpen(false)}
-      anchorPosition="downLeft"
-      panelPaddingSize="s"
-    >
-      <div
-        style={{ width: "180px" }}
-        onClick={stopPopoverSort}
-        onMouseDown={stopPopoverSort}
-        onKeyDown={stopPopoverSort}
-        className="custom-filter-wrapper"
-      >
-        <style>{`
-        .custom-filter-wrapper .euiCheckbox__square {
-          transform: scale(1.1);
-          transform-origin: center;
-        }
-        .custom-filter-wrapper .euiCheckbox__label {
-          padding-left: 12px;
-        }
-      `}</style>
-        <EuiCheckbox
-          id="exactMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>exactMatch</span>
-              <PredicateIcon type="exactMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("exactMatch")}
-          onChange={() => toggleTypeFilter("exactMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="closeMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>closeMatch</span>
-              <PredicateIcon type="closeMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("closeMatch")}
-          onChange={() => toggleTypeFilter("closeMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="broadMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>broadMatch</span>
-              <PredicateIcon type="broadMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("broadMatch")}
-          onChange={() => toggleTypeFilter("broadMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="narrowMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>narrowMatch</span>
-              <PredicateIcon type="narrowMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("narrowMatch")}
-          onChange={() => toggleTypeFilter("narrowMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="relatedMatch"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>relatedMatch</span>
-              <PredicateIcon type="relatedMatch" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("relatedMatch")}
-          onChange={() => toggleTypeFilter("relatedMatch")}
-        />
-
-        <EuiSpacer size="s" />
-
-        <EuiCheckbox
-          id="mappingRelation"
-          label={
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
-              <span>mappingRelation</span>
-              <PredicateIcon type="mappingRelation" />
-            </span>
-          }
-          checked={selectedTypeFilters.includes("mappingRelation")}
-          onChange={() => toggleTypeFilter("mappingRelation")}
-        />
-
-        <EuiSpacer size="l" />
-
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <EuiButton
-            size="s"
-            color="accent"
-            style={{ minWidth: "72px" }}
-            onClick={() => {
-              setSelectedTypeFilters([]);
-              setAppliedTypeFilters([]);
-              setIsTypeFilterOpen(false);
-            }}
-          >
-            Clear
-          </EuiButton>
-
-          <EuiButton
-            size="s"
-            color="success"
-            style={{ minWidth: "72px" }}
-            onClick={() => {
-              setAppliedTypeFilters(selectedTypeFilters);
-              setIsTypeFilterOpen(false);
-            }}
-          >
-            Apply
-          </EuiButton>
-        </div>
-      </div>
-    </EuiPopover>
-  );
-
-  const typeColumnHeader = (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "14px",
-      }}
-    >
-      {typeFilterCheckboxList}
-      <span>Type</span>
-    </span>
-  );
+        {hasMetadata && scheme !== "—" && (
+          <EuiButtonIcon
+            iconType={MetadataIcon}
+            color="primary"
+            aria-label={`Show metadata of ${label}`}
+            title={`Show metadata of ${label}`}
+            onClick={() =>
+              setMetadataTarget({ iri: uri, ontologyId: scheme.toLowerCase() })
+            }
+          />
+        )}
+      </span>
+    );
+  }
 
   const columns: Array<EuiBasicTableColumn<MappingRow>> = [
     {
+      field: "from",
+      name: <strong style={{ fontSize: "14px" }}>Source</strong>,
+      sortable: (row: MappingRow) => row.fromUri,
+      render: (from: string, item: MappingRow) =>
+        renderEntityCell(
+          from,
+          item.fromUri,
+          item.fromScheme,
+          Boolean(fromLabels[item.fromUri]),
+        ),
+    },
+    {
       field: "type",
-      name: <strong style={{ fontSize: "14px" }}>{typeColumnHeader}</strong>,
+      name: <strong style={{ fontSize: "14px" }}>Type</strong>,
       sortable: true,
 
       render: (type: string) => (
@@ -422,29 +255,13 @@ export default function MappingListPresentation(
       /** Sort by notation, not label: labels arrive later and reorder rows. */
       sortable: (row: MappingRow) => row.targetFromColiConc,
 
-      /** Label plus a metadata button, only for targets OLS could resolve. */
-      render: (to: string, item: MappingRow) => (
-        <span
-          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
-        >
-          <span title={item.toUri}>{to}</span>
-
-          {labels[item.toUri] && (
-            <EuiButtonIcon
-              iconType={MetadataIcon}
-              color="primary"
-              aria-label={`Show metadata of ${to}`}
-              title={`Show metadata of ${to}`}
-              onClick={() =>
-                setMetadataTarget({
-                  iri: item.toUri,
-                  ontologyId: item.toScheme.toLowerCase(),
-                })
-              }
-            />
-          )}
-        </span>
-      ),
+      render: (to: string, item: MappingRow) =>
+        renderEntityCell(
+          to,
+          item.toUri,
+          item.toScheme,
+          Boolean(labels[item.toUri]),
+        ),
     },
     {
       field: "creator",
@@ -514,8 +331,8 @@ export default function MappingListPresentation(
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "32px",
-        height: "32px",
+        width: "36px",
+        height: "36px",
         padding: 0,
         color: "#0645ad",
         backgroundColor: "transparent",
@@ -526,8 +343,8 @@ export default function MappingListPresentation(
     >
       <svg
         viewBox="0 0 24 24"
-        width="20"
-        height="20"
+        width="24"
+        height="24"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.8"
@@ -542,23 +359,121 @@ export default function MappingListPresentation(
     </button>
   );
 
+  /** Direction and type filters, counted when they differ from the default. */
+  const activeFilterCount =
+    typeFilters.length + (viewDirection === "from" ? 0 : 1);
+
+  const filterButton = (
+    <EuiFilterGroup>
+      <EuiFilterButton
+        iconType="filter"
+        iconSide="left"
+        isSelected={isFilterOpen}
+        hasActiveFilters={activeFilterCount > 0}
+        onClick={() => setIsFilterOpen((isOpen) => !isOpen)}
+      >
+        Filters
+      </EuiFilterButton>
+    </EuiFilterGroup>
+  );
+
+  /** One panel for every filter: direction on top, mapping types below. */
+  const filterPopover = (
+    <EuiPopover
+      button={filterButton}
+      isOpen={isFilterOpen}
+      closePopover={() => setIsFilterOpen(false)}
+      anchorPosition="downRight"
+      panelPaddingSize="m"
+    >
+      <div style={{ width: "280px" }}>
+        <EuiTitle size="xxxs">
+          <h4>View direction</h4>
+        </EuiTitle>
+        <EuiSpacer size="s" />
+        <EuiRadioGroup
+          name={`${filterIdPrefix}-direction`}
+          idSelected={`${filterIdPrefix}-${viewDirection}`}
+          onChange={(id) =>
+            setViewDirection(
+              id.replace(`${filterIdPrefix}-`, "") as ViewDirection,
+            )
+          }
+          options={[
+            {
+              id: `${filterIdPrefix}-from`,
+              label: (
+                <>
+                  Mappings from <strong>{entityLabel}</strong>
+                </>
+              ),
+            },
+            {
+              id: `${filterIdPrefix}-to`,
+              label: (
+                <>
+                  Mappings to <strong>{entityLabel}</strong>
+                </>
+              ),
+            },
+            { id: `${filterIdPrefix}-both`, label: "Both directions" },
+          ]}
+        />
+
+        <EuiHorizontalRule margin="m" />
+
+        <EuiTitle size="xxxs">
+          <h4>Mapping type</h4>
+        </EuiTitle>
+        <EuiSpacer size="s" />
+        {MAPPING_TYPES.map((type) => (
+          <EuiCheckbox
+            key={type}
+            id={`${filterIdPrefix}-${type}`}
+            label={
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <PredicateIcon type={type} />
+                {type}
+              </span>
+            }
+            checked={typeFilters.includes(type)}
+            onChange={() => toggleTypeFilter(type)}
+          />
+        ))}
+
+        <EuiHorizontalRule margin="m" />
+
+        <EuiButtonEmpty
+          size="s"
+          iconType="refresh"
+          isDisabled={activeFilterCount === 0}
+          onClick={() => {
+            setTypeFilters([]);
+            setViewDirection("from");
+          }}
+        >
+          Reset filters
+        </EuiButtonEmpty>
+      </div>
+    </EuiPopover>
+  );
+
   return (
     <EuiPanel paddingSize="m">
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           alignItems: "flex-start",
           width: "100%",
         }}
       >
-        <EuiTitle size="s">
-          <h2>
-            <strong>Source:</strong>
-            <span style={{ fontWeight: "normal" }}>&nbsp;{fromLabel}</span>
-          </h2>
-        </EuiTitle>
-
         <EuiPopover
           button={helpButton}
           isOpen={isPopoverOpen}
@@ -643,6 +558,11 @@ export default function MappingListPresentation(
       <div>
         <EuiInMemoryTable<MappingRow>
           css={css`
+            .euiSearchBar__searchHolder {
+              flex: 0 1 50%;
+              min-width: 220px;
+            }
+
             thead .euiTableHeaderCell .eui-textTruncate {
               white-space: normal !important;
               overflow-wrap: anywhere;
@@ -707,7 +627,7 @@ export default function MappingListPresentation(
           items={filteredRows}
           itemId="id"
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-          search={search}
+          search={{ ...search, toolsRight: filterPopover }}
           sorting={{
             sort: {
               field: "to",
@@ -749,3 +669,19 @@ export default function MappingListPresentation(
     </EuiPanel>
   );
 }
+
+function WrappedMappingListPresentation(
+  props: MappingListPresentationProps,
+): React.JSX.Element {
+  const queryClient = new QueryClient();
+
+  return (
+    <EuiProvider colorMode="light" globalStyles={false}>
+      <QueryClientProvider client={queryClient}>
+        <MappingListPresentation {...props} />
+      </QueryClientProvider>
+    </EuiProvider>
+  );
+}
+
+export { MappingListPresentation, WrappedMappingListPresentation };

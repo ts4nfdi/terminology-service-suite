@@ -28,4 +28,21 @@ export class JskosMappingApi {
       },
     });
   }
+
+  async getMappingsByTo(iri: string) {
+    return this.makeCall("/mappings", {
+      params: {
+        to: iri,
+      },
+    });
+  }
+
+  async getMappingsInBothDirections(iri: string) {
+    return this.makeCall("/mappings", {
+      params: {
+        from: iri,
+        direction: "both",
+      },
+    });
+  }
 }

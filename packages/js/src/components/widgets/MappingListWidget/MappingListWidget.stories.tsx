@@ -44,7 +44,7 @@ const meta: Meta<MappingListWidgetProps> = {
 window['ts4nfdiWidgets'].createMappingList(
     {
         api:"${args.api}",
-        source:"${args.source}",
+        iri:"${args.iri}",
         rowColor:"${args.rowColor}",
         MappingDetailBackgroundColor:"${args.MappingDetailBackgroundColor}"
     },
