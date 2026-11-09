@@ -685,3 +685,4 @@ function WrappedMappingListPresentation(
 }
 
 export { MappingListPresentation, WrappedMappingListPresentation };
+export default MappingListPresentation;

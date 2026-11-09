@@ -80,3 +80,4 @@ function WrappedMappingDetailWidget(
 }
 
 export { MappingDetailWidget, WrappedMappingDetailWidget };
+export default WrappedMappingDetailWidget;

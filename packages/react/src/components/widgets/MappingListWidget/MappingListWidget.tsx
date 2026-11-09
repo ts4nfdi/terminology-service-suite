@@ -353,3 +353,4 @@ function WrappedMappingListWidget(
 }
 
 export { MappingListWidget, WrappedMappingListWidget };
+export default WrappedMappingListWidget;
