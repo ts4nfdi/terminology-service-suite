@@ -5,6 +5,7 @@ import { OntologyInfoWidget } from "./OntologyInfoWidget";
 import {
   commonOntologyInfoWidgetPlay,
   NavigateToEBIPageArgs,
+  ontologyInfoLinksPlay,
   OntologyInfoWidget1Args,
   OntologyInfoWidget2Args,
   OntologyInfoWidgetOhdab,
@@ -58,7 +59,7 @@ export const NavigateToEBIPage: Story = {
 
 export const OntologyInfoUberon: Story = {
   args: OntologyInfoWidgetUberon,
-  play: commonOntologyInfoWidgetPlay,
+  play: ontologyInfoLinksPlay,
 };
 
 export const OntologyInfoOhdab: Story = {

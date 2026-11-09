@@ -93,3 +93,29 @@ export const commonOntologyInfoWidgetPlay = async ({
     },
   );
 };
+
+/**
+ * Checks that the IRI links are styled as links (issue #390), so they
+ * do not look like plain text when the host app resets the link color.
+ */
+export const ontologyInfoLinksPlay = async ({
+  canvasElement,
+}: {
+  canvasElement: HTMLElement;
+}) => {
+  await waitFor(
+    async () => {
+      const ontologyIri = canvasElement.querySelector("#ontologyIri");
+      await expect(ontologyIri).toBeInTheDocument();
+      await expect(ontologyIri).toHaveClass("clickable");
+    },
+    {
+      timeout: 3000,
+    },
+  );
+
+  const versionIri = canvasElement.querySelector("#versionIri");
+  if (versionIri) {
+    await expect(versionIri).toHaveClass("clickable");
+  }
+};
