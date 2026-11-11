@@ -41,7 +41,7 @@ function getIriShortName(iri: string): string {
 function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const {
     api,
-    iri,
+    source,
     rowColor = DEFAULT_ROW_COLOR,
     MappingDetailBackgroundColor,
   } = props;
@@ -55,15 +55,15 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
   const olsApi = useMemo(() => new OlsEntityApi(GATEWAY_API_OLS_ENDPOINT), []);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["mappings", iri, viewDirection],
+    ["mappings", source, viewDirection],
     () => {
       if (viewDirection === "to") {
-        return jskosMappingApi.getMappingsByTo(iri);
+        return jskosMappingApi.getMappingsByTo(source);
       }
       if (viewDirection === "both") {
-        return jskosMappingApi.getMappingsInBothDirections(iri);
+        return jskosMappingApi.getMappingsInBothDirections(source);
       }
-      return jskosMappingApi.getMappingsByFrom(iri);
+      return jskosMappingApi.getMappingsByFrom(source);
     },
   );
 
@@ -281,7 +281,8 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
    * Readable name of the entity the user asked for: its Gateway API label
    * when one was found, otherwise the last part of its IRI.
    */
-  const entityLabel = fromLabels[iri] ?? labels[iri] ?? getIriShortName(iri);
+  const entityLabel =
+    fromLabels[source] ?? labels[source] ?? getIriShortName(source);
 
   /**
    * State and handlers for the contextual help popover.
@@ -303,7 +304,7 @@ function MappingListWidget(props: MappingListWidgetProps): React.JSX.Element {
     </EuiPanel>
   ) : (
     <MappingListPresentation
-      iri={iri}
+      source={source}
       entityLabel={entityLabel}
       rowColor={rowColor}
       MappingDetailBackgroundColor={MappingDetailBackgroundColor}
@@ -343,7 +344,7 @@ function WrappedMappingListWidget(
       <QueryClientProvider client={queryClient}>
         <MappingListWidget
           api={props.api}
-          iri={props.iri}
+          source={props.source}
           rowColor={props.rowColor}
           MappingDetailBackgroundColor={props.MappingDetailBackgroundColor}
         />

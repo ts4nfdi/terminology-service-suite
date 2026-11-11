@@ -497,7 +497,7 @@ The widget currently does not work correctly for **properties**. This is due to 
 `.trim();
 
 export const MappingListDetailDescription = `
-The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and an entity IRI, it fetches the mappings of that concept and shows how it is connected to other concepts across terminologies.
+The MappingListWidget is a table-based visualization component that displays mappings between ontology or terminology entities retrieved from the ColiConc Concordance API. Given an API endpoint and an entity IRI (\`source\`), it fetches the mappings of that concept and shows how it is connected to other concepts across terminologies.
 
 #### Key Features:
 

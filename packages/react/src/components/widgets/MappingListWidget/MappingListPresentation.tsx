@@ -132,7 +132,7 @@ type MetadataTarget = { iri: string; ontologyId: string } | null;
 /** Everything the list shows or changes, passed down by MappingListWidget. */
 export type MappingListPresentationProps = {
   /** The entity the user asked for; its cells are shown in bold. */
-  iri: string;
+  source: string;
   entityLabel: string;
   rowColor: string;
   MappingDetailBackgroundColor?: string;
@@ -161,7 +161,7 @@ function MappingListPresentation(
   props: MappingListPresentationProps,
 ): React.JSX.Element {
   const {
-    iri,
+    source,
     entityLabel,
     rowColor,
     MappingDetailBackgroundColor,
@@ -203,7 +203,7 @@ function MappingListPresentation(
         style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
       >
         <span title={uri}>
-          {uri === iri ? <strong>{label}</strong> : label}
+          {uri === source ? <strong>{label}</strong> : label}
         </span>
 
         {hasMetadata && scheme !== "—" && (
