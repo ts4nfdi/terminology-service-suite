@@ -7,6 +7,7 @@ export declare class OLS4Ontology extends OLS4Thing implements Ontology {
     getCreators(): string[];
     getSourceFileTimestamp(): string;
     getNumEntities(): number;
+    getStatisticsCount(): Record<string, number> | undefined;
     getNumClasses(): number;
     getNumProperties(): number;
     getNumIndividuals(): number;

@@ -1,0 +1,49 @@
+import{aj as o,al as br,ak as Tr,N as Ir,ar as Ar,aA as Sr,aB as Or,aC as Er,aD as _r,aE as Pr,aF as kr,aG as Cr,aH as Lr,aI as Wr,o as vr,n as Nr,aJ as Rr,aK as fr,aL as Ur,aM as Dr,I as Gr}from"./storyArgs-DlkqV1RL.js";import{H as wr}from"./HierarchyWidget-D6CO48DG.js";import{E as a,T as dr,a as Br,F as Mr}from"./globals-1uEo64sR.js";import"./iframe-BpFuy5ep.js";import"./preload-helper-Dp1pzeXC.js";import"./useQuery-5ur9KbsH.js";import"./OntologyBadge-DWEUndkJ.js";import"./badge-Cw5FcrFI.js";import"./loading_spinner-CgeG--Yx.js";import"./href_validator-ejenqJUk.js";import"./color_utils-DFl2nPj6.js";import"./_button-Cjs4cHjv.js";import"./icon-BSNXWXNl.js";import"./inner_text-CmUn24Fr.js";import"./title-D-7OiDDM.js";import"./text-s4bt9A6x.js";import"./link.styles-CzsZAIZs.js";import"./button-BGM5gc-1.js";import"./_button_display-B4IrSCpc.js";import"./useCombinedRefs-PLosiWF6.js";import"./spacer-idPDVPev.js";import"./accordion-C3oJDD_l.js";import"./button_icon-CAnP2Sby.js";import"./flex_group-L_IQvbMj.js";import"./flex_item-NjMNo1c1.js";import"./panel-BX_wHbxc.js";import"./shadow-DI4vNkUI.js";const{expect:Fr,waitFor:Kr,within:xr}=__STORYBOOK_MODULE_TEST__,Qr={...Ur,...fr,...Rr,...Nr,...vr,...Wr,...Lr,...Cr,...kr,...Pr,..._r,...Er,...Or,...Sr,...Ar,...Ir,...Tr,...br},r={apiUrl:"",backendType:"ols",apiKey:"",onNavigateToEntity:"Console message",onNavigateToOntology:"Console message",iri:"",ontologyId:"",entityType:"term",includeObsoleteEntities:o.INCLUDE_OBSOLETE_ENTITIES,preferredRoots:o.PREFERRED_ROOTS,keepExpansionStates:o.KEEP_EXPANSION_STATES,showSiblingsOnInit:o.SHOW_SIBLINGS_ON_INIT,useLegacy:o.USE_LEGACY,hierarchyWrap:o.WRAP,parameter:"",targetIri:"",showHeader:o.SHOW_HEADER,showComparisonTitleInHeader:o.SHOW_COMPARISON_TITLE_IN_HEADER},Yr={...r,apiUrl:a,backendType:"ols",iri:"http://purl.obolibrary.org/obo/MONDO_0005015",entityType:"class",ontologyId:"efo"},Vr={...r,apiUrl:a,backendType:"ols",iri:"http://purl.obolibrary.org/obo/IAO_0000120",entityType:"individual",ontologyId:"bco"},jr={...r,apiUrl:a,backendType:"ols",iri:"",entityType:"class",ontologyId:"uberon",preferredRoots:!0},Jr={...r,apiUrl:a,backendType:"ols",iri:"",entityType:"class",ontologyId:"uberon",includeObsoleteEntities:!0,useLegacy:!0},Xr={...r,apiUrl:a,backendType:"ols",iri:"",entityType:"property",ontologyId:"bco",useLegacy:!0},Zr={...r,apiUrl:a,backendType:"ols",iri:"",entityType:"individual",ontologyId:"bco"},qr={...r,apiUrl:a,backendType:"ols",iri:"http://purl.obolibrary.org/obo/UBERON_2001747",entityType:"class",ontologyId:"uberon"},zr={...r,apiUrl:Mr,backendType:"skosmos",iri:"http://www.yso.fi/onto/yso/p864",ontologyId:"yso"},$r={...r,apiUrl:"https://concepts.sagepub.com/vocabularies/rest/v1/",backendType:"skosmos",iri:"https://concepts.sagepub.com/social-science/concept/economic_forecasting",ontologyId:"social-science"},re={...r,apiUrl:"https://data.biodivportal.gfbio.org",backendType:"ontoportal",iri:"http://terminologies.gfbio.org/terms/IOC_Strigops-habroptila",ontologyId:"IOC",entityType:"class",apiKey:""},ee={...r,apiUrl:Br,backendType:"ols",iri:"http://purl.obolibrary.org/obo/NCIT_C2984",entityType:"class",ontologyId:"ncit",useLegacy:!0},ae={...r,apiUrl:dr,backendType:"ols",iri:"https://database.factgrid.de/entity/Q692839",entityType:"class",ontologyId:"ohdab",useLegacy:!1,parameter:"lang=de"},oe={...r,apiUrl:"https://agrovoc.fao.org/browse/rest/v1/",backendType:"skosmos",iri:"http://aims.fao.org/aos/agrovoc/c_1731",showSiblingsOnInit:!0,ontologyId:"agrovoc",parameter:"lang=de"},se={...r,apiUrl:a,backendType:"ols",iri:"http://purl.obolibrary.org/obo/CHEBI_27594",targetIri:"http://purl.obolibrary.org/obo/CHEBI_18248",entityType:"class",ontologyId:"chebi"},te={...r,apiUrl:a,backendType:"ols",iri:"http://purl.obolibrary.org/obo/MONDO_0005015",targetIri:"http://purl.obolibrary.org/obo/MONDO_0004335",entityType:"class",ontologyId:"efo"},ie={...r,apiUrl:dr,backendType:"ols",iri:"https://database.factgrid.de/entity/Q692839",targetIri:"https://database.factgrid.de/entity/Q522788",entityType:"class",ontologyId:"ohdab",useLegacy:!1,parameter:"lang=de"},e=async({canvasElement:hr})=>{const ur=xr(hr);await Kr(async()=>{const Hr=ur.getByTestId("hierarchy");await Fr(Hr).toBeInTheDocument()},{timeout:3e3})},fe={title:"Hierarchy and Graph/HierarchyWidget",component:wr,parameters:{layout:"centered",docs:{source:{transform:Gr},description:{component:Dr}}},argTypes:Qr,args:r},s={args:Yr,play:e},t={args:Vr,play:e},i={args:jr,play:e},c={args:Jr,play:e},n={args:Xr,play:e},p={args:Zr,play:e},y={args:qr,play:e},g={args:zr,play:e},l={args:$r,play:e},m={args:re,play:e},d={args:ee,play:e},h={args:ae,play:e},u={args:oe,play:e},H={args:se,play:e},b={args:ie,play:e},T={args:te,play:e};var I,A,S;s.parameters={...s.parameters,docs:{...(I=s.parameters)==null?void 0:I.docs,source:{originalSource:`{
+  args: ClassHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(S=(A=s.parameters)==null?void 0:A.docs)==null?void 0:S.source}}};var O,E,_;t.parameters={...t.parameters,docs:{...(O=t.parameters)==null?void 0:O.docs,source:{originalSource:`{
+  args: IndividualHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(_=(E=t.parameters)==null?void 0:E.docs)==null?void 0:_.source}}};var P,k,C;i.parameters={...i.parameters,docs:{...(P=i.parameters)==null?void 0:P.docs,source:{originalSource:`{
+  args: PreferredRootsArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(C=(k=i.parameters)==null?void 0:k.docs)==null?void 0:C.source}}};var L,W,v;c.parameters={...c.parameters,docs:{...(L=c.parameters)==null?void 0:L.docs,source:{originalSource:`{
+  args: IncludeObsoleteEntitiesArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(v=(W=c.parameters)==null?void 0:W.docs)==null?void 0:v.source}}};var N,R,f;n.parameters={...n.parameters,docs:{...(N=n.parameters)==null?void 0:N.docs,source:{originalSource:`{
+  args: PropertyRootsArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(f=(R=n.parameters)==null?void 0:R.docs)==null?void 0:f.source}}};var U,D,G;p.parameters={...p.parameters,docs:{...(U=p.parameters)==null?void 0:U.docs,source:{originalSource:`{
+  args: IndividualRootsArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(G=(D=p.parameters)==null?void 0:D.docs)==null?void 0:G.source}}};var w,B,M;y.parameters={...y.parameters,docs:{...(w=y.parameters)==null?void 0:w.docs,source:{originalSource:`{
+  args: LargeHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(M=(B=y.parameters)==null?void 0:B.docs)==null?void 0:M.source}}};var F,K,x;g.parameters={...g.parameters,docs:{...(F=g.parameters)==null?void 0:F.docs,source:{originalSource:`{
+  args: SkosHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(x=(K=g.parameters)==null?void 0:K.docs)==null?void 0:x.source}}};var Q,Y,V;l.parameters={...l.parameters,docs:{...(Q=l.parameters)==null?void 0:Q.docs,source:{originalSource:`{
+  args: SagePubHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(V=(Y=l.parameters)==null?void 0:Y.docs)==null?void 0:V.source}}};var j,J,X;m.parameters={...m.parameters,docs:{...(j=m.parameters)==null?void 0:j.docs,source:{originalSource:`{
+  args: OntoportalHierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(X=(J=m.parameters)==null?void 0:J.docs)==null?void 0:X.source}}};var Z,q,z;d.parameters={...d.parameters,docs:{...(Z=d.parameters)==null?void 0:Z.docs,source:{originalSource:`{
+  args: OLS3HierarchyArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(z=(q=d.parameters)==null?void 0:q.docs)==null?void 0:z.source}}};var $,rr,er;h.parameters={...h.parameters,docs:{...($=h.parameters)==null?void 0:$.docs,source:{originalSource:`{
+  args: OLSGermanArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(er=(rr=h.parameters)==null?void 0:rr.docs)==null?void 0:er.source}}};var ar,or,sr;u.parameters={...u.parameters,docs:{...(ar=u.parameters)==null?void 0:ar.docs,source:{originalSource:`{
+  args: SkosmosAgrovocGermanArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(sr=(or=u.parameters)==null?void 0:or.docs)==null?void 0:sr.source}}};var tr,ir,cr;H.parameters={...H.parameters,docs:{...(tr=H.parameters)==null?void 0:tr.docs,source:{originalSource:`{
+  args: CompareHierarchiesArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(cr=(ir=H.parameters)==null?void 0:ir.docs)==null?void 0:cr.source}}};var nr,pr,yr;b.parameters={...b.parameters,docs:{...(nr=b.parameters)==null?void 0:nr.docs,source:{originalSource:`{
+  args: CompareHierarchiesGermanArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(yr=(pr=b.parameters)==null?void 0:pr.docs)==null?void 0:yr.source}}};var gr,lr,mr;T.parameters={...T.parameters,docs:{...(gr=T.parameters)==null?void 0:gr.docs,source:{originalSource:`{
+  args: CompareHierarchiesSubEntityArgs,
+  play: commonHierarchyWidgetPlay
+}`,...(mr=(lr=T.parameters)==null?void 0:lr.docs)==null?void 0:mr.source}}};const Ue=["ClassHierarchy","IndividualHierarchy","PreferredRoots","IncludeObsoleteEntities","PropertyRoots","IndividualRoots","LargeHierarchy","SkosHierarchy","SagePubHierarchy","OntoportalHierarchy","OLS3Hierarchy","OLSGerman","SkosmosAgrovocGerman","CompareHierarchies","CompareHierarchiesGerman","CompareHierarchiesSubEntity"];export{s as ClassHierarchy,H as CompareHierarchies,b as CompareHierarchiesGerman,T as CompareHierarchiesSubEntity,c as IncludeObsoleteEntities,t as IndividualHierarchy,p as IndividualRoots,y as LargeHierarchy,d as OLS3Hierarchy,h as OLSGerman,m as OntoportalHierarchy,i as PreferredRoots,n as PropertyRoots,l as SagePubHierarchy,g as SkosHierarchy,u as SkosmosAgrovocGerman,Ue as __namedExportsOrder,fe as default};

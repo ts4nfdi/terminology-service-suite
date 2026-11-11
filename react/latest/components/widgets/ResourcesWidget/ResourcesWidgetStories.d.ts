@@ -41,6 +41,16 @@ export declare const ResourcesWidgetLogosArgs: {
     parameter: string;
     useLegacy: boolean;
 };
+export declare const FAIRagroCollectionArgs: {
+    api: string;
+    useLegacy: boolean;
+    parameter: string;
+    initialEntriesPerPage: number;
+    pageSizeOptions: number[];
+    initialSortField: string;
+    initialSortDir: "asc";
+    onNavigate: string;
+};
 export declare const commonResourcesWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;
