@@ -32,13 +32,41 @@ export class OLS4Ontology extends OLS4Thing implements Ontology {
   getNumEntities(): number {
     return parseInt(this.properties["numberOfEntities"]);
   }
+
+  getStatisticsCount(): Record<string, number> | undefined {
+    const statistics = asArray(this.properties["statistics"]);
+    if (statistics.length === 0) return undefined;
+    const latest = [...statistics].sort((a, b) =>
+      String(b.created).localeCompare(String(a.created)),
+    )[0];
+    return latest?.count;
+  }
   getNumClasses(): number {
+    const count = this.getStatisticsCount();
+    if (count) {
+      const classes = count["http://www.w3.org/2002/07/owl#Class"];
+      const concepts = count["http://www.w3.org/2004/02/skos/core#Concept"];
+      if (classes === undefined && concepts === undefined) return NaN;
+      return Number(classes ?? 0) + Number(concepts ?? 0);
+    }
     return parseInt(this.properties["numberOfClasses"]);
   }
   getNumProperties(): number {
+    const count = this.getStatisticsCount();
+    if (count) {
+      return Number(
+        count["http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"] ?? NaN,
+      );
+    }
     return parseInt(this.properties["numberOfProperties"]);
   }
   getNumIndividuals(): number {
+    const count = this.getStatisticsCount();
+    if (count) {
+      return Number(
+        count["http://www.w3.org/2002/07/owl#NamedIndividual"] ?? NaN,
+      );
+    }
     return parseInt(this.properties["numberOfIndividuals"]);
   }
   getLogoURL(): string | undefined {
