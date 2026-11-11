@@ -1,1 +1,0 @@
-import{r as i}from"./client-DFp2fd_t.js";import{cO as a,T as s}from"./provider-DhHV66nY.js";var u=function(){var e=i.useContext(a);return e},k=function(e){var r=arguments.length>1&&arguments[1]!==void 0?arguments[1]:!0,n=u();return n&&r?e.includes(n):!1};function c(t){var e=s(),r=e.euiTheme.breakpoint,n=u();return n==null||r[t]==null?!1:r[n]>=r[t]}export{c as a,k as u};

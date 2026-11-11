@@ -3,6 +3,7 @@ import { OLS3Thing } from './OLS3Thing';
 import { default as Reified } from '../Reified';
 import { ThingTypeName } from '../ModelTypeCheck';
 export declare class OLS3Ontology extends OLS3Thing implements Ontology {
+    getStatisticsCount(): Record<string, number> | undefined;
     getType(): ThingTypeName;
     getTypePlural(): "ontologies" | "classes" | "terms" | "properties" | "individuals";
     getOntologyId(): string;

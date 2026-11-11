@@ -25,4 +25,5 @@ export interface Ontology extends Thing {
     getExportsTo(): string[];
     getAllowDownload(): boolean;
     getLicense(): string[];
+    getStatisticsCount(): Record<string, number> | undefined;
 }
