@@ -1,0 +1,1 @@
+export { SearchBarWidget } from './SearchBarWidget';
