@@ -1,0 +1,10 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { EntityProviderWidgetFullProps } from '@ts4nfdi/terminology-service-suite/src/components/widgets/EntityProviderWidget/EntityProviderWidget';
+declare const meta: Meta<EntityProviderWidgetFullProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const entityProvider: Story;
+export declare const ontologyProvider: Story;
+export declare const withoutRawData: Story;
+export declare const notFound: Story;
+export declare const disabled: Story;
