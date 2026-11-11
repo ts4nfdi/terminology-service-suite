@@ -65,12 +65,13 @@ function MappingDetailWidget(
   );
 }
 
-export function WrappedMappingDetailWidget(
+function WrappedMappingDetailWidget(
   props: MappingDetailWidgetProps,
 ): React.JSX.Element {
   const queryClient = new QueryClient();
+
   return (
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" globalStyles={false}>
       <QueryClientProvider client={queryClient}>
         <MappingDetailWidget {...props} />
       </QueryClientProvider>
@@ -78,5 +79,5 @@ export function WrappedMappingDetailWidget(
   );
 }
 
-export { MappingDetailWidget };
+export { MappingDetailWidget, WrappedMappingDetailWidget };
 export default WrappedMappingDetailWidget;

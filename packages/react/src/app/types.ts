@@ -1121,6 +1121,7 @@ export type EntityListWidgetProps = {
 
 export type MappingListWidgetProps = {
   api: string;
+  /** IRI of the entity whose mappings are shown, in whichever view direction. */
   source: string;
   rowColor?: string;
   MappingDetailBackgroundColor?: string;
