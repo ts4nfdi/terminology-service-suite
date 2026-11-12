@@ -65,4 +65,21 @@ export const entityListIndividualsPlay = async ({
       canvas.queryByRole("columnheader", { name: "Domain" }),
     ).not.toBeInTheDocument();
   });
+
+  // The total depends on the server, so it is read from the page, not hardcoded
+  let totalItemCount = 0;
+
+  // The counter shows the 10 rows of the first page and the total on the server
+  await step('Shows "Loaded: 10 / <total>" after loading', async () => {
+    const loadedText = await canvas.findByText(
+      /^Loaded: 10 \/ \d+$/,
+      {},
+      SERVER_TIMEOUT,
+    );
+    totalItemCount = Number(loadedText.textContent?.split("/")[1]);
+
+    // More than one page of data, otherwise the paging steps cannot work
+    await expect(totalItemCount).toBeGreaterThan(10);
+    await expect(canvas.queryByText(/loading…/)).not.toBeInTheDocument();
+  });
 };
