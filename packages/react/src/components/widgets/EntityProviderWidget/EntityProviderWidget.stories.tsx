@@ -11,6 +11,7 @@ import {
   DisabledArgs,
   fullDisabledPlay,
   fullNotFoundPlay,
+  fullWithOntologyIdPlay,
   fullWithoutRawPlay,
   NotFoundArgs,
   WithoutRawArgs,
@@ -44,6 +45,7 @@ type Story = StoryObj<typeof meta>;
 
 export const entityProvider: Story = {
   args: entityProviderArgs,
+  play: fullWithOntologyIdPlay,
 };
 
 export const ontologyProvider: Story = {
