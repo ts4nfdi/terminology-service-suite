@@ -1,3 +1,5 @@
+import type { StoryContext } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
@@ -33,3 +35,34 @@ export const EntityListWidgetMeshTermsArgs = {
   entityType: "term",
   parameter: "",
 } as const;
+
+/**
+ * The Individuals story loads real data from the EBI OLS API,
+ * so every wait for server data gets a generous timeout.
+ * It must stay below the Vitest test timeout of 15 seconds.
+ */
+const SERVER_TIMEOUT = { timeout: 10000 };
+
+export const entityListIndividualsPlay = async ({
+  canvas,
+  step,
+}: StoryContext) => {
+  // Wait until the first page of data is rendered in the table
+  await canvas.findByRole("table", {}, SERVER_TIMEOUT);
+
+  // Individuals show Name, ID and Type, but no property columns
+  await step("Table has the columns Name, ID and Type", async () => {
+    await expect(
+      canvas.getByRole("columnheader", { name: "Name" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("columnheader", { name: "ID" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("columnheader", { name: "Type" }),
+    ).toBeVisible();
+    await expect(
+      canvas.queryByRole("columnheader", { name: "Domain" }),
+    ).not.toBeInTheDocument();
+  });
+};
