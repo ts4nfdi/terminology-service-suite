@@ -1,0 +1,12 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { BreadcrumbWidgetProps } from '@ts4nfdi/terminology-service-suite/src';
+declare const meta: Meta<BreadcrumbWidgetProps>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export declare const BreadcrumbWidgetDefault: Story;
+export declare const SelectingDefiningOntology: Story;
+export declare const DefiningOntologyUnavailable: Story;
+export declare const ErrorBreadcrumbWidget: Story;
+export declare const CustomColors: Story;
+export declare const CustomStyle: Story;
+export declare const EntityInput: Story;
