@@ -63,11 +63,8 @@ function OntologyInfoPresentation(
       <EuiFlexItem>
         <b>Ontology IRI:</b>
         <p>
-          <a
-            id={"ontologyIri"}
-            href={ontology.getIri() || ontology.getOntologyPurl()}
-          >
-            {ontology.getIri() || ontology.getOntologyPurl()}
+          <a id={"ontologyIri"} className="clickable" href={iri}>
+            {iri}
           </a>
         </p>
       </EuiFlexItem>
@@ -81,7 +78,11 @@ function OntologyInfoPresentation(
           <EuiFlexItem>
             <b>Version IRI:</b>
             <p>
-              <a id={"versionIri"} href={ontology.getVersionIri()}>
+              <a
+                id={"versionIri"}
+                className="clickable"
+                href={ontology.getVersionIri()}
+              >
                 {ontology.getVersionIri()}
               </a>
             </p>
