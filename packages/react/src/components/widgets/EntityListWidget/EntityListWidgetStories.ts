@@ -100,9 +100,12 @@ export const entityListIndividualsPlay = async ({
     },
   );
 
+  // Kept for the search step, which searches for a name from page 1
+  let namesOnPage1: string[] = [];
+
   // Page 2 loads new rows from the server, so none of the page 1 names stay
   await step("The next page shows different rows", async () => {
-    const namesOnPage1 = getNameColumn(canvas);
+    namesOnPage1 = getNameColumn(canvas);
     // Page 2 is full, unless the total ends before 20 rows
     const expectedRowCount = Math.min(10, totalItemCount - 10);
 
@@ -127,6 +130,39 @@ export const entityListIndividualsPlay = async ({
       namesOnPage2.filter((name) => namesOnPage1.includes(name)),
     ).toEqual([]);
   });
+
+  // The search asks the server, so it finds a name from page 1 while we are on page 2
+  await step(
+    "Searching on page 2 finds results from all the data",
+    async () => {
+      const searchTerm = namesOnPage1[0];
+      const namesOnPage2 = getNameColumn(canvas);
+      await expect(namesOnPage2).not.toContain(searchTerm);
+
+      const searchBox = canvas.getByRole("searchbox", {
+        name: "Search by Name or ID",
+      });
+      await userEvent.type(searchBox, searchTerm);
+
+      // Wait until the search result from the server is shown
+      await waitFor(async () => {
+        await expect(getNameColumn(canvas)).toContain(searchTerm);
+      }, SERVER_TIMEOUT);
+
+      // The rows of page 2 do not match the search, so they are gone
+      await expect(
+        getNameColumn(canvas).filter((name) => namesOnPage2.includes(name)),
+      ).toEqual([]);
+
+      // Clear the search, so the next step starts with all the data again
+      await userEvent.clear(searchBox);
+      await canvas.findByText(
+        `Loaded: 10 / ${totalItemCount}`,
+        {},
+        SERVER_TIMEOUT,
+      );
+    },
+  );
 
   // With 25 rows per page, all rows up to 25 fit on one page
   await step(
@@ -168,5 +204,5 @@ function getNameColumn(canvas: StoryContext["canvas"]) {
   return canvas
     .getAllByRole("row")
     .filter((row) => within(row).queryAllByRole("cell").length > 0)
-    .map((row) => within(row).getAllByRole("cell")[0].textContent);
+    .map((row) => within(row).getAllByRole("cell")[0].textContent ?? "");
 }
