@@ -136,9 +136,6 @@ export const entityListIndividualsPlay = async ({
     "Searching on page 2 finds results from all the data",
     async () => {
       const searchTerm = namesOnPage1[0];
-      const namesOnPage2 = getNameColumn(canvas);
-      await expect(namesOnPage2).not.toContain(searchTerm);
-
       const searchBox = canvas.getByRole("searchbox", {
         name: "Search by Name or ID",
       });
@@ -149,9 +146,12 @@ export const entityListIndividualsPlay = async ({
         await expect(getNameColumn(canvas)).toContain(searchTerm);
       }, SERVER_TIMEOUT);
 
-      // The rows of page 2 do not match the search, so they are gone
+      // Every row matches the search term, so no unrelated row is shown.
+      // Without the search, the table shows page 1, which fails this check.
       await expect(
-        getNameColumn(canvas).filter((name) => namesOnPage2.includes(name)),
+        getNameColumn(canvas).filter(
+          (name) => !name.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
       ).toEqual([]);
 
       // Clear the search, so the next step starts with all the data again
