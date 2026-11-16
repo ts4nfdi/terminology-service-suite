@@ -1,5 +1,5 @@
 import type { StoryContext } from "@storybook/react-vite";
-import { expect, within } from "storybook/test";
+import { expect, screen, waitFor, within } from "storybook/test";
 import * as globals from "../../../app/globals";
 import {
   apiArgType,
@@ -97,6 +97,65 @@ export const entityListIndividualsPlay = async ({
       await expect(nameHeader).toHaveAttribute("aria-sort", "descending");
       await expect(getNameColumn(canvas)).toEqual([...namesBefore].reverse());
       await expect(getNameColumn(canvas)).not.toEqual(namesBefore);
+    },
+  );
+
+  // Page 2 loads new rows from the server, so none of the page 1 names stay
+  await step("The next page shows different rows", async () => {
+    const namesOnPage1 = getNameColumn(canvas);
+    // Page 2 is full, unless the total ends before 20 rows
+    const expectedRowCount = Math.min(10, totalItemCount - 10);
+
+    // EUI renders the clickable page controls as links, not buttons
+    await userEvent.click(canvas.getByRole("link", { name: "Next page" }));
+
+    // Wait until the server answered and the old rows are replaced
+    await waitFor(async () => {
+      await expect(getNameColumn(canvas)).not.toContain(namesOnPage1[0]);
+    }, SERVER_TIMEOUT);
+
+    const namesOnPage2 = getNameColumn(canvas);
+    await expect(namesOnPage2).toHaveLength(expectedRowCount);
+    await expect(
+      canvas.getByText(`Loaded: ${expectedRowCount} / ${totalItemCount}`),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: /^Page 2 of/ }),
+    ).toHaveAttribute("aria-current", "page");
+    // No name from page 1 is shown on page 2
+    await expect(
+      namesOnPage2.filter((name) => namesOnPage1.includes(name)),
+    ).toEqual([]);
+  });
+
+  // With 25 rows per page, all rows up to 25 fit on one page
+  await step(
+    "Changing rows per page changes how many rows we see",
+    async () => {
+      const expectedRowCount = Math.min(25, totalItemCount);
+
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Rows per page: 10" }),
+      );
+      // The options open in a popover outside the story root, so use screen
+      await userEvent.click(
+        await screen.findByRole("button", { name: "25 rows" }),
+      );
+
+      // Wait until the server answered with the bigger page
+      await waitFor(async () => {
+        await expect(getNameColumn(canvas)).toHaveLength(expectedRowCount);
+      }, SERVER_TIMEOUT);
+
+      await expect(
+        canvas.getByText(`Loaded: ${expectedRowCount} / ${totalItemCount}`),
+      ).toBeVisible();
+      await expect(
+        canvas.getByRole("button", { name: "Rows per page: 25" }),
+      ).toBeVisible();
+      await expect(
+        canvas.queryByRole("button", { name: "Rows per page: 10" }),
+      ).not.toBeInTheDocument();
     },
   );
 };
