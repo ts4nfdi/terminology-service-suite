@@ -4,4 +4,6 @@ export declare class JskosMappingApi {
     constructor(api: string | AxiosInstance);
     protected makeCall(url: string, config?: AxiosRequestConfig): Promise<any>;
     getMappingsByFrom(iri: string): Promise<any>;
+    getMappingsByTo(iri: string): Promise<any>;
+    getMappingsInBothDirections(iri: string): Promise<any>;
 }

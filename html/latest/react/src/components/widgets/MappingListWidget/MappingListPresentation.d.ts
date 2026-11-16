@@ -19,32 +19,40 @@ export type MappingRow = {
     uri: string;
     partOf: string;
 };
+/** Which side of the mappings the source sits on. */
+export type ViewDirection = "from" | "to" | "both";
 type MetadataTarget = {
     iri: string;
     ontologyId: string;
 } | null;
 /** Everything the list shows or changes, passed down by MappingListWidget. */
-type MappingListPresentationProps = {
-    fromLabel: string;
+export type MappingListPresentationProps = {
+    /** The entity the user asked for; its cells are shown in bold. */
+    source: string;
+    entityLabel: string;
     rowColor: string;
     MappingDetailBackgroundColor?: string;
     labels: Record<string, string>;
+    fromLabels: Record<string, string>;
     filteredRows: MappingRow[];
     search: EuiSearchBarProps;
     expandedRowIds: string[];
     toggleRowExpansion: (row: MappingRow) => void;
     metadataTarget: MetadataTarget;
     setMetadataTarget: Dispatch<SetStateAction<MetadataTarget>>;
-    isTypeFilterOpen: boolean;
-    setIsTypeFilterOpen: Dispatch<SetStateAction<boolean>>;
-    selectedTypeFilters: string[];
-    setSelectedTypeFilters: Dispatch<SetStateAction<string[]>>;
-    setAppliedTypeFilters: Dispatch<SetStateAction<string[]>>;
+    typeFilters: string[];
+    setTypeFilters: Dispatch<SetStateAction<string[]>>;
     toggleTypeFilter: (type: string) => void;
     isPopoverOpen: boolean;
     onButtonClick: () => void;
     closePopover: () => void;
+    isFilterOpen: boolean;
+    setIsFilterOpen: Dispatch<SetStateAction<boolean>>;
+    viewDirection: ViewDirection;
+    setViewDirection: Dispatch<SetStateAction<ViewDirection>>;
 };
 /** UI of the mapping list; all state and data come from MappingListWidget. */
-export default function MappingListPresentation(props: MappingListPresentationProps): React.JSX.Element;
-export {};
+declare function MappingListPresentation(props: MappingListPresentationProps): React.JSX.Element;
+declare function WrappedMappingListPresentation(props: MappingListPresentationProps): React.JSX.Element;
+export { MappingListPresentation, WrappedMappingListPresentation };
+export default MappingListPresentation;

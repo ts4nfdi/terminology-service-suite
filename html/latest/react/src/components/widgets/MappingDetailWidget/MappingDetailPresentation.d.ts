@@ -1,8 +1,4 @@
-/**
- * One mapping, flattened to the strings the card shows and downloads.
- * MappingDetailWidget builds it from what it fetches, MappingListWidget from
- * the row the user expanded.
- */
+/** One mapping, flattened to the strings the card shows and downloads. */
 export type MappingDetail = {
     type?: string;
     from?: string;
@@ -18,18 +14,13 @@ export type MappingDetail = {
     partOf?: string;
     uri?: string;
 };
-type MappingDetailPresentationProps = {
+export type MappingDetailPresentationProps = {
     mapping: MappingDetail;
     MappingDetailBackgroundColor?: string;
-    /**
-     * Puts a close button in the top corner of the card.
-     * MappingListWidget uses it to collapse the row again.
-     */
+    /** Shows a close button; the list widget uses it to collapse the row. */
     onClose?: () => void;
 };
-/**
- * The card itself: its fields, downloads and layout. It renders the mapping it
- * is handed and fetches nothing, so both mapping widgets can show it.
- */
+/** Renders the mapping it is handed, so both mapping widgets can show it. */
 export default function MappingDetailPresentation(props: MappingDetailPresentationProps): React.JSX.Element;
-export {};
+declare function WrappedMappingDetailPresentation(props: MappingDetailPresentationProps): React.JSX.Element;
+export { MappingDetailPresentation, WrappedMappingDetailPresentation };

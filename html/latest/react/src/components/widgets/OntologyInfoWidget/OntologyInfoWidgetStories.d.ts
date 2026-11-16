@@ -48,3 +48,10 @@ export declare const OntologyInfoWidgetOhdab: {
 export declare const commonOntologyInfoWidgetPlay: ({ canvasElement, }: {
     canvasElement: HTMLElement;
 }) => Promise<void>;
+/**
+ * Checks that the IRI links are styled as links (issue #390), so they
+ * do not look like plain text when the host app resets the link color.
+ */
+export declare const ontologyInfoLinksPlay: ({ canvasElement, }: {
+    canvasElement: HTMLElement;
+}) => Promise<void>;
