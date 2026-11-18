@@ -183,3 +183,70 @@ Stay on the branch feat/455-storybook-play-functions. Don't commit or push anyth
 
 Your code should be clear, maintainable and easy to understand.
 ```
+
+## v4
+
+What changed from v3:
+
+- Shorter and better organized: Setup, Scope, Required coverage, Test quality.
+- The steps for each test are numbered: write, run, break the widget, restore, report, wait.
+- The AI suggests the test order first and waits for me before it starts coding.
+- The AI restores only its own temporary changes and keeps my edits, even when something goes wrong.
+
+```
+Help me write Storybook play functions for a React widget. Act as a senior developer and mentor: work one step at a time, briefly explain what you changed and why, then wait for me. Carefully review any changes I make myself.
+
+Before coding, read the files below, suggest the test order by importance, and briefly explain your choices. Flag any important missing coverage or unnecessary checks, then wait for me.
+
+Setup:
+- Storybook 9.1, React, Vite, and Elastic UI (@elastic/eui 115).
+- Tests use @storybook/addon-vitest with Vitest browser mode and Playwright Chromium.
+- Get canvas, userEvent, and step from the play context. Import other test utilities from "storybook/test"; use StoryContext from "@storybook/react-vite" if needed.
+- Follow: https://storybook.js.org/docs/writing-tests/interaction-testing
+
+Read these files in packages/react/src/components/widgets/EntityListWidget:
+- EntityListWidget.tsx
+- EntityListPresentation.tsx
+- EntityListWidgetStories.ts
+- EntityListWidget.stories.tsx
+
+Also check EntityProviderWidget as the project example.
+
+Scope:
+Write one exported play function in EntityListWidgetStories.ts for the Individuals story, then attach it using play in EntityListWidget.stories.tsx. It uses real EBI OLS API data: ontology "iao", entity type "individual".
+Only change tests, except for the temporary verification changes described below. No mocks or new packages.
+
+Required coverage:
+Put each item in its own step block, ordered by importance:
+- The table has Name, ID, and Type columns.
+- Initial loading completes and shows "Loaded: 10 / <total>".
+- Clicking Name produces the expected sorted order, not merely a different order.
+- Moving to the next page displays different entities.
+- Changing rows per page produces the expected number of data rows.
+- Search works beyond the current page: while on page 2, search for an entity previously observed on another page and absent from page 2; verify it appears.
+
+Test quality:
+- Only write the tests that are really needed. More tests are not better.
+- Use accessible queries such as getByRole, getByLabelText, and getByText. No test IDs or CSS selectors.
+- Await every userEvent and expect.
+- Use findBy* with up to a 10-second timeout for asynchronous elements. The entire test has a 15-second timeout; avoid fixed delays.
+- Read the total from the UI; do not hardcode live API totals.
+- Wait for the relevant loading or data update before asserting.
+- Keep assertions minimal and meaningful. Every assertion should catch a specific regression.
+- Make sure each test can only pass when the feature really works, and not for another reason.
+- Add absence checks only when they provide additional coverage.
+- Add a short comment above each step.
+
+For each step:
+1. Implement it and briefly explain what it verifies.
+2. Run this command from packages/react:
+   npx vitest --project=storybook --run src/components/widgets/EntityListWidget -t Individuals
+3. Temporarily break the relevant widget behavior and confirm the test fails for the intended reason. If it still passes, strengthen the test.
+4. Immediately restore only your temporary changes, even if verification errors, preserving my existing edits. Rerun the restored version.
+5. Report the results and a short checklist of tested and remaining features.
+6. Stop and wait for me before the next step.
+
+Keep the code simple, readable, and maintainable. Ask when a necessary detail is unclear.
+
+Stay on feat/455-prompt-v4-entitylist. Do not commit or push.
+```
