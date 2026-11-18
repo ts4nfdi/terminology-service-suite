@@ -250,3 +250,78 @@ Keep the code simple, readable, and maintainable. Ask when a necessary detail is
 
 Stay on feat/455-prompt-v4-entitylist. Do not commit or push.
 ```
+
+## v5
+
+What changed from v4:
+
+- Clearer sections and simpler English. The rules that were repeated are now in one place.
+- The AI tells me how many tests are really needed before it starts.
+- The answers must be short and clear, in a few bullet points.
+- When the AI breaks the widget, it tells me the file, the line and what it changed, so I can do it myself.
+- The AI shows me the exact command to run the test of the widget, so I do not run the wrong one.
+- If the server makes the timeout unreliable, the AI tells me before it changes anything.
+
+```
+Help me write Storybook play functions for a React widget. Act as a senior developer and my mentor. I'm still learning this, so we work one step at a time: you write one step, explain it, and wait for me. If I change something myself, review it carefully.
+
+How to answer:
+- Keep every answer short and clear, in a few bullet points. No long text.
+- Ask me when something important is unclear. Don't guess.
+
+Before you write any code:
+- Read the files below.
+- Tell me how many tests are really needed, which ones, and in which order (most important first). Explain each choice in one line.
+- Tell me if an important feature is missing from my list, or if something in my list is not needed.
+- Then wait for me.
+
+Setup:
+- Storybook 9.1, React, Vite, and Elastic UI (@elastic/eui 115).
+- Tests run with @storybook/addon-vitest in Vitest browser mode (Playwright, Chromium).
+- Get canvas, userEvent, and step from the play context. Import everything else from "storybook/test". StoryContext comes from "@storybook/react-vite".
+- Follow this doc: https://storybook.js.org/docs/writing-tests/interaction-testing
+
+Files (in packages/react/src/components/widgets/EntityListWidget):
+- EntityListWidget.tsx
+- EntityListPresentation.tsx
+- EntityListWidgetStories.ts
+- EntityListWidget.stories.tsx
+Use EntityProviderWidget as the example for how we do it in this project.
+
+Scope:
+- Write one exported play function in EntityListWidgetStories.ts for the Individuals story, and connect it with play: in EntityListWidget.stories.tsx.
+- The story uses real data from the EBI OLS API (ontology "iao", entity type "individual").
+- Only change the test files. No mocks and no new packages.
+
+What I want to test (each item in its own step, most important first):
+- The table has the columns Name, ID, and Type.
+- After loading, it shows "Loaded: 10 / <total>".
+- Clicking the Name header sorts the rows in the expected order, not just a different order.
+- The next page shows different rows.
+- Changing rows per page shows the expected number of rows.
+- Search works on all the data, not only the current page: on page 2, search for a row from another page that is not on page 2, and verify it appears.
+
+Test quality:
+- Only write the tests and checks that are really necessary. More is not better.
+- Every check must be able to fail when its feature is broken.
+- Each test must only pass when the feature really works, not for another reason.
+- Add a check for something that should NOT be on the page only when it tests something new.
+- Find elements like a user: getByRole, getByLabelText, getByText. No test IDs and no CSS selectors.
+- Await every userEvent and expect.
+- The data comes from a real server: wait for it with findBy* or waitFor, with a 10-second timeout. No fixed delays.
+- The whole test has a 15-second timeout. If the server makes this unreliable, tell me before you change anything.
+- Don't hardcode the total. Read it from the page.
+- Add a short comment above each step.
+- Keep the code simple, readable, and maintainable.
+
+For each step:
+1. Write the step, and explain in one line what it checks.
+2. Run it from packages/react:
+   npx vitest --project=storybook --run src/components/widgets/EntityListWidget -t Individuals
+3. Break the widget on purpose for this feature. Tell me the file, the line, and what you changed, so I can do it myself. Check that this new step fails because of your change, not an earlier step or an unrelated error. If it still passes, the test is weak, so fix it.
+4. Restore only your own change right away, even if something went wrong, and keep my edits. Run the test again and check that it passes.
+5. Show me the result and a short checklist of tested and not tested features. Also show me the exact command to run the test of this widget, and from which folder, so I don't run the wrong one.
+6. Wait for me before the next step.
+
+Stay on the branch feat/455-prompt-v4-entitylist. Don't commit or push.
+```
