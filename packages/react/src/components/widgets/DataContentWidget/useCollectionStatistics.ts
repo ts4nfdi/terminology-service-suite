@@ -88,7 +88,7 @@ export function useCollectionStatistics(props: {
 
     setState({ ...IDLE, isLoading: true });
 
-    const url = `${statisticsApi.endsWith("/") ? statisticsApi : statisticsApi + "/"}collections/`;
+    const url = `${statisticsApi.endsWith("/") ? statisticsApi : statisticsApi + "/"}collections`;
     fetch(url, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw Error(`${response.status} ${url}`);
@@ -98,7 +98,12 @@ export function useCollectionStatistics(props: {
         (collections: Record<string, any>[]) => {
           if (ignore) return;
           const selected = collectionId
-            ? collections.filter((c) => c.id === collectionId)
+            ? collections.filter(
+                (c) =>
+                  c["@id"] === collectionId ||
+                  c["@id"] ===
+                    "https://w3id.org/ts4nfdi/collection/" + collectionId,
+              )
             : collections;
           const { ontologies, updatedAt } = toOntologies(selected);
           setState({
