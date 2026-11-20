@@ -12,7 +12,7 @@ export const DataContentWidgetStoryArgTypes = {
 };
 
 export const DataContentWidgetStoryArgs = {
-  api: "",
+  api: globals.GATEWAY_API_OLS_ENDPOINT,
   parameter: "",
 };
 
@@ -28,12 +28,14 @@ export const ErrorDataContentWidgetArgs = {
 
 export const DataContentFAIRagroCollectionArgs = {
   ...DataContentWidgetStoryArgs,
-  collectionId: "ff5491d1-d0a9-481e-ac90-0fad065fa097",
+  collectionId:
+    "https://w3id.org/ts4nfdi/collection/4f7df6cc-a6b2-45b7-a15e-7e8a577d70c2",
 };
 
 export const DataContentCollectionWithoutPropertiesArgs = {
   ...DataContentWidgetStoryArgs,
-  collectionId: "dc45621d-7e40-47ce-9616-4133f0b54edf",
+  collectionId:
+    "https://w3id.org/ts4nfdi/collection/c2832af3-c7ac-4c95-ba5c-eb31d7cdf8db",
 };
 
 export const commonDataContentWidgetPlay = async ({
