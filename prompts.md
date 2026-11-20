@@ -270,7 +270,7 @@ How to answer:
 - Ask me when something important is unclear. Don't guess.
 
 Before you write any code:
-- Read the files below.
+- Read all files in the widget folder below.
 - Tell me how many tests are really needed, which ones, and in which order (most important first). Explain each choice in one line.
 - Tell me if an important feature is missing from my list, or if something in my list is not needed.
 - Then wait for me.
@@ -281,11 +281,8 @@ Setup:
 - Get canvas, userEvent, and step from the play context. Import everything else from "storybook/test". StoryContext comes from "@storybook/react-vite".
 - Follow this doc: https://storybook.js.org/docs/writing-tests/interaction-testing
 
-Files (in packages/react/src/components/widgets/EntityListWidget):
-- EntityListWidget.tsx
-- EntityListPresentation.tsx
-- EntityListWidgetStories.ts
-- EntityListWidget.stories.tsx
+Files:
+- Read all files in the folder packages/react/src/components/widgets/EntityListWidget, including its subfolders.
 Use EntityProviderWidget as the example for how we do it in this project.
 
 Scope:
