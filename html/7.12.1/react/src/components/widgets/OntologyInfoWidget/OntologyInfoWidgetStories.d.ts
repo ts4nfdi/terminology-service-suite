@@ -1,0 +1,57 @@
+export declare const OntologyInfoWidgetStoryArgTypes: {
+    [x: string]: any;
+};
+export declare const OntologyInfoWidgetStoryArgs: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+    hasTitle: boolean;
+    showBadges: boolean;
+    parameter: string;
+    onNavigateToEntity: string;
+    onNavigateToOntology: string;
+    onNavigateToDisambiguate: string;
+};
+export declare const OntologyInfoWidget1Args: {
+    api: string;
+    ontologyId: string;
+};
+export declare const OntologyInfoWidget2Args: {
+    api: string;
+    ontologyId: string;
+};
+export declare const OntologyInfoWidgetOLS4APIArgs: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+};
+export declare const NavigateToEBIPageArgs: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+    onNavigateToEntity: string;
+    onNavigateToOntology: string;
+    onNavigateToDisambiguate: string;
+};
+export declare const OntologyInfoWidgetUberon: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+    hasTitle: boolean;
+    showBadges: boolean;
+};
+export declare const OntologyInfoWidgetOhdab: {
+    api: string;
+    useLegacy: boolean;
+    ontologyId: string;
+};
+export declare const commonOntologyInfoWidgetPlay: ({ canvasElement, }: {
+    canvasElement: HTMLElement;
+}) => Promise<void>;
+/**
+ * Checks that the IRI links are styled as links (issue #390), so they
+ * do not look like plain text when the host app resets the link color.
+ */
+export declare const ontologyInfoLinksPlay: ({ canvasElement, }: {
+    canvasElement: HTMLElement;
+}) => Promise<void>;
