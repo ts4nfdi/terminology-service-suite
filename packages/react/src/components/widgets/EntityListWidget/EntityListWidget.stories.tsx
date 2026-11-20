@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { EntityListDescription } from "../../../app/widgetDescriptions";
 import { WrappedEntityListWidget } from "./EntityListWidget";
 import {
+  entityListIndividualsPlay,
   EntityListWidgetIndividualsArgs,
   EntityListWidgetMeshTermsArgs,
-  EntityListWidgetStoryArgTypes,
   EntityListWidgetStoryArgs,
+  EntityListWidgetStoryArgTypes,
 } from "./EntityListWidgetStories";
 
 const meta: Meta = {
@@ -32,4 +33,5 @@ export const Classes: Story = {
 
 export const Individuals: Story = {
   args: EntityListWidgetIndividualsArgs,
+  play: entityListIndividualsPlay,
 };
